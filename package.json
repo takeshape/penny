@@ -1,0 +1,74 @@
+{
+  "name": "takeshape-starter-ecommerce-kitchen-sink",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
+    "lint": "next lint",
+    "typecheck": "tsc",
+    "typegen": "takeshape schema && takeshape types --to ./lib/takeshape/types.d.ts"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.10",
+    "@auth0/auth0-react": "^1.9.0",
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@stripe/react-stripe-js": "^1.7.0",
+    "@stripe/stripe-js": "^1.26.0",
+    "@takeshape/cli": "^8.119.0",
+    "@theme-ui/color": "^0.13.1",
+    "@theme-ui/components": "0.13.1",
+    "@theme-ui/core": "0.13.1",
+    "@theme-ui/css": "0.13.1",
+    "@theme-ui/presets": "^0.13.1",
+    "@theme-ui/theme-provider": "0.13.1",
+    "@types/lodash-es": "^4.17.6",
+    "abortcontroller-polyfill": "^1.7.3",
+    "date-fns": "^2.28.0",
+    "graphql": "^16.3.0",
+    "lodash-es": "^4.17.21",
+    "micro": "^9.3.4",
+    "next": "^12.1.2",
+    "node-fetch": "^3.2.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-hook-form": "^7.28.1",
+    "react-icons": "^4.3.1",
+    "react-star-ratings": "^2.3.0",
+    "stripe": "^8.213.0"
+  },
+  "prettier": {
+    "requirePragma": false,
+    "printWidth": 120,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "overrides": [
+      {
+        "files": [
+          "*.md"
+        ],
+        "options": {
+          "proseWrap": "always"
+        }
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.43",
+    "@types/react-star-ratings": "^2.3.0",
+    "eslint": "8.8.0",
+    "eslint-config-next": "12.0.10",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.6.1",
+    "typescript": "^4.6.3"
+  }
+}

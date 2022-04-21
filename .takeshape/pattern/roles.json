@@ -1,0 +1,312 @@
+[
+  {
+    "projectId": "79b5254d-5bc3-4034-8b05-e9c2f097de5a",
+    "conditions": {},
+    "updated": 1649714917705,
+    "permissions": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.ReviewsIo_listProductReviews"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Stripe_getProduct"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Stripe_listProducts"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getIndexedProductList"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.search"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "shape:query"
+          ]
+        }
+      ]
+    },
+    "created": 1648659084834,
+    "name": "anonymous"
+  },
+  {
+    "projectId": "79b5254d-5bc3-4034-8b05-e9c2f097de5a",
+    "conditions": {
+      "ForAllValues:StringEquals": {
+        "claims:provider": "auth0"
+      }
+    },
+    "updated": 1648776843207,
+    "permissions": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Resource": [
+            "ts:workflow-step:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "workflow-step:*"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:workflow:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "workflow:*"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Klaviyo_getLists"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Stripe_getProduct"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getIndexedProductList"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyInvoices"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyLoyaltyCard"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyNewsletterSubscriptions"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyPayments"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyProfile"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMySubscriptions"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getProductReviews"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.search"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.upsertMyProfile"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.upsertMyCustomer"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.deleteMySubscription"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.createMyCheckoutSession"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Klaviyo_getListMembers"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Klaviyo_addMembers"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Klaviyo_removeMembers"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "shape:query"
+          ]
+        }
+      ]
+    },
+    "created": 1627050588449,
+    "name": "authenticated"
+  },
+  {
+    "projectId": "79b5254d-5bc3-4034-8b05-e9c2f097de5a",
+    "conditions": {},
+    "updated": 1648573243098,
+    "permissions": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "shape:query"
+          ]
+        }
+      ]
+    },
+    "created": 1648573243098,
+    "name": "webhook"
+  }
+]
