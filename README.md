@@ -38,7 +38,7 @@ TKTK
 ## Instructions
 
 TKTK
-### Running the Starter
+## Running the Starter
 
 1. Head over to your trusty terminal or tool of choice.
 
@@ -52,7 +52,7 @@ TKTK
 3. Run `npm run dev` to start the application and open [http://localhost:3000](http://localhost:3000) with your browser
    to play around!
 
-### Known Limitations
+## Known Limitations
 
 TKTK
 ## Learn More
