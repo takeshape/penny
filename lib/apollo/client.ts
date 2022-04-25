@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloLink, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 export function createApolloClient(uri, getAuthToken) {

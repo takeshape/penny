@@ -7,7 +7,9 @@ export const toggleCart = (dispatch) => {
 export const openCart = (dispatch, timeout) => {
   return dispatch({
     type: 'OPEN_CART',
-    timeout
+    payload: {
+      timeout
+    }
   });
 };
 

@@ -1,6 +1,6 @@
+import { lighten } from '@theme-ui/color';
 import type { Theme } from '@theme-ui/core';
 import { swiss } from '@theme-ui/presets';
-import { lighten } from '@theme-ui/color';
 
 const theme: Theme = {
   ...swiss,

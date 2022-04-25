@@ -1,8 +1,8 @@
-import { useReducer, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useReducer } from 'react';
+import { clearCart, setCartIsReady, setCheckoutResult } from './actions';
 import { CartDispatchContext, CartStateContext } from './context';
 import reducer, { initialState } from './reducer';
-import { setCartIsReady, setCheckoutResult, clearCart } from './actions';
 import useLocalStorage from './use-local-storage';
 
 const localStorageKey = 'cartItems';

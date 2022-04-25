@@ -1,6 +1,7 @@
 export interface CartState {
   isCartReady: boolean;
   isCartOpen: boolean;
+  timeout?: NodeJS.Timeout;
   checkoutResult: any | null;
   items: any[];
 }
@@ -23,7 +24,7 @@ const reducer = (state: CartState, action) => {
       return {
         ...state,
         isCartOpen: true,
-        timeout: action.timeout
+        timeout: action.payload.timeout
       };
     case 'CLOSE_CART':
       return {

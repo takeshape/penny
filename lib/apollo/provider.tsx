@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import { takeshapeAnonymousApiKey } from 'lib/config';
-
 import { createApolloClient } from './client';
 
 export const AuthorizedApolloProvider = ({ uri, children }) => {

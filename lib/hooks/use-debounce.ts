@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const useDebounce = (value, timeout) => {
   const [state, setState] = useState(value);
