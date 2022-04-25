@@ -1,0 +1,33 @@
+name: Test with Jest and Cypress
+on: [push]
+jobs:
+  npm-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install modules
+        run: npm ci
+      - name: Run tests
+        run: npm test
+
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm run build
+          start: npm start
+          wait-on: "http://localhost:3000"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: artifacts-${{ github.run_id }}
+          path: |
+            ${{ github.workspace }}/cypress/screenshots
+            ${{ github.workspace }}/cypress/videos

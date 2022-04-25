@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import type { NextPage } from 'next';
-import { Heading, Divider, Alert, Container, Spinner, Box, Flex, Grid } from '@theme-ui/components';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Page, Section } from 'components/layout';
-import { ProfileForm, CustomerForm } from 'components/forms';
 import { useQuery } from '@apollo/client';
+import { withAuthenticationRequired } from '@auth0/auth0-react';
+import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from '@theme-ui/components';
+import { NewsletterToggle } from 'components/account/newsletter-toggle';
+import { CreateReferral, Referral, ReferralList } from 'components/account/referrals';
+import { CustomerForm, ProfileForm } from 'components/forms';
+import { Page, Section } from 'components/layout';
+import { Logout } from 'components/user';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'lib/queries';
 import { useProfile } from 'lib/takeshape';
-import { NewsletterToggle } from 'components/account/newsletter-toggle';
-import { Logout } from 'components/user';
-import { Referral, CreateReferral, ReferralList } from 'components/account/referrals';
+import type { NextPage } from 'next';
+import { useState } from 'react';
 
 const referralsFixtureData: Referral[] = [
   {
@@ -21,6 +21,7 @@ const referralsFixtureData: Referral[] = [
 
 const AccountPage: NextPage = () => {
   const { isProfileReady } = useProfile();
+
   const { data: profileData, error: profileError } = useQuery(GetMyProfile, {
     skip: !isProfileReady
   });
@@ -28,6 +29,7 @@ const AccountPage: NextPage = () => {
     skip: !isProfileReady
   });
   const [referrals, setReferrals] = useState<Referral[]>(referralsFixtureData);
+
   return (
     <Page>
       <Flex sx={{ width: '100%', gap: '2rem', alignItems: 'baseline' }}>

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { Label, Input, Textarea, Grid, Box, Progress, Avatar, Heading, Flex, Select } from '@theme-ui/components';
+import { useMutation } from '@apollo/client';
+import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Select, Textarea } from '@theme-ui/components';
 import useCountries from 'lib/countries/use-countries';
 import { useUpload } from 'lib/hooks/use-upload';
+import { GetMyProfile, UploadAssets, UpsertMyCustomer, UpsertMyProfile } from 'lib/queries';
 import { buildImageUrl } from 'lib/utils/images';
-import { useMutation } from '@apollo/client';
-import { UpsertMyCustomer, UpsertMyProfile, GetMyProfile, UploadAssets } from 'lib/queries';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { SubmitButton } from './buttons';
 
 export const CustomerForm = ({ customer }) => {

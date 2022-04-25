@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface UseUploadData {
   error: string | null;
@@ -53,7 +53,7 @@ export function useUpload(
       xhr.send(file);
     }
 
-    if (url !== undefined && file !== undefined) {
+    if (url && file) {
       doUpload();
     }
   }, [url, file]);

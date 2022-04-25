@@ -1,0 +1,20 @@
+{
+  "requirePragma": false,
+  "printWidth": 120,
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "overrides": [
+    {
+      "files": [
+        "*.md"
+      ],
+      "options": {
+        "proseWrap": "always"
+      }
+    }
+  ]
+}

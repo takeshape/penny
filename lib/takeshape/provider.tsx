@@ -1,8 +1,8 @@
-import type { UpsertMyProfileResponse } from 'lib/queries';
-import { useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation } from '@apollo/client';
-import { UpsertMyProfile, GetMyProfile } from 'lib/queries';
+import { useAuth0 } from '@auth0/auth0-react';
+import type { UpsertMyProfileResponse } from 'lib/queries';
+import { GetMyProfile, UpsertMyProfile } from 'lib/queries';
+import { useEffect } from 'react';
 import { TakeshapeContext } from './context';
 
 // Ensure a profile is created for the Auth0 user
