@@ -1,3 +1,8 @@
+## Development Notes
+
+* `react@18` cannot be used because of an issue with lazy queries in `@apollo/client`.
+* A number of other deps are at less-than-current versions because of above.
+
 # Deluxe ™️ Sample Project
 
 A full-featured e-commerce experience using the best services out there:

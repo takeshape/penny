@@ -1,11 +1,11 @@
-import Router from 'next/router';
-import { ThemeProvider, jsx } from '@theme-ui/core';
-import theme from 'lib/theme';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { ThemeProvider } from '@theme-ui/core';
 import { AuthorizedApolloProvider } from 'lib/apollo';
 import { CartProvider } from 'lib/cart';
+import { audience, clientId, domain, scope, takeshapeApiUrl } from 'lib/config';
 import { TakeshapeProvider } from 'lib/takeshape';
-import { clientId, domain, scope, audience, takeshapeApiUrl } from 'lib/config';
+import theme from 'lib/theme';
+import Router from 'next/router';
 
 const onRedirectCallback = (appState) => {
   Router.replace(appState?.returnTo ?? '/');
