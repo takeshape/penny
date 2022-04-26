@@ -1,5 +1,13 @@
 name: Test with Jest and Cypress
 on: [push]
+env:
+  NEXT_PUBLIC_AUTH0_DOMAIN: "dev-by9w1mxg.us.auth0.com"
+  NEXT_PUBLIC_AUTH0_CLIENT_ID: "qFoQD6d6vGhob9B8lguJbolKKXnL6jDQ"
+  NEXT_PUBLIC_AUTH0_REDIRECT_URI: "http://localhost:3000/"
+  NEXT_PUBLIC_AUTH0_AUDIENCE: "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/auth-0"
+  NEXT_PUBLIC_TAKESHAPE_API_URL: "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/v3/graphql"
+  NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY: "a9a84ace044c4d2796112c5710008a2f"
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_51JG7sTEjMGaPiQ74KqSiOjmOM3A64zrSHkogtR9rzMfC3PZauNAwGV7nDZmH1tNx9LwcJT7pLoKwMZSHaW30EifX00dYuNHWaq"
 jobs:
   npm-test:
     runs-on: ubuntu-latest
@@ -38,16 +46,6 @@ jobs:
           build: npm run build
           start: npm start
           wait-on: "http://localhost:3000"
-        env:
-          NEXT_PUBLIC_LOCALE: "en-US"
-          NEXT_PUBLIC_AUTH0_DOMAIN: "dev-by9w1mxg.us.auth0.com"
-          NEXT_PUBLIC_AUTH0_CLIENT_ID: "qFoQD6d6vGhob9B8lguJbolKKXnL6jDQ"
-          NEXT_PUBLIC_AUTH0_REDIRECT_URI: "http://localhost:3000/"
-          NEXT_PUBLIC_AUTH0_SCOPE: "openid profile email offline_access"
-          NEXT_PUBLIC_AUTH0_AUDIENCE: "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/auth-0"
-          NEXT_PUBLIC_TAKESHAPE_API_URL: "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/v3/graphql"
-          NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY: "a9a84ace044c4d2796112c5710008a2f"
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_51JG7sTEjMGaPiQ74KqSiOjmOM3A64zrSHkogtR9rzMfC3PZauNAwGV7nDZmH1tNx9LwcJT7pLoKwMZSHaW30EifX00dYuNHWaq"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
