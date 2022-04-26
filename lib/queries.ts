@@ -6,7 +6,7 @@ import type {
   Stripe_Product,
   Stripe_Subscription,
   Voucherify_LoyaltyCard
-} from './takeshape/types';
+} from 'types/takeshape';
 
 export interface StripeProducts {
   products: {

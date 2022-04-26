@@ -1,28 +1,28 @@
-import type { SetRequired } from 'type-fest';
-import type { NextApiHandler, NextConfig } from 'next';
-import type {
-  MutationVoucherify_CreateOrderArgs,
-  ReviewsIo_CreateInvitationResponse,
-  ReviewsIo_CreateInvitationResponsePropertyInput,
-  ReviewsIo_InvitationProductInput,
-  Voucherify_Order,
-  Voucherify_OrderItemInput,
-  MutationCreateShipmentArgs,
-  ShipEngine_Label,
-  ShipEngine_Package
-} from 'lib/takeshape/types';
-import Stripe from 'stripe';
-import { buffer } from 'micro';
+import { createApolloClient } from 'lib/apollo/client';
 import {
+  shipFrom,
+  siteUrl,
   stripeSecretKey,
   stripeWebhookSecret,
   takeshapeApiUrl,
-  takeshapeWebhookApiKey,
-  siteUrl,
-  shipFrom
+  takeshapeWebhookApiKey
 } from 'lib/config';
-import { createApolloClient } from 'lib/apollo/client';
 import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'lib/queries';
+import { buffer } from 'micro';
+import type { NextApiHandler, NextConfig } from 'next';
+import Stripe from 'stripe';
+import type { SetRequired } from 'type-fest';
+import type {
+  MutationCreateShipmentArgs,
+  MutationVoucherify_CreateOrderArgs,
+  ReviewsIo_CreateInvitationPropertiesPropertyInput,
+  ReviewsIo_CreateInvitationResponse,
+  ReviewsIo_InvitationProductInput,
+  ShipEngine_Label,
+  ShipEngine_Package,
+  Voucherify_Order,
+  Voucherify_OrderItemInput
+} from 'types/takeshape';
 
 const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' });
 const client = createApolloClient(takeshapeApiUrl, () => takeshapeWebhookApiKey);
@@ -54,7 +54,7 @@ async function handleReviews(customer: Stripe.Customer, session: Stripe.Checkout
 
     const response = await client.mutate<
       ReviewsIo_CreateInvitationResponse,
-      ReviewsIo_CreateInvitationResponsePropertyInput
+      ReviewsIo_CreateInvitationPropertiesPropertyInput
     >({
       mutation: CreateInvitation,
       variables: {

@@ -1,9 +1,9 @@
 import { useCart } from 'lib/cart';
-import { Stripe_Product } from 'lib/takeshape/types';
 import { formatPrice, pluralizeText } from 'lib/utils/text';
 import orderBy from 'lodash/orderBy';
 import { useEffect, useState } from 'react';
 import { Box, Button, Flex, Input, Label, Radio, Select, Text } from 'theme-ui';
+import { Stripe_Product } from 'types/takeshape';
 
 const showCartTimeout = 3000;
 const oneTimePurchase = 'one-time';

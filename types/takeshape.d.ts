@@ -1103,6 +1103,7 @@ export type TsWhereInput = {
   templateHash?: InputMaybe<TsWhereStringInput>;
   amount?: InputMaybe<TsWhereIntegerInput>;
   amount_capturable?: InputMaybe<TsWhereIntegerInput>;
+  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
   amount_received?: InputMaybe<TsWhereIntegerInput>;
   application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
   application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
@@ -1157,6 +1158,14 @@ export type TsWhereInput = {
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereStripe_PaymentFlowsAmountDetailsInput = {
+  tip?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsResourceTipInput>;
+};
+
+export type TsWhereStripe_PaymentFlowsAmountDetailsResourceTipInput = {
+  amount?: InputMaybe<TsWhereIntegerInput>;
 };
 
 export type TsWhereStripe_ApplicationWrappedStringUnionInput = {
@@ -1495,6 +1504,7 @@ export type TsWhereStripe_ApiErrorsInput = {
 export type TsWhereStripe_PaymentIntentInput = {
   amount?: InputMaybe<TsWhereIntegerInput>;
   amount_capturable?: InputMaybe<TsWhereIntegerInput>;
+  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
   amount_received?: InputMaybe<TsWhereIntegerInput>;
   application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
   application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
@@ -1540,6 +1550,7 @@ export type TsWhereStripe_PaymentIntentNextActionInput = {
   alipay_handle_redirect?: InputMaybe<TsWhereStripe_PaymentIntentNextActionAlipayHandleRedirectInput>;
   boleto_display_details?: InputMaybe<TsWhereStripe_PaymentIntentNextActionBoletoInput>;
   card_await_notification?: InputMaybe<TsWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput>;
+  display_bank_transfer_instructions?: InputMaybe<TsWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput>;
   konbini_display_details?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniInput>;
   oxxo_display_details?: InputMaybe<TsWhereStripe_PaymentIntentNextActionDisplayOxxoDetailsInput>;
   paynow_display_qr_code?: InputMaybe<TsWhereStripe_PaymentIntentNextActionPaynowDisplayQrCodeInput>;
@@ -1568,6 +1579,18 @@ export type TsWhereStripe_PaymentIntentNextActionBoletoInput = {
 export type TsWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput = {
   charge_attempt_at?: InputMaybe<TsWhereIntegerInput>;
   customer_approval_required?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput = {
+  amount_remaining?: InputMaybe<TsWhereIntegerInput>;
+  currency?: InputMaybe<TsWhereStringInput>;
+  financial_addresses?: InputMaybe<TsWhereStripe_FundingInstructionsBankTransferFinancialAddressInput>;
+  reference?: InputMaybe<TsWhereStringInput>;
+  type?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereStripe_FundingInstructionsBankTransferFinancialAddressInput = {
+  type?: InputMaybe<TsWhereInput>;
 };
 
 export type TsWhereStripe_PaymentIntentNextActionKonbiniInput = {
@@ -2154,6 +2177,7 @@ export type TsWhereStripe_PaymentMethodDetailsCardPresentInput = {
   fingerprint?: InputMaybe<TsWhereStringInput>;
   funding?: InputMaybe<TsWhereStringInput>;
   generated_card?: InputMaybe<TsWhereStringInput>;
+  incremental_authorization_supported?: InputMaybe<TsWhereBooleanInput>;
   last4?: InputMaybe<TsWhereStringInput>;
   network?: InputMaybe<TsWhereStringInput>;
   overcapture_supported?: InputMaybe<TsWhereBooleanInput>;
@@ -2272,6 +2296,7 @@ export type TsWhereStripe_PaymentIntentPaymentMethodOptionsInput = {
   boleto?: InputMaybe<TsWhere076b30d85cca1aae72305dffd8194343UnionInput>;
   card?: InputMaybe<TsWhere6181441ba9fb7eee556dd3a4a9d229e4UnionInput>;
   card_present?: InputMaybe<TsWherea245e0776494a0d51fe046b0453d38afUnionInput>;
+  customer_balance?: InputMaybe<TsWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput>;
   eps?: InputMaybe<TsWheref973d307d812f0dfb771bc8122e5c599UnionInput>;
   fpx?: InputMaybe<TsWhereabae1b112405e8b3c0dbfa673a54aaadUnionInput>;
   giropay?: InputMaybe<TsWhere8cc56b75820487c13c502fada2896d16UnionInput>;
@@ -2377,9 +2402,22 @@ export type TsWhereStripe_PaymentMethodOptionsCardMandateOptionsInput = {
 
 export type TsWherea245e0776494a0d51fe046b0453d38afUnionInput = {
   request_extended_authorization?: InputMaybe<TsWhereBooleanInput>;
+  request_incremental_authorization_support?: InputMaybe<TsWhereBooleanInput>;
   capture_method?: InputMaybe<TsWhereInput>;
   setup_future_usage?: InputMaybe<TsWhereInput>;
   verification_method?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput = {
+  bank_transfer?: InputMaybe<TsWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput>;
+  funding_type?: InputMaybe<TsWhereInput>;
+  setup_future_usage?: InputMaybe<TsWhereInput>;
+  capture_method?: InputMaybe<TsWhereInput>;
+  verification_method?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput = {
+  type?: InputMaybe<TsWhereInput>;
 };
 
 export type TsWheref973d307d812f0dfb771bc8122e5c599UnionInput = {
@@ -3953,6 +3991,7 @@ export type TsWhereStripe_PaymentIntentWrappedStringUnionInput = {
   value?: InputMaybe<TsWhereStringInput>;
   amount?: InputMaybe<TsWhereIntegerInput>;
   amount_capturable?: InputMaybe<TsWhereIntegerInput>;
+  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
   amount_received?: InputMaybe<TsWhereIntegerInput>;
   application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
   application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
@@ -4438,7 +4477,6 @@ export type Profile = TsSearchable & {
   stripeCustomer?: Maybe<Stripe_Customer>;
   loyaltyCard?: Maybe<Voucherify_LoyaltyCard>;
   orders?: Maybe<Array<Maybe<Stripe_Invoice>>>;
-  newsletters?: Maybe<Array<Maybe<ProfileNewsletterStatus>>>;
   _shapeId?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ID']>;
   _version?: Maybe<Scalars['Int']>;
@@ -6303,6 +6341,7 @@ export type Stripe_PaymentMethod = {
   /** Time at which the object was created. Measured in seconds since the Unix epoch. */
   created?: Maybe<Scalars['Int']>;
   customer?: Maybe<Stripe_PaymentMethodCustomerProperty>;
+  customer_balance?: Maybe<Stripe_PaymentMethodCustomerBalance>;
   eps?: Maybe<Stripe_PaymentMethodEps>;
   fpx?: Maybe<Stripe_PaymentMethodFpx>;
   giropay?: Maybe<Stripe_PaymentMethodGiropay>;
@@ -6476,6 +6515,8 @@ export type Stripe_PaymentMethodDetailsCardPresent = {
   funding?: Maybe<Scalars['String']>;
   /** ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod. */
   generated_card?: Maybe<Scalars['String']>;
+  /** Whether this [PaymentIntent](https://stripe.com/docs/api/payment_intents) is eligible for incremental authorizations. Request support using [request_incremental_authorization_support](https://stripe.com/docs/api/payment_intents/create#create_payment_intent-payment_method_options-card_present-request_incremental_authorization_support). */
+  incremental_authorization_supported?: Maybe<Scalars['Boolean']>;
   /** The last four digits of the card. */
   last4?: Maybe<Scalars['String']>;
   /** Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
@@ -6992,6 +7033,7 @@ export type Stripe_PaymentIntent = TsSearchable & {
   amount?: Maybe<Scalars['Int']>;
   /** Amount that can be captured from this PaymentIntent. */
   amount_capturable?: Maybe<Scalars['Int']>;
+  amount_details?: Maybe<Stripe_PaymentFlowsAmountDetails>;
   /** Amount that was collected by this PaymentIntent. */
   amount_received?: Maybe<Scalars['Int']>;
   application?: Maybe<Stripe_PaymentIntentApplicationProperty>;
@@ -7009,9 +7051,9 @@ export type Stripe_PaymentIntent = TsSearchable & {
   /**
    * The client secret of this PaymentIntent. Used for client-side retrieval using a publishable key.
    *
-   * The client secret can be used to complete a payment from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+   * The client secret can be used to complete a payment from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
    *
-   * Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?integration=elements) and learn about how `client_secret` should be handled.
+   * Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?ui=elements) and learn about how `client_secret` should be handled.
    */
   client_secret?: Maybe<Scalars['String']>;
   confirmation_method?: Maybe<Stripe_PaymentIntentConfirmationMethodProperty>;
@@ -7068,6 +7110,17 @@ export type Stripe_PaymentIntent = TsSearchable & {
   _shapeId?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ID']>;
   searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentFlowsAmountDetails = {
+  __typename?: 'Stripe_PaymentFlowsAmountDetails';
+  tip?: Maybe<Stripe_PaymentFlowsAmountDetailsResourceTip>;
+};
+
+export type Stripe_PaymentFlowsAmountDetailsResourceTip = {
+  __typename?: 'Stripe_PaymentFlowsAmountDetailsResourceTip';
+  /** Portion of the amount that corresponds to a tip. */
+  amount?: Maybe<Scalars['Int']>;
 };
 
 export type Stripe_PaymentIntentApplicationProperty = WrappedString | Stripe_Application;
@@ -11632,7 +11685,7 @@ export type Stripe_SetupIntent = {
   /**
    * The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
    *
-   * The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+   * The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
    */
   client_secret?: Maybe<Scalars['String']>;
   /** Time at which the object was created. Measured in seconds since the Unix epoch. */
@@ -12486,6 +12539,7 @@ export type Stripe_PaymentMethodDetails = {
   boleto?: Maybe<Stripe_PaymentMethodDetailsBoleto>;
   card?: Maybe<Stripe_PaymentMethodDetailsCard>;
   card_present?: Maybe<Stripe_PaymentMethodDetailsCardPresent>;
+  customer_balance?: Maybe<Stripe_PaymentMethodDetailsCustomerBalance>;
   eps?: Maybe<Stripe_PaymentMethodDetailsEps>;
   fpx?: Maybe<Stripe_PaymentMethodDetailsFpx>;
   giropay?: Maybe<Stripe_PaymentMethodDetailsGiropay>;
@@ -12769,6 +12823,11 @@ export type Stripe_PaymentMethodDetailsCardWalletVisaCheckout = {
   /** Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
   name?: Maybe<Scalars['String']>;
   shipping_address?: Maybe<Stripe_Address>;
+};
+
+export type Stripe_PaymentMethodDetailsCustomerBalance = {
+  __typename?: 'Stripe_PaymentMethodDetailsCustomerBalance';
+  result?: Maybe<Scalars['JSONObject']>;
 };
 
 export type Stripe_PaymentMethodDetailsEps = {
@@ -13314,6 +13373,7 @@ export type Stripe_PaymentIntentNextAction = {
   alipay_handle_redirect?: Maybe<Stripe_PaymentIntentNextActionAlipayHandleRedirect>;
   boleto_display_details?: Maybe<Stripe_PaymentIntentNextActionBoleto>;
   card_await_notification?: Maybe<Stripe_PaymentIntentNextActionCardAwaitNotification>;
+  display_bank_transfer_instructions?: Maybe<Stripe_PaymentIntentNextActionDisplayBankTransferInstructions>;
   konbini_display_details?: Maybe<Stripe_PaymentIntentNextActionKonbini>;
   oxxo_display_details?: Maybe<Stripe_PaymentIntentNextActionDisplayOxxoDetails>;
   paynow_display_qr_code?: Maybe<Stripe_PaymentIntentNextActionPaynowDisplayQrCode>;
@@ -13359,6 +13419,48 @@ export type Stripe_PaymentIntentNextActionCardAwaitNotification = {
   /** For payments greater than INR 5000, the customer must provide explicit approval of the payment with their bank. For payments of lower amount, no customer action is required. */
   customer_approval_required?: Maybe<Scalars['Boolean']>;
 };
+
+export type Stripe_PaymentIntentNextActionDisplayBankTransferInstructions = {
+  __typename?: 'Stripe_PaymentIntentNextActionDisplayBankTransferInstructions';
+  /** The remaining amount that needs to be transferred to complete the payment. */
+  amount_remaining?: Maybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: Maybe<Scalars['String']>;
+  /** A list of financial addresses that can be used to fund the customer balance */
+  financial_addresses?: Maybe<Array<Maybe<Stripe_FundingInstructionsBankTransferFinancialAddress>>>;
+  /** A string identifying this payment. Instruct your customer to include this code in the reference or memo field of their bank transfer. */
+  reference?: Maybe<Scalars['String']>;
+  /** Type of bank transfer */
+  type?: Maybe<Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsTypeProperty>;
+};
+
+export type Stripe_FundingInstructionsBankTransferFinancialAddress = {
+  __typename?: 'Stripe_FundingInstructionsBankTransferFinancialAddress';
+  /** The payment networks supported by this FinancialAddress */
+  supported_networks?: Maybe<Array<Maybe<Stripe_FundingInstructionsBankTransferFinancialAddressSupportedNetworksProperty>>>;
+  /** The type of financial address */
+  type?: Maybe<Stripe_FundingInstructionsBankTransferFinancialAddressTypeProperty>;
+  zengin?: Maybe<Stripe_FundingInstructionsBankTransferZenginRecord>;
+};
+
+export enum Stripe_FundingInstructionsBankTransferFinancialAddressSupportedNetworksProperty {
+  Sepa = 'sepa',
+  Zengin = 'zengin'
+}
+
+export enum Stripe_FundingInstructionsBankTransferFinancialAddressTypeProperty {
+  Iban = 'iban',
+  Zengin = 'zengin'
+}
+
+export type Stripe_FundingInstructionsBankTransferZenginRecord = {
+  __typename?: 'Stripe_FundingInstructionsBankTransferZenginRecord';
+  result?: Maybe<Scalars['JSONObject']>;
+};
+
+export enum Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsTypeProperty {
+  JpBankTransfer = 'jp_bank_transfer'
+}
 
 export type Stripe_PaymentIntentNextActionKonbini = {
   __typename?: 'Stripe_PaymentIntentNextActionKonbini';
@@ -13507,6 +13609,7 @@ export type Stripe_PaymentIntentPaymentMethodOptions = {
   boleto?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsBoletoProperty>;
   card?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsCardProperty>;
   card_present?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsCardPresentProperty>;
+  customer_balance?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsCustomerBalanceProperty>;
   eps?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsEpsProperty>;
   fpx?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsFpxProperty>;
   giropay?: Maybe<Stripe_PaymentIntentPaymentMethodOptionsGiropayProperty>;
@@ -13851,7 +13954,65 @@ export type Stripe_PaymentMethodOptionsCardPresent = {
   __typename?: 'Stripe_PaymentMethodOptionsCardPresent';
   /** Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity) */
   request_extended_authorization?: Maybe<Scalars['Boolean']>;
+  /** Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support. */
+  request_incremental_authorization_support?: Maybe<Scalars['Boolean']>;
 };
+
+export type Stripe_PaymentIntentPaymentMethodOptionsCustomerBalanceProperty = Stripe_PaymentMethodOptionsCustomerBalance | Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClient;
+
+export type Stripe_PaymentMethodOptionsCustomerBalance = {
+  __typename?: 'Stripe_PaymentMethodOptionsCustomerBalance';
+  bank_transfer?: Maybe<Stripe_PaymentMethodOptionsCustomerBalanceBankTransfer>;
+  /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
+  funding_type?: Maybe<Stripe_PaymentMethodOptionsCustomerBalanceFundingTypeProperty>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: Maybe<Stripe_PaymentMethodOptionsCustomerBalanceSetupFutureUsageProperty>;
+};
+
+export type Stripe_PaymentMethodOptionsCustomerBalanceBankTransfer = {
+  __typename?: 'Stripe_PaymentMethodOptionsCustomerBalanceBankTransfer';
+  /**
+   * List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
+   *
+   * Permitted values include: `zengin`.
+   */
+  requested_address_types?: Maybe<Array<Maybe<Stripe_PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypesProperty>>>;
+  /** The bank transfer type that this PaymentIntent is allowed to use for funding. Permitted values include: `us_bank_account`, `eu_bank_account`, `id_bank_account`, `gb_bank_account`, `jp_bank_account`, `mx_bank_account`, `eu_bank_transfer`, `gb_bank_transfer`, `id_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`. */
+  type?: Maybe<Stripe_PaymentMethodOptionsCustomerBalanceBankTransferTypeProperty>;
+};
+
+export enum Stripe_PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypesProperty {
+  Zengin = 'zengin'
+}
+
+export enum Stripe_PaymentMethodOptionsCustomerBalanceBankTransferTypeProperty {
+  EuBankAccount = 'eu_bank_account',
+  EuBankTransfer = 'eu_bank_transfer',
+  GbBankAccount = 'gb_bank_account',
+  GbBankTransfer = 'gb_bank_transfer',
+  IdBankAccount = 'id_bank_account',
+  IdBankTransfer = 'id_bank_transfer',
+  JpBankAccount = 'jp_bank_account',
+  JpBankTransfer = 'jp_bank_transfer',
+  MxBankAccount = 'mx_bank_account',
+  MxBankTransfer = 'mx_bank_transfer',
+  UsBankAccount = 'us_bank_account',
+  UsBankTransfer = 'us_bank_transfer'
+}
+
+export enum Stripe_PaymentMethodOptionsCustomerBalanceFundingTypeProperty {
+  BankTransfer = 'bank_transfer'
+}
+
+export enum Stripe_PaymentMethodOptionsCustomerBalanceSetupFutureUsageProperty {
+  None = 'none'
+}
 
 export type Stripe_PaymentIntentPaymentMethodOptionsEpsProperty = Stripe_PaymentIntentPaymentMethodOptionsEps | Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClient;
 
@@ -14429,6 +14590,11 @@ export type Stripe_PaymentMethodCardPresent = {
 
 export type Stripe_PaymentMethodCustomerProperty = WrappedString | Stripe_Customer;
 
+export type Stripe_PaymentMethodCustomerBalance = {
+  __typename?: 'Stripe_PaymentMethodCustomerBalance';
+  result?: Maybe<Scalars['JSONObject']>;
+};
+
 export type Stripe_PaymentMethodEps = {
   __typename?: 'Stripe_PaymentMethodEps';
   /** The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`. */
@@ -14659,6 +14825,7 @@ export enum Stripe_PaymentMethodTypeProperty {
   Boleto = 'boleto',
   Card = 'card',
   CardPresent = 'card_present',
+  CustomerBalance = 'customer_balance',
   Eps = 'eps',
   Fpx = 'fpx',
   Giropay = 'giropay',
@@ -14835,13 +15002,6 @@ export type Voucherify_LoyaltyCardAsset = {
   url?: Maybe<Scalars['String']>;
 };
 
-export type ProfileNewsletterStatus = {
-  __typename?: 'ProfileNewsletterStatus';
-  listId?: Maybe<Scalars['String']>;
-  listName?: Maybe<Scalars['String']>;
-  subscribed?: Maybe<Scalars['Boolean']>;
-};
-
 export type Stripe_PaymentIntentPaginatedList = {
   __typename?: 'Stripe_PaymentIntentPaginatedList';
   items: Array<Stripe_PaymentIntent>;
@@ -14851,6 +15011,7 @@ export type Stripe_PaymentIntentPaginatedList = {
 export type TsWhereStripePaymentIntentInput = {
   amount?: InputMaybe<TsWhereIntegerInput>;
   amount_capturable?: InputMaybe<TsWhereIntegerInput>;
+  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
   amount_received?: InputMaybe<TsWhereIntegerInput>;
   application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
   application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
@@ -14938,6 +15099,13 @@ export type Stripe_ListProductsResponse = {
 export enum Stripe_ListProductsResponseObjectProperty {
   List = 'list'
 }
+
+export type ProfileNewsletterStatus = {
+  __typename?: 'ProfileNewsletterStatus';
+  listId?: Maybe<Scalars['String']>;
+  listName?: Maybe<Scalars['String']>;
+  subscribed?: Maybe<Scalars['Boolean']>;
+};
 
 export type Stripe_ListInvoiceLinesResponse = {
   __typename?: 'Stripe_ListInvoiceLinesResponse';
@@ -15484,7 +15652,7 @@ export type MutationUpsertMyProfileArgs = {
 export type MutationUpsertMyCustomerArgs = {
   name?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
-  address?: InputMaybe<Stripe_CustomerAddressPropertyInput>;
+  address?: InputMaybe<UpsertMyCustomerPropertiesAddressPropertyInput>;
 };
 
 
@@ -15496,7 +15664,7 @@ export type MutationDeleteMySubscriptionArgs = {
 export type MutationCreateMyCheckoutSessionArgs = {
   redirectUrl: Scalars['String'];
   mode: Scalars['String'];
-  lineItems: Array<Stripe_CheckoutSessionLineItemsPropertyInput>;
+  lineItems: Array<CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput>;
 };
 
 
@@ -15544,7 +15712,7 @@ export type MutationKlaviyo_AddMembersArgs = {
 
 
 export type MutationKlaviyo_RemoveMembersArgs = {
-  input?: InputMaybe<Klaviyo_200OkPropertyInput>;
+  input?: InputMaybe<Klaviyo_RemoveMembersPropertiesPropertyInput>;
   list_id: Scalars['String'];
 };
 
@@ -15560,7 +15728,7 @@ export type MutationListCheckoutSessionsArgs = {
 
 
 export type MutationReviewsIo_CreateInvitationArgs = {
-  input?: InputMaybe<ReviewsIo_CreateInvitationResponsePropertyInput>;
+  input?: InputMaybe<ReviewsIo_CreateInvitationPropertiesPropertyInput>;
 };
 
 /** A project file stored on s3 */
@@ -15860,7 +16028,7 @@ export type ShipEngine_AddressInput = {
   address_residential_indicator?: InputMaybe<Scalars['String']>;
 };
 
-export type Stripe_CustomerAddressPropertyInput = {
+export type UpsertMyCustomerPropertiesAddressPropertyInput = {
   line1?: InputMaybe<Scalars['String']>;
   line2?: InputMaybe<Scalars['String']>;
   city?: InputMaybe<Scalars['String']>;
@@ -17029,7 +17197,7 @@ export type Stripe_PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown = {
   taxes?: Maybe<Array<Maybe<Stripe_LineItemsTaxAmount>>>;
 };
 
-export type Stripe_CheckoutSessionLineItemsPropertyInput = {
+export type CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput = {
   price?: InputMaybe<Scalars['String']>;
   quantity?: InputMaybe<Scalars['Int']>;
 };
@@ -17050,7 +17218,6 @@ export type UpdateProfileInput = {
   avatar?: InputMaybe<TsRelationshipInput>;
   stripeCustomerId?: InputMaybe<Scalars['String']>;
   orders?: InputMaybe<Array<InputMaybe<Stripe_InvoiceInput>>>;
-  newsletters?: InputMaybe<Array<InputMaybe<ProfileNewsletterStatusInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
   _shapeName?: InputMaybe<Scalars['String']>;
@@ -17141,7 +17308,7 @@ export type Stripe_InvoiceInput = {
   invoice_pdf?: InputMaybe<Scalars['String']>;
   last_finalization_error?: InputMaybe<Stripe_ApiErrorsInput>;
   /** The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any. */
-  lines?: InputMaybe<UpdateProfileResultOrdersLinesPropertyInput>;
+  lines?: InputMaybe<UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLinesPropertyInput>;
   /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
   livemode?: InputMaybe<Scalars['Boolean']>;
   /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
@@ -17271,14 +17438,14 @@ export type Stripe_CustomerInput = {
   preferred_locales?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   shipping?: InputMaybe<Stripe_ShippingInput>;
   /** The customer's payment sources, if any. */
-  sources?: InputMaybe<UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSourcesPropertyInput>;
+  sources?: InputMaybe<PropertiesCustomerPropertiesSourcesPropertyInput>;
   /** The customer's current subscriptions, if any. */
-  subscriptions?: InputMaybe<UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSubscriptionsPropertyInput>;
+  subscriptions?: InputMaybe<PropertiesCustomerPropertiesSubscriptionsPropertyInput>;
   tax?: InputMaybe<Stripe_CustomerTaxInput>;
   /** Describes the customer's tax exemption status. One of `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the text **"Reverse charge"**. */
   tax_exempt?: InputMaybe<UpdateProfileResultTaxExempt>;
   /** The customer's tax IDs. */
-  tax_ids?: InputMaybe<UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerTaxIdsPropertyInput>;
+  tax_ids?: InputMaybe<PropertiesCustomerPropertiesTaxIdsPropertyInput>;
   test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
 };
 
@@ -17400,7 +17567,7 @@ export type Stripe_AccountInput = {
   /** An email address associated with the account. You can treat this as metadata: it is not used for authentication or messaging account holders. */
   email?: InputMaybe<Scalars['String']>;
   /** External accounts (bank accounts and debit cards) currently attached to this account */
-  external_accounts?: InputMaybe<UpdateProfileResultOrdersOnBehalfOfAccountExternalAccountsPropertyInput>;
+  external_accounts?: InputMaybe<PropertiesAccountPropertiesExternalAccountsPropertyInput>;
   future_requirements?: InputMaybe<Stripe_AccountFutureRequirementsInput>;
   /** Unique identifier for the object. */
   id?: InputMaybe<Scalars['String']>;
@@ -17777,7 +17944,7 @@ export type Stripe_FileInput = {
   /** Unique identifier for the object. */
   id?: InputMaybe<Scalars['String']>;
   /** A list of [file links](https://stripe.com/docs/api#file_links) that point at this file. */
-  links?: InputMaybe<UpdateProfileResultOrdersOnBehalfOfAccountCompanyVerificationDocumentBackFileLinksPropertyInput>;
+  links?: InputMaybe<PropertiesFilePropertiesLinksPropertyInput>;
   /** String representing the object's type. Objects of the same type share the same value. */
   object?: InputMaybe<UpdateProfileResultObject>;
   /** The [purpose](https://stripe.com/docs/file-upload#uploading-a-file) of the uploaded file. */
@@ -17793,7 +17960,7 @@ export type Stripe_FileInput = {
 };
 
 /** A list of [file links](https://stripe.com/docs/api#file_links) that point at this file. */
-export type UpdateProfileResultOrdersOnBehalfOfAccountCompanyVerificationDocumentBackFileLinksPropertyInput = {
+export type PropertiesFilePropertiesLinksPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_FileLinkInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -17898,7 +18065,7 @@ export enum UpdateProfileResultType {
 }
 
 /** External accounts (bank accounts and debit cards) currently attached to this account */
-export type UpdateProfileResultOrdersOnBehalfOfAccountExternalAccountsPropertyInput = {
+export type PropertiesAccountPropertiesExternalAccountsPropertyInput = {
   /** The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards. */
   data: Array<BankAccountCardInputUnion>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -17988,7 +18155,7 @@ export type RecipientWrappedStringInputUnion = {
 
 export type Stripe_RecipientInput = {
   active_account?: InputMaybe<Stripe_BankAccountInput>;
-  cards?: InputMaybe<UpdateProfileResultOrdersDefaultSourceCardRecipientRecipientCardsPropertyInput>;
+  cards?: InputMaybe<PropertiesRecipientPropertiesCardsPropertyInput>;
   /** Time at which the object was created. Measured in seconds since the Unix epoch. */
   created?: InputMaybe<Scalars['Int']>;
   default_card?: InputMaybe<CardWrappedStringInputUnion>;
@@ -18011,7 +18178,7 @@ export type Stripe_RecipientInput = {
   type?: InputMaybe<Scalars['String']>;
 };
 
-export type UpdateProfileResultOrdersDefaultSourceCardRecipientRecipientCardsPropertyInput = {
+export type PropertiesRecipientPropertiesCardsPropertyInput = {
   data: Array<Stripe_CardInput>;
   /** True if this list has another page of items after this one that can be fetched. */
   has_more: Scalars['Boolean'];
@@ -18400,7 +18567,7 @@ export type Stripe_BitcoinReceiverInput = {
   /** The refund address of this bitcoin receiver. */
   refund_address?: InputMaybe<Scalars['String']>;
   /** A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key. */
-  transactions?: InputMaybe<UpdateProfileResultOrdersDefaultSourceBitcoinReceiverTransactionsPropertyInput>;
+  transactions?: InputMaybe<PropertiesBitcoinReceiverPropertiesTransactionsPropertyInput>;
   /** This receiver contains uncaptured funds that can be used for a payment or refunded. */
   uncaptured_funds?: InputMaybe<Scalars['Boolean']>;
   /** Indicate if this source is used for payment. */
@@ -18408,7 +18575,7 @@ export type Stripe_BitcoinReceiverInput = {
 };
 
 /** A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key. */
-export type UpdateProfileResultOrdersDefaultSourceBitcoinReceiverTransactionsPropertyInput = {
+export type PropertiesBitcoinReceiverPropertiesTransactionsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_BitcoinTransactionInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -18947,6 +19114,7 @@ export type Stripe_PaymentMethodInput = {
   /** Time at which the object was created. Measured in seconds since the Unix epoch. */
   created?: InputMaybe<Scalars['Int']>;
   customer?: InputMaybe<CustomerWrappedStringInputUnion>;
+  customer_balance?: InputMaybe<Stripe_PaymentMethodCustomerBalanceInput>;
   eps?: InputMaybe<Stripe_PaymentMethodEpsInput>;
   fpx?: InputMaybe<Stripe_PaymentMethodFpxInput>;
   giropay?: InputMaybe<Stripe_PaymentMethodGiropayInput>;
@@ -19107,6 +19275,8 @@ export type Stripe_PaymentMethodDetailsCardPresentInput = {
   funding?: InputMaybe<Scalars['String']>;
   /** ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod. */
   generated_card?: InputMaybe<Scalars['String']>;
+  /** Whether this [PaymentIntent](https://stripe.com/docs/api/payment_intents) is eligible for incremental authorizations. Request support using [request_incremental_authorization_support](https://stripe.com/docs/api/payment_intents/create#create_payment_intent-payment_method_options-card_present-request_incremental_authorization_support). */
+  incremental_authorization_supported?: InputMaybe<Scalars['Boolean']>;
   /** The last four digits of the card. */
   last4?: InputMaybe<Scalars['String']>;
   /** Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
@@ -19555,6 +19725,7 @@ export type Stripe_PaymentIntentInput = {
   amount?: InputMaybe<Scalars['Int']>;
   /** Amount that can be captured from this PaymentIntent. */
   amount_capturable?: InputMaybe<Scalars['Int']>;
+  amount_details?: InputMaybe<Stripe_PaymentFlowsAmountDetailsInput>;
   /** Amount that was collected by this PaymentIntent. */
   amount_received?: InputMaybe<Scalars['Int']>;
   application?: InputMaybe<ApplicationWrappedStringInputUnion>;
@@ -19568,13 +19739,13 @@ export type Stripe_PaymentIntentInput = {
   /** Controls when the funds will be captured from the customer's account. */
   capture_method?: InputMaybe<UpdateProfileResultCaptureMethod>;
   /** Charges that were created by this PaymentIntent, if any. */
-  charges?: InputMaybe<UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesPropertyInput>;
+  charges?: InputMaybe<UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertyInput>;
   /**
    * The client secret of this PaymentIntent. Used for client-side retrieval using a publishable key.
    *
-   * The client secret can be used to complete a payment from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+   * The client secret can be used to complete a payment from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
    *
-   * Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?integration=elements) and learn about how `client_secret` should be handled.
+   * Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?ui=elements) and learn about how `client_secret` should be handled.
    */
   client_secret?: InputMaybe<Scalars['String']>;
   confirmation_method?: InputMaybe<UpdateProfileResultConfirmationMethod>;
@@ -19630,6 +19801,15 @@ export type Stripe_PaymentIntentInput = {
   _id?: InputMaybe<Scalars['ID']>;
 };
 
+export type Stripe_PaymentFlowsAmountDetailsInput = {
+  tip?: InputMaybe<Stripe_PaymentFlowsAmountDetailsResourceTipInput>;
+};
+
+export type Stripe_PaymentFlowsAmountDetailsResourceTipInput = {
+  /** Portion of the amount that corresponds to a tip. */
+  amount?: InputMaybe<Scalars['Int']>;
+};
+
 export type Stripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput = {
   /** Automatically calculates compatible payment methods */
   enabled?: InputMaybe<Scalars['Boolean']>;
@@ -19651,7 +19831,7 @@ export enum UpdateProfileResultCaptureMethod {
 }
 
 /** Charges that were created by this PaymentIntent, if any. */
-export type UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesPropertyInput = {
+export type UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertyInput = {
   /** This list only contains the latest charge, even if there were previously multiple unsuccessful charges. To view all previous charges for a PaymentIntent, you can filter the charges list using the `payment_intent` [parameter](https://stripe.com/docs/api/charges/list#list_charges-payment_intent). */
   data: Array<Stripe_ChargeInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -19721,7 +19901,7 @@ export type Stripe_ChargeInput = {
   /** Whether the charge has been fully refunded. If the charge is only partially refunded, this attribute will still be false. */
   refunded?: InputMaybe<Scalars['Boolean']>;
   /** A list of refunds that have been applied to the charge. */
-  refunds?: InputMaybe<UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataRefundsPropertyInput>;
+  refunds?: InputMaybe<UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertiesDataItemsPropertiesRefundsPropertyInput>;
   review?: InputMaybe<ReviewWrappedStringInputUnion>;
   shipping?: InputMaybe<Stripe_ShippingInput>;
   source_transfer?: InputMaybe<TransferWrappedStringInputUnion>;
@@ -19765,7 +19945,7 @@ export type Stripe_ApplicationFeeInput = {
   /** Whether the fee has been fully refunded. If the fee is only partially refunded, this attribute will still be false. */
   refunded?: InputMaybe<Scalars['Boolean']>;
   /** A list of refunds that have been applied to the fee. */
-  refunds?: InputMaybe<UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataApplicationFeeApplicationFeeRefundsPropertyInput>;
+  refunds?: InputMaybe<PropertiesApplicationFeePropertiesRefundsPropertyInput>;
 };
 
 export type BalanceTransactionWrappedStringInputUnion = {
@@ -21706,7 +21886,7 @@ export type Stripe_TransferInput = {
   /** String representing the object's type. Objects of the same type share the same value. */
   object?: InputMaybe<UpdateProfileResultObject>;
   /** A list of reversals that have been applied to the transfer. */
-  reversals?: InputMaybe<UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataBalanceTransactionBalanceTransactionSourceTransferReversalsPropertyInput>;
+  reversals?: InputMaybe<PropertiesTransferPropertiesReversalsPropertyInput>;
   /** Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false. */
   reversed?: InputMaybe<Scalars['Boolean']>;
   source_transaction?: InputMaybe<ChargeWrappedStringInputUnion>;
@@ -21717,7 +21897,7 @@ export type Stripe_TransferInput = {
 };
 
 /** A list of reversals that have been applied to the transfer. */
-export type UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataBalanceTransactionBalanceTransactionSourceTransferReversalsPropertyInput = {
+export type PropertiesTransferPropertiesReversalsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_TransferReversalInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -21787,7 +21967,7 @@ export type Stripe_TopupInput = {
 };
 
 /** A list of refunds that have been applied to the fee. */
-export type UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataApplicationFeeApplicationFeeRefundsPropertyInput = {
+export type PropertiesApplicationFeePropertiesRefundsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_FeeRefundInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -21845,7 +22025,7 @@ export type Stripe_OrderInput = {
   /** String representing the object's type. Objects of the same type share the same value. */
   object?: InputMaybe<UpdateProfileResultObject>;
   /** A list of returns that have taken place for this order. */
-  returns?: InputMaybe<UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataOrderOrderReturnsPropertyInput>;
+  returns?: InputMaybe<PropertiesOrderPropertiesReturnsPropertyInput>;
   /** The shipping method that is currently selected for this order, if any. If present, it is equal to one of the `id`s of shipping methods in the `shipping_methods` array. At order creation time, if there are multiple shipping methods, Stripe will automatically selected the first method. */
   selected_shipping_method?: InputMaybe<Scalars['String']>;
   shipping?: InputMaybe<Stripe_ShippingInput>;
@@ -22088,7 +22268,7 @@ export enum UpdateProfileResultRound {
 }
 
 /** A list of returns that have taken place for this order. */
-export type UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataOrderOrderReturnsPropertyInput = {
+export type PropertiesOrderPropertiesReturnsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_OrderReturnInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -22194,6 +22374,7 @@ export type Stripe_PaymentMethodDetailsInput = {
   boleto?: InputMaybe<Stripe_PaymentMethodDetailsBoletoInput>;
   card?: InputMaybe<Stripe_PaymentMethodDetailsCardInput>;
   card_present?: InputMaybe<Stripe_PaymentMethodDetailsCardPresentInput>;
+  customer_balance?: InputMaybe<Stripe_PaymentMethodDetailsCustomerBalanceInput>;
   eps?: InputMaybe<Stripe_PaymentMethodDetailsEpsInput>;
   fpx?: InputMaybe<Stripe_PaymentMethodDetailsFpxInput>;
   giropay?: InputMaybe<Stripe_PaymentMethodDetailsGiropayInput>;
@@ -22429,6 +22610,10 @@ export type Stripe_PaymentMethodDetailsCardWalletVisaCheckoutInput = {
   /** Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
   name?: InputMaybe<Scalars['String']>;
   shipping_address?: InputMaybe<Stripe_AddressInput>;
+};
+
+export type Stripe_PaymentMethodDetailsCustomerBalanceInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
 };
 
 export type Stripe_PaymentMethodDetailsEpsInput = {
@@ -22670,7 +22855,7 @@ export type Stripe_PaymentMethodDetailsWechatPayInput = {
 };
 
 /** A list of refunds that have been applied to the charge. */
-export type UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataRefundsPropertyInput = {
+export type UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertiesDataItemsPropertiesRefundsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_RefundInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -22765,6 +22950,7 @@ export type Stripe_PaymentIntentNextActionInput = {
   alipay_handle_redirect?: InputMaybe<Stripe_PaymentIntentNextActionAlipayHandleRedirectInput>;
   boleto_display_details?: InputMaybe<Stripe_PaymentIntentNextActionBoletoInput>;
   card_await_notification?: InputMaybe<Stripe_PaymentIntentNextActionCardAwaitNotificationInput>;
+  display_bank_transfer_instructions?: InputMaybe<Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput>;
   konbini_display_details?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniInput>;
   oxxo_display_details?: InputMaybe<Stripe_PaymentIntentNextActionDisplayOxxoDetailsInput>;
   paynow_display_qr_code?: InputMaybe<Stripe_PaymentIntentNextActionPaynowDisplayQrCodeInput>;
@@ -22806,6 +22992,36 @@ export type Stripe_PaymentIntentNextActionCardAwaitNotificationInput = {
   charge_attempt_at?: InputMaybe<Scalars['Int']>;
   /** For payments greater than INR 5000, the customer must provide explicit approval of the payment with their bank. For payments of lower amount, no customer action is required. */
   customer_approval_required?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput = {
+  /** The remaining amount that needs to be transferred to complete the payment. */
+  amount_remaining?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** A list of financial addresses that can be used to fund the customer balance */
+  financial_addresses?: InputMaybe<Array<InputMaybe<Stripe_FundingInstructionsBankTransferFinancialAddressInput>>>;
+  /** A string identifying this payment. Instruct your customer to include this code in the reference or memo field of their bank transfer. */
+  reference?: InputMaybe<Scalars['String']>;
+  /** Type of bank transfer */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_FundingInstructionsBankTransferFinancialAddressInput = {
+  /** The payment networks supported by this FinancialAddress */
+  supported_networks?: InputMaybe<Array<InputMaybe<UpdateProfileResultSupportedNetworks>>>;
+  /** The type of financial address */
+  type?: InputMaybe<UpdateProfileResultType>;
+  zengin?: InputMaybe<Stripe_FundingInstructionsBankTransferZenginRecordInput>;
+};
+
+export enum UpdateProfileResultSupportedNetworks {
+  Sepa = 'sepa',
+  Zengin = 'zengin'
+}
+
+export type Stripe_FundingInstructionsBankTransferZenginRecordInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
 };
 
 export type Stripe_PaymentIntentNextActionKonbiniInput = {
@@ -22933,6 +23149,7 @@ export type Stripe_PaymentIntentPaymentMethodOptionsInput = {
   boleto?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBoletoInputUnion>;
   card?: InputMaybe<PaymentIntentPaymentMethodOptionsCardPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
   card_present?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCardPresentInputUnion>;
+  customer_balance?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCustomerBalanceInputUnion>;
   eps?: InputMaybe<PaymentIntentPaymentMethodOptionsEpsPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
   fpx?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsFpxInputUnion>;
   giropay?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsGiropayInputUnion>;
@@ -23202,7 +23419,47 @@ export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOpti
 export type Stripe_PaymentMethodOptionsCardPresentInput = {
   /** Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity) */
   request_extended_authorization?: InputMaybe<Scalars['Boolean']>;
+  /** Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support. */
+  request_incremental_authorization_support?: InputMaybe<Scalars['Boolean']>;
 };
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCustomerBalanceInputUnion = {
+  paymentMethodOptionsCustomerBalance?: InputMaybe<Stripe_PaymentMethodOptionsCustomerBalanceInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsCustomerBalanceInput = {
+  bank_transfer?: InputMaybe<Stripe_PaymentMethodOptionsCustomerBalanceBankTransferInput>;
+  /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
+  funding_type?: InputMaybe<UpdateProfileResultFundingType>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type Stripe_PaymentMethodOptionsCustomerBalanceBankTransferInput = {
+  /**
+   * List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
+   *
+   * Permitted values include: `zengin`.
+   */
+  requested_address_types?: InputMaybe<Array<InputMaybe<UpdateProfileResultRequestedAddressTypes>>>;
+  /** The bank transfer type that this PaymentIntent is allowed to use for funding. Permitted values include: `us_bank_account`, `eu_bank_account`, `id_bank_account`, `gb_bank_account`, `jp_bank_account`, `mx_bank_account`, `eu_bank_transfer`, `gb_bank_transfer`, `id_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export enum UpdateProfileResultRequestedAddressTypes {
+  Zengin = 'zengin'
+}
+
+export enum UpdateProfileResultFundingType {
+  BankTransfer = 'bank_transfer'
+}
 
 export type PaymentIntentPaymentMethodOptionsEpsPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
   paymentIntentPaymentMethodOptionsEps?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsEpsInput>;
@@ -23585,7 +23842,7 @@ export type Stripe_SubscriptionInput = {
   /** Unique identifier for the object. */
   id?: InputMaybe<Scalars['String']>;
   /** List of subscription items, each with an attached price. */
-  items?: InputMaybe<UpdateProfileResultOrdersSubscriptionSubscriptionItemsPropertyInput>;
+  items?: InputMaybe<PropertiesSubscriptionPropertiesItemsPropertyInput>;
   latest_invoice?: InputMaybe<InvoiceWrappedStringInputUnion>;
   /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
   livemode?: InputMaybe<Scalars['Boolean']>;
@@ -23683,7 +23940,7 @@ export enum UpdateProfileResultTaxType {
 }
 
 /** List of subscription items, each with an attached price. */
-export type UpdateProfileResultOrdersSubscriptionSubscriptionItemsPropertyInput = {
+export type PropertiesSubscriptionPropertiesItemsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_SubscriptionItemInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -23788,10 +24045,6 @@ export type Stripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput =
   type?: InputMaybe<Scalars['String']>;
 };
 
-export enum UpdateProfileResultFundingType {
-  BankTransfer = 'bank_transfer'
-}
-
 export type Stripe_InvoicePaymentMethodOptionsKonbiniInput = {
   result?: InputMaybe<Scalars['JSONObject']>;
 };
@@ -23842,7 +24095,7 @@ export type Stripe_SetupIntentInput = {
   /**
    * The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
    *
-   * The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+   * The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
    */
   client_secret?: InputMaybe<Scalars['String']>;
   /** Time at which the object was created. Measured in seconds since the Unix epoch. */
@@ -24311,6 +24564,10 @@ export type Stripe_PaymentMethodCardPresentInput = {
   result?: InputMaybe<Scalars['JSONObject']>;
 };
 
+export type Stripe_PaymentMethodCustomerBalanceInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
 export type Stripe_PaymentMethodEpsInput = {
   /** The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`. */
   bank?: InputMaybe<UpdateProfileResultBank>;
@@ -24414,7 +24671,7 @@ export type Stripe_PaymentMethodWechatPayInput = {
 };
 
 /** The customer's payment sources, if any. */
-export type UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSourcesPropertyInput = {
+export type PropertiesCustomerPropertiesSourcesPropertyInput = {
   /** Details about each object. */
   data: Array<AlipayAccountBankAccountBitcoinReceiverCardSourceInputUnion>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -24434,7 +24691,7 @@ export type AlipayAccountBankAccountBitcoinReceiverCardSourceInputUnion = {
 };
 
 /** The customer's current subscriptions, if any. */
-export type UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSubscriptionsPropertyInput = {
+export type PropertiesCustomerPropertiesSubscriptionsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_SubscriptionInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -24483,7 +24740,7 @@ export enum UpdateProfileResultTaxExempt {
 }
 
 /** The customer's tax IDs. */
-export type UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerTaxIdsPropertyInput = {
+export type PropertiesCustomerPropertiesTaxIdsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_TaxIdInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -24536,7 +24793,7 @@ export type Stripe_InvoicesResourceInvoiceTaxIdInput = {
 };
 
 /** The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any. */
-export type UpdateProfileResultOrdersLinesPropertyInput = {
+export type UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLinesPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_LineItemInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -24708,7 +24965,7 @@ export type Stripe_QuoteInput = {
   invoice?: InputMaybe<DeletedInvoiceInvoiceWrappedStringInputUnion>;
   invoice_settings?: InputMaybe<Stripe_InvoiceSettingQuoteSettingInput>;
   /** A list of items the customer is being quoted for. */
-  line_items?: InputMaybe<UpdateProfileResultOrdersQuoteQuoteLineItemsPropertyInput>;
+  line_items?: InputMaybe<PropertiesQuotePropertiesLineItemsPropertyInput>;
   /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
   livemode?: InputMaybe<Scalars['Boolean']>;
   /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
@@ -24776,12 +25033,12 @@ export type Stripe_QuotesResourceUpfrontInput = {
   /** Total after discounts and taxes are applied. */
   amount_total?: InputMaybe<Scalars['Int']>;
   /** The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice. */
-  line_items?: InputMaybe<UpdateProfileResultOrdersQuoteQuoteComputedUpfrontLineItemsPropertyInput>;
+  line_items?: InputMaybe<PropertiesQuotePropertiesComputedPropertiesUpfrontPropertiesLineItemsPropertyInput>;
   total_details?: InputMaybe<Stripe_QuotesResourceTotalDetailsInput>;
 };
 
 /** The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice. */
-export type UpdateProfileResultOrdersQuoteQuoteComputedUpfrontLineItemsPropertyInput = {
+export type PropertiesQuotePropertiesComputedPropertiesUpfrontPropertiesLineItemsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_ItemInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -24819,7 +25076,7 @@ export type Stripe_InvoiceSettingQuoteSettingInput = {
 };
 
 /** A list of items the customer is being quoted for. */
-export type UpdateProfileResultOrdersQuoteQuoteLineItemsPropertyInput = {
+export type PropertiesQuotePropertiesLineItemsPropertyInput = {
   /** Details about each object. */
   data: Array<Stripe_ItemInput>;
   /** True if this list has another page of items after this one that can be fetched. */
@@ -24885,12 +25142,6 @@ export type Stripe_InvoiceTransferDataInput = {
   destination?: InputMaybe<AccountWrappedStringInputUnion>;
 };
 
-export type ProfileNewsletterStatusInput = {
-  listId?: InputMaybe<Scalars['String']>;
-  listName?: InputMaybe<Scalars['String']>;
-  subscribed?: InputMaybe<Scalars['Boolean']>;
-};
-
 export type CreateProfileResult = {
   __typename?: 'CreateProfileResult';
   clientMutationId?: Maybe<Scalars['String']>;
@@ -24906,7 +25157,6 @@ export type CreateProfileInput = {
   avatar?: InputMaybe<TsRelationshipInput>;
   stripeCustomerId?: InputMaybe<Scalars['String']>;
   orders?: InputMaybe<Array<InputMaybe<Stripe_InvoiceInput>>>;
-  newsletters?: InputMaybe<Array<InputMaybe<ProfileNewsletterStatusInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _id?: InputMaybe<Scalars['ID']>;
   _version?: InputMaybe<Scalars['Int']>;
@@ -24939,7 +25189,6 @@ export type DuplicateProfileInput = {
   avatar?: InputMaybe<TsRelationshipInput>;
   stripeCustomerId?: InputMaybe<Scalars['String']>;
   orders?: InputMaybe<Array<InputMaybe<Stripe_InvoiceInput>>>;
-  newsletters?: InputMaybe<Array<InputMaybe<ProfileNewsletterStatusInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
   _shapeName?: InputMaybe<Scalars['String']>;
@@ -24991,10 +25240,10 @@ export type Klaviyo_AddMembersResponseItemsProperty = {
 };
 
 export type AddListMembersInput = {
-  profiles: Array<Klaviyo_AddMembersResponseProfilesPropertyInput>;
+  profiles: Array<Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput>;
 };
 
-export type Klaviyo_AddMembersResponseProfilesPropertyInput = {
+export type Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput = {
   email?: InputMaybe<Scalars['String']>;
 };
 
@@ -25016,7 +25265,7 @@ export type Klaviyo_200Ok = {
  * }
  *
  */
-export type Klaviyo_200OkPropertyInput = {
+export type Klaviyo_RemoveMembersPropertiesPropertyInput = {
   emails?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   phone_numbers?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   push_tokens?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
@@ -25049,7 +25298,7 @@ export enum ReviewsIo_CreateInvitationResponseStatusProperty {
   Error = 'error'
 }
 
-export type ReviewsIo_CreateInvitationResponsePropertyInput = {
+export type ReviewsIo_CreateInvitationPropertiesPropertyInput = {
   name?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   order_id?: InputMaybe<Scalars['String']>;

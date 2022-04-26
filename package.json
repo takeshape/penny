@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "typecheck": "tsc --noEmit --pretty ",
-    "typegen": "takeshape schema && takeshape types --to ./lib/takeshape/types.d.ts",
+    "typegen": "takeshape schema && takeshape types --to ./types/takeshape.d.ts",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "storybook": "start-storybook -p 6006",

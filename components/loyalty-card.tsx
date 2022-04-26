@@ -1,6 +1,6 @@
-import type { Voucherify_LoyaltyCard } from 'lib/takeshape/types';
 import { Box, Card, Image, Text } from 'theme-ui';
 import type { SetRequired } from 'type-fest';
+import type { Voucherify_LoyaltyCard } from 'types/takeshape';
 
 const LoyaltyCard = ({
   code,

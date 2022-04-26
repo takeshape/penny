@@ -1193,6 +1193,7 @@ input TSWhereInput {
   templateHash: TSWhereStringInput
   amount: TSWhereIntegerInput
   amount_capturable: TSWhereIntegerInput
+  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
   amount_received: TSWhereIntegerInput
   application: TSWhereStripe_ApplicationWrappedStringUnionInput
   application_fee_amount: TSWhereIntegerInput
@@ -1247,6 +1248,14 @@ input TSWhereInput {
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
+}
+
+input TSWhereStripe_PaymentFlowsAmountDetailsInput {
+  tip: TSWhereStripe_PaymentFlowsAmountDetailsResourceTipInput
+}
+
+input TSWhereStripe_PaymentFlowsAmountDetailsResourceTipInput {
+  amount: TSWhereIntegerInput
 }
 
 input TSWhereStripe_ApplicationWrappedStringUnionInput {
@@ -1595,6 +1604,7 @@ input TSWhereStripe_ApiErrorsInput {
 input TSWhereStripe_PaymentIntentInput {
   amount: TSWhereIntegerInput
   amount_capturable: TSWhereIntegerInput
+  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
   amount_received: TSWhereIntegerInput
   application: TSWhereStripe_ApplicationWrappedStringUnionInput
   application_fee_amount: TSWhereIntegerInput
@@ -1640,6 +1650,7 @@ input TSWhereStripe_PaymentIntentNextActionInput {
   alipay_handle_redirect: TSWhereStripe_PaymentIntentNextActionAlipayHandleRedirectInput
   boleto_display_details: TSWhereStripe_PaymentIntentNextActionBoletoInput
   card_await_notification: TSWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput
+  display_bank_transfer_instructions: TSWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput
   konbini_display_details: TSWhereStripe_PaymentIntentNextActionKonbiniInput
   oxxo_display_details: TSWhereStripe_PaymentIntentNextActionDisplayOxxoDetailsInput
   paynow_display_qr_code: TSWhereStripe_PaymentIntentNextActionPaynowDisplayQrCodeInput
@@ -1668,6 +1679,18 @@ input TSWhereStripe_PaymentIntentNextActionBoletoInput {
 input TSWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput {
   charge_attempt_at: TSWhereIntegerInput
   customer_approval_required: TSWhereBooleanInput
+}
+
+input TSWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput {
+  amount_remaining: TSWhereIntegerInput
+  currency: TSWhereStringInput
+  financial_addresses: TSWhereStripe_FundingInstructionsBankTransferFinancialAddressInput
+  reference: TSWhereStringInput
+  type: TSWhereInput
+}
+
+input TSWhereStripe_FundingInstructionsBankTransferFinancialAddressInput {
+  type: TSWhereInput
 }
 
 input TSWhereStripe_PaymentIntentNextActionKonbiniInput {
@@ -2289,6 +2312,7 @@ input TSWhereStripe_PaymentMethodDetailsCardPresentInput {
   fingerprint: TSWhereStringInput
   funding: TSWhereStringInput
   generated_card: TSWhereStringInput
+  incremental_authorization_supported: TSWhereBooleanInput
   last4: TSWhereStringInput
   network: TSWhereStringInput
   overcapture_supported: TSWhereBooleanInput
@@ -2412,6 +2436,7 @@ input TSWhereStripe_PaymentIntentPaymentMethodOptionsInput {
   boleto: TSWhere076b30d85cca1aae72305dffd8194343UnionInput
   card: TSWhere6181441ba9fb7eee556dd3a4a9d229e4UnionInput
   card_present: TSWherea245e0776494a0d51fe046b0453d38afUnionInput
+  customer_balance: TSWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput
   eps: TSWheref973d307d812f0dfb771bc8122e5c599UnionInput
   fpx: TSWhereabae1b112405e8b3c0dbfa673a54aaadUnionInput
   giropay: TSWhere8cc56b75820487c13c502fada2896d16UnionInput
@@ -2517,9 +2542,22 @@ input TSWhereStripe_PaymentMethodOptionsCardMandateOptionsInput {
 
 input TSWherea245e0776494a0d51fe046b0453d38afUnionInput {
   request_extended_authorization: TSWhereBooleanInput
+  request_incremental_authorization_support: TSWhereBooleanInput
   capture_method: TSWhereInput
   setup_future_usage: TSWhereInput
   verification_method: TSWhereInput
+}
+
+input TSWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput {
+  bank_transfer: TSWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput
+  funding_type: TSWhereInput
+  setup_future_usage: TSWhereInput
+  capture_method: TSWhereInput
+  verification_method: TSWhereInput
+}
+
+input TSWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput {
+  type: TSWhereInput
 }
 
 input TSWheref973d307d812f0dfb771bc8122e5c599UnionInput {
@@ -4118,6 +4156,7 @@ input TSWhereStripe_PaymentIntentWrappedStringUnionInput {
   value: TSWhereStringInput
   amount: TSWhereIntegerInput
   amount_capturable: TSWhereIntegerInput
+  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
   amount_received: TSWhereIntegerInput
   application: TSWhereStripe_ApplicationWrappedStringUnionInput
   application_fee_amount: TSWhereIntegerInput
@@ -4622,9 +4661,6 @@ type Profile implements TSSearchable {
 
   """"""
   orders: [Stripe_Invoice]
-
-  """"""
-  newsletters: [ProfileNewsletterStatus]
   _shapeId: String
   _id: ID
   _version: Int
@@ -7294,6 +7330,7 @@ type Stripe_PaymentMethod {
   """
   created: Int
   customer: Stripe_PaymentMethodCustomerProperty
+  customer_balance: Stripe_PaymentMethodCustomerBalance
   eps: Stripe_PaymentMethodEps
   fpx: Stripe_PaymentMethodFpx
   giropay: Stripe_PaymentMethodGiropay
@@ -7527,6 +7564,11 @@ type Stripe_PaymentMethodDetailsCardPresent {
   ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
   """
   generated_card: String
+
+  """
+  Whether this [PaymentIntent](https://stripe.com/docs/api/payment_intents) is eligible for incremental authorizations. Request support using [request_incremental_authorization_support](https://stripe.com/docs/api/payment_intents/create#create_payment_intent-payment_method_options-card_present-request_incremental_authorization_support).
+  """
+  incremental_authorization_supported: Boolean
 
   """The last four digits of the card."""
   last4: String
@@ -8132,6 +8174,7 @@ type Stripe_PaymentIntent implements TSSearchable {
 
   """Amount that can be captured from this PaymentIntent."""
   amount_capturable: Int
+  amount_details: Stripe_PaymentFlowsAmountDetails
 
   """Amount that was collected by this PaymentIntent."""
   amount_received: Int
@@ -8162,9 +8205,9 @@ type Stripe_PaymentIntent implements TSSearchable {
   """
   The client secret of this PaymentIntent. Used for client-side retrieval using a publishable key. 
   
-  The client secret can be used to complete a payment from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+  The client secret can be used to complete a payment from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
   
-  Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?integration=elements) and learn about how `client_secret` should be handled.
+  Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?ui=elements) and learn about how `client_secret` should be handled.
   """
   client_secret: String
   confirmation_method: Stripe_PaymentIntentConfirmationMethodProperty
@@ -8261,6 +8304,15 @@ type Stripe_PaymentIntent implements TSSearchable {
   _shapeId: String
   _id: ID
   searchSummary: String
+}
+
+type Stripe_PaymentFlowsAmountDetails {
+  tip: Stripe_PaymentFlowsAmountDetailsResourceTip
+}
+
+type Stripe_PaymentFlowsAmountDetailsResourceTip {
+  """Portion of the amount that corresponds to a tip."""
+  amount: Int
 }
 
 union Stripe_PaymentIntentApplicationProperty = WrappedString | Stripe_Application
@@ -13916,7 +13968,7 @@ type Stripe_SetupIntent {
   """
   The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
   
-  The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+  The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
   """
   client_secret: String
 
@@ -15086,6 +15138,7 @@ type Stripe_PaymentMethodDetails {
   boleto: Stripe_PaymentMethodDetailsBoleto
   card: Stripe_PaymentMethodDetailsCard
   card_present: Stripe_PaymentMethodDetailsCardPresent
+  customer_balance: Stripe_PaymentMethodDetailsCustomerBalance
   eps: Stripe_PaymentMethodDetailsEps
   fpx: Stripe_PaymentMethodDetailsFpx
   giropay: Stripe_PaymentMethodDetailsGiropay
@@ -15438,6 +15491,10 @@ type Stripe_PaymentMethodDetailsCardWalletVisaCheckout {
   """
   name: String
   shipping_address: Stripe_Address
+}
+
+type Stripe_PaymentMethodDetailsCustomerBalance {
+  result: JSONObject
 }
 
 type Stripe_PaymentMethodDetailsEps {
@@ -16081,6 +16138,7 @@ type Stripe_PaymentIntentNextAction {
   alipay_handle_redirect: Stripe_PaymentIntentNextActionAlipayHandleRedirect
   boleto_display_details: Stripe_PaymentIntentNextActionBoleto
   card_await_notification: Stripe_PaymentIntentNextActionCardAwaitNotification
+  display_bank_transfer_instructions: Stripe_PaymentIntentNextActionDisplayBankTransferInstructions
   konbini_display_details: Stripe_PaymentIntentNextActionKonbini
   oxxo_display_details: Stripe_PaymentIntentNextActionDisplayOxxoDetails
   paynow_display_qr_code: Stripe_PaymentIntentNextActionPaynowDisplayQrCode
@@ -16149,6 +16207,58 @@ type Stripe_PaymentIntentNextActionCardAwaitNotification {
   For payments greater than INR 5000, the customer must provide explicit approval of the payment with their bank. For payments of lower amount, no customer action is required.
   """
   customer_approval_required: Boolean
+}
+
+type Stripe_PaymentIntentNextActionDisplayBankTransferInstructions {
+  """
+  The remaining amount that needs to be transferred to complete the payment.
+  """
+  amount_remaining: Int
+
+  """
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  """
+  currency: String
+
+  """
+  A list of financial addresses that can be used to fund the customer balance
+  """
+  financial_addresses: [Stripe_FundingInstructionsBankTransferFinancialAddress]
+
+  """
+  A string identifying this payment. Instruct your customer to include this code in the reference or memo field of their bank transfer.
+  """
+  reference: String
+
+  """Type of bank transfer"""
+  type: Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsTypeProperty
+}
+
+type Stripe_FundingInstructionsBankTransferFinancialAddress {
+  """The payment networks supported by this FinancialAddress"""
+  supported_networks: [Stripe_FundingInstructionsBankTransferFinancialAddressSupportedNetworksProperty]
+
+  """The type of financial address"""
+  type: Stripe_FundingInstructionsBankTransferFinancialAddressTypeProperty
+  zengin: Stripe_FundingInstructionsBankTransferZenginRecord
+}
+
+enum Stripe_FundingInstructionsBankTransferFinancialAddressSupportedNetworksProperty {
+  sepa
+  zengin
+}
+
+enum Stripe_FundingInstructionsBankTransferFinancialAddressTypeProperty {
+  iban
+  zengin
+}
+
+type Stripe_FundingInstructionsBankTransferZenginRecord {
+  result: JSONObject
+}
+
+enum Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsTypeProperty {
+  jp_bank_transfer
 }
 
 type Stripe_PaymentIntentNextActionKonbini {
@@ -16319,6 +16429,7 @@ type Stripe_PaymentIntentPaymentMethodOptions {
   boleto: Stripe_PaymentIntentPaymentMethodOptionsBoletoProperty
   card: Stripe_PaymentIntentPaymentMethodOptionsCardProperty
   card_present: Stripe_PaymentIntentPaymentMethodOptionsCardPresentProperty
+  customer_balance: Stripe_PaymentIntentPaymentMethodOptionsCustomerBalanceProperty
   eps: Stripe_PaymentIntentPaymentMethodOptionsEpsProperty
   fpx: Stripe_PaymentIntentPaymentMethodOptionsFpxProperty
   giropay: Stripe_PaymentIntentPaymentMethodOptionsGiropayProperty
@@ -16697,6 +16808,72 @@ type Stripe_PaymentMethodOptionsCardPresent {
   Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity)
   """
   request_extended_authorization: Boolean
+
+  """
+  Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support.
+  """
+  request_incremental_authorization_support: Boolean
+}
+
+union Stripe_PaymentIntentPaymentMethodOptionsCustomerBalanceProperty = Stripe_PaymentMethodOptionsCustomerBalance | Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClient
+
+type Stripe_PaymentMethodOptionsCustomerBalance {
+  bank_transfer: Stripe_PaymentMethodOptionsCustomerBalanceBankTransfer
+
+  """
+  The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
+  """
+  funding_type: Stripe_PaymentMethodOptionsCustomerBalanceFundingTypeProperty
+
+  """
+  Indicates that you intend to make future payments with this PaymentIntent's payment method.
+  
+  Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+  
+  When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+  """
+  setup_future_usage: Stripe_PaymentMethodOptionsCustomerBalanceSetupFutureUsageProperty
+}
+
+type Stripe_PaymentMethodOptionsCustomerBalanceBankTransfer {
+  """
+  List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
+  
+  Permitted values include: `zengin`.
+  """
+  requested_address_types: [Stripe_PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypesProperty]
+
+  """
+  The bank transfer type that this PaymentIntent is allowed to use for funding. Permitted values include: `us_bank_account`, `eu_bank_account`, `id_bank_account`, `gb_bank_account`, `jp_bank_account`, `mx_bank_account`, `eu_bank_transfer`, `gb_bank_transfer`, `id_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`.
+  """
+  type: Stripe_PaymentMethodOptionsCustomerBalanceBankTransferTypeProperty
+}
+
+enum Stripe_PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypesProperty {
+  zengin
+}
+
+enum Stripe_PaymentMethodOptionsCustomerBalanceBankTransferTypeProperty {
+  eu_bank_account
+  eu_bank_transfer
+  gb_bank_account
+  gb_bank_transfer
+  id_bank_account
+  id_bank_transfer
+  jp_bank_account
+  jp_bank_transfer
+  mx_bank_account
+  mx_bank_transfer
+  us_bank_account
+  us_bank_transfer
+}
+
+enum Stripe_PaymentMethodOptionsCustomerBalanceFundingTypeProperty {
+  bank_transfer
+}
+
+enum Stripe_PaymentMethodOptionsCustomerBalanceSetupFutureUsageProperty {
+  none
 }
 
 union Stripe_PaymentIntentPaymentMethodOptionsEpsProperty = Stripe_PaymentIntentPaymentMethodOptionsEps | Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClient
@@ -17339,6 +17516,10 @@ type Stripe_PaymentMethodCardPresent {
 
 union Stripe_PaymentMethodCustomerProperty = WrappedString | Stripe_Customer
 
+type Stripe_PaymentMethodCustomerBalance {
+  result: JSONObject
+}
+
 type Stripe_PaymentMethodEps {
   """
   The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
@@ -17575,6 +17756,7 @@ enum Stripe_PaymentMethodTypeProperty {
   boleto
   card
   card_present
+  customer_balance
   eps
   fpx
   giropay
@@ -17777,17 +17959,6 @@ type Voucherify_LoyaltyCardAsset {
   url: String
 }
 
-type ProfileNewsletterStatus {
-  """"""
-  listId: String
-
-  """"""
-  listName: String
-
-  """"""
-  subscribed: Boolean
-}
-
 type Stripe_PaymentIntentPaginatedList {
   items: [Stripe_PaymentIntent!]!
   total: Int!
@@ -17796,6 +17967,7 @@ type Stripe_PaymentIntentPaginatedList {
 input TSWhereStripePaymentIntentInput {
   amount: TSWhereIntegerInput
   amount_capturable: TSWhereIntegerInput
+  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
   amount_received: TSWhereIntegerInput
   application: TSWhereStripe_ApplicationWrappedStringUnionInput
   application_fee_amount: TSWhereIntegerInput
@@ -17887,6 +18059,17 @@ type Stripe_ListProductsResponse {
 
 enum Stripe_ListProductsResponseObjectProperty {
   list
+}
+
+type ProfileNewsletterStatus {
+  """"""
+  listId: String
+
+  """"""
+  listName: String
+
+  """"""
+  subscribed: Boolean
 }
 
 type Stripe_ListInvoiceLinesResponse {
@@ -18323,13 +18506,13 @@ type Mutation {
   upsertMyProfile(name: String, bio: String, avatarId: String): Profile
 
   """Upsert the signed-in user's Stripe customer"""
-  upsertMyCustomer(name: String, description: String, address: Stripe_CustomerAddressPropertyInput): Stripe_Customer
+  upsertMyCustomer(name: String, description: String, address: UpsertMyCustomerPropertiesAddressPropertyInput): Stripe_Customer
 
   """Delete the signed-in user's subscription in Stripe"""
   deleteMySubscription(subscriptionId: String!): Stripe_Subscription
 
   """Create a Stripe checkout session for the signed-in user"""
-  createMyCheckoutSession(redirectUrl: String!, mode: String!, lineItems: [Stripe_CheckoutSessionLineItemsPropertyInput!]!): Stripe_CheckoutSession
+  createMyCheckoutSession(redirectUrl: String!, mode: String!, lineItems: [CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput!]!): Stripe_CheckoutSession
 
   """Update Profile"""
   updateProfile(input: UpdateProfileInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProfileResult
@@ -18348,13 +18531,13 @@ type Mutation {
   Klaviyo_addMembers(input: AddListMembersInput, list_id: String!): Klaviyo_AddMembersResponse
   Klaviyo_removeMembers(
     "\nThe profiles that you would like to remove from the list. \n\nExample:\n\n{\n  \"emails\":[\"george.washington@klaviyo.com\",\"abraham.lincoln@klaviyo.com\"],\n  \"phone_numbers\":[\"+13239169023\"],\n  \"push_tokens\":[\"03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2r\"]\n}\n"
-    input: Klaviyo_200OkPropertyInput
+    input: Klaviyo_RemoveMembersPropertiesPropertyInput
     list_id: String!
   ): Klaviyo_200Ok
 
   """<p>Returns a list of Checkout Sessions.</p>"""
   listCheckoutSessions(ending_before: String, expand: [String], limit: Int, payment_intent: String, starting_after: String, subscription: String): Stripe_ListCheckoutSessionsResponse
-  ReviewsIo_createInvitation(input: ReviewsIo_CreateInvitationResponsePropertyInput): ReviewsIo_CreateInvitationResponse
+  ReviewsIo_createInvitation(input: ReviewsIo_CreateInvitationPropertiesPropertyInput): ReviewsIo_CreateInvitationResponse
 }
 
 """A project file stored on s3"""
@@ -18648,7 +18831,7 @@ input ShipEngine_AddressInput {
   address_residential_indicator: String
 }
 
-input Stripe_CustomerAddressPropertyInput {
+input UpsertMyCustomerPropertiesAddressPropertyInput {
   line1: String
   line2: String
   city: String
@@ -19945,7 +20128,7 @@ type Stripe_PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown {
   taxes: [Stripe_LineItemsTaxAmount]
 }
 
-input Stripe_CheckoutSessionLineItemsPropertyInput {
+input CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput {
   price: String
   quantity: Int
 }
@@ -19979,9 +20162,6 @@ input UpdateProfileInput {
 
   """"""
   orders: [Stripe_InvoiceInput]
-
-  """"""
-  newsletters: [ProfileNewsletterStatusInput]
   _shapeId: String
   _version: Int
   _shapeName: String
@@ -20146,7 +20326,7 @@ input Stripe_InvoiceInput {
   """
   The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any.
   """
-  lines: UpdateProfileResultOrdersLinesPropertyInput
+  lines: UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLinesPropertyInput
 
   """
   Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -20376,10 +20556,10 @@ input Stripe_CustomerInput {
   shipping: Stripe_ShippingInput
 
   """The customer's payment sources, if any."""
-  sources: UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSourcesPropertyInput
+  sources: PropertiesCustomerPropertiesSourcesPropertyInput
 
   """The customer's current subscriptions, if any."""
-  subscriptions: UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSubscriptionsPropertyInput
+  subscriptions: PropertiesCustomerPropertiesSubscriptionsPropertyInput
   tax: Stripe_CustomerTaxInput
 
   """
@@ -20388,7 +20568,7 @@ input Stripe_CustomerInput {
   tax_exempt: UpdateProfileResultTaxExempt
 
   """The customer's tax IDs."""
-  tax_ids: UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerTaxIdsPropertyInput
+  tax_ids: PropertiesCustomerPropertiesTaxIdsPropertyInput
   test_clock: TestHelpersTestClockWrappedStringInputUnion
 }
 
@@ -20596,7 +20776,7 @@ input Stripe_AccountInput {
   """
   External accounts (bank accounts and debit cards) currently attached to this account
   """
-  external_accounts: UpdateProfileResultOrdersOnBehalfOfAccountExternalAccountsPropertyInput
+  external_accounts: PropertiesAccountPropertiesExternalAccountsPropertyInput
   future_requirements: Stripe_AccountFutureRequirementsInput
 
   """Unique identifier for the object."""
@@ -21122,7 +21302,7 @@ input Stripe_FileInput {
   """
   A list of [file links](https://stripe.com/docs/api#file_links) that point at this file.
   """
-  links: UpdateProfileResultOrdersOnBehalfOfAccountCompanyVerificationDocumentBackFileLinksPropertyInput
+  links: PropertiesFilePropertiesLinksPropertyInput
 
   """
   String representing the object's type. Objects of the same type share the same value.
@@ -21152,7 +21332,7 @@ input Stripe_FileInput {
 """
 A list of [file links](https://stripe.com/docs/api#file_links) that point at this file.
 """
-input UpdateProfileResultOrdersOnBehalfOfAccountCompanyVerificationDocumentBackFileLinksPropertyInput {
+input PropertiesFilePropertiesLinksPropertyInput {
   """Details about each object."""
   data: [Stripe_FileLinkInput!]!
 
@@ -21286,7 +21466,7 @@ enum UpdateProfileResultType {
 """
 External accounts (bank accounts and debit cards) currently attached to this account
 """
-input UpdateProfileResultOrdersOnBehalfOfAccountExternalAccountsPropertyInput {
+input PropertiesAccountPropertiesExternalAccountsPropertyInput {
   """
   The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards.
   """
@@ -21437,7 +21617,7 @@ input Stripe_RecipientInput {
   active_account: Stripe_BankAccountInput
 
   """"""
-  cards: UpdateProfileResultOrdersDefaultSourceCardRecipientRecipientCardsPropertyInput
+  cards: PropertiesRecipientPropertiesCardsPropertyInput
 
   """
   Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -21479,7 +21659,7 @@ input Stripe_RecipientInput {
 }
 
 """"""
-input UpdateProfileResultOrdersDefaultSourceCardRecipientRecipientCardsPropertyInput {
+input PropertiesRecipientPropertiesCardsPropertyInput {
   data: [Stripe_CardInput!]!
 
   """
@@ -22140,7 +22320,7 @@ input Stripe_BitcoinReceiverInput {
   """
   A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key.
   """
-  transactions: UpdateProfileResultOrdersDefaultSourceBitcoinReceiverTransactionsPropertyInput
+  transactions: PropertiesBitcoinReceiverPropertiesTransactionsPropertyInput
 
   """
   This receiver contains uncaptured funds that can be used for a payment or refunded.
@@ -22154,7 +22334,7 @@ input Stripe_BitcoinReceiverInput {
 """
 A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key.
 """
-input UpdateProfileResultOrdersDefaultSourceBitcoinReceiverTransactionsPropertyInput {
+input PropertiesBitcoinReceiverPropertiesTransactionsPropertyInput {
   """Details about each object."""
   data: [Stripe_BitcoinTransactionInput!]!
 
@@ -22918,6 +23098,7 @@ input Stripe_PaymentMethodInput {
   """
   created: Int
   customer: CustomerWrappedStringInputUnion
+  customer_balance: Stripe_PaymentMethodCustomerBalanceInput
   eps: Stripe_PaymentMethodEpsInput
   fpx: Stripe_PaymentMethodFpxInput
   giropay: Stripe_PaymentMethodGiropayInput
@@ -23151,6 +23332,11 @@ input Stripe_PaymentMethodDetailsCardPresentInput {
   ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod.
   """
   generated_card: String
+
+  """
+  Whether this [PaymentIntent](https://stripe.com/docs/api/payment_intents) is eligible for incremental authorizations. Request support using [request_incremental_authorization_support](https://stripe.com/docs/api/payment_intents/create#create_payment_intent-payment_method_options-card_present-request_incremental_authorization_support).
+  """
+  incremental_authorization_supported: Boolean
 
   """The last four digits of the card."""
   last4: String
@@ -23719,6 +23905,7 @@ input Stripe_PaymentIntentInput {
 
   """Amount that can be captured from this PaymentIntent."""
   amount_capturable: Int
+  amount_details: Stripe_PaymentFlowsAmountDetailsInput
 
   """Amount that was collected by this PaymentIntent."""
   amount_received: Int
@@ -23744,14 +23931,14 @@ input Stripe_PaymentIntentInput {
   capture_method: UpdateProfileResultCaptureMethod
 
   """Charges that were created by this PaymentIntent, if any."""
-  charges: UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesPropertyInput
+  charges: UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertyInput
 
   """
   The client secret of this PaymentIntent. Used for client-side retrieval using a publishable key. 
   
-  The client secret can be used to complete a payment from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+  The client secret can be used to complete a payment from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
   
-  Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?integration=elements) and learn about how `client_secret` should be handled.
+  Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?ui=elements) and learn about how `client_secret` should be handled.
   """
   client_secret: String
   confirmation_method: UpdateProfileResultConfirmationMethod
@@ -23846,6 +24033,15 @@ input Stripe_PaymentIntentInput {
   _id: ID
 }
 
+input Stripe_PaymentFlowsAmountDetailsInput {
+  tip: Stripe_PaymentFlowsAmountDetailsResourceTipInput
+}
+
+input Stripe_PaymentFlowsAmountDetailsResourceTipInput {
+  """Portion of the amount that corresponds to a tip."""
+  amount: Int
+}
+
 input Stripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput {
   """Automatically calculates compatible payment methods"""
   enabled: Boolean
@@ -23867,7 +24063,7 @@ enum UpdateProfileResultCaptureMethod {
 }
 
 """Charges that were created by this PaymentIntent, if any."""
-input UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesPropertyInput {
+input UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertyInput {
   """
   This list only contains the latest charge, even if there were previously multiple unsuccessful charges. To view all previous charges for a PaymentIntent, you can filter the charges list using the `payment_intent` [parameter](https://stripe.com/docs/api/charges/list#list_charges-payment_intent).
   """
@@ -24006,7 +24202,7 @@ input Stripe_ChargeInput {
   refunded: Boolean
 
   """A list of refunds that have been applied to the charge."""
-  refunds: UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataRefundsPropertyInput
+  refunds: UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertiesDataItemsPropertiesRefundsPropertyInput
   review: ReviewWrappedStringInputUnion
   shipping: Stripe_ShippingInput
   source_transfer: TransferWrappedStringInputUnion
@@ -24083,7 +24279,7 @@ input Stripe_ApplicationFeeInput {
   refunded: Boolean
 
   """A list of refunds that have been applied to the fee."""
-  refunds: UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataApplicationFeeApplicationFeeRefundsPropertyInput
+  refunds: PropertiesApplicationFeePropertiesRefundsPropertyInput
 }
 
 input BalanceTransactionWrappedStringInputUnion {
@@ -26580,7 +26776,7 @@ input Stripe_TransferInput {
   object: UpdateProfileResultObject
 
   """A list of reversals that have been applied to the transfer."""
-  reversals: UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataBalanceTransactionBalanceTransactionSourceTransferReversalsPropertyInput
+  reversals: PropertiesTransferPropertiesReversalsPropertyInput
 
   """
   Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false.
@@ -26600,7 +26796,7 @@ input Stripe_TransferInput {
 }
 
 """A list of reversals that have been applied to the transfer."""
-input UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataBalanceTransactionBalanceTransactionSourceTransferReversalsPropertyInput {
+input PropertiesTransferPropertiesReversalsPropertyInput {
   """Details about each object."""
   data: [Stripe_TransferReversalInput!]!
 
@@ -26732,7 +26928,7 @@ input Stripe_TopupInput {
 }
 
 """A list of refunds that have been applied to the fee."""
-input UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataApplicationFeeApplicationFeeRefundsPropertyInput {
+input PropertiesApplicationFeePropertiesRefundsPropertyInput {
   """Details about each object."""
   data: [Stripe_FeeRefundInput!]!
 
@@ -26829,7 +27025,7 @@ input Stripe_OrderInput {
   object: UpdateProfileResultObject
 
   """A list of returns that have taken place for this order."""
-  returns: UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataOrderOrderReturnsPropertyInput
+  returns: PropertiesOrderPropertiesReturnsPropertyInput
 
   """
   The shipping method that is currently selected for this order, if any. If present, it is equal to one of the `id`s of shipping methods in the `shipping_methods` array. At order creation time, if there are multiple shipping methods, Stripe will automatically selected the first method.
@@ -27238,7 +27434,7 @@ enum UpdateProfileResultRound {
 }
 
 """A list of returns that have taken place for this order."""
-input UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataOrderOrderReturnsPropertyInput {
+input PropertiesOrderPropertiesReturnsPropertyInput {
   """Details about each object."""
   data: [Stripe_OrderReturnInput!]!
 
@@ -27407,6 +27603,7 @@ input Stripe_PaymentMethodDetailsInput {
   boleto: Stripe_PaymentMethodDetailsBoletoInput
   card: Stripe_PaymentMethodDetailsCardInput
   card_present: Stripe_PaymentMethodDetailsCardPresentInput
+  customer_balance: Stripe_PaymentMethodDetailsCustomerBalanceInput
   eps: Stripe_PaymentMethodDetailsEpsInput
   fpx: Stripe_PaymentMethodDetailsFpxInput
   giropay: Stripe_PaymentMethodDetailsGiropayInput
@@ -27733,6 +27930,10 @@ input Stripe_PaymentMethodDetailsCardWalletVisaCheckoutInput {
   shipping_address: Stripe_AddressInput
 }
 
+input Stripe_PaymentMethodDetailsCustomerBalanceInput {
+  result: JSONObject
+}
+
 input Stripe_PaymentMethodDetailsEpsInput {
   """
   The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
@@ -28057,7 +28258,7 @@ input Stripe_PaymentMethodDetailsWechatPayInput {
 }
 
 """A list of refunds that have been applied to the charge."""
-input UpdateProfileResultOrdersLastFinalizationErrorPaymentIntentChargesDataRefundsPropertyInput {
+input UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertiesDataItemsPropertiesRefundsPropertyInput {
   """Details about each object."""
   data: [Stripe_RefundInput!]!
 
@@ -28191,6 +28392,7 @@ input Stripe_PaymentIntentNextActionInput {
   alipay_handle_redirect: Stripe_PaymentIntentNextActionAlipayHandleRedirectInput
   boleto_display_details: Stripe_PaymentIntentNextActionBoletoInput
   card_await_notification: Stripe_PaymentIntentNextActionCardAwaitNotificationInput
+  display_bank_transfer_instructions: Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput
   konbini_display_details: Stripe_PaymentIntentNextActionKonbiniInput
   oxxo_display_details: Stripe_PaymentIntentNextActionDisplayOxxoDetailsInput
   paynow_display_qr_code: Stripe_PaymentIntentNextActionPaynowDisplayQrCodeInput
@@ -28259,6 +28461,49 @@ input Stripe_PaymentIntentNextActionCardAwaitNotificationInput {
   For payments greater than INR 5000, the customer must provide explicit approval of the payment with their bank. For payments of lower amount, no customer action is required.
   """
   customer_approval_required: Boolean
+}
+
+input Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput {
+  """
+  The remaining amount that needs to be transferred to complete the payment.
+  """
+  amount_remaining: Int
+
+  """
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+  """
+  currency: String
+
+  """
+  A list of financial addresses that can be used to fund the customer balance
+  """
+  financial_addresses: [Stripe_FundingInstructionsBankTransferFinancialAddressInput]
+
+  """
+  A string identifying this payment. Instruct your customer to include this code in the reference or memo field of their bank transfer.
+  """
+  reference: String
+
+  """Type of bank transfer"""
+  type: UpdateProfileResultType
+}
+
+input Stripe_FundingInstructionsBankTransferFinancialAddressInput {
+  """The payment networks supported by this FinancialAddress"""
+  supported_networks: [UpdateProfileResultSupportedNetworks]
+
+  """The type of financial address"""
+  type: UpdateProfileResultType
+  zengin: Stripe_FundingInstructionsBankTransferZenginRecordInput
+}
+
+enum UpdateProfileResultSupportedNetworks {
+  sepa
+  zengin
+}
+
+input Stripe_FundingInstructionsBankTransferZenginRecordInput {
+  result: JSONObject
 }
 
 input Stripe_PaymentIntentNextActionKonbiniInput {
@@ -28421,6 +28666,7 @@ input Stripe_PaymentIntentPaymentMethodOptionsInput {
   boleto: PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBoletoInputUnion
   card: PaymentIntentPaymentMethodOptionsCardPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion
   card_present: PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCardPresentInputUnion
+  customer_balance: PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCustomerBalanceInputUnion
   eps: PaymentIntentPaymentMethodOptionsEpsPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion
   fpx: PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsFpxInputUnion
   giropay: PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsGiropayInputUnion
@@ -28737,6 +28983,56 @@ input Stripe_PaymentMethodOptionsCardPresentInput {
   Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity)
   """
   request_extended_authorization: Boolean
+
+  """
+  Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support.
+  """
+  request_incremental_authorization_support: Boolean
+}
+
+input PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCustomerBalanceInputUnion {
+  paymentMethodOptionsCustomerBalance: Stripe_PaymentMethodOptionsCustomerBalanceInput
+  paymentIntentTypeSpecificPaymentMethodOptionsClient: Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput
+}
+
+input Stripe_PaymentMethodOptionsCustomerBalanceInput {
+  bank_transfer: Stripe_PaymentMethodOptionsCustomerBalanceBankTransferInput
+
+  """
+  The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
+  """
+  funding_type: UpdateProfileResultFundingType
+
+  """
+  Indicates that you intend to make future payments with this PaymentIntent's payment method.
+  
+  Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+  
+  When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+  """
+  setup_future_usage: UpdateProfileResultSetupFutureUsage
+}
+
+input Stripe_PaymentMethodOptionsCustomerBalanceBankTransferInput {
+  """
+  List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
+  
+  Permitted values include: `zengin`.
+  """
+  requested_address_types: [UpdateProfileResultRequestedAddressTypes]
+
+  """
+  The bank transfer type that this PaymentIntent is allowed to use for funding. Permitted values include: `us_bank_account`, `eu_bank_account`, `id_bank_account`, `gb_bank_account`, `jp_bank_account`, `mx_bank_account`, `eu_bank_transfer`, `gb_bank_transfer`, `id_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`.
+  """
+  type: UpdateProfileResultType
+}
+
+enum UpdateProfileResultRequestedAddressTypes {
+  zengin
+}
+
+enum UpdateProfileResultFundingType {
+  bank_transfer
 }
 
 input PaymentIntentPaymentMethodOptionsEpsPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion {
@@ -29239,7 +29535,7 @@ input Stripe_SubscriptionInput {
   id: String
 
   """List of subscription items, each with an attached price."""
-  items: UpdateProfileResultOrdersSubscriptionSubscriptionItemsPropertyInput
+  items: PropertiesSubscriptionPropertiesItemsPropertyInput
   latest_invoice: InvoiceWrappedStringInputUnion
 
   """
@@ -29391,7 +29687,7 @@ enum UpdateProfileResultTaxType {
 }
 
 """List of subscription items, each with an attached price."""
-input UpdateProfileResultOrdersSubscriptionSubscriptionItemsPropertyInput {
+input PropertiesSubscriptionPropertiesItemsPropertyInput {
   """Details about each object."""
   data: [Stripe_SubscriptionItemInput!]!
 
@@ -29543,10 +29839,6 @@ input Stripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput {
   type: String
 }
 
-enum UpdateProfileResultFundingType {
-  bank_transfer
-}
-
 input Stripe_InvoicePaymentMethodOptionsKonbiniInput {
   result: JSONObject
 }
@@ -29606,7 +29898,7 @@ input Stripe_SetupIntentInput {
   """
   The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
   
-  The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, embedded in URLs, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+  The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
   """
   client_secret: String
 
@@ -30295,6 +30587,10 @@ input Stripe_PaymentMethodCardPresentInput {
   result: JSONObject
 }
 
+input Stripe_PaymentMethodCustomerBalanceInput {
+  result: JSONObject
+}
+
 input Stripe_PaymentMethodEpsInput {
   """
   The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
@@ -30426,7 +30722,7 @@ input Stripe_PaymentMethodWechatPayInput {
 }
 
 """The customer's payment sources, if any."""
-input UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSourcesPropertyInput {
+input PropertiesCustomerPropertiesSourcesPropertyInput {
   """Details about each object."""
   data: [AlipayAccountBankAccountBitcoinReceiverCardSourceInputUnion!]!
 
@@ -30453,7 +30749,7 @@ input AlipayAccountBankAccountBitcoinReceiverCardSourceInputUnion {
 }
 
 """The customer's current subscriptions, if any."""
-input UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerSubscriptionsPropertyInput {
+input PropertiesCustomerPropertiesSubscriptionsPropertyInput {
   """Details about each object."""
   data: [Stripe_SubscriptionInput!]!
 
@@ -30518,7 +30814,7 @@ enum UpdateProfileResultTaxExempt {
 }
 
 """The customer's tax IDs."""
-input UpdateProfileResultOrdersAccountTaxIdsTaxIdCustomerCustomerTaxIdsPropertyInput {
+input PropertiesCustomerPropertiesTaxIdsPropertyInput {
   """Details about each object."""
   data: [Stripe_TaxIdInput!]!
 
@@ -30590,7 +30886,7 @@ input Stripe_InvoicesResourceInvoiceTaxIdInput {
 """
 The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any.
 """
-input UpdateProfileResultOrdersLinesPropertyInput {
+input UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLinesPropertyInput {
   """Details about each object."""
   data: [Stripe_LineItemInput!]!
 
@@ -30860,7 +31156,7 @@ input Stripe_QuoteInput {
   invoice_settings: Stripe_InvoiceSettingQuoteSettingInput
 
   """A list of items the customer is being quoted for."""
-  line_items: UpdateProfileResultOrdersQuoteQuoteLineItemsPropertyInput
+  line_items: PropertiesQuotePropertiesLineItemsPropertyInput
 
   """
   Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
@@ -30958,14 +31254,14 @@ input Stripe_QuotesResourceUpfrontInput {
   """
   The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice.
   """
-  line_items: UpdateProfileResultOrdersQuoteQuoteComputedUpfrontLineItemsPropertyInput
+  line_items: PropertiesQuotePropertiesComputedPropertiesUpfrontPropertiesLineItemsPropertyInput
   total_details: Stripe_QuotesResourceTotalDetailsInput
 }
 
 """
 The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice.
 """
-input UpdateProfileResultOrdersQuoteQuoteComputedUpfrontLineItemsPropertyInput {
+input PropertiesQuotePropertiesComputedPropertiesUpfrontPropertiesLineItemsPropertyInput {
   """Details about each object."""
   data: [Stripe_ItemInput!]!
 
@@ -31016,7 +31312,7 @@ input Stripe_InvoiceSettingQuoteSettingInput {
 }
 
 """A list of items the customer is being quoted for."""
-input UpdateProfileResultOrdersQuoteQuoteLineItemsPropertyInput {
+input PropertiesQuotePropertiesLineItemsPropertyInput {
   """Details about each object."""
   data: [Stripe_ItemInput!]!
 
@@ -31116,17 +31412,6 @@ input Stripe_InvoiceTransferDataInput {
   destination: AccountWrappedStringInputUnion
 }
 
-input ProfileNewsletterStatusInput {
-  """"""
-  listId: String
-
-  """"""
-  listName: String
-
-  """"""
-  subscribed: Boolean
-}
-
 type CreateProfileResult {
   clientMutationId: String
   result: Profile
@@ -31154,9 +31439,6 @@ input CreateProfileInput {
 
   """"""
   orders: [Stripe_InvoiceInput]
-
-  """"""
-  newsletters: [ProfileNewsletterStatusInput]
   _shapeId: String
   _id: ID
   _version: Int
@@ -31202,9 +31484,6 @@ input DuplicateProfileInput {
 
   """"""
   orders: [Stripe_InvoiceInput]
-
-  """"""
-  newsletters: [ProfileNewsletterStatusInput]
   _shapeId: String
   _version: Int
   _shapeName: String
@@ -31252,10 +31531,10 @@ type Klaviyo_AddMembersResponseItemsProperty {
 }
 
 input AddListMembersInput {
-  profiles: [Klaviyo_AddMembersResponseProfilesPropertyInput!]!
+  profiles: [Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput!]!
 }
 
-input Klaviyo_AddMembersResponseProfilesPropertyInput {
+input Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput {
   email: String
 }
 
@@ -31264,7 +31543,7 @@ type Klaviyo_200Ok {
 }
 
 "\nThe profiles that you would like to remove from the list. \n\nExample:\n\n{\n  \"emails\":[\"george.washington@klaviyo.com\",\"abraham.lincoln@klaviyo.com\"],\n  \"phone_numbers\":[\"+13239169023\"],\n  \"push_tokens\":[\"03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2r\"]\n}\n"
-input Klaviyo_200OkPropertyInput {
+input Klaviyo_RemoveMembersPropertiesPropertyInput {
   emails: [String]
   phone_numbers: [String]
   push_tokens: [String]
@@ -31302,7 +31581,7 @@ enum ReviewsIo_CreateInvitationResponseStatusProperty {
   error
 }
 
-input ReviewsIo_CreateInvitationResponsePropertyInput {
+input ReviewsIo_CreateInvitationPropertiesPropertyInput {
   name: String
   email: String
   order_id: String
