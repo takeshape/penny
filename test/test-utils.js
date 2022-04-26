@@ -5,7 +5,7 @@ import { CartProvider } from '../lib/cart';
 import { TakeshapeProvider } from '../lib/takeshape';
 import theme from '../lib/theme';
 
-const mockedUseRouterReturnValue = {
+const mockUseRouterReturnValue = {
   query: {},
   pathname: '/',
   asPath: '/',
@@ -22,7 +22,7 @@ const mockedUseRouterReturnValue = {
 
 jest.mock('next/dist/client/router', () => ({
   __esModule: true,
-  useRouter: () => mockedUseRouterReturnValue
+  useRouter: () => mockUseRouterReturnValue
 }));
 
 const AllTheProviders = ({ children }) => {

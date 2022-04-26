@@ -1,4 +1,4 @@
-import { Divider, Heading, Paragraph, Link } from '@theme-ui/components';
+import { Box, Divider, Heading, Link, Paragraph } from '@theme-ui/components';
 import { Page, Section } from 'components/layout';
 
 const dependencies = [
@@ -13,14 +13,9 @@ const dependencies = [
     description: 'Auth0 bindings for React.'
   },
   {
-    title: 'Stripe.js',
-    link: 'https://github.com/stripe/stripe-js',
-    description: 'Stripe’s Javscript library.'
-  },
-  {
-    title: 'graphql-request',
-    link: 'https://github.com/prisma-labs/graphql-request',
-    description: 'A minimal GraphQL client.'
+    title: '@apollo/client',
+    link: 'https://github.com/apollographql/apollo-client',
+    description: 'A fully-featured, production ready caching GraphQL client for every UI framework and GraphQL server.'
   },
   {
     title: 'Theme UI',
@@ -31,11 +26,6 @@ const dependencies = [
     title: 'react-hook-form',
     link: 'https://react-hook-form.com',
     description: 'The easiest most composable way to work with forms in React that I‘ve used.'
-  },
-  {
-    title: 'swr',
-    link: 'https://github.com/vercel/swr',
-    description: 'A React hook library that does easy, cached data fetching and invalidation.'
   }
 ];
 
@@ -47,8 +37,8 @@ function AboutPage() {
 
       <Section>
         <Paragraph>
-          This project demonstrates using <Link to="https://auth0.com">Auth0</Link> to manage a user‘s account and make
-          purchases through <Link to="https://stripe.com">Stripe</Link>.
+          This project demonstrates using <Link href="https://auth0.com">Auth0</Link> to manage a user‘s account and
+          make purchases through <Link href="https://stripe.com">Shopify</Link>.
         </Paragraph>
 
         <Paragraph>
@@ -67,7 +57,8 @@ function AboutPage() {
       <Section>
         <Heading variant="h3">Key Dependencies</Heading>
         <Divider />
-        <ul
+        <Box
+          as="ul"
           sx={{
             listStyle: 'none',
             m: 0,
@@ -76,7 +67,8 @@ function AboutPage() {
           }}
         >
           {dependencies.map((dependency) => (
-            <li
+            <Box
+              as="li"
               key={dependency.link}
               sx={{
                 mb: 4
@@ -90,7 +82,7 @@ function AboutPage() {
                 }}
               >
                 <Link
-                  to={dependency.link}
+                  href={dependency.link}
                   sx={{
                     color: 'inherit',
                     textDecoration: 'none',
@@ -105,9 +97,9 @@ function AboutPage() {
                 </Link>
               </Heading>
               <Paragraph>{dependency.description}</Paragraph>
-            </li>
+            </Box>
           ))}
-        </ul>
+        </Box>
       </Section>
     </Page>
   );

@@ -51,14 +51,8 @@ const securityHeaders = [
 ];
 
 const config = {
-  poweredByHeader: false,
-  trailingSlash: true,
-  reactStrictMode: true,
   compiler: {
     styledComponents: true
-  },
-  images: {
-    domains: ['files.stripe.com']
   },
   async headers() {
     return [
@@ -68,6 +62,12 @@ const config = {
       }
     ];
   },
+  images: {
+    domains: ['files.stripe.com']
+  },
+  poweredByHeader: false,
+  reactStrictMode: true,
+  trailingSlash: true,
   webpack: (config, { dev, isServer }) => {
     // Replace React with Preact only in client production build
     if (!dev && !isServer) {

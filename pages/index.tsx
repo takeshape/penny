@@ -1,11 +1,12 @@
-import { Heading, Divider, Alert, Spinner, Container } from '@theme-ui/components';
+import { Alert, Container, Heading, Spinner } from '@theme-ui/components';
 import { Page } from 'components/layout';
 import ProductGrid from 'components/product/grid';
-import { GetStripeProducts } from 'lib/queries';
-import { takeshapeApiUrl, takeshapeAnonymousApiKey } from 'lib/config';
 import { createApolloClient } from 'lib/apollo';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
+import { GetStripeProducts } from 'lib/queries';
+import type { InferGetStaticPropsType } from 'next';
 
-function HomePage({ products, error }) {
+const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
       <Page>
@@ -28,7 +29,7 @@ function HomePage({ products, error }) {
       )}
     </Page>
   );
-}
+};
 
 export async function getStaticProps() {
   const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
@@ -54,4 +55,4 @@ export async function getStaticProps() {
   return { props: { products, error } };
 }
 
-export default HomePage;
+export default IndexPage;
