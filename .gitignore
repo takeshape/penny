@@ -40,3 +40,6 @@ yarn-error.log*
 # takeshape
 .graphqlconfig
 .takeshaperc
+
+# cypress
+/cypress/videos
