@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { Alert, Box, Button, Flex, Input, Link, Text } from '@theme-ui/components';
 import { useForm } from 'react-hook-form';
 import { BsCheckCircle, BsGiftFill, BsHourglassSplit } from 'react-icons/bs';
+import { Alert, Box, Button, Flex, Input, Link, Text } from 'theme-ui';
 
 export interface Reward {
   name: string;

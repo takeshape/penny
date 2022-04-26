@@ -1,7 +1,12 @@
 import type { Voucherify_LoyaltyCard } from 'lib/takeshape/types';
-import { Card, Text, Image, Heading, Box } from '@theme-ui/components';
+import { Box, Card, Image, Text } from 'theme-ui';
+import type { SetRequired } from 'type-fest';
 
-const LoyaltyCard = ({ code, loyalty_card, assets }: Voucherify_LoyaltyCard) => {
+const LoyaltyCard = ({
+  code,
+  loyalty_card,
+  assets
+}: SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>) => {
   return (
     <Card variant="loyalty" sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', padding: '1rem' }}>
       <Text variant="styles.shopName" sx={{ fontWeight: 'bold', flex: '1 1 100%' }}>
@@ -10,7 +15,7 @@ const LoyaltyCard = ({ code, loyalty_card, assets }: Voucherify_LoyaltyCard) => 
 
       <Box>
         <Box>
-          <Image src={assets.qr.url} alt="QR Code" height="70px" width="70px" />
+          <Image src={assets.qr.url} alt="QR Code" height={84} width={84} />
         </Box>
         <Text as="div" sx={{ textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center' }}></Text>
       </Box>

@@ -1,4 +1,4 @@
-import { Box, Grid, Paragraph } from '@theme-ui/components';
+import { Box, Grid, Paragraph } from 'theme-ui';
 import ProductCard from './card';
 
 export const ProductGrid = ({ products }) => {

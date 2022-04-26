@@ -1,6 +1,6 @@
 import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from '@theme-ui/core';
+import { ThemeProvider } from 'theme-ui';
 import { CartProvider } from '../lib/cart';
 import { TakeshapeProvider } from '../lib/takeshape';
 import theme from '../lib/theme';

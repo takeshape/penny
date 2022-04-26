@@ -1,10 +1,10 @@
-import { Alert, Container, Heading, Spinner } from '@theme-ui/components';
 import { Page } from 'components/layout';
 import ProductGrid from 'components/product/grid';
 import { createApolloClient } from 'lib/apollo';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
 import { GetStripeProducts } from 'lib/queries';
 import type { InferGetStaticPropsType } from 'next';
+import { Alert, Container, Heading, Spinner } from 'theme-ui';
 
 const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {

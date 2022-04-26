@@ -1,16 +1,16 @@
-import { useEffect, useRef, useCallback } from 'react';
-import { FiTrash2 } from 'react-icons/fi';
-import { BsCart3 } from 'react-icons/bs';
-import { Flex, Box, Divider, Heading, Close, IconButton, Button, Text, Grid, Image } from '@theme-ui/components';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation } from '@apollo/client';
-import { formatPrice } from 'lib/utils/text';
-import { getCheckoutPayload } from 'lib/utils/checkout';
-import { CreateMyCheckoutSession } from 'lib/queries';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useCart } from 'lib/cart';
+import { CreateMyCheckoutSession } from 'lib/queries';
+import { getCheckoutPayload } from 'lib/utils/checkout';
 import getStripe from 'lib/utils/stripe';
-import ProductImage from './product/image';
+import { formatPrice } from 'lib/utils/text';
+import { useCallback, useEffect, useRef } from 'react';
+import { BsCart3 } from 'react-icons/bs';
+import { FiTrash2 } from 'react-icons/fi';
+import { Box, Button, Close, Flex, Heading, IconButton, Text } from 'theme-ui';
 import { ProductPrice, Quantity } from './product/add-to-cart';
+import ProductImage from './product/image';
 
 export const CartIcon = () => {
   const {

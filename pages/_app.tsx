@@ -1,11 +1,12 @@
 import { Auth0Provider } from '@auth0/auth0-react';
-import { ThemeProvider } from '@theme-ui/core';
+import Styles from 'components/styles';
 import { AuthorizedApolloProvider } from 'lib/apollo';
 import { CartProvider } from 'lib/cart';
 import { audience, clientId, domain, scope, takeshapeApiUrl } from 'lib/config';
 import { TakeshapeProvider } from 'lib/takeshape';
 import theme from 'lib/theme';
 import Router from 'next/router';
+import { ThemeProvider } from 'theme-ui';
 
 const onRedirectCallback = (appState) => {
   Router.replace(appState?.returnTo ?? '/');
@@ -26,6 +27,7 @@ export default function App({ Component, pageProps }) {
         <TakeshapeProvider>
           <CartProvider>
             <ThemeProvider theme={theme}>
+              <Styles />
               <Component {...pageProps} />
             </ThemeProvider>
           </CartProvider>

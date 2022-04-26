@@ -17,7 +17,9 @@
     "typecheck": "tsc --noEmit --pretty ",
     "typegen": "takeshape schema && takeshape types --to ./lib/takeshape/types.d.ts",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
@@ -27,11 +29,7 @@
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
     "@theme-ui/color": "^0.14.4",
-    "@theme-ui/components": "^0.14.4",
-    "@theme-ui/core": "^0.14.4",
-    "@theme-ui/css": "^0.14.4",
     "@theme-ui/presets": "^0.14.4",
-    "@theme-ui/theme-provider": "^0.14.4",
     "@types/lodash-es": "^4.17.6",
     "abortcontroller-polyfill": "^1.7.3",
     "date-fns": "^2.28.0",
@@ -46,11 +44,20 @@
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
     "react-star-ratings": "^2.3.0",
-    "stripe": "^8.219.0"
+    "stripe": "^8.219.0",
+    "theme-ui": "^0.14.4"
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@emotion/jest": "^11.9.1",
+    "@storybook/addon-actions": "^6.4.22",
+    "@storybook/addon-essentials": "^6.4.22",
+    "@storybook/addon-interactions": "^6.4.22",
+    "@storybook/addon-links": "^6.4.22",
+    "@storybook/builder-webpack5": "^6.4.22",
+    "@storybook/manager-webpack5": "^6.4.22",
+    "@storybook/react": "^6.4.22",
+    "@storybook/testing-library": "0.0.11",
     "@takeshape/cli": "^8.143.3",
     "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "^5.16.4",
@@ -59,6 +66,7 @@
     "@types/react": "^18.0.7",
     "@types/react-star-ratings": "^2.3.0",
     "babel-jest": "^27.5.1",
+    "babel-loader": "^8.2.5",
     "cypress": "^9.6.0",
     "eslint": "^8.14.0",
     "eslint-config-next": "^12.1.5",
@@ -67,6 +75,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.4.1",
     "prettier": "^2.6.2",
-    "typescript": "^4.6.3"
+    "type-fest": "^2.12.2",
+    "typescript": "^4.6.3",
+    "webpack": "^5.68.0"
   }
 }

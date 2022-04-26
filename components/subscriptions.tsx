@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
-import { Alert, Box, Card, Flex, Heading, Paragraph, Text } from '@theme-ui/components';
 import { locale } from 'lib/config';
 import { DeleteMySubscription, GetMyPurchasesData } from 'lib/queries';
 import { formatPrice } from 'lib/utils/text';
+import { Alert, Box, Card, Flex, Heading, Paragraph, Text } from 'theme-ui';
 import { SubmitButton } from './buttons';
 import { ProductImage } from './product';
 

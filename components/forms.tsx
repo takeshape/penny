@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
-import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Select, Textarea } from '@theme-ui/components';
 import useCountries from 'lib/countries/use-countries';
 import { useUpload } from 'lib/hooks/use-upload';
 import { GetMyProfile, UploadAssets, UpsertMyCustomer, UpsertMyProfile } from 'lib/queries';
 import { buildImageUrl } from 'lib/utils/images';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Select, Textarea } from 'theme-ui';
 import { SubmitButton } from './buttons';
 
 export const CustomerForm = ({ customer }) => {

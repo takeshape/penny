@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useApolloClient } from '@apollo/client';
-import { Button } from '@theme-ui/components';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useCallback } from 'react';
+import { Button } from 'theme-ui';
 
 export const Logout = () => {
   const { resetStore } = useApolloClient();

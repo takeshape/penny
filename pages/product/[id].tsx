@@ -1,18 +1,18 @@
-import type {
-  Stripe_Product,
-  ReviewsIo_ListProductReviewsResponseStatsProperty,
-  ReviewsIo_ProductReview
-} from 'lib/takeshape/types';
-import { NextPage, GetStaticProps, GetStaticPaths } from 'next';
-import { useRouter } from 'next/router';
-import { Box, Flex, Heading, Paragraph } from '@theme-ui/components';
 import { Page } from 'components/layout';
-import { ProductImage, ProductAddToCart } from 'components/product';
-import { takeshapeApiUrl, takeshapeAnonymousApiKey } from 'lib/config';
+import { ProductAddToCart, ProductImage } from 'components/product';
 import { ReviewList } from 'components/reviews';
 import { createApolloClient } from 'lib/apollo';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'lib/queries';
+import type {
+  ReviewsIo_ListProductReviewsResponseStatsProperty,
+  ReviewsIo_ProductReview,
+  Stripe_Product
+} from 'lib/takeshape/types';
 import { getSingle } from 'lib/utils/types';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 
 interface ProductPageProps {
   product: Stripe_Product;

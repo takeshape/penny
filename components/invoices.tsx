@@ -1,7 +1,7 @@
-import { Grid, Box, Card, IconButton, Paragraph, Text, Link } from '@theme-ui/components';
-import { formatPrice } from 'lib/utils/text';
 import { format } from 'date-fns';
-import { FiCheckCircle, FiArrowDownCircle } from 'react-icons/fi';
+import { formatPrice } from 'lib/utils/text';
+import { FiArrowDownCircle, FiCheckCircle } from 'react-icons/fi';
+import { Box, Card, Grid, IconButton, Link, Paragraph, Text } from 'theme-ui';
 
 export const InvoiceItemCard = ({ invoice }) => {
   return (

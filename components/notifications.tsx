@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Box, Alert, Close } from '@theme-ui/components';
 import { useCart } from 'lib/cart';
+import { useEffect, useState } from 'react';
+import { Alert, Box, Close } from 'theme-ui';
 
 const Notifications = () => {
   const [state, setState] = useState({ visible: false, fade: true });

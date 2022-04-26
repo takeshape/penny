@@ -1,8 +1,7 @@
 import { getColor } from '@theme-ui/color';
-import { Box, Divider, Flex, Text } from '@theme-ui/components';
-import { useThemeUI } from '@theme-ui/core';
 import { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'lib/takeshape/types';
 import StarRatings from 'react-star-ratings';
+import { Box, Divider, Flex, Text, useThemeUI } from 'theme-ui';
 
 export const Review: React.FC<ReviewsIo_ProductReview> = (props) => {
   const { title, review, rating, timeago, date_created } = props;

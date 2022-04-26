@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from '@theme-ui/components';
 import { NewsletterToggle } from 'components/account/newsletter-toggle';
 import { CreateReferral, Referral, ReferralList } from 'components/account/referrals';
 import { CustomerForm, ProfileForm } from 'components/forms';
@@ -10,6 +9,7 @@ import { GetMyNewsletterSubscriptons, GetMyProfile } from 'lib/queries';
 import { useProfile } from 'lib/takeshape';
 import type { NextPage } from 'next';
 import { useState } from 'react';
+import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
 const referralsFixtureData: Referral[] = [
   {

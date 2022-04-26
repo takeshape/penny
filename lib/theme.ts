@@ -1,6 +1,6 @@
 import { lighten } from '@theme-ui/color';
-import type { Theme } from '@theme-ui/core';
 import { swiss } from '@theme-ui/presets';
+import type { Theme } from 'theme-ui';
 
 const theme: Theme = {
   ...swiss,
@@ -9,8 +9,18 @@ const theme: Theme = {
     secondary: '#ccc',
     lightGray: lighten('black', 0.5) as any
   },
+  fonts: {
+    body: '"Roboto", sans-serif',
+    heading: '"Roboto", sans-serif',
+    monospace: '"Roboto Mono", monospace'
+  },
   styles: {
     ...swiss.styles,
+    root: {
+      fontFamily: 'body',
+      fontWeight: 'body',
+      fontSize: 2
+    },
     flexspace: {
       mx: 'auto'
     },

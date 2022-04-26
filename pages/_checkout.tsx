@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { Container, Spinner } from '@theme-ui/components';
+import { useApolloClient } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { useCart } from 'lib/cart';
-import { useApolloClient } from '@apollo/client';
-import { getCheckoutPayload } from 'lib/utils/checkout';
 import { CreateMyCheckoutSession } from 'lib/queries';
-import getStripe from 'lib/utils/stripe';
 import { useProfile } from 'lib/takeshape';
+import { getCheckoutPayload } from 'lib/utils/checkout';
+import getStripe from 'lib/utils/stripe';
+import { useEffect } from 'react';
+import { Container, Spinner } from 'theme-ui';
 
 // After a successful login, redirect here to automatically checkout with the cart
 function _CheckoutPage() {

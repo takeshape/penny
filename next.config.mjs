@@ -3,11 +3,11 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com;
   child-src https://*.stripe.com https://*.stripe.network;
-  style-src 'self' 'unsafe-inline' https://*.stripe.com;
+  style-src 'self' 'unsafe-inline' https://*.stripe.com https://fonts.googleapis.com;
   img-src * blob: data: https://*.stripe.com;
   media-src 'none';
   connect-src *;
-  font-src 'self';
+  font-src 'self' https://fonts.gstatic.com;
   frame-src https://js.stripe.com https://*.auth0.com;
 `;
 

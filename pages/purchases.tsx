@@ -1,6 +1,5 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Alert, Box, Container, Divider, Flex, Heading, Spinner } from '@theme-ui/components';
 import { Page, Section } from 'components/layout';
 import LoyaltyCard from 'components/loyalty-card';
 import { PaymentList } from 'components/payments';
@@ -9,6 +8,7 @@ import type { GetMyPurchasesDataResponse } from 'lib/queries';
 import { GetMyPurchasesData } from 'lib/queries';
 import { useProfile } from 'lib/takeshape';
 import type { NextPage } from 'next';
+import { Alert, Box, Container, Divider, Flex, Heading, Spinner } from 'theme-ui';
 
 const PurchasesPage: NextPage = () => {
   const { isProfileReady } = useProfile();
@@ -49,7 +49,13 @@ const PurchasesPage: NextPage = () => {
         <Box sx={{ flex: '0 1 24rem' }}>
           <Section>
             {!loyaltyCard && !error ? <Spinner /> : null}
-            {loyaltyCard ? <LoyaltyCard {...loyaltyCard} /> : null}
+            {loyaltyCard ? (
+              <LoyaltyCard
+                code={loyaltyCard.code}
+                loyalty_card={loyaltyCard.loyalty_card}
+                assets={loyaltyCard.assets}
+              />
+            ) : null}
           </Section>
           <Section>
             <Heading variant="smallHeading" id="payments">

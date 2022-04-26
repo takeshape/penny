@@ -1,7 +1,7 @@
 import NextLink from 'next/link';
-import { Box, Link, Card, Heading, Flex } from '@theme-ui/components';
-import ProductImage from './image';
+import { Box, Card, Flex, Heading, Link } from 'theme-ui';
 import AddToCart from './add-to-cart';
+import ProductImage from './image';
 
 export const ProductCard = ({ product }) => {
   const { name, prices, description, images } = product;

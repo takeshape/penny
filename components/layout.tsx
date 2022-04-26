@@ -1,12 +1,12 @@
-import { Container, Divider, Flex, NavLink, Link as ThemeLink, IconButton, Box, Text } from '@theme-ui/components';
+import { useAuth0 } from '@auth0/auth0-react';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useAuth0 } from '@auth0/auth0-react';
+import { BsPersonCircle as AccountIcon, BsQuestionSquare, BsReceiptCutoff } from 'react-icons/bs';
+import { Box, Container, Divider, Flex, IconButton, Link as ThemeLink, NavLink, Text } from 'theme-ui';
 import { CartIcon, CartSidebar } from './cart';
 import Notifications from './notifications';
-import { Login } from './user';
 import { Search } from './search';
-import { BsQuestionSquare, BsReceiptCutoff, BsPersonCircle as AccountIcon } from 'react-icons/bs';
+import { Login } from './user';
 
 export const Header = () => {
   const { user } = useAuth0();
@@ -107,14 +107,6 @@ export const Page = ({ children }) => {
       <Notifications />
 
       <Footer />
-
-      <style jsx global>{`
-        body {
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-            'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-        }
-      `}</style>
     </Flex>
   );
 };

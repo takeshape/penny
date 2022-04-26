@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import NextLink from 'next/link';
-import { Box, Input, Link, AspectImage, Flex, Text } from '@theme-ui/components';
 import { useLazyQuery } from '@apollo/client';
-import { SearchStripeProducts } from 'lib/queries';
 import useDebounce from 'lib/hooks/use-debounce';
+import { SearchStripeProducts } from 'lib/queries';
+import NextLink from 'next/link';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AspectImage, Box, Flex, Input, Link, Text } from 'theme-ui';
 import { ProductPrice } from './product/add-to-cart';
 
 export const Search = () => {

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Box, Button, Select, Input, Label, Radio, Flex, Text } from '@theme-ui/components';
-import orderBy from 'lodash/orderBy';
 import { useCart } from 'lib/cart';
-import { pluralizeText, formatPrice } from 'lib/utils/text';
 import { Stripe_Product } from 'lib/takeshape/types';
+import { formatPrice, pluralizeText } from 'lib/utils/text';
+import orderBy from 'lodash/orderBy';
+import { useEffect, useState } from 'react';
+import { Box, Button, Flex, Input, Label, Radio, Select, Text } from 'theme-ui';
 
 const showCartTimeout = 3000;
 const oneTimePurchase = 'one-time';

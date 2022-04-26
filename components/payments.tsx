@@ -1,8 +1,8 @@
-import { Badge, Box, Card, Flex, Grid, Heading, Link, Paragraph } from '@theme-ui/components';
 import { format } from 'date-fns';
 import type { Stripe_Invoiceitem, Stripe_Item, Stripe_PaymentIntent } from 'lib/takeshape/types';
 import { formatPrice } from 'lib/utils/text';
 import NextLink from 'next/link';
+import { Badge, Box, Card, Flex, Grid, Heading, Link, Paragraph } from 'theme-ui';
 import { ProductImage } from './product';
 
 export interface OrderStatusProps {

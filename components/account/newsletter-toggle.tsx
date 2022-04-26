@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { Box, Flex, Label, Switch } from '@theme-ui/components';
 import { SubscribeToNewsletter, UnsubscribeFromNewsletter } from 'lib/queries';
 import { useCallback, useState } from 'react';
+import { Box, Flex, Label, Switch } from 'theme-ui';
 
 export const NewsletterToggle = ({ email, newsletter }) => {
   const [subscribe, { called: subscribeCalled, loading: subscribeLoading }] = useMutation(SubscribeToNewsletter);
