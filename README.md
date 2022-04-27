@@ -60,6 +60,11 @@ TKTK
 ## Known Limitations
 
 TKTK
+
+## Deploying to Production
+
+1. Replace all public placeholder assets
+2. Update `robots.txt`
 ## Learn More
 
 TKTK

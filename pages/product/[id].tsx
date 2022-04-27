@@ -1,4 +1,4 @@
-import Page from 'components/Page';
+import PageLayout from 'components/PageLayout';
 import ProductAddToCart from 'components/ProductAddToCart';
 import ProductImage from 'components/ProductImage';
 import ReviewList from 'components/ReviewList';
@@ -33,7 +33,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   const { product, reviews, stats } = props;
 
   return (
-    <Page>
+    <PageLayout>
       <Heading as="h2" variant="styles.pageTitle">
         {product.name}
       </Heading>
@@ -49,7 +49,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
           </Box>
         </Flex>
       </Flex>
-    </Page>
+    </PageLayout>
   );
 };
 

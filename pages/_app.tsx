@@ -2,9 +2,10 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import GlobalStyles from 'components/GlobalStyles';
 import { AuthorizedApolloProvider } from 'lib/apollo';
 import { CartProvider } from 'lib/cart';
-import { audience, clientId, domain, scope, takeshapeApiUrl } from 'lib/config';
+import { audience, clientId, domain, scope, seo, takeshapeApiUrl } from 'lib/config';
 import { TakeshapeProvider } from 'lib/takeshape';
 import theme from 'lib/theme';
+import { DefaultSeo } from 'next-seo';
 import Router from 'next/router';
 import { ThemeProvider } from 'theme-ui';
 
@@ -27,6 +28,7 @@ export default function App({ Component, pageProps }) {
         <TakeshapeProvider>
           <CartProvider>
             <ThemeProvider theme={theme}>
+              <DefaultSeo {...seo} />
               <GlobalStyles />
               <Component {...pageProps} />
             </ThemeProvider>

@@ -1,4 +1,4 @@
-import Page from 'components/Page';
+import PageLayout from 'components/PageLayout';
 import Section from 'components/Section';
 import { Box, Divider, Heading, Link, Paragraph } from 'theme-ui';
 
@@ -32,7 +32,7 @@ const dependencies = [
 
 function AboutPage() {
   return (
-    <Page>
+    <PageLayout>
       <Heading as="h1">About</Heading>
       <Divider />
 
@@ -102,7 +102,7 @@ function AboutPage() {
           ))}
         </Box>
       </Section>
-    </Page>
+    </PageLayout>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import LoyaltyCard from 'components/LoyaltyCard';
-import Page from 'components/Page';
+import PageLayout from 'components/PageLayout';
 import PaymentList from 'components/PaymentList';
 import Section from 'components/Section';
 import SubscriptionList from 'components/SubscriptionList';
@@ -22,7 +22,7 @@ const PurchasesPage: NextPage = () => {
 
   if ((!purchasesData && !error) || error) {
     return (
-      <Page>
+      <PageLayout>
         <Heading as="h1" variant="styles.pageTitle">
           Purchases
         </Heading>
@@ -35,14 +35,14 @@ const PurchasesPage: NextPage = () => {
             </>
           ) : null}
         </Box>
-      </Page>
+      </PageLayout>
     );
   }
 
   const { payments, subscriptions, loyaltyCard } = purchasesData;
 
   return (
-    <Page>
+    <PageLayout>
       <Heading as="h1" variant="styles.pageTitle">
         Purchases
       </Heading>
@@ -78,7 +78,7 @@ const PurchasesPage: NextPage = () => {
           </Section>
         </Box>
       </Flex>
-    </Page>
+    </PageLayout>
   );
 };
 

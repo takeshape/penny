@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import CustomerForm from 'components/CustomerForm';
 import NewsletterToggle from 'components/NewsletterToggle';
-import Page from 'components/Page';
+import PageLayout from 'components/PageLayout';
 import ProfileForm from 'components/ProfileForm';
 import ReferralsCreateReferral from 'components/ReferralsCreateReferral';
 import ReferralsList from 'components/ReferralsList';
@@ -35,7 +35,7 @@ const AccountPage: NextPage = () => {
   const [referrals, setReferrals] = useState<ReferralsListItemProps[]>(referralsFixtureData);
 
   return (
-    <Page>
+    <PageLayout>
       <Flex sx={{ width: '100%', gap: '2rem', alignItems: 'baseline' }}>
         <Heading as="h1" variant="styles.pageTitle">
           Account
@@ -94,7 +94,7 @@ const AccountPage: NextPage = () => {
           <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
         </>
       )}
-    </Page>
+    </PageLayout>
   );
 };
 
