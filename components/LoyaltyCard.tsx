@@ -2,11 +2,9 @@ import { Box, Card, Image, Text } from 'theme-ui';
 import type { SetRequired } from 'type-fest';
 import type { Voucherify_LoyaltyCard } from 'types/takeshape';
 
-const LoyaltyCard = ({
-  code,
-  loyalty_card,
-  assets
-}: SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>) => {
+export type LoyaltyCardProps = SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>;
+
+export const LoyaltyCard = ({ code, loyalty_card, assets }: LoyaltyCardProps) => {
   return (
     <Card variant="loyalty" sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', padding: '1rem' }}>
       <Text variant="styles.shopName" sx={{ fontWeight: 'bold', flex: '1 1 100%' }}>

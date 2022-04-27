@@ -4,7 +4,12 @@ import { GetMyProfile, UpsertMyCustomer } from 'lib/queries';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Grid, Input, Label, Select } from 'theme-ui';
+import type { Stripe_Customer } from 'types/takeshape';
 import SubmitButton from './SubmitButton';
+
+export interface CustomerFormProps {
+  customer: Stripe_Customer;
+}
 
 export const CustomerForm = ({ customer }) => {
   const [setCustomerPayload, { loading }] = useMutation(UpsertMyCustomer, {

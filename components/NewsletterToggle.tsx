@@ -2,8 +2,14 @@ import { useMutation } from '@apollo/client';
 import { SubscribeToNewsletter, UnsubscribeFromNewsletter } from 'lib/queries';
 import { useCallback, useState } from 'react';
 import { Box, Flex, Label, Switch } from 'theme-ui';
+import type { ProfileNewsletterStatus } from 'types/takeshape';
 
-export const NewsletterToggle = ({ email, newsletter }) => {
+export interface NewsletterToggleProps {
+  email: string;
+  newsletter: ProfileNewsletterStatus;
+}
+
+export const NewsletterToggle = ({ email, newsletter }: NewsletterToggleProps) => {
   const [subscribe, { called: subscribeCalled, loading: subscribeLoading }] = useMutation(SubscribeToNewsletter);
   const [unsubscribe, { called: unsubscribeCalled, loading: unsubscribeLoading }] =
     useMutation(UnsubscribeFromNewsletter);
@@ -33,3 +39,5 @@ export const NewsletterToggle = ({ email, newsletter }) => {
     </Flex>
   );
 };
+
+export default NewsletterToggle;

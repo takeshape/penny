@@ -1,6 +1,6 @@
 import { Container, Link as ThemeLink, Text } from 'theme-ui';
 
-export const PageFooter = () => {
+export const Footer = () => {
   return (
     <Container as="footer" variant="layout.footer" sx={{ width: '100%', textAlign: 'center', padding: '8rem 0' }}>
       <Text variant="smallHeading">
@@ -17,4 +17,4 @@ export const PageFooter = () => {
   );
 };
 
-export default PageFooter;
+export default Footer;

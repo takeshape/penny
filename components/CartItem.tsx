@@ -1,8 +1,16 @@
+import type { ChangeEventHandler } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Box, Flex, IconButton } from 'theme-ui';
+import type { Stripe_Product } from 'types/takeshape';
 import ProductImage from './ProductImage';
 import ProductPrice from './ProductPrice';
 import ProductQuantity from './ProductQuantity';
+
+export interface CartItemProps {
+  product: Stripe_Product;
+  onChangeQuantity: ChangeEventHandler;
+  onClickRemove: ChangeEventHandler;
+}
 
 const CartItem = ({ product, onChangeQuantity, onClickRemove }) => {
   return (

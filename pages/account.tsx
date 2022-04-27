@@ -1,10 +1,12 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { NewsletterToggle } from 'components/account/newsletter-toggle';
-import { CreateReferral, Referral, ReferralList } from 'components/account/referrals';
 import CustomerForm from 'components/CustomerForm';
+import NewsletterToggle from 'components/NewsletterToggle';
 import Page from 'components/Page';
 import ProfileForm from 'components/ProfileForm';
+import ReferralsCreateReferral from 'components/ReferralsCreateReferral';
+import ReferralsList from 'components/ReferralsList';
+import type { ReferralsListItemProps } from 'components/ReferralsListItem';
 import Section from 'components/Section';
 import UserLogout from 'components/UserLogout';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'lib/queries';
@@ -13,7 +15,7 @@ import type { NextPage } from 'next';
 import { useState } from 'react';
 import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
-const referralsFixtureData: Referral[] = [
+const referralsFixtureData: ReferralsListItemProps[] = [
   {
     email: 'mark@takeshape.io',
     sent: new Date(2022, 1, 23),
@@ -30,7 +32,7 @@ const AccountPage: NextPage = () => {
   const { data: newsletterData, error: newsletterError } = useQuery(GetMyNewsletterSubscriptons, {
     skip: !isProfileReady
   });
-  const [referrals, setReferrals] = useState<Referral[]>(referralsFixtureData);
+  const [referrals, setReferrals] = useState<ReferralsListItemProps[]>(referralsFixtureData);
 
   return (
     <Page>
@@ -75,8 +77,8 @@ const AccountPage: NextPage = () => {
         <Section sx={{ marginTop: '4rem' }}>
           <Heading variant="smallHeading">Referrals</Heading>
           <Divider sx={{ marginBottom: '1rem' }} />
-          <CreateReferral sendReferral={(data) => setReferrals([...referrals, data])} />
-          <ReferralList referrals={referrals} />
+          <ReferralsCreateReferral sendReferral={(data) => setReferrals([...referrals, data])} />
+          <ReferralsList referrals={referrals} />
         </Section>
       </Grid>
 

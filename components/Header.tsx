@@ -6,7 +6,7 @@ import CartNavigationIcon from './CartNavigationIcon';
 import Search from './Search';
 import UserLogin from './UserLogin';
 
-export const PageHeader = () => {
+export const Header = () => {
   const { user } = useAuth0();
 
   return (
@@ -57,4 +57,4 @@ export const PageHeader = () => {
   );
 };
 
-export default PageHeader;
+export default Header;
