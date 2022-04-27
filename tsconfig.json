@@ -14,11 +14,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "./src",
-    "paths": {
-      "test-utils": ["test/test-utils"]
-    }
+    "baseUrl": "./src"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "cypress", "coverage", ".github"],
+  "exclude": ["node_modules", "cypress", "coverage", ".github", "test", ".storybook", "public", ".takeshape", ".next"],
 }

@@ -1,9 +1,8 @@
 import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
+import { TakeshapeProvider } from 'lib/takeshape';
+import theme from 'lib/theme';
 import { ThemeProvider } from 'theme-ui';
-import { CartProvider } from '../src/lib/cart';
-import { TakeshapeProvider } from '../src/lib/takeshape';
-import theme from '../src/lib/theme';
 
 const mockUseRouterReturnValue = {
   query: {},
@@ -29,9 +28,7 @@ const AllTheProviders = ({ children }) => {
   return (
     <MockedApolloProvider>
       <TakeshapeProvider>
-        <CartProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </CartProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </TakeshapeProvider>
     </MockedApolloProvider>
   );
