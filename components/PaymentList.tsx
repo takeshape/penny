@@ -1,7 +1,11 @@
 import { Box, Flex, Paragraph } from 'theme-ui';
+import type { Stripe_PaymentIntent } from 'types/takeshape';
 import PaymentItemCard from './PaymentItem';
+export interface PaymentListProps {
+  payments: Stripe_PaymentIntent[];
+}
 
-export const PaymentList = ({ payments }) => {
+export const PaymentList = ({ payments }: PaymentListProps) => {
   if (!payments || !payments.length) {
     return <Paragraph>No payments to display!</Paragraph>;
   }

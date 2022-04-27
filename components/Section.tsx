@@ -1,6 +1,7 @@
+import type { BoxProps } from 'theme-ui';
 import { Box } from 'theme-ui';
 
-export const PageSection = ({ children, ...props }) => {
+export const Section = ({ children, ...props }: BoxProps) => {
   return (
     <Box
       as="section"
@@ -14,4 +15,4 @@ export const PageSection = ({ children, ...props }) => {
   );
 };
 
-export default PageSection;
+export default Section;

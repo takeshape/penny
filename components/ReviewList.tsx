@@ -9,8 +9,7 @@ export interface ReviewListProps {
   stats: ReviewsIo_ListProductReviewsResponseStatsProperty | null;
 }
 
-export const ReviewList = (props: ReviewListProps) => {
-  const { reviews, stats } = props;
+export const ReviewList = ({ reviews, stats }: ReviewListProps) => {
   const { theme } = useThemeUI();
   if (!reviews?.length) return null;
   return (

@@ -1,10 +1,14 @@
 import NextLink from 'next/link';
 import { Box, Card, Flex, Heading, Link } from 'theme-ui';
-import AddToCart from './ProductAddToCart';
+import type { Stripe_Product } from 'types/takeshape';
+import ProductAddToCart from './ProductAddToCart';
 import ProductImage from './ProductImage';
+export interface ProductCardProps {
+  product: Stripe_Product;
+}
 
-export const ProductCard = ({ product }) => {
-  const { name, prices, description, images } = product;
+export const ProductCard = ({ product }: ProductCardProps) => {
+  const { name, prices, images } = product;
 
   if (!prices.length) {
     return null;
@@ -26,7 +30,7 @@ export const ProductCard = ({ product }) => {
               <Link sx={{ color: 'inherit', ':hover': { color: 'primary' }, textDecoration: 'none' }}>{name}</Link>
             </NextLink>
           </Heading>
-          <AddToCart product={product} />
+          <ProductAddToCart product={product} />
         </Flex>
       </Flex>
     </Card>

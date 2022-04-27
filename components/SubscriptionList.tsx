@@ -1,13 +1,18 @@
 import { Box, Paragraph } from 'theme-ui';
-import SubscriptionItemCard from './SubscriptionItemCard';
+import type { Stripe_Subscription } from 'types/takeshape';
+import SubscriptionItem from './SubscriptionItem';
 
-export const SubscriptionList = ({ subscriptions }) => {
+export interface SubscriptionListProps {
+  subscriptions: Stripe_Subscription[];
+}
+
+export const SubscriptionList = ({ subscriptions }: SubscriptionListProps) => {
   if (!subscriptions || !subscriptions.length) return <Paragraph>No subscriptions to display!</Paragraph>;
   const listItems = subscriptions.map(
     (subscription) =>
       subscription.items?.data?.[0] && (
         <Box as="li" key={subscription.id} sx={{ marginBottom: '1rem' }}>
-          <SubscriptionItemCard subscription={subscription} subscriptionItem={subscription.items.data[0]} />
+          <SubscriptionItem subscription={subscription} subscriptionItem={subscription.items.data[0]} />
         </Box>
       )
   );

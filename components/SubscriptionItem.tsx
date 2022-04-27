@@ -3,10 +3,16 @@ import { locale } from 'lib/config';
 import { DeleteMySubscription, GetMyPurchasesData } from 'lib/queries';
 import { formatPrice } from 'lib/utils/text';
 import { Alert, Box, Card, Flex, Heading, Paragraph, Text } from 'theme-ui';
+import type { Stripe_Subscription, Stripe_SubscriptionItem } from 'types/takeshape';
 import ProductImage from './ProductImage';
 import SubmitButton from './SubmitButton';
 
-export const SubscriptionItemCard = ({ subscription, subscriptionItem }) => {
+export interface SubscriptionItemProps {
+  subscription: Stripe_Subscription;
+  subscriptionItem: Stripe_SubscriptionItem;
+}
+
+export const SubscriptionItem = ({ subscription, subscriptionItem }: SubscriptionItemProps) => {
   const [setCancelPayload, { error: cancelError, loading: cancelLoading }] = useMutation(DeleteMySubscription, {
     refetchQueries: [GetMyPurchasesData],
     awaitRefetchQueries: true
@@ -37,7 +43,7 @@ export const SubscriptionItemCard = ({ subscription, subscriptionItem }) => {
           <Heading>{product.name}</Heading>
           <Paragraph>
             <Text>
-              {formatPrice(price.currency, price.unitAmount)} / {price.recurring?.interval || ''}
+              {formatPrice(price.currency, price.unit_amount)} / {price.recurring?.interval || ''}
             </Text>
           </Paragraph>
         </Box>
@@ -62,4 +68,4 @@ export const SubscriptionItemCard = ({ subscription, subscriptionItem }) => {
   );
 };
 
-export default SubscriptionItemCard;
+export default SubscriptionItem;

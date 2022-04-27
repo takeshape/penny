@@ -1,5 +1,10 @@
 import { Box, Grid, Paragraph } from 'theme-ui';
+import type { Stripe_Product } from 'types/takeshape';
 import ProductCard from './ProductCard';
+
+export interface ProductGridProps {
+  products: Stripe_Product[];
+}
 
 export const ProductGrid = ({ products }) => {
   return (

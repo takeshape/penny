@@ -5,9 +5,14 @@ import { buildImageUrl } from 'lib/utils/images';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Textarea } from 'theme-ui';
+import type { Profile } from 'types/takeshape';
 import SubmitButton from './SubmitButton';
 
-const ProfileAvatarUploadForm = ({ profile }) => {
+interface ProfileAvatarUploadFormProps {
+  profile: Profile;
+}
+
+const ProfileAvatarUploadForm = ({ profile }: ProfileAvatarUploadFormProps) => {
   const [setAssetsPayload, { data: assetsData }] = useMutation(UploadAssets);
   const [setProfilePayload, { loading: isUpsertingProfile }] = useMutation(UpsertMyProfile, {
     refetchQueries: [GetMyProfile],
@@ -88,7 +93,11 @@ const ProfileAvatarUploadForm = ({ profile }) => {
   );
 };
 
-const ProfileTextForm = ({ profile }) => {
+interface ProfileTextFormProps {
+  profile: Profile;
+}
+
+const ProfileTextForm = ({ profile }: ProfileTextFormProps) => {
   const [setProfilePayload, { loading }] = useMutation(UpsertMyProfile, {
     refetchQueries: [GetMyProfile],
     awaitRefetchQueries: true
@@ -122,7 +131,11 @@ const ProfileTextForm = ({ profile }) => {
   );
 };
 
-export const ProfileForm = ({ profile }) => {
+export interface ProfileFormProps {
+  profile: Profile;
+}
+
+export const ProfileForm = ({ profile }: ProfileFormProps) => {
   return (
     <Grid
       sx={{

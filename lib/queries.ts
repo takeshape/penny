@@ -24,11 +24,11 @@ export const GetStripeProducts = gql`
         images
         prices {
           id
-          unitAmount: unit_amount
+          unit_amount
           currency
           recurring {
             interval
-            intervalCount: interval_count
+            interval_count
           }
         }
       }
@@ -48,11 +48,11 @@ export const SearchStripeProducts = gql`
           images
           prices {
             id
-            unitAmount: unit_amount
+            unit_amount
             currency
             recurring {
               interval
-              intervalCount: interval_count
+              interval_count
             }
           }
         }
@@ -79,11 +79,11 @@ export const GetProduct = gql`
       images
       prices {
         id
-        unitAmount: unit_amount
+        unit_amount
         currency
         recurring {
           interval
-          intervalCount: interval_count
+          interval_count
         }
       }
     }
@@ -273,7 +273,7 @@ export const GetMyPurchasesData = gql`
           id
           price {
             currency
-            unitAmount: unit_amount
+            unit_amount
             product {
               id
               name

@@ -6,10 +6,13 @@ export interface ProductImageProps {
   maxHeight?: string;
 }
 
-const ProductImage: React.FC<ProductImageProps> = (props) => {
-  const { alt = '', images, maxHeight } = props;
+const ProductImage = ({ alt = '', images, maxHeight }: ProductImageProps) => {
   const src = images?.[0];
-  if (!src) return null;
+
+  if (!src) {
+    return null;
+  }
+
   return (
     <Image
       alt={alt}

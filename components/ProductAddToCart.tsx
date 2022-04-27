@@ -1,17 +1,17 @@
 import { useCart } from 'lib/cart';
-import { pluralizeText } from 'lib/utils/text';
 import orderBy from 'lodash/orderBy';
 import { useEffect, useState } from 'react';
-import { Box, Button, Flex, Input, Label, Radio, Select } from 'theme-ui';
+import { Box, Button, Flex, Label, Radio } from 'theme-ui';
 import { Stripe_Product } from 'types/takeshape';
 import ProductPrice from './ProductPrice';
+import ProductQuantity from './ProductQuantity';
 
 const showCartTimeout = 3000;
 const oneTimePurchase = 'one-time';
 const recurringPurchase = 'recurring';
 const intervalOrderMap = ['day', 'week', 'month', 'year'];
 
-export const ProductPaymentToggle = ({ purchaseType, onChange }) => {
+const ProductPaymentToggle = ({ purchaseType, onChange }) => {
   return (
     <Box sx={{ margin: '1rem 0' }}>
       <Label sx={{ display: 'flex', alignItems: 'center', marginBottom: '.5rem', fontSize: '1em' }}>
@@ -23,36 +23,6 @@ export const ProductPaymentToggle = ({ purchaseType, onChange }) => {
         Subscribe &amp; Save!
       </Label>
     </Box>
-  );
-};
-
-export const Subscription = ({ id, currentPrice, recurringPayments, onChange }) => {
-  const inputId = `${id}-subscription`;
-  return (
-    <Box sx={{ margin: '1rem 0' }}>
-      <Label variant="styles.inputLabel" htmlFor={inputId}>
-        Subscription
-      </Label>
-      <Select id={inputId} value={currentPrice.id} onChange={onChange}>
-        {recurringPayments.map(({ id, recurring: { interval, intervalCount } }) => (
-          <option key={id} value={id}>
-            Every {pluralizeText(intervalCount, interval, `${interval}s`)}
-          </option>
-        ))}
-      </Select>
-    </Box>
-  );
-};
-
-export const Quantity = ({ id, value, onChange }) => {
-  const inputId = `${id}-quantity`;
-  return (
-    <Flex variant="styles.product.quantity" sx={{ flexWrap: 'wrap' }}>
-      <Label variant="styles.inputLabel" htmlFor={inputId}>
-        Quantity
-      </Label>
-      <Input id={inputId} type="number" min={1} value={value ?? 1} onChange={onChange} />
-    </Flex>
   );
 };
 
@@ -137,7 +107,11 @@ function useAddToCart(product: Stripe_Product) {
   };
 }
 
-const AddToCart: React.FC<{ product: Stripe_Product }> = ({ product }) => {
+export interface ProductAddToCartProps {
+  product: Stripe_Product;
+}
+
+const ProductAddToCart = ({ product }: ProductAddToCartProps) => {
   const {
     price,
     quantity,
@@ -145,7 +119,6 @@ const AddToCart: React.FC<{ product: Stripe_Product }> = ({ product }) => {
     oneTimePayment,
     recurringPayments,
     handleUpdatePurchaseType,
-    handleUpdateRecurring,
     handleUpdateQuantity,
     handleAddToCart
   } = useAddToCart(product);
@@ -156,7 +129,7 @@ const AddToCart: React.FC<{ product: Stripe_Product }> = ({ product }) => {
       ) : null}
 
       <Flex sx={{ alignItems: 'flex-end', gap: '1rem' }}>
-        <Quantity id={product.id} value={quantity} onChange={handleUpdateQuantity} />
+        <ProductQuantity id={product.id} value={quantity} onChange={handleUpdateQuantity} />
         <ProductPrice quantity={quantity} price={price} />
       </Flex>
 
@@ -165,4 +138,4 @@ const AddToCart: React.FC<{ product: Stripe_Product }> = ({ product }) => {
   );
 };
 
-export default AddToCart;
+export default ProductAddToCart;

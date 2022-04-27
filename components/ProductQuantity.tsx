@@ -1,6 +1,13 @@
+import type { ChangeEventHandler } from 'react';
 import { Flex, Input, Label } from 'theme-ui';
 
-export const ProductQuantity = ({ id, value, onChange }) => {
+export interface ProductQuantityProps {
+  id: string;
+  value: number;
+  onChange: ChangeEventHandler;
+}
+
+export const ProductQuantity = ({ id, value, onChange }: ProductQuantityProps) => {
   const inputId = `${id}-quantity`;
   return (
     <Flex variant="styles.product.quantity" sx={{ flexWrap: 'wrap' }}>
