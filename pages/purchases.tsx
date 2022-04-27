@@ -1,9 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { Page, Section } from 'components/layout';
-import LoyaltyCard from 'components/loyalty-card';
+import LoyaltyCard from 'components/LoyaltyCard';
+import Page from 'components/Page';
 import { PaymentList } from 'components/payments';
-import { SubscriptionList } from 'components/subscriptions';
+import Section from 'components/Section';
+import SubscriptionList from 'components/SubscriptionList';
 import type { GetMyPurchasesDataResponse } from 'lib/queries';
 import { GetMyPurchasesData } from 'lib/queries';
 import { useProfile } from 'lib/takeshape';

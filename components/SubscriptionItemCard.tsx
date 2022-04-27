@@ -3,8 +3,8 @@ import { locale } from 'lib/config';
 import { DeleteMySubscription, GetMyPurchasesData } from 'lib/queries';
 import { formatPrice } from 'lib/utils/text';
 import { Alert, Box, Card, Flex, Heading, Paragraph, Text } from 'theme-ui';
-import { SubmitButton } from './buttons';
 import { ProductImage } from './product';
+import SubmitButton from './SubmitButton';
 
 export const SubscriptionItemCard = ({ subscription, subscriptionItem }) => {
   const [setCancelPayload, { error: cancelError, loading: cancelLoading }] = useMutation(DeleteMySubscription, {
@@ -62,19 +62,4 @@ export const SubscriptionItemCard = ({ subscription, subscriptionItem }) => {
   );
 };
 
-export const SubscriptionList = ({ subscriptions }) => {
-  if (!subscriptions || !subscriptions.length) return <Paragraph>No subscriptions to display!</Paragraph>;
-  const listItems = subscriptions.map(
-    (subscription) =>
-      subscription.items?.data?.[0] && (
-        <Box as="li" key={subscription.id} sx={{ marginBottom: '1rem' }}>
-          <SubscriptionItemCard subscription={subscription} subscriptionItem={subscription.items.data[0]} />
-        </Box>
-      )
-  );
-  return (
-    <Box as="ul" sx={{ listStyleType: 'none', padding: 0 }}>
-      {listItems}
-    </Box>
-  );
-};
+export default SubscriptionItemCard;

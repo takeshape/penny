@@ -1,6 +1,6 @@
-import { Page } from 'components/layout';
+import Page from 'components/Page';
 import { ProductAddToCart, ProductImage } from 'components/product';
-import { ReviewList } from 'components/reviews';
+import ReviewList from 'components/ReviewList';
 import { createApolloClient } from 'lib/apollo';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'lib/queries';

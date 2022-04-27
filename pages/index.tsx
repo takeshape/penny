@@ -1,4 +1,4 @@
-import { Page } from 'components/layout';
+import Page from 'components/Page';
 import ProductGrid from 'components/product/grid';
 import { createApolloClient } from 'lib/apollo';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';

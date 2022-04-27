@@ -9,3 +9,5 @@ export const SubmitButton = ({ isSubmitting, text, ...props }) => {
     </Button>
   );
 };
+
+export default SubmitButton;

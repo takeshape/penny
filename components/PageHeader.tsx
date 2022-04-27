@@ -1,14 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import Head from 'next/head';
 import Link from 'next/link';
 import { BsPersonCircle as AccountIcon, BsQuestionSquare, BsReceiptCutoff } from 'react-icons/bs';
-import { Box, Container, Divider, Flex, IconButton, Link as ThemeLink, NavLink, Text } from 'theme-ui';
-import { CartIcon, CartSidebar } from './cart';
-import Notifications from './notifications';
-import { Search } from './search';
-import { Login } from './user';
+import { Box, Container, Flex, IconButton, NavLink } from 'theme-ui';
+import CartNavigationIcon from './CartNavigationIcon';
+import Search from './Search';
+import UserLogin from './UserLogin';
 
-export const Header = () => {
+export const PageHeader = () => {
   const { user } = useAuth0();
 
   return (
@@ -30,7 +28,7 @@ export const Header = () => {
           <Search />
         </Box>
         <Box variant="links.nav">
-          <CartIcon />
+          <CartNavigationIcon />
         </Box>
         {user ? (
           <>
@@ -51,7 +49,7 @@ export const Header = () => {
           </>
         ) : (
           <Box variant="links.nav">
-            <Login />
+            <UserLogin />
           </Box>
         )}
       </Flex>
@@ -59,56 +57,4 @@ export const Header = () => {
   );
 };
 
-export const Footer = () => {
-  return (
-    <Container as="footer" variant="layout.footer" sx={{ width: '100%', textAlign: 'center', padding: '8rem 0' }}>
-      <Text variant="smallHeading">
-        Made possible with{' '}
-        <ThemeLink
-          variant="styles.shopName"
-          sx={{ color: 'inherit', textDecoration: 'none' }}
-          href="https://www.takeshape.io"
-        >
-          <span>Take</span>Shape
-        </ThemeLink>
-      </Text>
-    </Container>
-  );
-};
-
-export const Section = ({ children, ...props }) => {
-  return (
-    <Box
-      as="section"
-      sx={{
-        mb: 4
-      }}
-      {...props}
-    >
-      {children}
-    </Box>
-  );
-};
-
-export const Page = ({ children }) => {
-  return (
-    <Flex variant="layout.page">
-      <Head>
-        <title>TakeShape E-commerce Kitchen Sink Starter</title>
-      </Head>
-
-      <Header />
-      <Divider />
-      <Container as="main" variant="layout.main">
-        {children}
-      </Container>
-
-      <CartSidebar />
-      <Notifications />
-
-      <Footer />
-    </Flex>
-  );
-};
-
-export default Page;
+export default PageHeader;

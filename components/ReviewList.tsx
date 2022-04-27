@@ -1,41 +1,15 @@
 import { getColor } from '@theme-ui/color';
 import StarRatings from 'react-star-ratings';
 import { Box, Divider, Flex, Text, useThemeUI } from 'theme-ui';
-import { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
-
-export const Review: React.FC<ReviewsIo_ProductReview> = (props) => {
-  const { title, review, rating, timeago, date_created } = props;
-  const { theme } = useThemeUI();
-  return (
-    <Box>
-      <Flex as="header" sx={{ alignItems: 'baseline', gap: '1rem' }}>
-        <Box sx={{ marginBottom: '.75em' }}>
-          <Text as="h3" sx={{ marginBottom: 0 }}>
-            {title}
-          </Text>
-          <Text as="time" title={date_created} sx={{ fontSize: '.8em', lineHeight: 1, opacity: 0.7 }}>
-            {timeago}
-          </Text>
-        </Box>
-        <StarRatings
-          rating={rating}
-          numberOfStars={5}
-          starDimension="14px"
-          starSpacing="1px"
-          starRatedColor={getColor(theme, 'primary')}
-        />
-      </Flex>
-      <Text as="p">{review}</Text>
-    </Box>
-  );
-};
+import type { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
+import ReviewItem from './ReviewItem';
 
 export interface ReviewListProps {
   reviews: ReviewsIo_ProductReview[] | null;
   stats: ReviewsIo_ListProductReviewsResponseStatsProperty | null;
 }
 
-export const ReviewList: React.FC<ReviewListProps> = (props) => {
+export const ReviewList = (props: ReviewListProps) => {
   const { reviews, stats } = props;
   const { theme } = useThemeUI();
   if (!reviews?.length) return null;
@@ -65,10 +39,12 @@ export const ReviewList: React.FC<ReviewListProps> = (props) => {
         {reviews.map((review, index) => (
           <Box as="li" key={`review-${index}`}>
             <Divider sx={{ margin: '1rem 0' }} />
-            <Review {...review} />
+            <ReviewItem {...review} />
           </Box>
         ))}
       </Box>
     </Box>
   );
 };
+
+export default ReviewList;

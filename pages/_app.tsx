@@ -1,5 +1,5 @@
 import { Auth0Provider } from '@auth0/auth0-react';
-import Styles from 'components/styles';
+import GlobalStyles from 'components/GlobalStyles';
 import { AuthorizedApolloProvider } from 'lib/apollo';
 import { CartProvider } from 'lib/cart';
 import { audience, clientId, domain, scope, takeshapeApiUrl } from 'lib/config';
@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }) {
         <TakeshapeProvider>
           <CartProvider>
             <ThemeProvider theme={theme}>
-              <Styles />
+              <GlobalStyles />
               <Component {...pageProps} />
             </ThemeProvider>
           </CartProvider>

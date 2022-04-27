@@ -3,8 +3,9 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { NewsletterToggle } from 'components/account/newsletter-toggle';
 import { CreateReferral, Referral, ReferralList } from 'components/account/referrals';
 import { CustomerForm, ProfileForm } from 'components/forms';
-import { Page, Section } from 'components/layout';
-import { Logout } from 'components/user';
+import Page from 'components/Page';
+import Section from 'components/Section';
+import UserLogout from 'components/UserLogout';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'lib/queries';
 import { useProfile } from 'lib/takeshape';
 import type { NextPage } from 'next';
@@ -36,7 +37,7 @@ const AccountPage: NextPage = () => {
         <Heading as="h1" variant="styles.pageTitle">
           Account
         </Heading>
-        <Logout />
+        <UserLogout />
       </Flex>
 
       <Section sx={{ marginTop: '4rem' }}>

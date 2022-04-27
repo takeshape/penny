@@ -6,7 +6,7 @@ import { buildImageUrl } from 'lib/utils/images';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Select, Textarea } from 'theme-ui';
-import { SubmitButton } from './buttons';
+import SubmitButton from './SubmitButton';
 
 export const CustomerForm = ({ customer }) => {
   const [setCustomerPayload, { loading }] = useMutation(UpsertMyCustomer, {
