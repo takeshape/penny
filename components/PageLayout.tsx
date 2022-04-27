@@ -1,3 +1,4 @@
+import { CartProvider } from 'lib/cart';
 import type { NextSeoProps } from 'next-seo';
 import type { PropsWithChildren } from 'react';
 import { Container, Divider, Flex } from 'theme-ui';
@@ -9,20 +10,22 @@ import Seo from './Seo';
 
 export const PageLayout = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoProps }>) => {
   return (
-    <Flex variant="layout.page">
-      <Seo {...seo} />
+    <CartProvider>
+      <Flex variant="layout.page">
+        <Seo {...seo} />
 
-      <Header />
-      <Divider />
-      <Container as="main" variant="layout.main">
-        {children}
-      </Container>
+        <Header />
+        <Divider />
+        <Container as="main" variant="layout.main">
+          {children}
+        </Container>
 
-      <CartSidebar />
-      <Notifications />
+        <CartSidebar />
+        <Notifications />
 
-      <Footer />
-    </Flex>
+        <Footer />
+      </Flex>
+    </CartProvider>
   );
 };
 

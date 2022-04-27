@@ -1,7 +1,6 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import GlobalStyles from 'components/GlobalStyles';
 import { AuthorizedApolloProvider } from 'lib/apollo';
-import { CartProvider } from 'lib/cart';
 import { audience, clientId, domain, scope, seo, takeshapeApiUrl } from 'lib/config';
 import { TakeshapeProvider } from 'lib/takeshape';
 import theme from 'lib/theme';
@@ -26,13 +25,11 @@ export default function App({ Component, pageProps }) {
     >
       <AuthorizedApolloProvider uri={takeshapeApiUrl}>
         <TakeshapeProvider>
-          <CartProvider>
-            <ThemeProvider theme={theme}>
-              <DefaultSeo {...seo} />
-              <GlobalStyles />
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </CartProvider>
+          <ThemeProvider theme={theme}>
+            <DefaultSeo {...seo} />
+            <GlobalStyles />
+            <Component {...pageProps} />
+          </ThemeProvider>
         </TakeshapeProvider>
       </AuthorizedApolloProvider>
     </Auth0Provider>

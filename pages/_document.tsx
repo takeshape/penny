@@ -17,10 +17,6 @@ export default class CustomDocument extends Document {
         <Head>
           <link rel="preload" href="/fonts/roboto.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
           <link rel="preload" href="/fonts/roboto-mono.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap"
-            rel="stylesheet"
-          ></link>
         </Head>
         <body>
           <Main />
