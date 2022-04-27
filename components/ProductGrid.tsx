@@ -1,5 +1,5 @@
 import { Box, Grid, Paragraph } from 'theme-ui';
-import ProductCard from './card';
+import ProductCard from './ProductCard';
 
 export const ProductGrid = ({ products }) => {
   return (

@@ -3,7 +3,7 @@ import { locale } from 'lib/config';
 import { DeleteMySubscription, GetMyPurchasesData } from 'lib/queries';
 import { formatPrice } from 'lib/utils/text';
 import { Alert, Box, Card, Flex, Heading, Paragraph, Text } from 'theme-ui';
-import { ProductImage } from './product';
+import ProductImage from './ProductImage';
 import SubmitButton from './SubmitButton';
 
 export const SubscriptionItemCard = ({ subscription, subscriptionItem }) => {

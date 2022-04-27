@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import LoyaltyCard from 'components/LoyaltyCard';
 import Page from 'components/Page';
-import { PaymentList } from 'components/payments';
+import PaymentList from 'components/PaymentList';
 import Section from 'components/Section';
 import SubscriptionList from 'components/SubscriptionList';
 import type { GetMyPurchasesDataResponse } from 'lib/queries';

@@ -4,7 +4,7 @@ import { SearchStripeProducts } from 'lib/queries';
 import NextLink from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AspectImage, Box, Flex, Input, Link, Text } from 'theme-ui';
-import { ProductPrice } from './product/add-to-cart';
+import ProductPrice from './ProductPrice';
 
 export const Search = () => {
   const searchRef = useRef(null);

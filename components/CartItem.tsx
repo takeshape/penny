@@ -1,7 +1,8 @@
 import { FiTrash2 } from 'react-icons/fi';
 import { Box, Flex, IconButton } from 'theme-ui';
-import { ProductPrice, Quantity } from './product/add-to-cart';
-import ProductImage from './product/image';
+import ProductImage from './ProductImage';
+import ProductPrice from './ProductPrice';
+import ProductQuantity from './ProductQuantity';
 
 const CartItem = ({ product, onChangeQuantity, onClickRemove }) => {
   return (
@@ -15,7 +16,7 @@ const CartItem = ({ product, onChangeQuantity, onClickRemove }) => {
             <strong>{product.name}</strong>
           </div>
           <Flex sx={{ gap: '1rem', alignItems: 'flex-end', margin: '1rem 0' }}>
-            <Quantity id={product.id} value={product.quantity} onChange={onChangeQuantity} />
+            <ProductQuantity id={product.id} value={product.quantity} onChange={onChangeQuantity} />
             <Box sx={{ fontSize: '.8em' }}>
               <ProductPrice price={product.price} quantity={product.quantity} />
             </Box>

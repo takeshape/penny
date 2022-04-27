@@ -1,5 +1,5 @@
 import Page from 'components/Page';
-import ProductGrid from 'components/product/grid';
+import ProductGrid from 'components/ProductGrid';
 import { createApolloClient } from 'lib/apollo';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
 import { GetStripeProducts } from 'lib/queries';
