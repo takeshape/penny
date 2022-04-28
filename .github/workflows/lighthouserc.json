@@ -1,0 +1,9 @@
+{
+  "ci": {
+    "collect": {
+      "settings": {
+        "configPath": "./.github/workflows/lighthouse-config.js"
+      }
+    }
+  }
+}

@@ -5,13 +5,20 @@ on:
 
 jobs:
   lighthouse-run:
-    # if: github.event.deployment_status.state == 'success'
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
+      # - name: Dump context
+      #   uses: crazy-max/ghaction-dump-context@v1
 
-      - name: Dump context
-        uses: crazy-max/ghaction-dump-context@v1
+      - uses: actions/checkout@v3
+
+      - name: Get PR number
+        id: pr
+        run: |
+          number=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
+          echo "::set-output name=number::$number"
+
       # - name: Static Web App - get preview URL
       #   id: static_web_app_preview_url
       #   uses: azure/CLI@v1
@@ -48,37 +55,40 @@ jobs:
       #     timeout: 600000
       #     interval: 1000
 
-      # - name: Audit URLs using Lighthouse
-      #   id: lighthouse_audit
-      #   uses: treosh/lighthouse-ci-action@v8
-      #   with:
-      #     urls: |
-      #       ${{ steps.static_web_app_preview_url.outputs.PREVIEW_URL }}
-      #     configPath: ./.github/workflows/lighthousesrc.json
-      #     uploadArtifacts: true
-      #     temporaryPublicStorage: true
-      #     runs: 5
+      - name: Audit URLs using Lighthouse
+        if: steps.pr.outputs.number != ''
+        id: lighthouse_audit
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            ${{ github.event.deployment_status.target_url }}
+          configPath: ./.github/workflows/lighthousesrc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 5
 
-      # - name: Format lighthouse score
-      #   id: format_lighthouse_score
-      #   uses: actions/github-script@v5
-      #   with:
-      #     script: |
-      #       const lighthouseCommentMaker = require('./.github/workflows/lighthouseCommentMaker.js');
+      - name: Format lighthouse score
+        if: steps.pr.outputs.number != ''
+        id: format_lighthouse_score
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lighthouseCommentMaker = require('./.github/workflows/lighthouseCommentMaker.js');
 
-      #       const lighthouseOutputs = {
-      #         manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
-      #         links: ${{ steps.lighthouse_audit.outputs.links }}
-      #       };
+            const lighthouseOutputs = {
+              manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
+              links: ${{ steps.lighthouse_audit.outputs.links }}
+            };
 
-      #       const comment = lighthouseCommentMaker({ lighthouseOutputs });
-      #       core.setOutput("comment", comment);
+            const comment = lighthouseCommentMaker({ lighthouseOutputs });
+            core.setOutput("comment", comment);
 
-      # - name: Add Lighthouse stats as comment
-      #   id: comment_to_pr
-      #   uses: marocchino/sticky-pull-request-comment@v2.0.0
-      #   with:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     number: ${{ github.event.pull_request.number }}
-      #     header: lighthouse
-      #     message: ${{ steps.format_lighthouse_score.outputs.comment }}
+      - name: Add Lighthouse stats as comment
+        if: steps.pr.outputs.number != ''
+        id: comment_to_pr
+        uses: marocchino/sticky-pull-request-comment@v2.0.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.pr.outputs.number }}
+          header: lighthouse
+          message: ${{ steps.format_lighthouse_score.outputs.comment }}
