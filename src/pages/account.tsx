@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Section from 'components/Section';
-import CustomerForm from 'features/CustomerForm';
+import CustomerForm from 'features/account/CustomerForm';
+import NewsletterToggle from 'features/account/NewsletterToggle';
+import ProfileForm from 'features/account/ProfileForm';
 import PageLayout from 'features/layout/Page';
-import NewsletterToggle from 'features/NewsletterToggle';
-import ProfileForm from 'features/ProfileForm';
 import ReferralsCreateReferral from 'features/referrals/CreateReferral';
 import ReferralsList from 'features/referrals/ReferralList';
 import type { ReferralListItemProps } from 'features/referrals/ReferralListItem';
