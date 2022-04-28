@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import type { UpsertMyProfileResponse } from 'lib/queries';
 import { GetMyProfile, UpsertMyProfile } from 'lib/queries';
 import { useEffect } from 'react';
-import { TakeshapeContext } from './context';
+import TakeshapeContext from './TakeshapeContext';
 
 // Ensure a profile is created for the Auth0 user
 export const TakeshapeProvider = ({ children }) => {

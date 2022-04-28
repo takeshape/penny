@@ -10,9 +10,9 @@ import type { ReferralsListItemProps } from 'components/ReferralsListItem';
 import Section from 'components/Section';
 import UserLogout from 'components/UserLogout';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'lib/queries';
-import { useProfile } from 'lib/takeshape';
 import type { NextPage } from 'next';
 import { useState } from 'react';
+import useProfile from 'services/takeshape/useProfile';
 import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
 const referralsFixtureData: ReferralsListItemProps[] = [

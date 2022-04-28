@@ -7,8 +7,8 @@ import Section from 'components/Section';
 import SubscriptionList from 'components/SubscriptionList';
 import type { GetMyPurchasesDataResponse } from 'lib/queries';
 import { GetMyPurchasesData } from 'lib/queries';
-import { useProfile } from 'lib/takeshape';
 import type { NextPage } from 'next';
+import useProfile from 'services/takeshape/useProfile';
 import { Alert, Box, Container, Divider, Flex, Heading, Spinner } from 'theme-ui';
 
 const PurchasesPage: NextPage = () => {

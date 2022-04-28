@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
-import useCountries from 'lib/countries/use-countries';
 import { GetMyProfile, UpsertMyCustomer } from 'lib/queries';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import useCountries from 'services/countries/useCountries';
 import { Box, Grid, Input, Label, Select } from 'theme-ui';
 import type { Stripe_Customer } from 'types/takeshape';
 import SubmitButton from './SubmitButton';

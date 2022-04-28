@@ -1,6 +1,6 @@
-import { CartProvider } from 'lib/cart';
 import type { NextSeoProps } from 'next-seo';
 import type { PropsWithChildren } from 'react';
+import CartProvider from 'services/cart/CartProvider';
 import { Container, Divider, Flex } from 'theme-ui';
 import CartSidebar from './CartSidebar';
 import Footer from './Footer';

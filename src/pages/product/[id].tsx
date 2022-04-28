@@ -2,12 +2,12 @@ import PageLayout from 'components/PageLayout';
 import ProductAddToCart from 'components/ProductAddToCart';
 import ProductImage from 'components/ProductImage';
 import ReviewList from 'components/ReviewList';
-import { createApolloClient } from 'lib/apollo';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'lib/queries';
 import { getSingle } from 'lib/utils/types';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { createApolloClient } from 'services/apollo/client';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type {
   ReviewsIo_ListProductReviewsResponseStatsProperty,

@@ -1,11 +1,11 @@
 import { useApolloClient } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
-import { useCart } from 'lib/cart';
 import { CreateMyCheckoutSession } from 'lib/queries';
-import { useProfile } from 'lib/takeshape';
 import { getCheckoutPayload } from 'lib/utils/checkout';
 import getStripe from 'lib/utils/stripe';
 import { useEffect } from 'react';
+import useCart from 'services/cart/useCart';
+import useProfile from 'services/takeshape/useProfile';
 import { Container, Spinner } from 'theme-ui';
 
 // After a successful login, redirect here to automatically checkout with the cart

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { TakeshapeContext } from './context';
+import TakeshapeContext from './TakeshapeContext';
 
 export const useProfile = () => {
   return useContext(TakeshapeContext);

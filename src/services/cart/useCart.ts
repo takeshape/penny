@@ -10,7 +10,8 @@ import {
   toggleCart,
   updateCartItem
 } from './actions';
-import { CartDispatchContext, CartStateContext } from './context';
+import CartDispatchContext from './CartDispatchContext';
+import CartStateContext from './CartStateContext';
 
 export const useCart = () => {
   const state = useContext(CartStateContext);

@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useCart } from 'lib/cart';
 import { CreateMyCheckoutSession } from 'lib/queries';
 import { getCheckoutPayload } from 'lib/utils/checkout';
 import getStripe from 'lib/utils/stripe';
 import { formatPrice } from 'lib/utils/text';
 import { useCallback, useEffect, useRef } from 'react';
+import useCart from 'services/cart/useCart';
 import { Box, Button, Close, Flex, Heading, Text } from 'theme-ui';
 import CartItem from './CartItem';
 

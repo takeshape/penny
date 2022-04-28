@@ -1,5 +1,5 @@
-import { useCart } from 'lib/cart';
 import { useEffect, useState } from 'react';
+import useCart from 'services/cart/useCart';
 import { Alert, Box, Close } from 'theme-ui';
 
 const Notifications = () => {

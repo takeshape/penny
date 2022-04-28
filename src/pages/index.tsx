@@ -1,9 +1,9 @@
 import PageLayout from 'components/PageLayout';
 import ProductGrid from 'components/ProductGrid';
-import { createApolloClient } from 'lib/apollo';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
 import { GetStripeProducts } from 'lib/queries';
 import type { InferGetStaticPropsType } from 'next';
+import { createApolloClient } from 'services/apollo/client';
 import { Alert, Container, Heading, Spinner } from 'theme-ui';
 
 const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {

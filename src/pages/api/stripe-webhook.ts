@@ -1,4 +1,3 @@
-import { createApolloClient } from 'lib/apollo/client';
 import {
   shipFrom,
   siteUrl,
@@ -10,6 +9,7 @@ import {
 import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'lib/queries';
 import { buffer } from 'micro';
 import type { NextApiHandler, NextConfig } from 'next';
+import { createApolloClient } from 'services/apollo/client';
 import Stripe from 'stripe';
 import type { SetRequired } from 'type-fest';
 import type {

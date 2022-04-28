@@ -1,14 +1,16 @@
 import { useRouter } from 'next/router';
+import type { PropsWithChildren } from 'react';
 import { useEffect, useReducer } from 'react';
+import useLocalStorage from 'services/utils/useLocalStorage';
 import { clearCart, setCartIsReady, setCheckoutResult } from './actions';
-import { CartDispatchContext, CartStateContext } from './context';
+import CartDispatchContext from './CartDispatchContext';
+import CartStateContext from './CartStateContext';
 import reducer, { initialState } from './reducer';
-import useLocalStorage from './use-local-storage';
 
 const localStorageKey = 'cartItems';
 const stripeCheckoutActionSuccess = 'success';
 
-export const CartProvider = ({ children }) => {
+export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const [persistedCartItems, setPersistedCartItems] = useLocalStorage(localStorageKey, []);
 
   const {

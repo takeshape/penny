@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { useUpload } from 'lib/hooks/use-upload';
 import { GetMyProfile, UploadAssets, UpsertMyProfile } from 'lib/queries';
 import { buildImageUrl } from 'lib/utils/images';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useUpload from 'services/utils/useUpload';
 import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Textarea } from 'theme-ui';
 import type { Profile } from 'types/takeshape';
 import SubmitButton from './SubmitButton';

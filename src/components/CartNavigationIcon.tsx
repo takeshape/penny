@@ -1,5 +1,5 @@
-import { useCart } from 'lib/cart';
 import { BsCart3 } from 'react-icons/bs';
+import useCart from 'services/cart/useCart';
 import { Flex, IconButton, Text } from 'theme-ui';
 
 export const CartNavigationIcon = () => {

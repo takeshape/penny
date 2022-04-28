@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import type { JsonValue } from 'type-fest';
 
-function useLocalStorage(key, initialValue) {
+const useLocalStorage = (key: string, initialValue: JsonValue) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const item = typeof window !== 'undefined' && window.localStorage.getItem(key);
@@ -22,6 +23,6 @@ function useLocalStorage(key, initialValue) {
   };
 
   return [storedValue, setValue];
-}
+};
 
 export default useLocalStorage;
