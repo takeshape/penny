@@ -18,7 +18,9 @@ jobs:
         run: |
           number=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
           echo "::set-output name=number::$number"
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       # - name: Static Web App - get preview URL
       #   id: static_web_app_preview_url
       #   uses: azure/CLI@v1
