@@ -64,7 +64,7 @@ jobs:
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
-          configPath: ./.github/workflows/lighthousesrc.json
+          configPath: ./.github/workflows/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
           runs: 5
