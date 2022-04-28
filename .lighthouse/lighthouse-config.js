@@ -11,6 +11,6 @@ module.exports = {
       'unsized-images',
       'offline-start-url'
     ],
-    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo']
+    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa']
   }
 };
