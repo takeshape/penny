@@ -9,7 +9,8 @@ module.exports = {
       'maskable-icon',
       'valid-source-maps',
       'unsized-images',
-      'offline-start-url',
+      'offline-start-url'
     ],
-  },
+    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo']
+  }
 };

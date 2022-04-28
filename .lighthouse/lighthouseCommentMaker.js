@@ -25,13 +25,10 @@
  */
 
 const formatScore = (/** @type { number } */ score) => Math.round(score * 100);
-const emojiScore = (/** @type { number } */ score) =>
-  score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴';
+const emojiScore = (/** @type { number } */ score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
 
-const scoreRow = (
-  /** @type { string } */ label,
-  /** @type { number } */ score
-) => `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
+const scoreRow = (/** @type { string } */ label, /** @type { number } */ score) =>
+  `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
 
 /**
  * @param {LighthouseOutputs} lighthouseOutputs
