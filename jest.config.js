@@ -5,11 +5,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/.jest/jest.setup.js'],
   snapshotSerializers: ['@emotion/jest/serializer'],
   // coverage
-  collectCoverageFrom: [
-    '<rootDir>/src/pages/**/*.{ts,tsx}',
-    '<rootDir>/src/components/**/*.{ts,tsx}',
-    '<rootDir>/src/lib/**/*.{ts,tsx}'
-  ],
+  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   // ignore cypress folder
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/cypress/'],
   // jest 27 introduced 'node' as new default `testEnvironment`

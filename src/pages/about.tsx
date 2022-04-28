@@ -1,5 +1,5 @@
-import PageLayout from 'components/PageLayout';
 import Section from 'components/Section';
+import PageLayout from 'features/layout/PageLayout';
 import { Box, Divider, Heading, Link, Paragraph } from 'theme-ui';
 
 const dependencies = [

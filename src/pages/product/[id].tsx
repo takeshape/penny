@@ -1,8 +1,8 @@
-import PageLayout from 'components/PageLayout';
-import ProductAddToCart from 'components/ProductAddToCart';
-import ProductImage from 'components/ProductImage';
-import ReviewList from 'components/ReviewList';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+import PageLayout from 'features/layout/PageLayout';
+import ProductAddToCart from 'features/ProductAddToCart';
+import ProductImage from 'features/ProductImage';
+import ReviewList from 'features/ReviewList';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';

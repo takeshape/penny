@@ -1,6 +1,6 @@
-import PageLayout from 'components/PageLayout';
-import ProductGrid from 'components/ProductGrid';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+import PageLayout from 'features/layout/PageLayout';
+import ProductGrid from 'features/ProductGrid';
 import type { InferGetStaticPropsType } from 'next';
 import { GetStripeProducts } from 'queries';
 import { createApolloClient } from 'services/apollo/client';
