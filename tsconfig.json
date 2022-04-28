@@ -17,5 +17,5 @@
     "baseUrl": "./src"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "cypress", "coverage", ".github", "test", ".storybook", "public", ".takeshape", ".next"],
+  "exclude": ["node_modules", "cypress", "coverage", ".github", "test", ".storybook", "public", ".takeshape", ".next", ".lighthouse"],
 }

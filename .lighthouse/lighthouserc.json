@@ -2,7 +2,7 @@
   "ci": {
     "collect": {
       "settings": {
-        "configPath": "./.github/workflows/lighthouse-config.js"
+        "configPath": "./.lighthouse/lighthouse-config.js"
       }
     }
   }

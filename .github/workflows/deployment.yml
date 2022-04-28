@@ -8,9 +8,6 @@ jobs:
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
-      # - name: Dump context
-      #   uses: crazy-max/ghaction-dump-context@v1
-
       - uses: actions/checkout@v3
 
       - name: Get PR number
@@ -20,42 +17,20 @@ jobs:
           echo "::set-output name=number::$number"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      # - name: Static Web App - get preview URL
-      #   id: static_web_app_preview_url
-      #   uses: azure/CLI@v1
-      #   with:
-      #     inlineScript: |
-      #       CUSTOM_DOMAIN='agreeable-rock-039a51810.1.azurestaticapps.net'
-      #       LOCATION='centralus'
 
-      #       PREVIEW_URL="https://${CUSTOM_DOMAIN/.[1-9]./-${{github.event.pull_request.number }}.$LOCATION.1.}"
-
-      #       echo "::set-output name=PREVIEW_URL::$PREVIEW_URL"
-
-      # - name: Get preview url
-      #   id: preview-url
-      #   run: |
-      #     DOMAIN='ecommerce-kitchen-sink'
-
-      #     -i3fvqwma3-takeshape.vercel.app
-      #   with:
-      #     inlineScript: |
-      #       CUSTOM_DOMAIN='agreeable-rock-039a51810.1.azurestaticapps.net'
-      #       LOCATION='centralus'
-
-      #       PREVIEW_URL="https://${CUSTOM_DOMAIN/.[1-9]./-${{github.event.pull_request.number }}.$LOCATION.1.}"
-
-      #       echo "::set-output name=PREVIEW_URL::$PREVIEW_URL"
-
-      # - name: Static Web App - wait for preview
-      #   id: static_web_app_wait_for_preview
-      #   uses: nev7n/wait_for_response@v1
-      #   with:
-      #     url: "${{ steps.static_web_app_preview_url.outputs.PREVIEW_URL }}"
-      #     responseCode: 200
-      #     timeout: 600000
-      #     interval: 1000
+      - name: Set PR status
+        if: steps.pr.outputs.number != ''
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+            --field state='pending' \
+            --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+            --field description='Lighthouse is running...' \
+            --field context='lighthouse'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Audit URLs using Lighthouse
         if: steps.pr.outputs.number != ''
@@ -64,18 +39,47 @@ jobs:
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
-          configPath: ./.github/workflows/lighthouserc.json
+          configPath: ./.lighthouse/lighthouserc.json
+          budgetPath: ./.lighthouse/budget.json
           uploadArtifacts: true
           temporaryPublicStorage: true
           runs: 5
 
-      - name: Format lighthouse score
-        if: steps.pr.outputs.number != ''
+      - name: Set PR status
+        if: failure() && steps.pr.outputs.number != ''
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+            --field state='failure' \
+            --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+            --field description='Lighthouse failed' \
+            --field context='lighthouse'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set PR status
+        if: success() && steps.pr.outputs.number != ''
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+            --field state='success' \
+            --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+            --field description='Lighthouse passed' \
+            --field context='lighthouse'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Format Lighthouse score
+        if: always() && steps.pr.outputs.number != ''
         id: format_lighthouse_score
         uses: actions/github-script@v6
         with:
           script: |
-            const lighthouseCommentMaker = require('./.github/workflows/lighthouseCommentMaker.js');
+            const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
 
             const lighthouseOutputs = {
               manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
@@ -86,9 +90,8 @@ jobs:
             core.setOutput("comment", comment);
 
       - name: Add Lighthouse stats as comment
-        if: steps.pr.outputs.number != ''
-        id: comment_to_pr
-        uses: marocchino/sticky-pull-request-comment@v2.0.0
+        if: always() && steps.pr.outputs.number != ''
+        uses: marocchino/sticky-pull-request-comment@v2.2.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.pr.outputs.number }}
