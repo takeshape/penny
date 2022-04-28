@@ -32,7 +32,7 @@ jobs:
           runs: 5
 
       - name: Format Lighthouse score
-        if: steps.pr.outputs.number != ''
+        if: always() && steps.pr.outputs.number != ''
         id: format_lighthouse_score
         uses: actions/github-script@v6
         with:
@@ -48,7 +48,7 @@ jobs:
             core.setOutput("comment", comment);
 
       - name: Add Lighthouse stats as comment
-        if: steps.pr.outputs.number != ''
+        if: always() && steps.pr.outputs.number != ''
         uses: marocchino/sticky-pull-request-comment@v2.2.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
