@@ -1,4 +1,4 @@
-name: Run Deployment Tests
+name: Deployment
 
 on:
   deployment_status:
