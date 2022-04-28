@@ -1,6 +1,7 @@
 name: Test with Jest and Cypress
 on: [push]
 env:
+  # These are all public, so easier to keep in repo than in secrets
   NEXT_PUBLIC_AUTH0_DOMAIN: "dev-by9w1mxg.us.auth0.com"
   NEXT_PUBLIC_AUTH0_CLIENT_ID: "qFoQD6d6vGhob9B8lguJbolKKXnL6jDQ"
   NEXT_PUBLIC_AUTH0_REDIRECT_URI: "http://localhost:3000/"
