@@ -18,19 +18,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set PR status
-        if: steps.pr.outputs.number != ''
-        run: |
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
-            --field state='pending' \
-            --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
-            --field description='Lighthouse is running...' \
-            --field context='lighthouse'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Set PR status
+      #   if: steps.pr.outputs.number != ''
+      #   run: |
+      #     gh api \
+      #       --method POST \
+      #       -H "Accept: application/vnd.github.v3+json" \
+      #       "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+      #       --field state='pending' \
+      #       --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+      #       --field description='Lighthouse is running...' \
+      #       --field context='lighthouse'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Audit URLs using Lighthouse
         if: steps.pr.outputs.number != ''
@@ -45,36 +45,36 @@ jobs:
           temporaryPublicStorage: true
           runs: 5
 
-      - name: Set PR status
-        if: failure() && steps.pr.outputs.number != ''
-        run: |
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
-            --field state='failure' \
-            --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
-            --field description='Lighthouse failed' \
-            --field context='lighthouse'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Set PR status
+      #   if: failure() && steps.pr.outputs.number != ''
+      #   run: |
+      #     gh api \
+      #       --method POST \
+      #       -H "Accept: application/vnd.github.v3+json" \
+      #       "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+      #       --field state='failure' \
+      #       --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+      #       --field description='Lighthouse failed' \
+      #       --field context='lighthouse'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set PR status
-        if: success() && steps.pr.outputs.number != ''
-        run: |
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
-            --field state='success' \
-            --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
-            --field description='Lighthouse passed' \
-            --field context='lighthouse'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Set PR status
+      #   if: success() && steps.pr.outputs.number != ''
+      #   run: |
+      #     gh api \
+      #       --method POST \
+      #       -H "Accept: application/vnd.github.v3+json" \
+      #       "/repos/${{ github.repository }}/statuses/${{ github.sha }}" \
+      #       --field state='success' \
+      #       --field target_url='https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}' \
+      #       --field description='Lighthouse passed' \
+      #       --field context='lighthouse'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Format Lighthouse score
-        if: always() && steps.pr.outputs.number != ''
+        if: steps.pr.outputs.number != ''
         id: format_lighthouse_score
         uses: actions/github-script@v6
         with:
@@ -90,7 +90,7 @@ jobs:
             core.setOutput("comment", comment);
 
       - name: Add Lighthouse stats as comment
-        if: always() && steps.pr.outputs.number != ''
+        if: steps.pr.outputs.number != ''
         uses: marocchino/sticky-pull-request-comment@v2.2.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
