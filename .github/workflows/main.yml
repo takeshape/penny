@@ -29,6 +29,9 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
 
+      - name: Run typecheck
+        run: npm run graphql:validate
+
       - name: Run lint
         run: npm run lint
 

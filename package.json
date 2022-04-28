@@ -19,7 +19,11 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "graphql:coverage": "graphql coverage",
+    "graphql:validate": "graphql validate",
+    "graphql:diff": "graphql diff",
+    "graphql:similar": "graphql similar"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",
@@ -78,6 +82,11 @@
     "prettier": "^2.6.2",
     "type-fest": "^2.12.2",
     "typescript": "^4.6.3",
-    "webpack": "^5.68.0"
+    "webpack": "^5.68.0",
+    "graphql-cli": "4.1.0",
+    "@graphql-cli/coverage": "2.1.0",
+    "@graphql-cli/validate": "2.1.0",
+    "@graphql-cli/diff": "2.1.0",
+    "@graphql-cli/similar": "2.1.0"
   }
 }
