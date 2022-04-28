@@ -1,5 +1,5 @@
 import type { ComponentMeta } from '@storybook/react';
-import LoyaltyCard from '../LoyaltyCard';
+import LoyaltyCard from '../purchases/LoyaltyCard';
 import purchases from '../__fixtures__/purchases-data.json';
 
 export default {

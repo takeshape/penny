@@ -1,7 +1,7 @@
+import ProductImage from 'features/products/ProductImage';
 import NextLink from 'next/link';
 import { Box, Card, Flex, Grid, Heading, Link } from 'theme-ui';
 import { formatPrice } from 'utils/text';
-import ProductImage from './ProductImage';
 
 export interface PaymentProductLineItemProps {
   id: string;

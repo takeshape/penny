@@ -1,10 +1,10 @@
 import { useLazyQuery } from '@apollo/client';
+import ProductPrice from 'features/products/ProductPrice';
 import NextLink from 'next/link';
 import { SearchStripeProducts } from 'queries';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import useDebounce from 'services/hooks/useDebounce';
 import { AspectImage, Box, Flex, Input, Link, Text } from 'theme-ui';
-import ProductPrice from './ProductPrice';
 
 export const Search = () => {
   const searchRef = useRef(null);

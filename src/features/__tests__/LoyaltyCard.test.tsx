@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'test/test-utils';
-import LoyaltyCard from '../LoyaltyCard';
+import LoyaltyCard from '../purchases/LoyaltyCard';
 import purchases from '../__fixtures__/purchases-data.json';
 
 describe('LoyaltyCard', () => {

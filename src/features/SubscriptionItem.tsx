@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
 import SubmitButton from 'components/SubmitButton';
 import { locale } from 'config';
+import ProductImage from 'features/products/ProductImage';
 import { DeleteMySubscription, GetMyPurchasesData } from 'queries';
 import { Alert, Box, Card, Flex, Heading, Paragraph, Text } from 'theme-ui';
 import type { Stripe_Subscription, Stripe_SubscriptionItem } from 'types/takeshape';
 import { formatPrice } from 'utils/text';
-import ProductImage from './ProductImage';
 
 export interface SubscriptionItemProps {
   subscription: Stripe_Subscription;

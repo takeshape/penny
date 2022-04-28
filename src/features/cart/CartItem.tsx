@@ -1,10 +1,10 @@
+import ProductImage from 'features/products/ProductImage';
+import ProductPrice from 'features/products/ProductPrice';
+import ProductQuantity from 'features/products/ProductQuantity';
 import type { ChangeEventHandler } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Box, Flex, IconButton } from 'theme-ui';
 import type { Stripe_Product } from 'types/takeshape';
-import ProductImage from '../ProductImage';
-import ProductPrice from '../ProductPrice';
-import ProductQuantity from '../ProductQuantity';
 
 export interface CartItemProps {
   product: Stripe_Product;

@@ -3,9 +3,9 @@ import StarRatings from 'react-star-ratings';
 import { Box, Flex, Text, useThemeUI } from 'theme-ui';
 import type { ReviewsIo_ProductReview } from 'types/takeshape';
 
-export interface ReviewItemProps extends ReviewsIo_ProductReview {}
+export interface ReviewListItemProps extends ReviewsIo_ProductReview {}
 
-export const ReviewItem = ({ title, review, rating, timeago, date_created }: ReviewItemProps) => {
+export const ReviewListItem = ({ title, review, rating, timeago, date_created }: ReviewListItemProps) => {
   const { theme } = useThemeUI();
   return (
     <Box>
@@ -31,4 +31,4 @@ export const ReviewItem = ({ title, review, rating, timeago, date_created }: Rev
   );
 };
 
-export default ReviewItem;
+export default ReviewListItem;
