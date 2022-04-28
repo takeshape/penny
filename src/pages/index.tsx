@@ -1,5 +1,5 @@
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
-import PageLayout from 'features/layout/PageLayout';
+import PageLayout from 'features/layout/Page';
 import ProductGrid from 'features/ProductGrid';
 import type { InferGetStaticPropsType } from 'next';
 import { GetStripeProducts } from 'queries';

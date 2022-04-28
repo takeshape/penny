@@ -1,13 +1,13 @@
 import { BsCheckCircle, BsHourglassSplit } from 'react-icons/bs';
 import { Flex, Link, Text } from 'theme-ui';
 
-export interface ReferralsListItemProps {
+export interface ReferralListItemProps {
   email: string;
   sent: Date;
   earned: boolean;
 }
 
-export const ReferralsListItem = ({ email, sent, earned }: ReferralsListItemProps) => (
+export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps) => (
   <Flex sx={{ gap: '1rem', alignItems: 'center' }}>
     {earned ? (
       <BsCheckCircle size={24} color="green" title="Earned Referral" />
@@ -20,4 +20,4 @@ export const ReferralsListItem = ({ email, sent, earned }: ReferralsListItemProp
   </Flex>
 );
 
-export default ReferralsListItem;
+export default ReferralListItem;

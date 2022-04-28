@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Section from 'components/Section';
-import PageLayout from 'features/layout/PageLayout';
+import PageLayout from 'features/layout/Page';
 import LoyaltyCard from 'features/LoyaltyCard';
 import PaymentList from 'features/PaymentList';
 import SubscriptionList from 'features/SubscriptionList';

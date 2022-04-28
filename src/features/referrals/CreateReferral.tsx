@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, Input } from 'theme-ui';
 
-export interface ReferralsCreateReferralProps {
+export interface CreateReferralProps {
   sendReferral: (props: any) => void;
 }
 
-export const ReferralsCreateReferral = ({ sendReferral }: ReferralsCreateReferralProps) => {
+export const CreateReferral = ({ sendReferral }: CreateReferralProps) => {
   const { register, handleSubmit, reset } = useForm<{ email: string }>({
     defaultValues: {
       email: ''
@@ -29,4 +29,4 @@ export const ReferralsCreateReferral = ({ sendReferral }: ReferralsCreateReferra
   );
 };
 
-export default ReferralsCreateReferral;
+export default CreateReferral;

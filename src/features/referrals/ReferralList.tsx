@@ -1,7 +1,7 @@
 import { BsGiftFill } from 'react-icons/bs';
 import { Alert, Box, Text } from 'theme-ui';
-import type { ReferralsListItemProps } from './ReferralsListItem';
-import ReferralListItem from './ReferralsListItem';
+import type { ReferralListItemProps } from './ReferralListItem';
+import ReferralListItem from './ReferralListItem';
 
 export interface Reward {
   name: string;
@@ -13,11 +13,11 @@ const reward: Reward = {
   code: '1XGHc80'
 };
 
-export interface ReferralsListProps {
-  referrals: ReferralsListItemProps[];
+export interface ReferralListProps {
+  referrals: ReferralListItemProps[];
 }
 
-export const ReferralsList = ({ referrals }) => {
+export const ReferralList = ({ referrals }) => {
   return (
     <Box as="ul" sx={{ listStyleType: 'none', padding: 0 }}>
       {referrals.map((referral) => (
@@ -36,4 +36,4 @@ export const ReferralsList = ({ referrals }) => {
   );
 };
 
-export default ReferralsList;
+export default ReferralList;

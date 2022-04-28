@@ -2,12 +2,12 @@ import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import Section from 'components/Section';
 import CustomerForm from 'features/CustomerForm';
-import PageLayout from 'features/layout/PageLayout';
+import PageLayout from 'features/layout/Page';
 import NewsletterToggle from 'features/NewsletterToggle';
 import ProfileForm from 'features/ProfileForm';
-import ReferralsCreateReferral from 'features/ReferralsCreateReferral';
-import ReferralsList from 'features/ReferralsList';
-import type { ReferralsListItemProps } from 'features/ReferralsListItem';
+import ReferralsCreateReferral from 'features/referrals/CreateReferral';
+import ReferralsList from 'features/referrals/ReferralList';
+import type { ReferralListItemProps } from 'features/referrals/ReferralListItem';
 import UserLogout from 'features/UserLogout';
 import type { NextPage } from 'next';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'queries';
@@ -15,7 +15,7 @@ import { useState } from 'react';
 import useProfile from 'services/takeshape/useProfile';
 import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
-const referralsFixtureData: ReferralsListItemProps[] = [
+const referralsFixtureData: ReferralListItemProps[] = [
   {
     email: 'mark@takeshape.io',
     sent: new Date(2022, 1, 23),
@@ -32,7 +32,7 @@ const AccountPage: NextPage = () => {
   const { data: newsletterData, error: newsletterError } = useQuery(GetMyNewsletterSubscriptons, {
     skip: !isProfileReady
   });
-  const [referrals, setReferrals] = useState<ReferralsListItemProps[]>(referralsFixtureData);
+  const [referrals, setReferrals] = useState<ReferralListItemProps[]>(referralsFixtureData);
 
   return (
     <PageLayout>

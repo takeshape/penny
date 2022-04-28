@@ -8,7 +8,7 @@ import { Container, Divider, Flex } from 'theme-ui';
 import Footer from './Footer';
 import Header from './Header';
 
-export const PageLayout = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoProps }>) => {
+export const Page = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoProps }>) => {
   return (
     <CartProvider>
       <Flex variant="layout.page">
@@ -29,4 +29,4 @@ export const PageLayout = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoP
   );
 };
 
-export default PageLayout;
+export default Page;

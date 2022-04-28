@@ -1,5 +1,5 @@
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
-import PageLayout from 'features/layout/PageLayout';
+import PageLayout from 'features/layout/Page';
 import ProductAddToCart from 'features/ProductAddToCart';
 import ProductImage from 'features/ProductImage';
 import ReviewList from 'features/ReviewList';
