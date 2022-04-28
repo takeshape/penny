@@ -36,7 +36,7 @@ module.exports = {
           },
           {
             resourceType: 'total',
-            budget: 10000
+            budget: 15000
           }
         ],
         resourceCounts: [
