@@ -23,7 +23,8 @@
     "graphql:coverage": "graphql coverage",
     "graphql:validate": "graphql validate",
     "graphql:diff": "graphql diff",
-    "graphql:similar": "graphql similar"
+    "graphql:similar": "graphql similar",
+    "takeshape:validate": "takeshape validate --path .takeshape/pattern/schema.json"
   },
   "dependencies": {
     "@apollo/client": "^3.5.10",

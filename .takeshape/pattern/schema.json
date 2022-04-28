@@ -1,5 +1,14 @@
 {
   "$schema": "https://schema.takeshape.io/project-schema",
+  "dataKey": "",
+  "projectId": "06ccc3dc-a9da-4f5b-9142-5a104db52ee3",
+  "version": 8,
+  "created": "2022-04-21T15:47:16.247Z",
+  "updated": "2022-04-25T19:39:31.180Z",
+  "defaultLocale": "en-us",
+  "locales": [
+    "en-us"
+  ],
   "apiVersion": "2",
   "workflows": {},
   "forms": {
@@ -177,7 +186,7 @@
     "Stripe_PaymentIntent": {
       "queries": {
         "list": {
-          "name": "listPaymentIntents",
+          "name": "Stripe_listPaymentIntents",
           "pagination": {
             "type": "cursor",
             "cursorPath": "data[(@.length-1)].id",
