@@ -1,5 +1,10 @@
-name: Test with Jest and Cypress
-on: [push]
+name: Run Tests
+
+on:
+  pull_request:
+    types: [opened]
+  workflow_dispatch:
+
 jobs:
   npm-test:
     runs-on: ubuntu-latest
