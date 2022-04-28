@@ -3,10 +3,10 @@ import { withAuthenticationRequired } from '@auth0/auth0-react';
 import { CreateMyCheckoutSession } from 'queries';
 import { useEffect } from 'react';
 import useCart from 'services/cart/useCart';
+import getStripe from 'services/stripe/getStripe';
 import useProfile from 'services/takeshape/useProfile';
 import { Container, Spinner } from 'theme-ui';
 import { getCheckoutPayload } from 'utils/checkout';
-import getStripe from 'utils/stripe';
 
 // After a successful login, redirect here to automatically checkout with the cart
 function _CheckoutPage() {

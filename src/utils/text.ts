@@ -1,4 +1,4 @@
-import { locale } from '../config';
+import { locale } from 'config';
 
 const pluralRules = new Intl.PluralRules(locale);
 

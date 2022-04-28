@@ -3,9 +3,9 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { CreateMyCheckoutSession } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import useCart from 'services/cart/useCart';
+import getStripe from 'services/stripe/getStripe';
 import { Box, Button, Close, Flex, Heading, Text } from 'theme-ui';
 import { getCheckoutPayload } from 'utils/checkout';
-import getStripe from 'utils/stripe';
 import { formatPrice } from 'utils/text';
 import CartItem from './CartItem';
 

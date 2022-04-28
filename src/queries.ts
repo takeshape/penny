@@ -177,7 +177,11 @@ export const UploadAssets = gql`
 `;
 
 export const UpsertMyCustomer = gql`
-  mutation UpsertMyCustomer($name: String, $description: String, $address: Stripe_CustomerAddressPropertyInput) {
+  mutation UpsertMyCustomer(
+    $name: String
+    $description: String
+    $address: UpsertMyCustomerPropertiesAddressPropertyInput
+  ) {
     customer: upsertMyCustomer(name: $name, description: $description, address: $address) {
       id
       name
@@ -197,7 +201,7 @@ export const UpsertMyCustomer = gql`
 export const CreateMyCheckoutSession = gql`
   mutation CreateMyCheckoutSession(
     $redirectUrl: String!
-    $lineItems: [Stripe_CheckoutSessionLineItemsPropertyInput!]!
+    $lineItems: [CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput!]!
     $mode: String!
   ) {
     session: createMyCheckoutSession(lineItems: $lineItems, redirectUrl: $redirectUrl, mode: $mode) {
@@ -310,7 +314,7 @@ export const CreateInvitation = gql`
     $name: String
     $email: String
     $order_id: String
-    $products: [ReviewsIo_ProductInput]
+    $products: [ReviewsIo_InvitationProductInput]
     $template_id: String
   ) {
     ReviewsIo_createInvitation(
