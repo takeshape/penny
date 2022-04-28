@@ -11,6 +11,41 @@ module.exports = {
       'unsized-images',
       'offline-start-url'
     ],
-    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa']
+    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa'],
+    budgets: [
+      {
+        path: '/*',
+        timings: [
+          {
+            metric: 'interactive',
+            budget: 5000
+          },
+          {
+            metric: 'first-contentful-paint',
+            budget: 1000
+          },
+          {
+            metric: 'speed-index',
+            budget: 1500
+          }
+        ],
+        resourceSizes: [
+          {
+            resourceType: 'script',
+            budget: 200
+          },
+          {
+            resourceType: 'total',
+            budget: 15000
+          }
+        ],
+        resourceCounts: [
+          {
+            resourceType: 'third-party',
+            budget: 30
+          }
+        ]
+      }
+    ]
   }
 };
