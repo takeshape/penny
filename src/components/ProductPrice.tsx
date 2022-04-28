@@ -1,6 +1,6 @@
-import { formatPrice, pluralizeText } from 'lib/utils/text';
 import { Box, Text } from 'theme-ui';
 import type { Stripe_Price } from 'types/takeshape';
+import { formatPrice, pluralizeText } from 'utils/text';
 
 export interface ProductPriceProps {
   price: Stripe_Price;

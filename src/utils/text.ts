@@ -2,7 +2,7 @@ import { locale } from '../config';
 
 const pluralRules = new Intl.PluralRules(locale);
 
-export function pluralizeText(count, singular, plural) {
+export function pluralizeText(count: number, singular: string, plural: string) {
   const grammaticalNumber = pluralRules.select(count);
   switch (grammaticalNumber) {
     case 'one':
@@ -14,6 +14,6 @@ export function pluralizeText(count, singular, plural) {
   }
 }
 
-export function formatPrice(currency, amountInCents) {
+export function formatPrice(currency: string, amountInCents: number) {
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amountInCents / 100);
 }

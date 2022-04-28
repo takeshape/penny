@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import type { UpsertMyProfileResponse } from 'lib/queries';
-import { GetMyProfile, UpsertMyProfile } from 'lib/queries';
+import type { UpsertMyProfileResponse } from 'queries';
+import { GetMyProfile, UpsertMyProfile } from 'queries';
 import { useEffect } from 'react';
 import TakeshapeContext from './TakeshapeContext';
 

@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { CreateMyCheckoutSession } from 'lib/queries';
-import { getCheckoutPayload } from 'lib/utils/checkout';
-import getStripe from 'lib/utils/stripe';
-import { formatPrice } from 'lib/utils/text';
+import { CreateMyCheckoutSession } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import useCart from 'services/cart/useCart';
 import { Box, Button, Close, Flex, Heading, Text } from 'theme-ui';
+import { getCheckoutPayload } from 'utils/checkout';
+import getStripe from 'utils/stripe';
+import { formatPrice } from 'utils/text';
 import CartItem from './CartItem';
 
 export const CartSidebar = () => {

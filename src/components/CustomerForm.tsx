@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { GetMyProfile, UpsertMyCustomer } from 'lib/queries';
+import { GetMyProfile, UpsertMyCustomer } from 'queries';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useCountries from 'services/countries/useCountries';

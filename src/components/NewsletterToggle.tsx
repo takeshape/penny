@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { SubscribeToNewsletter, UnsubscribeFromNewsletter } from 'lib/queries';
+import { SubscribeToNewsletter, UnsubscribeFromNewsletter } from 'queries';
 import { useCallback, useState } from 'react';
 import { Box, Flex, Label, Switch } from 'theme-ui';
 import type { ProfileNewsletterStatus } from 'types/takeshape';

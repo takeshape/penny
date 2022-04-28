@@ -1,8 +1,8 @@
 import { format } from 'date-fns';
-import { isStripeInvoiceitemArray } from 'lib/types';
-import { formatPrice } from 'lib/utils/text';
 import { Box, Card, Flex, Paragraph } from 'theme-ui';
 import type { Stripe_Invoiceitem, Stripe_Item, Stripe_PaymentIntent } from 'types/takeshape';
+import { formatPrice } from 'utils/text';
+import { isStripeInvoiceitemArray } from 'utils/types';
 import type { PaymentItemOrderStatusProps } from './PaymentItemOrderStatus';
 import PaymentItemOrderStatus from './PaymentItemOrderStatus';
 import type { PaymentProductLineItemProps } from './PaymentProductLineItem';

@@ -1,7 +1,7 @@
 import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing';
 import { render } from '@testing-library/react';
-import theme from 'lib/theme';
 import TakeshapeProvider from 'services/takeshape/TakeshapeProvider';
+import theme from 'theme';
 import { ThemeProvider } from 'theme-ui';
 
 const mockUseRouterReturnValue = {
@@ -38,3 +38,4 @@ const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...
 
 export * from '@testing-library/react';
 export { customRender as render };
+

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';
 import { useEffect, useReducer } from 'react';
-import useLocalStorage from 'services/utils/useLocalStorage';
+import useLocalStorage from 'services/hooks/useLocalStorage';
 import { clearCart, setCartIsReady, setCheckoutResult } from './actions';
 import CartDispatchContext from './CartDispatchContext';
 import CartStateContext from './CartStateContext';

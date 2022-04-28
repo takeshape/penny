@@ -2,11 +2,10 @@ import PageLayout from 'components/PageLayout';
 import ProductAddToCart from 'components/ProductAddToCart';
 import ProductImage from 'components/ProductImage';
 import ReviewList from 'components/ReviewList';
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
-import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'lib/queries';
-import { getSingle } from 'lib/utils/types';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
 import { createApolloClient } from 'services/apollo/client';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type {
@@ -14,6 +13,7 @@ import type {
   ReviewsIo_ProductReview,
   Stripe_Product
 } from 'types/takeshape';
+import { getSingle } from 'utils/types';
 
 interface ProductPageProps {
   product: Stripe_Product;

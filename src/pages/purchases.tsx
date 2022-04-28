@@ -5,9 +5,9 @@ import PageLayout from 'components/PageLayout';
 import PaymentList from 'components/PaymentList';
 import Section from 'components/Section';
 import SubscriptionList from 'components/SubscriptionList';
-import type { GetMyPurchasesDataResponse } from 'lib/queries';
-import { GetMyPurchasesData } from 'lib/queries';
 import type { NextPage } from 'next';
+import type { GetMyPurchasesDataResponse } from 'queries';
+import { GetMyPurchasesData } from 'queries';
 import useProfile from 'services/takeshape/useProfile';
 import { Alert, Box, Container, Divider, Flex, Heading, Spinner } from 'theme-ui';
 

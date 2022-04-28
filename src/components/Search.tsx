@@ -1,8 +1,8 @@
 import { useLazyQuery } from '@apollo/client';
-import { SearchStripeProducts } from 'lib/queries';
 import NextLink from 'next/link';
+import { SearchStripeProducts } from 'queries';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useDebounce from 'services/utils/useDebounce';
+import useDebounce from 'services/hooks/useDebounce';
 import { AspectImage, Box, Flex, Input, Link, Text } from 'theme-ui';
 import ProductPrice from './ProductPrice';
 

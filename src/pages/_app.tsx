@@ -1,11 +1,11 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import GlobalStyles from 'components/GlobalStyles';
-import { audience, clientId, domain, scope, seo, takeshapeApiUrl } from 'lib/config';
-import theme from 'lib/theme';
+import { audience, clientId, domain, scope, seo, takeshapeApiUrl } from 'config';
 import { DefaultSeo } from 'next-seo';
 import Router from 'next/router';
 import AuthorizedApolloProvider from 'services/apollo/AuthorizedApolloProvider';
 import TakeshapeProvider from 'services/takeshape/TakeshapeProvider';
+import theme from 'theme';
 import { ThemeProvider } from 'theme-ui';
 
 const onRedirectCallback = (appState) => {

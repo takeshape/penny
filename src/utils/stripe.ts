@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js/pure';
-import { stripePublishableKey } from 'lib/config';
+import { stripePublishableKey } from 'config';
 
 let stripePromise;
 

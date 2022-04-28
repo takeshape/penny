@@ -1,8 +1,8 @@
 import PageLayout from 'components/PageLayout';
 import ProductGrid from 'components/ProductGrid';
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'lib/config';
-import { GetStripeProducts } from 'lib/queries';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import type { InferGetStaticPropsType } from 'next';
+import { GetStripeProducts } from 'queries';
 import { createApolloClient } from 'services/apollo/client';
 import { Alert, Container, Heading, Spinner } from 'theme-ui';
 

@@ -5,10 +5,10 @@ import {
   stripeWebhookSecret,
   takeshapeApiUrl,
   takeshapeWebhookApiKey
-} from 'lib/config';
-import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'lib/queries';
+} from 'config';
 import { buffer } from 'micro';
 import type { NextApiHandler, NextConfig } from 'next';
+import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'queries';
 import { createApolloClient } from 'services/apollo/client';
 import Stripe from 'stripe';
 import type { SetRequired } from 'type-fest';
