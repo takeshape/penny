@@ -1,4 +1,4 @@
-import CartSidebar from 'features/CartSidebar';
+import CartSidebar from 'features/cart/CartSidebar';
 import Notifications from 'features/Notifications';
 import Seo from 'features/Seo';
 import type { NextSeoProps } from 'next-seo';

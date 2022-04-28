@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import CartNavigationIcon from 'features/CartNavigationIcon';
+import CartNavigationIcon from 'features/cart/CartNavigationIcon';
 import Search from 'features/Search';
 import UserLogin from 'features/UserLogin';
 import Link from 'next/link';
