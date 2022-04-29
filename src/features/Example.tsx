@@ -23,10 +23,10 @@ export const RickAndMortyListItem = ({ character }: RickAndMortyListItemProps) =
       <div className="h-10 w-10 relative">
         <Image
           src={character.image}
-          alt="Picture of the author"
-          layout="fill" // required
-          objectFit="cover" // change to suit your needs
-          className="rounded-full" // just an example
+          alt={`${character.name}'s pic`}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-full"
         />
       </div>
       <div className="ml-3">
