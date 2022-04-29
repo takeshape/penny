@@ -1,4 +1,5 @@
-import { Image } from 'theme-ui';
+import Image from 'components/NextImage';
+import { Box } from 'theme-ui';
 
 export interface ProductImageProps {
   alt?: string;
@@ -14,16 +15,9 @@ const ProductImage = ({ alt = '', images, maxHeight }: ProductImageProps) => {
   }
 
   return (
-    <Image
-      alt={alt}
-      src={src}
-      sx={{
-        height: maxHeight,
-        width: '100%',
-        objectFit: 'contain',
-        objectPosition: 'center'
-      }}
-    />
+    <Box as="div" sx={{ position: 'relative', width: '100%', height: maxHeight }}>
+      <Image alt={alt} src={src} layout="fill" objectFit="contain" />
+    </Box>
   );
 };
 

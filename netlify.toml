@@ -1,5 +1,9 @@
 [[headers]]
-  for = "/fonts/roboto.woff2"
+  for = "/fonts/inter-roman.var.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+[[headers]]
+  for = "/fonts/inter-italic.var.woff2"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 [[headers]]

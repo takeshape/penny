@@ -1,4 +1,4 @@
-import orderBy from 'lodash/orderBy';
+import orderBy from 'lodash-es/orderBy';
 import { useEffect, useState } from 'react';
 import useCart from 'services/cart/useCart';
 import { Box, Button, Flex, Label, Radio } from 'theme-ui';

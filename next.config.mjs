@@ -1,3 +1,9 @@
+import createBundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = createBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true'
+});
+
 // https://securityheaders.com
 const ContentSecurityPolicy = `
   default-src 'self';
@@ -59,11 +65,38 @@ const config = {
       {
         source: '/(.*)',
         headers: securityHeaders
+      },
+      {
+        source: '/_next/image(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
+        source: '/fonts/inter-roman.var.woff2',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
+      },
+      {
+        source: '/fonts/inter-italic.var.woff2',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
       }
     ];
   },
   images: {
-    domains: ['files.stripe.com']
+    domains: ['files.stripe.com', 'rickandmortyapi.com']
   },
   poweredByHeader: false,
   reactStrictMode: true,
@@ -83,4 +116,4 @@ const config = {
   }
 };
 
-export default config;
+export default withBundleAnalyzer(config);
