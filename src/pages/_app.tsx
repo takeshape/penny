@@ -7,6 +7,7 @@ import AuthorizedApolloProvider from 'services/apollo/AuthorizedApolloProvider';
 import TakeshapeProvider from 'services/takeshape/TakeshapeProvider';
 import theme from 'theme';
 import { ThemeProvider } from 'theme-ui';
+import '../styles/globals.css';
 
 const onRedirectCallback = (appState) => {
   Router.replace(appState?.returnTo ?? '/');

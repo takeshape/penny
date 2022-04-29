@@ -10,8 +10,8 @@ const theme: Theme = {
     lightGray: lighten('black', 0.5) as any
   },
   fonts: {
-    body: '"Roboto", sans-serif',
-    heading: '"Roboto", sans-serif',
+    body: '"Inter", sans-serif',
+    heading: '"Inter", sans-serif',
     monospace: '"Roboto Mono", monospace'
   },
   styles: {

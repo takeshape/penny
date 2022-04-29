@@ -1,6 +1,6 @@
-import React from 'react';
 import { ThemeProvider } from 'theme-ui';
 import GlobalStyles from '../src/components/GlobalStyles';
+import '../src/styles/globals.css';
 import theme from '../src/theme';
 
 export const parameters = {

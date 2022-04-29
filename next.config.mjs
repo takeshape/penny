@@ -63,7 +63,7 @@ const config = {
     ];
   },
   images: {
-    domains: ['files.stripe.com']
+    domains: ['files.stripe.com', 'rickandmortyapi.com']
   },
   poweredByHeader: false,
   reactStrictMode: true,

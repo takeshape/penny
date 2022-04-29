@@ -15,8 +15,14 @@ export default class CustomDocument extends Document {
     return (
       <Html>
         <Head>
-          <link rel="preload" href="/fonts/roboto.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-          <link rel="preload" href="/fonts/roboto-mono.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+          <link rel="preload" href="/fonts/inter-roman.var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+          <link
+            rel="preload"
+            href="/fonts/inter-italic.var.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <Main />
