@@ -1,3 +1,9 @@
+import createBundleAnalyzer from '@next/bundle-analyzer';
+
+const withBundleAnalyzer = createBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true'
+});
+
 // https://securityheaders.com
 const ContentSecurityPolicy = `
   default-src 'self';
@@ -83,4 +89,4 @@ const config = {
   }
 };
 
-export default config;
+export default withBundleAnalyzer(config);
