@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import Image from 'components/NextImage';
+import classNames from 'utils/classNames';
 
 export interface RickAndMortyCharacter {
   id: string;

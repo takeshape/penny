@@ -1,10 +1,9 @@
 import Navigation from 'features/Navigation';
-import { Container } from 'theme-ui';
 
 export const Header = () => (
-  <Container as="header" sx={{ maxWidth: '72rem' }}>
+  <header className="relative z-10">
     <Navigation />
-  </Container>
+  </header>
 );
 
 export default Header;

@@ -82,3 +82,5 @@ export const seo: DefaultSeoProps = {
     site_name: siteName
   }
 };
+
+export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
