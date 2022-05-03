@@ -49,7 +49,7 @@ TKTK
 
    - Clone this repo with `git clone https://github.com/takeshape/takeshape-starter-deluxe-sample-project.git`.
    - `cd` into the folder that the cloning created.
-   - Run `mv .env.local-example .env.local` to rename the environment variables file.
+   - Run `cp .env.local-example .env.local` to rename the environment variables file.
    - Run `npm install`.
 
 2. Follow the instructions in `.env.local`.
