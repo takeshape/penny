@@ -4,12 +4,7 @@ import type { NavigationState } from './types';
 const defaults: NavigationState = {
   isMobileMenuOpen: false,
   openMobileMenu: () => {},
-  closeMobileMenu: () => {},
-  links: {
-    categories: [],
-    pages: []
-  },
-  setLinks: () => {}
+  closeMobileMenu: () => {}
 };
 
 const NavigationContext = createContext(defaults);

@@ -23,7 +23,7 @@ export const CartSidebar = () => {
   const cartCurrency = items?.[0]?.price?.currency ?? '';
 
   const cartTotal = items
-    .map((item) => item.price.unitAmount * item.quantity)
+    .map((item) => item.price.unit_amount * item.quantity)
     .reduce((prev, current) => prev + current, 0);
 
   const handleRemove = (itemIndex) => {

@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { currencyList } from 'config';
 import type {
   Mutation,
   ReviewsIo_ListProductReviewsResponse,
@@ -37,7 +38,7 @@ export const GetStripeProducts = gql`
 `;
 
 export const SearchStripeProducts = gql`
-  query SearchStripeProductsQuery($query: String!) {
+  query SearchStripeProducts($query: String!) {
     products: search(terms: $query, where: { active: { eq: true } }) {
       results {
         __typename
@@ -388,6 +389,70 @@ export const CreateShipment = gql`
       packages: $packages
     ) {
       shipment_id
+    }
+  }
+`;
+
+/**
+ * UI Stuff
+ */
+
+export type NavigationLink = {
+  name: string;
+  href: string;
+};
+
+export type NavigationCategory = {
+  name: string;
+  featured: NavigationLink[];
+  collection: NavigationLink[];
+  categories: NavigationLink[];
+  brands: NavigationLink[];
+};
+
+export type NavigationLinks = {
+  categories: NavigationCategory[];
+  pages: NavigationLink[];
+};
+
+export type NavigationCurrency = typeof currencyList[number];
+
+export interface NavigationDataResults {
+  getNavigationData: {
+    links: NavigationLinks;
+    currencies: NavigationCurrency[];
+  };
+}
+
+export const GetNavigationDataQuery = gql`
+  query GetNavigationData {
+    getNavigationData {
+      links {
+        categories {
+          name
+          featured {
+            name
+            href
+          }
+          collection {
+            name
+            href
+          }
+          categories {
+            name
+            href
+          }
+          brands {
+            name
+            href
+          }
+        }
+        pages {
+          name
+          href
+        }
+      }
+      currencies
     }
   }
 `;

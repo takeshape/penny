@@ -19,6 +19,7 @@ module.exports = {
         },
       },
     },
+    'storybook-addon-apollo-client'
   ],
   framework: '@storybook/react',
   core: {

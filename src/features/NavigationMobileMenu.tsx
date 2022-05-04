@@ -1,24 +1,21 @@
+import { useQuery } from '@apollo/client';
 import { Dialog, Tab, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import { currencyList } from 'config';
+import type { NavigationDataResults } from 'queries';
+import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
-import type { NavigationCurrency, NavigationLinks } from 'services/navigation/types';
-import useNavigation from 'services/navigation/useNavigation';
 import classNames from 'utils/classNames';
-
+import NavigationMobileMenuCreateOrSignIn from './NavigationMobileMenuCreateOrSignIn';
+import NavigationMobileMenuCurrencySelect from './NavigationMobileMenuCurrencySelect';
 export interface NavigationMobileMenuProps {
   isMobileMenuOpen: boolean;
   onCloseMobileMenu: () => void;
-  links: NavigationLinks;
-  currencies: NavigationCurrency[];
 }
 
-export const NavigationMobileMenu = ({
-  isMobileMenuOpen,
-  onCloseMobileMenu,
-  links,
-  currencies
-}: NavigationMobileMenuProps) => {
+export const NavigationMobileMenu = ({ isMobileMenuOpen, onCloseMobileMenu }: NavigationMobileMenuProps) => {
+  const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
+  const { currencies, links } = data?.getNavigationData ?? {};
+
   return (
     <Transition.Root show={isMobileMenuOpen} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={onCloseMobileMenu}>
@@ -59,7 +56,7 @@ export const NavigationMobileMenu = ({
             <Tab.Group as="div" className="mt-2">
               <div className="border-b border-gray-200">
                 <Tab.List className="-mb-px flex px-4 space-x-8">
-                  {links.categories.map((category) => (
+                  {links?.categories.map((category) => (
                     <Tab
                       key={category.name}
                       className={({ selected }) =>
@@ -75,7 +72,7 @@ export const NavigationMobileMenu = ({
                 </Tab.List>
               </div>
               <Tab.Panels as={Fragment}>
-                {links.categories.map((category, categoryIdx) => (
+                {links?.categories.map((category, categoryIdx) => (
                   <Tab.Panel key={category.name} className="px-4 pt-10 pb-6 space-y-12">
                     <div className="grid grid-cols-1 items-start gap-y-10 gap-x-6">
                       <div className="grid grid-cols-1 gap-y-10 gap-x-6">
@@ -150,7 +147,7 @@ export const NavigationMobileMenu = ({
             </Tab.Group>
 
             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-              {links.pages.map((page) => (
+              {links?.pages.map((page) => (
                 <div key={page.name} className="flow-root">
                   <a href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
                     {page.name}
@@ -159,18 +156,7 @@ export const NavigationMobileMenu = ({
               ))}
             </div>
 
-            <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-              <div className="flow-root">
-                <a href="#" className="-m-2 p-2 block font-medium text-gray-900">
-                  Create an account
-                </a>
-              </div>
-              <div className="flow-root">
-                <a href="#" className="-m-2 p-2 block font-medium text-gray-900">
-                  Sign in
-                </a>
-              </div>
-            </div>
+            <NavigationMobileMenuCreateOrSignIn />
 
             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
               {/* Currency selector */}
@@ -180,15 +166,7 @@ export const NavigationMobileMenu = ({
                     Currency
                   </label>
                   <div className="-ml-2 group relative border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                    <select
-                      id="mobile-currency"
-                      name="currency"
-                      className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency}>{currency}</option>
-                      ))}
-                    </select>
+                    <NavigationMobileMenuCurrencySelect currencies={currencies} />
                     <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
                       <svg
                         aria-hidden="true"
@@ -217,14 +195,4 @@ export const NavigationMobileMenu = ({
   );
 };
 
-export default function ConnectedNavigationMobileMenu() {
-  const { isMobileMenuOpen, closeMobileMenu, links } = useNavigation();
-  return (
-    <NavigationMobileMenu
-      links={links}
-      currencies={[...currencyList]}
-      isMobileMenuOpen={isMobileMenuOpen}
-      onCloseMobileMenu={closeMobileMenu}
-    />
-  );
-}
+export default NavigationMobileMenu;

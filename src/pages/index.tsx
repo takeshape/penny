@@ -1,9 +1,8 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import PageLayout from 'features/layout/Page';
 import ProductGrid from 'features/products/ProductGrid';
 import type { InferGetStaticPropsType } from 'next';
 import { GetStripeProducts } from 'queries';
-import { createApolloClient } from 'services/apollo/client';
+import { addApolloState, initializeApollo } from 'services/apollo/apolloClient';
 import { Alert, Container, Heading, Spinner } from 'theme-ui';
 
 const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -32,13 +31,13 @@ const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStatic
 };
 
 export async function getStaticProps() {
-  const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
+  const apolloClient = initializeApollo();
 
   let products = [];
   let error = null;
 
   try {
-    const { data } = await client.query({
+    const { data } = await apolloClient.query({
       query: GetStripeProducts
     });
 
@@ -52,7 +51,7 @@ export async function getStaticProps() {
     error = Array.isArray(err) ? err.map((e) => e.message).join() : err.message;
   }
 
-  return { props: { products, error } };
+  return addApolloState(apolloClient, { props: { products, error } });
 }
 
 export default IndexPage;
