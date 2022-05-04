@@ -1,20 +1,15 @@
-import { useAtom } from 'jotai';
-import { Fragment, useState } from 'react';
-import { currencyAtom } from 'store';
+import { Fragment } from 'react';
 import NavigationMobileMenu from './NavigationMobileMenu';
 import NavigationTop from './NavigationTop';
+import SearchModal from './SearchModal';
 
 export const Navigation = () => {
-  const [selectedCurrency, updateCurrency] = useAtom(currencyAtom);
-  console.log(selectedCurrency);
-
-  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <Fragment>
-      <NavigationMobileMenu isMobileMenuOpen={isMobileMenuOpen} onCloseMobileMenu={() => setMobileMenuOpen(false)} />
+      <SearchModal />
+      <NavigationMobileMenu />
       <header className="relative z-10">
-        <NavigationTop onOpenMobileMenu={() => setMobileMenuOpen(true)} />
+        <NavigationTop />
       </header>
     </Fragment>
   );

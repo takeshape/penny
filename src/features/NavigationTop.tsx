@@ -6,19 +6,16 @@ import { useAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
-import { searchIsOpenAtom } from 'store';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import NavigationAccountIcon from './NavigationAccountIcon';
 import NavigationCreateOrSignIn from './NavigationCreateOrSignIn';
 import NavigationCurrencySelect from './NavigationCurrencySelect';
 import SearchModal from './SearchModal';
 
-export interface NavigationTopProps {
-  onOpenMobileMenu: () => void;
-}
-
-export const NavigationTop = ({ onOpenMobileMenu }: NavigationTopProps) => {
-  const [, setSearchIsOpen] = useAtom(searchIsOpenAtom);
+export const NavigationTop = () => {
+  const [, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
+  const [, setIsSearchOpen] = useAtom(isSearchOpenAtom);
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
   const { currencies, links } = data?.getNavigationData ?? {};
 
@@ -231,14 +228,14 @@ export const NavigationTop = ({ onOpenMobileMenu }: NavigationTopProps) => {
                   <button
                     type="button"
                     className="-ml-2 bg-white p-2 rounded-md text-gray-400"
-                    onClick={onOpenMobileMenu}
+                    onClick={() => setIsMobileMenuOpen(true)}
                   >
                     <span className="sr-only">Open menu</span>
                     <MenuIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
                   {/* Search */}
-                  <a onClick={() => setSearchIsOpen(true)} className="ml-2 p-2 text-gray-400 hover:text-gray-500">
+                  <a onClick={() => setIsSearchOpen(true)} className="ml-2 p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <SearchIcon className="w-6 h-6" aria-hidden="true" />
                   </a>
@@ -261,7 +258,7 @@ export const NavigationTop = ({ onOpenMobileMenu }: NavigationTopProps) => {
                   <div className="flex items-center lg:ml-8">
                     <div className="flex space-x-8">
                       <div className="hidden lg:flex">
-                        <a onClick={() => setSearchIsOpen(true)} className="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                        <a onClick={() => setIsSearchOpen(true)} className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                           <span className="sr-only">Search</span>
                           <SearchIcon className="w-6 h-6" aria-hidden="true" />
                         </a>

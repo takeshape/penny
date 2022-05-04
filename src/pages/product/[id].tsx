@@ -1,4 +1,3 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import PageLayout from 'features/layout/Page';
 import ProductAddToCart from 'features/products/ProductAddToCart';
 import ProductImage from 'features/products/ProductImage';
@@ -6,7 +5,7 @@ import ReviewList from 'features/reviews/ReviewList';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
-import { createApolloClient } from 'services/apollo/client';
+import { addApolloState, initializeApollo } from 'services/apollo/apolloClient';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type {
   ReviewsIo_ListProductReviewsResponseStatsProperty,
@@ -39,7 +38,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
       </Heading>
       <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
         <Box sx={{ flex: '1 1 32rem' }}>
-          <ProductImage images={product.images} />
+          <ProductImage images={product.images} maxHeight="600px" />
         </Box>
         <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
           <ProductAddToCart product={product} />
@@ -53,33 +52,38 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   );
 };
 
-export const getStaticProps: GetStaticProps<ProductPageProps> = async (context) => {
-  const { params } = context;
+export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
   const id = getSingle(params.id);
-  const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
+
+  const apolloClient = initializeApollo();
+
   const {
     data: { product, reviews }
-  } = await client.query<GetProductResponse, GetProductArgs>({
+  } = await apolloClient.query<GetProductResponse, GetProductArgs>({
     query: GetProduct,
     variables: { id }
   });
-  return {
+
+  return addApolloState(apolloClient, {
     props: {
       product,
       reviews: reviews.reviews.data ?? null,
       stats: reviews.stats ?? null
     }
-  };
+  });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
-  const { data } = await client.query<StripeProducts>({
+  const apolloClient = initializeApollo();
+
+  const { data } = await apolloClient.query<StripeProducts>({
     query: GetStripeProducts
   });
+
   const paths = data.products.items.map((product) => ({
     params: { id: product.id }
   }));
+
   return {
     paths,
     fallback: true

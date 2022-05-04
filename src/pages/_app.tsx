@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
       clientId={clientId}
       scope={scope}
       audience={audience}
-      redirectUri={isSsg && window.location.origin}
+      redirectUri={!isSsg && window.location.origin}
       cacheLocation="localstorage"
       onRedirectCallback={onRedirectCallback}
     >

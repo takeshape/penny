@@ -1,24 +1,23 @@
 import { useQuery } from '@apollo/client';
 import { Dialog, Tab, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import { useAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
+import { isMobileMenuOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import NavigationMobileMenuCreateOrSignIn from './NavigationMobileMenuCreateOrSignIn';
 import NavigationMobileMenuCurrencySelect from './NavigationMobileMenuCurrencySelect';
-export interface NavigationMobileMenuProps {
-  isMobileMenuOpen: boolean;
-  onCloseMobileMenu: () => void;
-}
 
-export const NavigationMobileMenu = ({ isMobileMenuOpen, onCloseMobileMenu }: NavigationMobileMenuProps) => {
+export const NavigationMobileMenu = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
   const { currencies, links } = data?.getNavigationData ?? {};
 
   return (
     <Transition.Root show={isMobileMenuOpen} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={onCloseMobileMenu}>
+      <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={() => setIsMobileMenuOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"
@@ -45,7 +44,7 @@ export const NavigationMobileMenu = ({ isMobileMenuOpen, onCloseMobileMenu }: Na
               <button
                 type="button"
                 className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400"
-                onClick={onCloseMobileMenu}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
                 <XIcon className="h-6 w-6" aria-hidden="true" />

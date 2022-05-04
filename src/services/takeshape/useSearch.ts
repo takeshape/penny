@@ -5,12 +5,17 @@ import { useCallback, useEffect, useState } from 'react';
 import useDebounce from 'services/hooks/useDebounce';
 import type { Stripe_Product } from 'types/takeshape';
 
-export const useSearch = (): [boolean, string, Stripe_Product[], Dispatch<string>, () => void] => {
+export interface UseSearchProps {
+  filterFn?: (result: any) => boolean;
+}
+
+export const useSearch = ({
+  filterFn
+}: UseSearchProps): [boolean, string, Stripe_Product[], Dispatch<string>, () => void] => {
+  filterFn = filterFn ?? ((x) => x);
   const [search, { loading, data }] = useLazyQuery(SearchStripeProducts);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-
-  console.log({ loading, data });
   const debouncedQuery = useDebounce(query, 200);
 
   useEffect(() => {
@@ -26,8 +31,8 @@ export const useSearch = (): [boolean, string, Stripe_Product[], Dispatch<string
       return;
     }
 
-    setResults(data.products.results.filter((result) => result.__typename === 'Stripe_Product'));
-  }, [data, loading]);
+    setResults(data.products.results.filter(filterFn));
+  }, [data, loading, filterFn]);
 
   const resetQuery = useCallback(() => {
     setQuery('');

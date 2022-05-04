@@ -3,4 +3,5 @@ import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 
 export const currencyAtom = atomWithStorage('currency', defaultCurrency);
-export const searchIsOpenAtom = atom(false);
+export const isSearchOpenAtom = atom(false);
+export const isMobileMenuOpenAtom = atom(false);

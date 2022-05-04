@@ -1,15 +1,19 @@
 import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/solid';
+import Loader from 'components/Loader';
 import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 import { Fragment } from 'react';
 import useSearch from 'services/takeshape/useSearch';
-import { searchIsOpenAtom } from 'store';
+import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 
 export const SearchModal = () => {
-  const [loading, query, results, setQuery, resetQuery] = useSearch();
-  const [isOpen, setIsOpen] = useAtom(searchIsOpenAtom);
-
+  const router = useRouter();
+  const [loading, query, results, setQuery, resetQuery] = useSearch({
+    filterFn: (result) => result.__typename === 'Stripe_Product'
+  });
+  const [isOpen, setIsOpen] = useAtom(isSearchOpenAtom);
   return (
     <Transition.Root show={isOpen} as={Fragment} afterLeave={() => setQuery('')} appear>
       <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
@@ -36,7 +40,7 @@ export const SearchModal = () => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
-              <Combobox onChange={(product) => (window.location = `/product/${product.id}`)}>
+              <Combobox value="" onChange={(productId) => router.push(`/product/${productId}`)}>
                 <div className="relative">
                   <SearchIcon
                     className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
@@ -54,7 +58,7 @@ export const SearchModal = () => {
                     {results.map((product) => (
                       <Combobox.Option
                         key={product.id}
-                        value={product}
+                        value={product.id}
                         className={({ active }) =>
                           classNames('cursor-default select-none px-4 py-2', active && 'bg-indigo-600 text-white')
                         }
@@ -65,8 +69,14 @@ export const SearchModal = () => {
                   </Combobox.Options>
                 )}
 
-                {query !== '' && results.length === 0 && (
+                {query !== '' && results.length === 0 && !loading && (
                   <p className="p-4 text-sm text-gray-500">No products found.</p>
+                )}
+
+                {query !== '' && loading && (
+                  <div className="p-8 flex items-center justify-center">
+                    <Loader />
+                  </div>
                 )}
               </Combobox>
             </Dialog.Panel>
