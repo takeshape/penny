@@ -2,6 +2,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { audience, clientId, domain, isSsg, scope } from 'config';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { withJotai } from 'storybook-addon-jotai';
 import { ThemeProvider } from 'theme-ui';
 import GlobalStyles from '../src/components/GlobalStyles';
 import '../src/styles/globals.css';
@@ -24,6 +25,7 @@ export const parameters = {
 }
 
 export const decorators = [
+  withJotai,
   (Story) => (
     <Auth0Provider
       domain={domain}

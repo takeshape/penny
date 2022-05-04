@@ -418,7 +418,7 @@ export type NavigationLinks = {
 export type NavigationCurrency = typeof currencyList[number];
 
 export interface NavigationDataResults {
-  getNavigationData: {
+  navigation: {
     links: NavigationLinks;
     currencies: NavigationCurrency[];
   };
@@ -426,7 +426,7 @@ export interface NavigationDataResults {
 
 export const GetNavigationDataQuery = gql`
   query GetNavigationData {
-    getNavigationData {
+    navigation: getNavigationData {
       links {
         categories {
           name
@@ -452,7 +452,6 @@ export const GetNavigationDataQuery = gql`
           href
         }
       }
-      currencies
     }
   }
 `;

@@ -1,9 +1,10 @@
 import PageLayout from 'features/layout/Page';
 import ProductGrid from 'features/products/ProductGrid';
 import type { InferGetStaticPropsType } from 'next';
-import { GetStripeProducts } from 'queries';
-import { addApolloState, initializeApollo } from 'services/apollo/apolloClient';
+import { GetNavigationDataQuery, GetStripeProducts } from 'queries';
+import { addApolloState, createStaticClient } from 'services/apollo/apolloClient';
 import { Alert, Container, Heading, Spinner } from 'theme-ui';
+import { formatError } from 'utils/errors';
 
 const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
@@ -31,12 +32,17 @@ const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStatic
 };
 
 export async function getStaticProps() {
-  const apolloClient = initializeApollo();
+  const apolloClient = createStaticClient();
 
   let products = [];
   let error = null;
 
   try {
+    // Load the navigation data into the cache
+    await apolloClient.query({
+      query: GetNavigationDataQuery
+    });
+
     const { data } = await apolloClient.query({
       query: GetStripeProducts
     });
@@ -48,7 +54,7 @@ export async function getStaticProps() {
     }
   } catch (err) {
     console.error(err);
-    error = Array.isArray(err) ? err.map((e) => e.message).join() : err.message;
+    error = formatError(err);
   }
 
   return addApolloState(apolloClient, { props: { products, error } });

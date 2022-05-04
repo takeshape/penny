@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Dialog, Tab, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import { currencyList } from 'config';
 import { useAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
@@ -13,7 +14,8 @@ import NavigationMobileMenuCurrencySelect from './NavigationMobileMenuCurrencySe
 export const NavigationMobileMenu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
-  const { currencies, links } = data?.getNavigationData ?? {};
+  const { links } = data?.navigation ?? {};
+  const currencies = [...currencyList];
 
   return (
     <Transition.Root show={isMobileMenuOpen} as={Fragment}>
@@ -55,7 +57,7 @@ export const NavigationMobileMenu = () => {
             <Tab.Group as="div" className="mt-2">
               <div className="border-b border-gray-200">
                 <Tab.List className="-mb-px flex px-4 space-x-8">
-                  {links?.categories.map((category) => (
+                  {links?.categories?.map((category) => (
                     <Tab
                       key={category.name}
                       className={({ selected }) =>
@@ -71,7 +73,7 @@ export const NavigationMobileMenu = () => {
                 </Tab.List>
               </div>
               <Tab.Panels as={Fragment}>
-                {links?.categories.map((category, categoryIdx) => (
+                {links?.categories?.map((category, categoryIdx) => (
                   <Tab.Panel key={category.name} className="px-4 pt-10 pb-6 space-y-12">
                     <div className="grid grid-cols-1 items-start gap-y-10 gap-x-6">
                       <div className="grid grid-cols-1 gap-y-10 gap-x-6">
@@ -84,7 +86,7 @@ export const NavigationMobileMenu = () => {
                             aria-labelledby={`mobile-featured-heading-${categoryIdx}`}
                             className="mt-6 space-y-6"
                           >
-                            {category.featured.map((item) => (
+                            {category.featured?.map((item) => (
                               <li key={item.name} className="flex">
                                 <a href={item.href} className="text-gray-500">
                                   {item.name}
@@ -98,7 +100,7 @@ export const NavigationMobileMenu = () => {
                             Categories
                           </p>
                           <ul role="list" aria-labelledby="mobile-categories-heading" className="mt-6 space-y-6">
-                            {category.categories.map((item) => (
+                            {category.categories?.map((item) => (
                               <li key={item.name} className="flex">
                                 <a href={item.href} className="text-gray-500">
                                   {item.name}
@@ -114,7 +116,7 @@ export const NavigationMobileMenu = () => {
                             Collection
                           </p>
                           <ul role="list" aria-labelledby="mobile-collection-heading" className="mt-6 space-y-6">
-                            {category.collection.map((item) => (
+                            {category.collection?.map((item) => (
                               <li key={item.name} className="flex">
                                 <a href={item.href} className="text-gray-500">
                                   {item.name}
@@ -129,7 +131,7 @@ export const NavigationMobileMenu = () => {
                             Brands
                           </p>
                           <ul role="list" aria-labelledby="mobile-brand-heading" className="mt-6 space-y-6">
-                            {category.brands.map((item) => (
+                            {category.brands?.map((item) => (
                               <li key={item.name} className="flex">
                                 <a href={item.href} className="text-gray-500">
                                   {item.name}
@@ -146,7 +148,7 @@ export const NavigationMobileMenu = () => {
             </Tab.Group>
 
             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-              {links?.pages.map((page) => (
+              {links?.pages?.map((page) => (
                 <div key={page.name} className="flow-root">
                   <a href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
                     {page.name}

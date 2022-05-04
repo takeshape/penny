@@ -1,6 +1,7 @@
 import type { ComponentMeta } from '@storybook/react';
 import { currencyList } from 'config';
 import { GetNavigationDataQuery } from 'queries';
+import { isMobileMenuOpenAtom } from 'store';
 import { NavigationMobileMenu } from '../NavigationMobileMenu';
 import navigationJson from '../__fixtures__/navigation.json';
 
@@ -11,6 +12,14 @@ export default {
     viewport: {
       defaultViewport: 'mobile2'
     },
+    jotai: {
+      atoms: {
+        isMobileMenuOpen: isMobileMenuOpenAtom
+      },
+      values: {
+        isMobileMenuOpen: true
+      }
+    },
     apolloClient: {
       mocks: [
         {
@@ -19,7 +28,7 @@ export default {
           },
           result: {
             data: {
-              getNavigationData: {
+              navigation: {
                 links: navigationJson.links,
                 currencies: [...currencyList]
               }

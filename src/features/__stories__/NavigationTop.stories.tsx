@@ -17,7 +17,7 @@ export default {
           },
           result: {
             data: {
-              getNavigationData: {
+              navigation: {
                 links: navigationJson.links,
                 currencies: [...currencyList]
               }
@@ -31,7 +31,7 @@ export default {
           },
           result: {
             data: {
-              products: {
+              search: {
                 results: [
                   {
                     __typename: 'Stripe_Product',

@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Popover, Transition } from '@headlessui/react';
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline';
-import Image from 'components/NextImage';
+import { currencyList } from 'config';
 import { useAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
@@ -17,7 +17,8 @@ export const NavigationTop = () => {
   const [, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
   const [, setIsSearchOpen] = useAtom(isSearchOpenAtom);
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
-  const { currencies, links } = data?.getNavigationData ?? {};
+  const { links } = data?.navigation ?? {};
+  const currencies = [...currencyList];
 
   return (
     <>
@@ -73,12 +74,8 @@ export const NavigationTop = () => {
                   <a href="#">
                     <span className="sr-only">Workflow</span>
                     <div className="h-8 w-8 relative">
-                      <Image
-                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                        alt=""
-                        layout="fill"
-                        objectFit="contain"
-                      />
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
                     </div>
                   </a>
                 </div>
@@ -87,7 +84,7 @@ export const NavigationTop = () => {
                   {/* Mega menus */}
                   <Popover.Group className="ml-8">
                     <div className="h-full flex justify-center space-x-8">
-                      {links?.categories.map((category, categoryIdx) => (
+                      {links?.categories?.map((category, categoryIdx) => (
                         <Popover key={category.name} className="flex">
                           {({ open }) => (
                             <>
@@ -133,7 +130,7 @@ export const NavigationTop = () => {
                                               aria-labelledby={`desktop-featured-heading-${categoryIdx}`}
                                               className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                             >
-                                              {category.featured.map((item) => (
+                                              {category.featured?.map((item) => (
                                                 <li key={item.name} className="flex">
                                                   <a href={item.href} className="hover:text-gray-800">
                                                     {item.name}
@@ -151,7 +148,7 @@ export const NavigationTop = () => {
                                               aria-labelledby="desktop-categories-heading"
                                               className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                             >
-                                              {category.categories.map((item) => (
+                                              {category.categories?.map((item) => (
                                                 <li key={item.name} className="flex">
                                                   <a href={item.href} className="hover:text-gray-800">
                                                     {item.name}
@@ -171,7 +168,7 @@ export const NavigationTop = () => {
                                               aria-labelledby="desktop-collection-heading"
                                               className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                             >
-                                              {category.collection.map((item) => (
+                                              {category.collection?.map((item) => (
                                                 <li key={item.name} className="flex">
                                                   <a href={item.href} className="hover:text-gray-800">
                                                     {item.name}
@@ -190,7 +187,7 @@ export const NavigationTop = () => {
                                               aria-labelledby="desktop-brand-heading"
                                               className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                             >
-                                              {category.brands.map((item) => (
+                                              {category.brands?.map((item) => (
                                                 <li key={item.name} className="flex">
                                                   <a href={item.href} className="hover:text-gray-800">
                                                     {item.name}
@@ -210,7 +207,7 @@ export const NavigationTop = () => {
                         </Popover>
                       ))}
 
-                      {links?.pages.map((page) => (
+                      {links?.pages?.map((page) => (
                         <a
                           key={page.name}
                           href={page.href}
@@ -245,12 +242,8 @@ export const NavigationTop = () => {
                 <a href="#" className="lg:hidden">
                   <span className="sr-only">Workflow</span>
                   <div className="h-8 w-8 relative">
-                    <Image
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-                      alt=""
-                      layout="fill"
-                      objectFit="contain"
-                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
                   </div>
                 </a>
 

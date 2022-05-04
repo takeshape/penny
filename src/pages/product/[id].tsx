@@ -5,7 +5,7 @@ import ReviewList from 'features/reviews/ReviewList';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
-import { addApolloState, initializeApollo } from 'services/apollo/apolloClient';
+import { addApolloState, createStaticClient } from 'services/apollo/apolloClient';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type {
   ReviewsIo_ListProductReviewsResponseStatsProperty,
@@ -55,7 +55,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
   const id = getSingle(params.id);
 
-  const apolloClient = initializeApollo();
+  const apolloClient = createStaticClient();
 
   const {
     data: { product, reviews }
@@ -74,7 +74,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const apolloClient = initializeApollo();
+  const apolloClient = createStaticClient();
 
   const { data } = await apolloClient.query<StripeProducts>({
     query: GetStripeProducts

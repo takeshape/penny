@@ -2,7 +2,7 @@
 
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { isSsg, takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useMemo } from 'react';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
@@ -12,9 +12,10 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
   getAccessToken?: () => string | Promise<string>;
+  ssrMode?: boolean;
 }
 
-function createApolloClient({ getAccessToken }: Pick<InitializeApolloProps, 'getAccessToken'>) {
+function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloProps, 'getAccessToken' | 'ssrMode'>) {
   const httpLink = createHttpLink({
     uri: takeshapeApiUrl
   });
@@ -61,25 +62,37 @@ function createApolloClient({ getAccessToken }: Pick<InitializeApolloProps, 'get
   return new ApolloClient<NormalizedCacheObject>({
     link: ApolloLink.from([withToken, authLink.concat(httpLinkWithoutTypeName)]),
     cache: new InMemoryCache(),
-    ssrMode: isSsg
+    ssrMode
   });
 }
 
-export function initializeApollo({ initialCache, getAccessToken }: InitializeApolloProps = {}) {
-  const _apolloClient = apolloClient ?? createApolloClient({ getAccessToken });
+/**
+ * The static client is used during static generation. Existing clients will be
+ * reused to ensure the cache is complete.
+ */
+export function createStaticClient({ initialCache, getAccessToken }: InitializeApolloProps = {}) {
+  const _apolloClient = apolloClient ?? createApolloClient({ getAccessToken, ssrMode: true });
 
   if (initialCache) {
     _apolloClient.cache.restore(initialCache);
   }
 
-  // For SSG and SSR always create a new Apollo Client
-  if (isSsg) {
-    return _apolloClient;
-  }
-
-  // Create the Apollo Client once in the client
   if (!apolloClient) {
     apolloClient = _apolloClient;
+  }
+
+  return _apolloClient;
+}
+
+/**
+ * Creates a client and  restores the cache. Always returns a new client. Suitable
+ * for use inside useMemo.
+ */
+export function createClient({ initialCache, getAccessToken }: InitializeApolloProps = {}) {
+  const _apolloClient = createApolloClient({ getAccessToken });
+
+  if (initialCache) {
+    _apolloClient.cache.restore(initialCache);
   }
 
   return _apolloClient;
@@ -95,6 +108,6 @@ export function addApolloState(client: ApolloClient<NormalizedCacheObject>, page
 
 export function useApollo(pageProps: any, getAccessToken?: InitializeApolloProps['getAccessToken']) {
   const initialCache = pageProps[APOLLO_CACHE_PROP_NAME];
-  const client = useMemo(() => initializeApollo({ initialCache, getAccessToken }), [initialCache, getAccessToken]);
+  const client = useMemo(() => createClient({ initialCache, getAccessToken }), [initialCache, getAccessToken]);
   return client;
 }

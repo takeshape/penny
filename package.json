@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "typecheck": "tsc --noEmit --pretty ",
-    "typegen": "takeshape schema && takeshape types --to ./types/takeshape.d.ts",
+    "typegen": "takeshape schema && takeshape types --to src/types/takeshape.d.ts",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "storybook": "start-storybook -p 6006",
@@ -27,7 +27,7 @@
     "takeshape:validate": "takeshape validate --path .takeshape/pattern/schema.json"
   },
   "dependencies": {
-    "@apollo/client": "^3.5.10",
+    "@apollo/client": "^3.6.2",
     "@auth0/auth0-react": "^1.10.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -97,6 +97,7 @@
     "postcss": "^8.4.12",
     "prettier": "^2.6.2",
     "storybook-addon-apollo-client": "^4.0.11",
+    "storybook-addon-jotai": "0.0.5",
     "tailwindcss": "^3.0.24",
     "type-fest": "^2.12.2",
     "typescript": "^4.6.3",
