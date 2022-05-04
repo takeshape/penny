@@ -35,7 +35,7 @@ export const Search = () => {
       return;
     }
 
-    setResults(data.products.results.filter((result) => result.__typename === 'Stripe_Product'));
+    setResults(data.search.results.filter((result) => result.__typename === 'Stripe_Product'));
   }, [data, loading]);
 
   const onClick = useCallback(

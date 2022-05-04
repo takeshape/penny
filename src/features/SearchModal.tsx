@@ -3,7 +3,8 @@ import { SearchIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { Fragment } from 'react';
+import { SearchStripeProducts } from 'queries';
+import { Fragment, useCallback } from 'react';
 import useSearch from 'services/takeshape/useSearch';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
@@ -11,11 +12,24 @@ import classNames from 'utils/classNames';
 export const SearchModal = () => {
   const router = useRouter();
   const [loading, query, results, setQuery, resetQuery] = useSearch({
+    graphqlQuery: SearchStripeProducts,
     filterFn: (result) => result.__typename === 'Stripe_Product'
   });
   const [isOpen, setIsOpen] = useAtom(isSearchOpenAtom);
+
+  const onQueryChange = useCallback(
+    (e) => {
+      setQuery(e.target.value);
+    },
+    [setQuery]
+  );
+
+  const onLeave = useCallback(() => {
+    resetQuery();
+  }, [resetQuery]);
+
   return (
-    <Transition.Root show={isOpen} as={Fragment} afterLeave={() => setQuery('')} appear>
+    <Transition.Root show={isOpen} as={Fragment} afterLeave={onLeave} appear>
       <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
         <Transition.Child
           as={Fragment}
@@ -49,7 +63,7 @@ export const SearchModal = () => {
                   <Combobox.Input
                     className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm"
                     placeholder="Search..."
-                    onChange={(event) => setQuery(event.target.value)}
+                    onChange={onQueryChange}
                   />
                 </div>
 

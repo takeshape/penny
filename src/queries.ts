@@ -39,7 +39,7 @@ export const GetStripeProducts = gql`
 
 export const SearchStripeProducts = gql`
   query SearchStripeProducts($query: String!) {
-    products: search(terms: $query, where: { active: { eq: true } }) {
+    search(terms: $query, where: { active: { eq: true } }) {
       results {
         __typename
         ... on Stripe_Product {

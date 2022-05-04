@@ -96,7 +96,7 @@ const config = {
     ];
   },
   images: {
-    domains: ['files.stripe.com', 'rickandmortyapi.com']
+    domains: ['files.stripe.com', 'tailwindui.com']
   },
   poweredByHeader: false,
   reactStrictMode: true,
