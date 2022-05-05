@@ -1,12 +1,13 @@
 import { useQuery } from '@apollo/client';
 import { Popover, Transition } from '@headlessui/react';
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline';
+import ClientOnly from 'components/ClientOnly';
 import { currencyList } from 'config';
-import { useSetAtom } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
-import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
+import { cartItemsAtom, isCartOpenAtom, isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import NavigationAccountIcon from './NavigationAccountIcon';
 import NavigationCreateOrSignIn from './NavigationCreateOrSignIn';
@@ -16,6 +17,10 @@ import SearchModal from './SearchModal';
 export const NavigationTop = () => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
   const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
+  const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
+  const cartItems = useAtomValue(cartItemsAtom);
+  const cartQuantity = cartItems.reduce((q, i) => q + i.quantity, 0);
+
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
   const { links } = data?.navigation ?? {};
   const currencies = [...currencyList];
@@ -265,12 +270,19 @@ export const NavigationTop = () => {
                     <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
                     <div className="flow-root">
-                      <a href="#" className="group -m-2 p-2 flex items-center">
+                      <a
+                        onClick={() => (isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true))}
+                        className="group -m-2 p-2 flex items-center"
+                      >
                         <ShoppingCartIcon
                           className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
                           aria-hidden="true"
                         />
-                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                        <ClientOnly>
+                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                            {cartQuantity}
+                          </span>
+                        </ClientOnly>
                         <span className="sr-only">items in cart, view bag</span>
                       </a>
                     </div>

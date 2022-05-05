@@ -75,9 +75,6 @@ Tablet.parameters = {
 export const Desktop = Template.bind({});
 
 Desktop.parameters = {
-  viewport: {
-    defaultViewport: 'responsive'
-  },
   jotai: {
     atoms: {
       isSearchOpen: isSearchOpenAtom
