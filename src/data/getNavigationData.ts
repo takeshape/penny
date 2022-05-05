@@ -5,20 +5,19 @@ import { createStaticClient } from 'services/apollo/apolloClient';
 
 const cache = accessCache('build.cache');
 
-async function getCommonQueryCache() {
-  let queryCache = (await cache.get('commonQueryCache')) as NormalizedCacheObject;
+async function getNavigationData() {
+  let queryCache = (await cache.get('navigationData')) as NormalizedCacheObject;
 
   if (!queryCache) {
     const apolloClient = createStaticClient();
     await apolloClient.query({
       query: GetNavigationDataQuery
     });
-    console.log('DOING QUERY!!');
     queryCache = apolloClient.cache.extract();
-    await cache.put('commonQueryCache', queryCache, 30000);
+    await cache.put('navigationData', queryCache);
   }
 
   return queryCache;
 }
 
-export default getCommonQueryCache;
+export default getNavigationData;

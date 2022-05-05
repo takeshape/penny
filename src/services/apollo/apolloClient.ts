@@ -4,7 +4,6 @@ import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCach
 import { setContext } from '@apollo/client/link/context';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useMemo } from 'react';
-import { mergeWithArrayMerge } from 'utils/merge';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
 
@@ -72,7 +71,7 @@ function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloPr
  * reused to ensure the cache is complete.
  */
 export function createStaticClient({ getAccessToken }: InitializeApolloProps = {}) {
-  const _apolloClient = createApolloClient({ getAccessToken, ssrMode: true });
+  const _apolloClient = apolloClient ?? createApolloClient({ getAccessToken, ssrMode: true });
 
   if (!apolloClient) {
     apolloClient = _apolloClient;
@@ -93,19 +92,6 @@ export function createClient({ initialCache, getAccessToken }: InitializeApolloP
   }
 
   return _apolloClient;
-}
-
-export function addQueryCache(
-  client: ApolloClient<NormalizedCacheObject>,
-  common: NormalizedCacheObject,
-  pageProps: any
-) {
-  if (pageProps?.props) {
-    const cache = client.cache.extract();
-    pageProps.props[APOLLO_CACHE_PROP_NAME] = mergeWithArrayMerge(cache, common);
-  }
-
-  return pageProps;
 }
 
 export function useApollo(pageProps: any, getAccessToken?: InitializeApolloProps['getAccessToken']) {

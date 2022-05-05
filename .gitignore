@@ -42,4 +42,4 @@ yarn-error.log*
 /cypress/videos
 
 # build cache
-build.cache
+*.cache

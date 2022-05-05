@@ -6,7 +6,9 @@
     "node": ">=14"
   },
   "scripts": {
+    "predev": "rm -f *.cache",
     "dev": "next dev",
+    "prebuild": "rm -f *.cache",
     "build": "next build",
     "start": "next start",
     "export": "next build && next export",
@@ -48,6 +50,7 @@
     "micro": "^9.3.4",
     "next": "^12.1.6",
     "next-build-cache": "^1.0.4",
+    "next-compose-plugins": "^2.2.1",
     "next-seo": "^5.4.0",
     "node-fetch": "^3.2.4",
     "preact": "^10.7.1",
@@ -56,6 +59,7 @@
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
     "react-star-ratings": "^2.3.0",
+    "sharp": "^0.30.4",
     "stripe": "^8.219.0",
     "theme-ui": "^0.14.5"
   },

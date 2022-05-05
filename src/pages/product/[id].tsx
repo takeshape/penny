@@ -1,4 +1,3 @@
-import getCommonQueryCache from 'data/getCommonQueryCache';
 import PageLayout from 'features/layout/Page';
 import ProductAddToCart from 'features/products/ProductAddToCart';
 import ProductImage from 'features/products/ProductImage';
@@ -6,7 +5,8 @@ import ReviewList from 'features/reviews/ReviewList';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
-import { addQueryCache, createStaticClient } from 'services/apollo/apolloClient';
+import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
+import { createStaticClient } from 'services/apollo/apolloClient';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type {
   ReviewsIo_ListProductReviewsResponseStatsProperty,
@@ -64,9 +64,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     variables: { id }
   });
 
-  const commonQueryCache = await getCommonQueryCache();
-
-  return addQueryCache(apolloClient, commonQueryCache, {
+  return addApolloQueryCache(apolloClient, {
     props: {
       product,
       reviews: reviews.reviews.data ?? null,

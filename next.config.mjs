@@ -1,4 +1,5 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import withPlugins from 'next-compose-plugins';
 
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -116,4 +117,4 @@ const config = {
   }
 };
 
-export default withBundleAnalyzer(config);
+export default withPlugins([withBundleAnalyzer], config);
