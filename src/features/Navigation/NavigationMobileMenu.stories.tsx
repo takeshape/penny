@@ -2,8 +2,8 @@ import type { ComponentMeta } from '@storybook/react';
 import { currencyList } from 'config';
 import { GetNavigationDataQuery } from 'queries';
 import { isMobileMenuOpenAtom } from 'store';
-import { NavigationMobileMenu } from '../NavigationMobileMenu';
 import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
+import { NavigationMobileMenu } from './NavigationMobileMenu';
 
 export default {
   title: 'Features/NavigationMobileMenu',

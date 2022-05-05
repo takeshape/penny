@@ -1,4 +1,4 @@
-import Navigation from 'features/Navigation';
+import Navigation from 'features/Navigation/Navigation';
 import { Container } from 'theme-ui';
 
 export const Header = () => (

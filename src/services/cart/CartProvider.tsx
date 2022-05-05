@@ -2,13 +2,13 @@ import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';
 import { Fragment, useEffect } from 'react';
-import { cartCheckoutResult, cartItemsAtom } from 'store';
+import { cartCheckoutResultAtom, cartItemsAtom } from 'store';
 
 const stripeCheckoutActionSuccess = 'success';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const setCartItems = useSetAtom(cartItemsAtom);
-  const setCheckoutResult = useSetAtom(cartCheckoutResult);
+  const setCheckoutResult = useSetAtom(cartCheckoutResultAtom);
 
   const {
     replace,

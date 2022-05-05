@@ -1,7 +1,7 @@
+import SearchModal from 'features/Search/SearchModal';
 import { Fragment } from 'react';
 import NavigationMobileMenu from './NavigationMobileMenu';
 import NavigationTop from './NavigationTop';
-import SearchModal from './SearchModal';
 
 export const Navigation = () => {
   return (

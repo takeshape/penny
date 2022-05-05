@@ -2,9 +2,9 @@ import type { ComponentMeta } from '@storybook/react';
 import { currencyList } from 'config';
 import { GetNavigationDataQuery, SearchStripeProducts } from 'queries';
 import { isSearchOpenAtom } from 'store';
-import { NavigationTop } from '../NavigationTop';
 import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
 import SearchStripeProductsResults from '../__fixtures__/SearchStripeProducts.result.json';
+import { NavigationTop } from './NavigationTop';
 
 export default {
   title: 'Features/NavigationTop',

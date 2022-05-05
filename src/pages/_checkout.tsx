@@ -1,10 +1,11 @@
 import { useApolloClient } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
+import { useAtomValue } from 'jotai';
 import { CreateMyCheckoutSession } from 'queries';
 import { useEffect } from 'react';
-import useCart from 'services/cart/useCart';
 import getStripe from 'services/stripe/getStripe';
 import useProfile from 'services/takeshape/useProfile';
+import { cartItemsAtom } from 'store';
 import { Container, Spinner } from 'theme-ui';
 import { getCheckoutPayload } from 'utils/checkout';
 
@@ -12,13 +13,13 @@ import { getCheckoutPayload } from 'utils/checkout';
 function _CheckoutPage() {
   const { isProfileReady } = useProfile();
   const client = useApolloClient();
-  const { items } = useCart();
+  const cartItems = useAtomValue(cartItemsAtom);
 
   useEffect(() => {
     const doCheckout = async () => {
       const { data } = await client.mutate({
         mutation: CreateMyCheckoutSession,
-        variables: getCheckoutPayload(items, '/')
+        variables: getCheckoutPayload(cartItems, '/')
       });
 
       const stripe = await getStripe();
@@ -30,7 +31,7 @@ function _CheckoutPage() {
     if (isProfileReady) {
       doCheckout();
     }
-  }, [client, items, isProfileReady]);
+  }, [client, cartItems, isProfileReady]);
 
   return (
     <Container variant="layout.loading">
