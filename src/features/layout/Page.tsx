@@ -1,7 +1,7 @@
+import CartSidebar from 'features/Cart/CartSidebar';
 import NavigationNew from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
 import Seo from 'features/Seo';
-import CartSidebar from 'features/tmp/CartSidebar';
 import type { NextSeoProps } from 'next-seo';
 import type { PropsWithChildren } from 'react';
 import CartProvider from 'services/cart/CartProvider';
