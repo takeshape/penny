@@ -1248,6 +1248,7 @@ input TSWhereInput {
   bio: TSWhereStringInput
   avatar: TSWhereAssetRelationshipInput
   stripeCustomerId: TSWhereStringInput
+  message: TSWhereStringInput
   links: TSWhereNavigationDataLinksInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
@@ -4664,8 +4665,8 @@ input TSWhereNavigationDataLinksCategoriesCollectionInput {
 }
 
 input TSWhereNavigationDataLinksCategoriesCategoriesInput {
-  href: TSWhereStringInput
   name: TSWhereStringInput
+  href: TSWhereStringInput
 }
 
 input TSWhereNavigationDataLinksCategoriesBrandsInput {
@@ -18182,6 +18183,9 @@ enum Stripe_ListPaymentIntentsResponseObjectProperty {
 
 type NavigationData implements TSSearchable {
   """"""
+  message: String
+
+  """"""
   links: NavigationDataLinks
   _shapeId: String
   _id: ID
@@ -18243,10 +18247,10 @@ type NavigationDataLinksCategoriesCollection {
 
 type NavigationDataLinksCategoriesCategories {
   """"""
-  href: String
+  name: String
 
   """"""
-  name: String
+  href: String
 }
 
 type NavigationDataLinksCategoriesBrands {
@@ -20547,6 +20551,9 @@ type UpdateNavigationDataResult {
 """update NavigationData input"""
 input UpdateNavigationDataInput {
   """"""
+  message: String
+
+  """"""
   links: NavigationDataLinksInput
   _shapeId: String
   _id: ID
@@ -20607,10 +20614,10 @@ input NavigationDataLinksCategoriesCollectionInput {
 
 input NavigationDataLinksCategoriesCategoriesInput {
   """"""
-  href: String
+  name: String
 
   """"""
-  name: String
+  href: String
 }
 
 input NavigationDataLinksCategoriesBrandsInput {

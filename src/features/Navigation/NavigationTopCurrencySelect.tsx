@@ -1,13 +1,10 @@
+import { currencyList } from 'config';
 import { useAtom } from 'jotai';
-import type { NavigationCurrency } from 'queries';
 import { currencyAtom } from 'store';
 
-export interface NavigationCurrencySelectProps {
-  currencies: NavigationCurrency[];
-}
-
-export const NavigationCurrencySelect = ({ currencies }: NavigationCurrencySelectProps) => {
+export const NavigationTopCurrencySelect = () => {
   const [selectedCurrency, updateCurrency] = useAtom(currencyAtom);
+  const currencies = [...currencyList];
 
   return (
     <select
@@ -24,4 +21,4 @@ export const NavigationCurrencySelect = ({ currencies }: NavigationCurrencySelec
   );
 };
 
-export default NavigationCurrencySelect;
+export default NavigationTopCurrencySelect;

@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 
-export const NavigationCreateOrSignIn = () => {
+export const NavigationTopCreateOrSignIn = () => {
   const { user, loginWithRedirect } = useAuth0();
 
   if (user) {
@@ -20,4 +20,4 @@ export const NavigationCreateOrSignIn = () => {
   );
 };
 
-export default NavigationCreateOrSignIn;
+export default NavigationTopCreateOrSignIn;

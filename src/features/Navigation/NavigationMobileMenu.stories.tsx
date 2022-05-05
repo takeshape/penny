@@ -1,5 +1,4 @@
 import type { ComponentMeta } from '@storybook/react';
-import { currencyList } from 'config';
 import { GetNavigationDataQuery } from 'queries';
 import { isMobileMenuOpenAtom } from 'store';
 import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
@@ -18,14 +17,7 @@ export default {
           request: {
             query: GetNavigationDataQuery
           },
-          result: {
-            data: {
-              navigation: {
-                links: GetNavigationDataResult.data.navigation.links,
-                currencies: [...currencyList]
-              }
-            }
-          }
+          result: GetNavigationDataResult
         }
       ]
     }
@@ -43,19 +35,6 @@ Open.parameters = {
     },
     values: {
       isMobileMenuOpen: true
-    }
-  }
-};
-
-export const Closed = Template.bind({});
-
-Closed.parameters = {
-  jotai: {
-    atoms: {
-      isMobileMenuOpen: isMobileMenuOpenAtom
-    },
-    values: {
-      isMobileMenuOpen: false
     }
   }
 };

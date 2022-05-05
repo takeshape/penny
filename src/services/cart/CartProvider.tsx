@@ -1,3 +1,6 @@
+/**
+ * TODO: Should be able to remove / rename this.
+ */
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';

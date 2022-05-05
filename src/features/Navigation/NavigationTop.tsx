@@ -1,29 +1,17 @@
-import { useQuery } from '@apollo/client';
-import { Popover, Transition } from '@headlessui/react';
-import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline';
-import ClientOnly from 'components/ClientOnly';
-import { currencyList } from 'config';
-import { useAtom, useAtomValue, useSetAtom } from 'jotai';
-import type { NavigationDataResults } from 'queries';
-import { GetNavigationDataQuery } from 'queries';
-import { Fragment } from 'react';
-import { cartItemsAtom, isCartOpenAtom, isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import classNames from 'utils/classNames';
+import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
+import { useSetAtom } from 'jotai';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import SearchModal from '../Search/SearchModal';
-import NavigationAccountIcon from './NavigationAccountIcon';
-import NavigationCreateOrSignIn from './NavigationCreateOrSignIn';
-import NavigationCurrencySelect from './NavigationCurrencySelect';
+import NavigationTopAccountIcon from './NavigationTopAccountIcon';
+import NavigationTopCartIcon from './NavigationTopCartIcon';
+import NavigationTopCreateOrSignIn from './NavigationTopCreateOrSignIn';
+import NavigationTopCurrencySelect from './NavigationTopCurrencySelect';
+import NavigationTopLinks from './NavigationTopLinks';
+import NavigationTopMessage from './NavigationTopMessage';
 
 export const NavigationTop = () => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
   const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
-  const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
-  const cartItems = useAtomValue(cartItemsAtom);
-  const cartQuantity = cartItems.reduce((q, i) => q + i.quantity, 0);
-
-  const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
-  const { links } = data?.navigation ?? {};
-  const currencies = [...currencyList];
 
   return (
     <>
@@ -39,7 +27,7 @@ export const NavigationTop = () => {
                   Currency
                 </label>
                 <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                  <NavigationCurrencySelect currencies={currencies} />
+                  <NavigationTopCurrencySelect />
                   <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
                     <svg
                       aria-hidden="true"
@@ -61,11 +49,8 @@ export const NavigationTop = () => {
               </div>
             </form>
 
-            <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-              Get free delivery on orders over $100
-            </p>
-
-            <NavigationCreateOrSignIn />
+            <NavigationTopMessage />
+            <NavigationTopCreateOrSignIn />
           </div>
         </div>
 
@@ -85,145 +70,7 @@ export const NavigationTop = () => {
                   </a>
                 </div>
 
-                <div className="hidden h-full lg:flex">
-                  {/* Mega menus */}
-                  <Popover.Group className="ml-8">
-                    <div className="h-full flex justify-center space-x-8">
-                      {links?.categories?.map((category, categoryIdx) => (
-                        <Popover key={category.name} className="flex">
-                          {({ open }) => (
-                            <>
-                              <div className="relative flex">
-                                <Popover.Button
-                                  className={classNames(
-                                    open
-                                      ? 'border-indigo-600 text-indigo-600'
-                                      : 'border-transparent text-gray-700 hover:text-gray-800',
-                                    'relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px'
-                                  )}
-                                >
-                                  {category.name}
-                                </Popover.Button>
-                              </div>
-
-                              <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-200"
-                                enterFrom="opacity-0"
-                                enterTo="opacity-100"
-                                leave="transition ease-in duration-150"
-                                leaveFrom="opacity-100"
-                                leaveTo="opacity-0"
-                              >
-                                <Popover.Panel className="absolute top-full inset-x-0 text-gray-500 sm:text-sm">
-                                  {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
-                                  <div className="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
-
-                                  <div className="relative bg-white">
-                                    <div className="max-w-7xl mx-auto px-8">
-                                      <div className="grid grid-cols-2 items-start gap-y-10 gap-x-8 pt-10 pb-12">
-                                        <div className="grid grid-cols-2 gap-y-10 gap-x-8">
-                                          <div>
-                                            <p
-                                              id={`desktop-featured-heading-${categoryIdx}`}
-                                              className="font-medium text-gray-900"
-                                            >
-                                              Featured
-                                            </p>
-                                            <ul
-                                              role="list"
-                                              aria-labelledby={`desktop-featured-heading-${categoryIdx}`}
-                                              className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                            >
-                                              {category.featured?.map((item) => (
-                                                <li key={item.name} className="flex">
-                                                  <a href={item.href} className="hover:text-gray-800">
-                                                    {item.name}
-                                                  </a>
-                                                </li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                          <div>
-                                            <p id="desktop-categories-heading" className="font-medium text-gray-900">
-                                              Categories
-                                            </p>
-                                            <ul
-                                              role="list"
-                                              aria-labelledby="desktop-categories-heading"
-                                              className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                            >
-                                              {category.categories?.map((item) => (
-                                                <li key={item.name} className="flex">
-                                                  <a href={item.href} className="hover:text-gray-800">
-                                                    {item.name}
-                                                  </a>
-                                                </li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-y-10 gap-x-8">
-                                          <div>
-                                            <p id="desktop-collection-heading" className="font-medium text-gray-900">
-                                              Collection
-                                            </p>
-                                            <ul
-                                              role="list"
-                                              aria-labelledby="desktop-collection-heading"
-                                              className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                            >
-                                              {category.collection?.map((item) => (
-                                                <li key={item.name} className="flex">
-                                                  <a href={item.href} className="hover:text-gray-800">
-                                                    {item.name}
-                                                  </a>
-                                                </li>
-                                              ))}
-                                            </ul>
-                                          </div>
-
-                                          <div>
-                                            <p id="desktop-brand-heading" className="font-medium text-gray-900">
-                                              Brands
-                                            </p>
-                                            <ul
-                                              role="list"
-                                              aria-labelledby="desktop-brand-heading"
-                                              className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
-                                            >
-                                              {category.brands?.map((item) => (
-                                                <li key={item.name} className="flex">
-                                                  <a href={item.href} className="hover:text-gray-800">
-                                                    {item.name}
-                                                  </a>
-                                                </li>
-                                              ))}
-                                            </ul>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Popover.Panel>
-                              </Transition>
-                            </>
-                          )}
-                        </Popover>
-                      ))}
-
-                      {links?.pages?.map((page) => (
-                        <a
-                          key={page.name}
-                          href={page.href}
-                          className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                        >
-                          {page.name}
-                        </a>
-                      ))}
-                    </div>
-                  </Popover.Group>
-                </div>
+                <NavigationTopLinks />
 
                 {/* Mobile menu and search (lg-) */}
                 <div className="flex-1 flex items-center lg:hidden">
@@ -263,29 +110,13 @@ export const NavigationTop = () => {
                       </div>
 
                       <div className="flex">
-                        <NavigationAccountIcon />
+                        <NavigationTopAccountIcon />
                       </div>
                     </div>
 
                     <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
-                    <div className="flow-root">
-                      <a
-                        onClick={() => (isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true))}
-                        className="group -m-2 p-2 flex items-center"
-                      >
-                        <ShoppingCartIcon
-                          className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                          aria-hidden="true"
-                        />
-                        <ClientOnly>
-                          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                            {cartQuantity}
-                          </span>
-                        </ClientOnly>
-                        <span className="sr-only">items in cart, view bag</span>
-                      </a>
-                    </div>
+                    <NavigationTopCartIcon />
                   </div>
                 </div>
               </div>

@@ -1,21 +1,15 @@
-import { useQuery } from '@apollo/client';
-import { Dialog, Tab, Transition } from '@headlessui/react';
+import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import { currencyList, isStorybook } from 'config';
+import { isStorybook } from 'config';
 import { useAtom } from 'jotai';
-import type { NavigationDataResults } from 'queries';
-import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
 import { isMobileMenuOpenAtom } from 'store';
-import classNames from 'utils/classNames';
 import NavigationMobileMenuCreateOrSignIn from './NavigationMobileMenuCreateOrSignIn';
 import NavigationMobileMenuCurrencySelect from './NavigationMobileMenuCurrencySelect';
+import NavigationMobileMenuLinks from './NavigationMobileMenuLinks';
 
 export const NavigationMobileMenu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
-  const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
-  const { links } = data?.navigation ?? {};
-  const currencies = [...currencyList];
 
   return (
     <Transition.Root show={isMobileMenuOpen} as={Fragment}>
@@ -59,141 +53,12 @@ export const NavigationMobileMenu = () => {
               </button>
             </div>
 
-            {/* Links */}
-            <Tab.Group as="div" className="mt-2">
-              <div className="border-b border-gray-200">
-                <Tab.List className="-mb-px flex px-4 space-x-8">
-                  {links?.categories?.map((category) => (
-                    <Tab
-                      key={category.name}
-                      className={({ selected }) =>
-                        classNames(
-                          selected ? 'text-indigo-600 border-indigo-600' : 'text-gray-900 border-transparent',
-                          'flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium'
-                        )
-                      }
-                    >
-                      {category.name}
-                    </Tab>
-                  ))}
-                </Tab.List>
-              </div>
-              <Tab.Panels as={Fragment}>
-                {links?.categories?.map((category, categoryIdx) => (
-                  <Tab.Panel key={category.name} className="px-4 pt-10 pb-6 space-y-12">
-                    <div className="grid grid-cols-1 items-start gap-y-10 gap-x-6">
-                      <div className="grid grid-cols-1 gap-y-10 gap-x-6">
-                        <div>
-                          <p id={`mobile-featured-heading-${categoryIdx}`} className="font-medium text-gray-900">
-                            Featured
-                          </p>
-                          <ul
-                            role="list"
-                            aria-labelledby={`mobile-featured-heading-${categoryIdx}`}
-                            className="mt-6 space-y-6"
-                          >
-                            {category.featured?.map((item) => (
-                              <li key={item.name} className="flex">
-                                <a href={item.href} className="text-gray-500">
-                                  {item.name}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <p id="mobile-categories-heading" className="font-medium text-gray-900">
-                            Categories
-                          </p>
-                          <ul role="list" aria-labelledby="mobile-categories-heading" className="mt-6 space-y-6">
-                            {category.categories?.map((item) => (
-                              <li key={item.name} className="flex">
-                                <a href={item.href} className="text-gray-500">
-                                  {item.name}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-1 gap-y-10 gap-x-6">
-                        <div>
-                          <p id="mobile-collection-heading" className="font-medium text-gray-900">
-                            Collection
-                          </p>
-                          <ul role="list" aria-labelledby="mobile-collection-heading" className="mt-6 space-y-6">
-                            {category.collection?.map((item) => (
-                              <li key={item.name} className="flex">
-                                <a href={item.href} className="text-gray-500">
-                                  {item.name}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        <div>
-                          <p id="mobile-brand-heading" className="font-medium text-gray-900">
-                            Brands
-                          </p>
-                          <ul role="list" aria-labelledby="mobile-brand-heading" className="mt-6 space-y-6">
-                            {category.brands?.map((item) => (
-                              <li key={item.name} className="flex">
-                                <a href={item.href} className="text-gray-500">
-                                  {item.name}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </Tab.Panel>
-                ))}
-              </Tab.Panels>
-            </Tab.Group>
-
-            <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-              {links?.pages?.map((page) => (
-                <div key={page.name} className="flow-root">
-                  <a href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
-                    {page.name}
-                  </a>
-                </div>
-              ))}
-            </div>
+            <NavigationMobileMenuLinks />
 
             <NavigationMobileMenuCreateOrSignIn />
 
             <div className="border-t border-gray-200 py-6 px-4 space-y-6">
-              {/* Currency selector */}
-              <form>
-                <div className="inline-block">
-                  <label htmlFor="mobile-currency" className="sr-only">
-                    Currency
-                  </label>
-                  <div className="-ml-2 group relative border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                    <NavigationMobileMenuCurrencySelect currencies={currencies} />
-                    <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
-                      <svg
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 20"
-                        className="w-5 h-5 text-gray-500"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="1.5"
-                          d="M6 8l4 4 4-4"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </form>
+              <NavigationMobileMenuCurrencySelect />
             </div>
           </div>
         </Transition.Child>

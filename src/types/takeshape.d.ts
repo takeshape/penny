@@ -1164,6 +1164,7 @@ export type TsWhereInput = {
   bio?: InputMaybe<TsWhereStringInput>;
   avatar?: InputMaybe<TsWhereAssetRelationshipInput>;
   stripeCustomerId?: InputMaybe<TsWhereStringInput>;
+  message?: InputMaybe<TsWhereStringInput>;
   links?: InputMaybe<TsWhereNavigationDataLinksInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
@@ -4500,8 +4501,8 @@ export type TsWhereNavigationDataLinksCategoriesCollectionInput = {
 };
 
 export type TsWhereNavigationDataLinksCategoriesCategoriesInput = {
-  href?: InputMaybe<TsWhereStringInput>;
   name?: InputMaybe<TsWhereStringInput>;
+  href?: InputMaybe<TsWhereStringInput>;
 };
 
 export type TsWhereNavigationDataLinksCategoriesBrandsInput = {
@@ -15202,6 +15203,7 @@ export enum Stripe_ListPaymentIntentsResponseObjectProperty {
 
 export type NavigationData = TsSearchable & {
   __typename?: 'NavigationData';
+  message?: Maybe<Scalars['String']>;
   links?: Maybe<NavigationDataLinks>;
   _shapeId?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ID']>;
@@ -15251,8 +15253,8 @@ export type NavigationDataLinksCategoriesCollection = {
 
 export type NavigationDataLinksCategoriesCategories = {
   __typename?: 'NavigationDataLinksCategoriesCategories';
-  href?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  href?: Maybe<Scalars['String']>;
 };
 
 export type NavigationDataLinksCategoriesBrands = {
@@ -17585,6 +17587,7 @@ export type UpdateNavigationDataResult = {
 
 /** update NavigationData input */
 export type UpdateNavigationDataInput = {
+  message?: InputMaybe<Scalars['String']>;
   links?: InputMaybe<NavigationDataLinksInput>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _id?: InputMaybe<Scalars['ID']>;
@@ -17626,8 +17629,8 @@ export type NavigationDataLinksCategoriesCollectionInput = {
 };
 
 export type NavigationDataLinksCategoriesCategoriesInput = {
-  href?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  href?: InputMaybe<Scalars['String']>;
 };
 
 export type NavigationDataLinksCategoriesBrandsInput = {

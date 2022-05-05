@@ -419,6 +419,7 @@ export type NavigationCurrency = typeof currencyList[number];
 
 export interface NavigationDataResults {
   navigation: {
+    message: string;
     links: NavigationLinks;
     currencies: NavigationCurrency[];
   };
@@ -427,6 +428,7 @@ export interface NavigationDataResults {
 export const GetNavigationDataQuery = gql`
   query GetNavigationData {
     navigation: getNavigationData {
+      message
       links {
         categories {
           name

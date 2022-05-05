@@ -1,5 +1,4 @@
 import type { ComponentMeta } from '@storybook/react';
-import { currencyList } from 'config';
 import { GetNavigationDataQuery, SearchStripeProducts } from 'queries';
 import { isSearchOpenAtom } from 'store';
 import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
@@ -17,14 +16,7 @@ export default {
           request: {
             query: GetNavigationDataQuery
           },
-          result: {
-            data: {
-              navigation: {
-                ...GetNavigationDataResult.data.navigation,
-                currencies: [...currencyList]
-              }
-            }
-          }
+          result: GetNavigationDataResult
         },
         {
           request: {
@@ -81,19 +73,6 @@ Desktop.parameters = {
     },
     values: {
       isSearchOpen: false
-    }
-  }
-};
-
-export const SearchOpen = Template.bind({});
-
-SearchOpen.parameters = {
-  jotai: {
-    atoms: {
-      isSearchOpen: isSearchOpenAtom
-    },
-    values: {
-      isSearchOpen: true
     }
   }
 };
