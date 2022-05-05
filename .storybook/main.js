@@ -2,7 +2,7 @@ const cwd = process.cwd();
 
 module.exports = {
   stories: [
-    '../src/**/*.stories.@(ts|tsx)'
+    '../src/**/*.stories.@(tsx|mdx)'
   ],
   addons: [
     '@storybook/addon-links',

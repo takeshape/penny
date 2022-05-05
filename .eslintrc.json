@@ -1,4 +1,13 @@
 {
   "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
-  "rules": { "no-unreachable": "error" }
+  "rules": { "no-unreachable": "error" },
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "overrides": [
+    {
+      "files": "*.mdx",
+      "extends": "plugin:mdx/recommended"
+    }
+  ]
 }

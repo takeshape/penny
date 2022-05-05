@@ -46,6 +46,7 @@ const getClassNames = (columns) =>
   });
 
 export const RickAndMortyList = ({ characters, columns }: RickAndMortyListProps) => {
+  console.log('HI');
   return (
     <ul className={getClassNames(columns ? Number(columns) : 1)}>
       {characters.map((character) => (
