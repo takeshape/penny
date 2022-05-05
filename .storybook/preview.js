@@ -3,10 +3,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { audience, clientId, domain, isSsg, scope } from 'config';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { withJotai } from 'storybook-addon-jotai';
-import { ThemeProvider } from 'theme-ui';
-import GlobalStyles from '../src/components/GlobalStyles';
 import '../src/styles/globals.css';
-import theme from '../src/theme';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -35,12 +32,9 @@ export const decorators = [
       redirectUri={isSsg && window.location.origin}
       cacheLocation="localstorage"
     >
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
         <div className="container">
           <Story />
         </div>
-      </ThemeProvider>
     </Auth0Provider>
   )
 ];

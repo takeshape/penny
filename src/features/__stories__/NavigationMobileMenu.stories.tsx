@@ -3,7 +3,7 @@ import { currencyList } from 'config';
 import { GetNavigationDataQuery } from 'queries';
 import { isMobileMenuOpenAtom } from 'store';
 import { NavigationMobileMenu } from '../NavigationMobileMenu';
-import navigationJson from '../__fixtures__/navigation.json';
+import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
 
 export default {
   title: 'Features/NavigationMobileMenu',
@@ -11,14 +11,6 @@ export default {
   parameters: {
     viewport: {
       defaultViewport: 'mobile2'
-    },
-    jotai: {
-      atoms: {
-        isMobileMenuOpen: isMobileMenuOpenAtom
-      },
-      values: {
-        isMobileMenuOpen: true
-      }
     },
     apolloClient: {
       mocks: [
@@ -29,7 +21,7 @@ export default {
           result: {
             data: {
               navigation: {
-                links: navigationJson.links,
+                links: GetNavigationDataResult.data.navigation.links,
                 currencies: [...currencyList]
               }
             }
@@ -40,4 +32,30 @@ export default {
   }
 } as ComponentMeta<typeof NavigationMobileMenu>;
 
-export const Renders = (args) => <NavigationMobileMenu isMobileMenuOpen={true} {...args} />;
+const Template = (args) => <NavigationMobileMenu {...args} />;
+
+export const Open = Template.bind({});
+
+Open.parameters = {
+  jotai: {
+    atoms: {
+      isMobileMenuOpen: isMobileMenuOpenAtom
+    },
+    values: {
+      isMobileMenuOpen: true
+    }
+  }
+};
+
+export const Closed = Template.bind({});
+
+Closed.parameters = {
+  jotai: {
+    atoms: {
+      isMobileMenuOpen: isMobileMenuOpenAtom
+    },
+    values: {
+      isMobileMenuOpen: false
+    }
+  }
+};

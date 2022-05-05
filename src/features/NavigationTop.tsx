@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { Popover, Transition } from '@headlessui/react';
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline';
 import { currencyList } from 'config';
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
@@ -14,8 +14,8 @@ import NavigationCurrencySelect from './NavigationCurrencySelect';
 import SearchModal from './SearchModal';
 
 export const NavigationTop = () => {
-  const [, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
-  const [, setIsSearchOpen] = useAtom(isSearchOpenAtom);
+  const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
+  const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
   const { links } = data?.navigation ?? {};
   const currencies = [...currencyList];

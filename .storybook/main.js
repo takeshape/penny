@@ -19,7 +19,8 @@ module.exports = {
         },
       },
     },
-    'storybook-addon-apollo-client'
+    'storybook-addon-apollo-client',
+    'storybook-addon-jotai'
   ],
   framework: '@storybook/react',
   core: {

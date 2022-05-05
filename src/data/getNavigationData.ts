@@ -1,12 +1,18 @@
 import type { NormalizedCacheObject } from '@apollo/client';
-import { accessCache } from 'next-build-cache';
 import { GetNavigationDataQuery } from 'queries';
 import { createStaticClient } from 'services/apollo/apolloClient';
 
-const cache = accessCache('build.cache');
+// const cache = accessCache('build.cache');
+
+interface Cache {
+  navigationData?: NormalizedCacheObject;
+}
+
+const cache: Cache = {};
 
 async function getNavigationData() {
-  let queryCache = (await cache.get('navigationData')) as NormalizedCacheObject;
+  // let queryCache = (await cache.get('navigationData')) as NormalizedCacheObject;
+  let queryCache = cache.navigationData;
 
   if (!queryCache) {
     const apolloClient = createStaticClient();
@@ -14,7 +20,8 @@ async function getNavigationData() {
       query: GetNavigationDataQuery
     });
     queryCache = apolloClient.cache.extract();
-    await cache.put('navigationData', queryCache);
+    // await cache.put('navigationData', queryCache);
+    cache.navigationData = queryCache;
   }
 
   return queryCache;

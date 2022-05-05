@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Dialog, Tab, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import { currencyList } from 'config';
+import { currencyList, isStorybook } from 'config';
 import { useAtom } from 'jotai';
 import type { NavigationDataResults } from 'queries';
 import { GetNavigationDataQuery } from 'queries';
@@ -19,7 +19,13 @@ export const NavigationMobileMenu = () => {
 
   return (
     <Transition.Root show={isMobileMenuOpen} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 flex z-40 lg:hidden" onClose={() => setIsMobileMenuOpen(false)}>
+      <Dialog
+        static
+        as="div"
+        className="fixed inset-0 flex z-40 lg:hidden"
+        // Without this check onClose will trigger in wider viewports
+        onClose={() => isStorybook || setIsMobileMenuOpen(false)}
+      >
         <Transition.Child
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"

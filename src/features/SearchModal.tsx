@@ -15,7 +15,7 @@ export const SearchModal = () => {
     graphqlQuery: SearchStripeProducts,
     filterFn: (result) => result.__typename === 'Stripe_Product'
   });
-  const [isOpen, setIsOpen] = useAtom(isSearchOpenAtom);
+  const [isSearchOpen, setIsSearchOpen] = useAtom(isSearchOpenAtom);
 
   const onQueryChange = useCallback(
     (e) => {
@@ -29,8 +29,8 @@ export const SearchModal = () => {
   }, [resetQuery]);
 
   return (
-    <Transition.Root show={isOpen} as={Fragment} afterLeave={onLeave} appear>
-      <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
+    <Transition.Root show={isSearchOpen} as={Fragment} afterLeave={onLeave} appear>
+      <Dialog as="div" className="relative z-10" onClose={() => setIsSearchOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

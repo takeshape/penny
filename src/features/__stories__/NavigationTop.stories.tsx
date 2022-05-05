@@ -1,8 +1,10 @@
 import type { ComponentMeta } from '@storybook/react';
 import { currencyList } from 'config';
 import { GetNavigationDataQuery, SearchStripeProducts } from 'queries';
+import { isSearchOpenAtom } from 'store';
 import { NavigationTop } from '../NavigationTop';
-import navigationJson from '../__fixtures__/navigation.json';
+import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
+import SearchStripeProductsResults from '../__fixtures__/SearchStripeProducts.result.json';
 
 export default {
   title: 'Features/NavigationTop',
@@ -18,7 +20,7 @@ export default {
           result: {
             data: {
               navigation: {
-                links: navigationJson.links,
+                ...GetNavigationDataResult.data.navigation,
                 currencies: [...currencyList]
               }
             }
@@ -29,58 +31,7 @@ export default {
             query: SearchStripeProducts,
             variables: { query: 'socks' }
           },
-          result: {
-            data: {
-              search: {
-                results: [
-                  {
-                    __typename: 'Stripe_Product',
-                    id: 'prod_LPvslzaZA4bjRO',
-                    name: 'Cozy Socks',
-                    description: 'Socks for all occasions, perfectly snug.',
-                    images: [
-                      'https://files.stripe.com/links/MDB8YWNjdF8xSkc3c1RFak1HYVBpUTc0fGZsX3Rlc3RfeHBuRzhCY010OWRPVFdPZEo5YXY3Y3Ew000eNM5bvw'
-                    ],
-                    prices: [
-                      {
-                        id: 'price_1Kj60YEjMGaPiQ74U08NcmDI',
-                        unit_amout: 1000,
-                        currency: 'usd',
-                        recurring: null,
-                        __typename: 'Stripe_Price'
-                      }
-                    ]
-                  },
-                  {
-                    __typename: 'Stripe_Product',
-                    id: 'prod_LNjQn6SmhBfhkT',
-                    name: 'Pink Camo Socks',
-                    description: 'Are these pink camo socks perfect for a night out on the town, or what?',
-                    images: [
-                      'https://files.stripe.com/links/MDB8YWNjdF8xSkc3c1RFak1HYVBpUTc0fGZsX3Rlc3RfUENIY3NiNkFOTXRzOGVRdDFjakJ2aFJV00MZSZZGKf'
-                    ],
-                    prices: [
-                      {
-                        id: 'price_1KgyNyEjMGaPiQ74w5knSXdZ',
-                        unit_amout: 700,
-                        currency: 'usd',
-                        recurring: { interval: 'month', interval_count: 1, __typename: 'Stripe_Recurring' },
-                        __typename: 'Stripe_Price'
-                      },
-                      {
-                        id: 'price_1KgxxhEjMGaPiQ74gcw80L7h',
-                        unit_amout: 900,
-                        currency: 'usd',
-                        recurring: null,
-                        __typename: 'Stripe_Price'
-                      }
-                    ]
-                  }
-                ],
-                __typename: 'TSSearchableSearchResults'
-              }
-            }
-          }
+          result: SearchStripeProductsResults
         }
       ]
     }
@@ -89,4 +40,63 @@ export default {
 
 const Template = (args) => <NavigationTop {...args} />;
 
-export const Renders = Template.bind({});
+export const Mobile = Template.bind({});
+
+Mobile.parameters = {
+  viewport: {
+    defaultViewport: 'mobile2'
+  },
+  jotai: {
+    atoms: {
+      isSearchOpen: isSearchOpenAtom
+    },
+    values: {
+      isSearchOpen: false
+    }
+  }
+};
+
+export const Tablet = Template.bind({});
+
+Tablet.parameters = {
+  viewport: {
+    defaultViewport: 'tablet'
+  },
+  jotai: {
+    atoms: {
+      isSearchOpen: isSearchOpenAtom
+    },
+    values: {
+      isSearchOpen: false
+    }
+  }
+};
+
+export const Desktop = Template.bind({});
+
+Desktop.parameters = {
+  viewport: {
+    defaultViewport: 'responsive'
+  },
+  jotai: {
+    atoms: {
+      isSearchOpen: isSearchOpenAtom
+    },
+    values: {
+      isSearchOpen: false
+    }
+  }
+};
+
+export const SearchOpen = Template.bind({});
+
+SearchOpen.parameters = {
+  jotai: {
+    atoms: {
+      isSearchOpen: isSearchOpenAtom
+    },
+    values: {
+      isSearchOpen: true
+    }
+  }
+};
