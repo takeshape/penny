@@ -1,15 +1,8 @@
-import {
-  shipFrom,
-  siteUrl,
-  stripeSecretKey,
-  stripeWebhookSecret,
-  takeshapeApiUrl,
-  takeshapeWebhookApiKey
-} from 'config';
+import { shipFrom, siteUrl, stripeSecretKey, stripeWebhookSecret, takeshapeWebhookApiKey } from 'config';
 import { buffer } from 'micro';
 import type { NextApiHandler, NextConfig } from 'next';
 import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'queries';
-import { createApolloClient } from 'services/apollo/client';
+import { createStaticClient } from 'services/apollo/apolloClient';
 import Stripe from 'stripe';
 import type { SetRequired } from 'type-fest';
 import type {
@@ -25,7 +18,7 @@ import type {
 } from 'types/takeshape';
 
 const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' });
-const client = createApolloClient(takeshapeApiUrl, () => takeshapeWebhookApiKey);
+const client = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
 
 function isValidShippingAddress(
   address: Stripe.Address

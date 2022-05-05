@@ -1,8 +1,9 @@
+import getCommonQueryCache from 'data/getCommonQueryCache';
 import PageLayout from 'features/layout/Page';
 import ProductGrid from 'features/products/ProductGrid';
 import type { InferGetStaticPropsType } from 'next';
-import { GetNavigationDataQuery, GetStripeProducts } from 'queries';
-import { addApolloState, createStaticClient } from 'services/apollo/apolloClient';
+import { GetStripeProducts } from 'queries';
+import { addQueryCache, createStaticClient } from 'services/apollo/apolloClient';
 import { Alert, Container, Heading, Spinner } from 'theme-ui';
 import { formatError } from 'utils/errors';
 
@@ -39,9 +40,9 @@ export async function getStaticProps() {
 
   try {
     // Load the navigation data into the cache
-    await apolloClient.query({
-      query: GetNavigationDataQuery
-    });
+    // await apolloClient.query({
+    //   query: GetNavigationDataQuery
+    // });
 
     const { data } = await apolloClient.query({
       query: GetStripeProducts
@@ -57,7 +58,9 @@ export async function getStaticProps() {
     error = formatError(err);
   }
 
-  return addApolloState(apolloClient, { props: { products, error } });
+  const commonQueryCache = await getCommonQueryCache();
+
+  return addQueryCache(apolloClient, commonQueryCache, { props: { products, error } });
 }
 
 export default IndexPage;
