@@ -34,6 +34,7 @@ export const useSearch = ({
     }
 
     setResults(data.search.results.filter(filterFn));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, loading]);
 
   const resetQuery = useCallback(() => {

@@ -114,6 +114,9 @@ const config = {
     }
 
     return config;
+  },
+  eslint: {
+    dirs: ['.']
   }
 };
 

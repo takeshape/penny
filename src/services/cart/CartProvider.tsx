@@ -28,6 +28,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
     if (action === stripeCheckoutActionSuccess) {
       setCartItems([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [action, pathname, query, replace]);
 
   return <Fragment>{children}</Fragment>;

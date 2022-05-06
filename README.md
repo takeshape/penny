@@ -1,7 +1,9 @@
 ## Development Notes
 
-* `react@18` cannot be used because of an issue with lazy queries in `@apollo/client`.
-* A number of other deps are at less-than-current versions because of above.
+- `react@18` cannot be used because of an issue with lazy queries in `@apollo/client`.
+- A number of other deps are at less-than-current versions because of above.
+- Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
+  component. This prevents rendering mismatches and stale / incorrect info.
 
 # Deluxe ™️ Sample Project
 
@@ -24,7 +26,7 @@ A full-featured e-commerce experience using the best services out there:
 graph TD
     A[Frontend NextJS Client] --> |Unified GraphQL API| Mesh{TakeShape's API Mesh}
     Mesh --> |User Authentication| Auth0
-    Mesh --> P{Products} 
+    Mesh --> P{Products}
     P --> Stripe
     Mesh --> UP{User Profile}
     UP --> |Referrals| RC(Referral Candy)
@@ -43,6 +45,7 @@ TKTK
 ## Instructions
 
 TKTK
+
 ## Running the Starter
 
 1. Head over to your trusty terminal or tool of choice.
@@ -65,10 +68,9 @@ TKTK
 
 1. Replace all public placeholder assets
 2. Update `robots.txt`
+
 ## Learn More
 
 TKTK
 
-
-TEST
-TEST
+TEST TEST

@@ -18,6 +18,7 @@ type CartItem = Stripe_Product & {
   price: Stripe_Price;
   quantity: number;
 };
+
 export const cartItemsAtom = atomWithStorage<CartItem[]>('cartItems', []);
 export const cartCheckoutResultAtom = atom<string>('');
 export const cartTimeoutMsAtom = atom<number>(0);
