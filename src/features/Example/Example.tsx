@@ -38,15 +38,15 @@ export const RickAndMortyListItem = ({ character }: RickAndMortyListItemProps) =
 };
 
 const getClassNames = (columns) =>
-  classNames({
-    'grid grid-cols-1 gap-4 divide-y divide-gray-200': columns === 1,
-    'grid grid-cols-2 gap-4 divide-y divide-gray-200': columns === 2,
-    'grid grid-cols-3 gap-4 divide-y divide-gray-200': columns === 3,
-    'grid grid-cols-4 gap-4 divide-y divide-gray-200': columns === 4
-  });
+  classNames(
+    columns === 1 && 'grid-cols-1',
+    columns === 2 && 'grid-cols-2',
+    columns === 3 && 'grid-cols-3',
+    columns === 4 && 'grid-cols-4',
+    'grid gap-4 divide-y divide-gray-200'
+  );
 
 export const RickAndMortyList = ({ characters, columns }: RickAndMortyListProps) => {
-  console.log('HI');
   return (
     <ul className={getClassNames(columns ? Number(columns) : 1)}>
       {characters.map((character) => (
