@@ -1,6 +1,7 @@
 import CartSidebar from 'features/Cart/CartSidebar';
-import NavigationNew from 'features/Navigation/Navigation';
+import Navigation from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
+import SearchModal from 'features/Search/SearchModal';
 import Seo from 'features/Seo';
 import type { NextSeoProps } from 'next-seo';
 import type { PropsWithChildren } from 'react';
@@ -15,7 +16,8 @@ export const Page = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoProps }
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <Seo {...seo} />
 
-        <NavigationNew />
+        <SearchModal />
+        <Navigation />
 
         <Divider />
         <Container as="main" variant="layout.main">

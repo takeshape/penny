@@ -1,13 +1,15 @@
 import { Combobox, Dialog, Transition } from '@headlessui/react';
+import { ExclamationIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { SearchStripeProducts } from 'queries';
-import { Fragment, useCallback } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import useSearch from 'services/takeshape/useSearch';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
+import { getSingle } from 'utils/types';
 
 export const SearchModal = () => {
   const router = useRouter();
@@ -17,10 +19,25 @@ export const SearchModal = () => {
   });
   const [isSearchOpen, setIsSearchOpen] = useAtom(isSearchOpenAtom);
 
+  // This should only be called once, on page load, to avoid a loop
+  useEffect(() => {
+    const initialQuery = getSingle(router.query.search);
+    if (router.isReady && initialQuery) {
+      setIsSearchOpen(true);
+      setQuery(initialQuery);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  // Only trigger this on queries, router is a side-effect
   const onQueryChange = useCallback(
     (e) => {
       setQuery(e.target.value);
+      router.replace({ pathname: router.pathname, query: { search: e.target.value } }, null, {
+        shallow: true
+      });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setQuery]
   );
 
@@ -30,7 +47,7 @@ export const SearchModal = () => {
 
   return (
     <Transition.Root show={isSearchOpen} as={Fragment} afterLeave={onLeave} appear>
-      <Dialog as="div" className="relative z-10" onClose={() => setIsSearchOpen(false)}>
+      <Dialog as="div" className="relative z-10" open={isSearchOpen} onClose={setIsSearchOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -54,7 +71,7 @@ export const SearchModal = () => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
-              <Combobox value="" onChange={(productId) => router.push(`/product/${productId}`)}>
+              <Combobox value={query} onChange={(productId) => router.push(`/product/${productId}`)}>
                 <div className="relative">
                   <SearchIcon
                     className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
@@ -84,7 +101,11 @@ export const SearchModal = () => {
                 )}
 
                 {query !== '' && results.length === 0 && !loading && (
-                  <p className="p-4 text-sm text-gray-500">No products found.</p>
+                  <div className="py-14 px-6 text-center text-sm sm:px-14">
+                    <ExclamationIcon className="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
+                    <p className="mt-4 font-semibold text-gray-900">No results found</p>
+                    <p className="mt-2 text-gray-500">We couldn’t find anything with that term. Please try again.</p>
+                  </div>
                 )}
 
                 {query !== '' && loading && (

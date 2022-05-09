@@ -1,7 +1,6 @@
 import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import SearchModal from '../Search/SearchModal';
 import NavigationTopAccountIcon from './NavigationTopAccountIcon';
 import NavigationTopCartIcon from './NavigationTopCartIcon';
 import NavigationTopCreateOrSignIn from './NavigationTopCreateOrSignIn';
@@ -15,7 +14,6 @@ export const NavigationTop = () => {
 
   return (
     <>
-      <SearchModal />
       <nav aria-label="Top">
         {/* Top navigation */}
         <div className="bg-gray-900">

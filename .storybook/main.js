@@ -20,7 +20,8 @@ module.exports = {
       },
     },
     'storybook-addon-apollo-client',
-    'storybook-addon-jotai'
+    'storybook-addon-jotai',
+    'storybook-addon-next-router'
   ],
   framework: '@storybook/react',
   core: {

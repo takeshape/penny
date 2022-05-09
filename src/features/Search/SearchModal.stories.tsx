@@ -9,6 +9,14 @@ export default {
   component: SearchModal,
   decorators: [(Story) => <div className="relative z-10">{Story()}</div>],
   parameters: {
+    jotai: {
+      atoms: {
+        isSearchOpen: isSearchOpenAtom
+      },
+      values: {
+        isSearchOpen: true
+      }
+    },
     apolloClient: {
       mocks: [
         {
@@ -25,54 +33,61 @@ export default {
 
 const Template = (args) => <SearchModal {...args} />;
 
-// export const Mobile = Template.bind({});
+export const Empty = Template.bind({});
 
-// Mobile.parameters = {
-//   viewport: {
-//     defaultViewport: 'mobile2'
-//   },
-//   jotai: {
-//     atoms: {
-//       isSearchOpen: isSearchOpenAtom
-//     },
-//     values: {
-//       isSearchOpen: false
-//     }
-//   }
-// };
+Empty.parameters = {
+  apolloClient: {
+    mocks: [
+      {
+        request: {
+          query: SearchStripeProducts,
+          variables: { query: 'socks' }
+        },
+        result: { data: { search: { results: [] } } }
+      }
+    ]
+  }
+};
 
-// export const Tablet = Template.bind({});
+export const Loading = Template.bind({});
 
-// Tablet.parameters = {
-//   viewport: {
-//     defaultViewport: 'tablet'
-//   },
-//   jotai: {
-//     atoms: {
-//       isSearchOpen: isSearchOpenAtom
-//     },
-//     values: {
-//       isSearchOpen: false
-//     }
-//   }
-// };
+Loading.parameters = {
+  nextRouter: {
+    path: '/',
+    query: {
+      id: 'soc'
+    }
+  },
+  apolloClient: {
+    mocks: [
+      {
+        delay: 100000000,
+        request: {
+          query: SearchStripeProducts,
+          variables: { query: 'soc' }
+        },
+        result: SearchStripeProductsResults
+      }
+    ]
+  }
+};
 
-// export const Desktop = Template.bind({});
+export const WithResults = Template.bind({});
 
-// Desktop.parameters = {
-//   jotai: {
-//     atoms: {
-//       isSearchOpen: isSearchOpenAtom
-//     },
-//     values: {
-//       isSearchOpen: false
-//     }
-//   }
-// };
+WithResults.parameters = {
+  jotai: {
+    atoms: {
+      isSearchOpen: isSearchOpenAtom
+    },
+    values: {
+      isSearchOpen: true
+    }
+  }
+};
 
-export const SearchOpen = Template.bind({});
+export const NoResults = Template.bind({});
 
-SearchOpen.parameters = {
+NoResults.parameters = {
   jotai: {
     atoms: {
       isSearchOpen: isSearchOpenAtom
