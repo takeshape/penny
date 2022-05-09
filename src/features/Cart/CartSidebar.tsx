@@ -73,6 +73,12 @@ export const CartSidebar = () => {
         setIsCartOpen(false);
       }, cartTimeoutMs);
     }
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
   }, [cartTimeoutMs, setIsCartOpen, setCartTimeoutMs]);
 
   const clearToggle = useCallback(() => {
