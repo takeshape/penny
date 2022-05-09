@@ -21,6 +21,7 @@ export const SearchModal = () => {
 
   // This should only be called once, on page load, to avoid a loop
   useEffect(() => {
+    console.log('router is ready', router.query, router.isReady);
     const initialQuery = getSingle(router.query.search);
     if (router.isReady && initialQuery) {
       setIsSearchOpen(true);
@@ -44,6 +45,8 @@ export const SearchModal = () => {
   const onLeave = useCallback(() => {
     resetQuery();
   }, [resetQuery]);
+
+  console.log({ query });
 
   return (
     <Transition.Root show={isSearchOpen} as={Fragment} afterLeave={onLeave} appear>

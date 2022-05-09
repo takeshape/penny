@@ -16,17 +16,6 @@ export default {
       values: {
         isSearchOpen: true
       }
-    },
-    apolloClient: {
-      mocks: [
-        {
-          request: {
-            query: SearchStripeProducts,
-            variables: { query: 'socks' }
-          },
-          result: SearchStripeProductsResults
-        }
-      ]
     }
   }
 } as ComponentMeta<typeof SearchModal>;
@@ -54,8 +43,9 @@ export const Loading = Template.bind({});
 Loading.parameters = {
   nextRouter: {
     path: '/',
+    isReady: true,
     query: {
-      id: 'soc'
+      search: 'socks'
     }
   },
   apolloClient: {
@@ -64,7 +54,7 @@ Loading.parameters = {
         delay: 100000000,
         request: {
           query: SearchStripeProducts,
-          variables: { query: 'soc' }
+          variables: { query: 'socks' }
         },
         result: SearchStripeProductsResults
       }
@@ -75,25 +65,45 @@ Loading.parameters = {
 export const WithResults = Template.bind({});
 
 WithResults.parameters = {
-  jotai: {
-    atoms: {
-      isSearchOpen: isSearchOpenAtom
-    },
-    values: {
-      isSearchOpen: true
+  nextRouter: {
+    path: '/',
+    isReady: true,
+    query: {
+      search: 'socks'
     }
+  },
+  apolloClient: {
+    mocks: [
+      {
+        request: {
+          query: SearchStripeProducts,
+          variables: { query: 'socks' }
+        },
+        result: SearchStripeProductsResults
+      }
+    ]
   }
 };
 
 export const NoResults = Template.bind({});
 
 NoResults.parameters = {
-  jotai: {
-    atoms: {
-      isSearchOpen: isSearchOpenAtom
-    },
-    values: {
-      isSearchOpen: true
+  nextRouter: {
+    path: '/',
+    isReady: true,
+    query: {
+      search: 'socks'
     }
+  },
+  apolloClient: {
+    mocks: [
+      {
+        request: {
+          query: SearchStripeProducts,
+          variables: { query: 'socks' }
+        },
+        result: { data: { search: { results: [] } } }
+      }
+    ]
   }
 };
