@@ -1,3 +1,4 @@
+// We use Apollo Client cache rehydration to support loading data into components during static render. Read more:
 // https://developers.wpengine.com/blog/apollo-client-cache-rehydration-in-next-js
 
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
