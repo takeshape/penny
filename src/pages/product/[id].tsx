@@ -1,4 +1,5 @@
-import PageLayout from 'features/layout/Page';
+import PageLoader from 'components/PageLoader';
+import Container from 'features/Container';
 import ProductAddToCart from 'features/products/ProductAddToCart';
 import ProductImage from 'features/products/ProductImage';
 import ReviewList from 'features/reviews/ReviewList';
@@ -27,13 +28,13 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return <PageLoader />;
   }
 
   const { product, reviews, stats } = props;
 
   return (
-    <PageLayout>
+    <Container title={product.name}>
       <Heading as="h2" variant="styles.pageTitle">
         {product.name}
       </Heading>
@@ -49,7 +50,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
           </Box>
         </Flex>
       </Flex>
-    </PageLayout>
+    </Container>
   );
 };
 

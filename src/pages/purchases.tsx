@@ -1,7 +1,8 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
+import PageLoader from 'components/PageLoader';
 import Section from 'components/Section';
-import PageLayout from 'features/layout/Page';
+import Container from 'features/Container';
 import LoyaltyCard from 'features/purchases/LoyaltyCard';
 import PaymentList from 'features/purchases/PaymentList';
 import SubscriptionList from 'features/SubscriptionList';
@@ -9,7 +10,7 @@ import type { NextPage } from 'next';
 import type { GetMyPurchasesDataResponse } from 'queries';
 import { GetMyPurchasesData } from 'queries';
 import useProfile from 'services/takeshape/useProfile';
-import { Alert, Box, Container, Divider, Flex, Heading, Spinner } from 'theme-ui';
+import { Alert, Box, Divider, Flex, Heading, Spinner } from 'theme-ui';
 
 const PurchasesPage: NextPage = () => {
   const { isProfileReady } = useProfile();
@@ -22,7 +23,7 @@ const PurchasesPage: NextPage = () => {
 
   if ((!purchasesData && !error) || error) {
     return (
-      <PageLayout>
+      <Container title="Purchases">
         <Heading as="h1" variant="styles.pageTitle">
           Purchases
         </Heading>
@@ -35,14 +36,14 @@ const PurchasesPage: NextPage = () => {
             </>
           ) : null}
         </Box>
-      </PageLayout>
+      </Container>
     );
   }
 
   const { payments, subscriptions, loyaltyCard } = purchasesData;
 
   return (
-    <PageLayout>
+    <Container title="Purchases">
       <Heading as="h1" variant="styles.pageTitle">
         Purchases
       </Heading>
@@ -78,14 +79,10 @@ const PurchasesPage: NextPage = () => {
           </Section>
         </Box>
       </Flex>
-    </PageLayout>
+    </Container>
   );
 };
 
 export default withAuthenticationRequired(PurchasesPage, {
-  onRedirecting: () => (
-    <Container variant="layout.loading">
-      <Spinner />
-    </Container>
-  )
+  onRedirecting: () => <PageLoader />
 });

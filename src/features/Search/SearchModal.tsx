@@ -10,13 +10,18 @@ import useSearch from 'services/takeshape/useSearch';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
+import type { SearchStripeProductsResults } from './Search.queries';
+
+const resultsFn = (data: SearchStripeProductsResults) =>
+  data.search.results.filter((result) => result.__typename === 'Stripe_Product');
 
 export const SearchModal = () => {
   const router = useRouter();
-  const [loading, query, results, setQuery, resetQuery] = useSearch({
+  const [loading, query, results, setQuery] = useSearch({
     graphqlQuery: SearchStripeProducts,
-    filterFn: (result) => result.__typename === 'Stripe_Product'
+    resultsFn
   });
+
   const [isSearchOpen, setIsSearchOpen] = useAtom(isSearchOpenAtom);
 
   // This should only be called once, on page load, to avoid a loop
@@ -41,13 +46,23 @@ export const SearchModal = () => {
     [setQuery]
   );
 
+  const onSelectResult = useCallback(
+    (productId) => {
+      setIsSearchOpen(false);
+      setQuery('');
+      router.push(`/product/${productId}`);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setIsSearchOpen, setQuery]
+  );
+
   const onLeave = useCallback(() => {
-    resetQuery();
-  }, [resetQuery]);
+    setQuery('');
+  }, [setQuery]);
 
   return (
     <Transition.Root show={isSearchOpen} as={Fragment} afterLeave={onLeave} appear>
-      <Dialog as="div" className="relative z-10" open={isSearchOpen} onClose={setIsSearchOpen}>
+      <Dialog as="div" className="relative z-10" open={isSearchOpen} onClose={() => setIsSearchOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -71,7 +86,7 @@ export const SearchModal = () => {
             leaveTo="opacity-0 scale-95"
           >
             <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
-              <Combobox value={query} onChange={(productId) => router.push(`/product/${productId}`)}>
+              <Combobox value={query} onChange={onSelectResult}>
                 <div className="relative">
                   <SearchIcon
                     className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"

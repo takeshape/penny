@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import { Tab } from '@headlessui/react';
-import type { NavigationDataResults } from 'queries';
-import { GetNavigationDataQuery } from 'queries';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
+import type { NavigationDataResults } from './Navigation.queries';
+import { GetNavigationDataQuery } from './Navigation.queries';
 
 export const NavigationTopLinks = () => {
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);

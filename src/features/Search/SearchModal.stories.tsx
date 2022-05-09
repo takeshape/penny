@@ -1,8 +1,8 @@
 import type { ComponentMeta } from '@storybook/react';
 import { SearchStripeProducts } from 'queries';
 import { isSearchOpenAtom } from 'store';
-import SearchStripeProductsResults from '../__fixtures__/SearchStripeProducts.result.json';
 import { SearchModal } from './SearchModal';
+import SearchFixtures from './__fixtures__/Search.fixtures.json';
 
 export default {
   title: 'Features/SearchModal',
@@ -56,7 +56,7 @@ Loading.parameters = {
           query: SearchStripeProducts,
           variables: { query: 'socks' }
         },
-        result: SearchStripeProductsResults
+        result: SearchFixtures.SearchStripeProducts.result
       }
     ]
   }
@@ -79,7 +79,7 @@ WithResults.parameters = {
           query: SearchStripeProducts,
           variables: { query: 'socks' }
         },
-        result: SearchStripeProductsResults
+        result: SearchFixtures.SearchStripeProducts.result
       }
     ]
   }

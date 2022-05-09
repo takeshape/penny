@@ -1,35 +1,31 @@
-import PageLayout from 'features/layout/Page';
+import PageLoader from 'components/PageLoader';
+import Container from 'features/Container';
 import ProductGrid from 'features/products/ProductGrid';
 import logger from 'logger';
-import type { InferGetStaticPropsType } from 'next';
+import type { InferGetStaticPropsType, NextPage } from 'next';
 import { GetStripeProducts } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
 import { createStaticClient } from 'services/apollo/apolloClient';
-import { Alert, Container, Heading, Spinner } from 'theme-ui';
+import { Alert, Heading } from 'theme-ui';
 import { formatError } from 'utils/errors';
 
-const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
-      <PageLayout>
+      <Container>
         <Alert>Error loading products</Alert>
         <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
-      </PageLayout>
+      </Container>
     );
   }
+
   return (
-    <PageLayout>
+    <Container>
       <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
         Products
       </Heading>
-      {products ? (
-        <ProductGrid products={products} />
-      ) : (
-        <Container variant="layout.loading">
-          <Spinner />
-        </Container>
-      )}
-    </PageLayout>
+      {products ? <ProductGrid products={products} /> : <PageLoader />}
+    </Container>
   );
 };
 

@@ -1,8 +1,8 @@
 import type { ComponentMeta } from '@storybook/react';
-import { GetNavigationDataQuery } from 'queries';
 import { isMobileMenuOpenAtom } from 'store';
-import GetNavigationDataResult from '../__fixtures__/GetNavigationData.result.json';
+import { GetNavigationDataQuery } from './Navigation.queries';
 import { NavigationMobileMenu } from './NavigationMobileMenu';
+import NavigationFixtures from './__fixtures__/Navigation.fixtures.json';
 
 export default {
   title: 'Features/NavigationMobileMenu',
@@ -17,7 +17,7 @@ export default {
           request: {
             query: GetNavigationDataQuery
           },
-          result: GetNavigationDataResult
+          result: NavigationFixtures.GetNavigationDataQuery.result
         }
       ]
     }

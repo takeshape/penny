@@ -1,4 +1,5 @@
 import CartSidebar from 'features/Cart/CartSidebar';
+import Footer from 'features/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
 import SearchModal from 'features/Search/SearchModal';
@@ -6,23 +7,20 @@ import Seo from 'features/Seo';
 import type { NextSeoProps } from 'next-seo';
 import type { PropsWithChildren } from 'react';
 import CartProvider from 'services/cart/CartProvider';
-import { Container, Divider } from 'theme-ui';
-import Footer from './Footer';
 
-export const Page = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoProps }>) => {
+export const Container = ({ children, ...seo }: PropsWithChildren<NextSeoProps>) => {
   return (
     <CartProvider>
       {/* Full-width on mobile, constrained with padded content above */}
-      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div className="flex flex-col max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-screen">
         <Seo {...seo} />
 
         <SearchModal />
         <Navigation />
 
-        <Divider />
-        <Container as="main" variant="layout.main">
+        <main id="content" className="flex flex-col grow">
           {children}
-        </Container>
+        </main>
 
         <CartSidebar />
         <Notifications />
@@ -33,4 +31,4 @@ export const Page = ({ children, seo }: PropsWithChildren<{ seo?: NextSeoProps }
   );
 };
 
-export default Page;
+export default Container;

@@ -1,6 +1,8 @@
 import type { ComponentMeta } from '@storybook/react';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
+import { GetNavigationDataQuery } from './Navigation.queries';
 import { NavigationTop } from './NavigationTop';
+import NavigationFixtures from './__fixtures__/Navigation.fixtures.json';
 
 export default {
   title: 'Features/NavigationTop',
@@ -17,6 +19,16 @@ export default {
         isSearchOpen: false,
         isMobileMenuOpen: false
       }
+    },
+    apolloClient: {
+      mocks: [
+        {
+          request: {
+            query: GetNavigationDataQuery
+          },
+          result: NavigationFixtures.GetNavigationDataQuery.result
+        }
+      ]
     }
   }
 } as ComponentMeta<typeof NavigationTop>;

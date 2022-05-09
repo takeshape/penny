@@ -1,10 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
+import PageLoader from 'components/PageLoader';
 import Section from 'components/Section';
 import CustomerForm from 'features/account/CustomerForm';
 import NewsletterToggle from 'features/account/NewsletterToggle';
 import ProfileForm from 'features/account/ProfileForm';
-import PageLayout from 'features/layout/Page';
+import Container from 'features/Container';
 import ReferralsCreateReferral from 'features/referrals/CreateReferral';
 import ReferralsList from 'features/referrals/ReferralList';
 import type { ReferralListItemProps } from 'features/referrals/ReferralListItem';
@@ -13,7 +14,7 @@ import type { NextPage } from 'next';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'queries';
 import { useState } from 'react';
 import useProfile from 'services/takeshape/useProfile';
-import { Alert, Box, Container, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
+import { Alert, Box, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
 const referralsFixtureData: ReferralListItemProps[] = [
   {
@@ -35,7 +36,7 @@ const AccountPage: NextPage = () => {
   const [referrals, setReferrals] = useState<ReferralListItemProps[]>(referralsFixtureData);
 
   return (
-    <PageLayout>
+    <Container title="Account">
       <Flex sx={{ width: '100%', gap: '2rem', alignItems: 'baseline' }}>
         <Heading as="h1" variant="styles.pageTitle">
           Account
@@ -94,14 +95,10 @@ const AccountPage: NextPage = () => {
           <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
         </>
       )}
-    </PageLayout>
+    </Container>
   );
 };
 
 export default withAuthenticationRequired(AccountPage, {
-  onRedirecting: () => (
-    <Container variant="layout.loading">
-      <Spinner />
-    </Container>
-  )
+  onRedirecting: () => <PageLoader />
 });

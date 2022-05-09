@@ -1,20 +1,19 @@
 import { useLazyQuery } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
 import type { Dispatch } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDebounce from 'services/hooks/useDebounce';
 import type { Stripe_Product } from 'types/takeshape';
 
 export interface UseSearchProps {
   graphqlQuery: DocumentNode;
-  filterFn?: (result: any) => boolean;
+  resultsFn: (data: any) => any[];
 }
 
 export const useSearch = ({
   graphqlQuery,
-  filterFn
-}: UseSearchProps): [boolean, string, Stripe_Product[], Dispatch<string>, () => void] => {
-  filterFn = filterFn ?? ((x) => x);
+  resultsFn
+}: UseSearchProps): [boolean, string, Stripe_Product[], Dispatch<string>] => {
   const [search, { loading, data }] = useLazyQuery(graphqlQuery);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -33,16 +32,10 @@ export const useSearch = ({
       return;
     }
 
-    setResults(data.search.results.filter(filterFn));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, loading]);
+    setResults(resultsFn(data));
+  }, [data, loading, resultsFn]);
 
-  const resetQuery = useCallback(() => {
-    setQuery('');
-    setResults([]);
-  }, []);
-
-  return [loading, query, results, setQuery, resetQuery];
+  return [loading, query, results, setQuery];
 };
 
 export default useSearch;

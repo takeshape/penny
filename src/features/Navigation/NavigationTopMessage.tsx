@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import type { NavigationDataResults } from 'queries';
-import { GetNavigationDataQuery } from 'queries';
+import type { NavigationDataResults } from './Navigation.queries';
+import { GetNavigationDataQuery } from './Navigation.queries';
 
 export const NavigationTopCartIcon = () => {
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
