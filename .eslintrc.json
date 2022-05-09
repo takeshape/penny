@@ -8,8 +8,19 @@
     "plugin:mdx/recommended"
   ],
   "rules": {
-    "no-unreachable": "error"
+    "no-unreachable": "error",
+    "no-console": "error"
   },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.*"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
   "parserOptions": {
     "ecmaVersion": 12
   },
