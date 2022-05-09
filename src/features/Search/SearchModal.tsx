@@ -4,13 +4,13 @@ import { SearchIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { SearchStripeProducts } from 'queries';
 import { Fragment, useCallback, useEffect } from 'react';
 import useSearch from 'services/takeshape/useSearch';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
 import type { SearchStripeProductsResults } from './Search.queries';
+import { SearchStripeProducts } from './Search.queries';
 
 const resultsFn = (data: SearchStripeProductsResults) =>
   data.search.results.filter((result) => result.__typename === 'Stripe_Product');

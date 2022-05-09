@@ -1,6 +1,6 @@
 import type { ComponentMeta } from '@storybook/react';
-import { SearchStripeProducts } from 'queries';
 import { isSearchOpenAtom } from 'store';
+import { SearchStripeProducts } from './Search.queries';
 import { SearchModal } from './SearchModal';
 import SearchFixtures from './__fixtures__/Search.fixtures.json';
 
