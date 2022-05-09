@@ -4,6 +4,10 @@
 - A number of other deps are at less-than-current versions because of above.
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
   component. This prevents rendering mismatches and stale / incorrect info.
+- Navigation data is loaded into an Apollo cache variable via `addApolloQueryCache`. Files in the `src/data` folder
+  should define queries to get data that need to be fetched and cached during `getStaticProps` in order to prevent a
+  flash of unloaded data in common high visibility components, like the navigation, footer, etc... Add to the file
+  `src/services/apollo/addApolloQueryCache.ts` following the pattern there to get other common data.
 
 # Deluxe ™️ Sample Project
 
