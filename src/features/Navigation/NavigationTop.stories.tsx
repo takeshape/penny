@@ -1,10 +1,24 @@
 import type { ComponentMeta } from '@storybook/react';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { NavigationTop } from './NavigationTop';
 
 export default {
   title: 'Features/NavigationTop',
   component: NavigationTop,
-  decorators: [(Story) => <div className="relative z-10">{Story()}</div>]
+  decorators: [(Story) => <div className="relative z-10">{Story()}</div>],
+  parameters: {
+    // Allows inspecting these values since they don't do anything in this context
+    jotai: {
+      atoms: {
+        isSearchOpen: isSearchOpenAtom,
+        isMobileMenuOpen: isMobileMenuOpenAtom
+      },
+      values: {
+        isSearchOpen: false,
+        isMobileMenuOpen: false
+      }
+    }
+  }
 } as ComponentMeta<typeof NavigationTop>;
 
 const Template = (args) => <NavigationTop {...args} />;
