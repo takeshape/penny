@@ -1,5 +1,5 @@
 import type { NormalizedCacheObject } from '@apollo/client';
-import { GetNavigationDataQuery } from 'queries';
+import { GetNavigationDataQuery } from 'features/Navigation/Navigation.queries';
 import { createStaticClient } from 'services/apollo/apolloClient';
 
 interface Cache {
