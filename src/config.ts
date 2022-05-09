@@ -19,7 +19,6 @@ export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
 
 export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
-export const logDestination = process.env.NEXT_PUBLIC_LOG_DESTINATION ?? 'stdout';
 
 export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 
