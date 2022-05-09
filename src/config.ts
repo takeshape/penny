@@ -1,6 +1,6 @@
 import type { DefaultSeoProps } from 'next-seo';
 
-export const nodeEnv = process.env.NODE_ENV;
+export const nodeEnv = process.env.NODE_ENV ?? 'development';
 export const isProduction = nodeEnv === 'production';
 export const isStorybook = Boolean(process.env.STORYBOOK);
 export const isSsg = typeof window === 'undefined';
@@ -17,6 +17,11 @@ export const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_K
 export const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
+
+export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
+export const logDestination = process.env.NEXT_PUBLIC_LOG_DESTINATION ?? 'stdout';
+
+export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 
 export const shipFrom = {
   name: 'KitchenSink',

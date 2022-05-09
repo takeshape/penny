@@ -1,5 +1,6 @@
 import PageLayout from 'features/layout/Page';
 import ProductGrid from 'features/products/ProductGrid';
+import logger from 'logger';
 import type { InferGetStaticPropsType } from 'next';
 import { GetStripeProducts } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
@@ -49,7 +50,7 @@ export async function getStaticProps() {
       products = data.products.items;
     }
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     error = formatError(err);
   }
 
