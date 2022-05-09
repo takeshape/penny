@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import { currencyList } from 'config';
 import type {
   Mutation,
+  NavigationData,
   ReviewsIo_ListProductReviewsResponse,
   Stripe_PaymentIntentPaginatedList,
   Stripe_Product,
@@ -393,34 +394,11 @@ export const CreateShipment = gql`
   }
 `;
 
-/**
- * UI Stuff
- */
-
-export type NavigationLink = {
-  name: string;
-  href: string;
-};
-
-export type NavigationCategory = {
-  name: string;
-  featured: NavigationLink[];
-  collection: NavigationLink[];
-  categories: NavigationLink[];
-  brands: NavigationLink[];
-};
-
-export type NavigationLinks = {
-  categories: NavigationCategory[];
-  pages: NavigationLink[];
-};
-
+// TakeShape doesn't support scalar arrays, so sticking with this for now
 export type NavigationCurrency = typeof currencyList[number];
 
 export interface NavigationDataResults {
-  navigation: {
-    message: string;
-    links: NavigationLinks;
+  navigation: NavigationData & {
     currencies: NavigationCurrency[];
   };
 }
