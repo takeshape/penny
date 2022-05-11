@@ -1,6 +1,7 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import GlobalStyles from 'components/GlobalStyles';
 import { audience, clientId, domain, isSsg, scope, seo } from 'config';
+import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 import type { AppContext, AppInitialProps } from 'next/app';
 import Router from 'next/router';
@@ -25,15 +26,17 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
       cacheLocation="localstorage"
       onRedirectCallback={onRedirectCallback}
     >
-      <AuthorizedApolloProvider pageProps={pageProps}>
-        <TakeshapeProvider>
-          <ThemeProvider theme={theme}>
-            <DefaultSeo {...seo} />
-            <GlobalStyles />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </TakeshapeProvider>
-      </AuthorizedApolloProvider>
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <AuthorizedApolloProvider pageProps={pageProps}>
+          <TakeshapeProvider>
+            <ThemeProvider theme={theme}>
+              <DefaultSeo {...seo} />
+              <GlobalStyles />
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </TakeshapeProvider>
+        </AuthorizedApolloProvider>
+      </SessionProvider>
     </Auth0Provider>
   );
 }
