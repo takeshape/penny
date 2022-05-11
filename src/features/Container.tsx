@@ -12,7 +12,7 @@ export const Container = ({ children, ...seo }: PropsWithChildren<NextSeoProps>)
   return (
     <CartProvider>
       {/* Full-width on mobile, constrained with padded content above */}
-      <div className="flex flex-col max-w-7xl mx-auto sm:px-6 lg:px-8 min-h-screen">
+      <div className="flex flex-col min-h-screen">
         <Seo {...seo} />
 
         <SearchModal />

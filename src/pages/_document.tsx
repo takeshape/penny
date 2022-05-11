@@ -15,17 +15,8 @@ export default class CustomDocument extends Document {
   render() {
     return (
       <Html lang={locale}>
-        <Head>
-          <link rel="preload" href="/fonts/inter-roman.var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-          <link
-            rel="preload"
-            href="/fonts/inter-italic.var.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-        </Head>
-        <body>
+        <Head />
+        <body className="antialiased font-sans bg-gray-200 overflow-hidden">
           <Main />
           <NextScript />
         </body>

@@ -79,6 +79,20 @@ export const seo: DefaultSeoProps = {
     {
       rel: 'manifest',
       href: '/manifest.json'
+    },
+    {
+      rel: 'preload',
+      href: '/fonts/inter-roman.var.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous'
+    },
+    {
+      rel: 'preload',
+      href: '/fonts/inter-italic.var.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous'
     }
   ],
   openGraph: {

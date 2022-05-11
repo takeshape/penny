@@ -3,6 +3,7 @@ import Container from 'features/Container';
 import ProductAddToCart from 'features/products/ProductAddToCart';
 import ProductImage from 'features/products/ProductImage';
 import ReviewList from 'features/reviews/ReviewList';
+import Page from 'layouts/Page';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
@@ -28,28 +29,34 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <PageLoader />;
+    return (
+      <Container title="Product loading...">
+        <PageLoader />
+      </Container>
+    );
   }
 
   const { product, reviews, stats } = props;
 
   return (
     <Container title={product.name}>
-      <Heading as="h2" variant="styles.pageTitle">
-        {product.name}
-      </Heading>
-      <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
-        <Box sx={{ flex: '1 1 32rem' }}>
-          <ProductImage images={product.images} maxHeight="600px" />
-        </Box>
-        <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
-          <ProductAddToCart product={product} />
-          <Paragraph sx={{ textAlign: 'left' }}>{product.description}</Paragraph>
-          <Box sx={{ fontSize: '.8em' }}>
-            <ReviewList reviews={reviews} stats={stats} />
+      <Page>
+        <Heading as="h2" variant="styles.pageTitle">
+          {product.name}
+        </Heading>
+        <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
+          <Box sx={{ flex: '1 1 32rem' }}>
+            <ProductImage images={product.images} maxHeight="600px" />
           </Box>
+          <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
+            <ProductAddToCart product={product} />
+            <Paragraph sx={{ textAlign: 'left' }}>{product.description}</Paragraph>
+            <Box sx={{ fontSize: '.8em' }}>
+              <ReviewList reviews={reviews} stats={stats} />
+            </Box>
+          </Flex>
         </Flex>
-      </Flex>
+      </Page>
     </Container>
   );
 };

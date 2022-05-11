@@ -10,6 +10,7 @@ import ReferralsCreateReferral from 'features/referrals/CreateReferral';
 import ReferralsList from 'features/referrals/ReferralList';
 import type { ReferralListItemProps } from 'features/referrals/ReferralListItem';
 import UserLogout from 'features/UserLogout';
+import Page from 'layouts/Page';
 import type { NextPage } from 'next';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'queries';
 import { useState } from 'react';
@@ -37,64 +38,66 @@ const AccountPage: NextPage = () => {
 
   return (
     <Container title="Account">
-      <Flex sx={{ width: '100%', gap: '2rem', alignItems: 'baseline' }}>
-        <Heading as="h1" variant="styles.pageTitle">
-          Account
-        </Heading>
-        <UserLogout />
-      </Flex>
-
-      <Section sx={{ marginTop: '4rem' }}>
-        <Heading variant="smallHeading">TakeShape Profile</Heading>
-        <Divider sx={{ marginBottom: '1rem' }} />
-        {profileData ? <ProfileForm profile={profileData.profile} /> : <Spinner />}
-      </Section>
-
-      <Grid columns={2}>
-        <Section sx={{ marginTop: '4rem' }}>
-          <Heading variant="smallHeading">Klavyio Subscriptions</Heading>
-          <Divider sx={{ marginBottom: '1rem' }} />
-
-          {(!profileData || !newsletterData) && <Spinner />}
-
-          {profileData && newsletterData && (
-            <Box as="ul" sx={{ listStyleType: 'none', padding: 0 }}>
-              {newsletterData.newsletters.map((newsletter) => (
-                <Box as="li" key={newsletter.listId} sx={{ marginBottom: '1rem' }}>
-                  <NewsletterToggle email={profileData.profile?.email} newsletter={newsletter} />
-                </Box>
-              ))}
-            </Box>
-          )}
-
-          {newsletterError && (
-            <>
-              <Alert>Error loading newsletter subscriptions</Alert>
-              <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
-            </>
-          )}
-        </Section>
+      <Page>
+        <Flex sx={{ width: '100%', gap: '2rem', alignItems: 'baseline' }}>
+          <Heading as="h1" variant="styles.pageTitle">
+            Account
+          </Heading>
+          <UserLogout />
+        </Flex>
 
         <Section sx={{ marginTop: '4rem' }}>
-          <Heading variant="smallHeading">Referrals</Heading>
+          <Heading variant="smallHeading">TakeShape Profile</Heading>
           <Divider sx={{ marginBottom: '1rem' }} />
-          <ReferralsCreateReferral sendReferral={(data) => setReferrals([...referrals, data])} />
-          <ReferralsList referrals={referrals} />
+          {profileData ? <ProfileForm profile={profileData.profile} /> : <Spinner />}
         </Section>
-      </Grid>
 
-      <Section sx={{ marginTop: '4rem' }}>
-        <Heading variant="smallHeading">Stripe Customer</Heading>
-        <Divider sx={{ marginBottom: '1rem' }} />
-        {profileData ? <CustomerForm customer={profileData.profile?.customer} /> : <Spinner />}
-      </Section>
+        <Grid columns={2}>
+          <Section sx={{ marginTop: '4rem' }}>
+            <Heading variant="smallHeading">Klavyio Subscriptions</Heading>
+            <Divider sx={{ marginBottom: '1rem' }} />
 
-      {profileError && (
-        <>
-          <Alert>Error loading TakeShape profile</Alert>
-          <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
-        </>
-      )}
+            {(!profileData || !newsletterData) && <Spinner />}
+
+            {profileData && newsletterData && (
+              <Box as="ul" sx={{ listStyleType: 'none', padding: 0 }}>
+                {newsletterData.newsletters.map((newsletter) => (
+                  <Box as="li" key={newsletter.listId} sx={{ marginBottom: '1rem' }}>
+                    <NewsletterToggle email={profileData.profile?.email} newsletter={newsletter} />
+                  </Box>
+                ))}
+              </Box>
+            )}
+
+            {newsletterError && (
+              <>
+                <Alert>Error loading newsletter subscriptions</Alert>
+                <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
+              </>
+            )}
+          </Section>
+
+          <Section sx={{ marginTop: '4rem' }}>
+            <Heading variant="smallHeading">Referrals</Heading>
+            <Divider sx={{ marginBottom: '1rem' }} />
+            <ReferralsCreateReferral sendReferral={(data) => setReferrals([...referrals, data])} />
+            <ReferralsList referrals={referrals} />
+          </Section>
+        </Grid>
+
+        <Section sx={{ marginTop: '4rem' }}>
+          <Heading variant="smallHeading">Stripe Customer</Heading>
+          <Divider sx={{ marginBottom: '1rem' }} />
+          {profileData ? <CustomerForm customer={profileData.profile?.customer} /> : <Spinner />}
+        </Section>
+
+        {profileError && (
+          <>
+            <Alert>Error loading TakeShape profile</Alert>
+            <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
+          </>
+        )}
+      </Page>
     </Container>
   );
 };

@@ -6,9 +6,9 @@ import type { AppContext, AppInitialProps } from 'next/app';
 import Router from 'next/router';
 import AuthorizedApolloProvider from 'services/apollo/AuthorizedApolloProvider';
 import TakeshapeProvider from 'services/takeshape/TakeshapeProvider';
+import 'styles/globals.css';
 import theme from 'theme';
 import { ThemeProvider } from 'theme-ui';
-import '../styles/globals.css';
 
 const onRedirectCallback = (appState) => {
   Router.replace(appState?.returnTo ?? '/');

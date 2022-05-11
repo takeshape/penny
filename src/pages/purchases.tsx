@@ -6,6 +6,7 @@ import Container from 'features/Container';
 import LoyaltyCard from 'features/purchases/LoyaltyCard';
 import PaymentList from 'features/purchases/PaymentList';
 import SubscriptionList from 'features/SubscriptionList';
+import Page from 'layouts/Page';
 import type { NextPage } from 'next';
 import type { GetMyPurchasesDataResponse } from 'queries';
 import { GetMyPurchasesData } from 'queries';
@@ -24,18 +25,20 @@ const PurchasesPage: NextPage = () => {
   if ((!purchasesData && !error) || error) {
     return (
       <Container title="Purchases">
-        <Heading as="h1" variant="styles.pageTitle">
-          Purchases
-        </Heading>
-        <Box variant="layout.loading">
-          {!purchasesData && !error ? <Spinner /> : null}
-          {error ? (
-            <>
-              <Alert>Error loading purchases</Alert>
-              <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
-            </>
-          ) : null}
-        </Box>
+        <Page>
+          <Heading as="h1" variant="styles.pageTitle">
+            Purchases
+          </Heading>
+          <Box variant="layout.loading">
+            {!purchasesData && !error ? <Spinner /> : null}
+            {error ? (
+              <>
+                <Alert>Error loading purchases</Alert>
+                <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
+              </>
+            ) : null}
+          </Box>
+        </Page>
       </Container>
     );
   }
@@ -44,41 +47,43 @@ const PurchasesPage: NextPage = () => {
 
   return (
     <Container title="Purchases">
-      <Heading as="h1" variant="styles.pageTitle">
-        Purchases
-      </Heading>
-      <Flex sx={{ gap: '2rem' }}>
-        <Box sx={{ flex: '0 1 24rem' }}>
-          <Section>
-            {!loyaltyCard && !error ? <Spinner /> : null}
-            {loyaltyCard ? (
-              <LoyaltyCard
-                code={loyaltyCard.code}
-                loyalty_card={loyaltyCard.loyalty_card}
-                assets={loyaltyCard.assets}
-              />
-            ) : null}
-          </Section>
-          <Section>
-            <Heading variant="smallHeading" id="payments">
-              Past Purchases
-            </Heading>
-            <Divider />
-            {!payments && !error ? <Spinner /> : null}
-            {payments && <PaymentList payments={payments.items} />}
-          </Section>
-        </Box>
-        <Box sx={{ flex: '1 1 32rem' }}>
-          <Section>
-            <Heading variant="smallHeading" id="subscriptions">
-              Active Subscriptions
-            </Heading>
-            <Divider />
-            {!subscriptions && !error ? <Spinner /> : null}
-            {subscriptions && <SubscriptionList subscriptions={subscriptions} />}
-          </Section>
-        </Box>
-      </Flex>
+      <Page>
+        <Heading as="h1" variant="styles.pageTitle">
+          Purchases
+        </Heading>
+        <Flex sx={{ gap: '2rem' }}>
+          <Box sx={{ flex: '0 1 24rem' }}>
+            <Section>
+              {!loyaltyCard && !error ? <Spinner /> : null}
+              {loyaltyCard ? (
+                <LoyaltyCard
+                  code={loyaltyCard.code}
+                  loyalty_card={loyaltyCard.loyalty_card}
+                  assets={loyaltyCard.assets}
+                />
+              ) : null}
+            </Section>
+            <Section>
+              <Heading variant="smallHeading" id="payments">
+                Past Purchases
+              </Heading>
+              <Divider />
+              {!payments && !error ? <Spinner /> : null}
+              {payments && <PaymentList payments={payments.items} />}
+            </Section>
+          </Box>
+          <Box sx={{ flex: '1 1 32rem' }}>
+            <Section>
+              <Heading variant="smallHeading" id="subscriptions">
+                Active Subscriptions
+              </Heading>
+              <Divider />
+              {!subscriptions && !error ? <Spinner /> : null}
+              {subscriptions && <SubscriptionList subscriptions={subscriptions} />}
+            </Section>
+          </Box>
+        </Flex>
+      </Page>
     </Container>
   );
 };

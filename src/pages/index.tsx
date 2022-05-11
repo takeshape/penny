@@ -1,6 +1,7 @@
 import PageLoader from 'components/PageLoader';
 import Container from 'features/Container';
 import ProductGrid from 'features/products/ProductGrid';
+import Page from 'layouts/Page';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import { GetStripeProducts } from 'queries';
@@ -13,18 +14,26 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
   if (error) {
     return (
       <Container>
-        <Alert>Error loading products</Alert>
-        <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
+        <Page>
+          <Alert>Error loading products</Alert>
+          <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
+        </Page>
       </Container>
     );
   }
 
   return (
     <Container>
-      <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
-        Products
-      </Heading>
-      {products ? <ProductGrid products={products} /> : <PageLoader />}
+      {products ? (
+        <Page>
+          <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
+            Products
+          </Heading>
+          <ProductGrid products={products} />
+        </Page>
+      ) : (
+        <PageLoader />
+      )}
     </Container>
   );
 };
