@@ -1,4 +1,31 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
-  "rules": { "no-unreachable": "error" }
+  "plugins": [
+    "json-format"
+  ],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:prettier/recommended",
+    "plugin:mdx/recommended"
+  ],
+  "rules": {
+    "no-unreachable": "error",
+    "no-console": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.*"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "settings": {
+    "mdx/code-blocks": true,
+    "mdx/language-mapper": {}
+  }
 }

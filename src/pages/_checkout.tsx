@@ -1,24 +1,26 @@
 import { useApolloClient } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
+import PageLoader from 'components/PageLoader';
+import { useAtomValue } from 'jotai';
+import type { NextPage } from 'next';
 import { CreateMyCheckoutSession } from 'queries';
 import { useEffect } from 'react';
-import useCart from 'services/cart/useCart';
 import getStripe from 'services/stripe/getStripe';
 import useProfile from 'services/takeshape/useProfile';
-import { Container, Spinner } from 'theme-ui';
+import { cartItemsAtom } from 'store';
 import { getCheckoutPayload } from 'utils/checkout';
 
 // After a successful login, redirect here to automatically checkout with the cart
-function _CheckoutPage() {
+const _CheckoutPage: NextPage = () => {
   const { isProfileReady } = useProfile();
   const client = useApolloClient();
-  const { items } = useCart();
+  const cartItems = useAtomValue(cartItemsAtom);
 
   useEffect(() => {
     const doCheckout = async () => {
       const { data } = await client.mutate({
         mutation: CreateMyCheckoutSession,
-        variables: getCheckoutPayload(items, '/')
+        variables: getCheckoutPayload(cartItems, '/')
       });
 
       const stripe = await getStripe();
@@ -30,19 +32,11 @@ function _CheckoutPage() {
     if (isProfileReady) {
       doCheckout();
     }
-  }, [client, items, isProfileReady]);
+  }, [client, cartItems, isProfileReady]);
 
-  return (
-    <Container variant="layout.loading">
-      <Spinner />
-    </Container>
-  );
-}
+  return <PageLoader />;
+};
 
 export default withAuthenticationRequired(_CheckoutPage, {
-  onRedirecting: () => (
-    <Container variant="layout.loading">
-      <Spinner />
-    </Container>
-  )
+  onRedirecting: () => <PageLoader />
 });

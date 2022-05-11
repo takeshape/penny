@@ -1,4 +1,5 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import withPlugins from 'next-compose-plugins';
 
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -96,7 +97,7 @@ const config = {
     ];
   },
   images: {
-    domains: ['files.stripe.com', 'rickandmortyapi.com']
+    domains: ['files.stripe.com', 'tailwindui.com']
   },
   poweredByHeader: false,
   reactStrictMode: true,
@@ -113,7 +114,10 @@ const config = {
     }
 
     return config;
+  },
+  eslint: {
+    dirs: ['.']
   }
 };
 
-export default withBundleAnalyzer(config);
+export default withPlugins([withBundleAnalyzer], config);

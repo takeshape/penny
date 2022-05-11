@@ -1,8 +1,9 @@
 import type { DefaultSeoProps } from 'next-seo';
 
-export const nodeEnv = process.env.NODE_ENV;
+export const nodeEnv = process.env.NODE_ENV ?? 'development';
 export const isProduction = nodeEnv === 'production';
 export const isStorybook = Boolean(process.env.STORYBOOK);
+export const isSsg = typeof window === 'undefined';
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
 export const domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
 export const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
@@ -16,6 +17,10 @@ export const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_K
 export const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
+
+export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
+
+export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 
 export const shipFrom = {
   name: 'KitchenSink',
@@ -74,6 +79,20 @@ export const seo: DefaultSeoProps = {
     {
       rel: 'manifest',
       href: '/manifest.json'
+    },
+    {
+      rel: 'preload',
+      href: '/fonts/inter-roman.var.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous'
+    },
+    {
+      rel: 'preload',
+      href: '/fonts/inter-italic.var.woff2',
+      as: 'font',
+      type: 'font/woff2',
+      crossOrigin: 'anonymous'
     }
   ],
   openGraph: {
@@ -82,3 +101,6 @@ export const seo: DefaultSeoProps = {
     site_name: siteName
   }
 };
+
+export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
+export const defaultCurrency = 'USD';

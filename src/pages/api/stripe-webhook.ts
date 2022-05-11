@@ -1,15 +1,9 @@
-import {
-  shipFrom,
-  siteUrl,
-  stripeSecretKey,
-  stripeWebhookSecret,
-  takeshapeApiUrl,
-  takeshapeWebhookApiKey
-} from 'config';
+import { shipFrom, siteUrl, stripeSecretKey, stripeWebhookSecret, takeshapeWebhookApiKey } from 'config';
+import logger from 'logger';
 import { buffer } from 'micro';
 import type { NextApiHandler, NextConfig } from 'next';
 import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'queries';
-import { createApolloClient } from 'services/apollo/client';
+import { createStaticClient } from 'services/apollo/apolloClient';
 import Stripe from 'stripe';
 import type { SetRequired } from 'type-fest';
 import type {
@@ -25,7 +19,7 @@ import type {
 } from 'types/takeshape';
 
 const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' });
-const client = createApolloClient(takeshapeApiUrl, () => takeshapeWebhookApiKey);
+const client = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
 
 function isValidShippingAddress(
   address: Stripe.Address
@@ -205,14 +199,14 @@ const handler: NextApiHandler = async (req, res) => {
         const { payment_status } = session;
 
         if (payment_status !== 'paid') {
-          console.warn('Session not paid');
+          logger.warn('Session not paid');
           break;
         }
 
         const maybeCustomer = await stripe.customers.retrieve(session.customer as string);
 
         if (maybeCustomer.deleted || !(maybeCustomer as Stripe.Customer).email) {
-          console.warn('No valid customer');
+          logger.warn('No valid customer');
           break;
         }
 
@@ -230,7 +224,7 @@ const handler: NextApiHandler = async (req, res) => {
 
         const results = await Promise.all(tasks);
 
-        console.info(`Handled event type ${event.type}`, { results });
+        logger.info(`Handled event type ${event.type}`, { results });
 
         res.status(200).json({
           data: {
@@ -241,12 +235,12 @@ const handler: NextApiHandler = async (req, res) => {
         });
         break;
       default:
-        console.info(`Unhandled event type ${event.type}`);
+        logger.info(`Unhandled event type ${event.type}`);
         res.status(200).json({ data: null });
     }
     return;
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(500).json({ errors: [err.message] });
   }
 };

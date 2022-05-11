@@ -1,14 +1,11 @@
+import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import useCart from 'services/cart/useCart';
+import { cartCheckoutResultAtom } from 'store';
 import { Alert, Box, Close } from 'theme-ui';
 
-const Notifications = () => {
+export const Notifications = () => {
   const [state, setState] = useState({ visible: false, fade: true });
-
-  const {
-    checkoutResult,
-    actions: { clearCheckoutResult }
-  } = useCart();
+  const [cartCheckoutResult, setCartCheckoutResult] = useAtom(cartCheckoutResultAtom);
 
   let stateTimeout;
   let resultTimeout;
@@ -22,26 +19,26 @@ const Notifications = () => {
     }
 
     setState({ visible: false, fade: false });
-    clearCheckoutResult();
+    setCartCheckoutResult('');
   };
 
   useEffect(() => {
-    if (checkoutResult) {
+    if (cartCheckoutResult) {
       setState({ visible: true, fade: true });
       // eslint-disable-next-line react-hooks/exhaustive-deps
       stateTimeout = setTimeout(() => setState({ visible: false, fade: true }), 5000);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      resultTimeout = setTimeout(() => clearCheckoutResult(), 5500);
+      resultTimeout = setTimeout(() => setCartCheckoutResult(''), 5500);
     }
-  }, [checkoutResult]);
+  }, [cartCheckoutResult]);
 
   let message;
 
-  if (checkoutResult === 'success') {
+  if (cartCheckoutResult === 'success') {
     message = 'Successfully checked out, your cart has been cleared.';
   }
 
-  if (checkoutResult === 'canceled') {
+  if (cartCheckoutResult === 'canceled') {
     message = 'Checkout canceled, your cart has been saved.';
   }
 

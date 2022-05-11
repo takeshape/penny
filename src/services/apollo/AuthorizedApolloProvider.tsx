@@ -1,16 +1,14 @@
 import { ApolloProvider } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { takeshapeAnonymousApiKey } from 'config';
-import { createApolloClient } from './client';
+import type { PropsWithChildren } from 'react';
+import { useApollo } from './apolloClient';
 
-export const AuthorizedApolloProvider = ({ uri, children }) => {
+export type AuthorizedApolloProviderProps = PropsWithChildren<{ pageProps: any }>;
+
+export const AuthorizedApolloProvider = ({ pageProps, children }: AuthorizedApolloProviderProps) => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-
-  const getAccessToken = isAuthenticated ? getAccessTokenSilently : () => takeshapeAnonymousApiKey;
-
-  const client = createApolloClient(uri, getAccessToken);
-
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+  const apolloClient = useApollo(pageProps, isAuthenticated ? getAccessTokenSilently : undefined);
+  return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
 };
 
 export default AuthorizedApolloProvider;

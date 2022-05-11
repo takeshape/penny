@@ -2,7 +2,7 @@ const cwd = process.cwd();
 
 module.exports = {
   stories: [
-    '../src/**/*.stories.@(ts|tsx)'
+    '../src/**/*.stories.@(tsx|mdx)'
   ],
   addons: [
     '@storybook/addon-links',
@@ -19,6 +19,9 @@ module.exports = {
         },
       },
     },
+    'storybook-addon-apollo-client',
+    'storybook-addon-jotai',
+    'storybook-addon-next-router'
   ],
   framework: '@storybook/react',
   core: {

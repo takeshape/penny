@@ -1,44 +1,51 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
-import PageLayout from 'features/layout/Page';
+import PageLoader from 'components/PageLoader';
+import Container from 'features/Container';
 import ProductGrid from 'features/products/ProductGrid';
-import type { InferGetStaticPropsType } from 'next';
+import Page from 'layouts/Page';
+import logger from 'logger';
+import type { InferGetStaticPropsType, NextPage } from 'next';
 import { GetStripeProducts } from 'queries';
-import { createApolloClient } from 'services/apollo/client';
-import { Alert, Container, Heading, Spinner } from 'theme-ui';
+import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
+import { createStaticClient } from 'services/apollo/apolloClient';
+import { Alert, Heading } from 'theme-ui';
+import { formatError } from 'utils/errors';
 
-const IndexPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
-      <PageLayout>
-        <Alert>Error loading products</Alert>
-        <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
-      </PageLayout>
+      <Container>
+        <Page>
+          <Alert>Error loading products</Alert>
+          <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
+        </Page>
+      </Container>
     );
   }
+
   return (
-    <PageLayout>
-      <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
-        Products
-      </Heading>
+    <Container>
       {products ? (
-        <ProductGrid products={products} />
+        <Page>
+          <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
+            Products
+          </Heading>
+          <ProductGrid products={products} />
+        </Page>
       ) : (
-        <Container variant="layout.loading">
-          <Spinner />
-        </Container>
+        <PageLoader />
       )}
-    </PageLayout>
+    </Container>
   );
 };
 
 export async function getStaticProps() {
-  const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
+  const apolloClient = createStaticClient();
 
   let products = [];
   let error = null;
 
   try {
-    const { data } = await client.query({
+    const { data } = await apolloClient.query({
       query: GetStripeProducts
     });
 
@@ -48,11 +55,11 @@ export async function getStaticProps() {
       products = data.products.items;
     }
   } catch (err) {
-    console.error(err);
-    error = Array.isArray(err) ? err.map((e) => e.message).join() : err.message;
+    logger.error(err);
+    error = formatError(err);
   }
 
-  return { props: { products, error } };
+  return addApolloQueryCache(apolloClient, { props: { products, error } });
 }
 
 export default IndexPage;

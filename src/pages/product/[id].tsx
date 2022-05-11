@@ -1,12 +1,14 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
-import PageLayout from 'features/layout/Page';
+import PageLoader from 'components/PageLoader';
+import Container from 'features/Container';
 import ProductAddToCart from 'features/products/ProductAddToCart';
 import ProductImage from 'features/products/ProductImage';
 import ReviewList from 'features/reviews/ReviewList';
+import Page from 'layouts/Page';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
-import { createApolloClient } from 'services/apollo/client';
+import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
+import { createStaticClient } from 'services/apollo/apolloClient';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type {
   ReviewsIo_ListProductReviewsResponseStatsProperty,
@@ -27,59 +29,69 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <Container title="Product loading...">
+        <PageLoader />
+      </Container>
+    );
   }
 
   const { product, reviews, stats } = props;
 
   return (
-    <PageLayout>
-      <Heading as="h2" variant="styles.pageTitle">
-        {product.name}
-      </Heading>
-      <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
-        <Box sx={{ flex: '1 1 32rem' }}>
-          <ProductImage images={product.images} />
-        </Box>
-        <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
-          <ProductAddToCart product={product} />
-          <Paragraph sx={{ textAlign: 'left' }}>{product.description}</Paragraph>
-          <Box sx={{ fontSize: '.8em' }}>
-            <ReviewList reviews={reviews} stats={stats} />
+    <Container title={product.name}>
+      <Page>
+        <Heading as="h2" variant="styles.pageTitle">
+          {product.name}
+        </Heading>
+        <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
+          <Box sx={{ flex: '1 1 32rem' }}>
+            <ProductImage images={product.images} maxHeight="600px" />
           </Box>
+          <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
+            <ProductAddToCart product={product} />
+            <Paragraph sx={{ textAlign: 'left' }}>{product.description}</Paragraph>
+            <Box sx={{ fontSize: '.8em' }}>
+              <ReviewList reviews={reviews} stats={stats} />
+            </Box>
+          </Flex>
         </Flex>
-      </Flex>
-    </PageLayout>
+      </Page>
+    </Container>
   );
 };
 
-export const getStaticProps: GetStaticProps<ProductPageProps> = async (context) => {
-  const { params } = context;
+export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
   const id = getSingle(params.id);
-  const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
+  const apolloClient = createStaticClient();
+
   const {
     data: { product, reviews }
-  } = await client.query<GetProductResponse, GetProductArgs>({
+  } = await apolloClient.query<GetProductResponse, GetProductArgs>({
     query: GetProduct,
     variables: { id }
   });
-  return {
+
+  return addApolloQueryCache(apolloClient, {
     props: {
       product,
       reviews: reviews.reviews.data ?? null,
       stats: reviews.stats ?? null
     }
-  };
+  });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const client = createApolloClient(takeshapeApiUrl, () => takeshapeAnonymousApiKey);
-  const { data } = await client.query<StripeProducts>({
+  const apolloClient = createStaticClient();
+
+  const { data } = await apolloClient.query<StripeProducts>({
     query: GetStripeProducts
   });
+
   const paths = data.products.items.map((product) => ({
     params: { id: product.id }
   }));
+
   return {
     paths,
     fallback: true

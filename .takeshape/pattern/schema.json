@@ -43,6 +43,73 @@
           "stripeCustomerId"
         ]
       }
+    },
+    "NavigationData": {
+      "default": {
+        "properties": {
+          "message": {"widget": "singleLineText"},
+          "links": {
+            "widget": "object",
+            "properties": {
+              "categories": {
+                "widget": "repeater",
+                "properties": {
+                  "name": {"widget": "singleLineText"},
+                  "featured": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {"widget": "singleLineText"},
+                      "href": {"widget": "singleLineText"}
+                    },
+                    "order": ["name", "href"]
+                  },
+                  "collection": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {"widget": "singleLineText"},
+                      "href": {"widget": "singleLineText"}
+                    },
+                    "order": ["name", "href"]
+                  },
+                  "categories": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {"widget": "singleLineText"},
+                      "href": {"widget": "singleLineText"}
+                    },
+                    "order": ["name", "href"]
+                  },
+                  "brands": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {"widget": "singleLineText"},
+                      "href": {"widget": "singleLineText"}
+                    },
+                    "order": ["name", "href"]
+                  }
+                },
+                "order": [
+                  "name",
+                  "featured",
+                  "collection",
+                  "categories",
+                  "brands"
+                ]
+              },
+              "pages": {
+                "widget": "repeater",
+                "properties": {
+                  "name": {"widget": "singleLineText"},
+                  "href": {"widget": "singleLineText"}
+                },
+                "order": ["name", "href"]
+              }
+            },
+            "order": ["categories", "pages"]
+          }
+        },
+        "order": ["message", "links"]
+      }
     }
   },
   "services": {
@@ -1074,9 +1141,29 @@
         },
         "required": []
       }
+    },
+    "getNavigationData": {
+      "shape": "NavigationData",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "NavigationData"
+      },
+      "description": "Get a NavigationData by ID",
+      "args": "TSGetSingletonArgs<NavigationData>"
     }
   },
   "mutations": {
+    "updateNavigationData": {
+      "shape": "UpdateResult<NavigationData>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "NavigationData"
+      },
+      "description": "Update NavigationData",
+      "args": "UpdateArgs<NavigationData>"
+    },
     "createShipment": {
       "shape": "ShipEngine_Label",
       "resolver": {
@@ -3429,6 +3516,220 @@
           "profiles"
         ],
         "type": "object"
+      }
+    },
+    "NavigationDataLinksCategoriesFeatured": {
+      "id": "68vvVsGMR",
+      "name": "NavigationDataLinksCategoriesFeatured",
+      "title": "Navigation Data Links Categories Featured",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "name",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesFeatured.ju6MThWm_"
+          },
+          "href": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "href",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesFeatured.Yvb2N4Bwq"
+          }
+        }
+      }
+    },
+    "NavigationDataLinksCategoriesCollection": {
+      "id": "wyJWNPt3z",
+      "name": "NavigationDataLinksCategoriesCollection",
+      "title": "Navigation Data Links Categories Collection",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "name",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCollection.MHxRsVP0V"
+          },
+          "href": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "href",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCollection.OJ88NAamE"
+          }
+        }
+      }
+    },
+    "NavigationDataLinksCategories": {
+      "id": "gFm-OwTpX",
+      "name": "NavigationDataLinksCategories",
+      "title": "Navigation Data Links Categories",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "name",
+            "@mapping": "takeshape:local:NavigationDataLinksCategories.x_VqrjyTh"
+          },
+          "featured": {
+            "title": "featured",
+            "description": "",
+            "items": {"@ref": "local:NavigationDataLinksCategoriesFeatured"},
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationDataLinksCategories.68vvVsGMR"
+          },
+          "collection": {
+            "title": "collection",
+            "description": "",
+            "items": {"@ref": "local:NavigationDataLinksCategoriesCollection"},
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationDataLinksCategories.wyJWNPt3z"
+          },
+          "categories": {
+            "title": "categories",
+            "description": "",
+            "items": {"@ref": "local:NavigationDataLinksCategoriesCategories"},
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationDataLinksCategories.l8hbX9gQa"
+          },
+          "brands": {
+            "title": "brands",
+            "description": "",
+            "items": {"@ref": "local:NavigationDataLinksCategoriesBrands"},
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationDataLinksCategories.ZN1Zl5dGX"
+          }
+        }
+      }
+    },
+    "NavigationDataLinksPages": {
+      "id": "w2GofQlUo",
+      "name": "NavigationDataLinksPages",
+      "title": "Navigation Data Links Pages",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "name",
+            "@mapping": "takeshape:local:NavigationDataLinksPages.rNquPKTsP"
+          },
+          "href": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "href",
+            "@mapping": "takeshape:local:NavigationDataLinksPages.5WjR-bis-"
+          }
+        }
+      }
+    },
+    "NavigationDataLinks": {
+      "id": "pjLk12fP9",
+      "name": "NavigationDataLinks",
+      "title": "Navigation Data Links",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "title": "categories",
+            "description": "",
+            "items": {"@ref": "local:NavigationDataLinksCategories"},
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationDataLinks.gFm-OwTpX"
+          },
+          "pages": {
+            "title": "pages",
+            "description": "",
+            "items": {"@ref": "local:NavigationDataLinksPages"},
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationDataLinks.w2GofQlUo"
+          }
+        }
+      }
+    },
+    "NavigationData": {
+      "id": "VHo3Y6Rab",
+      "name": "NavigationData",
+      "title": "Navigation Data",
+      "workflow": "default",
+      "model": {"type": "single"},
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 0,
+            "description": "",
+            "title": "message",
+            "@mapping": "takeshape:local:NavigationData.oXXaz-sxe"
+          },
+          "links": {
+            "title": "links",
+            "description": "",
+            "@ref": "local:NavigationDataLinks",
+            "@mapping": "takeshape:local:NavigationData.pjLk12fP9"
+          }
+        }
+      }
+    },
+    "NavigationDataLinksCategoriesCategories": {
+      "id": "l8hbX9gQa",
+      "name": "NavigationDataLinksCategoriesCategories",
+      "title": "Navigation Data Links Categories Categories",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "name",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCategories.bxi7I7fb_"
+          },
+          "href": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "href",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCategories.LH1Ztc4Ii"
+          }
+        }
+      }
+    },
+    "NavigationDataLinksCategoriesBrands": {
+      "id": "ZN1Zl5dGX",
+      "name": "NavigationDataLinksCategoriesBrands",
+      "title": "Navigation Data Links Categories Brands",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "name",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesBrands.0EyRktMNj"
+          },
+          "href": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "href",
+            "@mapping": "takeshape:local:NavigationDataLinksCategoriesBrands.I0s8qSosl"
+          }
+        }
       }
     }
   },

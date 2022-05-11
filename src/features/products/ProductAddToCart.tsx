@@ -1,6 +1,8 @@
+import { useAtom, useSetAtom } from 'jotai';
 import orderBy from 'lodash-es/orderBy';
 import { useEffect, useState } from 'react';
-import useCart from 'services/cart/useCart';
+import { addToCart } from 'services/cart/jotai';
+import { cartItemsAtom, cartTimeoutMsAtom, isCartOpenAtom } from 'store';
 import { Box, Button, Flex, Label, Radio } from 'theme-ui';
 import { Stripe_Product } from 'types/takeshape';
 import ProductPrice from './ProductPrice';
@@ -33,6 +35,10 @@ const AddToCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 );
 
 function useAddToCart(product: Stripe_Product) {
+  const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
+  const setCartTimeoutMs = useSetAtom(cartTimeoutMsAtom);
+  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+
   const { prices } = product;
   const oneTimePayment = prices?.find((p) => !p.recurring);
 
@@ -42,10 +48,6 @@ function useAddToCart(product: Stripe_Product) {
     ['asc', 'asc']
   );
   const findPriceById = (priceId) => prices.find((p) => p.id === priceId);
-  const {
-    isCartOpen,
-    actions: { addToCart, openCart, toggleCart }
-  } = useCart();
 
   const defaultPurchaseType = oneTimePayment ? oneTimePurchase : recurringPurchase;
   const defaultPrice = oneTimePayment ? oneTimePayment : recurringPayments?.[0];
@@ -86,11 +88,11 @@ function useAddToCart(product: Stripe_Product) {
   };
 
   const handleAddToCart = () => {
-    addToCart({ ...product, price, quantity });
+    addToCart(cartItems, setCartItems, { ...product, price, quantity });
 
     if (!isCartOpen) {
-      const timeout = setTimeout(() => toggleCart(), showCartTimeout);
-      openCart(timeout);
+      setCartTimeoutMs(showCartTimeout);
+      setIsCartOpen(true);
     }
   };
 

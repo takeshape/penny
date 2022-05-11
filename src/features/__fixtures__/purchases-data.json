@@ -202,7 +202,7 @@
               "id": "si_LUn2vtxDXvHjL5",
               "price": {
                 "currency": "usd",
-                "unitAmount": 2000,
+                "unit_amount": 2000,
                 "product": {
                   "id": "prod_LPvoTsSPD3jChL",
                   "name": "Baseball Cap",
@@ -228,7 +228,7 @@
               "id": "si_LUmxIXjzIawLHK",
               "price": {
                 "currency": "usd",
-                "unitAmount": 4000,
+                "unit_amount": 4000,
                 "product": {
                   "id": "prod_LNjPyhiFYDd0zk",
                   "name": "Oxford Shirt",
@@ -246,7 +246,7 @@
               "id": "si_LUmxD9FIErloq2",
               "price": {
                 "currency": "usd",
-                "unitAmount": 2000,
+                "unit_amount": 2000,
                 "product": {
                   "id": "prod_LPvMQBLsmamRRg",
                   "name": "Diamond Earrings",
@@ -272,7 +272,7 @@
               "id": "si_LSv6LVegLHtUDA",
               "price": {
                 "currency": "usd",
-                "unitAmount": 3000,
+                "unit_amount": 3000,
                 "product": {
                   "id": "prod_LPvVtHsMsXtspI",
                   "name": "Mesh Gym Shorts",

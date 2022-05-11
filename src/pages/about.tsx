@@ -1,5 +1,7 @@
 import Section from 'components/Section';
-import PageLayout from 'features/layout/Page';
+import Container from 'features/Container';
+import Page from 'layouts/Page';
+import type { NextPage } from 'next';
 import { Box, Divider, Heading, Link, Paragraph } from 'theme-ui';
 
 const dependencies = [
@@ -30,80 +32,82 @@ const dependencies = [
   }
 ];
 
-function AboutPage() {
+const AboutPage: NextPage = () => {
   return (
-    <PageLayout>
-      <Heading as="h1">About</Heading>
-      <Divider />
-
-      <Section>
-        <Paragraph>
-          This project demonstrates using <Link href="https://auth0.com">Auth0</Link> to manage a user‘s account and
-          make purchases through <Link href="https://stripe.com">Shopify</Link>.
-        </Paragraph>
-
-        <Paragraph>
-          This user account provides users with the ability to review their past purchases, and manage any subscriptions
-          they have.
-        </Paragraph>
-
-        <Paragraph>
-          We opted to use the Single Page App approach to Auth0 to make the project as simple as possible to deploy, and
-          to highlight that working with our GraphQL API removes the need for a dedicated backend. The official Auth0
-          Next.js library only makes access tokens available in API routes — we‘ve avoided those entirely so that you
-          can run `npm run export` and host your bundle on any static file service.
-        </Paragraph>
-      </Section>
-
-      <Section>
-        <Heading variant="h3">Key Dependencies</Heading>
+    <Container title="About">
+      <Page>
+        <Heading as="h1">About</Heading>
         <Divider />
-        <Box
-          as="ul"
-          sx={{
-            listStyle: 'none',
-            m: 0,
-            px: 0,
-            py: 4
-          }}
-        >
-          {dependencies.map((dependency) => (
-            <Box
-              as="li"
-              key={dependency.link}
-              sx={{
-                mb: 4
-              }}
-            >
-              <Heading
-                variant="smallHeading"
-                as="h3"
+
+        <Section>
+          <Paragraph>
+            This project demonstrates using <Link href="https://auth0.com">Auth0</Link> to manage a user‘s account and
+            make purchases through <Link href="https://stripe.com">Shopify</Link>.
+          </Paragraph>
+
+          <Paragraph>
+            This user account provides users with the ability to review their past purchases, and manage any
+            subscriptions they have.
+          </Paragraph>
+
+          <Paragraph>
+            We opted to use the Single Page App approach to Auth0 to make the project as simple as possible to deploy,
+            and to highlight that working with our GraphQL API removes the need for a dedicated backend. The official
+            Auth0 Next.js library only makes access tokens available in API routes — we‘ve avoided those entirely so
+            that you can run `npm run export` and host your bundle on any static file service.
+          </Paragraph>
+        </Section>
+
+        <Section>
+          <Heading variant="h3">Key Dependencies</Heading>
+          <Divider />
+          <Box
+            as="ul"
+            sx={{
+              listStyle: 'none',
+              m: 0,
+              px: 0,
+              py: 4
+            }}
+          >
+            {dependencies.map((dependency) => (
+              <Box
+                as="li"
+                key={dependency.link}
                 sx={{
-                  m: 0
+                  mb: 4
                 }}
               >
-                <Link
-                  href={dependency.link}
+                <Heading
+                  variant="smallHeading"
+                  as="h3"
                   sx={{
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    ':hover,:focus': {
-                      color: 'primary',
-                      textDecoration: 'underline',
-                      cursor: 'pointer'
-                    }
+                    m: 0
                   }}
                 >
-                  {dependency.title}
-                </Link>
-              </Heading>
-              <Paragraph>{dependency.description}</Paragraph>
-            </Box>
-          ))}
-        </Box>
-      </Section>
-    </PageLayout>
+                  <Link
+                    href={dependency.link}
+                    sx={{
+                      color: 'inherit',
+                      textDecoration: 'none',
+                      ':hover,:focus': {
+                        color: 'primary',
+                        textDecoration: 'underline',
+                        cursor: 'pointer'
+                      }
+                    }}
+                  >
+                    {dependency.title}
+                  </Link>
+                </Heading>
+                <Paragraph>{dependency.description}</Paragraph>
+              </Box>
+            ))}
+          </Box>
+        </Section>
+      </Page>
+    </Container>
   );
-}
+};
 
 export default AboutPage;
