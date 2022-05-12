@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { HandlerOptions } from '../types';
+import type { Client, HandlerOptions } from '../types';
 
-const handler = (options: HandlerOptions, _req: NextApiRequest, res: NextApiResponse) => {
-  const { issuer, origin, client } = options;
+const handler = (options: HandlerOptions, client: Client, _req: NextApiRequest, res: NextApiResponse) => {
+  const { issuer, origin } = options;
   res.send({
     issuer: `${issuer}`,
     token_endpoint: `${origin}/api/oidc/${client.id}/token`,

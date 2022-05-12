@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useOidc } from 'lib/next-auth-oidc/react';
 import type { UpsertMyProfileResponse } from 'queries';
 import { GetMyProfile, UpsertMyProfile } from 'queries';
 import { useEffect } from 'react';
@@ -7,7 +7,7 @@ import TakeshapeContext from './TakeshapeContext';
 
 // Ensure a profile is created for the Auth0 user
 export const TakeshapeProvider = ({ children }) => {
-  const { user } = useAuth0();
+  const { isAuthenticated } = useOidc({ clientId: 'takeshape' });
 
   const [upsertMyProfile, { data: profileData, loading: profileUpdating }] = useMutation<UpsertMyProfileResponse>(
     UpsertMyProfile,
@@ -20,10 +20,10 @@ export const TakeshapeProvider = ({ children }) => {
 
   useEffect(() => {
     // Logged in
-    if (user && !profileUpdating && !profileData) {
+    if (isAuthenticated && !profileUpdating && !profileData) {
       upsertMyProfile();
     }
-  }, [user, profileData, profileUpdating, upsertMyProfile]);
+  }, [isAuthenticated, profileData, profileUpdating, upsertMyProfile]);
 
   return (
     <TakeshapeContext.Provider

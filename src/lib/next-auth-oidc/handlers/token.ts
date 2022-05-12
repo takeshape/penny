@@ -1,10 +1,12 @@
 import { importPKCS8, SignJWT } from 'jose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
-import type { HandlerOptions } from '../types';
+import secs from '../secs';
+import type { Client, HandlerOptions } from '../types';
 
-async function handler(options: HandlerOptions, req: NextApiRequest, res: NextApiResponse) {
-  const { issuer, client, jwksKid, nextAuthSecret } = options;
+async function handler(options: HandlerOptions, client: Client, req: NextApiRequest, res: NextApiResponse) {
+  const { issuer, jwks, nextAuthSecret } = options;
+  const jwksKid = jwks.keys[0].kid;
 
   const token = await getToken({ req, secret: nextAuthSecret });
 
@@ -15,6 +17,8 @@ async function handler(options: HandlerOptions, req: NextApiRequest, res: NextAp
   }
 
   const privateKey = await importPKCS8(options.privateKey.replace(/\\n/g, '\n'), 'RS256');
+  const expiration: number =
+    typeof client.expiration === 'number' ? client.expiration : secs(client.expiration ?? '6h');
 
   const signed = await new SignJWT(token)
     .setProtectedHeader({
@@ -24,11 +28,11 @@ async function handler(options: HandlerOptions, req: NextApiRequest, res: NextAp
     })
     .setIssuer(issuer)
     .setAudience(client.audience)
-    .setExpirationTime(client.expiration ?? '6h')
+    .setExpirationTime(expiration)
     .setIssuedAt()
     .sign(privateKey);
 
-  res.send({ access_token: signed });
+  res.send({ access_token: signed, token_type: 'bearer', expires_in: expiration });
 }
 
 export default handler;
