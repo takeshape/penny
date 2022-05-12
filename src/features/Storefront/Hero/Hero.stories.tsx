@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Hero from './Hero';
 
 const Meta: ComponentMeta<typeof Hero> = {
-  title: 'Storefront / Hero',
+  title: 'Storefront / Components / Hero',
   component: Hero,
   parameters: {
     layout: 'centered'

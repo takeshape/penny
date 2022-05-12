@@ -1,4 +1,4 @@
-interface SaleProps {
+export interface SaleProps {
   text: {
     primary: string;
     secondary: string;
@@ -6,7 +6,7 @@ interface SaleProps {
   };
 }
 
-const Sale: React.FC<SaleProps> = ({ text }) => {
+const Sale: React.FC<SaleProps> = ({text}) => {
   return (
     <section
       aria-labelledby="sale-heading"

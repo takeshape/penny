@@ -6,7 +6,11 @@ interface Collection {
   href: string;
 }
 
-const Collections: React.FC<{ collections?: Collection[] }> = ({ collections }) => {
+export interface CollectionsProps {
+  collections?: Collection[]
+}
+
+const Collections: React.FC<CollectionsProps> = ({ collections }) => {
   if (!collections || !collections.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-gray-100">

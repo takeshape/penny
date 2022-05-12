@@ -4,7 +4,11 @@ interface Testimonial {
   attribution: string;
 }
 
-const Testimonials: React.FC<{ testimonials?: Testimonial[] }> = ({ testimonials }) => {
+export interface TestimonialsProps {
+  testimonials?: Testimonial[];
+}
+
+const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
   if (!testimonials || !testimonials.length) return null;
   return (
     <section

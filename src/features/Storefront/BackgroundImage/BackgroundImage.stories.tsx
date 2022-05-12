@@ -1,12 +1,12 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import Testimonials from 'components/Testimonials/Testimonials';
-import { _Testimonials } from 'components/Testimonials/Testimonials.stories';
+import Testimonials from 'features/Storefront/Testimonials/Testimonials';
+import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
 import Sale from '../Sale/Sale';
 import { _Sale } from '../Sale/Sale.stories';
 import BackgroundImage from './BackgroundImage';
 
 const Meta: ComponentMeta<typeof BackgroundImage> = {
-  title: 'Components /  Background Image',
+  title: 'Storefront / Components / Background Image',
   component: BackgroundImage
 };
 
