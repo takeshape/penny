@@ -6,7 +6,7 @@ interface Collection {
   href: string;
 }
 
-const Collections: React.FC<{collections?: Collection[]}> = ({collections}) => {
+const Collections: React.FC<{ collections?: Collection[] }> = ({ collections }) => {
   if (!collections || !collections.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-gray-100">
@@ -39,7 +39,7 @@ const Collections: React.FC<{collections?: Collection[]}> = ({collections}) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Collections
+export default Collections;

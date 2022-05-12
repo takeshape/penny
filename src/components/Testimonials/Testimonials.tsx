@@ -4,7 +4,7 @@ interface Testimonial {
   attribution: string;
 }
 
-const Testimonials: React.FC<{testimonials?: Testimonial[]}> = ({testimonials}) => {
+const Testimonials: React.FC<{ testimonials?: Testimonial[] }> = ({ testimonials }) => {
   if (!testimonials || !testimonials.length) return null;
   return (
     <section
@@ -15,7 +15,7 @@ const Testimonials: React.FC<{testimonials?: Testimonial[]}> = ({testimonials}) 
         <h2 id="testimonial-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
           What are people saying?
         </h2>
-    
+
         <div className="mt-16 space-y-16 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
           {testimonials.map((testimonial) => (
             <blockquote key={testimonial.id} className="sm:flex lg:block">
@@ -34,16 +34,14 @@ const Testimonials: React.FC<{testimonials?: Testimonial[]}> = ({testimonials}) 
               </svg>
               <div className="mt-8 sm:mt-0 sm:ml-6 lg:mt-10 lg:ml-0">
                 <p className="text-lg text-gray-600">{testimonial.quote}</p>
-                <cite className="mt-4 block font-semibold not-italic text-gray-900">
-                  {testimonial.attribution}
-                </cite>
+                <cite className="mt-4 block font-semibold not-italic text-gray-900">{testimonial.attribution}</cite>
               </div>
             </blockquote>
           ))}
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default Testimonials;

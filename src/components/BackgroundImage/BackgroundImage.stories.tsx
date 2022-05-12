@@ -19,7 +19,7 @@ const Template: ComponentStory<typeof BackgroundImage> = (args) => (
 
 export const _BackgroundImage = Template.bind({});
 _BackgroundImage.args = {
-  image: "https://tailwindui.com/img/ecommerce-images/home-page-02-sale-full-width.jpg"
+  image: 'https://tailwindui.com/img/ecommerce-images/home-page-02-sale-full-width.jpg'
 };
 
 export default Meta;

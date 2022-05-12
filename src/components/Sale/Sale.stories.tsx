@@ -14,9 +14,10 @@ const Template: ComponentStory<typeof Sale> = (args) => <Sale {...args} />;
 export const _Sale = Template.bind({});
 _Sale.args = {
   text: {
-    primary: "Get 25% off during our one-time sale",
-    secondary: "Most of our products are limited releases that won't come back. Get your favorite items while they're in stock.",
-    button: "Get access to our one-time sale"
+    primary: 'Get 25% off during our one-time sale',
+    secondary:
+      "Most of our products are limited releases that won't come back. Get your favorite items while they're in stock.",
+    button: 'Get access to our one-time sale'
   }
 };
 
