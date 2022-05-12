@@ -10,10 +10,10 @@ export interface StorefrontProps extends OffersProps, TestimonialsProps, Collect
   hero: HeroProps;
   sale: SaleProps;
   saleImage: string;
-};
+}
 
-const Storefront: React.FC<StorefrontProps> = props => {
-  const {hero, offers, testimonials, collections, trendingProducts, sale, saleImage} = props;
+const Storefront: React.FC<StorefrontProps> = (props) => {
+  const { hero, offers, testimonials, collections, trendingProducts, sale, saleImage } = props;
   return (
     <main className="bg-white">
       <Offers offers={offers} />
@@ -25,7 +25,7 @@ const Storefront: React.FC<StorefrontProps> = props => {
         <Testimonials testimonials={testimonials} />
       </BackgroundImage>
     </main>
-  )
-}
+  );
+};
 
 export default Storefront;

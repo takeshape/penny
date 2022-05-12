@@ -7,7 +7,7 @@ interface Collection {
 }
 
 export interface CollectionsProps {
-  collections?: Collection[]
+  collections?: Collection[];
 }
 
 const Collections: React.FC<CollectionsProps> = ({ collections }) => {

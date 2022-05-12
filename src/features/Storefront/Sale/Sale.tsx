@@ -6,7 +6,7 @@ export interface SaleProps {
   };
 }
 
-const Sale: React.FC<SaleProps> = ({text}) => {
+const Sale: React.FC<SaleProps> = ({ text }) => {
   return (
     <section
       aria-labelledby="sale-heading"
