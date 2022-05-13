@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { NextAuthOptions } from 'next-auth';
@@ -64,6 +65,8 @@ function NextAuthOIDC(options: NextAuthOIDCOptions) {
       ...nextAuthOptions.callbacks,
       session: sessionCallback
     };
+
+    console.log('callbacks', nextAuthOptions.callbacks);
 
     return NextAuthOIDCHandler(handlerOptions, NextAuth(nextAuthOptions));
   };
