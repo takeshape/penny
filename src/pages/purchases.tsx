@@ -1,6 +1,4 @@
 import { useQuery } from '@apollo/client';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import PageLoader from 'components/PageLoader';
 import Section from 'components/Section';
 import Container from 'features/Container';
 import LoyaltyCard from 'features/purchases/LoyaltyCard';
@@ -89,6 +87,4 @@ const PurchasesPage: NextPage = () => {
   );
 };
 
-export default withAuthenticationRequired(PurchasesPage, {
-  onRedirecting: () => <PageLoader />
-});
+export default PurchasesPage;

@@ -1,6 +1,4 @@
 import { useQuery } from '@apollo/client';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import PageLoader from 'components/PageLoader';
 import Section from 'components/Section';
 import UserLogout from 'features/account/AccountLogout';
 import CustomerForm from 'features/account/CustomerForm';
@@ -105,6 +103,4 @@ const AccountPage: NextPage = () => {
   );
 };
 
-export default withAuthenticationRequired(AccountPage, {
-  onRedirecting: () => <PageLoader />
-});
+export default AccountPage;
