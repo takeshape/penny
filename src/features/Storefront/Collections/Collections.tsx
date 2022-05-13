@@ -12,7 +12,7 @@ export interface CollectionsProps {
   collections?: Collection[];
 }
 
-const Collections: React.FC<CollectionsProps> = ({ collections }) => {
+const Collections = ({ collections }: React.PropsWithChildren<CollectionsProps>) => {
   if (!collections || !collections.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-gray-100">

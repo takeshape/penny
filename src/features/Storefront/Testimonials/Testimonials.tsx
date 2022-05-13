@@ -8,7 +8,7 @@ export interface TestimonialsProps {
   testimonials?: Testimonial[];
 }
 
-const Testimonials: React.FC<TestimonialsProps> = ({ testimonials }) => {
+const Testimonials = ({ testimonials }: React.PropsWithChildren<TestimonialsProps>) => {
   if (!testimonials || !testimonials.length) return null;
   return (
     <section

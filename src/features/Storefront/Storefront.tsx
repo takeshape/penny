@@ -12,7 +12,7 @@ export interface StorefrontProps extends OffersProps, TestimonialsProps, Collect
   saleImage: string;
 }
 
-const Storefront: React.FC<StorefrontProps> = (props) => {
+const Storefront = (props: React.PropsWithChildren<StorefrontProps>) => {
   const { hero, offers, testimonials, collections, trendingProducts, sale, saleImage } = props;
   return (
     <main className="bg-white">

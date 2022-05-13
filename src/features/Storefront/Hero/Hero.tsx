@@ -9,7 +9,7 @@ export interface HeroProps {
   image: string;
 }
 
-export const Hero: React.FC<HeroProps> = (props) => {
+export const Hero = (props: React.PropsWithChildren<HeroProps>) => {
   const { text, image } = props;
   return (
     <div className="relative bg-gray-100 pb-4 lg:pb-0">

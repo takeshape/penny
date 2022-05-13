@@ -1,6 +1,6 @@
 import NextImage from 'components/NextImage';
 
-const BackgroundImage: React.FC<{ image: string }> = ({ image, children }) => {
+const BackgroundImage = ({ image, children }: React.PropsWithChildren<{ image: string }>) => {
   return (
     <div className="relative overflow-hidden">
       {/* Decorative background image and gradient */}

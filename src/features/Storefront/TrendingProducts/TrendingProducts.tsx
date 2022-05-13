@@ -20,7 +20,7 @@ export interface TrendingProductsProps {
   trendingProducts?: TrendingProduct[];
 }
 
-const TrendingProducts: React.FC<TrendingProductsProps> = ({ trendingProducts }) => {
+const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<TrendingProductsProps>) => {
   if (!(trendingProducts ?? trendingProducts.length)) return null;
   return (
     <section aria-labelledby="trending-heading" className="bg-white">

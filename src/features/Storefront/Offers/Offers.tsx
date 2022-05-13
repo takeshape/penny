@@ -8,7 +8,7 @@ export interface OffersProps {
   offers: Offer[];
 }
 
-const Offers: React.FC<OffersProps> = ({ offers }) => {
+const Offers = ({ offers }: React.PropsWithChildren<OffersProps>) => {
   if (!offers) return null;
   return (
     <nav aria-label="Offers" className="order-last lg:order-first">
