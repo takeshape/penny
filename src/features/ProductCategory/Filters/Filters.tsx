@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
-import { Fragment } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import classNames from 'utils/classNames';
 
 interface SortOption {
@@ -19,12 +19,80 @@ interface Filters {
   [filter: string]: FilterOption[];
 }
 
-export interface FiltersProps {
-  filters: Filters;
-  sortOptions: SortOption[];
+type SetFilter = (filter: string, value: string, checked: boolean) => void;
+
+export interface FilterOptionProps extends FilterOption {
+  index: number;
+  filter: string;
+  setFilter: SetFilter;
 }
 
-const Filters: React.FC<FiltersProps> = ({filters, sortOptions}) => {
+export interface FilterProps {
+  legend: string;
+  options: FilterOption[];
+  setFilter: SetFilter;
+}
+export interface FiltersProps {
+  filters: Filters;
+  setFilters: (filters: Filters) => void;
+  clearAllFilters: () => void;
+  sortOptions: SortOption[];
+  setSortOption: (option: SortOption) => void;
+}
+
+const FilterOption: React.FC<FilterOptionProps> = (props) => {
+  return (
+    <div className="flex items-center text-base sm:text-sm">
+      <input
+        id={`${props.filter}-${props.index}`}
+        name={`${props.filter}[]`}
+        value={props.value}
+        type="checkbox"
+        className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+        checked={props.checked}
+        onChange={() => props.setFilter(props.filter, props.value, !props.checked)}
+      />
+      <label htmlFor={`${props.filter}-${props.index}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+        {props.label}
+      </label>
+    </div>
+  );
+};
+
+const Filter: React.FC<FilterProps> = (props) => {
+  return (
+    <fieldset>
+      <legend className="block font-medium">{props.legend}</legend>
+      <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
+        {props.options.map((option, optionIdx) => (
+          <FilterOption key={option.value} {...option} filter="price" index={optionIdx} setFilter={props.setFilter} />
+        ))}
+      </div>
+    </fieldset>
+  );
+};
+
+const Filters: React.FC<FiltersProps> = (props) => {
+  const { filters, setFilters, clearAllFilters, sortOptions, setSortOption } = props;
+  const setFilter = useCallback(
+    (filter: string, value: string, checked: boolean): void => {
+      const newFilters = { ...filters };
+      newFilters[filter].find((filterOption) => filterOption.value === value).checked = checked;
+      setFilters(newFilters);
+    },
+    [filters, setFilters]
+  );
+  const checkedFilterCount = useMemo(() => {
+    let checked = 0;
+    Object.values(filters).forEach((filter) => {
+      filter.forEach((filterOption) => {
+        if (filterOption.checked) {
+          checked++;
+        }
+      });
+    });
+    return checked;
+  }, [filters]);
   return (
     <Disclosure
       as="section"
@@ -42,11 +110,11 @@ const Filters: React.FC<FiltersProps> = ({filters, sortOptions}) => {
                 className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
                 aria-hidden="true"
               />
-              2 Filters
+              {checkedFilterCount} Filter{checkedFilterCount !== 1 && 's'}
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500">
+            <button type="button" className="text-gray-500" onClick={() => clearAllFilters()}>
               Clear all
             </button>
           </div>
@@ -55,88 +123,12 @@ const Filters: React.FC<FiltersProps> = ({filters, sortOptions}) => {
       <Disclosure.Panel className="border-t border-gray-200 py-10">
         <div className="max-w-7xl mx-auto grid grid-cols-2 gap-x-4 px-4 text-sm sm:px-6 md:gap-x-6 lg:px-8">
           <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
-            <fieldset>
-              <legend className="block font-medium">Price</legend>
-              <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.price.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
-                    <input
-                      id={`price-${optionIdx}`}
-                      name="price[]"
-                      defaultValue={option.value}
-                      type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-                      defaultChecked={option.checked}
-                    />
-                    <label htmlFor={`price-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="block font-medium">Color</legend>
-              <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.color.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
-                    <input
-                      id={`color-${optionIdx}`}
-                      name="color[]"
-                      defaultValue={option.value}
-                      type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-                      defaultChecked={option.checked}
-                    />
-                    <label htmlFor={`color-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
+            <Filter legend="Price" options={filters.price} setFilter={setFilter} />
+            <Filter legend="Color" options={filters.color} setFilter={setFilter} />
           </div>
           <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
-            <fieldset>
-              <legend className="block font-medium">Size</legend>
-              <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.size.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
-                    <input
-                      id={`size-${optionIdx}`}
-                      name="size[]"
-                      defaultValue={option.value}
-                      type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-                      defaultChecked={option.checked}
-                    />
-                    <label htmlFor={`size-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="block font-medium">Category</legend>
-              <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
-                {filters.category.map((option, optionIdx) => (
-                  <div key={option.value} className="flex items-center text-base sm:text-sm">
-                    <input
-                      id={`category-${optionIdx}`}
-                      name="category[]"
-                      defaultValue={option.value}
-                      type="checkbox"
-                      className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
-                      defaultChecked={option.checked}
-                    />
-                    <label htmlFor={`category-${optionIdx}`} className="ml-3 min-w-0 flex-1 text-gray-600">
-                      {option.label}
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </fieldset>
+            <Filter legend="Size" options={filters.size} setFilter={setFilter} />
+            <Filter legend="Category" options={filters.category} setFilter={setFilter} />
           </div>
         </div>
       </Disclosure.Panel>
@@ -174,6 +166,10 @@ const Filters: React.FC<FiltersProps> = ({filters, sortOptions}) => {
                             active ? 'bg-gray-100' : '',
                             'block px-4 py-2 text-sm'
                           )}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSortOption(option);
+                          }}
                         >
                           {option.name}
                         </a>
@@ -187,7 +183,7 @@ const Filters: React.FC<FiltersProps> = ({filters, sortOptions}) => {
         </div>
       </div>
     </Disclosure>
-  )
-}
+  );
+};
 
 export default Filters;
