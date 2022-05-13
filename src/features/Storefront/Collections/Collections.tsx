@@ -1,3 +1,5 @@
+import NextImage from 'components/NextImage';
+
 interface Collection {
   name: string;
   description: string;
@@ -24,7 +26,8 @@ const Collections: React.FC<CollectionsProps> = ({ collections }) => {
             {collections.map((collection) => (
               <div key={collection.name} className="group relative">
                 <div className="relative w-full h-80 bg-white rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
-                  <img
+                  <NextImage
+                    layout="fill"
                     src={collection.imageSrc}
                     alt={collection.imageAlt}
                     className="w-full h-full object-center object-cover"

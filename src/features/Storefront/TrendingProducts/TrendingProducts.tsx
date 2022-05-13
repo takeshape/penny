@@ -1,3 +1,5 @@
+import NextImage from 'components/NextImage';
+
 interface AvailableColor {
   name: string;
   colorBg: string;
@@ -42,7 +44,8 @@ const TrendingProducts: React.FC<TrendingProductsProps> = ({ trendingProducts })
                 <li key={product.id} className="w-64 inline-flex flex-col text-center lg:w-auto">
                   <div className="group relative">
                     <div className="w-full bg-gray-200 rounded-md overflow-hidden aspect-w-1 aspect-h-1">
-                      <img
+                      <NextImage
+                        layout="fill"
                         src={product.imageSrc}
                         alt={product.imageAlt}
                         className="w-full h-full object-center object-cover group-hover:opacity-75"
