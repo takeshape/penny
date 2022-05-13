@@ -1,63 +1,71 @@
 import fs from 'fs';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextAuthOptions } from 'next-auth';
+import { createSessionCallback } from './callbacks';
 import jwksHandler from './handlers/jwks';
 import openidConfigurationHandler from './handlers/openid-configuration';
-import tokenHandler from './handlers/token';
+import type { CreateSigningFnsParams } from './token';
 import type { HandlerOptions, NextAuthOIDCOptions } from './types';
 import { getIssuer, getOrigin } from './utils';
 
-async function NextAuthOIDCHandler(options: HandlerOptions, req: NextApiRequest, res: NextApiResponse) {
-  let {
-    query: { nextauthoidc: route }
-  } = req;
+function NextAuthOIDCHandler(options: HandlerOptions, nextAuth: any) {
+  return async (req: NextApiRequest, res: NextApiResponse) => {
+    let {
+      query: { nextauth: route }
+    } = req;
 
-  route = Array.isArray(route) ? route : [route];
+    route = Array.isArray(route) ? route : [route];
 
-  if (route[0] === 'jwks.json') {
-    return jwksHandler(options, req, res);
-  }
+    route = route.join('/');
 
-  const clientId = route.shift();
-  const client = options.clients.find((c) => c.id === clientId);
-
-  if (!client) {
-    res.status(404).end();
-    return;
-  }
-
-  route = route.join('/');
-
-  switch (route) {
-    case '.well-known/openid-configuration':
-      return openidConfigurationHandler(options, client, req, res);
-    case 'token':
-      return tokenHandler(options, client, req, res);
-    default:
-      res.status(404).end();
-  }
+    switch (route) {
+      case 'oidc/jwks.json':
+        return jwksHandler(options, req, res);
+      case 'oidc/.well-known/openid-configuration':
+        return openidConfigurationHandler(options, req, res);
+      default:
+        return nextAuth(req, res);
+    }
+  };
 }
 
+/**
+ * Wraps NextAuth with OIDC code, which adds OIDC endpoints and inserts
+ * access tokens into the session object.
+ */
 function NextAuthOIDC(options: NextAuthOIDCOptions) {
-  let jwksPath = options.jwksPath ?? process.env.NEXTAUTHOIDC_JWKS_PATH;
+  const jwksPath = options.jwksPath ?? process.env.NEXTAUTHOIDC_JWKS_PATH;
   const privateKey = options.privateKey ?? process.env.NEXTAUTHOIDC_PRIVATE_KEY;
 
   if (!jwksPath || !privateKey) {
-    throw new Error('Public key and private key are required');
+    throw new Error('JWKS file path and private key are required');
   }
 
   const jwks = JSON.parse(fs.readFileSync(jwksPath, 'utf-8'));
+  const issuer = getIssuer(options.issuer);
 
   const handlerOptions: HandlerOptions = {
-    clients: options.clients,
-    issuer: getIssuer(options.issuer),
+    issuer,
     origin: getOrigin(),
-    jwks,
-    privateKey: privateKey.trim(),
-    nextAuthSecret: options.nextAuthSecret ?? process.env.NEXTAUTH_SECRET
+    jwks
   };
 
-  return async (req: NextApiRequest, res: NextApiResponse) => {
-    return await NextAuthOIDCHandler(handlerOptions, req, res);
+  const signingOptions: CreateSigningFnsParams = {
+    clients: options.clients,
+    privateKey: privateKey.trim().replace(/\\n/g, '\n'),
+    issuer,
+    kid: jwks.keys[0].kid
+  };
+
+  return (NextAuth: (opt: NextAuthOptions) => any, nextAuthOptions: NextAuthOptions) => {
+    const sessionCallback = createSessionCallback(signingOptions, nextAuthOptions);
+
+    nextAuthOptions.callbacks = {
+      ...nextAuthOptions.callbacks,
+      session: sessionCallback
+    };
+
+    return NextAuthOIDCHandler(handlerOptions, NextAuth(nextAuthOptions));
   };
 }
 

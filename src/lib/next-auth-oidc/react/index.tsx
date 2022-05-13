@@ -1,27 +1,42 @@
+import type { SessionContextValue, UseSessionOptions } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
-import { useCallback } from 'react';
+import { useEffect, useState } from 'react';
+import type { SetOptional } from 'type-fest';
 
-export interface UseTokenOptions {
+export interface GetClientTokenOptions {
+  clientId: string;
+  session: SessionContextValue['data'];
+}
+
+export function getClientToken({ clientId, session }: GetClientTokenOptions) {
+  return session?.oidcAccessTokens?.[clientId] && session.oidcAccessTokens[clientId];
+}
+
+export interface UseClientTokenOptions extends SetOptional<UseSessionOptions<boolean>, 'required'> {
   clientId: string;
 }
 
-export function useOidc(options: UseTokenOptions) {
-  const { clientId } = options;
-  const { data: session, status } = useSession();
+/**
+ * A convenience hook to provide the client token from the NextAuth session
+ * for a configured client. Must be wrapped in the NextAuth SessionProvider.
+ */
+export function useClientToken({ clientId, ...options }: UseClientTokenOptions) {
+  const { data: session, status } = useSession({ required: false, ...options });
+  const [isAuthenticated, setIsAuthenticated] = useState(status === 'authenticated');
+  const [clientToken, setClientToken] = useState(null);
 
-  // When the session changes this callback should also
-  const getAccessToken = useCallback(async (): Promise<any> => {
-    let token;
-    try {
-      const res = await fetch(`/api/oidc/${clientId}/token`);
-      const json = await res.json();
-      token = json.access_token;
-    } catch (error) {
-      throw error;
+  useEffect(() => {
+    setIsAuthenticated(status === 'authenticated');
+  }, [status]);
+
+  useEffect(() => {
+    const clientToken = getClientToken({ clientId, session });
+    if (clientToken) {
+      setClientToken(clientToken);
+    } else {
+      setClientToken(null);
     }
-    return token;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [clientId, session]);
 
-  return { isAuthenticated: status === 'authenticated', getAccessToken };
+  return { isAuthenticated, clientToken };
 }

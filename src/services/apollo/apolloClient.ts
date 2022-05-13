@@ -3,7 +3,10 @@
 
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+import { onError } from '@apollo/client/link/error';
+import type { ServerError } from '@apollo/client/link/utils';
+import { isSsr, takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+import logger from 'logger';
 import { useMemo } from 'react';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
@@ -34,6 +37,21 @@ function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloPr
     return { token };
   });
 
+  const withError = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) =>
+        logger.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+      );
+    if (networkError) {
+      // When unauthenticated, redirect to sign in
+      if ((networkError as ServerError).statusCode === 401 && !isSsr) {
+        window.location.href = '/api/auth/signin?error=SessionRequired';
+      }
+
+      logger.error(`[Network error]: ${networkError}`);
+    }
+  });
+
   const authLink = new ApolloLink((operation, forward) => {
     const { token, headers } = operation.getContext();
 
@@ -61,7 +79,7 @@ function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloPr
   const httpLinkWithoutTypeName = ApolloLink.from([cleanTypeName, httpLink]);
 
   return new ApolloClient<NormalizedCacheObject>({
-    link: ApolloLink.from([withToken, authLink.concat(httpLinkWithoutTypeName)]),
+    link: ApolloLink.from([withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
     cache: new InMemoryCache(),
     ssrMode
   });

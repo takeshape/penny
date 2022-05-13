@@ -1,16 +1,19 @@
 import { useApolloClient } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
+import { signOut } from 'next-auth/react';
 import { useCallback } from 'react';
 import { Button } from 'theme-ui';
 
 export const UserLogout = () => {
   const { resetStore } = useApolloClient();
-  const { logout } = useAuth0();
 
-  const handleLogout = useCallback(async () => {
-    await resetStore();
-    logout({ returnTo: window.location.origin });
-  }, [logout, resetStore]);
+  const handleLogout = useCallback(
+    async (e) => {
+      e.preventDefault();
+      await resetStore();
+      signOut({ callbackUrl: '/' });
+    },
+    [resetStore]
+  );
 
   return (
     <Button

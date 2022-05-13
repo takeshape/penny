@@ -4,11 +4,11 @@ import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 export const NavigationTopAccountIcon = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   return (
     <div className="flex">
-      {session ? (
+      {status === 'authenticated' ? (
         <Link href="/account">
           <a className="-m-2 p-2 text-gray-400 hover:text-gray-500">
             <span className="sr-only">Account</span>

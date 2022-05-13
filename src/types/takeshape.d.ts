@@ -15665,6 +15665,8 @@ export type Mutation = {
   deleteTsStaticSite?: Maybe<DeleteTsStaticSiteResult>;
   /** Create a shipment with ShipEngine. */
   createShipment?: Maybe<ShipEngine_Label>;
+  /** A privileged user or webhook can upsert a user's profile, updating ShapeDB and Stripe. */
+  upsertProfile?: Maybe<Profile>;
   /** Upsert the signed-in user's profile, updating ShapeDB and Stripe */
   upsertMyProfile?: Maybe<Profile>;
   /** Upsert the signed-in user's Stripe customer */
@@ -15781,6 +15783,12 @@ export type MutationCreateShipmentArgs = {
   packages?: InputMaybe<Array<InputMaybe<ShipEngine_PackageInput>>>;
   ship_to?: InputMaybe<ShipEngine_AddressInput>;
   ship_from?: InputMaybe<ShipEngine_AddressInput>;
+};
+
+
+export type MutationUpsertProfileArgs = {
+  id: Scalars['String'];
+  email: Scalars['String'];
 };
 
 

@@ -138,6 +138,18 @@ export const UpsertMyProfile = gql`
   }
 `;
 
+export interface UpsertProfileResponse {
+  profile: Mutation['upsertProfile'];
+}
+
+export const UpsertProfile = gql`
+  mutation UpsertProfile($id: String!, $email: String!) {
+    profile: upsertProfile(id: $id, email: $email) {
+      _id
+    }
+  }
+`;
+
 export const UploadAssets = gql`
   mutation UploadAssets($files: [TSFile]!) {
     uploadAssets(files: $files) {

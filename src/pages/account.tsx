@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { withAuthenticationRequired } from '@auth0/auth0-react';
 import PageLoader from 'components/PageLoader';
 import Section from 'components/Section';
+import UserLogout from 'features/account/AccountLogout';
 import CustomerForm from 'features/account/CustomerForm';
 import NewsletterToggle from 'features/account/NewsletterToggle';
 import ProfileForm from 'features/account/ProfileForm';
@@ -9,12 +10,11 @@ import Container from 'features/Container';
 import ReferralsCreateReferral from 'features/referrals/CreateReferral';
 import ReferralsList from 'features/referrals/ReferralList';
 import type { ReferralListItemProps } from 'features/referrals/ReferralListItem';
-import UserLogout from 'features/UserLogout';
 import Page from 'layouts/Page';
 import type { NextPage } from 'next';
+import { useSession } from 'next-auth/react';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'queries';
 import { useState } from 'react';
-import useProfile from 'services/takeshape/useProfile';
 import { Alert, Box, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
 const referralsFixtureData: ReferralListItemProps[] = [
@@ -26,14 +26,17 @@ const referralsFixtureData: ReferralListItemProps[] = [
 ];
 
 const AccountPage: NextPage = () => {
-  const { isProfileReady } = useProfile();
+  const { status } = useSession({ required: true });
+  const skip = status !== 'authenticated';
 
   const { data: profileData, error: profileError } = useQuery(GetMyProfile, {
-    skip: !isProfileReady
+    skip
   });
+
   const { data: newsletterData, error: newsletterError } = useQuery(GetMyNewsletterSubscriptons, {
-    skip: !isProfileReady
+    skip
   });
+
   const [referrals, setReferrals] = useState<ReferralListItemProps[]>(referralsFixtureData);
 
   return (

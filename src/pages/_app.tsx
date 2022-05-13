@@ -1,12 +1,11 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import GlobalStyles from 'components/GlobalStyles';
-import { audience, clientId, domain, isSsg, scope, seo } from 'config';
+import { audience, clientId, domain, isSsr, scope, seo } from 'config';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 import type { AppContext, AppInitialProps } from 'next/app';
 import Router from 'next/router';
 import AuthorizedApolloProvider from 'services/apollo/AuthorizedApolloProvider';
-import TakeshapeProvider from 'services/takeshape/TakeshapeProvider';
 import 'styles/globals.css';
 import theme from 'theme';
 import { ThemeProvider } from 'theme-ui';
@@ -22,19 +21,17 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
       clientId={clientId}
       scope={scope}
       audience={audience}
-      redirectUri={!isSsg && window.location.origin}
+      redirectUri={!isSsr && window.location.origin}
       cacheLocation="localstorage"
       onRedirectCallback={onRedirectCallback}
     >
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <AuthorizedApolloProvider pageProps={pageProps}>
-          <TakeshapeProvider>
-            <ThemeProvider theme={theme}>
-              <DefaultSeo {...seo} />
-              <GlobalStyles />
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </TakeshapeProvider>
+          <ThemeProvider theme={theme}>
+            <DefaultSeo {...seo} />
+            <GlobalStyles />
+            <Component {...pageProps} />
+          </ThemeProvider>
         </AuthorizedApolloProvider>
       </SessionProvider>
     </Auth0Provider>

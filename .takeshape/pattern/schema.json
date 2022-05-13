@@ -1182,6 +1182,210 @@
       "description": "Create a shipment with ShipEngine.",
       "args": "ShipEngine_Shipment"
     },
+    "upsertProfile": {
+      "description": "A privileged user or webhook can upsert a user's profile, updating ShapeDB and Stripe.",
+      "shape": "Profile",
+      "resolver": {
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$resolvers.createProfile.result"
+            },
+            {
+              "path": "$",
+              "mapping": "$resolvers.updateProfile.result"
+            }
+          ]
+        },
+        "compose": [
+          {
+            "id": "existingProfile",
+            "name": "takeshape:find",
+            "service": "takeshape:local",
+            "shapeName": "Profile",
+            "args": {
+              "ops": [
+                {
+                  "path": "where.id.eq",
+                  "mapping": "$args.id"
+                }
+              ]
+            }
+          },
+          {
+            "if": "isEmpty($resolvers.existingProfile.stripeCustomerId)",
+            "id": "existingCustomerByEmail",
+            "name": "rest:get",
+            "service": "stripe",
+            "path": "/v1/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$args.email"
+                }
+              ]
+            }
+          },
+          {
+            "if": "isEmpty($resolvers.existingProfile.stripeCustomerId) && isEmpty($resolvers.existingCustomerByEmail.data[0].id)",
+            "id": "createCustomer",
+            "name": "rest:post",
+            "service": "stripe",
+            "path": "/v1/customers",
+            "form": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$args.email"
+                }
+              ],
+              "serialize": {
+                "defaults": {
+                  "style": "deepObject",
+                  "explode": true
+                }
+              }
+            }
+          },
+          {
+            "if": "(!isEmpty($resolvers.existingProfile.stripeCustomerId) || !isEmpty($resolvers.existingCustomerByEmail.data[0].id)) && isEmpty($resolvers.createCustomer)",
+            "id": "updateCustomer",
+            "name": "rest:post",
+            "service": "stripe",
+            "path": {
+              "ops": [
+                {
+                  "path": "customer",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.existingProfile.stripeCustomerId"
+                      }
+                    ]
+                  ]
+                }
+              ],
+              "serialize": {
+                "template": "/v1/customers/{customer}"
+              }
+            },
+            "form": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$args.email"
+                }
+              ],
+              "serialize": {
+                "defaults": {
+                  "style": "deepObject",
+                  "explode": true
+                }
+              }
+            }
+          },
+          {
+            "if": "isEmpty($resolvers.existingProfile)",
+            "id": "createProfile",
+            "name": "takeshape:create",
+            "service": "takeshape:local",
+            "shapeName": "Profile",
+            "args": {
+              "ops": [
+                {
+                  "path": "input.id",
+                  "mapping": "$args.id"
+                },
+                {
+                  "path": "input.email",
+                  "mapping": "$args.email"
+                },
+                {
+                  "path": "input.stripeCustomerId",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.createCustomer.id"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "if": "!isEmpty($resolvers.existingProfile)",
+            "id": "updateProfile",
+            "name": "takeshape:update",
+            "service": "takeshape:local",
+            "shapeName": "Profile",
+            "args": {
+              "ops": [
+                {
+                  "path": "input._id",
+                  "mapping": "$resolvers.existingProfile._id"
+                },
+                {
+                  "path": "input.email",
+                  "mapping": "$claims.email"
+                },
+                {
+                  "path": "input.stripeCustomerId",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.existingProfile.stripeCustomerId"
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.createCustomer.id"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "email"]
+      }
+    },
     "upsertMyProfile": {
       "description": "Upsert the signed-in user's profile, updating ShapeDB and Stripe",
       "shape": "Profile",
