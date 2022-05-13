@@ -11,7 +11,7 @@ import type { MutationUpsertProfileArgs } from 'types/takeshape';
 const client = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
 
 const withOIDC = createNextAuthOIDC({
-  jwksPath: path.resolve('../../../../keys/jwks.json'),
+  jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
   clients: [
     {
       id: 'takeshape',
