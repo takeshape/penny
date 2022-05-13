@@ -47,7 +47,6 @@
     "micro": "^9.3.4",
     "next": "^12.1.6",
     "next-auth": "^4.3.4",
-    "next-build-cache": "^1.0.4",
     "next-compose-plugins": "^2.2.1",
     "next-seo": "^5.4.0",
     "node-fetch": "^3.2.4",

@@ -1,6 +1,5 @@
 import { MockedProvider } from '@apollo/client/testing';
-import { Auth0Provider } from '@auth0/auth0-react';
-import { audience, clientId, domain, isSsg, scope } from 'config';
+import { SessionProvider } from 'next-auth/react';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { withJotai } from 'storybook-addon-jotai';
 import '../src/styles/globals.css';
@@ -24,17 +23,10 @@ export const parameters = {
 export const decorators = [
   withJotai,
   (Story) => (
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      scope={scope}
-      audience={audience}
-      redirectUri={isSsg && window.location.origin}
-      cacheLocation="localstorage"
-    >
+    <SessionProvider session={{}} refetchInterval={0}>
         <div className="container">
           <Story />
         </div>
-    </Auth0Provider>
+    </SessionProvider>
   )
 ];
