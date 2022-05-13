@@ -23,7 +23,7 @@ export const parameters = {
 export const decorators = [
   withJotai,
   (Story) => (
-    <SessionProvider session={{}} refetchInterval={0}>
+    <SessionProvider session={{ expires: '2050-10-05T14:48:00.000Z' }} refetchInterval={0}>
         <div className="container">
           <Story />
         </div>

@@ -15,7 +15,7 @@ const onRedirectCallback = (appState) => {
 
 export default function App({ Component, pageProps }: AppContext & AppInitialProps) {
   return (
-    <SessionProvider session={pageProps.session} refetchInterval={0}>
+    <SessionProvider session={pageProps.session} refetchInterval={30 * 60} refetchOnWindowFocus={true}>
       <AuthorizedApolloProvider pageProps={pageProps}>
         <ThemeProvider theme={theme}>
           <DefaultSeo {...seo} />
