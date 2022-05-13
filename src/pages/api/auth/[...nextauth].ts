@@ -1,5 +1,5 @@
 import { takeshapeWebhookApiKey } from 'config';
-import createNextAuthOIDC from 'lib/next-auth-oidc';
+import createNextAuthAllAccess from 'lib/next-auth-all-access';
 import NextAuth from 'next-auth';
 import Auth0Provider from 'next-auth/providers/auth0';
 import path from 'path';
@@ -10,7 +10,8 @@ import type { MutationUpsertProfileArgs } from 'types/takeshape';
 
 const client = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
 
-const withOIDC = createNextAuthOIDC({
+const withAllAccess = createNextAuthAllAccess({
+  issuer: 'https://deluxe-sample-project.vercel.app/',
   jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
   clients: [
     {
@@ -21,7 +22,7 @@ const withOIDC = createNextAuthOIDC({
   ]
 });
 
-export default withOIDC(NextAuth, {
+export default withAllAccess(NextAuth, {
   providers: [
     Auth0Provider({
       clientId: process.env.AUTH0_ID,

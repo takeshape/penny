@@ -6,7 +6,7 @@ export interface Client {
   expiration?: string | number;
 }
 
-export interface NextAuthOIDCOptions {
+export interface NextAuthAllAccessOptions {
   clients: Client[];
   jwksPath?: string;
   privateKey?: string;

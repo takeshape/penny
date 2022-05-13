@@ -1,9 +1,11 @@
-import { importPKCS8, SignJWT } from 'jose';
+import type { KeyLike } from 'jose';
+import { SignJWT } from 'jose';
+// import type { KeyLike } from './key';
 import type { Client, NextAuthToken } from './types';
 
 interface CreateSignTokenParams {
   id: string;
-  privateKey: string;
+  privateKey: KeyLike;
   expiration?: string | number;
   kid: string;
   issuer: string;
@@ -12,8 +14,6 @@ interface CreateSignTokenParams {
 
 export function createSigningFn({ id, privateKey, expiration, kid, issuer, audience }: CreateSignTokenParams) {
   return async (token: NextAuthToken) => {
-    const key = await importPKCS8(privateKey, 'RS256');
-
     const signed = await new SignJWT(token)
       .setProtectedHeader({
         typ: 'JWT',
@@ -24,7 +24,7 @@ export function createSigningFn({ id, privateKey, expiration, kid, issuer, audie
       .setAudience(audience)
       .setExpirationTime(expiration)
       .setIssuedAt()
-      .sign(key);
+      .sign(privateKey);
 
     return { id, accessToken: signed };
   };
@@ -32,7 +32,7 @@ export function createSigningFn({ id, privateKey, expiration, kid, issuer, audie
 
 export interface CreateSigningFnsParams {
   clients: Client[];
-  privateKey: string;
+  privateKey: KeyLike;
   issuer: string;
   kid: string;
 }

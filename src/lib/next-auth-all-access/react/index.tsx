@@ -9,10 +9,10 @@ export interface GetClientTokenOptions {
 }
 
 export function getClientToken({ clientId, session }: GetClientTokenOptions) {
-  return session?.oidcAccessTokens?.[clientId] && session.oidcAccessTokens[clientId];
+  return session?.allAccess?.[clientId];
 }
 
-export interface UseClientTokenOptions extends SetOptional<UseSessionOptions<boolean>, 'required'> {
+export interface UseAllAccessOptions extends SetOptional<UseSessionOptions<boolean>, 'required'> {
   clientId: string;
 }
 
@@ -20,7 +20,7 @@ export interface UseClientTokenOptions extends SetOptional<UseSessionOptions<boo
  * A convenience hook to provide the client token from the NextAuth session
  * for a configured client. Must be wrapped in the NextAuth SessionProvider.
  */
-export function useClientToken({ clientId, ...options }: UseClientTokenOptions) {
+export function useAllAccess({ clientId, ...options }: UseAllAccessOptions) {
   const { data: session, status } = useSession({ required: false, ...options });
   const [isAuthenticated, setIsAuthenticated] = useState(status === 'authenticated');
   const [clientToken, setClientToken] = useState(null);

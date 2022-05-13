@@ -23,7 +23,7 @@ export function getOrigin() {
 export function getIssuer(issuer?: string) {
   // Explicit values are used literally, otherwise use a URL.
   // When using the URL add a trailing slash.
-  return issuer ?? process.env.NEXTAUTHOIDC_ISSUER ?? `${getOrigin()}/`;
+  return issuer ?? process.env.ALLACCESS_ISSUER ?? `${getOrigin()}/`;
 }
 
 export function sanitizeKey(key: string) {
