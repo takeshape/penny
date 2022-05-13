@@ -17,7 +17,7 @@ export interface ProductGridProps {
   products?: Product[];
 }
 
-const ProductGrid: React.FC<ProductGridProps> = ({ products }) => {
+const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) => {
   if (!products || !products.length) return null;
   return (
     <section aria-labelledby="products-heading" className="max-w-7xl mx-auto overflow-hidden sm:px-6 lg:px-8">

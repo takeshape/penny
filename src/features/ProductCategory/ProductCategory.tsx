@@ -5,7 +5,7 @@ import ProductGrid, { ProductGridProps } from './ProductGrid/ProductGrid';
 
 export type ProductCategoryProps = HeaderProps & FiltersProps & ProductGridProps & PaginationProps;
 
-const ProductCategory: React.FC<ProductCategoryProps> = (props) => {
+const ProductCategory = (props: React.PropsWithChildren<ProductCategoryProps>) => {
   const { header, filters, sortOptions, setFilters, clearAllFilters, setSortOption, products, pagination } = props;
   return (
     <main className="pb-24">

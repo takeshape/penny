@@ -41,7 +41,7 @@ export interface FiltersProps {
   setSortOption: (option: SortOption) => void;
 }
 
-const FilterOption: React.FC<FilterOptionProps> = (props) => {
+const FilterOption = (props: React.PropsWithChildren<FilterOptionProps>) => {
   return (
     <div className="flex items-center text-base sm:text-sm">
       <input
@@ -60,7 +60,7 @@ const FilterOption: React.FC<FilterOptionProps> = (props) => {
   );
 };
 
-const Filter: React.FC<FilterProps> = (props) => {
+const Filter = (props: React.PropsWithChildren<FilterProps>) => {
   return (
     <fieldset>
       <legend className="block font-medium">{props.legend}</legend>
@@ -79,7 +79,7 @@ const Filter: React.FC<FilterProps> = (props) => {
   );
 };
 
-const Filters: React.FC<FiltersProps> = (props) => {
+const Filters = (props: React.PropsWithChildren<FiltersProps>) => {
   const { filters, setFilters, clearAllFilters, sortOptions, setSortOption } = props;
   const setFilter = useCallback(
     (filter: string, value: string, checked: boolean): void => {

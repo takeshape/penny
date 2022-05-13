@@ -7,7 +7,7 @@ interface PaginationLinkProps {
   href?: string;
 }
 
-const PaginationLink: React.FC<PaginationLinkProps> = ({ onClick, current, href, children }) => {
+const PaginationLink = ({ onClick, current, href, children }: React.PropsWithChildren<PaginationLinkProps>) => {
   if (current) {
     return (
       <a
@@ -38,7 +38,7 @@ export interface PaginationProps {
   };
 }
 
-const Pagination: React.FC<PaginationProps> = (props) => {
+const Pagination = (props: React.PropsWithChildren<PaginationProps>) => {
   const {
     pagination: { pageCount, currentPage, setCurrentPage }
   } = props;

@@ -7,7 +7,7 @@ export interface HeaderProps {
   };
 }
 
-const Header: React.FC<HeaderProps> = ({ header: { text } }) => {
+const Header = ({ header: { text } }: React.PropsWithChildren<HeaderProps>) => {
   return (
     <div className="text-center py-16 px-4 sm:px-6 lg:px-8">
       <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">{text.primary}</h1>
