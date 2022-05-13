@@ -25,3 +25,7 @@ export function getIssuer(issuer?: string) {
   // When using the URL add a trailing slash.
   return issuer ?? process.env.NEXTAUTHOIDC_ISSUER ?? `${getOrigin()}/`;
 }
+
+export function sanitizeKey(key: string) {
+  return key.replace(/['|"]/g, '').trim().replace(/\\n/g, '\n');
+}

@@ -7,7 +7,7 @@ import jwksHandler from './handlers/jwks';
 import openidConfigurationHandler from './handlers/openid-configuration';
 import type { CreateSigningFnsParams } from './token';
 import type { HandlerOptions, NextAuthOIDCOptions } from './types';
-import { getIssuer, getOrigin } from './utils';
+import { getIssuer, getOrigin, sanitizeKey } from './utils';
 
 function NextAuthOIDCHandler(options: HandlerOptions, nextAuth: any) {
   return async (req: NextApiRequest, res: NextApiResponse) => {
@@ -53,7 +53,7 @@ function NextAuthOIDC(options: NextAuthOIDCOptions) {
 
   const signingOptions: CreateSigningFnsParams = {
     clients: options.clients,
-    privateKey: privateKey.trim().replace(/\\n/g, '\n'),
+    privateKey: sanitizeKey(privateKey),
     issuer,
     kid: jwks.keys[0].kid
   };
