@@ -2,6 +2,7 @@ import { takeshapeWebhookApiKey } from 'config';
 import createNextAuthOIDC from 'lib/next-auth-oidc';
 import NextAuth from 'next-auth';
 import Auth0Provider from 'next-auth/providers/auth0';
+import path from 'path';
 import type { UpsertProfileResponse } from 'queries';
 import { UpsertProfile } from 'queries';
 import { createStaticClient } from 'services/apollo/apolloClient';
@@ -10,7 +11,7 @@ import type { MutationUpsertProfileArgs } from 'types/takeshape';
 const client = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
 
 const withOIDC = createNextAuthOIDC({
-  jwksPath: 'keys/jwks.json',
+  jwksPath: path.resolve('../../../../keys/jwks.json'),
   clients: [
     {
       id: 'takeshape',
