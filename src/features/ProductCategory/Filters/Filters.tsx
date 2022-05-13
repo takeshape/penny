@@ -28,6 +28,7 @@ export interface FilterOptionProps extends FilterOption {
 }
 
 export interface FilterProps {
+  name: string;
   legend: string;
   options: FilterOption[];
   setFilter: SetFilter;
@@ -65,7 +66,13 @@ const Filter: React.FC<FilterProps> = (props) => {
       <legend className="block font-medium">{props.legend}</legend>
       <div className="pt-6 space-y-6 sm:pt-4 sm:space-y-4">
         {props.options.map((option, optionIdx) => (
-          <FilterOption key={option.value} {...option} filter="price" index={optionIdx} setFilter={props.setFilter} />
+          <FilterOption
+            key={option.value}
+            {...option}
+            filter={props.name}
+            index={optionIdx}
+            setFilter={props.setFilter}
+          />
         ))}
       </div>
     </fieldset>
@@ -123,12 +130,12 @@ const Filters: React.FC<FiltersProps> = (props) => {
       <Disclosure.Panel className="border-t border-gray-200 py-10">
         <div className="max-w-7xl mx-auto grid grid-cols-2 gap-x-4 px-4 text-sm sm:px-6 md:gap-x-6 lg:px-8">
           <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
-            <Filter legend="Price" options={filters.price} setFilter={setFilter} />
-            <Filter legend="Color" options={filters.color} setFilter={setFilter} />
+            <Filter name="price" legend="Price" options={filters.price} setFilter={setFilter} />
+            <Filter name="color" legend="Color" options={filters.color} setFilter={setFilter} />
           </div>
           <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
-            <Filter legend="Size" options={filters.size} setFilter={setFilter} />
-            <Filter legend="Category" options={filters.category} setFilter={setFilter} />
+            <Filter name="size" legend="Size" options={filters.size} setFilter={setFilter} />
+            <Filter name="category" legend="Category" options={filters.category} setFilter={setFilter} />
           </div>
         </div>
       </Disclosure.Panel>
