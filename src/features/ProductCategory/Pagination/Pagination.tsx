@@ -7,7 +7,7 @@ interface PaginationLinkProps {
   href?: string;
 }
 
-const PaginationLink: React.FC<PaginationLinkProps> = ({onClick, current, href, children}) => {
+const PaginationLink: React.FC<PaginationLinkProps> = ({ onClick, current, href, children }) => {
   if (current) {
     return (
       <a
@@ -17,7 +17,7 @@ const PaginationLink: React.FC<PaginationLinkProps> = ({onClick, current, href, 
       >
         {children}
       </a>
-    )
+    );
   }
   return (
     <a
@@ -27,51 +27,61 @@ const PaginationLink: React.FC<PaginationLinkProps> = ({onClick, current, href, 
     >
       {children}
     </a>
-  )
-}
+  );
+};
 
 export interface PaginationProps {
   pagination: {
     pageCount: number;
     currentPage: number;
     setCurrentPage: (page: number) => void;
-  }
+  };
 }
 
 const Pagination: React.FC<PaginationProps> = (props) => {
-  const {pagination: {pageCount, currentPage, setCurrentPage}} = props;
-  const paginationRange = usePagination({currentPage, pageCount, siblingCount: 1});
+  const {
+    pagination: { pageCount, currentPage, setCurrentPage }
+  } = props;
+  const paginationRange = usePagination({ currentPage, pageCount, siblingCount: 1 });
   const pageList = React.useMemo(() => {
     if (currentPage === 0 || paginationRange.length < 2) {
       return null;
     }
     return (
       <div className="hidden space-x-2 sm:flex">
-        {paginationRange.map(pageNumber => {
-         if (pageNumber === '…') {
-           return <span className="inline-flex items-center text-gray-500 px-1.5 h-10">&#8230;</span>;
-         }
-         return <PaginationLink current={pageNumber === currentPage} onClick={() => setCurrentPage(pageNumber)}>{pageNumber}</PaginationLink>;
-       })}
+        {paginationRange.map((pageNumber) => {
+          if (pageNumber === '…') {
+            return <span className="inline-flex items-center text-gray-500 px-1.5 h-10">&#8230;</span>;
+          }
+          return (
+            <PaginationLink
+              key={`page-${pageNumber}`}
+              current={pageNumber === currentPage}
+              onClick={() => setCurrentPage(pageNumber)}
+            >
+              {pageNumber}
+            </PaginationLink>
+          );
+        })}
       </div>
-    )
-  }, [pageCount, currentPage, setCurrentPage]);
+    );
+  }, [currentPage, setCurrentPage, paginationRange]);
   const onPrevious = React.useCallback(() => setCurrentPage(currentPage - 1), [currentPage, setCurrentPage]);
   const onNext = React.useCallback(() => setCurrentPage(currentPage + 1), [currentPage, setCurrentPage]);
   return (
     <nav
-        aria-label="Pagination"
-        className="max-w-7xl mx-auto space-x-2 px-4 mt-6 flex justify-between text-sm font-medium text-gray-700 sm:px-6 lg:px-8"
-      >
-        <div className="flex-1">
-          <PaginationLink onClick={onPrevious}>Previous</PaginationLink>
-        </div>
-        {pageList}
-        <div className="flex-1 flex justify-end">
-          <PaginationLink onClick={onNext}>Next</PaginationLink>
-        </div>
-      </nav>
-  )
-}
+      aria-label="Pagination"
+      className="max-w-7xl mx-auto space-x-2 px-4 mt-6 flex justify-between text-sm font-medium text-gray-700 sm:px-6 lg:px-8"
+    >
+      <div className="flex-1">
+        <PaginationLink onClick={onPrevious}>Previous</PaginationLink>
+      </div>
+      {pageList}
+      <div className="flex-1 flex justify-end">
+        <PaginationLink onClick={onNext}>Next</PaginationLink>
+      </div>
+    </nav>
+  );
+};
 
 export default Pagination;

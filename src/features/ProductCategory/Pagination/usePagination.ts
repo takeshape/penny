@@ -12,11 +12,7 @@ const range = (start, end) => {
 
 const DOTS = '…';
 
-export const usePagination = ({
-  pageCount,
-  siblingCount = 1,
-  currentPage
-}) => {
+export const usePagination = ({ pageCount, siblingCount = 1, currentPage }) => {
   const paginationRange = useMemo(() => {
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
     const totalPageNumbers = siblingCount + 5;
@@ -29,15 +25,12 @@ export const usePagination = ({
     if (totalPageNumbers >= pageCount) {
       return range(1, pageCount);
     }
-	
+
     /*
     	Calculate left and right sibling index and make sure they are within range 1 and totalPageCount
     */
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
-    const rightSiblingIndex = Math.min(
-      currentPage + siblingCount,
-      pageCount
-    );
+    const rightSiblingIndex = Math.min(currentPage + siblingCount, pageCount);
 
     /*
       We do not show dots just when there is just one page number to be inserted between the extremes of sibling and the page limits i.e 1 and totalPageCount. Hence we are using leftSiblingIndex > 2 and rightSiblingIndex < totalPageCount - 2
@@ -62,15 +55,11 @@ export const usePagination = ({
     	Case 3: No right dots to show, but left dots to be shown
     */
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      
       let rightItemCount = 3 + 2 * siblingCount;
-      let rightRange = range(
-        pageCount - rightItemCount + 1,
-        pageCount
-      );
+      let rightRange = range(pageCount - rightItemCount + 1, pageCount);
       return [firstPageIndex, DOTS, ...rightRange];
     }
-     
+
     /*
     	Case 4: Both left and right dots to be shown
     */

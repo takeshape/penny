@@ -1,8 +1,8 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import { _Filters } from "./Filters/Filters.stories";
-import { _Header } from "./Header/Header.stories";
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { _Filters } from './Filters/Filters.stories';
+import { _Header } from './Header/Header.stories';
 import { _Pagination } from './Pagination/Pagination.stories';
-import ProductCategory from "./ProductCategory";
+import ProductCategory from './ProductCategory';
 import { _ProductGrid } from './ProductGrid/ProductGrid.stories';
 
 const Meta: ComponentMeta<typeof ProductCategory> = {
@@ -13,7 +13,7 @@ const Meta: ComponentMeta<typeof ProductCategory> = {
   }
 };
 
-const Template: ComponentStory<typeof ProductCategory> = args => <ProductCategory {...args} />;
+const Template: ComponentStory<typeof ProductCategory> = (args) => <ProductCategory {...args} />;
 
 export default Meta;
 

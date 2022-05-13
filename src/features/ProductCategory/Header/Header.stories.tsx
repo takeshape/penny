@@ -9,7 +9,7 @@ const Meta: ComponentMeta<typeof Header> = {
   }
 };
 
-const Template: ComponentStory<typeof Header> = args => <Header {...args} />;
+const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
 
 export default Meta;
 
@@ -18,7 +18,8 @@ _Header.args = {
   header: {
     text: {
       primary: 'Workspace',
-      secondary: "The secret to a tidy desk? Don't get rid of anything, just put it in really really nice looking containers."
+      secondary:
+        "The secret to a tidy desk? Don't get rid of anything, just put it in really really nice looking containers."
     }
   }
 };

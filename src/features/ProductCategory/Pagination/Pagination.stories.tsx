@@ -10,7 +10,7 @@ const Meta: ComponentMeta<typeof Pagination> = {
   }
 };
 
-const Template: ComponentStory<typeof Pagination> = args => <Pagination {...args} />;
+const Template: ComponentStory<typeof Pagination> = (args) => <Pagination {...args} />;
 
 export default Meta;
 

@@ -1,5 +1,5 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-import ProductGrid from "./ProductGrid";
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import ProductGrid from './ProductGrid';
 
 const Meta: ComponentMeta<typeof ProductGrid> = {
   title: 'Product Category / Components / Product Grid',
@@ -9,7 +9,7 @@ const Meta: ComponentMeta<typeof ProductGrid> = {
   }
 };
 
-const Template: ComponentStory<typeof ProductGrid> = args => <ProductGrid {...args} />;
+const Template: ComponentStory<typeof ProductGrid> = (args) => <ProductGrid {...args} />;
 
 export default Meta;
 
@@ -24,7 +24,7 @@ _ProductGrid.args = {
       reviewCount: 38,
       imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-01.jpg',
       imageAlt: 'TODO',
-      href: '#',
+      href: '#'
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ _ProductGrid.args = {
       reviewCount: 18,
       imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-02.jpg',
       imageAlt: 'TODO',
-      href: '#',
+      href: '#'
     },
     {
       id: 3,
@@ -44,7 +44,7 @@ _ProductGrid.args = {
       reviewCount: 14,
       imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-03.jpg',
       imageAlt: 'TODO',
-      href: '#',
+      href: '#'
     },
     {
       id: 4,
@@ -54,7 +54,7 @@ _ProductGrid.args = {
       reviewCount: 21,
       imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-05-image-card-04.jpg',
       imageAlt: 'TODO',
-      href: '#',
-    },
+      href: '#'
+    }
   ]
 };
