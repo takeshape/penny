@@ -33,6 +33,7 @@
     "@stripe/react-stripe-js": "^1.7.2",
     "@stripe/stripe-js": "^1.29.0",
     "@tailwindcss/typography": "^0.5.2",
+    "@takeshape/next-auth-all-access": "0.0.8",
     "@theme-ui/color": "^0.14.5",
     "@theme-ui/presets": "^0.14.5",
     "@types/lodash-es": "^4.17.6",

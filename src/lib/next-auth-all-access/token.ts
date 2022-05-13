@@ -30,14 +30,14 @@ export function createSigningFn({ id, privateKey, expiration, kid, issuer, audie
   };
 }
 
-export interface CreateSigningFnsParams {
+export interface CreateSigningFnsParameters {
   clients: Client[];
   privateKey: KeyLike;
   issuer: string;
   kid: string;
 }
 
-export function createSigningFns({ clients, privateKey, issuer, kid }: CreateSigningFnsParams) {
+export function createSigningFns({ clients, privateKey, issuer, kid }: CreateSigningFnsParameters) {
   const accessTokenSigningFns = clients.map((client) => {
     return createSigningFn({
       ...client,

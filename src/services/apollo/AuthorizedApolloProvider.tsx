@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
-import { getClientToken } from 'lib/next-auth-all-access/react';
+import { getClientToken } from '@takeshape/next-auth-all-access/react';
 import { useSession } from 'next-auth/react';
 import type { PropsWithChildren } from 'react';
 import { useCallback } from 'react';

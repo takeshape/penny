@@ -4,7 +4,7 @@ import type { KeyLike } from 'jose';
 /**
  * Adapted from jose to avoid the unnecessary async wrapper
  */
-export function importPKCS8(pkcs8: string): KeyLike {
+export function importPkcs8(pkcs8: string): KeyLike {
   if (typeof pkcs8 !== 'string' || pkcs8.indexOf('-----BEGIN PRIVATE KEY-----') !== 0) {
     throw new TypeError('"pkcs8" must be PCKS8 formatted string');
   }

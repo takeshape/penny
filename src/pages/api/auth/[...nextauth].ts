@@ -1,5 +1,5 @@
+import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeWebhookApiKey } from 'config';
-import createNextAuthAllAccess from 'lib/next-auth-all-access';
 import NextAuth from 'next-auth';
 import Auth0Provider from 'next-auth/providers/auth0';
 import path from 'path';
