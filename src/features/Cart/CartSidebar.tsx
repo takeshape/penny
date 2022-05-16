@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
 import ClientOnly from 'components/ClientOnly';
 import { useAtom } from 'jotai';
+import { signIn, useSession } from 'next-auth/react';
 import { CreateMyCheckoutSession } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { removeFromCart, updateCartItem } from 'services/cart/jotai';
@@ -17,7 +17,7 @@ export const CartSidebar = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
   const [cartTimeoutMs, setCartTimeoutMs] = useAtom(cartTimeoutMsAtom);
   const sidebarRef = useRef<HTMLDivElement>();
-  const { user, loginWithRedirect } = useAuth0();
+  const { status } = useSession();
   const [setCheckoutPayload, { data: checkoutData }] = useMutation(CreateMyCheckoutSession);
 
   const cartCurrency = items?.[0]?.price?.currency ?? '';
@@ -35,8 +35,8 @@ export const CartSidebar = () => {
   };
 
   const handleCheckout = async () => {
-    if (!user) {
-      loginWithRedirect({ appState: { returnTo: '/_checkout' } });
+    if (status !== 'authenticated') {
+      signIn(undefined, { callbackUrl: '/_checkout' });
       return;
     }
     setCheckoutPayload({

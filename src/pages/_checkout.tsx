@@ -1,18 +1,17 @@
 import { useApolloClient } from '@apollo/client';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
 import PageLoader from 'components/PageLoader';
 import { useAtomValue } from 'jotai';
 import type { NextPage } from 'next';
+import { useSession } from 'next-auth/react';
 import { CreateMyCheckoutSession } from 'queries';
 import { useEffect } from 'react';
 import getStripe from 'services/stripe/getStripe';
-import useProfile from 'services/takeshape/useProfile';
 import { cartItemsAtom } from 'store';
 import { getCheckoutPayload } from 'utils/checkout';
 
 // After a successful login, redirect here to automatically checkout with the cart
 const _CheckoutPage: NextPage = () => {
-  const { isProfileReady } = useProfile();
+  const { status } = useSession();
   const client = useApolloClient();
   const cartItems = useAtomValue(cartItemsAtom);
 
@@ -29,14 +28,12 @@ const _CheckoutPage: NextPage = () => {
         sessionId: data.session.id
       });
     };
-    if (isProfileReady) {
+    if (status === 'authenticated') {
       doCheckout();
     }
-  }, [client, cartItems, isProfileReady]);
+  }, [client, cartItems, status]);
 
   return <PageLoader />;
 };
 
-export default withAuthenticationRequired(_CheckoutPage, {
-  onRedirecting: () => <PageLoader />
-});
+export default _CheckoutPage;

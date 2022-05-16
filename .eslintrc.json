@@ -19,6 +19,14 @@
       "rules": {
         "no-console": "off"
       }
+    },
+    {
+      "files": [
+        "scripts/**/*"
+      ],
+      "rules": {
+        "no-console": "off"
+      }
     }
   ],
   "parserOptions": {

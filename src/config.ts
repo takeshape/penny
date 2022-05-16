@@ -3,7 +3,7 @@ import type { DefaultSeoProps } from 'next-seo';
 export const nodeEnv = process.env.NODE_ENV ?? 'development';
 export const isProduction = nodeEnv === 'production';
 export const isStorybook = Boolean(process.env.STORYBOOK);
-export const isSsg = typeof window === 'undefined';
+export const isSsr = typeof window === 'undefined';
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
 export const domain = process.env.NEXT_PUBLIC_AUTH0_DOMAIN;
 export const clientId = process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID;
