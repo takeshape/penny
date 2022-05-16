@@ -1,13 +1,22 @@
 import { ApolloProvider } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
+import { getClientToken } from '@takeshape/next-auth-all-access/react';
+import { useSession } from 'next-auth/react';
 import type { PropsWithChildren } from 'react';
+import { useCallback } from 'react';
 import { useApollo } from './apolloClient';
 
 export type AuthorizedApolloProviderProps = PropsWithChildren<{ pageProps: any }>;
 
 export const AuthorizedApolloProvider = ({ pageProps, children }: AuthorizedApolloProviderProps) => {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-  const apolloClient = useApollo(pageProps, isAuthenticated ? getAccessTokenSilently : undefined);
+  const { status, data: session } = useSession();
+  const clientToken = getClientToken({ clientId: 'takeshape', session });
+
+  const getAccessToken = useCallback(() => {
+    return clientToken?.accessToken;
+  }, [clientToken?.accessToken]);
+
+  const apolloClient = useApollo(pageProps, status === 'authenticated' ? getAccessToken : undefined);
+
   return <ApolloProvider client={apolloClient}>{children}</ApolloProvider>;
 };
 

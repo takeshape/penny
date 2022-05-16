@@ -1,13 +1,14 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { UserIcon } from '@heroicons/react/outline';
 import { UserIcon as SolidUserIcon } from '@heroicons/react/solid';
+import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 export const NavigationTopAccountIcon = () => {
-  const { user, loginWithRedirect } = useAuth0();
+  const { status } = useSession();
+
   return (
     <div className="flex">
-      {user ? (
+      {status === 'authenticated' ? (
         <Link href="/account">
           <a className="-m-2 p-2 text-gray-400 hover:text-gray-500">
             <span className="sr-only">Account</span>
@@ -15,7 +16,14 @@ export const NavigationTopAccountIcon = () => {
           </a>
         </Link>
       ) : (
-        <a onClick={loginWithRedirect} className="-m-2 p-2 text-gray-400 hover:text-gray-500 cursor-pointer">
+        <a
+          href={`/api/auth/signin`}
+          onClick={(e) => {
+            e.preventDefault();
+            signIn();
+          }}
+          className="-m-2 p-2 text-gray-400 hover:text-gray-500 cursor-pointer"
+        >
           <span className="sr-only">Account</span>
           <UserIcon className="w-6 h-6" aria-hidden="true" />
         </a>

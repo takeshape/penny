@@ -16,7 +16,7 @@ export default class CustomDocument extends Document {
     return (
       <Html lang={locale}>
         <Head />
-        <body className="antialiased font-sans bg-gray-200 overflow-hidden">
+        <body className="antialiased font-sans">
           <Main />
           <NextScript />
         </body>

@@ -1,6 +1,4 @@
 import { useQuery } from '@apollo/client';
-import { withAuthenticationRequired } from '@auth0/auth0-react';
-import PageLoader from 'components/PageLoader';
 import Section from 'components/Section';
 import Container from 'features/Container';
 import LoyaltyCard from 'features/purchases/LoyaltyCard';
@@ -8,14 +6,15 @@ import PaymentList from 'features/purchases/PaymentList';
 import SubscriptionList from 'features/SubscriptionList';
 import Page from 'layouts/Page';
 import type { NextPage } from 'next';
+import { useSession } from 'next-auth/react';
 import type { GetMyPurchasesDataResponse } from 'queries';
 import { GetMyPurchasesData } from 'queries';
-import useProfile from 'services/takeshape/useProfile';
 import { Alert, Box, Divider, Flex, Heading, Spinner } from 'theme-ui';
 
 const PurchasesPage: NextPage = () => {
-  const { isProfileReady } = useProfile();
-  const skip = !isProfileReady;
+  const { status } = useSession({ required: true });
+
+  const skip = status !== 'authenticated';
 
   const { data: purchasesData, error } = useQuery<GetMyPurchasesDataResponse>(GetMyPurchasesData, {
     skip,
@@ -88,6 +87,4 @@ const PurchasesPage: NextPage = () => {
   );
 };
 
-export default withAuthenticationRequired(PurchasesPage, {
-  onRedirecting: () => <PageLoader />
-});
+export default PurchasesPage;
