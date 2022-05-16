@@ -3,7 +3,7 @@ import { UserIcon as SolidUserIcon } from '@heroicons/react/solid';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
-export const NavigationTopAccountIcon = () => {
+export const TopAccountIcon = () => {
   const { status } = useSession();
 
   return (
@@ -32,4 +32,4 @@ export const NavigationTopAccountIcon = () => {
   );
 };
 
-export default NavigationTopAccountIcon;
+export default TopAccountIcon;

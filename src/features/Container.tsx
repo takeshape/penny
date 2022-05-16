@@ -2,7 +2,7 @@ import CartSidebar from 'features/Cart/CartSidebar';
 import Footer from 'features/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
-import SearchModal from 'features/Search/SearchModal';
+import SearchModal from 'features/Search/Modal/Modal';
 import Seo from 'features/Seo';
 import type { NextSeoProps } from 'next-seo';
 import type { PropsWithChildren } from 'react';

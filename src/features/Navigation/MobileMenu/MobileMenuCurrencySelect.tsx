@@ -2,7 +2,7 @@ import { currencyList } from 'config';
 import { useAtom } from 'jotai';
 import { currencyAtom } from 'store';
 
-export const NavigationMobileMenuCurrencySelect = () => {
+export const MobileMenuCurrencySelect = () => {
   const [selectedCurrency, updateCurrency] = useAtom(currencyAtom);
   const currencies = [...currencyList];
 
@@ -47,4 +47,4 @@ export const NavigationMobileMenuCurrencySelect = () => {
   );
 };
 
-export default NavigationMobileMenuCurrencySelect;
+export default MobileMenuCurrencySelect;

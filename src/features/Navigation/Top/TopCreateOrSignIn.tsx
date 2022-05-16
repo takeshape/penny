@@ -1,6 +1,6 @@
 import { signIn, useSession } from 'next-auth/react';
 
-export const NavigationTopCreateOrSignIn = () => {
+export const TopCreateOrSignIn = () => {
   const { status } = useSession();
 
   if (status === 'authenticated') {
@@ -34,4 +34,4 @@ export const NavigationTopCreateOrSignIn = () => {
   );
 };
 
-export default NavigationTopCreateOrSignIn;
+export default TopCreateOrSignIn;

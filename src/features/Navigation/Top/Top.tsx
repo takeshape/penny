@@ -1,14 +1,14 @@
 import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import NavigationTopAccountIcon from './NavigationTopAccountIcon';
-import NavigationTopCartIcon from './NavigationTopCartIcon';
-import NavigationTopCreateOrSignIn from './NavigationTopCreateOrSignIn';
-import NavigationTopCurrencySelect from './NavigationTopCurrencySelect';
-import NavigationTopLinks from './NavigationTopLinks';
-import NavigationTopMessage from './NavigationTopMessage';
+import TopAccountIcon from './TopAccountIcon';
+import TopCartIcon from './TopCartIcon';
+import TopCreateOrSignIn from './TopCreateOrSignIn';
+import TopCurrencySelect from './TopCurrencySelect';
+import TopLinks from './TopLinks';
+import TopMessage from './TopMessage';
 
-export const NavigationTop = () => {
+export const Top = () => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
   const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
 
@@ -29,7 +29,7 @@ export const NavigationTop = () => {
                   Currency
                 </label>
                 <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                  <NavigationTopCurrencySelect />
+                  <TopCurrencySelect />
                   <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
                     <svg
                       aria-hidden="true"
@@ -51,8 +51,8 @@ export const NavigationTop = () => {
               </div>
             </form>
 
-            <NavigationTopMessage />
-            <NavigationTopCreateOrSignIn />
+            <TopMessage />
+            <TopCreateOrSignIn />
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export const NavigationTop = () => {
                   </a>
                 </div>
 
-                <NavigationTopLinks />
+                <TopLinks />
 
                 {/* Mobile menu and search (lg-) */}
                 <div className="flex-1 flex items-center lg:hidden">
@@ -112,13 +112,13 @@ export const NavigationTop = () => {
                       </div>
 
                       <div className="flex">
-                        <NavigationTopAccountIcon />
+                        <TopAccountIcon />
                       </div>
                     </div>
 
                     <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
-                    <NavigationTopCartIcon />
+                    <TopCartIcon />
                   </div>
                 </div>
               </div>
@@ -130,4 +130,4 @@ export const NavigationTop = () => {
   );
 };
 
-export default NavigationTop;
+export default Top;

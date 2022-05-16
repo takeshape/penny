@@ -1,12 +1,12 @@
 import type { ComponentMeta } from '@storybook/react';
 import { isMobileMenuOpenAtom } from 'store';
-import { GetNavigationDataQuery } from './Navigation.queries';
-import { NavigationMobileMenu } from './NavigationMobileMenu';
-import NavigationFixtures from './__fixtures__/Navigation.fixtures.json';
+import NavigationFixtures from '../Navigation.fixtures.json';
+import { GetNavigationDataQuery } from '../Navigation.queries';
+import { MobileMenu } from './MobileMenu';
 
-export default {
-  title: 'Features/NavigationMobileMenu',
-  component: NavigationMobileMenu,
+const Meta: ComponentMeta<typeof MobileMenu> = {
+  title: 'Navigation / Components / MobileMenu',
+  component: MobileMenu,
   parameters: {
     viewport: {
       defaultViewport: 'mobile2'
@@ -22,13 +22,12 @@ export default {
       ]
     }
   }
-} as ComponentMeta<typeof NavigationMobileMenu>;
+};
 
-const Template = (args) => <NavigationMobileMenu {...args} />;
+const Template = (args) => <MobileMenu {...args} />;
 
-export const Open = Template.bind({});
-
-Open.parameters = {
+export const _Open = Template.bind({});
+_Open.parameters = {
   jotai: {
     atoms: {
       isMobileMenuOpen: isMobileMenuOpenAtom
@@ -38,3 +37,5 @@ Open.parameters = {
     }
   }
 };
+
+export default Meta;

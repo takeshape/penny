@@ -1,13 +1,12 @@
 import type { ComponentMeta } from '@storybook/react';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import { GetNavigationDataQuery } from './Navigation.queries';
-import { NavigationTop } from './NavigationTop';
-import NavigationFixtures from './__fixtures__/Navigation.fixtures.json';
+import NavigationFixtures from '../Navigation.fixtures.json';
+import { GetNavigationDataQuery } from '../Navigation.queries';
+import { Top } from './Top';
 
-export default {
-  title: 'Features/NavigationTop',
-  component: NavigationTop,
-  decorators: [(Story) => <div className="relative z-10">{Story()}</div>],
+const Meta: ComponentMeta<typeof Top> = {
+  title: 'Navigation / Components / Top',
+  component: Top,
   parameters: {
     // Allows inspecting these values since they don't do anything in this context
     jotai: {
@@ -31,26 +30,25 @@ export default {
       ]
     }
   }
-} as ComponentMeta<typeof NavigationTop>;
+};
 
-const Template = (args) => <NavigationTop {...args} />;
+const Template = (args) => <Top {...args} />;
 
-export const Mobile = Template.bind({});
-
-Mobile.parameters = {
+export const _Mobile = Template.bind({});
+_Mobile.parameters = {
   viewport: {
     defaultViewport: 'mobile2'
   }
 };
 
-export const Tablet = Template.bind({});
-
-Tablet.parameters = {
+export const _Tablet = Template.bind({});
+_Tablet.parameters = {
   viewport: {
     defaultViewport: 'tablet'
   }
 };
 
-export const Desktop = Template.bind({});
+export const _Desktop = Template.bind({});
+_Desktop.parameters = {};
 
-Desktop.parameters = {};
+export default Meta;

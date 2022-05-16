@@ -1,6 +1,6 @@
 import { signIn, useSession } from 'next-auth/react';
 
-export const NavigationMobileMenuCreateOrSignIn = () => {
+export const MobileMenuCreateOrSignIn = () => {
   const { status } = useSession();
 
   if (status === 'authenticated') {
@@ -37,4 +37,4 @@ export const NavigationMobileMenuCreateOrSignIn = () => {
   );
 };
 
-export default NavigationMobileMenuCreateOrSignIn;
+export default MobileMenuCreateOrSignIn;
