@@ -9,13 +9,13 @@ import useSearch from 'services/takeshape/useSearch';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
-import type { SearchStripeProductsResults } from './Search.queries';
-import { SearchStripeProducts } from './Search.queries';
+import type { SearchStripeProductsResults } from '../Search.queries';
+import { SearchStripeProducts } from '../Search.queries';
 
 const resultsFn = (data: SearchStripeProductsResults) =>
   data.search.results.filter((result) => result.__typename === 'Stripe_Product');
 
-export const SearchModal = () => {
+export const Modal = () => {
   const router = useRouter();
   const [loading, query, results, setQuery] = useSearch({
     graphqlQuery: SearchStripeProducts,
@@ -137,4 +137,4 @@ export const SearchModal = () => {
   );
 };
 
-export default SearchModal;
+export default Modal;

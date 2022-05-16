@@ -2,10 +2,10 @@ import { useQuery } from '@apollo/client';
 import { Tab } from '@headlessui/react';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import type { NavigationDataResults } from './Navigation.queries';
-import { GetNavigationDataQuery } from './Navigation.queries';
+import type { NavigationDataResults } from '../Navigation.queries';
+import { GetNavigationDataQuery } from '../Navigation.queries';
 
-export const NavigationTopLinks = () => {
+export const MobileMenuLinks = () => {
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
   const { links } = data?.navigation ?? {};
 
@@ -118,4 +118,4 @@ export const NavigationTopLinks = () => {
   );
 };
 
-export default NavigationTopLinks;
+export default MobileMenuLinks;

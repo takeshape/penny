@@ -1,13 +1,12 @@
-import type { ComponentMeta } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { isSearchOpenAtom } from 'store';
-import { SearchStripeProducts } from './Search.queries';
-import { SearchModal } from './SearchModal';
-import SearchFixtures from './__fixtures__/Search.fixtures.json';
+import SearchFixtures from '../Search.fixtures.json';
+import { SearchStripeProducts } from '../Search.queries';
+import { Modal } from './Modal';
 
-export default {
-  title: 'Features/SearchModal',
-  component: SearchModal,
-  decorators: [(Story) => <div className="relative z-10">{Story()}</div>],
+const Meta: ComponentMeta<typeof Modal> = {
+  title: 'Search / Components / Modal',
+  component: Modal,
   parameters: {
     jotai: {
       atoms: {
@@ -18,13 +17,12 @@ export default {
       }
     }
   }
-} as ComponentMeta<typeof SearchModal>;
+};
 
-const Template = (args) => <SearchModal {...args} />;
+const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
 
-export const Empty = Template.bind({});
-
-Empty.parameters = {
+export const _Empty = Template.bind({});
+_Empty.parameters = {
   apolloClient: {
     mocks: [
       {
@@ -38,9 +36,8 @@ Empty.parameters = {
   }
 };
 
-export const Loading = Template.bind({});
-
-Loading.parameters = {
+export const _Loading = Template.bind({});
+_Loading.parameters = {
   nextRouter: {
     path: '/',
     isReady: true,
@@ -62,9 +59,8 @@ Loading.parameters = {
   }
 };
 
-export const WithResults = Template.bind({});
-
-WithResults.parameters = {
+export const _WithResults = Template.bind({});
+_WithResults.parameters = {
   nextRouter: {
     path: '/',
     isReady: true,
@@ -85,9 +81,8 @@ WithResults.parameters = {
   }
 };
 
-export const NoResults = Template.bind({});
-
-NoResults.parameters = {
+export const _NoResults = Template.bind({});
+_NoResults.parameters = {
   nextRouter: {
     path: '/',
     isReady: true,
@@ -107,3 +102,5 @@ NoResults.parameters = {
     ]
   }
 };
+
+export default Meta;

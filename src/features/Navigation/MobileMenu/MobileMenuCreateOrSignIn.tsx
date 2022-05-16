@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 
-export const NavigationMobileMenuCreateOrSignIn = () => {
+export const MobileMenuCreateOrSignIn = () => {
   const { user, loginWithRedirect } = useAuth0();
 
   if (user) {
@@ -23,4 +23,4 @@ export const NavigationMobileMenuCreateOrSignIn = () => {
   );
 };
 
-export default NavigationMobileMenuCreateOrSignIn;
+export default MobileMenuCreateOrSignIn;

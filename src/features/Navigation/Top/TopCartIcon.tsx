@@ -3,7 +3,7 @@ import ClientOnly from 'components/ClientOnly';
 import { useAtom, useAtomValue } from 'jotai';
 import { cartItemsAtom, isCartOpenAtom } from 'store';
 
-export const NavigationTopCartIcon = () => {
+export const TopCartIcon = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
   const cartItems = useAtomValue(cartItemsAtom);
   const cartQuantity = cartItems.reduce((q, i) => q + i.quantity, 0);
@@ -27,4 +27,4 @@ export const NavigationTopCartIcon = () => {
   );
 };
 
-export default NavigationTopCartIcon;
+export default TopCartIcon;

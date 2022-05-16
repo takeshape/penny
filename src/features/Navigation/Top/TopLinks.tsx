@@ -2,10 +2,10 @@ import { useQuery } from '@apollo/client';
 import { Popover, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import type { NavigationDataResults } from './Navigation.queries';
-import { GetNavigationDataQuery } from './Navigation.queries';
+import type { NavigationDataResults } from '../Navigation.queries';
+import { GetNavigationDataQuery } from '../Navigation.queries';
 
-export const NavigationTopLinks = () => {
+export const TopLinks = () => {
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
   const { links } = data?.navigation ?? {};
 
@@ -149,4 +149,4 @@ export const NavigationTopLinks = () => {
   );
 };
 
-export default NavigationTopLinks;
+export default TopLinks;

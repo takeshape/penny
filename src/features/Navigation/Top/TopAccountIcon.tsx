@@ -3,7 +3,7 @@ import { UserIcon } from '@heroicons/react/outline';
 import { UserIcon as SolidUserIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 
-export const NavigationTopAccountIcon = () => {
+export const TopAccountIcon = () => {
   const { user, loginWithRedirect } = useAuth0();
   return (
     <div className="flex">
@@ -24,4 +24,4 @@ export const NavigationTopAccountIcon = () => {
   );
 };
 
-export default NavigationTopAccountIcon;
+export default TopAccountIcon;
