@@ -236,6 +236,9 @@ type Query {
 
   """Get a NavigationData by ID"""
   getNavigationData(locale: String, enableLocaleFallback: Boolean = true): NavigationData
+
+  """Get a Footer by ID"""
+  getFooter(locale: String, enableLocaleFallback: Boolean = true): Footer
   searchAssetIndex(
     terms: String
 
@@ -1250,6 +1253,8 @@ input TSWhereInput {
   stripeCustomerId: TSWhereStringInput
   message: TSWhereStringInput
   links: TSWhereNavigationDataLinksInput
+  navigation: TSWhereFooterNavigationInput
+  newsletter: TSWhereFooterNewsletterInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
@@ -4677,6 +4682,30 @@ input TSWhereNavigationDataLinksCategoriesBrandsInput {
 input TSWhereNavigationDataLinksPagesInput {
   name: TSWhereStringInput
   href: TSWhereStringInput
+}
+
+input TSWhereFooterNavigationInput {
+  sections: TSWhereFooterNavigationSectionsInput
+}
+
+input TSWhereFooterNavigationSectionsInput {
+  name: TSWhereStringInput
+  items: TSWhereFooterItemsInput
+}
+
+input TSWhereFooterItemsInput {
+  name: TSWhereStringInput
+  href: TSWhereStringInput
+}
+
+input TSWhereFooterNewsletterInput {
+  text: TSWhereTextInput
+}
+
+input TSWhereTextInput {
+  primary: TSWhereStringInput
+  secondary: TSWhereStringInput
+  button: TSWhereStringInput
 }
 
 type Profile implements TSSearchable {
@@ -18269,6 +18298,59 @@ type NavigationDataLinksPages {
   href: String
 }
 
+type Footer implements TSSearchable {
+  """"""
+  navigation: FooterNavigation
+
+  """"""
+  newsletter: FooterNewsletter
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type FooterNavigation {
+  """"""
+  sections: [FooterNavigationSections]
+}
+
+type FooterNavigationSections {
+  """"""
+  name: String
+
+  """"""
+  items: [NavigationLink]
+}
+
+type NavigationLink {
+  name: String
+  href: String
+}
+
+type FooterNewsletter {
+  """"""
+  text: Text
+}
+
+"""Reusable text shape"""
+type Text {
+  primary: String
+  secondary: String
+  button: String
+}
+
 """Asset search results"""
 type AssetSearchResults {
   results: [Asset!]!
@@ -18531,6 +18613,9 @@ type WithContext {
 
   """Get a NavigationData by ID"""
   getNavigationData(locale: String, enableLocaleFallback: Boolean = true): NavigationData
+
+  """Get a Footer by ID"""
+  getFooter(locale: String, enableLocaleFallback: Boolean = true): Footer
   searchAssetIndex(
     terms: String
 
@@ -18703,6 +18788,9 @@ type Mutation {
 
   """Update NavigationData"""
   updateNavigationData(input: UpdateNavigationDataInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateNavigationDataResult
+
+  """Update Footer"""
+  updateFooter(input: UpdateFooterInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateFooterResult
 }
 
 """A project file stored on s3"""
@@ -20639,4 +20727,70 @@ input NavigationDataLinksPagesInput {
 
   """"""
   href: String
+}
+
+type UpdateFooterResult {
+  clientMutationId: String
+  result: Footer
+}
+
+"""update Footer input"""
+input UpdateFooterInput {
+  """"""
+  navigation: FooterNavigationInput
+
+  """"""
+  newsletter: FooterNewsletterInput
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input FooterNavigationInput {
+  """"""
+  sections: [FooterNavigationSectionsInput]
+}
+
+input FooterNavigationSectionsInput {
+  """"""
+  name: String
+
+  """"""
+  items: [NavigationLinkInputUnion]
+}
+
+input NavigationLinkInputUnion {
+  navigationLink: NavigationLinkInput
+}
+
+input NavigationLinkInput {
+  name: String
+  href: String
+}
+
+input FooterNewsletterInput {
+  """"""
+  text: TextInputUnion
+}
+
+""""""
+input TextInputUnion {
+  text: TextInput
+}
+
+input TextInput {
+  primary: String
+  secondary: String
+  button: String
 }

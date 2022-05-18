@@ -64,6 +64,8 @@ export type Query = {
   Stripe_listPaymentIntents?: Maybe<Stripe_ListPaymentIntentsResponse>;
   /** Get a NavigationData by ID */
   getNavigationData?: Maybe<NavigationData>;
+  /** Get a Footer by ID */
+  getFooter?: Maybe<Footer>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -301,6 +303,13 @@ export type QueryStripe_ListPaymentIntentsArgs = {
 
 /** Root of the Schema */
 export type QueryGetNavigationDataArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetFooterArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
 };
@@ -1166,6 +1175,8 @@ export type TsWhereInput = {
   stripeCustomerId?: InputMaybe<TsWhereStringInput>;
   message?: InputMaybe<TsWhereStringInput>;
   links?: InputMaybe<TsWhereNavigationDataLinksInput>;
+  navigation?: InputMaybe<TsWhereFooterNavigationInput>;
+  newsletter?: InputMaybe<TsWhereFooterNewsletterInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
@@ -4513,6 +4524,30 @@ export type TsWhereNavigationDataLinksCategoriesBrandsInput = {
 export type TsWhereNavigationDataLinksPagesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereFooterNavigationInput = {
+  sections?: InputMaybe<TsWhereFooterNavigationSectionsInput>;
+};
+
+export type TsWhereFooterNavigationSectionsInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  items?: InputMaybe<TsWhereFooterItemsInput>;
+};
+
+export type TsWhereFooterItemsInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  href?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereFooterNewsletterInput = {
+  text?: InputMaybe<TsWhereTextInput>;
+};
+
+export type TsWhereTextInput = {
+  primary?: InputMaybe<TsWhereStringInput>;
+  secondary?: InputMaybe<TsWhereStringInput>;
+  button?: InputMaybe<TsWhereStringInput>;
 };
 
 export type Profile = TsSearchable & {
@@ -15269,6 +15304,59 @@ export type NavigationDataLinksPages = {
   href?: Maybe<Scalars['String']>;
 };
 
+export type Footer = TsSearchable & {
+  __typename?: 'Footer';
+  navigation?: Maybe<FooterNavigation>;
+  newsletter?: Maybe<FooterNewsletter>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type FooterNavigation = {
+  __typename?: 'FooterNavigation';
+  sections?: Maybe<Array<Maybe<FooterNavigationSections>>>;
+};
+
+export type FooterNavigationSections = {
+  __typename?: 'FooterNavigationSections';
+  name?: Maybe<Scalars['String']>;
+  items?: Maybe<Array<Maybe<NavigationLink>>>;
+};
+
+export type NavigationLink = {
+  __typename?: 'NavigationLink';
+  name?: Maybe<Scalars['String']>;
+  href?: Maybe<Scalars['String']>;
+};
+
+export type FooterNewsletter = {
+  __typename?: 'FooterNewsletter';
+  text?: Maybe<Text>;
+};
+
+/** Reusable text shape */
+export type Text = {
+  __typename?: 'Text';
+  primary?: Maybe<Scalars['String']>;
+  secondary?: Maybe<Scalars['String']>;
+  button?: Maybe<Scalars['String']>;
+};
+
 /** Asset search results */
 export type AssetSearchResults = {
   __typename?: 'AssetSearchResults';
@@ -15345,6 +15433,8 @@ export type WithContext = {
   Stripe_listPaymentIntents?: Maybe<Stripe_ListPaymentIntentsResponse>;
   /** Get a NavigationData by ID */
   getNavigationData?: Maybe<NavigationData>;
+  /** Get a Footer by ID */
+  getFooter?: Maybe<Footer>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -15587,6 +15677,13 @@ export type WithContextGetNavigationDataArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetFooterArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -15692,6 +15789,8 @@ export type Mutation = {
   ReviewsIo_createInvitation?: Maybe<ReviewsIo_CreateInvitationResponse>;
   /** Update NavigationData */
   updateNavigationData?: Maybe<UpdateNavigationDataResult>;
+  /** Update Footer */
+  updateFooter?: Maybe<UpdateFooterResult>;
 };
 
 
@@ -15884,6 +15983,15 @@ export type MutationReviewsIo_CreateInvitationArgs = {
 
 export type MutationUpdateNavigationDataArgs = {
   input: UpdateNavigationDataInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationUpdateFooterArgs = {
+  input: UpdateFooterInput;
   clientMutationId?: InputMaybe<Scalars['String']>;
   structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
   locale?: InputMaybe<Scalars['String']>;
@@ -17649,4 +17757,62 @@ export type NavigationDataLinksCategoriesBrandsInput = {
 export type NavigationDataLinksPagesInput = {
   name?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateFooterResult = {
+  __typename?: 'UpdateFooterResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Footer>;
+};
+
+/** update Footer input */
+export type UpdateFooterInput = {
+  navigation?: InputMaybe<FooterNavigationInput>;
+  newsletter?: InputMaybe<FooterNewsletterInput>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type FooterNavigationInput = {
+  sections?: InputMaybe<Array<InputMaybe<FooterNavigationSectionsInput>>>;
+};
+
+export type FooterNavigationSectionsInput = {
+  name?: InputMaybe<Scalars['String']>;
+  items?: InputMaybe<Array<InputMaybe<NavigationLinkInputUnion>>>;
+};
+
+export type NavigationLinkInputUnion = {
+  navigationLink?: InputMaybe<NavigationLinkInput>;
+};
+
+export type NavigationLinkInput = {
+  name?: InputMaybe<Scalars['String']>;
+  href?: InputMaybe<Scalars['String']>;
+};
+
+export type FooterNewsletterInput = {
+  text?: InputMaybe<TextInputUnion>;
+};
+
+export type TextInputUnion = {
+  text?: InputMaybe<TextInput>;
+};
+
+export type TextInput = {
+  primary?: InputMaybe<Scalars['String']>;
+  secondary?: InputMaybe<Scalars['String']>;
+  button?: InputMaybe<Scalars['String']>;
 };

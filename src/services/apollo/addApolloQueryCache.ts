@@ -1,4 +1,5 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import getFooterData from 'data/getFooterData';
 import getNavigationData from 'data/getNavigationData';
 import { mergeWithArrayMerge } from 'utils/merge';
 import { APOLLO_CACHE_PROP_NAME } from './apolloClient';
@@ -10,6 +11,7 @@ export async function addApolloQueryCache(client: ApolloClient<NormalizedCacheOb
     // Add common queries that export Apollo cache objects
     const commonQueryCache: NormalizedCacheObject[] = [];
     commonQueryCache.push(await getNavigationData());
+    commonQueryCache.push(await getFooterData());
 
     let apolloCache = clientCache;
     for (const queryCache of commonQueryCache) {

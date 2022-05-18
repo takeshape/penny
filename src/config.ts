@@ -16,6 +16,7 @@ export const takeshapeWebhookApiKey = process.env.TAKESHAPE_WEBHOOK_API_KEY;
 export const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 export const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+export const defaultKlaviyoListId = process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID;
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
 
 export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
