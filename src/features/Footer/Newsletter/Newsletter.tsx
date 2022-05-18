@@ -1,19 +1,37 @@
+import { useMutation } from '@apollo/client';
+import { defaultKlaviyoListId } from 'config';
+import { useCallback } from 'react';
+import { Klaviyo_AddMembersResponse } from 'types/takeshape';
+import { EmailSubmissionMutation, EmailSubmissionMutationArgs } from './Newsletter.queries';
+
 export interface NewsletterProps {
-  text: {
-    primary: string;
-    secondary: string;
-    button: string;
+  text?: {
+    primary?: string;
+    secondary?: string;
+    button?: string;
   };
-  onSubmit: () => void;
 }
 
 const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
-  const { text, onSubmit } = props;
+  const { text } = props;
+  const [mutateFn] = useMutation<Klaviyo_AddMembersResponse, EmailSubmissionMutationArgs>(EmailSubmissionMutation);
+  const subscribeToNewsletter = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const email = e.currentTarget.elements['email-address'].value;
+      if (email) {
+        mutateFn({ variables: { listId: defaultKlaviyoListId, email: email } });
+      }
+    },
+    [mutateFn]
+  );
   return (
     <>
-      <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{text.primary}</h3>
-      <p className="mt-4 text-base text-gray-500">{text.secondary}</p>
-      <form className="mt-4 sm:flex sm:max-w-md" onSubmit={onSubmit}>
+      {text?.primary && (
+        <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{text.primary}</h3>
+      )}
+      {text?.secondary && <p className="mt-4 text-base text-gray-500">{text.secondary}</p>}
+      <form className="mt-4 sm:flex sm:max-w-md" onSubmit={subscribeToNewsletter}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>
@@ -31,7 +49,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
             type="submit"
             className="w-full bg-indigo-600 flex items-center justify-center border border-transparent rounded-md py-2 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {text.button}
+            {text?.button ?? 'Subscribe'}
           </button>
         </div>
       </form>

@@ -1,5 +1,5 @@
 import CartSidebar from 'features/Cart/CartSidebar';
-import Footer from 'features/Footer';
+import Footer from 'features/Footer/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
 import SearchModal from 'features/Search/Modal/Modal';

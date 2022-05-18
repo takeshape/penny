@@ -12,6 +12,51 @@
   "apiVersion": "2",
   "workflows": {},
   "forms": {
+    "Text": {
+      "default": {
+        "properties": {
+          "primary": {"widget": "singleLineText"},
+          "secondary": {"widget": "singleLineText"},
+          "button": {"widget": "singleLineText"}
+        },
+        "order": ["primary", "secondary", "button"]
+      }
+    },
+    "NavigationLink": {
+      "default": {
+        "properties": {
+          "name": {"widget": "singleLineText"},
+          "href": {"widget": "singleLineText"}
+        },
+        "order": ["name", "href"]
+      }
+    },
+    "Footer": {
+      "default": {
+        "properties": {
+          "navigation": {
+            "widget": "object",
+            "properties": {
+              "sections": {
+                "widget": "repeater",
+                "properties": {
+                  "name": {"widget": "singleLineText"},
+                  "items": {"widget": "shapeArray"}
+                },
+                "order": ["name", "items"]
+              }
+            },
+            "order": ["sections"]
+          },
+          "newsletter": {
+            "widget": "object",
+            "properties": {"text": {"widget": "shapeObject"}},
+            "order": ["text"]
+          }
+        },
+        "order": ["navigation", "newsletter"]
+      }
+    },
     "Profile": {
       "default": {
         "properties": {
@@ -315,6 +360,16 @@
     }
   },
   "queries": {
+    "getFooter": {
+      "shape": "Footer",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Footer"
+      },
+      "description": "Get a Footer by ID",
+      "args": "TSGetSingletonArgs<Footer>"
+    },
     "ReviewsIo_createInvitation": {
       "shape": "ReviewsIo_CreateInvitationResponse",
       "resolver": {
@@ -1154,6 +1209,16 @@
     }
   },
   "mutations": {
+    "updateFooter": {
+      "shape": "UpdateResult<Footer>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "Footer"
+      },
+      "description": "Update Footer",
+      "args": "UpdateArgs<Footer>"
+    },
     "updateNavigationData": {
       "shape": "UpdateResult<NavigationData>",
       "resolver": {
@@ -3932,6 +3997,133 @@
             "description": "",
             "title": "href",
             "@mapping": "takeshape:local:NavigationDataLinksCategoriesBrands.I0s8qSosl"
+          }
+        }
+      }
+    },
+    "Text": {
+      "id": "gl5yJyZb7",
+      "name": "Text",
+      "title": "Text",
+      "description": "Reusable text shape",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "primary": {
+            "type": "string",
+            "title": "Primary",
+            "@mapping": "takeshape:local:Text.83c8_dKaO"
+          },
+          "secondary": {
+            "type": "string",
+            "title": "Secondary",
+            "@mapping": "takeshape:local:Text._AFSl6JSe"
+          },
+          "button": {
+            "type": "string",
+            "title": "Button",
+            "@mapping": "takeshape:local:Text.Hpree2AIm"
+          }
+        }
+      }
+    },
+    "NavigationLink": {
+      "id": "ugCpxVXCO",
+      "name": "NavigationLink",
+      "title": "Navigation Link",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLink.cLCSz9EWu"
+          },
+          "href": {
+            "type": "string",
+            "title": "Href",
+            "@mapping": "takeshape:local:NavigationLink.J_fkfs7w7"
+          }
+        }
+      }
+    },
+    "FooterNavigationSections": {
+      "id": "RcAzYGCEA",
+      "name": "FooterNavigationSections",
+      "title": "Footer Navigation Sections",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 0,
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:FooterNavigationSections.BeZ6ywWzG"
+          },
+          "items": {
+            "type": "array",
+            "items": {"oneOf": [{"@ref": "local:NavigationLink"}]},
+            "description": "",
+            "title": "Items",
+            "@mapping": "takeshape:local:FooterNavigationSections.vwvZ3gpJ6"
+          }
+        }
+      }
+    },
+    "FooterNavigation": {
+      "id": "oFGJhE0k9",
+      "name": "FooterNavigation",
+      "title": "Footer Navigation",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "sections": {
+            "title": "Sections",
+            "description": "",
+            "type": "array",
+            "items": {"@ref": "local:FooterNavigationSections"},
+            "@mapping": "takeshape:local:FooterNavigation.RcAzYGCEA"
+          }
+        }
+      }
+    },
+    "FooterNewsletter": {
+      "id": "kmSZztbAu",
+      "name": "FooterNewsletter",
+      "title": "Footer Newsletter",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "oneOf": [{"@ref": "local:Text"}],
+            "description": "",
+            "title": "Text",
+            "@mapping": "takeshape:local:FooterNewsletter.lJadcfQQm"
+          }
+        }
+      }
+    },
+    "Footer": {
+      "id": "vT1T1S22q",
+      "name": "Footer",
+      "title": "Footer",
+      "workflow": "default",
+      "model": {"type": "single"},
+      "schema": {
+        "type": "object",
+        "properties": {
+          "navigation": {
+            "title": "Navigation",
+            "description": "",
+            "@ref": "local:FooterNavigation",
+            "@mapping": "takeshape:local:Footer.oFGJhE0k9"
+          },
+          "newsletter": {
+            "title": "Newsletter",
+            "description": "",
+            "@ref": "local:FooterNewsletter",
+            "@mapping": "takeshape:local:Footer.kmSZztbAu"
           }
         }
       }
