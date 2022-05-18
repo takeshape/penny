@@ -16,7 +16,7 @@ export const MobileMenuCurrencySelect = () => {
           <select
             id="mobile-currency"
             name="currency"
-            className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent"
+            className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent uppercase"
             onChange={(e) => updateCurrency(e.target.value)}
             value={selectedCurrency}
           >

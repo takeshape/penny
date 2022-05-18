@@ -102,5 +102,6 @@ export const seo: DefaultSeoProps = {
   }
 };
 
-export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
-export const defaultCurrency = 'USD';
+// Lowercase matches Stripe
+export const currencyList = ['cad', 'usd', 'aud', 'eur', 'gbp'] as const;
+export const defaultCurrency = 'usd';

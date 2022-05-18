@@ -41,13 +41,14 @@ export const Item = ({ atom, remove }: ItemProps) => {
           <div className="flex-1 flex items-center justify-start">
             <div className="flex items-center">
               <div className="flex space-x-4">
-                <a
+                <button
+                  disabled={quantity < 2}
                   onClick={() => setItem({ ...item, quantity: item.quantity - 1 })}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="text-gray-400 hover:text-gray-500 disabled:text-gray-300"
                 >
                   <span className="sr-only">One Less</span>
                   <MinusCircleIcon className="w-5 h-5" aria-hidden="true" />
-                </a>
+                </button>
 
                 <div className="flex items-center w-1 text-gray-500">{quantity}</div>
 

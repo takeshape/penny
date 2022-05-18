@@ -43,7 +43,7 @@ export const Checkout = () => {
     <button
       onClick={handleCheckout}
       disabled={quantity === 0}
-      className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 w-full cursor-pointer"
+      className="flex items-center justify-center w-full cursor-pointer rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
     >
       Checkout
     </button>

@@ -7,7 +7,6 @@ import { Stripe_Product } from 'types/takeshape';
 import ProductPrice from './ProductPrice';
 import ProductQuantity from './ProductQuantity';
 
-const showCartTimeout = 3000;
 const oneTimePurchase = 'one-time';
 const recurringPurchase = 'recurring';
 const intervalOrderMap = ['day', 'week', 'month', 'year'];
@@ -36,8 +35,6 @@ const AddToCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 function useAddToCart(product: Stripe_Product) {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
   const addToCart = useSetAtom(addToCartAtom);
-
-  // const [cartItems, setCartItems] = useAtom(cartItemsAtom);
 
   const { prices } = product;
   const oneTimePayment = prices?.find((p) => !p.recurring);

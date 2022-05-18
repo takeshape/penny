@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { Fragment } from 'react';
 import { cartItemAtomsAtom, isCartOpenAtom } from 'services/cart/store';
 import Checkout from './Checkout/Checkout';
+import Empty from './Empty/Empty';
 import Item from './Item/Item';
 import Subtotal from './Subtotal/Subtotal';
 
@@ -57,15 +58,19 @@ export const Cart = () => {
                       </div>
 
                       <div className="mt-8">
-                        <div className="flow-root">
-                          <ul role="list" className="-my-6 divide-y divide-gray-200">
-                            {items.map((atom) => (
-                              <li key={atom.toString()} className="flex py-6">
-                                <Item atom={atom} remove={() => dispatch({ type: 'remove', atom })} />
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        {items.length ? (
+                          <div className="flow-root">
+                            <ul role="list" className="-my-6 divide-y divide-gray-200">
+                              {items.map((atom) => (
+                                <li key={atom.toString()} className="flex py-6">
+                                  <Item atom={atom} remove={() => dispatch({ type: 'remove', atom })} />
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <Empty />
+                        )}
                       </div>
                     </div>
 
