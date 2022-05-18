@@ -1,5 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { isCartOpenAtom, newCartItemsAtom } from 'store';
+import { cartItemsAtom, isCartOpenAtom } from 'services/cart/store';
 import { Cart } from './Cart';
 
 const Meta: ComponentMeta<typeof Cart> = {
@@ -8,7 +8,7 @@ const Meta: ComponentMeta<typeof Cart> = {
   parameters: {
     jotai: {
       atoms: {
-        cartItems: newCartItemsAtom
+        cartItems: cartItemsAtom
       },
       values: {
         cartItems: [

@@ -5,8 +5,8 @@ import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { CreateMyCheckoutSession } from 'queries';
 import { useEffect } from 'react';
+import { cartItemsAtom } from 'services/cart/store';
 import getStripe from 'services/stripe/getStripe';
-import { cartItemsAtom } from 'store';
 import { getCheckoutPayload } from 'utils/checkout';
 
 // After a successful login, redirect here to automatically checkout with the cart

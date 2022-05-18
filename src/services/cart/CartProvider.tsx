@@ -2,7 +2,7 @@ import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';
 import { Fragment, useEffect } from 'react';
-import { cartCheckoutResultAtom, cartItemsAtom } from 'store';
+import { cartCheckoutResultAtom, cartItemsAtom } from './store';
 
 const STRIPE_CHECKOUT_ACTION_SUCCESS = 'success';
 
