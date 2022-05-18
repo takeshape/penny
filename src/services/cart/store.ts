@@ -1,8 +1,7 @@
+import { cartLocalStorageKey } from 'config';
 import { atom } from 'jotai';
 import { atomWithStorage, splitAtom } from 'jotai/utils';
 import type { SetOptional } from 'type-fest';
-
-export const LOCAL_STORAGE_KEY = 'cart';
 
 export type CartItem = {
   id: string;
@@ -28,7 +27,7 @@ export const cartCheckoutResultAtom = atom<string>('');
 export const cartTimeoutMsAtom = atom<number>(0);
 
 /* Cart Items */
-export const cartItemsAtom = atomWithStorage<CartItem[]>(LOCAL_STORAGE_KEY, []);
+export const cartItemsAtom = atomWithStorage<CartItem[]>(cartLocalStorageKey, []);
 export const cartItemAtomsAtom = splitAtom(cartItemsAtom);
 
 const withItemDefaults = (item: CartItemInput): CartItem => ({
