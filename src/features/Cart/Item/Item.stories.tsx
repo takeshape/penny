@@ -54,4 +54,9 @@ _LongPrice.args = {
   })
 };
 
+export const _RecurringPurchase = Template.bind({});
+_RecurringPurchase.args = {
+  atom: atom(fixtures.cartItems[1])
+};
+
 export default Meta;

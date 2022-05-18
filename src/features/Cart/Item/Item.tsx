@@ -2,18 +2,19 @@ import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import Image from 'components/NextImage';
 import type { PrimitiveAtom } from 'jotai';
 import { useAtom } from 'jotai';
+import Link from 'next/link';
 import { Fragment } from 'react';
 import type { CartItem } from 'services/cart/store';
-import { formatPrice } from 'utils/text';
+import { formatPrice, pluralizeText } from 'utils/text';
 
 export interface ItemProps {
   atom: PrimitiveAtom<CartItem>;
-  remove: () => void;
+  onRemove: () => void;
 }
 
-export const Item = ({ atom, remove }: ItemProps) => {
+export const Item = ({ atom, onRemove }: ItemProps) => {
   const [item, setItem] = useAtom(atom);
-  const { imageSrc, imageAlt, name, href, currency, unitAmount, quantity } = item;
+  const { imageSrc, imageAlt, name, href, currency, unitAmount, quantity, interval, intervalCount } = item;
 
   return (
     <Fragment>
@@ -31,10 +32,18 @@ export const Item = ({ atom, remove }: ItemProps) => {
         <div>
           <div className="flex justify-between text-base font-medium text-gray-900">
             <h3>
-              <a href={href}> {name} </a>
+              <Link href={href}>{name}</Link>
             </h3>
-            <p className="ml-4">{formatPrice(currency, unitAmount)}</p>
+            <div>
+              <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
+              {interval === 'none' ? null : (
+                <p className="ml-4 text-right text-xs text-gray-500">
+                  per {pluralizeText(intervalCount, interval, `${interval}s`)}
+                </p>
+              )}
+            </div>
           </div>
+          {/* Preserving example of details style */}
           {/* <p className="mt-1 text-sm text-gray-500">{color}</p> */}
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
@@ -64,7 +73,7 @@ export const Item = ({ atom, remove }: ItemProps) => {
           </div>
 
           <div className="flex">
-            <button onClick={remove} type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <button onClick={onRemove} type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
               Remove
             </button>
           </div>

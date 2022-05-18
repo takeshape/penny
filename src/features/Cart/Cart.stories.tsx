@@ -27,6 +27,22 @@ _WithItems.parameters = {
   }
 };
 
+export const _WithRecurringAndOneTime = Template.bind({});
+_WithRecurringAndOneTime.parameters = {
+  jotai: {
+    atoms: {
+      isCartOpen: isCartOpenAtom,
+      cartItems: cartItemsAtom,
+      currency: currencyAtom
+    },
+    values: {
+      isCartOpen: true,
+      cartItems: [...fixtures.cartItems, { ...fixtures.cartItems[1], interval: 'none', intervalCount: 0 }],
+      currency: 'usd'
+    }
+  }
+};
+
 export const _Empty = Template.bind({});
 _Empty.parameters = {
   jotai: {
