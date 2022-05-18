@@ -5,7 +5,8 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:prettier/recommended",
-    "plugin:mdx/recommended"
+    "plugin:mdx/recommended",
+    "plugin:storybook/recommended"
   ],
   "rules": {
     "no-unreachable": "error",
