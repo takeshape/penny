@@ -1,4 +1,5 @@
-import CartSidebar from 'features/Cart/CartSidebar';
+// import CartSidebar from 'features/Cart/CartSidebar';
+import Cart from 'features/Cart/Cart';
 import Footer from 'features/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
@@ -22,7 +23,7 @@ export const Container = ({ children, ...seo }: PropsWithChildren<NextSeoProps>)
           {children}
         </main>
 
-        <CartSidebar />
+        <Cart />
         <Notifications />
 
         <Footer />

@@ -1,13 +1,10 @@
-/**
- * TODO: Should be able to remove / rename this.
- */
 import { useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';
 import { Fragment, useEffect } from 'react';
 import { cartCheckoutResultAtom, cartItemsAtom } from 'store';
 
-const stripeCheckoutActionSuccess = 'success';
+const STRIPE_CHECKOUT_ACTION_SUCCESS = 'success';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const setCartItems = useSetAtom(cartItemsAtom);
@@ -25,7 +22,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
       replace(pathname, query, { shallow: true });
     }
 
-    if (action === stripeCheckoutActionSuccess) {
+    if (action === STRIPE_CHECKOUT_ACTION_SUCCESS) {
       setCartItems([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
