@@ -1,6 +1,6 @@
 // import CartSidebar from 'features/Cart/CartSidebar';
 import Cart from 'features/Cart/Cart';
-import Footer from 'features/Footer';
+import Footer from 'features/Footer/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notifications from 'features/Notifications';
 import SearchModal from 'features/Search/Modal/Modal';
