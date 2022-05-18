@@ -1,6 +1,6 @@
 import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { cartCheckoutResultAtom } from 'store';
+import { cartCheckoutResultAtom } from 'services/cart/store';
 import { Alert, Box, Close } from 'theme-ui';
 
 export const Notifications = () => {

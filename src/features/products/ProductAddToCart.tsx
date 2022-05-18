@@ -1,8 +1,7 @@
 import { useAtom, useSetAtom } from 'jotai';
 import orderBy from 'lodash-es/orderBy';
 import { useEffect, useState } from 'react';
-import { addToCartAtom } from 'services/cart/store';
-import { cartTimeoutMsAtom, isCartOpenAtom } from 'store';
+import { addToCartAtom, isCartOpenAtom } from 'services/cart/store';
 import { Box, Button, Flex, Label, Radio } from 'theme-ui';
 import { Stripe_Product } from 'types/takeshape';
 import ProductPrice from './ProductPrice';
@@ -36,7 +35,6 @@ const AddToCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 
 function useAddToCart(product: Stripe_Product) {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
-  const setCartTimeoutMs = useSetAtom(cartTimeoutMsAtom);
   const addToCart = useSetAtom(addToCartAtom);
 
   // const [cartItems, setCartItems] = useAtom(cartItemsAtom);
@@ -109,7 +107,6 @@ function useAddToCart(product: Stripe_Product) {
     });
 
     if (!isCartOpen) {
-      setCartTimeoutMs(showCartTimeout);
       setIsCartOpen(true);
     }
   };
