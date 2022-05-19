@@ -31,12 +31,12 @@ export const cartItemsAtom = atomWithStorage<CartItem[]>(cartLocalStorageKey, []
 export const cartItemAtomsAtom = splitAtom(cartItemsAtom);
 
 const withItemDefaults = (item: CartItemInput): CartItem => ({
-  interval: 'none',
-  intervalCount: 0,
-  imageSrc: '/images/default-product-image.webp',
-  imageAlt: 'Default product image',
-  data: {},
-  ...item
+  ...item,
+  interval: item.interval ?? 'none',
+  intervalCount: item.intervalCount ?? 0,
+  imageSrc: item.imageSrc ?? '/images/default-product-image.webp',
+  imageAlt: item.imageAlt ?? 'Default product image',
+  data: item.data ?? {}
 });
 
 export const addToCartAtom = atom<null, CartItemInput>(null, (get, set, itemInput) => {
