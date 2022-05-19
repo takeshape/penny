@@ -24,39 +24,39 @@ const Meta: ComponentMeta<typeof Item> = {
 
 const Template = (args) => <Item {...args} />;
 
-export const _Standard = Template.bind({});
-_Standard.args = {
+export const OneTimePurchase = Template.bind({});
+OneTimePurchase.args = {
   atom: atom(fixtures.cartItems[0])
 };
 
-export const _PlaceholderImage = Template.bind({});
-_PlaceholderImage.args = {
+export const RecurringPurchase = Template.bind({});
+RecurringPurchase.args = {
+  atom: atom(fixtures.cartItems[1])
+};
+
+export const PlaceholderImage = Template.bind({});
+PlaceholderImage.args = {
   atom: atom({
     ...fixtures.cartItems[0],
     imageSrc: '/images/default-product-image.webp'
   })
 };
 
-export const _LongName = Template.bind({});
-_LongName.args = {
+export const LongName = Template.bind({});
+LongName.args = {
   atom: atom({
     ...fixtures.cartItems[0],
     name: 'Super Special Awesome Magic Rainbow Coat'
   })
 };
 
-export const _LongPrice = Template.bind({});
-_LongPrice.args = {
+export const LongPrice = Template.bind({});
+LongPrice.args = {
   atom: atom({
     ...fixtures.cartItems[0],
     name: 'Super Special Awesome Magic Rainbow Coat',
     unitAmount: 6969420
   })
-};
-
-export const _RecurringPurchase = Template.bind({});
-_RecurringPurchase.args = {
-  atom: atom(fixtures.cartItems[1])
 };
 
 export default Meta;

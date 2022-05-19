@@ -2,15 +2,14 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';
 import { Fragment, useEffect, useState } from 'react';
-import { currencyAtom } from 'store';
-import { cartCheckoutResultAtom, cartItemsAtom } from './store';
-
-const STRIPE_CHECKOUT_ACTION_SUCCESS = 'success';
+import { currencyAtom, notificationAtom } from 'store';
+import { cartItemsAtom } from './store';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
-  const [previousCurrency, setPreviousCurrency] = useState('');
   const setCartItems = useSetAtom(cartItemsAtom);
-  const setCheckoutResult = useSetAtom(cartCheckoutResultAtom);
+  const setNotification = useSetAtom(notificationAtom);
+
+  const [previousCurrency, setPreviousCurrency] = useState('');
   const currency = useAtomValue(currencyAtom);
 
   const {
@@ -21,25 +20,35 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
 
   useEffect(() => {
     if (action) {
-      setCheckoutResult(action as string);
+      let title = '';
+      let body = '';
+
+      if (action === 'success') {
+        title = 'Successfully checked out';
+        body = 'Your cart has been cleared.';
+        setCartItems([]);
+      }
+
+      if (action === 'canceled') {
+        title = 'Checkout canceled';
+        body = 'Your cart has been saved.';
+      }
+
+      setNotification({ title, body, showFor: 5000, status: 'info' });
       replace(pathname, query, { shallow: true });
     }
-
-    if (action === STRIPE_CHECKOUT_ACTION_SUCCESS) {
-      setCartItems([]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [action, pathname, query, replace]);
+  }, [action, pathname, query, replace, setCartItems, setNotification]);
 
   useEffect(() => {
     // If the currency changes the cart needs to be reset to prevent out-of-sync
     // prices... a smarter system might look up all the new prices and re-populate
     // the cart
     if (previousCurrency && currency !== previousCurrency) {
+      setNotification({ title: 'Currency changed', body: 'You cart has been cleared.', showFor: 5000, status: 'info' });
       setCartItems([]);
     }
     setPreviousCurrency(currency);
-  }, [currency, previousCurrency, setCartItems]);
+  }, [currency, previousCurrency, setCartItems, setNotification]);
 
   return <Fragment>{children}</Fragment>;
 };

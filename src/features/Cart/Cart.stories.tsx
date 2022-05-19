@@ -11,8 +11,8 @@ const Meta: ComponentMeta<typeof Cart> = {
 
 const Template: ComponentStory<typeof Cart> = (args) => <Cart {...args} />;
 
-export const _WithItems = Template.bind({});
-_WithItems.parameters = {
+export const WithItems = Template.bind({});
+WithItems.parameters = {
   jotai: {
     atoms: {
       isCartOpen: isCartOpenAtom,
@@ -27,8 +27,8 @@ _WithItems.parameters = {
   }
 };
 
-export const _WithRecurringAndOneTime = Template.bind({});
-_WithRecurringAndOneTime.parameters = {
+export const WithRecurringAndOneTime = Template.bind({});
+WithRecurringAndOneTime.parameters = {
   jotai: {
     atoms: {
       isCartOpen: isCartOpenAtom,
@@ -43,8 +43,8 @@ _WithRecurringAndOneTime.parameters = {
   }
 };
 
-export const _Empty = Template.bind({});
-_Empty.parameters = {
+export const Empty = Template.bind({});
+Empty.parameters = {
   jotai: {
     atoms: {
       isCartOpen: isCartOpenAtom,
@@ -59,8 +59,8 @@ _Empty.parameters = {
   }
 };
 
-export const _WithGBP = Template.bind({});
-_WithGBP.parameters = {
+export const WithGBP = Template.bind({});
+WithGBP.parameters = {
   jotai: {
     atoms: {
       isCartOpen: isCartOpenAtom,
