@@ -75,7 +75,7 @@ export interface ContactProps {
 const Contact = (props: React.PropsWithChildren<ContactProps>) => {
   const { text, onSubmit } = props;
   const [agreed, setAgreed] = useState(false);
-  const { handleSubmit, formState, control } = useForm<ContactForm>();
+  const { handleSubmit, formState, control } = useForm<ContactForm>({ mode: 'onBlur' });
   return (
     <div className="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
       <div className="relative max-w-xl mx-auto">
@@ -98,7 +98,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="First name"
               autoComplete="given-name"
               type="text"
-              rules={{ required: true }}
+              rules={{ required: 'This field is required' }}
             />
             <Input
               control={control}
@@ -107,7 +107,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Last name"
               autoComplete="family-name"
               type="text"
-              rules={{ required: true }}
+              rules={{ required: 'This field is required' }}
             />
             <Input
               className="sm:col-span-2"
@@ -117,7 +117,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Company"
               autoComplete="organization"
               type="text"
-              rules={{ required: true }}
+              rules={{ required: 'This field is required' }}
             />
             <Input
               className="sm:col-span-2"
@@ -127,7 +127,14 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Email"
               autoComplete="email"
               type="text"
-              rules={{ required: true }}
+              rules={{
+                required: 'This field is required',
+                pattern: {
+                  value:
+                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                  message: 'Please enter a valid email'
+                }
+              }}
             />
             <Input
               className="sm:col-span-2"
@@ -138,7 +145,13 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               autoComplete="tel"
               placeholder="+1 (555) 987-6543"
               type="text"
-              rules={{ required: true }}
+              rules={{
+                required: 'This field is required',
+                pattern: {
+                  value: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
+                  message: 'Please enter a valid phone number'
+                }
+              }}
             />
             <Textarea
               className="sm:col-span-2"
@@ -146,7 +159,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               name="message"
               id="message"
               label="Message"
-              rules={{ required: true }}
+              rules={{ required: 'This field is required' }}
             />
             <div className="sm:col-span-2">
               <div className="flex items-start">
