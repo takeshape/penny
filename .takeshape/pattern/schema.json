@@ -3232,14 +3232,16 @@
           },
           "avatar": {
             "description": "",
-            "@ref": "local:TSRelationship",
-            "@relationship": {
-              "shapeIds": [
-                "ASSET"
-              ]
-            },
+            "@ref": "local:Asset",
             "title": "Avatar",
-            "@mapping": "takeshape:local:Profile.k0Ha4O7oV"
+            "@mapping": "takeshape:local:Profile.k0Ha4O7oV",
+            "@input": {"@ref": "local:TSRelationship"},
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {"nullable": true}
+            }
           },
           "stripeCustomerId": {
             "type": "string",
@@ -4129,5 +4131,5 @@
       }
     }
   },
-  "schemaVersion": "3.17.0"
+  "schemaVersion": "3.18.0"
 }
