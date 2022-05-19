@@ -1,7 +1,7 @@
 import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
-import Loader from 'components/Loader';
+import Loader from 'components/Loader/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Fragment, useCallback, useEffect } from 'react';
