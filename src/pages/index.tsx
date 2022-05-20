@@ -4,13 +4,16 @@ import ProductGrid from 'features/products/ProductGrid';
 import Page from 'layouts/Page';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
-import { GetStripeProducts } from 'queries';
+import type { GetProductsResponse } from 'queries';
+import { GetProductsQuery } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
 import { createStaticClient } from 'services/apollo/apolloClient';
 import { Alert, Heading } from 'theme-ui';
 import { formatError } from 'utils/errors';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  console.log(products);
+
   if (error) {
     return (
       <Container>
@@ -45,15 +48,11 @@ export async function getStaticProps() {
   let error = null;
 
   try {
-    const { data } = await apolloClient.query({
-      query: GetStripeProducts
+    const { data } = await apolloClient.query<GetProductsResponse>({
+      query: GetProductsQuery
     });
 
-    if (data.errors) {
-      error = data.errors;
-    } else {
-      products = data.products.items;
-    }
+    products = data.products.edges.map((e) => e.node);
   } catch (err) {
     logger.error(err);
     error = formatError(err);

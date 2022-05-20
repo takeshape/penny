@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import type {
   Mutation,
   ReviewsIo_ListProductReviewsResponse,
+  Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
   Stripe_Product,
   Stripe_Subscription,
@@ -29,6 +30,62 @@ export const GetStripeProducts = gql`
           recurring {
             interval
             interval_count
+          }
+        }
+      }
+    }
+  }
+`;
+
+export interface GetProductsResponse {
+  products: Shopify_ProductConnection;
+}
+
+export const GetProductsQuery = gql`
+  query GetProducts {
+    products: Shopify_products(first: 10) {
+      edges {
+        node {
+          id
+          title
+          descriptionHtml
+          featuredImage {
+            width
+            height
+            url
+          }
+          recharge {
+            discount_type
+            discount_amount
+            subscription_defaults {
+              order_interval_unit
+              charge_interval_frequency
+              order_interval_frequency_options
+            }
+          }
+          variants(first: 10) {
+            edges {
+              node {
+                id
+                availableForSale
+                compareAtPrice
+                displayName
+                createdAt
+                image {
+                  width
+                  height
+                  url
+                }
+                price
+                sellableOnlineQuantity
+                sku
+                title
+                selectedOptions {
+                  name
+                  value
+                }
+              }
+            }
           }
         }
       }
