@@ -1,7 +1,7 @@
 import { defaultCurrency } from 'config';
 import { atom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
-import type { Stripe_Price, Stripe_Product } from 'types/takeshape';
+import { atomWithReset, atomWithStorage } from 'jotai/utils';
+import type { NotificationMessage } from 'types/notification';
 
 /* Global */
 export const currencyAtom = atomWithStorage('currency', defaultCurrency);
@@ -10,15 +10,5 @@ export const currencyAtom = atomWithStorage('currency', defaultCurrency);
 export const isSearchOpenAtom = atom(false);
 export const isMobileMenuOpenAtom = atom(false);
 
-/* Cart */
-export const isCartOpenAtom = atom(false);
-
-// Temporary, see note in services/cart/jotai
-type CartItem = Stripe_Product & {
-  price: Stripe_Price;
-  quantity: number;
-};
-
-export const cartItemsAtom = atomWithStorage<CartItem[]>('cartItems', []);
-export const cartCheckoutResultAtom = atom<string>('');
-export const cartTimeoutMsAtom = atom<number>(0);
+/* Notification */
+export const notificationAtom = atomWithReset<NotificationMessage>({ title: '', body: '' });

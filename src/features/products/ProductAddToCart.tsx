@@ -1,14 +1,12 @@
 import { useAtom, useSetAtom } from 'jotai';
 import orderBy from 'lodash-es/orderBy';
 import { useEffect, useState } from 'react';
-import { addToCart } from 'services/cart/jotai';
-import { cartItemsAtom, cartTimeoutMsAtom, isCartOpenAtom } from 'store';
+import { addToCartAtom, isCartOpenAtom } from 'services/cart/store';
 import { Box, Button, Flex, Label, Radio } from 'theme-ui';
 import { Stripe_Product } from 'types/takeshape';
 import ProductPrice from './ProductPrice';
 import ProductQuantity from './ProductQuantity';
 
-const showCartTimeout = 3000;
 const oneTimePurchase = 'one-time';
 const recurringPurchase = 'recurring';
 const intervalOrderMap = ['day', 'week', 'month', 'year'];
@@ -36,8 +34,7 @@ const AddToCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
 
 function useAddToCart(product: Stripe_Product) {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
-  const setCartTimeoutMs = useSetAtom(cartTimeoutMsAtom);
-  const [cartItems, setCartItems] = useAtom(cartItemsAtom);
+  const addToCart = useSetAtom(addToCartAtom);
 
   const { prices } = product;
   const oneTimePayment = prices?.find((p) => !p.recurring);
@@ -88,10 +85,25 @@ function useAddToCart(product: Stripe_Product) {
   };
 
   const handleAddToCart = () => {
-    addToCart(cartItems, setCartItems, { ...product, price, quantity });
+    addToCart({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      href: `/product/${product.id}`,
+      unitAmount: price.unit_amount,
+      currency: price.currency,
+      quantity,
+      imageSrc: product.images[0],
+      imageAlt: `Picture of ${product.name}`,
+      interval: price.recurring?.interval,
+      intervalCount: price.recurring?.interval_count,
+      data: {
+        product,
+        price
+      }
+    });
 
     if (!isCartOpen) {
-      setCartTimeoutMs(showCartTimeout);
       setIsCartOpen(true);
     }
   };

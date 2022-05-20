@@ -1,12 +1,11 @@
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 import ClientOnly from 'components/ClientOnly';
 import { useAtom, useAtomValue } from 'jotai';
-import { cartItemsAtom, isCartOpenAtom } from 'store';
+import { cartQuantityAtom, isCartOpenAtom } from 'services/cart/store';
 
 export const TopCartIcon = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
-  const cartItems = useAtomValue(cartItemsAtom);
-  const cartQuantity = cartItems.reduce((q, i) => q + i.quantity, 0);
+  const cartQuantity = useAtomValue(cartQuantityAtom);
 
   return (
     <div className="flow-root">
