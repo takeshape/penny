@@ -1,0 +1,32 @@
+{
+  "cartItems": [
+    {
+      "id": "prod_LPvslzaZA4bjRO",
+      "name": "Throwback Hip Bag",
+      "description": "Cool!",
+      "href": "/product/prod_LPvslzaZA4bjRO",
+      "unitAmount": 9000,
+      "currency": "usd",
+      "quantity": 1,
+      "imageSrc": "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+      "imageAlt": "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+      "interval": "none",
+      "intervalCount": 0,
+      "data": {}
+    },
+    {
+      "id": "prod_LNjQn6SmhBfhkT",
+      "name": "Medium Stuff Satchel",
+      "description": "Cool!",
+      "href": "/product/prod_LNjQn6SmhBfhkT",
+      "unitAmount": 3200,
+      "currency": "usd",
+      "quantity": 1,
+      "imageSrc": "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+      "imageAlt": "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+      "interval": "month",
+      "intervalCount": 1,
+      "data": {}
+    }
+  ]
+}
