@@ -96,6 +96,13 @@ export const defaultCurrency = 'usd';
 /* Cart */
 export const cartLocalStorageKey = process.env.NEXT_PUBLIC_CART_LOCAL_STORAGE_KEY ?? 'cart';
 
+/* Product */
+export const defaultProductImage = {
+  height: 480,
+  url: '/images/default-product-image.webp',
+  width: 480
+};
+
 /* Misc */
 export const shipFrom = {
   name: 'KitchenSink',

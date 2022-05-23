@@ -97,7 +97,7 @@ const config = {
     ];
   },
   images: {
-    domains: ['files.stripe.com', 'tailwindui.com']
+    domains: ['files.stripe.com', 'tailwindui.com', 'cdn.shopify.com']
   },
   poweredByHeader: false,
   reactStrictMode: true,

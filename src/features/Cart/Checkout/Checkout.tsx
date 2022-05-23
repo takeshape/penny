@@ -4,7 +4,6 @@ import { signIn, useSession } from 'next-auth/react';
 import { CreateMyCheckoutSession } from 'queries';
 import { useCallback, useEffect } from 'react';
 import { cartItemsAtom, cartQuantityAtom } from 'services/cart/store';
-import getStripe from 'services/stripe/getStripe';
 import { getCheckoutPayload } from 'utils/checkout';
 
 export const Checkout = () => {
@@ -22,20 +21,13 @@ export const Checkout = () => {
     }
 
     setCheckoutPayload({
-      variables: getCheckoutPayload(items, window.location.href)
+      variables: getCheckoutPayload(items)
     });
   }, [items, setCheckoutPayload, status]);
 
   useEffect(() => {
-    const doCheckout = async () => {
-      const stripe = await getStripe();
-      stripe.redirectToCheckout({
-        sessionId: checkoutData.session.id
-      });
-    };
-
-    if (checkoutData?.session) {
-      doCheckout();
+    if (checkoutData?.checkoutUrl) {
+      window.location.href = checkoutData.checkoutUrl;
     }
   }, [checkoutData]);
 

@@ -1,6 +1,6 @@
 import PageLoader from 'components/PageLoader';
 import Container from 'features/Container';
-import ProductGrid from 'features/products/ProductGrid';
+import ProductCategory from 'features/ProductCategory/ProductCategory';
 import Page from 'layouts/Page';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
@@ -8,12 +8,11 @@ import type { GetProductsResponse } from 'queries';
 import { GetProductsQuery } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
 import { createStaticClient } from 'services/apollo/apolloClient';
-import { Alert, Heading } from 'theme-ui';
+import { Alert } from 'theme-ui';
 import { formatError } from 'utils/errors';
+import { shopifyProductToProductListItem } from 'utils/transforms';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log(products);
-
   if (error) {
     return (
       <Container>
@@ -29,10 +28,43 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
     <Container>
       {products ? (
         <Page>
-          <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
-            Products
-          </Heading>
-          <ProductGrid products={products} />
+          <ProductCategory
+            header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }}
+            products={products}
+            setFilters={() => {}}
+            clearAllFilters={() => {}}
+            setSortOption={() => {}}
+            filters={{
+              color: [
+                { value: 'white', label: 'White', checked: false },
+                { value: 'beige', label: 'Beige', checked: false },
+                { value: 'blue', label: 'Blue', checked: true },
+                { value: 'brown', label: 'Brown', checked: false },
+                { value: 'green', label: 'Green', checked: false },
+                { value: 'purple', label: 'Purple', checked: false }
+              ],
+              size: [
+                { value: 'xs', label: 'XS', checked: false },
+                { value: 's', label: 'S', checked: true },
+                { value: 'm', label: 'M', checked: false },
+                { value: 'l', label: 'L', checked: false },
+                { value: 'xl', label: 'XL', checked: false },
+                { value: '2xl', label: '2XL', checked: false }
+              ]
+            }}
+            sortOptions={[
+              { name: 'Most Popular', href: '#', current: true },
+              { name: 'Best Rating', href: '#', current: false },
+              { name: 'Newest', href: '#', current: false },
+              { name: 'Price: Low to High', href: '#', current: false },
+              { name: 'Price: High to Low', href: '#', current: false }
+            ]}
+            pagination={{
+              pageCount: 1,
+              currentPage: 1,
+              setCurrentPage: () => {}
+            }}
+          />
         </Page>
       ) : (
         <PageLoader />
@@ -52,7 +84,7 @@ export async function getStaticProps() {
       query: GetProductsQuery
     });
 
-    products = data.products.edges.map((e) => e.node);
+    products = data.products.edges.map((e) => shopifyProductToProductListItem(e.node));
   } catch (err) {
     logger.error(err);
     error = formatError(err);
