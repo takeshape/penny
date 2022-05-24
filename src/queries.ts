@@ -240,41 +240,6 @@ export const GetProductQuery = gql`
   }
 `;
 
-export const GetProduct = gql`
-  query GetProduct($id: String!) {
-    product: Stripe_getProduct(id: $id) {
-      id
-      name
-      description
-      images
-      prices {
-        id
-        unit_amount
-        currency
-        recurring {
-          interval
-          interval_count
-        }
-      }
-    }
-    reviews: ReviewsIo_listProductReviews(sku: $id) {
-      reviews {
-        data {
-          date_created
-          timeago
-          rating
-          title
-          review
-        }
-      }
-      stats {
-        average
-        count
-      }
-    }
-  }
-`;
-
 export const GetMyProfile = gql`
   query GetMyProfile {
     profile: getMyProfile {
