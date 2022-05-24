@@ -5,8 +5,8 @@ import type { CreateMyCartResponse } from 'queries';
 import { CreateMyCartQuery } from 'queries';
 import { useCallback, useEffect } from 'react';
 import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from 'services/cart/store';
+import { getCheckoutPayload } from 'services/cart/utils';
 import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
-import { getCheckoutPayload } from 'utils/checkout';
 
 export const Checkout = () => {
   const { status } = useSession();
