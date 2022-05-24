@@ -1904,225 +1904,28 @@
         ]
       }
     },
-    "createMyCheckoutSession": {
-      "description": "Create a Stripe checkout session for the signed-in user",
-      "shape": "stripe:CheckoutSession",
+    "createMyCart": {
       "resolver": {
-        "compose": [
-          {
-            "if": "!isEmpty($claims.sub)",
-            "id": "existingProfile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && !isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "createSubscription",
-            "name": "rest:post",
-            "service": "stripe",
-            "path": "/v1/checkout/sessions",
-            "form": {
-              "ops": [
-                {
-                  "path": "customer",
-                  "mapping": "$resolvers.existingProfile.stripeCustomerId"
-                },
-                {
-                  "path": "line_items",
-                  "mapping": "$args.lineItems"
-                },
-                {
-                  "path": "cancel_url",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$args.redirectUrl"
-                      }
-                    ],
-                    [
-                      "format",
-                      {
-                        "template": "%s?stripe_checkout_session_id={CHECKOUT_SESSION_ID}&stripe_checkout_action=canceled"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "path": "success_url",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$args.redirectUrl"
-                      }
-                    ],
-                    [
-                      "format",
-                      {
-                        "template": "%s?stripe_checkout_session_id={CHECKOUT_SESSION_ID}&stripe_checkout_action=success"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "path": "payment_method_types[0]",
-                  "value": "card"
-                },
-                {
-                  "path": "mode",
-                  "mapping": "$args.mode"
-                },
-                {
-                  "path": "shipping_address_collection.allowed_countries",
-                  "value": [
-                    "US"
-                  ]
-                },
-                {
-                  "path": "shipping_options[0].shipping_rate_data",
-                  "ops": [
-                    {
-                      "path": "type",
-                      "value": "fixed_amount"
-                    },
-                    {
-                      "path": "fixed_amount.amount",
-                      "value": 0
-                    },
-                    {
-                      "path": "fixed_amount.currency",
-                      "value": "usd"
-                    },
-                    {
-                      "path": "display_name",
-                      "value": "Free shipping (UPS Ground)"
-                    },
-                    {
-                      "path": "delivery_estimate.minimum.unit",
-                      "value": "business_day"
-                    },
-                    {
-                      "path": "delivery_estimate.minimum.value",
-                      "value": 5
-                    },
-                    {
-                      "path": "delivery_estimate.maximum.unit",
-                      "value": "business_day"
-                    },
-                    {
-                      "path": "delivery_estimate.maximum.value",
-                      "value": 7
-                    }
-                  ]
-                },
-                {
-                  "path": "shipping_options[1].shipping_rate_data",
-                  "ops": [
-                    {
-                      "path": "type",
-                      "value": "fixed_amount"
-                    },
-                    {
-                      "path": "fixed_amount.amount",
-                      "value": 1000
-                    },
-                    {
-                      "path": "fixed_amount.currency",
-                      "value": "usd"
-                    },
-                    {
-                      "path": "display_name",
-                      "value": "Expedited shipping (UPS 2nd Day Air)"
-                    },
-                    {
-                      "path": "delivery_estimate.minimum.unit",
-                      "value": "business_day"
-                    },
-                    {
-                      "path": "delivery_estimate.minimum.value",
-                      "value": 2
-                    },
-                    {
-                      "path": "delivery_estimate.maximum.unit",
-                      "value": "business_day"
-                    },
-                    {
-                      "path": "delivery_estimate.maximum.value",
-                      "value": 2
-                    }
-                  ]
-                },
-                {
-                  "path": "shipping_options",
-                  "mapping": [
-                    [
-                      "expressionEval",
-                      {
-                        "expression": "$args.mode === 'subscription' ? null : undefined"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "path": "customer_update.shipping",
-                  "value": "auto"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          }
-        ]
+        "name": "graphql:mutation",
+        "service": "shopify-storefront",
+        "fieldName": "cartCreate",
+        "args": {
+          "ops": [
+            {"path": "input", "mapping": "$args.input"},
+            {"path": "input.buyerIdentity.email", "mapping": "$claims.email"}
+          ]
+        }
       },
       "args": {
         "type": "object",
         "properties": {
-          "redirectUrl": {
-            "type": "string"
-          },
-          "mode": {
-            "type": "string",
-            "enum": [
-              "payment",
-              "subscription",
-              "setup"
-            ]
-          },
-          "lineItems": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "price": {
-                  "type": "string"
-                },
-                "quantity": {
-                  "type": "integer"
-                }
-              }
-            }
+          "input": {
+            "@ref": "shopify-storefront:CartInput",
+            "description": "The fields used to create a cart."
           }
-        },
-        "required": [
-          "mode",
-          "lineItems",
-          "redirectUrl"
-        ]
-      }
+        }
+      },
+      "shape": "ShopifyStorefront_CartCreatePayload"
     },
     "updateProfile": {
       "shape": "UpdateResult<Profile>",
@@ -2500,6 +2303,73 @@
         },
         "required": []
       }
+    },
+    "Shopify_products": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "deluxe-sample-project",
+        "fieldName": "products"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "description": "Returns up to the first `n` elements from the list."
+          },
+          "after": {
+            "type": "string",
+            "description": "Returns the elements that come after the specified cursor."
+          },
+          "last": {
+            "type": "integer",
+            "description": "Returns up to the last `n` elements from the list."
+          },
+          "before": {
+            "type": "string",
+            "description": "Returns the elements that come before the specified cursor."
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "Reverse the order of the underlying list.",
+            "default": false
+          },
+          "sortKey": {
+            "@ref": "deluxe-sample-project:ProductSortKeys",
+            "description": "Sort the underlying list by the given key.",
+            "default": "ID"
+          },
+          "query": {
+            "type": "string",
+            "description": "Supported filter parameters:\n - `barcode`\n - `created_at`\n - `delivery_profile_id`\n - `error_feedback`\n - `gift_card`\n - `has_only_composites`\n - `has_only_default_variant`\n - `id`\n - `inventory_total`\n - `is_price_reduced`\n - `out_of_stock_somewhere`\n - `price`\n - `product_type`\n - `publishable_status`\n - `published_status`\n - `sku`\n - `status`\n - `tag`\n - `tag_not`\n - `title`\n - `updated_at`\n - `vendor`\n\nSee the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)\nfor more information about using filters."
+          },
+          "savedSearchId": {
+            "type": "string",
+            "@tag": "id",
+            "description": "The ID of an existing saved search.\nThe search’s query string is used as the query argument.\nRefer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch)."
+          }
+        }
+      },
+      "shape": "Shopify_ProductConnection"
+    },
+    "Shopify_product": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "deluxe-sample-project",
+        "fieldName": "product"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "@tag": "id",
+            "description": "The ID of the Product to return."
+          }
+        },
+        "required": ["id"]
+      },
+      "shape": "Shopify_Product"
     }
   },
   "shapes": {
@@ -4127,6 +3997,132 @@
             "@ref": "local:FooterNewsletter",
             "@mapping": "takeshape:local:Footer.kmSZztbAu"
           }
+        }
+      }
+    },
+    "Shopify_Product": {
+      "id": "Shopify_Product",
+      "name": "Shopify_Product",
+      "title": "Shopify_Product",
+      "schema": {
+        "extends": [
+          {"@ref": "deluxe-sample-project:Product"},
+          {
+            "type": "object",
+            "properties": {
+              "reviews": {
+                "@ref": "reviews-io:ListProductReviewsResponse",
+                "@resolver": {
+                  "name": "rest:get",
+                  "service": "reviews-io",
+                  "path": "/product/review",
+                  "searchParams": {
+                    "ops": [
+                      {
+                        "path": "sku",
+                        "mapping": [
+                          ["get", {"path": "$source.id"}],
+                          [
+                            "replace",
+                            {
+                              "pattern": "gid://shopify/Product/",
+                              "replacement": ""
+                            }
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "recharge": {
+                "description": "The Recharge subscription data associated with this product",
+                "title": "Recharge",
+                "@ref": "local:Recharge_Product",
+                "@resolver": {
+                  "name": "rest:get",
+                  "service": "recharge",
+                  "options": {"ignoreErrors": true, "ttl": 3600},
+                  "path": "/products",
+                  "searchParams": {
+                    "ops": [
+                      {
+                        "path": "shopify_product_id",
+                        "mapping": [
+                          ["get", {"path": "$source.id"}],
+                          [
+                            "replace",
+                            {
+                              "pattern": "gid://shopify/Product/",
+                              "replacement": ""
+                            }
+                          ]
+                        ]
+                      }
+                    ]
+                  },
+                  "results": {
+                    "ops": [
+                      {"path": "$", "mapping": "$finalResolver.products[0]"}
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "Recharge_Product": {
+      "id": "Recharge_Product",
+      "name": "Recharge_Product",
+      "title": "Recharge_Product",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "number", "title": "ID"},
+          "product_id": {"type": "number", "title": "product_id"},
+          "shopify_product_id": {
+            "type": "number",
+            "title": "shopify_product_id"
+          },
+          "discount_type": {"type": "string"},
+          "discount_amount": {"type": "number", "title": "discount_amount"},
+          "subscription_defaults": {
+            "type": "object",
+            "title": "subscription_defaults",
+            "properties": {
+              "charge_interval_frequency": {"type": "number"},
+              "cutoff_day_of_month": {"type": "number"},
+              "cutoff_day_of_week": {"type": "number"},
+              "expire_after_specific_number_of_charges": {"type": "number"},
+              "order_day_of_month": {"type": "number"},
+              "order_day_of_week": {"type": "number"},
+              "order_interval_frequency": {"type": "number"},
+              "order_interval_unit": {"type": "string"},
+              "storefront_purchase_options": {"type": "string"},
+              "order_interval_frequency_options": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          },
+          "external_product_id": {
+            "type": "string",
+            "title": "external_product_id"
+          },
+          "brand": {"type": "string", "title": "brand"},
+          "images": {
+            "type": "object",
+            "title": "images",
+            "properties": {
+              "large": {"type": "string", "title": "large"},
+              "medium": {"type": "string", "title": "medium"},
+              "original": {"type": "string", "title": "original"},
+              "small": {"type": "string", "title": "small"}
+            }
+          },
+          "title": {"type": "string", "title": "title"}
         }
       }
     }
