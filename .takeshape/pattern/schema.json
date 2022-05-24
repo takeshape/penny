@@ -158,14 +158,6 @@
     }
   },
   "services": {
-    "auth-0": {
-      "id": "auth-0",
-      "provider": "auth0",
-      "title": "auth0",
-      "serviceType": "authentication",
-      "authenticationType": "none",
-      "options": {}
-    },
     "stripe": {
       "id": "stripe",
       "provider": "stripe",
@@ -259,6 +251,27 @@
       "authenticationType": "bearer",
       "options": {
         "endpoint": "https://api.rechargeapps.com"
+      }
+    },
+    "shopify-storefront": {
+      "id": "shopify-storefront",
+      "provider": "generic",
+      "title": "Shopify Storefront",
+      "namespace": "ShopifyStorefront",
+      "serviceType": "graphql",
+      "authenticationType": "bearer",
+      "options": {
+        "endpoint": ""
+      }
+    },
+    "open-id": {
+      "id": "open-id",
+      "provider": "oidc",
+      "title": "OpenID",
+      "serviceType": "authentication",
+      "authenticationType": "none",
+      "options": {
+        "idClaim": "sub"
       }
     }
   },
@@ -2307,7 +2320,7 @@
     "Shopify_products": {
       "resolver": {
         "name": "graphql:query",
-        "service": "deluxe-sample-project",
+        "service": "shopify",
         "fieldName": "products"
       },
       "args": {
@@ -2335,7 +2348,7 @@
             "default": false
           },
           "sortKey": {
-            "@ref": "deluxe-sample-project:ProductSortKeys",
+            "@ref": "shopify:ProductSortKeys",
             "description": "Sort the underlying list by the given key.",
             "default": "ID"
           },
@@ -2355,7 +2368,7 @@
     "Shopify_product": {
       "resolver": {
         "name": "graphql:query",
-        "service": "deluxe-sample-project",
+        "service": "shopify",
         "fieldName": "product"
       },
       "args": {
@@ -4006,7 +4019,7 @@
       "title": "Shopify_Product",
       "schema": {
         "extends": [
-          {"@ref": "deluxe-sample-project:Product"},
+          {"@ref": "shopify:Product"},
           {
             "type": "object",
             "properties": {
