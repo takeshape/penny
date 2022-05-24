@@ -1,5 +1,10 @@
-export const Loader = () => {
-  let circleCommonClasses = 'h-2.5 w-2.5 bg-current rounded-full';
+export interface LoaderProps {
+  colorClass?: string;
+}
+
+export const Loader = ({ colorClass }: LoaderProps) => {
+  colorClass = colorClass ?? 'text-black';
+  let circleCommonClasses = `h-2.5 w-2.5 bg-current rounded-full ${colorClass}`;
 
   return (
     <div className="flex">

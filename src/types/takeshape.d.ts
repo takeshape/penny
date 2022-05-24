@@ -78,6 +78,8 @@ export type Query = {
   Shopify_productVariants?: Maybe<Shopify_ProductVariantConnection>;
   Shopify_products?: Maybe<Shopify_ProductConnection>;
   Shopify_product?: Maybe<Shopify_Product>;
+  Shopify_customer?: Maybe<Shopify_Customer>;
+  Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -356,6 +358,19 @@ export type QueryShopify_ProductsArgs = {
 /** Root of the Schema */
 export type QueryShopify_ProductArgs = {
   id: Scalars['ID'];
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_CustomerArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_CustomerPaymentMethodArgs = {
+  id: Scalars['ID'];
+  showRevoked?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -15628,7 +15643,10 @@ export type Shopify_ProductVariantTranslationsArgs = {
   locale: Scalars['String'];
 };
 
-/** The pricing of a particular product variant in a given context. */
+/**
+ * The price of a product variant in a specific country.
+ * Prices vary between countries.
+ */
 export type Shopify_ProductVariantContextualPricing = {
   __typename?: 'Shopify_ProductVariantContextualPricing';
   /** The final compare-at price after all adjustments are applied. */
@@ -15755,7 +15773,6 @@ export enum Shopify_CurrencyCode {
   Rwf = 'RWF',
   Wst = 'WST',
   Sar = 'SAR',
-  Std = 'STD',
   Rsd = 'RSD',
   Scr = 'SCR',
   Sgd = 'SGD',
@@ -15801,6 +15818,7 @@ export enum Shopify_CurrencyCode {
   Sll = 'SLL',
   Shp = 'SHP',
   Sos = 'SOS',
+  Std = 'STD',
   Tjs = 'TJS',
   Top = 'TOP',
   Vef = 'VEF',
@@ -18351,7 +18369,10 @@ export enum Shopify_CollectionSortKeys {
   Relevance = 'RELEVANCE'
 }
 
-/** The pricing of a particular product in a given context. */
+/**
+ * The price of a product in a specific country.
+ * Prices vary between countries.
+ */
 export type Shopify_ProductContextualPricing = {
   __typename?: 'Shopify_ProductContextualPricing';
   /** The pricing of the variant with the highest price in the given context. */
@@ -19686,6 +19707,4248 @@ export enum Shopify_ProductSortKeys {
   Relevance = 'RELEVANCE'
 }
 
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_Customer = {
+  __typename?: 'Shopify_Customer';
+  /**
+   * Whether the customer has agreed to receive marketing material.
+   * @deprecated Use `emailMarketingConsent` instead
+   */
+  acceptsMarketing: Scalars['Boolean'];
+  /**
+   * The date and time when the customer consented or objected to receiving marketing material by email.
+   * @deprecated Use `emailMarketingConsent` instead
+   */
+  acceptsMarketingUpdatedAt: Scalars['DateTime'];
+  /** A list of addresses associated with the customer. */
+  addresses: Array<Shopify_MailingAddress>;
+  /**
+   * The average amount that the customer spent per order.
+   * @deprecated Use `averageOrderAmountV2` instead
+   */
+  averageOrderAmount?: Maybe<Scalars['Money']>;
+  /** The average amount that the customer spent per order. */
+  averageOrderAmountV2?: Maybe<Shopify_MoneyV2>;
+  /**
+   * Whether the merchant can delete the customer from their store.
+   *
+   * A customer can be deleted from a store only if they have not yet made an order. After a customer makes an
+   * order, they can't be deleted from a store.
+   */
+  canDelete: Scalars['Boolean'];
+  /** The date and time when the customer was added to the store. */
+  createdAt: Scalars['DateTime'];
+  /** The default address associated with the customer. */
+  defaultAddress?: Maybe<Shopify_MailingAddress>;
+  /**
+   * The full name of the customer, based on the values for first_name and last_name. If the first_name and
+   * last_name are not available, then this falls back to the customer's email address, and if that is not available, the customer's phone number.
+   */
+  displayName: Scalars['String'];
+  /** The customer's email address. */
+  email?: Maybe<Scalars['String']>;
+  /** A list of events associated with the customer. */
+  events: Shopify_EventConnection;
+  /** The customer's first name. */
+  firstName?: Maybe<Scalars['String']>;
+  /**
+   * Whether the customer has a note associated with them.
+   * @deprecated Check for a value in the note field directly instead.
+   */
+  hasNote: Scalars['Boolean'];
+  /**
+   * Whether the merchant has added timeline comments about the customer on the customer's page.
+   * @deprecated To query for comments on the timeline, use the events connection and a `query` argument containing `verb:comment`, or look for a `CommentEvent` in the `__typename` of events.
+   */
+  hasTimelineComment: Scalars['Boolean'];
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The image associated with the customer. */
+  image: Shopify_Image;
+  /** The customer's last name. */
+  lastName?: Maybe<Scalars['String']>;
+  /** The customer's last order. */
+  lastOrder?: Maybe<Shopify_Order>;
+  /** The ID of the corresponding resource in the REST Admin API. */
+  legacyResourceId: Scalars['UnsignedInt64'];
+  /**
+   * The amount of time since the customer was first added to the store.
+   *
+   * Example: 'about 12 years'.
+   */
+  lifetimeDuration: Scalars['String'];
+  /** The customer's locale. */
+  locale: Scalars['String'];
+  /**
+   * The marketing subscription opt-in level, as described by the M3AAWG best practices guidelines, that the
+   * customer gave when they consented to receive marketing material by email.
+   *
+   * If the customer does not accept email marketing, then this property is `null`.
+   * @deprecated Use `emailMarketingConsent` instead
+   */
+  marketingOptInLevel?: Maybe<Shopify_CustomerMarketingOptInLevel>;
+  /** Returns a metafield by namespace and key that belongs to the resource. */
+  metafield?: Maybe<Shopify_Metafield>;
+  /** List of metafield definitions. */
+  metafieldDefinitions: Shopify_MetafieldDefinitionConnection;
+  /** List of metafields that belong to the resource. */
+  metafields: Shopify_MetafieldConnection;
+  /** A unique identifier for the customer that's used with Multipass login. */
+  multipassIdentifier?: Maybe<Scalars['String']>;
+  /** A note about the customer. */
+  note?: Maybe<Scalars['String']>;
+  /** A list of the customer's orders. */
+  orders: Shopify_OrderConnection;
+  /**
+   * The number of orders that the customer has made at the store in their lifetime.
+   * @deprecated Use `numberOfOrders` instead
+   */
+  ordersCount: Scalars['UnsignedInt64'];
+  /** A list of the customer's payment methods. */
+  paymentMethods: Shopify_CustomerPaymentMethodConnection;
+  /** The customer's phone number. */
+  phone?: Maybe<Scalars['String']>;
+  /** Returns a private metafield by namespace and key that belongs to the resource. */
+  privateMetafield?: Maybe<Shopify_PrivateMetafield>;
+  /** List of private metafields that belong to the resource. */
+  privateMetafields: Shopify_PrivateMetafieldConnection;
+  /** Possible subscriber states of a customer defined by their subscription contracts. */
+  productSubscriberStatus: Shopify_CustomerProductSubscriberStatus;
+  /**
+   * The current SMS marketing state for the customer's phone number.
+   *
+   * If the customer does not have a phone number, then this property is `null`.
+   */
+  smsMarketingConsent?: Maybe<Shopify_CustomerSmsMarketingConsentState>;
+  /** The state of the customer's account with the shop. */
+  state: Shopify_CustomerState;
+  /** A list of the customer's subscription contracts. */
+  subscriptionContracts: Shopify_SubscriptionContractConnection;
+  /** A comma separated list of tags that have been added to the customer. */
+  tags: Array<Scalars['String']>;
+  /** Whether the customer is exempt from being charged taxes on their orders. */
+  taxExempt: Scalars['Boolean'];
+  /** The list of tax exemptions applied to the customer. */
+  taxExemptions: Array<Shopify_TaxExemption>;
+  /**
+   * The total amount that the customer has spent on orders in their lifetime.
+   * @deprecated Use `amountSpent` instead
+   */
+  totalSpent: Scalars['Money'];
+  /**
+   * The total amount that the customer has spent on orders in their lifetime.
+   * @deprecated Use `amountSpent` instead
+   */
+  totalSpentV2: Shopify_MoneyV2;
+  /** The date and time when the customer was last updated. */
+  updatedAt: Scalars['DateTime'];
+  /**
+   * Whether the email address is formatted correctly. This does not
+   * guarantee that the email address actually exists.
+   */
+  validEmailAddress: Scalars['Boolean'];
+  /** Whether the customer has verified their email address. Defaults to `true` if the customer is created through the Shopify admin or API. */
+  verifiedEmail: Scalars['Boolean'];
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerAddressesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerEventsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_EventSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerImageArgs = {
+  size?: InputMaybe<Scalars['Int']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerMetafieldArgs = {
+  namespace: Scalars['String'];
+  key: Scalars['String'];
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerMetafieldDefinitionsArgs = {
+  namespace?: InputMaybe<Scalars['String']>;
+  pinnedStatus?: InputMaybe<Shopify_MetafieldDefinitionPinnedStatus>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_MetafieldDefinitionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerMetafieldsArgs = {
+  namespace?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerOrdersArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_OrderSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerPaymentMethodsArgs = {
+  showRevoked?: InputMaybe<Scalars['Boolean']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerPrivateMetafieldArgs = {
+  namespace: Scalars['String'];
+  key: Scalars['String'];
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerPrivateMetafieldsArgs = {
+  namespace?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * Represents information about a customer of the shop, such as the customer's contact details, their order
+ * history, and whether they've agreed to receive marketing material by email.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_CustomerSubscriptionContractsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/**
+ * Represents a customer mailing address.
+ *
+ * For example, a customer's default address and an order's billing address are both mailling addresses.
+ */
+export type Shopify_MailingAddress = {
+  __typename?: 'Shopify_MailingAddress';
+  /** The first line of the address. Typically the street address or PO Box number. */
+  address1?: Maybe<Scalars['String']>;
+  /** The second line of the address. Typically the number of the apartment, suite, or unit. */
+  address2?: Maybe<Scalars['String']>;
+  /** The name of the city, district, village, or town. */
+  city?: Maybe<Scalars['String']>;
+  /** The name of the customer's company or organization. */
+  company?: Maybe<Scalars['String']>;
+  /** The name of the country. */
+  country?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the country of the address.
+   *
+   * For example, US.
+   * @deprecated Use `countryCodeV2` instead
+   */
+  countryCode?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the country of the address.
+   *
+   * For example, US.
+   */
+  countryCodeV2?: Maybe<Shopify_CountryCode>;
+  /** The first name of the customer. */
+  firstName?: Maybe<Scalars['String']>;
+  /** A formatted version of the address, customized by the provided arguments. */
+  formatted: Array<Scalars['String']>;
+  /** A comma-separated list of the values for city, province, and country. */
+  formattedArea?: Maybe<Scalars['String']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The last name of the customer. */
+  lastName?: Maybe<Scalars['String']>;
+  /** The latitude coordinate of the customer address. */
+  latitude?: Maybe<Scalars['Float']>;
+  /** The longitude coordinate of the customer address. */
+  longitude?: Maybe<Scalars['Float']>;
+  /** The full name of the customer, based on firstName and lastName. */
+  name?: Maybe<Scalars['String']>;
+  /**
+   * A unique phone number for the customer.
+   *
+   * Formatted using E.164 standard. For example, _+16135551111_.
+   */
+  phone?: Maybe<Scalars['String']>;
+  /** The region of the address, such as the province, state, or district. */
+  province?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the region.
+   *
+   * For example, ON.
+   */
+  provinceCode?: Maybe<Scalars['String']>;
+  /** The zip or postal code of the address. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+
+/**
+ * Represents a customer mailing address.
+ *
+ * For example, a customer's default address and an order's billing address are both mailling addresses.
+ */
+export type Shopify_MailingAddressFormattedArgs = {
+  withName?: InputMaybe<Scalars['Boolean']>;
+  withCompany?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An auto-generated type for paginating through multiple Events. */
+export type Shopify_EventConnection = {
+  __typename?: 'Shopify_EventConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_EventEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one Event and a cursor during pagination. */
+export type Shopify_EventEdge = {
+  __typename?: 'Shopify_EventEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of EventEdge. */
+  node: Shopify_Event;
+};
+
+/**
+ * Events chronicle resource activities such as the creation of an article, the fulfillment of an order, or the
+ * addition of a product.
+ */
+export type Shopify_Event = {
+  __typename?: 'Shopify_Event';
+  /** The name of the app that created the event. */
+  appTitle?: Maybe<Scalars['String']>;
+  /** Whether the event was created by an app. */
+  attributeToApp: Scalars['Boolean'];
+  /** Whether the event was caused by an admin user. */
+  attributeToUser: Scalars['Boolean'];
+  /** The date and time when the event was created. */
+  createdAt: Scalars['DateTime'];
+  /** Whether the event is critical. */
+  criticalAlert: Scalars['Boolean'];
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** Human readable text that describes the event. */
+  message: Scalars['FormattedString'];
+};
+
+export enum Shopify_EventSortKeys {
+  CreatedAt = 'CREATED_AT',
+  Id = 'ID',
+  Relevance = 'RELEVANCE'
+}
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_Order = {
+  __typename?: 'Shopify_Order';
+  /** A list of sales agreements associated with the order. */
+  agreements: Shopify_SalesAgreementConnection;
+  /** A list of messages that appear on the order page in the Shopify admin. */
+  alerts: Array<Shopify_ResourceAlert>;
+  /** The application that created the order. */
+  app?: Maybe<Shopify_OrderApp>;
+  /** The billing address of the customer. */
+  billingAddress?: Maybe<Shopify_MailingAddress>;
+  /** Whether the billing address matches the shipping address. */
+  billingAddressMatchesShippingAddress: Scalars['Boolean'];
+  /** Whether the order can be manually marked as paid. */
+  canMarkAsPaid: Scalars['Boolean'];
+  /** Whether a customer email exists for the order. */
+  canNotifyCustomer: Scalars['Boolean'];
+  /**
+   * The reason provided when the order was canceled.
+   * Returns `null` if the order wasn't canceled.
+   */
+  cancelReason?: Maybe<Shopify_OrderCancelReason>;
+  /**
+   * The date and time when the order was canceled.
+   * Returns `null` if the order wasn't canceled.
+   */
+  cancelledAt?: Maybe<Scalars['DateTime']>;
+  /** Whether payment for the order can be captured. */
+  capturable: Scalars['Boolean'];
+  /**
+   * The total order-level discount amount, before returns, in shop currency.
+   * @deprecated Use `cartDiscountAmountSet` instead
+   */
+  cartDiscountAmount?: Maybe<Scalars['Money']>;
+  /** The total order-level discount amount, before returns, in shop and presentment currencies. */
+  cartDiscountAmountSet?: Maybe<Shopify_MoneyBag>;
+  /**
+   * The channel that created the order.
+   * @deprecated Use `publication` instead
+   */
+  channel?: Maybe<Shopify_Channel>;
+  /** The IP address of the API client that created the order. */
+  clientIp?: Maybe<Scalars['String']>;
+  /** Whether the order is closed. */
+  closed: Scalars['Boolean'];
+  /**
+   * The date and time when the order was closed.
+   * Returns `null` if the order is not closed.
+   */
+  closedAt?: Maybe<Scalars['DateTime']>;
+  /** Whether inventory has been reserved for the order. */
+  confirmed: Scalars['Boolean'];
+  /** Date and time when the order was created in Shopify. */
+  createdAt: Scalars['DateTime'];
+  /** The shop currency when the order was placed. */
+  currencyCode: Shopify_CurrencyCode;
+  /** The current order-level discount amount after all order updates, in shop and presentment currencies. */
+  currentCartDiscountAmountSet: Shopify_MoneyBag;
+  /** The sum of the quantities for all line items that contribute to the order's current subtotal price. */
+  currentSubtotalLineItemsQuantity: Scalars['Int'];
+  /**
+   * The sum of the prices for all line items after discounts and returns, in shop and presentment currencies.
+   * If `taxesIncluded` is `true`, then the subtotal also includes tax.
+   */
+  currentSubtotalPriceSet: Shopify_MoneyBag;
+  /**
+   * A list of all tax lines applied to line items on the order, after returns.
+   * Tax line prices represent the total price for all tax lines with the same `rate` and `title`.
+   */
+  currentTaxLines: Array<Shopify_TaxLine>;
+  /**
+   * The total amount discounted on the order after returns, in shop and presentment currencies.
+   * This includes both order and line level discounts.
+   */
+  currentTotalDiscountsSet: Shopify_MoneyBag;
+  /**
+   * The total amount of duties after returns, in shop and presentment currencies.
+   * Returns `null` if duties aren't applicable.
+   */
+  currentTotalDutiesSet?: Maybe<Shopify_MoneyBag>;
+  /**
+   * The total price of the order, after returns, in shop and presentment currencies.
+   * This includes taxes and discounts.
+   */
+  currentTotalPriceSet: Shopify_MoneyBag;
+  /** The sum of the prices of all tax lines applied to line items on the order, after returns, in shop and presentment currencies. */
+  currentTotalTaxSet: Shopify_MoneyBag;
+  /** The total weight of the order after returns, in grams. */
+  currentTotalWeight: Scalars['UnsignedInt64'];
+  /** A list of the custom attributes added to the order. */
+  customAttributes: Array<Shopify_Attribute>;
+  /** The customer that placed the order. */
+  customer?: Maybe<Shopify_Customer>;
+  /** Whether the customer agreed to receive marketing materials. */
+  customerAcceptsMarketing: Scalars['Boolean'];
+  /**
+   * The customer's visits and interactions with the online store before placing the order.
+   * @deprecated Use `customerJourneySummary` instead
+   */
+  customerJourney?: Maybe<Shopify_CustomerJourney>;
+  /** The customer's visits and interactions with the online store before placing the order. */
+  customerJourneySummary?: Maybe<Shopify_CustomerJourneySummary>;
+  /** A two-letter or three-letter language code, optionally followed by a region modifier. */
+  customerLocale?: Maybe<Scalars['String']>;
+  /** A list of discounts that are applied to the order. */
+  discountApplications: Shopify_DiscountApplicationConnection;
+  /** The discount code used for the order. */
+  discountCode?: Maybe<Scalars['String']>;
+  /**
+   * The primary address of the customer.
+   * Returns `null` if neither the shipping address nor the billing address was provided.
+   */
+  displayAddress?: Maybe<Shopify_MailingAddress>;
+  /**
+   * The financial status of the order that can be shown to the merchant.
+   * This field does not capture all the details of an order's financial state. It should only be used for display summary purposes.
+   */
+  displayFinancialStatus?: Maybe<Shopify_OrderDisplayFinancialStatus>;
+  /**
+   * The fulfillment status for the order that can be shown to the merchant.
+   * This field does not capture all the details of an order's fulfillment state. It should only be used for display summary purposes.
+   * For a more granular view of the fulfillment status, refer to the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object.
+   */
+  displayFulfillmentStatus: Shopify_OrderDisplayFulfillmentStatus;
+  /** A list of the disputes associated with the order. */
+  disputes: Array<Shopify_OrderDisputeSummary>;
+  /**
+   * A list of draft fulfillments that can be created for the order, which includes line items that can be partially fulfilled.
+   * @deprecated Use `fulfillmentOrders` instead
+   */
+  draftFulfillments: Array<Shopify_DraftFulfillment>;
+  /** Whether the order has had any edits applied. */
+  edited: Scalars['Boolean'];
+  /** The email address associated with the customer. */
+  email?: Maybe<Scalars['String']>;
+  /**
+   * Whether taxes on the order are estimated.
+   * This field returns `false` when taxes on the order are finalized and aren't subject to any changes.
+   */
+  estimatedTaxes: Scalars['Boolean'];
+  /** A list of events associated with the order. */
+  events: Shopify_EventConnection;
+  /**
+   * Whether there are line items that can be fulfilled.
+   * This field returns `false` when the order has no fulfillable line items.
+   * For a more granular view of the fulfillment status, refer to the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object.
+   */
+  fulfillable: Scalars['Boolean'];
+  /** A list of fulfillment orders for the order. */
+  fulfillmentOrders: Shopify_FulfillmentOrderConnection;
+  /** List of shipments for the order. */
+  fulfillments: Array<Shopify_Fulfillment>;
+  /** Whether the order has been paid in full. */
+  fullyPaid: Scalars['Boolean'];
+  /** Whether the merchant added a timeline comment to the order. */
+  hasTimelineComment: Scalars['Boolean'];
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /**
+   * The URL of the first page of the online store that the customer visited before they submitted the order.
+   * @deprecated Use `customerJourneySummary.lastVisit.landingPageHtml` instead
+   */
+  landingPageDisplayText?: Maybe<Scalars['String']>;
+  /**
+   * The first page of the online store that the customer visited before they submitted the order.
+   * @deprecated Use `customerJourneySummary.lastVisit.landingPage` instead
+   */
+  landingPageUrl?: Maybe<Scalars['Url']>;
+  /** The ID of the corresponding resource in the REST Admin API. */
+  legacyResourceId: Scalars['UnsignedInt64'];
+  /** A list of the order's line items. */
+  lineItems: Shopify_LineItemConnection;
+  /**
+   * A list of the order's line items.
+   * @deprecated Use `lineItems` instead
+   */
+  lineItemsMutable: Shopify_LineItemMutableConnection;
+  /** List of localization extensions for the resource. */
+  localizationExtensions: Shopify_LocalizationExtensionConnection;
+  /**
+   * The fulfillment location that was assigned when the order was created.
+   * Use the [`FulfillmentOrder`](https://shopify.dev/api/admin-graphql/latest/objects/fulfillmentorder) object for up-to-date fulfillment location information.
+   * @deprecated Use `physicalLocation` instead
+   */
+  location?: Maybe<Scalars['String']>;
+  /** Whether the order can be edited by the merchant. For example, canceled orders can’t be edited. */
+  merchantEditable: Scalars['Boolean'];
+  /** A list of reasons why the order can't be edited. For example, "Canceled orders can’t be edited". */
+  merchantEditableErrors: Array<Scalars['String']>;
+  /** Returns a metafield by namespace and key that belongs to the resource. */
+  metafield?: Maybe<Shopify_Metafield>;
+  /** List of metafield definitions. */
+  metafieldDefinitions: Shopify_MetafieldDefinitionConnection;
+  /** List of metafields that belong to the resource. */
+  metafields: Shopify_MetafieldConnection;
+  /**
+   * The unique identifier for the order that appears on the order page in the Shopify admin and the order status page.
+   * For example, "#1001", "EN1001", or "1001-A".
+   * This value isn't unique across multiple stores.
+   */
+  name: Scalars['String'];
+  /**
+   * The net payment for the order, based on the total amount received minus the total amount refunded, in shop currency.
+   * @deprecated Use `netPaymentSet` instead
+   */
+  netPayment: Scalars['Money'];
+  /** The net payment for the order, based on the total amount received minus the total amount refunded, in shop and presentment currencies. */
+  netPaymentSet: Shopify_MoneyBag;
+  /**
+   * A list of line items that can't be fulfilled.
+   * For example, tips and fully refunded line items can't be fulfilled.
+   * For a more granular view of the fulfillment status, refer to the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object.
+   */
+  nonFulfillableLineItems: Shopify_LineItemConnection;
+  /** The contents of the note associated with the order. */
+  note?: Maybe<Scalars['String']>;
+  /**
+   * The total amount of duties before returns, in shop and presentment currencies.
+   * Returns `null` if duties aren't applicable.
+   */
+  originalTotalDutiesSet?: Maybe<Shopify_MoneyBag>;
+  /** The total price of the order at the time of order creation, in shop and presentment currencies. */
+  originalTotalPriceSet: Shopify_MoneyBag;
+  /** The payment collection details for the order. */
+  paymentCollectionDetails: Shopify_OrderPaymentCollectionDetails;
+  /**
+   * A list of the names of all payment gateways used for the order.
+   * For example, "Shopify Payments" and "Cash on Delivery (COD)".
+   */
+  paymentGatewayNames: Array<Scalars['String']>;
+  /** The payment terms associated with the order. */
+  paymentTerms?: Maybe<Shopify_PaymentTerms>;
+  /** The phone number associated with the customer. */
+  phone?: Maybe<Scalars['String']>;
+  /**
+   * The fulfillment location that was assigned when the order was created.
+   * Use the [`FulfillmentOrder`](https://shopify.dev/api/admin-graphql/latest/objects/fulfillmentorder) object for up to date fulfillment location information.
+   */
+  physicalLocation?: Maybe<Shopify_Location>;
+  /** The payment `CurrencyCode` of the customer for the order. */
+  presentmentCurrencyCode: Shopify_CurrencyCode;
+  /** Returns a private metafield by namespace and key that belongs to the resource. */
+  privateMetafield?: Maybe<Shopify_PrivateMetafield>;
+  /** List of private metafields that belong to the resource. */
+  privateMetafields: Shopify_PrivateMetafieldConnection;
+  /**
+   * The date and time when the order was processed.
+   * This date and time might not match the date and time when the order was created.
+   */
+  processedAt: Scalars['DateTime'];
+  /** The publication that the order was created from. */
+  publication?: Maybe<Shopify_Publication>;
+  /**
+   * The marketing referral code from the link that the customer clicked to visit the store.
+   * Supports the following URL attributes: "ref", "source", or "r".
+   * For example, if the URL is `{shop}.myshopify.com/products/slide?ref=j2tj1tn2`, then this value is `j2tj1tn2`.
+   * @deprecated Use `customerJourneySummary.lastVisit.referralCode` instead
+   */
+  referralCode?: Maybe<Scalars['String']>;
+  /**
+   * A web domain or short description of the source that sent the customer to your online store. For example, "shopify.com" or "email".
+   * @deprecated Use `customerJourneySummary.lastVisit.referralInfoHtml` instead
+   */
+  referrerDisplayText?: Maybe<Scalars['String']>;
+  /**
+   * The URL of the webpage where the customer clicked a link that sent them to your online store.
+   * @deprecated Use `customerJourneySummary.lastVisit.referrerUrl` instead
+   */
+  referrerUrl?: Maybe<Scalars['Url']>;
+  /** The difference between the suggested and actual refund amount of all refunds that have been applied to the order. A positive value indicates a difference in the merchant's favor, and a negative value indicates a difference in the customer's favor. */
+  refundDiscrepancySet: Shopify_MoneyBag;
+  /** Whether the order can be refunded. */
+  refundable: Scalars['Boolean'];
+  /** A list of refunds that have been applied to the order. */
+  refunds: Array<Shopify_Refund>;
+  /** Whether the order has shipping lines or at least one line item on the order that requires shipping. */
+  requiresShipping: Scalars['Boolean'];
+  /** Whether any line item on the order can be restocked. */
+  restockable: Scalars['Boolean'];
+  /** The fraud risk level of the order. */
+  riskLevel: Shopify_OrderRiskLevel;
+  /** A list of risks associated with the order. */
+  risks: Array<Shopify_OrderRisk>;
+  /** The mailing address of the customer. */
+  shippingAddress?: Maybe<Shopify_MailingAddress>;
+  /** A summary of all shipping costs on the order. */
+  shippingLine?: Maybe<Shopify_ShippingLine>;
+  /** A list of the order's shipping lines. */
+  shippingLines: Shopify_ShippingLineConnection;
+  /** The sum of the quantities for all line items that contribute to the order's subtotal price. */
+  subtotalLineItemsQuantity: Scalars['Int'];
+  /**
+   * The sum of the prices for all line items after discounts and before returns, in shop currency.
+   * If `taxesIncluded` is `true`, then the subtotal also includes tax.
+   * @deprecated Use `subtotalPriceSet` instead
+   */
+  subtotalPrice?: Maybe<Scalars['Money']>;
+  /**
+   * The sum of the prices for all line items after discounts and before returns, in shop and presentment currencies.
+   * If `taxesIncluded` is `true`, then the subtotal also includes tax.
+   */
+  subtotalPriceSet?: Maybe<Shopify_MoneyBag>;
+  /** A suggested refund for the order. */
+  suggestedRefund?: Maybe<Shopify_SuggestedRefund>;
+  /**
+   * A comma separated list of tags associated with the order. Updating `tags` overwrites
+   * any existing tags that were previously added to the order. To add new tags without overwriting
+   * existing tags, use the [tagsAdd](https://shopify.dev/api/admin-graphql/latest/mutations/tagsadd)
+   * mutation.
+   */
+  tags: Array<Scalars['String']>;
+  /**
+   * A list of all tax lines applied to line items on the order, before returns.
+   * Tax line prices represent the total price for all tax lines with the same `rate` and `title`.
+   */
+  taxLines: Array<Shopify_TaxLine>;
+  /** Whether taxes are included in the subtotal price of the order. */
+  taxesIncluded: Scalars['Boolean'];
+  /**
+   * Whether the order is a test.
+   * Test orders are made using the Shopify Bogus Gateway or a payment provider with test mode enabled.
+   * A test order cannot be converted into a real order and vice versa.
+   */
+  test: Scalars['Boolean'];
+  /**
+   * The authorized amount that is uncaptured or undercaptured, in shop currency.
+   * This amount isn't adjusted for returns.
+   * @deprecated Use `totalCapturableSet` instead
+   */
+  totalCapturable: Scalars['Money'];
+  /**
+   * The authorized amount that is uncaptured or undercaptured, in shop and presentment currencies.
+   * This amount isn't adjusted for returns.
+   */
+  totalCapturableSet: Shopify_MoneyBag;
+  /**
+   * The total amount discounted on the order before returns, in shop currency.
+   * This includes both order and line level discounts.
+   * @deprecated Use `totalDiscountsSet` instead
+   */
+  totalDiscounts?: Maybe<Scalars['Money']>;
+  /**
+   * The total amount discounted on the order before returns, in shop and presentment currencies.
+   * This includes both order and line level discounts.
+   */
+  totalDiscountsSet?: Maybe<Shopify_MoneyBag>;
+  /**
+   * The total amount not yet transacted for the order, in shop and presentment currencies.
+   * A positive value indicates a difference in the merchant's favor (payment from customer to merchant) and a negative value indicates a difference in the customer's favor (refund from merchant to customer).
+   */
+  totalOutstandingSet: Shopify_MoneyBag;
+  /**
+   * The total price of the order, before returns, in shop currency.
+   * This includes taxes and discounts.
+   * @deprecated Use `totalPriceSet` instead
+   */
+  totalPrice: Scalars['Money'];
+  /**
+   * The total price of the order, before returns, in shop and presentment currencies.
+   * This includes taxes and discounts.
+   */
+  totalPriceSet: Shopify_MoneyBag;
+  /**
+   * The total amount received from the customer before returns, in shop currency.
+   * @deprecated Use `totalReceivedSet` instead
+   */
+  totalReceived: Scalars['Money'];
+  /** The total amount received from the customer before returns, in shop and presentment currencies. */
+  totalReceivedSet: Shopify_MoneyBag;
+  /**
+   * The total amount that was refunded, in shop currency.
+   * @deprecated Use `totalRefundedSet` instead
+   */
+  totalRefunded: Scalars['Money'];
+  /** The total amount that was refunded, in shop and presentment currencies. */
+  totalRefundedSet: Shopify_MoneyBag;
+  /** The total amount of shipping that was refunded, in shop and presentment currencies. */
+  totalRefundedShippingSet: Shopify_MoneyBag;
+  /**
+   * The total shipping amount before discounts and returns, in shop currency.
+   * @deprecated Use `totalShippingPriceSet` instead
+   */
+  totalShippingPrice: Scalars['Money'];
+  /** The total shipping amount before discounts and returns, in shop and presentment currencies. */
+  totalShippingPriceSet: Shopify_MoneyBag;
+  /**
+   * The total tax amount before returns, in shop currency.
+   * @deprecated Use `totalTaxSet` instead
+   */
+  totalTax?: Maybe<Scalars['Money']>;
+  /** The total tax amount before returns, in shop and presentment currencies. */
+  totalTaxSet?: Maybe<Shopify_MoneyBag>;
+  /**
+   * The sum of all tip amounts for the order, in shop currency.
+   * @deprecated Use `totalTipReceivedSet` instead
+   */
+  totalTipReceived: Shopify_MoneyV2;
+  /** The sum of all tip amounts for the order, in shop and presentment currencies. */
+  totalTipReceivedSet: Shopify_MoneyBag;
+  /** The total weight of the order before returns, in grams. */
+  totalWeight?: Maybe<Scalars['UnsignedInt64']>;
+  /** A list of transactions associated with the order. */
+  transactions: Array<Shopify_OrderTransaction>;
+  /** Whether no payments have been made for the order. */
+  unpaid: Scalars['Boolean'];
+  /** The date and time when the order was modified last. */
+  updatedAt: Scalars['DateTime'];
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderAgreementsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderDiscountApplicationsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderEventsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_EventSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderFulfillmentOrdersArgs = {
+  displayable?: InputMaybe<Scalars['Boolean']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderFulfillmentsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderLineItemsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderLineItemsMutableArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderLocalizationExtensionsArgs = {
+  countryCodes?: InputMaybe<Array<InputMaybe<Shopify_CountryCode>>>;
+  purposes?: InputMaybe<Array<InputMaybe<Shopify_LocalizationExtensionPurpose>>>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderMetafieldArgs = {
+  namespace: Scalars['String'];
+  key: Scalars['String'];
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderMetafieldDefinitionsArgs = {
+  namespace?: InputMaybe<Scalars['String']>;
+  pinnedStatus?: InputMaybe<Shopify_MetafieldDefinitionPinnedStatus>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_MetafieldDefinitionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderMetafieldsArgs = {
+  namespace?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderNonFulfillableLineItemsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderPrivateMetafieldArgs = {
+  namespace: Scalars['String'];
+  key: Scalars['String'];
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderPrivateMetafieldsArgs = {
+  namespace?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderRefundsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderRisksArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderShippingLinesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderSuggestedRefundArgs = {
+  shippingAmount?: InputMaybe<Scalars['Money']>;
+  refundShipping?: InputMaybe<Scalars['Boolean']>;
+  refundLineItems?: InputMaybe<Array<InputMaybe<Shopify_RefundLineItemInput>>>;
+  refundDuties?: InputMaybe<Array<InputMaybe<Shopify_RefundDutyInput>>>;
+  suggestFullRefund?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+ * Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+ *
+ * Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+ * then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+ * access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+ * [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+ *
+ * **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+ */
+export type Shopify_OrderTransactionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  capturable?: InputMaybe<Scalars['Boolean']>;
+  manuallyResolvable?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An auto-generated type for paginating through multiple SalesAgreements. */
+export type Shopify_SalesAgreementConnection = {
+  __typename?: 'Shopify_SalesAgreementConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_SalesAgreementEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one SalesAgreement and a cursor during pagination. */
+export type Shopify_SalesAgreementEdge = {
+  __typename?: 'Shopify_SalesAgreementEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of SalesAgreementEdge. */
+  node: Shopify_SalesAgreement;
+};
+
+/** An addition, removal, modification, or other sale commitment associated with an order. */
+export type Shopify_SalesAgreement = {
+  __typename?: 'Shopify_SalesAgreement';
+  /** The application that created the agreement. */
+  app?: Maybe<Shopify_App>;
+  /** The date and time at which the agreement occured. */
+  happenedAt: Scalars['DateTime'];
+  /** The unique identifier for the agreement. */
+  id: Scalars['ID'];
+  /** The reason the agremeent was created. */
+  reason: Shopify_OrderActionType;
+  /** The sales associated with the agreement. */
+  sales: Shopify_SaleConnection;
+};
+
+
+/** An addition, removal, modification, or other sale commitment associated with an order. */
+export type Shopify_SalesAgreementSalesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+export enum Shopify_OrderActionType {
+  Order = 'ORDER',
+  OrderEdit = 'ORDER_EDIT',
+  Refund = 'REFUND',
+  Unknown = 'UNKNOWN'
+}
+
+/** An auto-generated type for paginating through multiple Sales. */
+export type Shopify_SaleConnection = {
+  __typename?: 'Shopify_SaleConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_SaleEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one Sale and a cursor during pagination. */
+export type Shopify_SaleEdge = {
+  __typename?: 'Shopify_SaleEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of SaleEdge. */
+  node: Shopify_Sale;
+};
+
+/** An individual sale record associated with a sales agreement. */
+export type Shopify_Sale = {
+  __typename?: 'Shopify_Sale';
+  /** The type of order action that the sale represents. */
+  actionType: Shopify_SaleActionType;
+  /** The unique identifier for the sale. */
+  id: Scalars['ID'];
+  /** The line type assocated with the sale. */
+  lineType: Shopify_SaleLineType;
+  /** The number of units either ordered or intended to be returned. */
+  quantity?: Maybe<Scalars['Int']>;
+  /** All individual taxes associated with the sale. */
+  taxes: Array<Shopify_SaleTax>;
+  /** The total sale amount after taxes and discounts. */
+  totalAmount: Shopify_MoneyBag;
+  /** The total discounts allocated to the sale after taxes. */
+  totalDiscountAmountAfterTaxes: Shopify_MoneyBag;
+  /** The total discounts allocated to the sale before taxes. */
+  totalDiscountAmountBeforeTaxes: Shopify_MoneyBag;
+  /** The total amount of taxes for the sale. */
+  totalTaxAmount: Shopify_MoneyBag;
+};
+
+export enum Shopify_SaleActionType {
+  Order = 'ORDER',
+  Return = 'RETURN',
+  Update = 'UPDATE',
+  Unknown = 'UNKNOWN'
+}
+
+export enum Shopify_SaleLineType {
+  Product = 'PRODUCT',
+  Tip = 'TIP',
+  GiftCard = 'GIFT_CARD',
+  Shipping = 'SHIPPING',
+  Duty = 'DUTY',
+  Unknown = 'UNKNOWN',
+  Adjustment = 'ADJUSTMENT'
+}
+
+/** The tax allocated to a sale from a single tax line. */
+export type Shopify_SaleTax = {
+  __typename?: 'Shopify_SaleTax';
+  /** The portion of the total tax amount on the related sale that comes from the associated tax line. */
+  amount: Shopify_MoneyBag;
+  /** The unique identifier for the sale tax. */
+  id: Scalars['ID'];
+  /** The tax line associated with the sale. */
+  taxLine: Shopify_TaxLine;
+};
+
+/**
+ * A collection of monetary values in their respective currencies. Typically used in the context of multi-currency pricing and transactions,
+ * when an amount in the shop's currency is converted to the customer's currency of choice (the presentment currency).
+ */
+export type Shopify_MoneyBag = {
+  __typename?: 'Shopify_MoneyBag';
+  /** Amount in presentment currency. */
+  presentmentMoney: Shopify_MoneyV2;
+  /** Amount in shop currency. */
+  shopMoney: Shopify_MoneyV2;
+};
+
+/** Represents a single tax applied to the associated line item. */
+export type Shopify_TaxLine = {
+  __typename?: 'Shopify_TaxLine';
+  /** Whether the channel that submitted the tax line is liable for remitting. A value of null indicates unknown liability for this tax line. */
+  channelLiable?: Maybe<Scalars['Boolean']>;
+  /**
+   * The amount of tax, in shop currency, after discounts and before returns.
+   * @deprecated Use `priceSet` instead
+   */
+  price: Scalars['Money'];
+  /** The amount of tax, in shop and presentment currencies, after discounts and before returns. */
+  priceSet: Shopify_MoneyBag;
+  /** The proportion of the line item price that the tax represents as a decimal. */
+  rate?: Maybe<Scalars['Float']>;
+  /** The proportion of the line item price that the tax represents as a percentage. */
+  ratePercentage?: Maybe<Scalars['Float']>;
+  /** The name of the tax. */
+  title: Scalars['String'];
+};
+
+/**
+ * An alert message that appears in the Shopify admin about a problem with a store resource, with 1 or more actions to take. For example, you could use an alert to indicate that you're not charging taxes on some product variants.
+ * They can optionally have a specific icon and be dismissed by merchants.
+ */
+export type Shopify_ResourceAlert = {
+  __typename?: 'Shopify_ResourceAlert';
+  /**
+   * Buttons in the alert that link to related information.
+   * For example, _Edit variants_.
+   */
+  actions: Array<Shopify_ResourceAlertAction>;
+  /** The secondary text in the alert that includes further information or instructions about how to solve a problem. */
+  content: Scalars['Html'];
+  /**
+   * Unique identifier that appears when an alert is manually closed by the merchant.
+   * Most alerts cannot be manually closed.
+   */
+  dismissibleHandle?: Maybe<Scalars['String']>;
+  /** An icon that is optionally displayed with the alert. */
+  icon?: Maybe<Shopify_ResourceAlertIcon>;
+  /** Indication of how important the alert is. */
+  severity: Shopify_ResourceAlertSeverity;
+  /** The primary text in the alert that includes information or describes the problem. */
+  title: Scalars['String'];
+};
+
+/** An action associated to a resource alert, such as editing variants. */
+export type Shopify_ResourceAlertAction = {
+  __typename?: 'Shopify_ResourceAlertAction';
+  /** Whether the action appears as a button or as a link. */
+  primary: Scalars['Boolean'];
+  /** Resource for the action to show. */
+  show?: Maybe<Scalars['String']>;
+  /** The text for the button in the alert. For example, _Edit variants_. */
+  title: Scalars['String'];
+  /** The target URL that the button links to. */
+  url: Scalars['Url'];
+};
+
+export enum Shopify_ResourceAlertIcon {
+  CheckmarkCircle = 'CHECKMARK_CIRCLE',
+  InformationCircle = 'INFORMATION_CIRCLE'
+}
+
+export enum Shopify_ResourceAlertSeverity {
+  Default = 'DEFAULT',
+  Info = 'INFO',
+  Warning = 'WARNING',
+  Success = 'SUCCESS',
+  Critical = 'CRITICAL',
+  Error = 'ERROR'
+}
+
+/** The [application](https://shopify.dev/apps) that created the order. */
+export type Shopify_OrderApp = {
+  __typename?: 'Shopify_OrderApp';
+  /** The application icon. */
+  icon: Shopify_Image;
+  /** The name of the application. */
+  name: Scalars['String'];
+};
+
+export enum Shopify_OrderCancelReason {
+  Customer = 'CUSTOMER',
+  Fraud = 'FRAUD',
+  Inventory = 'INVENTORY',
+  Declined = 'DECLINED',
+  Other = 'OTHER'
+}
+
+/** Represents a generic custom attribute. */
+export type Shopify_Attribute = {
+  __typename?: 'Shopify_Attribute';
+  /** Key or name of the attribute. */
+  key: Scalars['String'];
+  /** Value of the attribute. */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** Represents a customer's visiting activities on a shop's online store. */
+export type Shopify_CustomerJourney = {
+  __typename?: 'Shopify_CustomerJourney';
+  /** The position of the current order within the customer's order history. */
+  customerOrderIndex: Scalars['Int'];
+  /** The amount of days between first session and order creation date. First session represents first session since the last order, or first session within the 30 day attribution window, if more than 30 days has passed since the last order. */
+  daysToConversion: Scalars['Int'];
+  /** The customer's first session going into the shop. */
+  firstVisit: Shopify_CustomerVisit;
+  /** The last session before an order is made. */
+  lastVisit?: Maybe<Shopify_CustomerVisit>;
+  /** Events preceding a customer order, such as shop sessions. */
+  moments: Array<Shopify_CustomerMoment>;
+};
+
+/** Represents a customer's session visiting a shop's online store, including information about the marketing activity attributed to starting the session. */
+export type Shopify_CustomerVisit = {
+  __typename?: 'Shopify_CustomerVisit';
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** URL of the first page the customer landed on for the session. */
+  landingPage?: Maybe<Scalars['Url']>;
+  /** Landing page information with URL linked in HTML. For example, the first page the customer visited was store.myshopify.com/products/1. */
+  landingPageHtml?: Maybe<Scalars['Html']>;
+  /**
+   * Represent actions taken by an app, on behalf of a merchant,
+   * to market Shopify resources such as products, collections, and discounts.
+   */
+  marketingEvent?: Maybe<Shopify_MarketingEvent>;
+  /** The date and time when the customer's session occurred. */
+  occurredAt: Scalars['DateTime'];
+  /**
+   * Marketing referral code from the link that the customer clicked to visit the store.
+   * Supports the following URL attributes: _ref_, _source_, or _r_.
+   * For example, if the URL is myshopifystore.com/products/slide?ref=j2tj1tn2, then this value is j2tj1tn2.
+   */
+  referralCode?: Maybe<Scalars['String']>;
+  /** Referral information with URLs linked in HTML. */
+  referralInfoHtml: Scalars['FormattedString'];
+  /**
+   * Webpage where the customer clicked a link that sent them to the online store.
+   * For example, _https://randomblog.com/page1_ or _android-app://com.google.android.gm_.
+   */
+  referrerUrl?: Maybe<Scalars['Url']>;
+  /**
+   * Source from which the customer visited the store, such as a platform (Facebook, Google), email, direct,
+   * a website domain, QR code, or unknown.
+   */
+  source: Scalars['String'];
+  /** Describes the source explicitly for first or last session. */
+  sourceDescription?: Maybe<Scalars['String']>;
+  /** Type of marketing tactic. */
+  sourceType?: Maybe<Shopify_MarketingTactic>;
+  /** A set of UTM parameters gathered from the URL parameters of the referrer. */
+  utmParameters?: Maybe<Shopify_UtmParameters>;
+};
+
+/** Represents actions that market a merchant's store or products. */
+export type Shopify_MarketingEvent = {
+  __typename?: 'Shopify_MarketingEvent';
+  /** The app that the marketing event is attributed to. */
+  app: Shopify_App;
+  /** The marketing channel used by the marketing event. */
+  channel?: Maybe<Shopify_MarketingChannel>;
+  /** A human-readable description of the marketing event. */
+  description?: Maybe<Scalars['String']>;
+  /** The date and time when the marketing event ended. */
+  endedAt?: Maybe<Scalars['DateTime']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The ID of the corresponding resource in the REST Admin API. */
+  legacyResourceId: Scalars['UnsignedInt64'];
+  /** The URL where the marketing event can be managed. */
+  manageUrl?: Maybe<Scalars['Url']>;
+  /** The URL where the marketing event can be previewed. */
+  previewUrl?: Maybe<Scalars['Url']>;
+  /** An optional ID that helps Shopify validate engagement data. */
+  remoteId?: Maybe<Scalars['String']>;
+  /** The date and time when the marketing event is scheduled to end. */
+  scheduledToEndAt?: Maybe<Scalars['DateTime']>;
+  /**
+   * Where the `MarketingEvent` occurred and what kind of content was used.
+   * Because `utmSource` and `utmMedium` are often used interchangeably, this is
+   * based on a combination of `marketingChannel`, `referringDomain`, and `type` to
+   * provide a consistent representation for any given piece of marketing
+   * regardless of the app that created it.
+   */
+  sourceAndMedium: Scalars['String'];
+  /** The date and time when the marketing event started. */
+  startedAt: Scalars['DateTime'];
+  /**
+   * The display text for the marketing event type.
+   * @deprecated Use `sourceAndMedium` instead
+   */
+  targetTypeDisplayText: Scalars['String'];
+  /** The marketing event type. */
+  type: Shopify_MarketingTactic;
+  /** The name of the marketing campaign. */
+  utmCampaign?: Maybe<Scalars['String']>;
+  /** The medium that the marketing campaign is using. Example values: `cpc`, `banner`. */
+  utmMedium?: Maybe<Scalars['String']>;
+  /** The referrer of the marketing event. Example values: `google`, `newsletter`. */
+  utmSource?: Maybe<Scalars['String']>;
+};
+
+export enum Shopify_MarketingChannel {
+  Search = 'SEARCH',
+  Display = 'DISPLAY',
+  Social = 'SOCIAL',
+  Email = 'EMAIL',
+  Referral = 'REFERRAL'
+}
+
+export enum Shopify_MarketingTactic {
+  AbandonedCart = 'ABANDONED_CART',
+  Ad = 'AD',
+  Affiliate = 'AFFILIATE',
+  Link = 'LINK',
+  Loyalty = 'LOYALTY',
+  Message = 'MESSAGE',
+  Newsletter = 'NEWSLETTER',
+  Notification = 'NOTIFICATION',
+  Post = 'POST',
+  Retargeting = 'RETARGETING',
+  Transactional = 'TRANSACTIONAL',
+  Seo = 'SEO',
+  Direct = 'DIRECT',
+  StorefrontApp = 'STOREFRONT_APP',
+  Display = 'DISPLAY',
+  Search = 'SEARCH',
+  FollowUp = 'FOLLOW_UP',
+  Receipt = 'RECEIPT'
+}
+
+/** Represents a set of UTM parameters. */
+export type Shopify_UtmParameters = {
+  __typename?: 'Shopify_UTMParameters';
+  /** The name of a marketing campaign. */
+  campaign?: Maybe<Scalars['String']>;
+  /** Identifies specific content in a marketing campaign. Used to differentiate between similar content or links in a marketing campaign to determine which is the most effective. */
+  content?: Maybe<Scalars['String']>;
+  /** The medium of a marketing campaign, such as a banner or email newsletter. */
+  medium?: Maybe<Scalars['String']>;
+  /** The source of traffic to the merchant's store, such as Google or an email newsletter. */
+  source?: Maybe<Scalars['String']>;
+  /** Paid search terms used by a marketing campaign. */
+  term?: Maybe<Scalars['String']>;
+};
+
+/** Represents a session preceding an order, often used for building a timeline of events leading to an order. */
+export type Shopify_CustomerMoment = {
+  __typename?: 'Shopify_CustomerMoment';
+  /** The date and time when the customer's session occurred. */
+  occurredAt: Scalars['DateTime'];
+};
+
+/** Represents a customer's visiting activities on a shop's online store. */
+export type Shopify_CustomerJourneySummary = {
+  __typename?: 'Shopify_CustomerJourneySummary';
+  /** The position of the current order within the customer's order history. Test orders aren't included. */
+  customerOrderIndex?: Maybe<Scalars['Int']>;
+  /** The number of days between the first session and the order creation date. The first session represents the first session since the last order, or the first session within the 30 day attribution window, if more than 30 days have passed since the last order. */
+  daysToConversion?: Maybe<Scalars['Int']>;
+  /** The customer's first session going into the shop. */
+  firstVisit?: Maybe<Shopify_CustomerVisit>;
+  /** The last session before an order is made. */
+  lastVisit?: Maybe<Shopify_CustomerVisit>;
+  /** The events preceding a customer's order, such as shop sessions. */
+  moments?: Maybe<Shopify_CustomerMomentConnection>;
+  /** The total number of customer moments associated with this order. Returns null if the order is still in the process of being attributed. */
+  momentsCount?: Maybe<Scalars['Int']>;
+  /** Whether or not the attributed sessions for the order have been created yet. */
+  ready: Scalars['Boolean'];
+};
+
+
+/** Represents a customer's visiting activities on a shop's online store. */
+export type Shopify_CustomerJourneySummaryMomentsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An auto-generated type for paginating through multiple CustomerMoments. */
+export type Shopify_CustomerMomentConnection = {
+  __typename?: 'Shopify_CustomerMomentConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_CustomerMomentEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one CustomerMoment and a cursor during pagination. */
+export type Shopify_CustomerMomentEdge = {
+  __typename?: 'Shopify_CustomerMomentEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of CustomerMomentEdge. */
+  node: Shopify_CustomerMoment;
+};
+
+/** An auto-generated type for paginating through multiple DiscountApplications. */
+export type Shopify_DiscountApplicationConnection = {
+  __typename?: 'Shopify_DiscountApplicationConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_DiscountApplicationEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one DiscountApplication and a cursor during pagination. */
+export type Shopify_DiscountApplicationEdge = {
+  __typename?: 'Shopify_DiscountApplicationEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of DiscountApplicationEdge. */
+  node: Shopify_DiscountApplication;
+};
+
+/**
+ * Discount applications capture the intentions of a discount source at
+ * the time of application on an order's line items or shipping lines.
+ *
+ * Discount applications don't represent the actual final amount discounted on a line (line item or shipping line). The actual amount discounted on a line is represented by the [DiscountAllocation](https://shopify.dev/api/admin-graphql/2022-04/objects/discountallocation) object.
+ */
+export type Shopify_DiscountApplication = {
+  __typename?: 'Shopify_DiscountApplication';
+  /** The method by which the discount's value is applied to its entitled items. */
+  allocationMethod: Shopify_DiscountApplicationAllocationMethod;
+  /**
+   * An ordered index that can be used to identify the discount application and indicate the precedence
+   * of the discount application for calculations.
+   */
+  index: Scalars['Int'];
+  /** How the discount amount is distributed on the discounted lines. */
+  targetSelection: Shopify_DiscountApplicationTargetSelection;
+  /** Whether the discount is applied on line items or shipping lines. */
+  targetType: Shopify_DiscountApplicationTargetType;
+  /** The value of the discount application. */
+  value: Shopify_PricingValue;
+};
+
+export enum Shopify_DiscountApplicationAllocationMethod {
+  Across = 'ACROSS',
+  Each = 'EACH',
+  One = 'ONE'
+}
+
+export enum Shopify_DiscountApplicationTargetSelection {
+  All = 'ALL',
+  Entitled = 'ENTITLED',
+  Explicit = 'EXPLICIT'
+}
+
+export enum Shopify_DiscountApplicationTargetType {
+  LineItem = 'LINE_ITEM',
+  ShippingLine = 'SHIPPING_LINE'
+}
+
+/** The type of value given to a customer when a discount is applied to an order. For example, the application of the discount might give the customer a percentage off a specified item. Alternatively, the application of the discount might give the customer a monetary value in a given currency off an order. */
+export type Shopify_PricingValue = Shopify_MoneyV2 | Shopify_PricingPercentageValue;
+
+/** The value of the percentage pricing object. */
+export type Shopify_PricingPercentageValue = {
+  __typename?: 'Shopify_PricingPercentageValue';
+  /** The percentage value of the object. */
+  percentage: Scalars['Float'];
+};
+
+export enum Shopify_OrderDisplayFinancialStatus {
+  Pending = 'PENDING',
+  Authorized = 'AUTHORIZED',
+  PartiallyPaid = 'PARTIALLY_PAID',
+  PartiallyRefunded = 'PARTIALLY_REFUNDED',
+  Voided = 'VOIDED',
+  Paid = 'PAID',
+  Refunded = 'REFUNDED',
+  Expired = 'EXPIRED'
+}
+
+export enum Shopify_OrderDisplayFulfillmentStatus {
+  Unfulfilled = 'UNFULFILLED',
+  PartiallyFulfilled = 'PARTIALLY_FULFILLED',
+  Fulfilled = 'FULFILLED',
+  Restocked = 'RESTOCKED',
+  PendingFulfillment = 'PENDING_FULFILLMENT',
+  Open = 'OPEN',
+  InProgress = 'IN_PROGRESS',
+  OnHold = 'ON_HOLD',
+  Scheduled = 'SCHEDULED'
+}
+
+/** A summary of the important details for a dispute on an order. */
+export type Shopify_OrderDisputeSummary = {
+  __typename?: 'Shopify_OrderDisputeSummary';
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The type that the dispute was initiated as. */
+  initiatedAs: Shopify_DisputeType;
+  /** The current status of the dispute. */
+  status: Shopify_DisputeStatus;
+};
+
+export enum Shopify_DisputeType {
+  Chargeback = 'CHARGEBACK',
+  Inquiry = 'INQUIRY'
+}
+
+export enum Shopify_DisputeStatus {
+  NeedsResponse = 'NEEDS_RESPONSE',
+  UnderReview = 'UNDER_REVIEW',
+  ChargeRefunded = 'CHARGE_REFUNDED',
+  Accepted = 'ACCEPTED',
+  Won = 'WON',
+  Lost = 'LOST'
+}
+
+/** Returns unfulfilled line items grouped by their fulfillment service. Each draft fulfillment contains additional information, such as whether the fulfillment requires shipping and whether a shipping label can be printed for it. */
+export type Shopify_DraftFulfillment = {
+  __typename?: 'Shopify_DraftFulfillment';
+  /** Whether a label can be purchased. */
+  allowLabelPurchase: Scalars['Boolean'];
+  /** The line items (which might correspond to a variant) that are part of this draft fulfillment. */
+  lineItems: Array<Shopify_LineItem>;
+  /** Whether a fulfillment requires shipping. */
+  requiresShipping: Scalars['Boolean'];
+  /** The service responsible for fulfilling the fulfillment. */
+  service: Shopify_FulfillmentService;
+};
+
+/** Represents a single line item on an order. */
+export type Shopify_LineItem = {
+  __typename?: 'Shopify_LineItem';
+  /**
+   * Whether the line item can be restocked.
+   * @deprecated Use `restockable` instead
+   */
+  canRestock: Scalars['Boolean'];
+  /** The subscription contract associated with this line item. */
+  contract?: Maybe<Shopify_SubscriptionContract>;
+  /** The line item's quantity, minus the removed quantity. */
+  currentQuantity: Scalars['Int'];
+  /** A list of additional information about the line item. */
+  customAttributes: Array<Shopify_Attribute>;
+  /** The discounts that have been allocated onto the line item by discount applications. */
+  discountAllocations: Array<Shopify_DiscountAllocation>;
+  /**
+   * The total line price after discounts are applied, in shop currency.
+   * @deprecated Use `discountedTotalSet` instead
+   */
+  discountedTotal: Scalars['Money'];
+  /** The total line price after discounts are applied, in shop and presentment currencies. */
+  discountedTotalSet: Shopify_MoneyBag;
+  /**
+   * The approximate split price of a line item unit, in shop currency. This value doesn't include discounts applied to the entire order.
+   * @deprecated Use `discountedUnitPriceSet` instead
+   */
+  discountedUnitPrice: Scalars['Money'];
+  /** The approximate split price of a line item unit, in shop and presentment currencies. This value doesn't include discounts applied to the entire order. */
+  discountedUnitPriceSet: Shopify_MoneyBag;
+  /** The duties associated with the line item. */
+  duties: Array<Shopify_Duty>;
+  /**
+   * The total number of units to fulfill.
+   * @deprecated Use [FulfillmentOrderLineItem#remainingQuantity](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderLineItem#field-fulfillmentorderlineitem-remainingquantity) instead.
+   */
+  fulfillableQuantity: Scalars['Int'];
+  /**
+   * The service provider that fulfills the line item.
+   *
+   * Deleted fulfillment services will return null.
+   * @deprecated Use [FulfillmentOrder#assignedLocation](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder#field-fulfillmentorder-assignedlocation) instead.
+   */
+  fulfillmentService?: Maybe<Shopify_FulfillmentService>;
+  /**
+   * The line item's fulfillment status. Returns 'fulfilled' if fulfillableQuantity >= quantity,
+   * 'partial' if  fulfillableQuantity > 0, and 'unfulfilled' otherwise.
+   * @deprecated Use [FulfillmentOrderLineItem#remainingQuantity](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderLineItem#field-fulfillmentorderlineitem-remainingquantity) instead
+   */
+  fulfillmentStatus: Scalars['String'];
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The image associated to the line item's variant. */
+  image?: Maybe<Shopify_Image>;
+  /** Whether the line item can be edited or not. */
+  merchantEditable: Scalars['Boolean'];
+  /** The name of the product. */
+  name: Scalars['String'];
+  /**
+   * The total number of units that can't be fulfilled.
+   *         For example, if items have been refunded, or the item is not something that can be fulfilled,
+   *         like a tip.Please see the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object for more fulfillment details.
+   */
+  nonFulfillableQuantity: Scalars['Int'];
+  /**
+   * The total price without discounts applied, in shop currency.
+   * This value is based on the unit price of the variant x quantity.
+   * @deprecated Use `originalTotalSet` instead
+   */
+  originalTotal: Scalars['Money'];
+  /** The total price in shop and presentment currencies, without discounts applied. This value is based on the unit price of the variant x quantity. */
+  originalTotalSet: Shopify_MoneyBag;
+  /**
+   * The variant unit price without discounts applied, in shop currency.
+   * @deprecated Use `originalUnitPriceSet` instead
+   */
+  originalUnitPrice: Scalars['Money'];
+  /** The variant unit price without discounts applied, in shop and presentment currencies. */
+  originalUnitPriceSet: Shopify_MoneyBag;
+  /** The Product object associated with this line item's variant. */
+  product?: Maybe<Shopify_Product>;
+  /** The number of variant units ordered. */
+  quantity: Scalars['Int'];
+  /** The line item's quantity, minus the removed quantity. */
+  refundableQuantity: Scalars['Int'];
+  /** Whether physical shipping is required for the variant. */
+  requiresShipping: Scalars['Boolean'];
+  /** Whether the line item can be restocked. */
+  restockable: Scalars['Boolean'];
+  /** The selling plan details associated with the line item. */
+  sellingPlan?: Maybe<Shopify_LineItemSellingPlan>;
+  /** The variant SKU number. */
+  sku?: Maybe<Scalars['String']>;
+  /** The taxes charged for this line item. */
+  taxLines: Array<Shopify_TaxLine>;
+  /** Whether the variant is taxable. */
+  taxable: Scalars['Boolean'];
+  /** The title of the product. */
+  title: Scalars['String'];
+  /**
+   * The sum of all AppliedDiscounts on this line item, in shop currency.
+   * @deprecated Use `totalDiscountSet` instead
+   */
+  totalDiscount: Scalars['Money'];
+  /** The sum of all AppliedDiscounts on this line item, in shop and presentment currencies. */
+  totalDiscountSet: Shopify_MoneyBag;
+  /**
+   * The total discounted value of unfulfilled units, in shop currency.
+   * @deprecated Use `unfulfilledDiscountedTotalSet` instead
+   */
+  unfulfilledDiscountedTotal: Scalars['Money'];
+  /** The total discounted value of unfulfilled units, in shop and presentment currencies. */
+  unfulfilledDiscountedTotalSet: Shopify_MoneyBag;
+  /**
+   * The total price, without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop currency.
+   * @deprecated Use `unfulfilledOriginalTotalSet` instead
+   */
+  unfulfilledOriginalTotal: Scalars['Money'];
+  /** The total price, without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop and presentment currencies. */
+  unfulfilledOriginalTotalSet: Shopify_MoneyBag;
+  /** The number of units not yet fulfilled. */
+  unfulfilledQuantity: Scalars['Int'];
+  /** The Variant object associated with this line item. */
+  variant?: Maybe<Shopify_ProductVariant>;
+  /** The name of the variant. */
+  variantTitle?: Maybe<Scalars['String']>;
+  /** The name of the vendor who made the variant. */
+  vendor?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a single line item on an order. */
+export type Shopify_LineItemImageArgs = {
+  maxWidth?: InputMaybe<Scalars['Int']>;
+  maxHeight?: InputMaybe<Scalars['Int']>;
+  crop?: InputMaybe<Shopify_CropRegion>;
+  scale?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Represents a single line item on an order. */
+export type Shopify_LineItemTaxLinesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+/** Represents a Subscription Contract. */
+export type Shopify_SubscriptionContract = {
+  __typename?: 'Shopify_SubscriptionContract';
+  /** The subscription app that this subscription contract is registered to. */
+  app?: Maybe<Shopify_App>;
+  /** URL of the subscription contract page on the subscription app. */
+  appAdminUrl?: Maybe<Scalars['Url']>;
+  /** The list of billing attempts associated with the subscription contract. */
+  billingAttempts: Shopify_SubscriptionBillingAttemptConnection;
+  /** The billing policy associated with the subscription contract. */
+  billingPolicy: Shopify_SubscriptionBillingPolicy;
+  /** The date and time when the subscription contract was created. */
+  createdAt: Scalars['DateTime'];
+  /** The currency used for the subscription contract. */
+  currencyCode: Shopify_CurrencyCode;
+  /** The customer to whom the subscription contract belongs. */
+  customer?: Maybe<Shopify_Customer>;
+  /** The customer payment method used for the subscription contract. */
+  customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
+  /** The delivery method for each billing of the subscription contract. */
+  deliveryMethod?: Maybe<Shopify_SubscriptionDeliveryMethod>;
+  /** The delivery policy associated with the subscription contract. */
+  deliveryPolicy: Shopify_SubscriptionDeliveryPolicy;
+  /** The delivery price for each billing of the subscription contract. */
+  deliveryPrice: Shopify_MoneyV2;
+  /** The list of subscription discounts associated with the subscription contract. */
+  discounts: Shopify_SubscriptionManualDiscountConnection;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The current status of the last payment. */
+  lastPaymentStatus?: Maybe<Shopify_SubscriptionContractLastPaymentStatus>;
+  /** The number of lines associated with the subscription contract. */
+  lineCount: Scalars['Int'];
+  /** The list of subscription lines associated with the subscription contract. */
+  lines: Shopify_SubscriptionLineConnection;
+  /** The next billing date for the subscription contract. */
+  nextBillingDate?: Maybe<Scalars['DateTime']>;
+  /** The note field that will be applied to the generated orders. */
+  note?: Maybe<Scalars['String']>;
+  /** A list of the subscription contract's orders. */
+  orders: Shopify_OrderConnection;
+  /** The order from which this contract originated. */
+  originOrder?: Maybe<Shopify_Order>;
+  /** The current status of the subscription contract. */
+  status: Shopify_SubscriptionContractSubscriptionStatus;
+  /** The date and time when the subscription contract was updated. */
+  updatedAt: Scalars['DateTime'];
+};
+
+
+/** Represents a Subscription Contract. */
+export type Shopify_SubscriptionContractBillingAttemptsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Represents a Subscription Contract. */
+export type Shopify_SubscriptionContractCustomerPaymentMethodArgs = {
+  showRevoked?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Represents a Subscription Contract. */
+export type Shopify_SubscriptionContractDiscountsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Represents a Subscription Contract. */
+export type Shopify_SubscriptionContractLinesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Represents a Subscription Contract. */
+export type Shopify_SubscriptionContractOrdersArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An auto-generated type for paginating through multiple SubscriptionBillingAttempts. */
+export type Shopify_SubscriptionBillingAttemptConnection = {
+  __typename?: 'Shopify_SubscriptionBillingAttemptConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_SubscriptionBillingAttemptEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one SubscriptionBillingAttempt and a cursor during pagination. */
+export type Shopify_SubscriptionBillingAttemptEdge = {
+  __typename?: 'Shopify_SubscriptionBillingAttemptEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of SubscriptionBillingAttemptEdge. */
+  node: Shopify_SubscriptionBillingAttempt;
+};
+
+/**
+ * A record of an execution of the subscription billing process. Billing attempts use
+ * idempotency keys to avoid duplicate order creation. A successful billing attempt
+ * will create an order.
+ */
+export type Shopify_SubscriptionBillingAttempt = {
+  __typename?: 'Shopify_SubscriptionBillingAttempt';
+  /** The date and time when the billing attempt was completed. */
+  completedAt?: Maybe<Scalars['DateTime']>;
+  /** The date and time when the billing attempt was created. */
+  createdAt: Scalars['DateTime'];
+  /** A code corresponding to a payment error during processing. */
+  errorCode?: Maybe<Shopify_SubscriptionBillingAttemptErrorCode>;
+  /** A message describing a payment error during processing. */
+  errorMessage?: Maybe<Scalars['String']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** A unique key generated by the client to avoid duplicate payments. */
+  idempotencyKey: Scalars['String'];
+  /** The URL where the customer needs to be redirected so they can complete the 3D Secure payment flow. */
+  nextActionUrl?: Maybe<Scalars['Url']>;
+  /** The result of this billing attempt if completed successfully. */
+  order?: Maybe<Shopify_Order>;
+  /** Whether or not the billing attempt is still processing. */
+  ready: Scalars['Boolean'];
+  /** The subscription contract. */
+  subscriptionContract: Shopify_SubscriptionContract;
+};
+
+export enum Shopify_SubscriptionBillingAttemptErrorCode {
+  PaymentMethodNotFound = 'PAYMENT_METHOD_NOT_FOUND',
+  PaymentProviderIsNotEnabled = 'PAYMENT_PROVIDER_IS_NOT_ENABLED',
+  InvalidPaymentMethod = 'INVALID_PAYMENT_METHOD',
+  UnexpectedError = 'UNEXPECTED_ERROR',
+  ExpiredPaymentMethod = 'EXPIRED_PAYMENT_METHOD',
+  PaymentMethodDeclined = 'PAYMENT_METHOD_DECLINED',
+  AuthenticationError = 'AUTHENTICATION_ERROR',
+  TestMode = 'TEST_MODE',
+  BuyerCanceledPaymentMethod = 'BUYER_CANCELED_PAYMENT_METHOD',
+  CustomerNotFound = 'CUSTOMER_NOT_FOUND',
+  CustomerInvalid = 'CUSTOMER_INVALID',
+  InvalidShippingAddress = 'INVALID_SHIPPING_ADDRESS'
+}
+
+/** Represents a Subscription Billing Policy. */
+export type Shopify_SubscriptionBillingPolicy = {
+  __typename?: 'Shopify_SubscriptionBillingPolicy';
+  /** Specific anchor dates upon which the billing interval calculations should be made. */
+  anchors: Array<Shopify_SellingPlanAnchor>;
+  /** The kind of interval that is associated with this schedule (e.g. Monthly, Weekly, etc). */
+  interval: Shopify_SellingPlanInterval;
+  /** The number of billing intervals between invoices. */
+  intervalCount: Scalars['Int'];
+  /** Maximum amount of cycles after which the subscription ends. */
+  maxCycles?: Maybe<Scalars['Int']>;
+  /** Minimum amount of cycles required in the subscription. */
+  minCycles?: Maybe<Scalars['Int']>;
+};
+
+/** A customer's payment method. */
+export type Shopify_CustomerPaymentMethod = {
+  __typename?: 'Shopify_CustomerPaymentMethod';
+  /** The customer to whom the payment method belongs. */
+  customer?: Maybe<Shopify_Customer>;
+  /** The ID of this payment method. */
+  id: Scalars['ID'];
+  /** The instrument for this payment method. */
+  instrument?: Maybe<Shopify_CustomerPaymentInstrument>;
+  /** The time that the payment method was revoked. */
+  revokedAt?: Maybe<Scalars['DateTime']>;
+  /** The revocation reason for this payment method. */
+  revokedReason?: Maybe<Shopify_CustomerPaymentMethodRevocationReason>;
+  /** List Subscription Contracts. */
+  subscriptionContracts: Shopify_SubscriptionContractConnection;
+};
+
+
+/** A customer's payment method. */
+export type Shopify_CustomerPaymentMethodSubscriptionContractsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** All possible instruments for CustomerPaymentMethods. */
+export type Shopify_CustomerPaymentInstrument = Shopify_CustomerCreditCard | Shopify_CustomerPaypalBillingAgreement | Shopify_CustomerShopPayAgreement;
+
+/** Represents a card instrument for customer payment method. */
+export type Shopify_CustomerCreditCard = {
+  __typename?: 'Shopify_CustomerCreditCard';
+  /** The billing address of the card. */
+  billingAddress?: Maybe<Shopify_CustomerCreditCardBillingAddress>;
+  /** The brand of the card. */
+  brand: Scalars['String'];
+  /** Whether the card is about to expire. */
+  expiresSoon: Scalars['Boolean'];
+  /** The expiry month of the card. */
+  expiryMonth: Scalars['Int'];
+  /** The expiry year of the card. */
+  expiryYear: Scalars['Int'];
+  /** The card's BIN number. */
+  firstDigits?: Maybe<Scalars['String']>;
+  /** The payment method can be revoked if there are no active subscription contracts. */
+  isRevocable: Scalars['Boolean'];
+  /** The last 4 digits of the card. */
+  lastDigits: Scalars['String'];
+  /** The masked card number with only the last 4 digits displayed. */
+  maskedNumber: Scalars['String'];
+  /** The name of the card holder. */
+  name: Scalars['String'];
+  /** The source of the card if coming from a wallet such as Apple Pay. */
+  source?: Maybe<Scalars['String']>;
+  /** The last 4 digits of the Device Account Number. */
+  virtualLastDigits?: Maybe<Scalars['String']>;
+};
+
+/** The billing address of a credit card payment instrument. */
+export type Shopify_CustomerCreditCardBillingAddress = {
+  __typename?: 'Shopify_CustomerCreditCardBillingAddress';
+  /** The first line of the address. Typically the street address or PO Box number. */
+  address1?: Maybe<Scalars['String']>;
+  /** The name of the city, district, village, or town. */
+  city?: Maybe<Scalars['String']>;
+  /** The name of the country. */
+  country?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the country of the address.
+   * For example, US.
+   */
+  countryCode?: Maybe<Shopify_CountryCode>;
+  /** The region of the address, such as the province, state, or district. */
+  province?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the region.
+   * For example, ON.
+   */
+  provinceCode?: Maybe<Scalars['String']>;
+  /** The zip or postal code of the address. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+/** Represents a PayPal instrument for customer payment method. */
+export type Shopify_CustomerPaypalBillingAgreement = {
+  __typename?: 'Shopify_CustomerPaypalBillingAgreement';
+  /** The billing address of this payment method. */
+  billingAddress?: Maybe<Shopify_CustomerPaymentInstrumentBillingAddress>;
+  /** Whether the PayPal billing agreement is inactive. */
+  inactive: Scalars['Boolean'];
+  /** Whether the payment method can be revoked.The payment method can be revoked if there are no active subscription contracts. */
+  isRevocable: Scalars['Boolean'];
+  /** The customers's PayPal account email address. */
+  paypalAccountEmail?: Maybe<Scalars['String']>;
+};
+
+/** The billing address of a payment instrument. */
+export type Shopify_CustomerPaymentInstrumentBillingAddress = {
+  __typename?: 'Shopify_CustomerPaymentInstrumentBillingAddress';
+  /** The first line of the address. Typically the street address or PO Box number. */
+  address1?: Maybe<Scalars['String']>;
+  /** The name of the city, district, village, or town. */
+  city?: Maybe<Scalars['String']>;
+  /** The name of the country. */
+  country?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the country of the address.
+   * For example, US.
+   */
+  countryCode?: Maybe<Shopify_CountryCode>;
+  /** The name of the buyer of the address. */
+  name?: Maybe<Scalars['String']>;
+  /** The region of the address, such as the province, state, or district. */
+  province?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the region.
+   * For example, ON.
+   */
+  provinceCode?: Maybe<Scalars['String']>;
+  /** The zip or postal code of the address. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+/** Represents a Shop Pay card instrument for customer payment method. */
+export type Shopify_CustomerShopPayAgreement = {
+  __typename?: 'Shopify_CustomerShopPayAgreement';
+  /** Whether the card is about to expire. */
+  expiresSoon: Scalars['Boolean'];
+  /** The expiry month of the card. */
+  expiryMonth: Scalars['Int'];
+  /** The expiry year of the card. */
+  expiryYear: Scalars['Int'];
+  /** Whether the Shop Pay billing agreement is inactive. */
+  inactive: Scalars['Boolean'];
+  /** The payment method can be revoked if there are no active subscription contracts. */
+  isRevocable: Scalars['Boolean'];
+  /** The last 4 digits of the card. */
+  lastDigits: Scalars['String'];
+  /** The masked card number with only the last 4 digits displayed. */
+  maskedNumber: Scalars['String'];
+  /** The name of the card holder. */
+  name: Scalars['String'];
+};
+
+export enum Shopify_CustomerPaymentMethodRevocationReason {
+  AuthorizeNetGatewayNotEnabled = 'AUTHORIZE_NET_GATEWAY_NOT_ENABLED',
+  AuthorizeNetReturnedNoPaymentMethod = 'AUTHORIZE_NET_RETURNED_NO_PAYMENT_METHOD',
+  FailedToUpdateCreditCard = 'FAILED_TO_UPDATE_CREDIT_CARD',
+  ManuallyRevoked = 'MANUALLY_REVOKED',
+  StripeApiAuthenticationError = 'STRIPE_API_AUTHENTICATION_ERROR',
+  StripeApiInvalidRequestError = 'STRIPE_API_INVALID_REQUEST_ERROR',
+  StripeGatewayNotEnabled = 'STRIPE_GATEWAY_NOT_ENABLED',
+  StripeReturnedNoPaymentMethod = 'STRIPE_RETURNED_NO_PAYMENT_METHOD',
+  StripePaymentMethodNotCard = 'STRIPE_PAYMENT_METHOD_NOT_CARD'
+}
+
+/** An auto-generated type for paginating through multiple SubscriptionContracts. */
+export type Shopify_SubscriptionContractConnection = {
+  __typename?: 'Shopify_SubscriptionContractConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_SubscriptionContractEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one SubscriptionContract and a cursor during pagination. */
+export type Shopify_SubscriptionContractEdge = {
+  __typename?: 'Shopify_SubscriptionContractEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of SubscriptionContractEdge. */
+  node: Shopify_SubscriptionContract;
+};
+
+/** Describes the delivery method to use to get the physical goods to the customer. */
+export type Shopify_SubscriptionDeliveryMethod = Shopify_SubscriptionDeliveryMethodShipping;
+
+/** Represents a shipping delivery method: a mailing address and a shipping option. */
+export type Shopify_SubscriptionDeliveryMethodShipping = {
+  __typename?: 'Shopify_SubscriptionDeliveryMethodShipping';
+  /** The address to ship to. */
+  address: Shopify_SubscriptionMailingAddress;
+  /** The details of the shipping method to use. */
+  shippingOption: Shopify_SubscriptionDeliveryMethodShippingOption;
+};
+
+/** Represents a Mailing Address on a Subscription. */
+export type Shopify_SubscriptionMailingAddress = {
+  __typename?: 'Shopify_SubscriptionMailingAddress';
+  /** The first line of the address. Typically the street address or PO Box number. */
+  address1?: Maybe<Scalars['String']>;
+  /** The second line of the address. Typically the number of the apartment, suite, or unit. */
+  address2?: Maybe<Scalars['String']>;
+  /** The name of the city, district, village, or town. */
+  city?: Maybe<Scalars['String']>;
+  /** The name of the customer's company or organization. */
+  company?: Maybe<Scalars['String']>;
+  /** The name of the country. */
+  country?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the country of the address.
+   *
+   * For example, US.
+   */
+  countryCode?: Maybe<Shopify_CountryCode>;
+  /** The first name of the customer. */
+  firstName?: Maybe<Scalars['String']>;
+  /** The last name of the customer. */
+  lastName?: Maybe<Scalars['String']>;
+  /** The full name of the customer, based on firstName and lastName. */
+  name?: Maybe<Scalars['String']>;
+  /** A unique phone number for the customer. Formatted using E.164 standard. For example, _+16135551111_. */
+  phone?: Maybe<Scalars['String']>;
+  /** The region of the address, such as the province, state, or district. */
+  province?: Maybe<Scalars['String']>;
+  /**
+   * The two-letter code for the region.
+   *
+   * For example, ON.
+   */
+  provinceCode?: Maybe<Scalars['String']>;
+  /** The zip or postal code of the address. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+/** Represents the selected shipping option on a subscription contract. */
+export type Shopify_SubscriptionDeliveryMethodShippingOption = {
+  __typename?: 'Shopify_SubscriptionDeliveryMethodShippingOption';
+  /** The carrier service of the shipping option. */
+  carrierService?: Maybe<Shopify_DeliveryCarrierService>;
+  /** The code of the shipping option. */
+  code?: Maybe<Scalars['String']>;
+  /** The description of the shipping option. */
+  description?: Maybe<Scalars['String']>;
+  /** The presentment title of the shipping option. */
+  presentmentTitle?: Maybe<Scalars['String']>;
+  /** The title of the shipping option. */
+  title?: Maybe<Scalars['String']>;
+};
+
+/** Represents a Subscription Delivery Policy. */
+export type Shopify_SubscriptionDeliveryPolicy = {
+  __typename?: 'Shopify_SubscriptionDeliveryPolicy';
+  /** Specific anchor dates upon which the delivery interval calculations should be made. */
+  anchors: Array<Shopify_SellingPlanAnchor>;
+  /** The kind of interval that is associated with this schedule (e.g. Monthly, Weekly, etc). */
+  interval: Shopify_SellingPlanInterval;
+  /** The number of delivery intervals between deliveries. */
+  intervalCount: Scalars['Int'];
+};
+
+/** An auto-generated type for paginating through multiple SubscriptionManualDiscounts. */
+export type Shopify_SubscriptionManualDiscountConnection = {
+  __typename?: 'Shopify_SubscriptionManualDiscountConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_SubscriptionManualDiscountEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one SubscriptionManualDiscount and a cursor during pagination. */
+export type Shopify_SubscriptionManualDiscountEdge = {
+  __typename?: 'Shopify_SubscriptionManualDiscountEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of SubscriptionManualDiscountEdge. */
+  node: Shopify_SubscriptionManualDiscount;
+};
+
+/** Custom subscription discount. */
+export type Shopify_SubscriptionManualDiscount = {
+  __typename?: 'Shopify_SubscriptionManualDiscount';
+  /** Entitled line items used to apply the subscription discount on. */
+  entitledLines: Shopify_SubscriptionDiscountEntitledLines;
+  /** The unique identifier. */
+  id: Scalars['ID'];
+  /** The maximum number of times the subscription discount will be applied on orders. */
+  recurringCycleLimit?: Maybe<Scalars['Int']>;
+  /** The reason that the discount on the subscription draft is rejected. */
+  rejectionReason?: Maybe<Shopify_SubscriptionDiscountRejectionReason>;
+  /** Type of line the discount applies on. */
+  targetType: Shopify_DiscountTargetType;
+  /** The title associated with the subscription discount. */
+  title?: Maybe<Scalars['String']>;
+  /** The type of the subscription discount. */
+  type: Shopify_DiscountType;
+  /** The number of times the discount was applied. */
+  usageCount: Scalars['Int'];
+  /** The value of the subscription discount. */
+  value: Shopify_SubscriptionDiscountValue;
+};
+
+/** Represents the subscription lines the discount applies on. */
+export type Shopify_SubscriptionDiscountEntitledLines = {
+  __typename?: 'Shopify_SubscriptionDiscountEntitledLines';
+  /** Specify whether the subscription discount will apply on all subscription lines. */
+  all: Scalars['Boolean'];
+  /** The list of subscription lines associated with the subscription discount. */
+  lines: Shopify_SubscriptionLineConnection;
+};
+
+
+/** Represents the subscription lines the discount applies on. */
+export type Shopify_SubscriptionDiscountEntitledLinesLinesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An auto-generated type for paginating through multiple SubscriptionLines. */
+export type Shopify_SubscriptionLineConnection = {
+  __typename?: 'Shopify_SubscriptionLineConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_SubscriptionLineEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one SubscriptionLine and a cursor during pagination. */
+export type Shopify_SubscriptionLineEdge = {
+  __typename?: 'Shopify_SubscriptionLineEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of SubscriptionLineEdge. */
+  node: Shopify_SubscriptionLine;
+};
+
+/** Represents a Subscription Line. */
+export type Shopify_SubscriptionLine = {
+  __typename?: 'Shopify_SubscriptionLine';
+  /** The price per unit for the subscription line in the contract's currency. */
+  currentPrice: Shopify_MoneyV2;
+  /** List of custom attributes associated to the line item. */
+  customAttributes: Array<Shopify_Attribute>;
+  /** Discount allocations. */
+  discountAllocations: Array<Shopify_SubscriptionDiscountAllocation>;
+  /** The unique identifier. */
+  id: Scalars['ID'];
+  /** Total line price including all discounts. */
+  lineDiscountedPrice: Shopify_MoneyV2;
+  /** Describe the price changes of the line over time. */
+  pricingPolicy?: Maybe<Shopify_SubscriptionPricingPolicy>;
+  /** The product id associated with the subscription line. */
+  productId?: Maybe<Scalars['ID']>;
+  /** The quantity of the unit selected for the subscription line. */
+  quantity: Scalars['Int'];
+  /** Whether physical shipping is required for the variant. */
+  requiresShipping: Scalars['Boolean'];
+  /**
+   * The selling plan ID associated to the line.
+   *
+   * Indicates which selling plan was used to create this
+   * contract line initially. The selling plan ID is also used to
+   * find the associated delivery profile.
+   *
+   * The subscription contract, subscription line, or selling plan might have
+   * changed. As a result, the selling plan's attributes might not
+   * match the information on the contract.
+   */
+  sellingPlanId?: Maybe<Scalars['ID']>;
+  /**
+   * The selling plan name associated to the line. This name describes
+   * the order line items created from this subscription line
+   * for both merchants and customers.
+   *
+   * The value can be different from the selling plan's name, because both
+   * the selling plan's name and the subscription line's selling_plan_name
+   * attribute can be updated independently.
+   */
+  sellingPlanName?: Maybe<Scalars['String']>;
+  /** Variant SKU number of the item associated with the subscription line. */
+  sku?: Maybe<Scalars['String']>;
+  /** Whether the variant is taxable. */
+  taxable: Scalars['Boolean'];
+  /** Product title of the item associated with the subscription line. */
+  title: Scalars['String'];
+  /** The product variant id associated with the subscription line. */
+  variantId?: Maybe<Scalars['ID']>;
+  /** The image associated with the line item's variant or product. */
+  variantImage?: Maybe<Shopify_Image>;
+  /** Product variant title of the item associated with the subscription line. */
+  variantTitle?: Maybe<Scalars['String']>;
+};
+
+/** Represents what a particular discount reduces from a line price. */
+export type Shopify_SubscriptionDiscountAllocation = {
+  __typename?: 'Shopify_SubscriptionDiscountAllocation';
+  /** Allocation amount. */
+  amount: Shopify_MoneyV2;
+  /** Discount that created the allocation. */
+  discount: Shopify_SubscriptionDiscount;
+};
+
+/** Subscription draft discount types. */
+export type Shopify_SubscriptionDiscount = Shopify_SubscriptionAppliedCodeDiscount | Shopify_SubscriptionManualDiscount;
+
+/** Represents an applied code discount. */
+export type Shopify_SubscriptionAppliedCodeDiscount = {
+  __typename?: 'Shopify_SubscriptionAppliedCodeDiscount';
+  /** The unique identifier. */
+  id: Scalars['ID'];
+  /** The redeem code of the discount that applies on the subscription. */
+  redeemCode: Scalars['String'];
+  /** The reason that the discount on the subscription draft is rejected. */
+  rejectionReason?: Maybe<Shopify_SubscriptionDiscountRejectionReason>;
+};
+
+export enum Shopify_SubscriptionDiscountRejectionReason {
+  NotFound = 'NOT_FOUND',
+  NoEntitledLineItems = 'NO_ENTITLED_LINE_ITEMS',
+  QuantityNotInRange = 'QUANTITY_NOT_IN_RANGE',
+  PurchaseNotInRange = 'PURCHASE_NOT_IN_RANGE',
+  CustomerNotEligible = 'CUSTOMER_NOT_ELIGIBLE',
+  UsageLimitReached = 'USAGE_LIMIT_REACHED',
+  CustomerUsageLimitReached = 'CUSTOMER_USAGE_LIMIT_REACHED',
+  CurrentlyInactive = 'CURRENTLY_INACTIVE',
+  NoEntitledShippingLines = 'NO_ENTITLED_SHIPPING_LINES',
+  IncompatiblePurchaseType = 'INCOMPATIBLE_PURCHASE_TYPE',
+  InternalError = 'INTERNAL_ERROR'
+}
+
+/** Represents a Subscription Line Pricing Policy. */
+export type Shopify_SubscriptionPricingPolicy = {
+  __typename?: 'Shopify_SubscriptionPricingPolicy';
+  /** The base price per unit for the subscription line in the contract's currency. */
+  basePrice: Shopify_MoneyV2;
+  /** The adjustments per cycle for the subscription line. */
+  cycleDiscounts: Array<Shopify_SubscriptionCyclePriceAdjustment>;
+};
+
+/** Represents a Subscription Line Pricing Cycle Adjustment. */
+export type Shopify_SubscriptionCyclePriceAdjustment = {
+  __typename?: 'Shopify_SubscriptionCyclePriceAdjustment';
+  /** Price adjustment type. */
+  adjustmentType: Shopify_SellingPlanPricingPolicyAdjustmentType;
+  /** Price adjustment value. */
+  adjustmentValue: Shopify_SellingPlanPricingPolicyAdjustmentValue;
+  /** The number of cycles required before this pricing policy applies. */
+  afterCycle: Scalars['Int'];
+  /** The computed price after the adjustments applied. */
+  computedPrice: Shopify_MoneyV2;
+};
+
+export enum Shopify_DiscountTargetType {
+  LineItem = 'LINE_ITEM',
+  ShippingLine = 'SHIPPING_LINE'
+}
+
+export enum Shopify_DiscountType {
+  Manual = 'MANUAL',
+  CodeDiscount = 'CODE_DISCOUNT'
+}
+
+/** The value of the discount and how it will be applied. */
+export type Shopify_SubscriptionDiscountValue = Shopify_SubscriptionDiscountFixedAmountValue | Shopify_SubscriptionDiscountPercentageValue;
+
+/** The value of the discount and how it will be applied. */
+export type Shopify_SubscriptionDiscountFixedAmountValue = {
+  __typename?: 'Shopify_SubscriptionDiscountFixedAmountValue';
+  /** The fixed amount value of the discount. */
+  amount: Shopify_MoneyV2;
+  /** Whether the amount is applied per item. */
+  appliesOnEachItem: Scalars['Boolean'];
+};
+
+/** The percentage value of the discount. */
+export type Shopify_SubscriptionDiscountPercentageValue = {
+  __typename?: 'Shopify_SubscriptionDiscountPercentageValue';
+  /** The percentage value of the discount. */
+  percentage: Scalars['Int'];
+};
+
+export enum Shopify_SubscriptionContractLastPaymentStatus {
+  Succeeded = 'SUCCEEDED',
+  Failed = 'FAILED'
+}
+
+/** An auto-generated type for paginating through multiple Orders. */
+export type Shopify_OrderConnection = {
+  __typename?: 'Shopify_OrderConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_OrderEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one Order and a cursor during pagination. */
+export type Shopify_OrderEdge = {
+  __typename?: 'Shopify_OrderEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of OrderEdge. */
+  node: Shopify_Order;
+};
+
+export enum Shopify_SubscriptionContractSubscriptionStatus {
+  Active = 'ACTIVE',
+  Paused = 'PAUSED',
+  Cancelled = 'CANCELLED',
+  Expired = 'EXPIRED',
+  Failed = 'FAILED'
+}
+
+/** An amount that's allocated to a line based on an associated discount application. */
+export type Shopify_DiscountAllocation = {
+  __typename?: 'Shopify_DiscountAllocation';
+  /**
+   * The money amount that's allocated to a line based on the associated discount application.
+   * @deprecated Use `allocatedAmountSet` instead
+   */
+  allocatedAmount: Shopify_MoneyV2;
+  /** The money amount that's allocated to a line based on the associated discount application in shop and presentment currencies. */
+  allocatedAmountSet: Shopify_MoneyBag;
+  /** The discount application that the allocated amount originated from. */
+  discountApplication: Shopify_DiscountApplication;
+};
+
+/** The duty details for a line item. */
+export type Shopify_Duty = {
+  __typename?: 'Shopify_Duty';
+  /** The ISO 3166-1 alpha-2 country code of the country of origin used in calculating the duty. */
+  countryCodeOfOrigin?: Maybe<Shopify_CountryCode>;
+  /** The harmonized system code of the item used in calculating the duty. */
+  harmonizedSystemCode?: Maybe<Scalars['String']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The amount of the duty. */
+  price: Shopify_MoneyBag;
+  /** A list of taxes charged on the duty. */
+  taxLines: Array<Shopify_TaxLine>;
+};
+
+/** Represents the selling plan for a line item. */
+export type Shopify_LineItemSellingPlan = {
+  __typename?: 'Shopify_LineItemSellingPlan';
+  /** The name of the selling plan for display purposes. */
+  name: Scalars['String'];
+};
+
+/** An auto-generated type for paginating through multiple FulfillmentOrders. */
+export type Shopify_FulfillmentOrderConnection = {
+  __typename?: 'Shopify_FulfillmentOrderConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentOrderEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one FulfillmentOrder and a cursor during pagination. */
+export type Shopify_FulfillmentOrderEdge = {
+  __typename?: 'Shopify_FulfillmentOrderEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentOrderEdge. */
+  node: Shopify_FulfillmentOrder;
+};
+
+/**
+ * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
+ * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
+ * for an order at a given location.
+ */
+export type Shopify_FulfillmentOrder = {
+  __typename?: 'Shopify_FulfillmentOrder';
+  /** The fulfillment order's assigned location. This is the location expected to perform fulfillment. */
+  assignedLocation: Shopify_FulfillmentOrderAssignedLocation;
+  /** Delivery method of this fulfillment order. */
+  deliveryMethod?: Maybe<Shopify_DeliveryMethod>;
+  /** The destination where the items should be sent. */
+  destination?: Maybe<Shopify_FulfillmentOrderDestination>;
+  /** The date and time at which the fulfillment order will be fulfillable. */
+  fulfillAt?: Maybe<Scalars['DateTime']>;
+  /** The fulfillment holds applied on the fulfillment order. */
+  fulfillmentHolds: Array<Shopify_FulfillmentHold>;
+  /** A list of fulfillments for the fulfillment order. */
+  fulfillments: Shopify_FulfillmentConnection;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The duties delivery method of this fulfillment order. */
+  internationalDuties?: Maybe<Shopify_FulfillmentOrderInternationalDuties>;
+  /** A list of the fulfillment order's line items. */
+  lineItems: Shopify_FulfillmentOrderLineItemConnection;
+  /** A list of locations that the fulfillment order can potentially move to. */
+  locationsForMove: Shopify_FulfillmentOrderLocationForMoveConnection;
+  /** A list of requests sent by the merchant to the fulfillment service for this fulfillment order. */
+  merchantRequests: Shopify_FulfillmentOrderMerchantRequestConnection;
+  /** The order that's associated with the fulfillment order. */
+  order: Shopify_Order;
+  /** The request status of the fulfillment order. */
+  requestStatus: Shopify_FulfillmentOrderRequestStatus;
+  /** The status of the fulfillment order. */
+  status: Shopify_FulfillmentOrderStatus;
+  /** The actions that can be performed on this fulfillment order. */
+  supportedActions: Array<Shopify_FulfillmentOrderSupportedAction>;
+};
+
+
+/**
+ * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
+ * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
+ * for an order at a given location.
+ */
+export type Shopify_FulfillmentOrderFulfillmentsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
+ * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
+ * for an order at a given location.
+ */
+export type Shopify_FulfillmentOrderLineItemsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
+ * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
+ * for an order at a given location.
+ */
+export type Shopify_FulfillmentOrderLocationsForMoveArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/**
+ * Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
+ * in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
+ * for an order at a given location.
+ */
+export type Shopify_FulfillmentOrderMerchantRequestsArgs = {
+  kind?: InputMaybe<Shopify_FulfillmentOrderMerchantRequestKind>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/**
+ * Represents the assigned location of a fulfillment order, which is a snapshot of the location
+ * at which the fulfillment order was created. The assigned location is expected to perform fulfillment.
+ */
+export type Shopify_FulfillmentOrderAssignedLocation = {
+  __typename?: 'Shopify_FulfillmentOrderAssignedLocation';
+  /** The first line of the address for the location. */
+  address1?: Maybe<Scalars['String']>;
+  /** The second line of the address for the location. */
+  address2?: Maybe<Scalars['String']>;
+  /** The city of the location. */
+  city?: Maybe<Scalars['String']>;
+  /** The two-letter country code of the location. */
+  countryCode: Shopify_CountryCode;
+  /**
+   * The location where the fulfillment order was created. This can differ from the
+   * `FulfillmentOrderAssignedLocation` if the location was updated since the fulfillment order
+   * was closed.
+   */
+  location?: Maybe<Shopify_Location>;
+  /** The name of the location. */
+  name: Scalars['String'];
+  /** The phone number of the location. */
+  phone?: Maybe<Scalars['String']>;
+  /** The province of the location. */
+  province?: Maybe<Scalars['String']>;
+  /** The ZIP code of the location. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+/** The delivery method used by a fulfillment order. */
+export type Shopify_DeliveryMethod = {
+  __typename?: 'Shopify_DeliveryMethod';
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The type of the delivery method. */
+  methodType: Shopify_DeliveryMethodType;
+};
+
+export enum Shopify_DeliveryMethodType {
+  Shipping = 'SHIPPING',
+  PickUp = 'PICK_UP',
+  None = 'NONE',
+  Retail = 'RETAIL',
+  Local = 'LOCAL'
+}
+
+/** Represents the destination where the items should be sent upon fulfillment. */
+export type Shopify_FulfillmentOrderDestination = {
+  __typename?: 'Shopify_FulfillmentOrderDestination';
+  /** The first line of the address of the destination. */
+  address1?: Maybe<Scalars['String']>;
+  /** The second line of the address of the destination. */
+  address2?: Maybe<Scalars['String']>;
+  /** The city of the destination. */
+  city?: Maybe<Scalars['String']>;
+  /** The company of the destination. */
+  company?: Maybe<Scalars['String']>;
+  /** The two-letter country code of the destination. */
+  countryCode?: Maybe<Shopify_CountryCode>;
+  /** The email of the customer at the destination. */
+  email?: Maybe<Scalars['String']>;
+  /** The first name of the customer at the destination. */
+  firstName?: Maybe<Scalars['String']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The last name of the customer at the destination. */
+  lastName?: Maybe<Scalars['String']>;
+  /** The phone number of the customer at the destination. */
+  phone?: Maybe<Scalars['String']>;
+  /** The province of the destination. */
+  province?: Maybe<Scalars['String']>;
+  /** The ZIP code of the destination. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+/** A fulfillment hold currently applied on a fulfillment order. */
+export type Shopify_FulfillmentHold = {
+  __typename?: 'Shopify_FulfillmentHold';
+  /** The reason for the fulfillment hold. */
+  reason: Shopify_FulfillmentHoldReason;
+  /** Additional information about the fulfillment hold reason. */
+  reasonNotes?: Maybe<Scalars['String']>;
+};
+
+export enum Shopify_FulfillmentHoldReason {
+  AwaitingPayment = 'AWAITING_PAYMENT',
+  HighRiskOfFraud = 'HIGH_RISK_OF_FRAUD',
+  IncorrectAddress = 'INCORRECT_ADDRESS',
+  InventoryOutOfStock = 'INVENTORY_OUT_OF_STOCK',
+  Other = 'OTHER'
+}
+
+/** An auto-generated type for paginating through multiple Fulfillments. */
+export type Shopify_FulfillmentConnection = {
+  __typename?: 'Shopify_FulfillmentConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one Fulfillment and a cursor during pagination. */
+export type Shopify_FulfillmentEdge = {
+  __typename?: 'Shopify_FulfillmentEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentEdge. */
+  node: Shopify_Fulfillment;
+};
+
+/** Represents a fulfillment. In Shopify, a fulfillment represents a shipment of one or more items in an order. When an order has been completely fulfilled, it means that all the items that are included in the order have been sent to the customer. There can be more than one fulfillment for an order. */
+export type Shopify_Fulfillment = {
+  __typename?: 'Shopify_Fulfillment';
+  /** The date and time when the fulfillment was created. */
+  createdAt: Scalars['DateTime'];
+  /** The date that this fulfillment was delivered. */
+  deliveredAt?: Maybe<Scalars['DateTime']>;
+  /** Human readable display status for this fulfillment. */
+  displayStatus?: Maybe<Shopify_FulfillmentDisplayStatus>;
+  /** The estimated date that this fulfillment will arrive. */
+  estimatedDeliveryAt?: Maybe<Scalars['DateTime']>;
+  /** The history of events associated with this fulfillment. */
+  events: Shopify_FulfillmentEventConnection;
+  /** List of the fulfillment's line items. */
+  fulfillmentLineItems: Shopify_FulfillmentLineItemConnection;
+  /** A paginated list of fulfillment orders for the fulfillment. */
+  fulfillmentOrders: Shopify_FulfillmentOrderConnection;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The date and time when the fulfillment went into transit. */
+  inTransitAt?: Maybe<Scalars['DateTime']>;
+  /** The ID of the corresponding resource in the REST Admin API. */
+  legacyResourceId: Scalars['UnsignedInt64'];
+  /** The location that the fulfillment was processed at. */
+  location?: Maybe<Shopify_Location>;
+  /** Human readable reference identifier for this fulfillment. */
+  name: Scalars['String'];
+  /** The order for which the fulfillment was created. */
+  order: Shopify_Order;
+  /** The address at which the fulfillment occurred. Typically this is the address of the warehouse or fulfillment center. */
+  originAddress?: Maybe<Shopify_FulfillmentOriginAddress>;
+  /** Whether any of the line items in the fulfillment require shipping. */
+  requiresShipping: Scalars['Boolean'];
+  /** Fulfillment service associated with the fulfillment. */
+  service?: Maybe<Shopify_FulfillmentService>;
+  /** The status of the fulfillment. */
+  status: Shopify_FulfillmentStatus;
+  /** Sum of all line item quantities for the fulfillment. */
+  totalQuantity: Scalars['Int'];
+  /**
+   * Tracking information associated with the fulfillment,
+   * such as the tracking company, tracking number, and tracking URL.
+   */
+  trackingInfo: Array<Shopify_FulfillmentTrackingInfo>;
+  /** The date and time when the fulfillment was last modified. */
+  updatedAt: Scalars['DateTime'];
+};
+
+
+/** Represents a fulfillment. In Shopify, a fulfillment represents a shipment of one or more items in an order. When an order has been completely fulfilled, it means that all the items that are included in the order have been sent to the customer. There can be more than one fulfillment for an order. */
+export type Shopify_FulfillmentEventsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_FulfillmentEventSortKeys>;
+};
+
+
+/** Represents a fulfillment. In Shopify, a fulfillment represents a shipment of one or more items in an order. When an order has been completely fulfilled, it means that all the items that are included in the order have been sent to the customer. There can be more than one fulfillment for an order. */
+export type Shopify_FulfillmentFulfillmentLineItemsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Represents a fulfillment. In Shopify, a fulfillment represents a shipment of one or more items in an order. When an order has been completely fulfilled, it means that all the items that are included in the order have been sent to the customer. There can be more than one fulfillment for an order. */
+export type Shopify_FulfillmentFulfillmentOrdersArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Represents a fulfillment. In Shopify, a fulfillment represents a shipment of one or more items in an order. When an order has been completely fulfilled, it means that all the items that are included in the order have been sent to the customer. There can be more than one fulfillment for an order. */
+export type Shopify_FulfillmentTrackingInfoArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+export enum Shopify_FulfillmentDisplayStatus {
+  AttemptedDelivery = 'ATTEMPTED_DELIVERY',
+  Canceled = 'CANCELED',
+  Confirmed = 'CONFIRMED',
+  Delivered = 'DELIVERED',
+  Failure = 'FAILURE',
+  Fulfilled = 'FULFILLED',
+  InTransit = 'IN_TRANSIT',
+  LabelPrinted = 'LABEL_PRINTED',
+  LabelPurchased = 'LABEL_PURCHASED',
+  LabelVoided = 'LABEL_VOIDED',
+  MarkedAsFulfilled = 'MARKED_AS_FULFILLED',
+  NotDelivered = 'NOT_DELIVERED',
+  OutForDelivery = 'OUT_FOR_DELIVERY',
+  ReadyForPickup = 'READY_FOR_PICKUP',
+  PickedUp = 'PICKED_UP',
+  Submitted = 'SUBMITTED'
+}
+
+/** An auto-generated type for paginating through multiple FulfillmentEvents. */
+export type Shopify_FulfillmentEventConnection = {
+  __typename?: 'Shopify_FulfillmentEventConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentEventEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one FulfillmentEvent and a cursor during pagination. */
+export type Shopify_FulfillmentEventEdge = {
+  __typename?: 'Shopify_FulfillmentEventEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentEventEdge. */
+  node: Shopify_FulfillmentEvent;
+};
+
+/** The fulfillment event that describes the fulfilllment status at a particular time. */
+export type Shopify_FulfillmentEvent = {
+  __typename?: 'Shopify_FulfillmentEvent';
+  /** The time at which this fulfillment event happened. */
+  happenedAt: Scalars['DateTime'];
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The status of this fulfillment event. */
+  status: Shopify_FulfillmentEventStatus;
+};
+
+export enum Shopify_FulfillmentEventStatus {
+  LabelPurchased = 'LABEL_PURCHASED',
+  LabelPrinted = 'LABEL_PRINTED',
+  ReadyForPickup = 'READY_FOR_PICKUP',
+  Confirmed = 'CONFIRMED',
+  InTransit = 'IN_TRANSIT',
+  OutForDelivery = 'OUT_FOR_DELIVERY',
+  AttemptedDelivery = 'ATTEMPTED_DELIVERY',
+  Delivered = 'DELIVERED',
+  Failure = 'FAILURE'
+}
+
+export enum Shopify_FulfillmentEventSortKeys {
+  HappenedAt = 'HAPPENED_AT',
+  Id = 'ID',
+  Relevance = 'RELEVANCE'
+}
+
+/** An auto-generated type for paginating through multiple FulfillmentLineItems. */
+export type Shopify_FulfillmentLineItemConnection = {
+  __typename?: 'Shopify_FulfillmentLineItemConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentLineItemEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one FulfillmentLineItem and a cursor during pagination. */
+export type Shopify_FulfillmentLineItemEdge = {
+  __typename?: 'Shopify_FulfillmentLineItemEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentLineItemEdge. */
+  node: Shopify_FulfillmentLineItem;
+};
+
+/** Represents a line item from an order that's included in a fulfillment. */
+export type Shopify_FulfillmentLineItem = {
+  __typename?: 'Shopify_FulfillmentLineItem';
+  /**
+   * The total price after discounts are applied.
+   * @deprecated Use `discountedTotalSet` instead
+   */
+  discountedTotal: Scalars['Money'];
+  /** The total price after discounts are applied in shop and presentment currencies. */
+  discountedTotalSet: Shopify_MoneyBag;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The associated order's line item. */
+  lineItem: Shopify_LineItem;
+  /**
+   * The total price before discounts are applied.
+   * @deprecated Use `originalTotalSet` instead
+   */
+  originalTotal: Scalars['Money'];
+  /** The total price before discounts are applied in shop and presentment currencies. */
+  originalTotalSet: Shopify_MoneyBag;
+  /** Number of line items in the fulfillment. */
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+/** The address at which the fulfillment occurred. Typically this is the address of the warehouse or fulfillment center. */
+export type Shopify_FulfillmentOriginAddress = {
+  __typename?: 'Shopify_FulfillmentOriginAddress';
+  /** The street address of the fulfillment location. */
+  address1?: Maybe<Scalars['String']>;
+  /** The second line of the address. Typically the number of the apartment, suite, or unit. */
+  address2?: Maybe<Scalars['String']>;
+  /** The city in which the fulfillment location is located. */
+  city?: Maybe<Scalars['String']>;
+  /** The country code of the fulfillment location. */
+  countryCode: Scalars['String'];
+  /** The province code of the fulfillment location. */
+  provinceCode?: Maybe<Scalars['String']>;
+  /** The zip code of the fulfillment location. */
+  zip?: Maybe<Scalars['String']>;
+};
+
+export enum Shopify_FulfillmentStatus {
+  Pending = 'PENDING',
+  Open = 'OPEN',
+  Success = 'SUCCESS',
+  Cancelled = 'CANCELLED',
+  Error = 'ERROR',
+  Failure = 'FAILURE'
+}
+
+/** Represents the tracking information for a fulfillment. */
+export type Shopify_FulfillmentTrackingInfo = {
+  __typename?: 'Shopify_FulfillmentTrackingInfo';
+  /** The name of the tracking company. */
+  company?: Maybe<Scalars['String']>;
+  /** The tracking number of the fulfillment. */
+  number?: Maybe<Scalars['String']>;
+  /** The URLs to track the fulfillment. */
+  url?: Maybe<Scalars['Url']>;
+};
+
+/** The international duties relevant to a fulfillment order. */
+export type Shopify_FulfillmentOrderInternationalDuties = {
+  __typename?: 'Shopify_FulfillmentOrderInternationalDuties';
+  /** The method of duties payment. Example values: `DDP`, `DAP`. */
+  incoterm: Scalars['String'];
+};
+
+/** An auto-generated type for paginating through multiple FulfillmentOrderLineItems. */
+export type Shopify_FulfillmentOrderLineItemConnection = {
+  __typename?: 'Shopify_FulfillmentOrderLineItemConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentOrderLineItemEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one FulfillmentOrderLineItem and a cursor during pagination. */
+export type Shopify_FulfillmentOrderLineItemEdge = {
+  __typename?: 'Shopify_FulfillmentOrderLineItemEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentOrderLineItemEdge. */
+  node: Shopify_FulfillmentOrderLineItem;
+};
+
+/** Represents a line item belonging to a fulfillment order. */
+export type Shopify_FulfillmentOrderLineItem = {
+  __typename?: 'Shopify_FulfillmentOrderLineItem';
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The associated order line item. */
+  lineItem: Shopify_LineItem;
+  /** The number of units remaining to be fulfilled. */
+  remainingQuantity: Scalars['Int'];
+  /** The total number of units to be fulfilled. */
+  totalQuantity: Scalars['Int'];
+};
+
+/** An auto-generated type for paginating through multiple FulfillmentOrderLocationForMoves. */
+export type Shopify_FulfillmentOrderLocationForMoveConnection = {
+  __typename?: 'Shopify_FulfillmentOrderLocationForMoveConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentOrderLocationForMoveEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one FulfillmentOrderLocationForMove and a cursor during pagination. */
+export type Shopify_FulfillmentOrderLocationForMoveEdge = {
+  __typename?: 'Shopify_FulfillmentOrderLocationForMoveEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentOrderLocationForMoveEdge. */
+  node: Shopify_FulfillmentOrderLocationForMove;
+};
+
+/** A location that a fulfillment order can potentially move to. */
+export type Shopify_FulfillmentOrderLocationForMove = {
+  __typename?: 'Shopify_FulfillmentOrderLocationForMove';
+  /** The location being considered as the fulfillment order's new assigned location. */
+  location: Shopify_Location;
+  /**
+   * A human-readable string with the reason why the fulfillment order, or some of its line items, can't be
+   * moved to the location.
+   */
+  message?: Maybe<Scalars['String']>;
+  /** Whether the fulfillment order can be moved to the location. */
+  movable: Scalars['Boolean'];
+};
+
+/** An auto-generated type for paginating through multiple FulfillmentOrderMerchantRequests. */
+export type Shopify_FulfillmentOrderMerchantRequestConnection = {
+  __typename?: 'Shopify_FulfillmentOrderMerchantRequestConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_FulfillmentOrderMerchantRequestEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one FulfillmentOrderMerchantRequest and a cursor during pagination. */
+export type Shopify_FulfillmentOrderMerchantRequestEdge = {
+  __typename?: 'Shopify_FulfillmentOrderMerchantRequestEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of FulfillmentOrderMerchantRequestEdge. */
+  node: Shopify_FulfillmentOrderMerchantRequest;
+};
+
+/** Represents a request made by the merchant to a fulfillment service for a fulfillment order. */
+export type Shopify_FulfillmentOrderMerchantRequest = {
+  __typename?: 'Shopify_FulfillmentOrderMerchantRequest';
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The kind of request made. */
+  kind: Shopify_FulfillmentOrderMerchantRequestKind;
+  /** The optional message that the merchant included in the request. */
+  message?: Maybe<Scalars['String']>;
+  /**
+   * Additional options requested by the merchant. These depend on the `kind` of the request.
+   * For example, for a `FULFILLMENT_REQUEST`, one option is `notify_customer`, which indicates whether the
+   * merchant intends to notify the customer upon fulfillment. The fulfillment service can then set
+   * `notifyCustomer` when making calls to `FulfillmentCreateV2`.
+   */
+  requestOptions?: Maybe<Scalars['Json']>;
+  /** The response from the fulfillment service. */
+  responseData?: Maybe<Scalars['Json']>;
+  /** The timestamp when the request was made. */
+  sentAt: Scalars['DateTime'];
+};
+
+export enum Shopify_FulfillmentOrderMerchantRequestKind {
+  FulfillmentRequest = 'FULFILLMENT_REQUEST',
+  CancellationRequest = 'CANCELLATION_REQUEST'
+}
+
+export enum Shopify_FulfillmentOrderRequestStatus {
+  Unsubmitted = 'UNSUBMITTED',
+  Submitted = 'SUBMITTED',
+  Accepted = 'ACCEPTED',
+  Rejected = 'REJECTED',
+  CancellationRequested = 'CANCELLATION_REQUESTED',
+  CancellationAccepted = 'CANCELLATION_ACCEPTED',
+  CancellationRejected = 'CANCELLATION_REJECTED',
+  Closed = 'CLOSED'
+}
+
+export enum Shopify_FulfillmentOrderStatus {
+  Open = 'OPEN',
+  InProgress = 'IN_PROGRESS',
+  Cancelled = 'CANCELLED',
+  Incomplete = 'INCOMPLETE',
+  Closed = 'CLOSED',
+  Scheduled = 'SCHEDULED',
+  OnHold = 'ON_HOLD'
+}
+
+/** One of the actions that the fulfillment order supports in its current state. */
+export type Shopify_FulfillmentOrderSupportedAction = {
+  __typename?: 'Shopify_FulfillmentOrderSupportedAction';
+  /** The action value. */
+  action: Shopify_FulfillmentOrderAction;
+  /**
+   * The external URL to be used to initiate the fulfillment process outside Shopify.
+   * Applicable only when the `action` value is `EXTERNAL`.
+   */
+  externalUrl?: Maybe<Scalars['Url']>;
+};
+
+export enum Shopify_FulfillmentOrderAction {
+  CreateFulfillment = 'CREATE_FULFILLMENT',
+  RequestFulfillment = 'REQUEST_FULFILLMENT',
+  CancelFulfillmentOrder = 'CANCEL_FULFILLMENT_ORDER',
+  Move = 'MOVE',
+  RequestCancellation = 'REQUEST_CANCELLATION',
+  MarkAsOpen = 'MARK_AS_OPEN',
+  ReleaseHold = 'RELEASE_HOLD',
+  Hold = 'HOLD',
+  External = 'EXTERNAL'
+}
+
+/** An auto-generated type for paginating through multiple LineItems. */
+export type Shopify_LineItemConnection = {
+  __typename?: 'Shopify_LineItemConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_LineItemEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one LineItem and a cursor during pagination. */
+export type Shopify_LineItemEdge = {
+  __typename?: 'Shopify_LineItemEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of LineItemEdge. */
+  node: Shopify_LineItem;
+};
+
+/** An auto-generated type for paginating through multiple LineItemMutables. */
+export type Shopify_LineItemMutableConnection = {
+  __typename?: 'Shopify_LineItemMutableConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_LineItemMutableEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one LineItemMutable and a cursor during pagination. */
+export type Shopify_LineItemMutableEdge = {
+  __typename?: 'Shopify_LineItemMutableEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of LineItemMutableEdge. */
+  node: Shopify_LineItemMutable;
+};
+
+/** Represents a single line item on an order. */
+export type Shopify_LineItemMutable = {
+  __typename?: 'Shopify_LineItemMutable';
+  /**
+   * Whether the line item can be restocked.
+   * @deprecated Use `restockable` instead
+   */
+  canRestock: Scalars['Boolean'];
+  /** A list of additional information about the line item. */
+  customAttributes: Array<Shopify_Attribute>;
+  /** The discounts that have been allocated onto the line item by discount applications. */
+  discountAllocations: Array<Shopify_DiscountAllocation>;
+  /**
+   * The total line price after discounts are applied, in shop currency.
+   * @deprecated Use `discountedTotalSet` instead
+   */
+  discountedTotal: Scalars['Money'];
+  /** The total line price after discounts are applied, in shop and presentment currencies. */
+  discountedTotalSet: Shopify_MoneyBag;
+  /**
+   * The approximate split price of a line item unit, in shop currency. This value doesn't include discounts applied to the entire order.
+   * @deprecated Use `discountedUnitPriceSet` instead
+   */
+  discountedUnitPrice: Scalars['Money'];
+  /** The approximate split price of a line item unit, in shop and presentment currencies. This value doesn't include discounts applied to the entire order. */
+  discountedUnitPriceSet: Shopify_MoneyBag;
+  /** The total number of units to fulfill. */
+  fulfillableQuantity: Scalars['Int'];
+  /**
+   * The service provider that fulfills the line item.
+   *
+   * Deleted fulfillment services will return null.
+   */
+  fulfillmentService?: Maybe<Shopify_FulfillmentService>;
+  /**
+   * The line item's fulfillment status. Returns 'fulfilled' if fulfillableQuantity >= quantity,
+   * 'partial' if  fulfillableQuantity > 0, and 'unfulfilled' otherwise.
+   */
+  fulfillmentStatus: Scalars['String'];
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The image associated to the line item's variant. */
+  image?: Maybe<Shopify_Image>;
+  /** Whether the line item can be edited or not. */
+  merchantEditable: Scalars['Boolean'];
+  /** The name of the product. */
+  name: Scalars['String'];
+  /** The total number of units that can't be fulfilled. For example, if items have been refunded, or the item is not something that can be fulfilled, like a tip. */
+  nonFulfillableQuantity: Scalars['Int'];
+  /**
+   * The total price without any discounts applied, in shop currency. ""This value is based on the unit price of the variant x quantity.
+   * @deprecated Use `originalTotalSet` instead
+   */
+  originalTotal: Scalars['Money'];
+  /** The total price in shop and presentment currencies, without discounts applied. This value is based on the unit price of the variant x quantity. */
+  originalTotalSet: Shopify_MoneyBag;
+  /**
+   * The variant unit price without discounts applied, in shop currency.
+   * @deprecated Use `originalUnitPriceSet` instead
+   */
+  originalUnitPrice: Scalars['Money'];
+  /** The variant unit price without discounts applied, in shop and presentment currencies. */
+  originalUnitPriceSet: Shopify_MoneyBag;
+  /** The Product object associated with this line item's variant. */
+  product?: Maybe<Shopify_Product>;
+  /** The number of variant units ordered. */
+  quantity: Scalars['Int'];
+  /** The line item's quantity, minus the removed quantity. */
+  refundableQuantity: Scalars['Int'];
+  /** Whether physical shipping is required for the variant. */
+  requiresShipping: Scalars['Boolean'];
+  /** Whether the line item can be restocked. */
+  restockable: Scalars['Boolean'];
+  /** The variant SKU number. */
+  sku?: Maybe<Scalars['String']>;
+  /** The TaxLine object connected to this line item. */
+  taxLines: Array<Shopify_TaxLine>;
+  /** Whether the variant is taxable. */
+  taxable: Scalars['Boolean'];
+  /** The title of the product. */
+  title: Scalars['String'];
+  /**
+   * The sum of all AppliedDiscounts on this line item, in shop currency.
+   * @deprecated Use `totalDiscountSet` instead
+   */
+  totalDiscount: Scalars['Money'];
+  /** The sum of all AppliedDiscounts on this line item in shop and presentment currencies. */
+  totalDiscountSet: Shopify_MoneyBag;
+  /**
+   * The total discounted value of unfulfilled units, in shop currency.
+   * @deprecated Use `unfulfilledDiscountedTotalSet` instead
+   */
+  unfulfilledDiscountedTotal: Scalars['Money'];
+  /** The total discounted value of unfulfilled units, in shop and presentment currencies. */
+  unfulfilledDiscountedTotalSet: Shopify_MoneyBag;
+  /**
+   * The total price without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop currency.
+   * @deprecated Use `unfulfilledOriginalTotalSet` instead
+   */
+  unfulfilledOriginalTotal: Scalars['Money'];
+  /** The total price without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop and presentment currencies. */
+  unfulfilledOriginalTotalSet: Shopify_MoneyBag;
+  /** The number of units not yet fulfilled. */
+  unfulfilledQuantity: Scalars['Int'];
+  /** The Variant object associated with this line item. */
+  variant?: Maybe<Shopify_ProductVariant>;
+  /** The name of the variant. */
+  variantTitle?: Maybe<Scalars['String']>;
+  /** The name of the vendor who made the variant. */
+  vendor?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a single line item on an order. */
+export type Shopify_LineItemMutableImageArgs = {
+  maxWidth?: InputMaybe<Scalars['Int']>;
+  maxHeight?: InputMaybe<Scalars['Int']>;
+  crop?: InputMaybe<Shopify_CropRegion>;
+  scale?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** Represents a single line item on an order. */
+export type Shopify_LineItemMutableTaxLinesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+};
+
+/** An auto-generated type for paginating through multiple LocalizationExtensions. */
+export type Shopify_LocalizationExtensionConnection = {
+  __typename?: 'Shopify_LocalizationExtensionConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_LocalizationExtensionEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one LocalizationExtension and a cursor during pagination. */
+export type Shopify_LocalizationExtensionEdge = {
+  __typename?: 'Shopify_LocalizationExtensionEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of LocalizationExtensionEdge. */
+  node: Shopify_LocalizationExtension;
+};
+
+/** Represents the value captured by a localization extension. Localization extensions are additional fields required by certain countries on international orders. For example, some countries require additional fields for customs information or tax identification numbers. */
+export type Shopify_LocalizationExtension = {
+  __typename?: 'Shopify_LocalizationExtension';
+  /** Country ISO 3166-1 alpha-2 code. */
+  countryCode: Shopify_CountryCode;
+  /** The localized extension keys that are allowed. */
+  key: Shopify_LocalizationExtensionKey;
+  /** The purpose of this localization extension. */
+  purpose: Shopify_LocalizationExtensionPurpose;
+  /** The localized extension title. */
+  title: Scalars['String'];
+  /** The value of the field. */
+  value: Scalars['String'];
+};
+
+export enum Shopify_LocalizationExtensionKey {
+  TaxCredentialBr = 'TAX_CREDENTIAL_BR',
+  ShippingCredentialBr = 'SHIPPING_CREDENTIAL_BR',
+  ShippingCredentialCn = 'SHIPPING_CREDENTIAL_CN',
+  TaxCredentialIt = 'TAX_CREDENTIAL_IT',
+  TaxEmailIt = 'TAX_EMAIL_IT',
+  ShippingCredentialKr = 'SHIPPING_CREDENTIAL_KR'
+}
+
+export enum Shopify_LocalizationExtensionPurpose {
+  Shipping = 'SHIPPING',
+  Tax = 'TAX'
+}
+
+/** The payment collection details for an order that requires additional payment following an edit to the order. */
+export type Shopify_OrderPaymentCollectionDetails = {
+  __typename?: 'Shopify_OrderPaymentCollectionDetails';
+  /** The URL to use for collecting an additional payment on the order. */
+  additionalPaymentCollectionUrl?: Maybe<Scalars['Url']>;
+};
+
+/** Represents the payment terms for an order or draft order. */
+export type Shopify_PaymentTerms = {
+  __typename?: 'Shopify_PaymentTerms';
+  /** Duration of payment terms in days based on the payment terms template used to create the payment terms. */
+  dueInDays?: Maybe<Scalars['Int']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** Whether the payment terms have overdue payment schedules. */
+  overdue: Scalars['Boolean'];
+  /** List of schedules for the payment terms. */
+  paymentSchedules: Shopify_PaymentScheduleConnection;
+  /** The name of the payment terms template used to create the payment terms. */
+  paymentTermsName: Scalars['String'];
+  /** The type of a payment terms template used to create the payment terms. */
+  paymentTermsType: Shopify_PaymentTermsType;
+  /** The translated payment terms name. */
+  translatedName: Scalars['String'];
+};
+
+
+/** Represents the payment terms for an order or draft order. */
+export type Shopify_PaymentTermsPaymentSchedulesArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** An auto-generated type for paginating through multiple PaymentSchedules. */
+export type Shopify_PaymentScheduleConnection = {
+  __typename?: 'Shopify_PaymentScheduleConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_PaymentScheduleEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one PaymentSchedule and a cursor during pagination. */
+export type Shopify_PaymentScheduleEdge = {
+  __typename?: 'Shopify_PaymentScheduleEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of PaymentScheduleEdge. */
+  node: Shopify_PaymentSchedule;
+};
+
+/** Represents the payment schedule for a single payment defined in the payment terms. */
+export type Shopify_PaymentSchedule = {
+  __typename?: 'Shopify_PaymentSchedule';
+  /** Amount owed for this payment schedule. */
+  amount: Shopify_MoneyV2;
+  /** Date and time when the payment schedule is paid or fulfilled. */
+  completedAt?: Maybe<Scalars['DateTime']>;
+  /** Date and time when the payment schedule is due. */
+  dueAt?: Maybe<Scalars['DateTime']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** Date and time when the invoice is sent. */
+  issuedAt?: Maybe<Scalars['DateTime']>;
+};
+
+export enum Shopify_PaymentTermsType {
+  Receipt = 'RECEIPT',
+  Net = 'NET',
+  Fixed = 'FIXED',
+  Unknown = 'UNKNOWN'
+}
+
+/** The record of the line items and transactions that were refunded to a customer, along with restocking instructions for refunded line items. */
+export type Shopify_Refund = {
+  __typename?: 'Shopify_Refund';
+  /** The date and time when the refund was created. */
+  createdAt?: Maybe<Scalars['DateTime']>;
+  /** A list of the refunded duties as part of this refund. */
+  duties?: Maybe<Array<Maybe<Shopify_RefundDuty>>>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The ID of the corresponding resource in the REST Admin API. */
+  legacyResourceId: Scalars['UnsignedInt64'];
+  /** The optional note associated with the refund. */
+  note?: Maybe<Scalars['String']>;
+  /** The order associated with the refund. */
+  order: Shopify_Order;
+  /** The `RefundLineItem` resources attached to the refund. */
+  refundLineItems: Shopify_RefundLineItemConnection;
+  /**
+   * The total amount across all transactions for the refund.
+   * @deprecated Use `totalRefundedSet` instead
+   */
+  totalRefunded: Shopify_MoneyV2;
+  /** The total amount across all transactions for the refund, in shop and presentment currencies. */
+  totalRefundedSet: Shopify_MoneyBag;
+  /** The transactions associated with the refund. */
+  transactions: Shopify_OrderTransactionConnection;
+  /** The date and time when the refund was updated. */
+  updatedAt: Scalars['DateTime'];
+};
+
+
+/** The record of the line items and transactions that were refunded to a customer, along with restocking instructions for refunded line items. */
+export type Shopify_RefundRefundLineItemsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** The record of the line items and transactions that were refunded to a customer, along with restocking instructions for refunded line items. */
+export type Shopify_RefundTransactionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Represents a refunded duty. */
+export type Shopify_RefundDuty = {
+  __typename?: 'Shopify_RefundDuty';
+  /** The amount of a refunded duty in shop and presentment currencies. */
+  amountSet: Shopify_MoneyBag;
+  /** The duty associated with this refunded duty. */
+  originalDuty?: Maybe<Shopify_Duty>;
+};
+
+/** An auto-generated type for paginating through multiple RefundLineItems. */
+export type Shopify_RefundLineItemConnection = {
+  __typename?: 'Shopify_RefundLineItemConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_RefundLineItemEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one RefundLineItem and a cursor during pagination. */
+export type Shopify_RefundLineItemEdge = {
+  __typename?: 'Shopify_RefundLineItemEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of RefundLineItemEdge. */
+  node: Shopify_RefundLineItem;
+};
+
+/** A line item that's included in a refund. */
+export type Shopify_RefundLineItem = {
+  __typename?: 'Shopify_RefundLineItem';
+  /** The `LineItem` resource associated to the refunded line item. */
+  lineItem: Shopify_LineItem;
+  /** The inventory restock location. */
+  location?: Maybe<Shopify_Location>;
+  /**
+   * The price of a refunded line item.
+   * @deprecated Use `priceSet` instead
+   */
+  price: Scalars['Money'];
+  /** The price of a refunded line item in shop and presentment currencies. */
+  priceSet: Shopify_MoneyBag;
+  /** The quantity of a refunded line item. */
+  quantity: Scalars['Int'];
+  /** The type of restock for the refunded line item. */
+  restockType: Shopify_RefundLineItemRestockType;
+  /** Whether the refunded line item was restocked. Not applicable in the context of a SuggestedRefund. */
+  restocked: Scalars['Boolean'];
+  /**
+   * The subtotal price of a refunded line item.
+   * @deprecated Use `subtotalSet` instead
+   */
+  subtotal: Scalars['Money'];
+  /** The subtotal price of a refunded line item in shop and presentment currencies. */
+  subtotalSet: Shopify_MoneyBag;
+  /**
+   * The total tax charged on a refunded line item.
+   * @deprecated Use `totalTaxSet` instead
+   */
+  totalTax: Scalars['Money'];
+  /** The total tax charged on a refunded line item in shop and presentment currencies. */
+  totalTaxSet: Shopify_MoneyBag;
+};
+
+export enum Shopify_RefundLineItemRestockType {
+  Return = 'RETURN',
+  Cancel = 'CANCEL',
+  LegacyRestock = 'LEGACY_RESTOCK',
+  NoRestock = 'NO_RESTOCK'
+}
+
+/** An auto-generated type for paginating through multiple OrderTransactions. */
+export type Shopify_OrderTransactionConnection = {
+  __typename?: 'Shopify_OrderTransactionConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_OrderTransactionEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one OrderTransaction and a cursor during pagination. */
+export type Shopify_OrderTransactionEdge = {
+  __typename?: 'Shopify_OrderTransactionEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of OrderTransactionEdge. */
+  node: Shopify_OrderTransaction;
+};
+
+/** A payment transaction in the context of an order. */
+export type Shopify_OrderTransaction = {
+  __typename?: 'Shopify_OrderTransaction';
+  /** The masked account number associated with the payment method. */
+  accountNumber?: Maybe<Scalars['String']>;
+  /**
+   * The amount of money.
+   * @deprecated Use `amountSet` instead
+   */
+  amount: Scalars['Money'];
+  /** The amount and currency of the transaction in shop and presentment currencies. */
+  amountSet: Shopify_MoneyBag;
+  /**
+   * The amount and currency of the transaction.
+   * @deprecated Use `amountSet` instead
+   */
+  amountV2: Shopify_MoneyV2;
+  /** Authorization code associated with the transaction. */
+  authorizationCode?: Maybe<Scalars['String']>;
+  /** The time when the authorization expires. This field is available only to stores on a Shopify Plus plan and is populated only for Shopify Payments authorizations. */
+  authorizationExpiresAt?: Maybe<Scalars['DateTime']>;
+  /** Date and time when the transaction was created. */
+  createdAt: Scalars['DateTime'];
+  /** A standardized error code, independent of the payment provider. */
+  errorCode?: Maybe<Shopify_OrderTransactionErrorCode>;
+  /** The transaction fees charged on the order transaction. Only present for Shopify Payments transactions. */
+  fees: Array<Shopify_TransactionFee>;
+  /** The human-readable payment gateway name used to process the transaction. */
+  formattedGateway?: Maybe<Scalars['String']>;
+  /** The payment gateway used to process the transaction. */
+  gateway?: Maybe<Scalars['String']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** The kind of transaction. */
+  kind: Shopify_OrderTransactionKind;
+  /** Whether the transaction can be manually captured. */
+  manuallyCapturable: Scalars['Boolean'];
+  /**
+   * Specifies the available amount to refund on the gateway.
+   * This value is only available for transactions of type `SuggestedRefund`.
+   * @deprecated Use `maximumRefundableV2` instead
+   */
+  maximumRefundable?: Maybe<Scalars['Money']>;
+  /**
+   * Specifies the available amount with currency to refund on the gateway.
+   * This value is only available for transactions of type `SuggestedRefund`.
+   */
+  maximumRefundableV2?: Maybe<Shopify_MoneyV2>;
+  /** The associated order. */
+  order?: Maybe<Shopify_Order>;
+  /** The associated parent transaction, for example the authorization of a capture. */
+  parentTransaction?: Maybe<Shopify_OrderTransaction>;
+  /** The payment icon to display for the transaction. */
+  paymentIcon?: Maybe<Shopify_Image>;
+  /**
+   * The payment method used for the transaction. This value is `null` if the payment method is unknown.
+   * @deprecated Use `paymentIcon` instead
+   */
+  paymentMethod?: Maybe<Shopify_PaymentMethods>;
+  /** Date and time when the transaction was processed. */
+  processedAt?: Maybe<Scalars['DateTime']>;
+  /**
+   * The transaction receipt that the payment gateway attaches to the transaction.
+   * The value of this field depends on which payment gateway processed the transaction.
+   * @deprecated Use `receiptJson` instead
+   */
+  receipt?: Maybe<Scalars['String']>;
+  /** The settlement currency. */
+  settlementCurrency?: Maybe<Shopify_CurrencyCode>;
+  /** The rate used when converting the transaction amount to settlement currency. */
+  settlementCurrencyRate?: Maybe<Scalars['Decimal']>;
+  /** Contains all Shopify Payments information related to an order transaction. This field is available only to stores on a Shopify Plus plan. */
+  shopifyPaymentsSet?: Maybe<Shopify_ShopifyPaymentsTransactionSet>;
+  /** The status of this transaction. */
+  status: Shopify_OrderTransactionStatus;
+  /** Whether the transaction is a test transaction. */
+  test: Scalars['Boolean'];
+  /**
+   * Specifies the available amount to capture on the gateway.
+   * Only available when an amount is capturable or manually mark as paid.
+   * @deprecated Use `totalUnsettledSet` instead
+   */
+  totalUnsettled?: Maybe<Scalars['Money']>;
+  /**
+   * Specifies the available amount with currency to capture on the gateway in shop and presentment currencies.
+   * Only available when an amount is capturable or manually mark as paid.
+   */
+  totalUnsettledSet?: Maybe<Shopify_MoneyBag>;
+  /**
+   * Specifies the available amount with currency to capture on the gateway.
+   * Only available when an amount is capturable or manually mark as paid.
+   * @deprecated Use `totalUnsettledSet` instead
+   */
+  totalUnsettledV2?: Maybe<Shopify_MoneyV2>;
+};
+
+
+/** A payment transaction in the context of an order. */
+export type Shopify_OrderTransactionPaymentIconArgs = {
+  maxWidth?: InputMaybe<Scalars['Int']>;
+  maxHeight?: InputMaybe<Scalars['Int']>;
+  crop?: InputMaybe<Shopify_CropRegion>;
+  scale?: InputMaybe<Scalars['Int']>;
+};
+
+export enum Shopify_OrderTransactionErrorCode {
+  IncorrectNumber = 'INCORRECT_NUMBER',
+  InvalidNumber = 'INVALID_NUMBER',
+  InvalidExpiryDate = 'INVALID_EXPIRY_DATE',
+  InvalidCvc = 'INVALID_CVC',
+  ExpiredCard = 'EXPIRED_CARD',
+  IncorrectCvc = 'INCORRECT_CVC',
+  IncorrectZip = 'INCORRECT_ZIP',
+  IncorrectAddress = 'INCORRECT_ADDRESS',
+  IncorrectPin = 'INCORRECT_PIN',
+  CardDeclined = 'CARD_DECLINED',
+  ProcessingError = 'PROCESSING_ERROR',
+  CallIssuer = 'CALL_ISSUER',
+  PickUpCard = 'PICK_UP_CARD',
+  ConfigError = 'CONFIG_ERROR',
+  TestModeLiveCard = 'TEST_MODE_LIVE_CARD',
+  UnsupportedFeature = 'UNSUPPORTED_FEATURE',
+  GenericError = 'GENERIC_ERROR',
+  InvalidCountry = 'INVALID_COUNTRY',
+  InvalidAmount = 'INVALID_AMOUNT',
+  PaymentMethodUnavailable = 'PAYMENT_METHOD_UNAVAILABLE',
+  AmazonPaymentsInvalidPaymentMethod = 'AMAZON_PAYMENTS_INVALID_PAYMENT_METHOD',
+  AmazonPaymentsMaxAmountCharged = 'AMAZON_PAYMENTS_MAX_AMOUNT_CHARGED',
+  AmazonPaymentsMaxAmountRefunded = 'AMAZON_PAYMENTS_MAX_AMOUNT_REFUNDED',
+  AmazonPaymentsMaxAuthorizationsCaptured = 'AMAZON_PAYMENTS_MAX_AUTHORIZATIONS_CAPTURED',
+  AmazonPaymentsMaxRefundsProcessed = 'AMAZON_PAYMENTS_MAX_REFUNDS_PROCESSED',
+  AmazonPaymentsOrderReferenceCanceled = 'AMAZON_PAYMENTS_ORDER_REFERENCE_CANCELED',
+  AmazonPaymentsStale = 'AMAZON_PAYMENTS_STALE'
+}
+
+/** Transaction fee related to an order transaction. */
+export type Shopify_TransactionFee = {
+  __typename?: 'Shopify_TransactionFee';
+  /** Amount of the fee. */
+  amount: Shopify_MoneyV2;
+  /** Flat rate charge for a transaction. */
+  flatFee: Shopify_MoneyV2;
+  /** Name of the credit card flat fee. */
+  flatFeeName?: Maybe<Scalars['String']>;
+  /** A globally-unique identifier. */
+  id: Scalars['ID'];
+  /** Percentage charge. */
+  rate: Scalars['Decimal'];
+  /** Name of the credit card rate. */
+  rateName?: Maybe<Scalars['String']>;
+  /** Tax amount charged on the fee. */
+  taxAmount: Shopify_MoneyV2;
+  /** Name of the type of fee. */
+  type: Scalars['String'];
+};
+
+export enum Shopify_OrderTransactionKind {
+  Sale = 'SALE',
+  Capture = 'CAPTURE',
+  Authorization = 'AUTHORIZATION',
+  Void = 'VOID',
+  Refund = 'REFUND',
+  Change = 'CHANGE',
+  EmvAuthorization = 'EMV_AUTHORIZATION',
+  SuggestedRefund = 'SUGGESTED_REFUND'
+}
+
+export enum Shopify_PaymentMethods {
+  Visa = 'VISA',
+  Mastercard = 'MASTERCARD',
+  Discover = 'DISCOVER',
+  AmericanExpress = 'AMERICAN_EXPRESS',
+  DinersClub = 'DINERS_CLUB',
+  Jcb = 'JCB',
+  Unionpay = 'UNIONPAY',
+  Elo = 'ELO',
+  Dankort = 'DANKORT',
+  Maestro = 'MAESTRO',
+  Forbrugsforeningen = 'FORBRUGSFORENINGEN',
+  Paypal = 'PAYPAL',
+  Bogus = 'BOGUS',
+  Bitcoin = 'BITCOIN',
+  Litecoin = 'LITECOIN',
+  Dogecoin = 'DOGECOIN',
+  Interac = 'INTERAC'
+}
+
+/** Presents all Shopify Payments specific information related to an order transaction. */
+export type Shopify_ShopifyPaymentsTransactionSet = {
+  __typename?: 'Shopify_ShopifyPaymentsTransactionSet';
+  /** Contains all fields related to an extended authorization. */
+  extendedAuthorizationSet?: Maybe<Shopify_ShopifyPaymentsExtendedAuthorization>;
+  /** Contains all fields related to a refund. */
+  refundSet?: Maybe<Shopify_ShopifyPaymentsRefundSet>;
+};
+
+/** Presents all Shopify Payments information related to an extended authorization. */
+export type Shopify_ShopifyPaymentsExtendedAuthorization = {
+  __typename?: 'Shopify_ShopifyPaymentsExtendedAuthorization';
+  /** The time after which the extended authorization expires. After the expiry, the merchant is unable to capture the payment. */
+  extendedAuthorizationExpiresAt: Scalars['DateTime'];
+  /** The time after which capture will incur an additional fee. */
+  standardAuthorizationExpiresAt: Scalars['DateTime'];
+};
+
+/** Presents all Shopify Payments specific information related to an order refund. */
+export type Shopify_ShopifyPaymentsRefundSet = {
+  __typename?: 'Shopify_ShopifyPaymentsRefundSet';
+  /** The acquirer reference number (ARN) code generated for Visa/Mastercard transactions. */
+  acquirerReferenceNumber?: Maybe<Scalars['String']>;
+};
+
+export enum Shopify_OrderTransactionStatus {
+  Success = 'SUCCESS',
+  Failure = 'FAILURE',
+  Pending = 'PENDING',
+  Error = 'ERROR',
+  AwaitingResponse = 'AWAITING_RESPONSE',
+  Unknown = 'UNKNOWN'
+}
+
+export enum Shopify_OrderRiskLevel {
+  Low = 'LOW',
+  Medium = 'MEDIUM',
+  High = 'HIGH'
+}
+
+/** Represents a fraud check on an order. */
+export type Shopify_OrderRisk = {
+  __typename?: 'Shopify_OrderRisk';
+  /** Whether the risk level is shown in the Shopify admin. If false, then this order risk is ignored when Shopify determines the overall risk level for the order. */
+  display: Scalars['Boolean'];
+  /**
+   * The likelihood that an order is fraudulent, based on this order risk.
+   *
+   * The level can be set by Shopify risk analysis or by an app.
+   */
+  level?: Maybe<Shopify_OrderRiskLevel>;
+  /** The risk message that's shown to the merchant in the Shopify admin. */
+  message?: Maybe<Scalars['String']>;
+};
+
+/** Represents the shipping details that the customer chose for their order. */
+export type Shopify_ShippingLine = {
+  __typename?: 'Shopify_ShippingLine';
+  /**
+   * A reference to the carrier service that provided the rate.
+   * Present when the rate was computed by a third-party carrier service.
+   */
+  carrierIdentifier?: Maybe<Scalars['String']>;
+  /** A reference to the shipping method. */
+  code?: Maybe<Scalars['String']>;
+  /** Whether the shipping line is custom or not. */
+  custom: Scalars['Boolean'];
+  /** The general classification of the delivery method. */
+  deliveryCategory?: Maybe<Scalars['String']>;
+  /** The discounts that have been allocated to the shipping line. */
+  discountAllocations: Array<Shopify_DiscountAllocation>;
+  /**
+   * The pre-tax shipping price with discounts applied.
+   * @deprecated Use `discountedPriceSet` instead
+   */
+  discountedPrice: Shopify_MoneyV2;
+  /** The pre-tax shipping price with discounts applied. */
+  discountedPriceSet: Shopify_MoneyBag;
+  /** A globally-unique identifier. */
+  id?: Maybe<Scalars['ID']>;
+  /**
+   * The pre-tax shipping price without any discounts applied.
+   * @deprecated Use `originalPriceSet` instead
+   */
+  originalPrice: Shopify_MoneyV2;
+  /** The pre-tax shipping price without any discounts applied. */
+  originalPriceSet: Shopify_MoneyBag;
+  /** The phone number at the shipping address. */
+  phone?: Maybe<Scalars['String']>;
+  /**
+   * Returns the price of the shipping line.
+   * @deprecated Use `originalPriceSet` instead
+   */
+  price: Scalars['Money'];
+  /**
+   * The fulfillment service requested for the shipping method.
+   * Present if the shipping method requires processing by a third party fulfillment service.
+   */
+  requestedFulfillmentService?: Maybe<Shopify_FulfillmentService>;
+  /** A unique identifier for the shipping rate. The format can change without notice and is not meant to be shown to users. */
+  shippingRateHandle?: Maybe<Scalars['String']>;
+  /** Returns the rate source for the shipping line. */
+  source?: Maybe<Scalars['String']>;
+  /** The TaxLine objects connected to this shipping line. */
+  taxLines: Array<Shopify_TaxLine>;
+  /** Returns the title of the shipping line. */
+  title: Scalars['String'];
+};
+
+/** An auto-generated type for paginating through multiple ShippingLines. */
+export type Shopify_ShippingLineConnection = {
+  __typename?: 'Shopify_ShippingLineConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_ShippingLineEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one ShippingLine and a cursor during pagination. */
+export type Shopify_ShippingLineEdge = {
+  __typename?: 'Shopify_ShippingLineEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of ShippingLineEdge. */
+  node: Shopify_ShippingLine;
+};
+
+/** Represents a refund suggested by Shopify based on the items being reimbursed. You can then use the suggested refund object to generate an actual refund. */
+export type Shopify_SuggestedRefund = {
+  __typename?: 'Shopify_SuggestedRefund';
+  /**
+   * The total monetary value to be refunded.
+   * @deprecated Use `amountSet` instead
+   */
+  amount: Scalars['Money'];
+  /** The total monetary value to be refunded in shop and presentment currencies. */
+  amountSet: Shopify_MoneyBag;
+  /** The sum of all the discounted prices of the line items being refunded. */
+  discountedSubtotalSet: Shopify_MoneyBag;
+  /**
+   * The total monetary value available to refund.
+   * @deprecated Use `maximumRefundableSet` instead
+   */
+  maximumRefundable: Scalars['Money'];
+  /** The total monetary value available to refund in shop and presentment currencies. */
+  maximumRefundableSet: Shopify_MoneyBag;
+  /** A list of duties to be refunded from the order. */
+  refundDuties: Array<Shopify_RefundDuty>;
+  /** A list of line items to be refunded, along with restock instructions. */
+  refundLineItems: Array<Shopify_RefundLineItem>;
+  /** The shipping costs to be refunded from the order. */
+  shipping: Shopify_ShippingRefund;
+  /**
+   * The sum of all the prices of the line items being refunded.
+   * @deprecated Use `subtotalSet` instead
+   */
+  subtotal: Scalars['Money'];
+  /** The sum of all the prices of the line items being refunded in shop and presentment currencies. */
+  subtotalSet: Shopify_MoneyBag;
+  /** A list of suggested order transactions. */
+  suggestedTransactions: Array<Shopify_SuggestedOrderTransaction>;
+  /** The total cart discount amount that was applied to all line items in this refund. */
+  totalCartDiscountAmountSet: Shopify_MoneyBag;
+  /** The sum of all the duties being refunded from the order in shop and presentment currencies. The value must be positive. */
+  totalDutiesSet: Shopify_MoneyBag;
+  /** The sum of the taxes being refunded from the order in shop and presentment currencies. The value must be positive. */
+  totalTaxSet: Shopify_MoneyBag;
+  /**
+   * The sum of the taxes being refunded from the order. The value must be positive.
+   * @deprecated Use `totalTaxSet` instead
+   */
+  totalTaxes: Scalars['Money'];
+};
+
+/** Represents the shipping costs refunded on the Refund. */
+export type Shopify_ShippingRefund = {
+  __typename?: 'Shopify_ShippingRefund';
+  /**
+   * The monetary value of the shipping fees to be refunded.
+   * @deprecated Use `amountSet` instead
+   */
+  amount: Scalars['Money'];
+  /** The monetary value of the shipping fees to be refunded in shop and presentment currencies. */
+  amountSet: Shopify_MoneyBag;
+  /**
+   * The maximum amount of shipping fees currently refundable.
+   * @deprecated Use `maximumRefundableSet` instead
+   */
+  maximumRefundable: Scalars['Money'];
+  /** The maximum amount of shipping fees currently refundable in shop and presentment currencies. */
+  maximumRefundableSet: Shopify_MoneyBag;
+  /**
+   * The monetary value of the tax allocated to shipping fees to be refunded.
+   * @deprecated Use `taxSet` instead
+   */
+  tax: Scalars['Money'];
+  /** The monetary value of the tax allocated to shipping fees to be refunded in shop and presentment currencies. */
+  taxSet: Shopify_MoneyBag;
+};
+
+/**
+ * A suggested transaction. Suggested transaction are usually used in the context of refunds
+ * and exchanges.
+ */
+export type Shopify_SuggestedOrderTransaction = {
+  __typename?: 'Shopify_SuggestedOrderTransaction';
+  /** The masked account number associated with the payment method. */
+  accountNumber?: Maybe<Scalars['String']>;
+  /**
+   * The amount of the transaction.
+   * @deprecated Use `amountSet` instead
+   */
+  amount: Scalars['Money'];
+  /** The amount and currency of the suggested order transaction in shop and presentment currencies. */
+  amountSet: Shopify_MoneyBag;
+  /** The human-readable payment gateway name suggested to process the transaction. */
+  formattedGateway?: Maybe<Scalars['String']>;
+  /** The suggested payment gateway used to process the transaction. */
+  gateway?: Maybe<Scalars['String']>;
+  /** Specifies the kind of the suggested order transaction. */
+  kind: Shopify_SuggestedOrderTransactionKind;
+  /**
+   * Specifies the available amount to refund on the gateway. Only available within SuggestedRefund.
+   * @deprecated Use `maximumRefundableSet` instead
+   */
+  maximumRefundable?: Maybe<Scalars['Money']>;
+  /** Specifies the available amount to refund on the gateway in shop and presentment currencies. Only available within SuggestedRefund. */
+  maximumRefundableSet?: Maybe<Shopify_MoneyBag>;
+  /** The associated parent transaction, for example the authorization of a capture. */
+  parentTransaction?: Maybe<Shopify_OrderTransaction>;
+};
+
+export enum Shopify_SuggestedOrderTransactionKind {
+  SuggestedRefund = 'SUGGESTED_REFUND'
+}
+
+/** The fields required to reimburse line items on a refund. */
+export type Shopify_RefundLineItemInput = {
+  /** The ID of the line item in the refund. */
+  lineItemId: Scalars['ID'];
+  /** The quantity of the associated line item to be refunded. */
+  quantity: Scalars['Int'];
+  /** The type of restock for this line item. */
+  restockType?: InputMaybe<Shopify_RefundLineItemRestockType>;
+  /** The intended location for restocking. If the `restockType` is set to `NO_RESTOCK`, then this value is empty.` */
+  locationId?: InputMaybe<Scalars['ID']>;
+};
+
+/** The fields required to reimburse duties on a refund. */
+export type Shopify_RefundDutyInput = {
+  /** The ID of the duty in the refund. */
+  dutyId: Scalars['ID'];
+  /** The type of refund for this duty. */
+  refundType?: InputMaybe<Shopify_RefundDutyRefundType>;
+};
+
+export enum Shopify_RefundDutyRefundType {
+  Proportional = 'PROPORTIONAL',
+  Full = 'FULL'
+}
+
+export enum Shopify_CustomerMarketingOptInLevel {
+  SingleOptIn = 'SINGLE_OPT_IN',
+  ConfirmedOptIn = 'CONFIRMED_OPT_IN',
+  Unknown = 'UNKNOWN'
+}
+
+export enum Shopify_OrderSortKeys {
+  CreatedAt = 'CREATED_AT',
+  CustomerName = 'CUSTOMER_NAME',
+  FinancialStatus = 'FINANCIAL_STATUS',
+  FulfillmentStatus = 'FULFILLMENT_STATUS',
+  OrderNumber = 'ORDER_NUMBER',
+  ProcessedAt = 'PROCESSED_AT',
+  TotalPrice = 'TOTAL_PRICE',
+  UpdatedAt = 'UPDATED_AT',
+  Id = 'ID',
+  Relevance = 'RELEVANCE'
+}
+
+/** An auto-generated type for paginating through multiple CustomerPaymentMethods. */
+export type Shopify_CustomerPaymentMethodConnection = {
+  __typename?: 'Shopify_CustomerPaymentMethodConnection';
+  /** A list of edges. */
+  edges: Array<Shopify_CustomerPaymentMethodEdge>;
+  /** Information to aid in pagination. */
+  pageInfo: Shopify_PageInfo;
+};
+
+/** An auto-generated type which holds one CustomerPaymentMethod and a cursor during pagination. */
+export type Shopify_CustomerPaymentMethodEdge = {
+  __typename?: 'Shopify_CustomerPaymentMethodEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of CustomerPaymentMethodEdge. */
+  node: Shopify_CustomerPaymentMethod;
+};
+
+export enum Shopify_CustomerProductSubscriberStatus {
+  Active = 'ACTIVE',
+  Cancelled = 'CANCELLED',
+  Expired = 'EXPIRED',
+  Failed = 'FAILED',
+  NeverSubscribed = 'NEVER_SUBSCRIBED',
+  Paused = 'PAUSED'
+}
+
+/**
+ * The record of when a customer consented to receive marketing material by SMS.
+ *
+ * The customer's consent state reflects the record with the most recent date when consent was updated.
+ */
+export type Shopify_CustomerSmsMarketingConsentState = {
+  __typename?: 'Shopify_CustomerSmsMarketingConsentState';
+  /** The source from which the SMS marketing information for the customer was collected. */
+  consentCollectedFrom?: Maybe<Shopify_CustomerConsentCollectedFrom>;
+  /**
+   * The date and time when the customer consented to receive marketing material by SMS.
+   * If no date is provided, then the date and time when the consent information was sent is used.
+   */
+  consentUpdatedAt?: Maybe<Scalars['DateTime']>;
+  /** The marketing subscription opt-in level that was set when the customer consented to receive marketing information. */
+  marketingOptInLevel: Shopify_CustomerMarketingOptInLevel;
+  /** The current SMS marketing state for the customer. */
+  marketingState: Shopify_CustomerSmsMarketingState;
+};
+
+export enum Shopify_CustomerConsentCollectedFrom {
+  Shopify = 'SHOPIFY',
+  Other = 'OTHER'
+}
+
+export enum Shopify_CustomerSmsMarketingState {
+  NotSubscribed = 'NOT_SUBSCRIBED',
+  Pending = 'PENDING',
+  Subscribed = 'SUBSCRIBED',
+  Unsubscribed = 'UNSUBSCRIBED',
+  Redacted = 'REDACTED'
+}
+
+export enum Shopify_CustomerState {
+  Declined = 'DECLINED',
+  Disabled = 'DISABLED',
+  Enabled = 'ENABLED',
+  Invited = 'INVITED'
+}
+
+export enum Shopify_TaxExemption {
+  CaStatusCardExemption = 'CA_STATUS_CARD_EXEMPTION',
+  CaBcResellerExemption = 'CA_BC_RESELLER_EXEMPTION',
+  CaMbResellerExemption = 'CA_MB_RESELLER_EXEMPTION',
+  CaSkResellerExemption = 'CA_SK_RESELLER_EXEMPTION',
+  CaDiplomatExemption = 'CA_DIPLOMAT_EXEMPTION',
+  CaBcCommercialFisheryExemption = 'CA_BC_COMMERCIAL_FISHERY_EXEMPTION',
+  CaMbCommercialFisheryExemption = 'CA_MB_COMMERCIAL_FISHERY_EXEMPTION',
+  CaNsCommercialFisheryExemption = 'CA_NS_COMMERCIAL_FISHERY_EXEMPTION',
+  CaPeCommercialFisheryExemption = 'CA_PE_COMMERCIAL_FISHERY_EXEMPTION',
+  CaSkCommercialFisheryExemption = 'CA_SK_COMMERCIAL_FISHERY_EXEMPTION',
+  CaBcProductionAndMachineryExemption = 'CA_BC_PRODUCTION_AND_MACHINERY_EXEMPTION',
+  CaSkProductionAndMachineryExemption = 'CA_SK_PRODUCTION_AND_MACHINERY_EXEMPTION',
+  CaBcSubContractorExemption = 'CA_BC_SUB_CONTRACTOR_EXEMPTION',
+  CaSkSubContractorExemption = 'CA_SK_SUB_CONTRACTOR_EXEMPTION',
+  CaBcContractorExemption = 'CA_BC_CONTRACTOR_EXEMPTION',
+  CaSkContractorExemption = 'CA_SK_CONTRACTOR_EXEMPTION',
+  CaOnPurchaseExemption = 'CA_ON_PURCHASE_EXEMPTION',
+  CaMbFarmerExemption = 'CA_MB_FARMER_EXEMPTION',
+  CaNsFarmerExemption = 'CA_NS_FARMER_EXEMPTION',
+  CaSkFarmerExemption = 'CA_SK_FARMER_EXEMPTION'
+}
+
 /** Asset search results */
 export type AssetSearchResults = {
   __typename?: 'AssetSearchResults';
@@ -19767,6 +24030,8 @@ export type WithContext = {
   Shopify_productVariants?: Maybe<Shopify_ProductVariantConnection>;
   Shopify_products?: Maybe<Shopify_ProductConnection>;
   Shopify_product?: Maybe<Shopify_Product>;
+  Shopify_customer?: Maybe<Shopify_Customer>;
+  Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -20048,6 +24313,19 @@ export type WithContextShopify_ProductArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextShopify_CustomerArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextShopify_CustomerPaymentMethodArgs = {
+  id: Scalars['ID'];
+  showRevoked?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -20136,6 +24414,8 @@ export type Mutation = {
   deleteMySubscription?: Maybe<Stripe_Subscription>;
   /** Create a Shopify storefront cart. */
   createMyCheckoutSession?: Maybe<ShopifyStorefront_Cart>;
+  /** Create a Shopify storefront cart. */
+  createMyCheckout?: Maybe<ShopifyStorefront_Cart>;
   /** Create a Stripe checkout session for the signed-in user */
   createMyCheckoutSession_Stripe?: Maybe<Stripe_CheckoutSession>;
   /** Update Profile */
@@ -20157,6 +24437,8 @@ export type Mutation = {
   updateNavigationData?: Maybe<UpdateNavigationDataResult>;
   /** Update Footer */
   updateFooter?: Maybe<UpdateFooterResult>;
+  ShopifyStorefront_cartCreate?: Maybe<ShopifyStorefront_CartCreatePayload>;
+  createMyCart?: Maybe<ShopifyStorefront_CartCreatePayload>;
 };
 
 
@@ -20281,6 +24563,12 @@ export type MutationCreateMyCheckoutSessionArgs = {
 };
 
 
+export type MutationCreateMyCheckoutArgs = {
+  email?: InputMaybe<Scalars['String']>;
+  lines: Array<CreateMyCheckoutPropertiesLinesItemsPropertyInput>;
+};
+
+
 export type MutationCreateMyCheckoutSession_StripeArgs = {
   redirectUrl: Scalars['String'];
   mode: Scalars['String'];
@@ -20367,6 +24655,16 @@ export type MutationUpdateFooterArgs = {
   structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationShopifyStorefront_CartCreateArgs = {
+  input?: InputMaybe<ShopifyStorefront_CartInput>;
+};
+
+
+export type MutationCreateMyCartArgs = {
+  input?: InputMaybe<ShopifyStorefront_CartInput>;
 };
 
 /** A project file stored on s3 */
@@ -23538,6 +27836,12 @@ export type CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput = {
   sellingPlanId?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateMyCheckoutPropertiesLinesItemsPropertyInput = {
+  quantity: Scalars['Int'];
+  merchandiseId: Scalars['String'];
+  sellingPlanId?: InputMaybe<Scalars['String']>;
+};
+
 export type Stripe_CheckoutSession = {
   __typename?: 'Stripe_CheckoutSession';
   after_expiration?: Maybe<Stripe_PaymentPagesCheckoutSessionAfterExpiration>;
@@ -25049,4 +29353,83 @@ export type TextInput = {
   primary?: InputMaybe<Scalars['String']>;
   secondary?: InputMaybe<Scalars['String']>;
   button?: InputMaybe<Scalars['String']>;
+};
+
+/** Return type for `cartCreate` mutation. */
+export type ShopifyStorefront_CartCreatePayload = {
+  __typename?: 'ShopifyStorefront_CartCreatePayload';
+  /** The new cart. */
+  cart?: Maybe<ShopifyStorefront_Cart>;
+  /** The list of errors that occurred from executing the mutation. */
+  userErrors: Array<ShopifyStorefront_CartUserError>;
+};
+
+/** Represents an error that happens during execution of a cart mutation. */
+export type ShopifyStorefront_CartUserError = {
+  __typename?: 'ShopifyStorefront_CartUserError';
+  /** The error code. */
+  code?: Maybe<ShopifyStorefront_CartErrorCode>;
+  /** The path to the input field that caused the error. */
+  field?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /** The error message. */
+  message: Scalars['String'];
+};
+
+export enum ShopifyStorefront_CartErrorCode {
+  Invalid = 'INVALID',
+  LessThan = 'LESS_THAN',
+  InvalidMerchandiseLine = 'INVALID_MERCHANDISE_LINE',
+  MissingDiscountCode = 'MISSING_DISCOUNT_CODE',
+  MissingNote = 'MISSING_NOTE'
+}
+
+/** Specifies the input fields to create a cart. */
+export type ShopifyStorefront_CartInput = {
+  /** An array of key-value pairs that contains additional information about the cart. */
+  attributes?: InputMaybe<Array<InputMaybe<ShopifyStorefront_AttributeInput>>>;
+  /** A list of merchandise lines to add to the cart. */
+  lines?: InputMaybe<Array<InputMaybe<ShopifyStorefront_CartLineInput>>>;
+  /** The case-insensitive discount codes that the customer added at checkout. */
+  discountCodes?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** A note that is associated with the cart. For example, the note can be a personalized message to the buyer. */
+  note?: InputMaybe<Scalars['String']>;
+  /** The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address. */
+  buyerIdentity?: InputMaybe<ShopifyStorefront_CartBuyerIdentityInput>;
+};
+
+/** Specifies the input fields required for an attribute. */
+export type ShopifyStorefront_AttributeInput = {
+  /** Key or name of the attribute. */
+  key: Scalars['String'];
+  /** Value of the attribute. */
+  value: Scalars['String'];
+};
+
+/** Specifies the input fields to create a merchandise line on a cart. */
+export type ShopifyStorefront_CartLineInput = {
+  /** An array of key-value pairs that contains additional information about the merchandise line. */
+  attributes?: InputMaybe<Array<InputMaybe<ShopifyStorefront_AttributeInput>>>;
+  /** The quantity of the merchandise. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The identifier of the merchandise that the buyer intends to purchase. */
+  merchandiseId: Scalars['ID'];
+  /** The identifier of the selling plan that the merchandise is being purchased with. */
+  sellingPlanId?: InputMaybe<Scalars['ID']>;
+};
+
+/**
+ * Specifies the input fields to update the buyer information associated with a cart.
+ * Buyer identity is used to determine
+ * [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout)
+ * and should match the customer's shipping address.
+ */
+export type ShopifyStorefront_CartBuyerIdentityInput = {
+  /** The email address of the buyer that is interacting with the cart. */
+  email?: InputMaybe<Scalars['String']>;
+  /** The phone number of the buyer that is interacting with the cart. */
+  phone?: InputMaybe<Scalars['String']>;
+  /** The country where the buyer is located. */
+  countryCode?: InputMaybe<ShopifyStorefront_CountryCode>;
+  /** The access token used to identify the customer associated with the cart. */
+  customerAccessToken?: InputMaybe<Scalars['String']>;
 };

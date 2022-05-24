@@ -12,3 +12,6 @@ export const isMobileMenuOpenAtom = atom(false);
 
 /* Notification */
 export const notificationAtom = atomWithReset<NotificationMessage>({ title: '', body: '' });
+
+/* Loader */
+export const isModalLoaderOpenAtom = atom(false);

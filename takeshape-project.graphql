@@ -354,6 +354,17 @@ type Query {
     """The ID of the Product to return."""
     id: ID!
   ): Shopify_Product
+  Shopify_customer(
+    """The ID of the Customer to return."""
+    id: ID!
+  ): Shopify_Customer
+  Shopify_customerPaymentMethod(
+    """The ID of the CustomerPaymentMethod to return."""
+    id: ID!
+
+    """Whether to show the customer's revoked payment method."""
+    showRevoked: Boolean = false
+  ): Shopify_CustomerPaymentMethod
   searchAssetIndex(
     terms: String
 
@@ -18814,7 +18825,10 @@ type Shopify_ProductVariant {
 
 scalar Money
 
-"""The pricing of a particular product variant in a given context."""
+"""
+The price of a product variant in a specific country.
+Prices vary between countries.
+"""
 type Shopify_ProductVariantContextualPricing {
   """The final compare-at price after all adjustments are applied."""
   compareAtPrice: Shopify_MoneyV2
@@ -18943,7 +18957,6 @@ enum Shopify_CurrencyCode {
   RWF
   WST
   SAR
-  STD
   RSD
   SCR
   SGD
@@ -18989,6 +19002,7 @@ enum Shopify_CurrencyCode {
   SLL
   SHP
   SOS
+  STD
   TJS
   TOP
   VEF
@@ -22084,7 +22098,10 @@ enum Shopify_CollectionSortKeys {
   RELEVANCE
 }
 
-"""The pricing of a particular product in a given context."""
+"""
+The price of a product in a specific country.
+Prices vary between countries.
+"""
 type Shopify_ProductContextualPricing {
   """
   The pricing of the variant with the highest price in the given context.
@@ -23754,6 +23771,5174 @@ enum Shopify_ProductSortKeys {
   RELEVANCE
 }
 
+"""
+Represents information about a customer of the shop, such as the customer's contact details, their order
+history, and whether they've agreed to receive marketing material by email.
+
+**Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+"""
+type Shopify_Customer {
+  """Whether the customer has agreed to receive marketing material."""
+  acceptsMarketing: Boolean! @deprecated(reason: "Use `emailMarketingConsent` instead")
+
+  """
+  The date and time when the customer consented or objected to receiving marketing material by email.
+  """
+  acceptsMarketingUpdatedAt: DateTime! @deprecated(reason: "Use `emailMarketingConsent` instead")
+
+  """A list of addresses associated with the customer."""
+  addresses(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_MailingAddress!]!
+
+  """The average amount that the customer spent per order."""
+  averageOrderAmount: Money @deprecated(reason: "Use `averageOrderAmountV2` instead")
+
+  """The average amount that the customer spent per order."""
+  averageOrderAmountV2: Shopify_MoneyV2
+
+  """
+  Whether the merchant can delete the customer from their store.
+  
+  A customer can be deleted from a store only if they have not yet made an order. After a customer makes an
+  order, they can't be deleted from a store.
+  """
+  canDelete: Boolean!
+
+  """The date and time when the customer was added to the store."""
+  createdAt: DateTime!
+
+  """The default address associated with the customer."""
+  defaultAddress: Shopify_MailingAddress
+
+  """
+  The full name of the customer, based on the values for first_name and last_name. If the first_name and
+  last_name are not available, then this falls back to the customer's email address, and if that is not available, the customer's phone number.
+  """
+  displayName: String!
+
+  """The customer's email address."""
+  email: String
+
+  """A list of events associated with the customer."""
+  events(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_EventSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `comments`
+     - `created_at`
+     - `subject_type`
+     - `verb`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_EventConnection!
+
+  """The customer's first name."""
+  firstName: String
+
+  """Whether the customer has a note associated with them."""
+  hasNote: Boolean! @deprecated(reason: "Check for a value in the note field directly instead.")
+
+  """
+  Whether the merchant has added timeline comments about the customer on the customer's page.
+  """
+  hasTimelineComment: Boolean! @deprecated(reason: "To query for comments on the timeline, use the events connection and a `query` argument containing `verb:comment`, or look for a `CommentEvent` in the `__typename` of events.")
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The image associated with the customer."""
+  image(
+    """
+    Image width and height (1 - 2048 pixels) This argument is deprecated: Use `maxWidth` or `maxHeight` on `Image.transformedSrc` instead.
+    """
+    size: Int
+  ): Shopify_Image!
+
+  """The customer's last name."""
+  lastName: String
+
+  """The customer's last order."""
+  lastOrder: Shopify_Order
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """
+  The amount of time since the customer was first added to the store.
+  
+  Example: 'about 12 years'.
+  """
+  lifetimeDuration: String!
+
+  """The customer's locale."""
+  locale: String!
+
+  """
+  The marketing subscription opt-in level, as described by the M3AAWG best practices guidelines, that the
+  customer gave when they consented to receive marketing material by email.
+  
+  If the customer does not accept email marketing, then this property is `null`.
+  """
+  marketingOptInLevel: Shopify_CustomerMarketingOptInLevel @deprecated(reason: "Use `emailMarketingConsent` instead")
+
+  """Returns a metafield by namespace and key that belongs to the resource."""
+  metafield(
+    """The namespace for the metafield."""
+    namespace: String!
+
+    """The key for the metafield."""
+    key: String!
+  ): Shopify_Metafield
+
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definitions by namespace."""
+    namespace: String
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: Shopify_MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `created_at`
+     - `key`
+     - `namespace`
+     - `owner_type`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_MetafieldDefinitionConnection!
+
+  """List of metafields that belong to the resource."""
+  metafields(
+    """The metafield namespace to filter by."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_MetafieldConnection!
+
+  """A unique identifier for the customer that's used with Multipass login."""
+  multipassIdentifier: String
+
+  """A note about the customer."""
+  note: String
+
+  """A list of the customer's orders."""
+  orders(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_OrderSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `cart_token`
+     - `channel`
+     - `channel_id`
+     - `chargeback_status`
+     - `checkout_token`
+     - `created_at`
+     - `credit_card_last4`
+     - `customer_id`
+     - `delivery_method`
+     - `discount_code`
+     - `earliest_fulfill_by`
+     - `email`
+     - `financial_status`
+     - `fraud_protection_level`
+     - `fulfillment_location_id`
+     - `fulfillment_status`
+     - `gateway`
+     - `location_id`
+     - `name`
+     - `payment_provider_id`
+     - `processed_at`
+     - `reference_location_id`
+     - `return_status`
+     - `risk_level`
+     - `sales_channel`
+     - `source_identifier`
+     - `source_name`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `test`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_OrderConnection!
+
+  """
+  The number of orders that the customer has made at the store in their lifetime.
+  """
+  ordersCount: UnsignedInt64! @deprecated(reason: "Use `numberOfOrders` instead")
+
+  """A list of the customer's payment methods."""
+  paymentMethods(
+    """Whether to show the customer's revoked payment method."""
+    showRevoked: Boolean = false
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CustomerPaymentMethodConnection!
+
+  """The customer's phone number."""
+  phone: String
+
+  """
+  Returns a private metafield by namespace and key that belongs to the resource.
+  """
+  privateMetafield(
+    """The namespace for the private metafield."""
+    namespace: String!
+
+    """The key for the private metafield."""
+    key: String!
+  ): Shopify_PrivateMetafield
+
+  """List of private metafields that belong to the resource."""
+  privateMetafields(
+    """Filter the private metafields by namespace."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PrivateMetafieldConnection!
+
+  """
+  Possible subscriber states of a customer defined by their subscription contracts.
+  """
+  productSubscriberStatus: Shopify_CustomerProductSubscriberStatus!
+
+  """
+  The current SMS marketing state for the customer's phone number.
+  
+  If the customer does not have a phone number, then this property is `null`.
+  """
+  smsMarketingConsent: Shopify_CustomerSmsMarketingConsentState
+
+  """The state of the customer's account with the shop."""
+  state: Shopify_CustomerState!
+
+  """A list of the customer's subscription contracts."""
+  subscriptionContracts(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SubscriptionContractConnection!
+
+  """A comma separated list of tags that have been added to the customer."""
+  tags: [String!]!
+
+  """
+  Whether the customer is exempt from being charged taxes on their orders.
+  """
+  taxExempt: Boolean!
+
+  """The list of tax exemptions applied to the customer."""
+  taxExemptions: [Shopify_TaxExemption!]!
+
+  """
+  The total amount that the customer has spent on orders in their lifetime.
+  """
+  totalSpent: Money! @deprecated(reason: "Use `amountSpent` instead")
+
+  """
+  The total amount that the customer has spent on orders in their lifetime.
+  """
+  totalSpentV2: Shopify_MoneyV2! @deprecated(reason: "Use `amountSpent` instead")
+
+  """The date and time when the customer was last updated."""
+  updatedAt: DateTime!
+
+  """
+  Whether the email address is formatted correctly. This does not
+  guarantee that the email address actually exists.
+  """
+  validEmailAddress: Boolean!
+
+  """
+  Whether the customer has verified their email address. Defaults to `true` if the customer is created through the Shopify admin or API.
+  """
+  verifiedEmail: Boolean!
+}
+
+"""
+Represents a customer mailing address.
+
+For example, a customer's default address and an order's billing address are both mailling addresses.
+"""
+type Shopify_MailingAddress {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the customer's company or organization."""
+  company: String
+
+  """The name of the country."""
+  country: String
+
+  """
+  The two-letter code for the country of the address.
+  
+  For example, US.
+  """
+  countryCode: String @deprecated(reason: "Use `countryCodeV2` instead")
+
+  """
+  The two-letter code for the country of the address.
+  
+  For example, US.
+  """
+  countryCodeV2: Shopify_CountryCode
+
+  """The first name of the customer."""
+  firstName: String
+
+  """
+  A formatted version of the address, customized by the provided arguments.
+  """
+  formatted(
+    """Whether to include the customer's name in the formatted address."""
+    withName: Boolean = false
+
+    """Whether to include the customer's company in the formatted address."""
+    withCompany: Boolean = true
+  ): [String!]!
+
+  """A comma-separated list of the values for city, province, and country."""
+  formattedArea: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The last name of the customer."""
+  lastName: String
+
+  """The latitude coordinate of the customer address."""
+  latitude: Float
+
+  """The longitude coordinate of the customer address."""
+  longitude: Float
+
+  """The full name of the customer, based on firstName and lastName."""
+  name: String
+
+  """
+  A unique phone number for the customer.
+  
+  Formatted using E.164 standard. For example, _+16135551111_.
+  """
+  phone: String
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """
+  The two-letter code for the region.
+  
+  For example, ON.
+  """
+  provinceCode: String
+
+  """The zip or postal code of the address."""
+  zip: String
+}
+
+"""An auto-generated type for paginating through multiple Events."""
+type Shopify_EventConnection {
+  """A list of edges."""
+  edges: [Shopify_EventEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Event and a cursor during pagination.
+"""
+type Shopify_EventEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of EventEdge."""
+  node: Shopify_Event!
+}
+
+"""
+Events chronicle resource activities such as the creation of an article, the fulfillment of an order, or the
+addition of a product.
+"""
+type Shopify_Event {
+  """The name of the app that created the event."""
+  appTitle: String
+
+  """Whether the event was created by an app."""
+  attributeToApp: Boolean!
+
+  """Whether the event was caused by an admin user."""
+  attributeToUser: Boolean!
+
+  """The date and time when the event was created."""
+  createdAt: DateTime!
+
+  """Whether the event is critical."""
+  criticalAlert: Boolean!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Human readable text that describes the event."""
+  message: FormattedString!
+}
+
+enum Shopify_EventSortKeys {
+  CREATED_AT
+  ID
+  RELEVANCE
+}
+
+"""
+An order is a customer's request to purchase one or more products from a shop. You can retrieve and update orders using the Order object.
+Learn more about [editing an existing order with the Admin API](https://shopify.dev/api/examples/order-editing).
+
+Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
+then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
+[Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
+
+**Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+"""
+type Shopify_Order {
+  """A list of sales agreements associated with the order."""
+  agreements(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """
+    Supported filter parameters:
+     - `happened_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_SalesAgreementConnection!
+
+  """A list of messages that appear on the order page in the Shopify admin."""
+  alerts: [Shopify_ResourceAlert!]!
+
+  """The application that created the order."""
+  app: Shopify_OrderApp
+
+  """The billing address of the customer."""
+  billingAddress: Shopify_MailingAddress
+
+  """Whether the billing address matches the shipping address."""
+  billingAddressMatchesShippingAddress: Boolean!
+
+  """Whether the order can be manually marked as paid."""
+  canMarkAsPaid: Boolean!
+
+  """Whether a customer email exists for the order."""
+  canNotifyCustomer: Boolean!
+
+  """
+  The reason provided when the order was canceled.
+  Returns `null` if the order wasn't canceled.
+  """
+  cancelReason: Shopify_OrderCancelReason
+
+  """
+  The date and time when the order was canceled.
+  Returns `null` if the order wasn't canceled.
+  """
+  cancelledAt: DateTime
+
+  """Whether payment for the order can be captured."""
+  capturable: Boolean!
+
+  """
+  The total order-level discount amount, before returns, in shop currency.
+  """
+  cartDiscountAmount: Money @deprecated(reason: "Use `cartDiscountAmountSet` instead")
+
+  """
+  The total order-level discount amount, before returns, in shop and presentment currencies.
+  """
+  cartDiscountAmountSet: Shopify_MoneyBag
+
+  """The channel that created the order."""
+  channel: Shopify_Channel @deprecated(reason: "Use `publication` instead")
+
+  """The IP address of the API client that created the order."""
+  clientIp: String
+
+  """Whether the order is closed."""
+  closed: Boolean!
+
+  """
+  The date and time when the order was closed.
+  Returns `null` if the order is not closed.
+  """
+  closedAt: DateTime
+
+  """Whether inventory has been reserved for the order."""
+  confirmed: Boolean!
+
+  """Date and time when the order was created in Shopify."""
+  createdAt: DateTime!
+
+  """The shop currency when the order was placed."""
+  currencyCode: Shopify_CurrencyCode!
+
+  """
+  The current order-level discount amount after all order updates, in shop and presentment currencies.
+  """
+  currentCartDiscountAmountSet: Shopify_MoneyBag!
+
+  """
+  The sum of the quantities for all line items that contribute to the order's current subtotal price.
+  """
+  currentSubtotalLineItemsQuantity: Int!
+
+  """
+  The sum of the prices for all line items after discounts and returns, in shop and presentment currencies.
+  If `taxesIncluded` is `true`, then the subtotal also includes tax.
+  """
+  currentSubtotalPriceSet: Shopify_MoneyBag!
+
+  """
+  A list of all tax lines applied to line items on the order, after returns.
+  Tax line prices represent the total price for all tax lines with the same `rate` and `title`.
+  """
+  currentTaxLines: [Shopify_TaxLine!]!
+
+  """
+  The total amount discounted on the order after returns, in shop and presentment currencies.
+  This includes both order and line level discounts.
+  """
+  currentTotalDiscountsSet: Shopify_MoneyBag!
+
+  """
+  The total amount of duties after returns, in shop and presentment currencies.
+  Returns `null` if duties aren't applicable.
+  """
+  currentTotalDutiesSet: Shopify_MoneyBag
+
+  """
+  The total price of the order, after returns, in shop and presentment currencies.
+  This includes taxes and discounts.
+  """
+  currentTotalPriceSet: Shopify_MoneyBag!
+
+  """
+  The sum of the prices of all tax lines applied to line items on the order, after returns, in shop and presentment currencies.
+  """
+  currentTotalTaxSet: Shopify_MoneyBag!
+
+  """The total weight of the order after returns, in grams."""
+  currentTotalWeight: UnsignedInt64!
+
+  """A list of the custom attributes added to the order."""
+  customAttributes: [Shopify_Attribute!]!
+
+  """The customer that placed the order."""
+  customer: Shopify_Customer
+
+  """Whether the customer agreed to receive marketing materials."""
+  customerAcceptsMarketing: Boolean!
+
+  """
+  The customer's visits and interactions with the online store before placing the order.
+  """
+  customerJourney: Shopify_CustomerJourney @deprecated(reason: "Use `customerJourneySummary` instead")
+
+  """
+  The customer's visits and interactions with the online store before placing the order.
+  """
+  customerJourneySummary: Shopify_CustomerJourneySummary
+
+  """
+  A two-letter or three-letter language code, optionally followed by a region modifier.
+  """
+  customerLocale: String
+
+  """A list of discounts that are applied to the order."""
+  discountApplications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_DiscountApplicationConnection!
+
+  """The discount code used for the order."""
+  discountCode: String
+
+  """
+  The primary address of the customer.
+  Returns `null` if neither the shipping address nor the billing address was provided.
+  """
+  displayAddress: Shopify_MailingAddress
+
+  """
+  The financial status of the order that can be shown to the merchant.
+  This field does not capture all the details of an order's financial state. It should only be used for display summary purposes.
+  """
+  displayFinancialStatus: Shopify_OrderDisplayFinancialStatus
+
+  """
+  The fulfillment status for the order that can be shown to the merchant.
+  This field does not capture all the details of an order's fulfillment state. It should only be used for display summary purposes.
+  For a more granular view of the fulfillment status, refer to the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object.
+  """
+  displayFulfillmentStatus: Shopify_OrderDisplayFulfillmentStatus!
+
+  """A list of the disputes associated with the order."""
+  disputes: [Shopify_OrderDisputeSummary!]!
+
+  """
+  A list of draft fulfillments that can be created for the order, which includes line items that can be partially fulfilled.
+  """
+  draftFulfillments: [Shopify_DraftFulfillment!]! @deprecated(reason: "Use `fulfillmentOrders` instead")
+
+  """Whether the order has had any edits applied."""
+  edited: Boolean!
+
+  """The email address associated with the customer."""
+  email: String
+
+  """
+  Whether taxes on the order are estimated.
+  This field returns `false` when taxes on the order are finalized and aren't subject to any changes.
+  """
+  estimatedTaxes: Boolean!
+
+  """A list of events associated with the order."""
+  events(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_EventSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `comments`
+     - `created_at`
+     - `subject_type`
+     - `verb`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_EventConnection!
+
+  """
+  Whether there are line items that can be fulfilled.
+  This field returns `false` when the order has no fulfillable line items.
+  For a more granular view of the fulfillment status, refer to the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object.
+  """
+  fulfillable: Boolean!
+
+  """A list of fulfillment orders for the order."""
+  fulfillmentOrders(
+    """
+    Whether fulfillment orders that are hidden from the merchant are included.
+    For example, fulfillment orders that were closed after being combined or moved are hidden.
+    """
+    displayable: Boolean = false
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """
+    Supported filter parameters:
+     - `assigned_location_id`
+     - `status`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_FulfillmentOrderConnection!
+
+  """List of shipments for the order."""
+  fulfillments(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_Fulfillment!]!
+
+  """Whether the order has been paid in full."""
+  fullyPaid: Boolean!
+
+  """Whether the merchant added a timeline comment to the order."""
+  hasTimelineComment: Boolean!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """
+  The URL of the first page of the online store that the customer visited before they submitted the order.
+  """
+  landingPageDisplayText: String @deprecated(reason: "Use `customerJourneySummary.lastVisit.landingPageHtml` instead")
+
+  """
+  The first page of the online store that the customer visited before they submitted the order.
+  """
+  landingPageUrl: Url @deprecated(reason: "Use `customerJourneySummary.lastVisit.landingPage` instead")
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """A list of the order's line items."""
+  lineItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_LineItemConnection!
+
+  """A list of the order's line items."""
+  lineItemsMutable(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_LineItemMutableConnection! @deprecated(reason: "Use `lineItems` instead")
+
+  """List of localization extensions for the resource."""
+  localizationExtensions(
+    """The country codes of the extensions."""
+    countryCodes: [Shopify_CountryCode]
+
+    """The purpose of the extensions."""
+    purposes: [Shopify_LocalizationExtensionPurpose]
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_LocalizationExtensionConnection!
+
+  """
+  The fulfillment location that was assigned when the order was created.
+  Use the [`FulfillmentOrder`](https://shopify.dev/api/admin-graphql/latest/objects/fulfillmentorder) object for up-to-date fulfillment location information.
+  """
+  location: String @deprecated(reason: "Use `physicalLocation` instead")
+
+  """
+  Whether the order can be edited by the merchant. For example, canceled orders can’t be edited.
+  """
+  merchantEditable: Boolean!
+
+  """
+  A list of reasons why the order can't be edited. For example, "Canceled orders can’t be edited".
+  """
+  merchantEditableErrors: [String!]!
+
+  """Returns a metafield by namespace and key that belongs to the resource."""
+  metafield(
+    """The namespace for the metafield."""
+    namespace: String!
+
+    """The key for the metafield."""
+    key: String!
+  ): Shopify_Metafield
+
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definitions by namespace."""
+    namespace: String
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: Shopify_MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `created_at`
+     - `key`
+     - `namespace`
+     - `owner_type`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_MetafieldDefinitionConnection!
+
+  """List of metafields that belong to the resource."""
+  metafields(
+    """The metafield namespace to filter by."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_MetafieldConnection!
+
+  """
+  The unique identifier for the order that appears on the order page in the Shopify admin and the order status page.
+  For example, "#1001", "EN1001", or "1001-A".
+  This value isn't unique across multiple stores.
+  """
+  name: String!
+
+  """
+  The net payment for the order, based on the total amount received minus the total amount refunded, in shop currency.
+  """
+  netPayment: Money! @deprecated(reason: "Use `netPaymentSet` instead")
+
+  """
+  The net payment for the order, based on the total amount received minus the total amount refunded, in shop and presentment currencies.
+  """
+  netPaymentSet: Shopify_MoneyBag!
+
+  """
+  A list of line items that can't be fulfilled.
+  For example, tips and fully refunded line items can't be fulfilled.
+  For a more granular view of the fulfillment status, refer to the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object.
+  """
+  nonFulfillableLineItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_LineItemConnection!
+
+  """The contents of the note associated with the order."""
+  note: String
+
+  """
+  The total amount of duties before returns, in shop and presentment currencies.
+  Returns `null` if duties aren't applicable.
+  """
+  originalTotalDutiesSet: Shopify_MoneyBag
+
+  """
+  The total price of the order at the time of order creation, in shop and presentment currencies.
+  """
+  originalTotalPriceSet: Shopify_MoneyBag!
+
+  """The payment collection details for the order."""
+  paymentCollectionDetails: Shopify_OrderPaymentCollectionDetails!
+
+  """
+  A list of the names of all payment gateways used for the order.
+  For example, "Shopify Payments" and "Cash on Delivery (COD)".
+  """
+  paymentGatewayNames: [String!]!
+
+  """The payment terms associated with the order."""
+  paymentTerms: Shopify_PaymentTerms
+
+  """The phone number associated with the customer."""
+  phone: String
+
+  """
+  The fulfillment location that was assigned when the order was created.
+  Use the [`FulfillmentOrder`](https://shopify.dev/api/admin-graphql/latest/objects/fulfillmentorder) object for up to date fulfillment location information.
+  """
+  physicalLocation: Shopify_Location
+
+  """The payment `CurrencyCode` of the customer for the order."""
+  presentmentCurrencyCode: Shopify_CurrencyCode!
+
+  """
+  Returns a private metafield by namespace and key that belongs to the resource.
+  """
+  privateMetafield(
+    """The namespace for the private metafield."""
+    namespace: String!
+
+    """The key for the private metafield."""
+    key: String!
+  ): Shopify_PrivateMetafield
+
+  """List of private metafields that belong to the resource."""
+  privateMetafields(
+    """Filter the private metafields by namespace."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PrivateMetafieldConnection!
+
+  """
+  The date and time when the order was processed.
+  This date and time might not match the date and time when the order was created.
+  """
+  processedAt: DateTime!
+
+  """The publication that the order was created from."""
+  publication: Shopify_Publication
+
+  """
+  The marketing referral code from the link that the customer clicked to visit the store.
+  Supports the following URL attributes: "ref", "source", or "r".
+  For example, if the URL is `{shop}.myshopify.com/products/slide?ref=j2tj1tn2`, then this value is `j2tj1tn2`.
+  """
+  referralCode: String @deprecated(reason: "Use `customerJourneySummary.lastVisit.referralCode` instead")
+
+  """
+  A web domain or short description of the source that sent the customer to your online store. For example, "shopify.com" or "email".
+  """
+  referrerDisplayText: String @deprecated(reason: "Use `customerJourneySummary.lastVisit.referralInfoHtml` instead")
+
+  """
+  The URL of the webpage where the customer clicked a link that sent them to your online store.
+  """
+  referrerUrl: Url @deprecated(reason: "Use `customerJourneySummary.lastVisit.referrerUrl` instead")
+
+  """
+  The difference between the suggested and actual refund amount of all refunds that have been applied to the order. A positive value indicates a difference in the merchant's favor, and a negative value indicates a difference in the customer's favor.
+  """
+  refundDiscrepancySet: Shopify_MoneyBag!
+
+  """Whether the order can be refunded."""
+  refundable: Boolean!
+
+  """A list of refunds that have been applied to the order."""
+  refunds(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_Refund!]!
+
+  """
+  Whether the order has shipping lines or at least one line item on the order that requires shipping.
+  """
+  requiresShipping: Boolean!
+
+  """Whether any line item on the order can be restocked."""
+  restockable: Boolean!
+
+  """The fraud risk level of the order."""
+  riskLevel: Shopify_OrderRiskLevel!
+
+  """A list of risks associated with the order."""
+  risks(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_OrderRisk!]!
+
+  """The mailing address of the customer."""
+  shippingAddress: Shopify_MailingAddress
+
+  """A summary of all shipping costs on the order."""
+  shippingLine: Shopify_ShippingLine
+
+  """A list of the order's shipping lines."""
+  shippingLines(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ShippingLineConnection!
+
+  """
+  The sum of the quantities for all line items that contribute to the order's subtotal price.
+  """
+  subtotalLineItemsQuantity: Int!
+
+  """
+  The sum of the prices for all line items after discounts and before returns, in shop currency.
+  If `taxesIncluded` is `true`, then the subtotal also includes tax.
+  """
+  subtotalPrice: Money @deprecated(reason: "Use `subtotalPriceSet` instead")
+
+  """
+  The sum of the prices for all line items after discounts and before returns, in shop and presentment currencies.
+  If `taxesIncluded` is `true`, then the subtotal also includes tax.
+  """
+  subtotalPriceSet: Shopify_MoneyBag
+
+  """A suggested refund for the order."""
+  suggestedRefund(
+    """
+    The amount to refund for shipping. Overrides the `refundShipping` argument.
+    Use the `shippingAmountV2` argument for multi-currency orders.
+    """
+    shippingAmount: Money
+
+    """Whether to refund the full shipping amount."""
+    refundShipping: Boolean
+
+    """The line items from the order to include in the refund."""
+    refundLineItems: [Shopify_RefundLineItemInput]
+
+    """The duties from the order to include in the refund."""
+    refundDuties: [Shopify_RefundDutyInput]
+
+    """
+    Whether the suggested refund should be created from all refundable line items on the order.
+    If `true`, the `refundLineItems` argument will be ignored.
+    """
+    suggestFullRefund: Boolean = false
+  ): Shopify_SuggestedRefund
+
+  """
+  A comma separated list of tags associated with the order. Updating `tags` overwrites
+  any existing tags that were previously added to the order. To add new tags without overwriting
+  existing tags, use the [tagsAdd](https://shopify.dev/api/admin-graphql/latest/mutations/tagsadd)
+  mutation.
+  """
+  tags: [String!]!
+
+  """
+  A list of all tax lines applied to line items on the order, before returns.
+  Tax line prices represent the total price for all tax lines with the same `rate` and `title`.
+  """
+  taxLines: [Shopify_TaxLine!]!
+
+  """Whether taxes are included in the subtotal price of the order."""
+  taxesIncluded: Boolean!
+
+  """
+  Whether the order is a test.
+  Test orders are made using the Shopify Bogus Gateway or a payment provider with test mode enabled.
+  A test order cannot be converted into a real order and vice versa.
+  """
+  test: Boolean!
+
+  """
+  The authorized amount that is uncaptured or undercaptured, in shop currency.
+  This amount isn't adjusted for returns.
+  """
+  totalCapturable: Money! @deprecated(reason: "Use `totalCapturableSet` instead")
+
+  """
+  The authorized amount that is uncaptured or undercaptured, in shop and presentment currencies.
+  This amount isn't adjusted for returns.
+  """
+  totalCapturableSet: Shopify_MoneyBag!
+
+  """
+  The total amount discounted on the order before returns, in shop currency.
+  This includes both order and line level discounts.
+  """
+  totalDiscounts: Money @deprecated(reason: "Use `totalDiscountsSet` instead")
+
+  """
+  The total amount discounted on the order before returns, in shop and presentment currencies.
+  This includes both order and line level discounts.
+  """
+  totalDiscountsSet: Shopify_MoneyBag
+
+  """
+  The total amount not yet transacted for the order, in shop and presentment currencies.
+  A positive value indicates a difference in the merchant's favor (payment from customer to merchant) and a negative value indicates a difference in the customer's favor (refund from merchant to customer).
+  """
+  totalOutstandingSet: Shopify_MoneyBag!
+
+  """
+  The total price of the order, before returns, in shop currency.
+  This includes taxes and discounts.
+  """
+  totalPrice: Money! @deprecated(reason: "Use `totalPriceSet` instead")
+
+  """
+  The total price of the order, before returns, in shop and presentment currencies.
+  This includes taxes and discounts.
+  """
+  totalPriceSet: Shopify_MoneyBag!
+
+  """
+  The total amount received from the customer before returns, in shop currency.
+  """
+  totalReceived: Money! @deprecated(reason: "Use `totalReceivedSet` instead")
+
+  """
+  The total amount received from the customer before returns, in shop and presentment currencies.
+  """
+  totalReceivedSet: Shopify_MoneyBag!
+
+  """The total amount that was refunded, in shop currency."""
+  totalRefunded: Money! @deprecated(reason: "Use `totalRefundedSet` instead")
+
+  """
+  The total amount that was refunded, in shop and presentment currencies.
+  """
+  totalRefundedSet: Shopify_MoneyBag!
+
+  """
+  The total amount of shipping that was refunded, in shop and presentment currencies.
+  """
+  totalRefundedShippingSet: Shopify_MoneyBag!
+
+  """
+  The total shipping amount before discounts and returns, in shop currency.
+  """
+  totalShippingPrice: Money! @deprecated(reason: "Use `totalShippingPriceSet` instead")
+
+  """
+  The total shipping amount before discounts and returns, in shop and presentment currencies.
+  """
+  totalShippingPriceSet: Shopify_MoneyBag!
+
+  """The total tax amount before returns, in shop currency."""
+  totalTax: Money @deprecated(reason: "Use `totalTaxSet` instead")
+
+  """
+  The total tax amount before returns, in shop and presentment currencies.
+  """
+  totalTaxSet: Shopify_MoneyBag
+
+  """The sum of all tip amounts for the order, in shop currency."""
+  totalTipReceived: Shopify_MoneyV2! @deprecated(reason: "Use `totalTipReceivedSet` instead")
+
+  """
+  The sum of all tip amounts for the order, in shop and presentment currencies.
+  """
+  totalTipReceivedSet: Shopify_MoneyBag!
+
+  """The total weight of the order before returns, in grams."""
+  totalWeight: UnsignedInt64
+
+  """A list of transactions associated with the order."""
+  transactions(
+    """Truncate the array result to this size."""
+    first: Int
+
+    """Filter transactions by whether they are capturable."""
+    capturable: Boolean
+
+    """
+    Filter transactions by whether they can be resolved manually.
+    For example, fully captured or voided transactions are not manually resolvable.
+    """
+    manuallyResolvable: Boolean
+  ): [Shopify_OrderTransaction!]!
+
+  """Whether no payments have been made for the order."""
+  unpaid: Boolean!
+
+  """The date and time when the order was modified last."""
+  updatedAt: DateTime!
+}
+
+"""
+An auto-generated type for paginating through multiple SalesAgreements.
+"""
+type Shopify_SalesAgreementConnection {
+  """A list of edges."""
+  edges: [Shopify_SalesAgreementEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one SalesAgreement and a cursor during pagination.
+"""
+type Shopify_SalesAgreementEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SalesAgreementEdge."""
+  node: Shopify_SalesAgreement!
+}
+
+"""
+An addition, removal, modification, or other sale commitment associated with an order.
+"""
+type Shopify_SalesAgreement {
+  """The application that created the agreement."""
+  app: Shopify_App
+
+  """The date and time at which the agreement occured."""
+  happenedAt: DateTime!
+
+  """The unique identifier for the agreement."""
+  id: ID!
+
+  """The reason the agremeent was created."""
+  reason: Shopify_OrderActionType!
+
+  """The sales associated with the agreement."""
+  sales(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SaleConnection!
+}
+
+enum Shopify_OrderActionType {
+  ORDER
+  ORDER_EDIT
+  REFUND
+  UNKNOWN
+}
+
+"""An auto-generated type for paginating through multiple Sales."""
+type Shopify_SaleConnection {
+  """A list of edges."""
+  edges: [Shopify_SaleEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Sale and a cursor during pagination.
+"""
+type Shopify_SaleEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SaleEdge."""
+  node: Shopify_Sale!
+}
+
+"""An individual sale record associated with a sales agreement."""
+type Shopify_Sale {
+  """The type of order action that the sale represents."""
+  actionType: Shopify_SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line type assocated with the sale."""
+  lineType: Shopify_SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [Shopify_SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: Shopify_MoneyBag!
+
+  """The total discounts allocated to the sale after taxes."""
+  totalDiscountAmountAfterTaxes: Shopify_MoneyBag!
+
+  """The total discounts allocated to the sale before taxes."""
+  totalDiscountAmountBeforeTaxes: Shopify_MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: Shopify_MoneyBag!
+}
+
+enum Shopify_SaleActionType {
+  ORDER
+  RETURN
+  UPDATE
+  UNKNOWN
+}
+
+enum Shopify_SaleLineType {
+  PRODUCT
+  TIP
+  GIFT_CARD
+  SHIPPING
+  DUTY
+  UNKNOWN
+  ADJUSTMENT
+}
+
+"""The tax allocated to a sale from a single tax line."""
+type Shopify_SaleTax {
+  """
+  The portion of the total tax amount on the related sale that comes from the associated tax line.
+  """
+  amount: Shopify_MoneyBag!
+
+  """The unique identifier for the sale tax."""
+  id: ID!
+
+  """The tax line associated with the sale."""
+  taxLine: Shopify_TaxLine!
+}
+
+"""
+A collection of monetary values in their respective currencies. Typically used in the context of multi-currency pricing and transactions,
+when an amount in the shop's currency is converted to the customer's currency of choice (the presentment currency).
+"""
+type Shopify_MoneyBag {
+  """Amount in presentment currency."""
+  presentmentMoney: Shopify_MoneyV2!
+
+  """Amount in shop currency."""
+  shopMoney: Shopify_MoneyV2!
+}
+
+"""Represents a single tax applied to the associated line item."""
+type Shopify_TaxLine {
+  """
+  Whether the channel that submitted the tax line is liable for remitting. A value of null indicates unknown liability for this tax line.
+  """
+  channelLiable: Boolean
+
+  """
+  The amount of tax, in shop currency, after discounts and before returns.
+  """
+  price: Money! @deprecated(reason: "Use `priceSet` instead")
+
+  """
+  The amount of tax, in shop and presentment currencies, after discounts and before returns.
+  """
+  priceSet: Shopify_MoneyBag!
+
+  """
+  The proportion of the line item price that the tax represents as a decimal.
+  """
+  rate: Float
+
+  """
+  The proportion of the line item price that the tax represents as a percentage.
+  """
+  ratePercentage: Float
+
+  """The name of the tax."""
+  title: String!
+}
+
+"""
+An alert message that appears in the Shopify admin about a problem with a store resource, with 1 or more actions to take. For example, you could use an alert to indicate that you're not charging taxes on some product variants.
+They can optionally have a specific icon and be dismissed by merchants.
+"""
+type Shopify_ResourceAlert {
+  """
+  Buttons in the alert that link to related information.
+  For example, _Edit variants_.
+  """
+  actions: [Shopify_ResourceAlertAction!]!
+
+  """
+  The secondary text in the alert that includes further information or instructions about how to solve a problem.
+  """
+  content: Html!
+
+  """
+  Unique identifier that appears when an alert is manually closed by the merchant.
+  Most alerts cannot be manually closed.
+  """
+  dismissibleHandle: String
+
+  """An icon that is optionally displayed with the alert."""
+  icon: Shopify_ResourceAlertIcon
+
+  """Indication of how important the alert is."""
+  severity: Shopify_ResourceAlertSeverity!
+
+  """
+  The primary text in the alert that includes information or describes the problem.
+  """
+  title: String!
+}
+
+"""An action associated to a resource alert, such as editing variants."""
+type Shopify_ResourceAlertAction {
+  """Whether the action appears as a button or as a link."""
+  primary: Boolean!
+
+  """Resource for the action to show."""
+  show: String
+
+  """The text for the button in the alert. For example, _Edit variants_."""
+  title: String!
+
+  """The target URL that the button links to."""
+  url: Url!
+}
+
+enum Shopify_ResourceAlertIcon {
+  CHECKMARK_CIRCLE
+  INFORMATION_CIRCLE
+}
+
+enum Shopify_ResourceAlertSeverity {
+  DEFAULT
+  INFO
+  WARNING
+  SUCCESS
+  CRITICAL
+  ERROR
+}
+
+"""The [application](https://shopify.dev/apps) that created the order."""
+type Shopify_OrderApp {
+  """The application icon."""
+  icon: Shopify_Image!
+
+  """The name of the application."""
+  name: String!
+}
+
+enum Shopify_OrderCancelReason {
+  CUSTOMER
+  FRAUD
+  INVENTORY
+  DECLINED
+  OTHER
+}
+
+"""Represents a generic custom attribute."""
+type Shopify_Attribute {
+  """Key or name of the attribute."""
+  key: String!
+
+  """Value of the attribute."""
+  value: String
+}
+
+"""Represents a customer's visiting activities on a shop's online store."""
+type Shopify_CustomerJourney {
+  """The position of the current order within the customer's order history."""
+  customerOrderIndex: Int!
+
+  """
+  The amount of days between first session and order creation date. First session represents first session since the last order, or first session within the 30 day attribution window, if more than 30 days has passed since the last order.
+  """
+  daysToConversion: Int!
+
+  """The customer's first session going into the shop."""
+  firstVisit: Shopify_CustomerVisit!
+
+  """The last session before an order is made."""
+  lastVisit: Shopify_CustomerVisit
+
+  """Events preceding a customer order, such as shop sessions."""
+  moments: [Shopify_CustomerMoment!]!
+}
+
+"""
+Represents a customer's session visiting a shop's online store, including information about the marketing activity attributed to starting the session.
+"""
+type Shopify_CustomerVisit {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """URL of the first page the customer landed on for the session."""
+  landingPage: Url
+
+  """
+  Landing page information with URL linked in HTML. For example, the first page the customer visited was store.myshopify.com/products/1.
+  """
+  landingPageHtml: Html
+
+  """
+  Represent actions taken by an app, on behalf of a merchant,
+  to market Shopify resources such as products, collections, and discounts.
+  """
+  marketingEvent: Shopify_MarketingEvent
+
+  """The date and time when the customer's session occurred."""
+  occurredAt: DateTime!
+
+  """
+  Marketing referral code from the link that the customer clicked to visit the store.
+  Supports the following URL attributes: _ref_, _source_, or _r_.
+  For example, if the URL is myshopifystore.com/products/slide?ref=j2tj1tn2, then this value is j2tj1tn2.
+  """
+  referralCode: String
+
+  """Referral information with URLs linked in HTML."""
+  referralInfoHtml: FormattedString!
+
+  """
+  Webpage where the customer clicked a link that sent them to the online store.
+  For example, _https://randomblog.com/page1_ or _android-app://com.google.android.gm_.
+  """
+  referrerUrl: Url
+
+  """
+  Source from which the customer visited the store, such as a platform (Facebook, Google), email, direct,
+  a website domain, QR code, or unknown.
+  """
+  source: String!
+
+  """Describes the source explicitly for first or last session."""
+  sourceDescription: String
+
+  """Type of marketing tactic."""
+  sourceType: Shopify_MarketingTactic
+
+  """
+  A set of UTM parameters gathered from the URL parameters of the referrer.
+  """
+  utmParameters: Shopify_UTMParameters
+}
+
+"""Represents actions that market a merchant's store or products."""
+type Shopify_MarketingEvent {
+  """The app that the marketing event is attributed to."""
+  app: Shopify_App!
+
+  """The marketing channel used by the marketing event."""
+  channel: Shopify_MarketingChannel
+
+  """A human-readable description of the marketing event."""
+  description: String
+
+  """The date and time when the marketing event ended."""
+  endedAt: DateTime
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """The URL where the marketing event can be managed."""
+  manageUrl: Url
+
+  """The URL where the marketing event can be previewed."""
+  previewUrl: Url
+
+  """An optional ID that helps Shopify validate engagement data."""
+  remoteId: String
+
+  """The date and time when the marketing event is scheduled to end."""
+  scheduledToEndAt: DateTime
+
+  """
+  Where the `MarketingEvent` occurred and what kind of content was used.
+  Because `utmSource` and `utmMedium` are often used interchangeably, this is
+  based on a combination of `marketingChannel`, `referringDomain`, and `type` to
+  provide a consistent representation for any given piece of marketing
+  regardless of the app that created it.
+  """
+  sourceAndMedium: String!
+
+  """The date and time when the marketing event started."""
+  startedAt: DateTime!
+
+  """The display text for the marketing event type."""
+  targetTypeDisplayText: String! @deprecated(reason: "Use `sourceAndMedium` instead")
+
+  """The marketing event type."""
+  type: Shopify_MarketingTactic!
+
+  """The name of the marketing campaign."""
+  utmCampaign: String
+
+  """
+  The medium that the marketing campaign is using. Example values: `cpc`, `banner`.
+  """
+  utmMedium: String
+
+  """
+  The referrer of the marketing event. Example values: `google`, `newsletter`.
+  """
+  utmSource: String
+}
+
+enum Shopify_MarketingChannel {
+  SEARCH
+  DISPLAY
+  SOCIAL
+  EMAIL
+  REFERRAL
+}
+
+enum Shopify_MarketingTactic {
+  ABANDONED_CART
+  AD
+  AFFILIATE
+  LINK
+  LOYALTY
+  MESSAGE
+  NEWSLETTER
+  NOTIFICATION
+  POST
+  RETARGETING
+  TRANSACTIONAL
+  SEO
+  DIRECT
+  STOREFRONT_APP
+  DISPLAY
+  SEARCH
+  FOLLOW_UP
+  RECEIPT
+}
+
+"""Represents a set of UTM parameters."""
+type Shopify_UTMParameters {
+  """The name of a marketing campaign."""
+  campaign: String
+
+  """
+  Identifies specific content in a marketing campaign. Used to differentiate between similar content or links in a marketing campaign to determine which is the most effective.
+  """
+  content: String
+
+  """
+  The medium of a marketing campaign, such as a banner or email newsletter.
+  """
+  medium: String
+
+  """
+  The source of traffic to the merchant's store, such as Google or an email newsletter.
+  """
+  source: String
+
+  """Paid search terms used by a marketing campaign."""
+  term: String
+}
+
+"""
+Represents a session preceding an order, often used for building a timeline of events leading to an order.
+"""
+type Shopify_CustomerMoment {
+  """The date and time when the customer's session occurred."""
+  occurredAt: DateTime!
+}
+
+"""Represents a customer's visiting activities on a shop's online store."""
+type Shopify_CustomerJourneySummary {
+  """
+  The position of the current order within the customer's order history. Test orders aren't included.
+  """
+  customerOrderIndex: Int
+
+  """
+  The number of days between the first session and the order creation date. The first session represents the first session since the last order, or the first session within the 30 day attribution window, if more than 30 days have passed since the last order.
+  """
+  daysToConversion: Int
+
+  """The customer's first session going into the shop."""
+  firstVisit: Shopify_CustomerVisit
+
+  """The last session before an order is made."""
+  lastVisit: Shopify_CustomerVisit
+
+  """The events preceding a customer's order, such as shop sessions."""
+  moments(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CustomerMomentConnection
+
+  """
+  The total number of customer moments associated with this order. Returns null if the order is still in the process of being attributed.
+  """
+  momentsCount: Int
+
+  """
+  Whether or not the attributed sessions for the order have been created yet.
+  """
+  ready: Boolean!
+}
+
+"""
+An auto-generated type for paginating through multiple CustomerMoments.
+"""
+type Shopify_CustomerMomentConnection {
+  """A list of edges."""
+  edges: [Shopify_CustomerMomentEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one CustomerMoment and a cursor during pagination.
+"""
+type Shopify_CustomerMomentEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of CustomerMomentEdge."""
+  node: Shopify_CustomerMoment!
+}
+
+"""
+An auto-generated type for paginating through multiple DiscountApplications.
+"""
+type Shopify_DiscountApplicationConnection {
+  """A list of edges."""
+  edges: [Shopify_DiscountApplicationEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one DiscountApplication and a cursor during pagination.
+"""
+type Shopify_DiscountApplicationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of DiscountApplicationEdge."""
+  node: Shopify_DiscountApplication!
+}
+
+"""
+Discount applications capture the intentions of a discount source at
+the time of application on an order's line items or shipping lines.
+
+Discount applications don't represent the actual final amount discounted on a line (line item or shipping line). The actual amount discounted on a line is represented by the [DiscountAllocation](https://shopify.dev/api/admin-graphql/2022-04/objects/discountallocation) object.
+"""
+type Shopify_DiscountApplication {
+  """
+  The method by which the discount's value is applied to its entitled items.
+  """
+  allocationMethod: Shopify_DiscountApplicationAllocationMethod!
+
+  """
+  An ordered index that can be used to identify the discount application and indicate the precedence
+  of the discount application for calculations.
+  """
+  index: Int!
+
+  """How the discount amount is distributed on the discounted lines."""
+  targetSelection: Shopify_DiscountApplicationTargetSelection!
+
+  """Whether the discount is applied on line items or shipping lines."""
+  targetType: Shopify_DiscountApplicationTargetType!
+
+  """The value of the discount application."""
+  value: Shopify_PricingValue!
+}
+
+enum Shopify_DiscountApplicationAllocationMethod {
+  ACROSS
+  EACH
+  ONE
+}
+
+enum Shopify_DiscountApplicationTargetSelection {
+  ALL
+  ENTITLED
+  EXPLICIT
+}
+
+enum Shopify_DiscountApplicationTargetType {
+  LINE_ITEM
+  SHIPPING_LINE
+}
+
+"""
+The type of value given to a customer when a discount is applied to an order. For example, the application of the discount might give the customer a percentage off a specified item. Alternatively, the application of the discount might give the customer a monetary value in a given currency off an order.
+"""
+union Shopify_PricingValue = Shopify_MoneyV2 | Shopify_PricingPercentageValue
+
+"""The value of the percentage pricing object."""
+type Shopify_PricingPercentageValue {
+  """The percentage value of the object."""
+  percentage: Float!
+}
+
+enum Shopify_OrderDisplayFinancialStatus {
+  PENDING
+  AUTHORIZED
+  PARTIALLY_PAID
+  PARTIALLY_REFUNDED
+  VOIDED
+  PAID
+  REFUNDED
+  EXPIRED
+}
+
+enum Shopify_OrderDisplayFulfillmentStatus {
+  UNFULFILLED
+  PARTIALLY_FULFILLED
+  FULFILLED
+  RESTOCKED
+  PENDING_FULFILLMENT
+  OPEN
+  IN_PROGRESS
+  ON_HOLD
+  SCHEDULED
+}
+
+"""A summary of the important details for a dispute on an order."""
+type Shopify_OrderDisputeSummary {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The type that the dispute was initiated as."""
+  initiatedAs: Shopify_DisputeType!
+
+  """The current status of the dispute."""
+  status: Shopify_DisputeStatus!
+}
+
+enum Shopify_DisputeType {
+  CHARGEBACK
+  INQUIRY
+}
+
+enum Shopify_DisputeStatus {
+  NEEDS_RESPONSE
+  UNDER_REVIEW
+  CHARGE_REFUNDED
+  ACCEPTED
+  WON
+  LOST
+}
+
+"""
+Returns unfulfilled line items grouped by their fulfillment service. Each draft fulfillment contains additional information, such as whether the fulfillment requires shipping and whether a shipping label can be printed for it.
+"""
+type Shopify_DraftFulfillment {
+  """Whether a label can be purchased."""
+  allowLabelPurchase: Boolean!
+
+  """
+  The line items (which might correspond to a variant) that are part of this draft fulfillment.
+  """
+  lineItems: [Shopify_LineItem!]!
+
+  """Whether a fulfillment requires shipping."""
+  requiresShipping: Boolean!
+
+  """The service responsible for fulfilling the fulfillment."""
+  service: Shopify_FulfillmentService!
+}
+
+"""Represents a single line item on an order."""
+type Shopify_LineItem {
+  """Whether the line item can be restocked."""
+  canRestock: Boolean! @deprecated(reason: "Use `restockable` instead")
+
+  """The subscription contract associated with this line item."""
+  contract: Shopify_SubscriptionContract
+
+  """The line item's quantity, minus the removed quantity."""
+  currentQuantity: Int!
+
+  """A list of additional information about the line item."""
+  customAttributes: [Shopify_Attribute!]!
+
+  """
+  The discounts that have been allocated onto the line item by discount applications.
+  """
+  discountAllocations: [Shopify_DiscountAllocation!]!
+
+  """The total line price after discounts are applied, in shop currency."""
+  discountedTotal: Money! @deprecated(reason: "Use `discountedTotalSet` instead")
+
+  """
+  The total line price after discounts are applied, in shop and presentment currencies.
+  """
+  discountedTotalSet: Shopify_MoneyBag!
+
+  """
+  The approximate split price of a line item unit, in shop currency. This value doesn't include discounts applied to the entire order.
+  """
+  discountedUnitPrice: Money! @deprecated(reason: "Use `discountedUnitPriceSet` instead")
+
+  """
+  The approximate split price of a line item unit, in shop and presentment currencies. This value doesn't include discounts applied to the entire order.
+  """
+  discountedUnitPriceSet: Shopify_MoneyBag!
+
+  """The duties associated with the line item."""
+  duties: [Shopify_Duty!]!
+
+  """The total number of units to fulfill."""
+  fulfillableQuantity: Int! @deprecated(reason: "Use [FulfillmentOrderLineItem#remainingQuantity](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderLineItem#field-fulfillmentorderlineitem-remainingquantity) instead.")
+
+  """
+  The service provider that fulfills the line item.
+  
+  Deleted fulfillment services will return null.
+  """
+  fulfillmentService: Shopify_FulfillmentService @deprecated(reason: "Use [FulfillmentOrder#assignedLocation](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder#field-fulfillmentorder-assignedlocation) instead.")
+
+  """
+  The line item's fulfillment status. Returns 'fulfilled' if fulfillableQuantity >= quantity,
+  'partial' if  fulfillableQuantity > 0, and 'unfulfilled' otherwise.
+  """
+  fulfillmentStatus: String! @deprecated(reason: "Use [FulfillmentOrderLineItem#remainingQuantity](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderLineItem#field-fulfillmentorderlineitem-remainingquantity) instead")
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The image associated to the line item's variant."""
+  image(
+    """
+    Image width in pixels between 1 and 2048. This argument is deprecated: Use `maxWidth` on `Image.transformedSrc` instead.
+    """
+    maxWidth: Int
+
+    """
+    Image height in pixels between 1 and 2048. This argument is deprecated: Use `maxHeight` on `Image.transformedSrc` instead.
+    """
+    maxHeight: Int
+
+    """
+    Crops the image according to the specified region. This argument is deprecated: Use `crop` on `Image.transformedSrc` instead.
+    """
+    crop: Shopify_CropRegion
+
+    """
+    Image size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use `scale` on `Image.transformedSrc` instead.
+    """
+    scale: Int = 1
+  ): Shopify_Image
+
+  """Whether the line item can be edited or not."""
+  merchantEditable: Boolean!
+
+  """The name of the product."""
+  name: String!
+
+  """
+  The total number of units that can't be fulfilled.
+          For example, if items have been refunded, or the item is not something that can be fulfilled,
+          like a tip.Please see the [FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder) object for more fulfillment details.
+  """
+  nonFulfillableQuantity: Int!
+
+  """
+  The total price without discounts applied, in shop currency.
+  This value is based on the unit price of the variant x quantity.
+  """
+  originalTotal: Money! @deprecated(reason: "Use `originalTotalSet` instead")
+
+  """
+  The total price in shop and presentment currencies, without discounts applied. This value is based on the unit price of the variant x quantity.
+  """
+  originalTotalSet: Shopify_MoneyBag!
+
+  """The variant unit price without discounts applied, in shop currency."""
+  originalUnitPrice: Money! @deprecated(reason: "Use `originalUnitPriceSet` instead")
+
+  """
+  The variant unit price without discounts applied, in shop and presentment currencies.
+  """
+  originalUnitPriceSet: Shopify_MoneyBag!
+
+  """The Product object associated with this line item's variant."""
+  product: Shopify_Product
+
+  """The number of variant units ordered."""
+  quantity: Int!
+
+  """The line item's quantity, minus the removed quantity."""
+  refundableQuantity: Int!
+
+  """Whether physical shipping is required for the variant."""
+  requiresShipping: Boolean!
+
+  """Whether the line item can be restocked."""
+  restockable: Boolean!
+
+  """The selling plan details associated with the line item."""
+  sellingPlan: Shopify_LineItemSellingPlan
+
+  """The variant SKU number."""
+  sku: String
+
+  """The taxes charged for this line item."""
+  taxLines(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_TaxLine!]!
+
+  """Whether the variant is taxable."""
+  taxable: Boolean!
+
+  """The title of the product."""
+  title: String!
+
+  """The sum of all AppliedDiscounts on this line item, in shop currency."""
+  totalDiscount: Money! @deprecated(reason: "Use `totalDiscountSet` instead")
+
+  """
+  The sum of all AppliedDiscounts on this line item, in shop and presentment currencies.
+  """
+  totalDiscountSet: Shopify_MoneyBag!
+
+  """The total discounted value of unfulfilled units, in shop currency."""
+  unfulfilledDiscountedTotal: Money! @deprecated(reason: "Use `unfulfilledDiscountedTotalSet` instead")
+
+  """
+  The total discounted value of unfulfilled units, in shop and presentment currencies.
+  """
+  unfulfilledDiscountedTotalSet: Shopify_MoneyBag!
+
+  """
+  The total price, without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop currency.
+  """
+  unfulfilledOriginalTotal: Money! @deprecated(reason: "Use `unfulfilledOriginalTotalSet` instead")
+
+  """
+  The total price, without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop and presentment currencies.
+  """
+  unfulfilledOriginalTotalSet: Shopify_MoneyBag!
+
+  """The number of units not yet fulfilled."""
+  unfulfilledQuantity: Int!
+
+  """The Variant object associated with this line item."""
+  variant: Shopify_ProductVariant
+
+  """The name of the variant."""
+  variantTitle: String
+
+  """The name of the vendor who made the variant."""
+  vendor: String
+}
+
+"""Represents a Subscription Contract."""
+type Shopify_SubscriptionContract {
+  """The subscription app that this subscription contract is registered to."""
+  app: Shopify_App
+
+  """URL of the subscription contract page on the subscription app."""
+  appAdminUrl: Url
+
+  """
+  The list of billing attempts associated with the subscription contract.
+  """
+  billingAttempts(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SubscriptionBillingAttemptConnection!
+
+  """The billing policy associated with the subscription contract."""
+  billingPolicy: Shopify_SubscriptionBillingPolicy!
+
+  """The date and time when the subscription contract was created."""
+  createdAt: DateTime!
+
+  """The currency used for the subscription contract."""
+  currencyCode: Shopify_CurrencyCode!
+
+  """The customer to whom the subscription contract belongs."""
+  customer: Shopify_Customer
+
+  """The customer payment method used for the subscription contract."""
+  customerPaymentMethod(
+    """Whether to show the customer's revoked payment method."""
+    showRevoked: Boolean = false
+  ): Shopify_CustomerPaymentMethod
+
+  """The delivery method for each billing of the subscription contract."""
+  deliveryMethod: Shopify_SubscriptionDeliveryMethod
+
+  """The delivery policy associated with the subscription contract."""
+  deliveryPolicy: Shopify_SubscriptionDeliveryPolicy!
+
+  """The delivery price for each billing of the subscription contract."""
+  deliveryPrice: Shopify_MoneyV2!
+
+  """
+  The list of subscription discounts associated with the subscription contract.
+  """
+  discounts(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SubscriptionManualDiscountConnection!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The current status of the last payment."""
+  lastPaymentStatus: Shopify_SubscriptionContractLastPaymentStatus
+
+  """The number of lines associated with the subscription contract."""
+  lineCount: Int!
+
+  """
+  The list of subscription lines associated with the subscription contract.
+  """
+  lines(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SubscriptionLineConnection!
+
+  """The next billing date for the subscription contract."""
+  nextBillingDate: DateTime
+
+  """The note field that will be applied to the generated orders."""
+  note: String
+
+  """A list of the subscription contract's orders."""
+  orders(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_OrderConnection!
+
+  """The order from which this contract originated."""
+  originOrder: Shopify_Order
+
+  """The current status of the subscription contract."""
+  status: Shopify_SubscriptionContractSubscriptionStatus!
+
+  """The date and time when the subscription contract was updated."""
+  updatedAt: DateTime!
+}
+
+"""
+An auto-generated type for paginating through multiple SubscriptionBillingAttempts.
+"""
+type Shopify_SubscriptionBillingAttemptConnection {
+  """A list of edges."""
+  edges: [Shopify_SubscriptionBillingAttemptEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one SubscriptionBillingAttempt and a cursor during pagination.
+"""
+type Shopify_SubscriptionBillingAttemptEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SubscriptionBillingAttemptEdge."""
+  node: Shopify_SubscriptionBillingAttempt!
+}
+
+"""
+A record of an execution of the subscription billing process. Billing attempts use
+idempotency keys to avoid duplicate order creation. A successful billing attempt
+will create an order.
+"""
+type Shopify_SubscriptionBillingAttempt {
+  """The date and time when the billing attempt was completed."""
+  completedAt: DateTime
+
+  """The date and time when the billing attempt was created."""
+  createdAt: DateTime!
+
+  """A code corresponding to a payment error during processing."""
+  errorCode: Shopify_SubscriptionBillingAttemptErrorCode
+
+  """A message describing a payment error during processing."""
+  errorMessage: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """A unique key generated by the client to avoid duplicate payments."""
+  idempotencyKey: String!
+
+  """
+  The URL where the customer needs to be redirected so they can complete the 3D Secure payment flow.
+  """
+  nextActionUrl: Url
+
+  """The result of this billing attempt if completed successfully."""
+  order: Shopify_Order
+
+  """Whether or not the billing attempt is still processing."""
+  ready: Boolean!
+
+  """The subscription contract."""
+  subscriptionContract: Shopify_SubscriptionContract!
+}
+
+enum Shopify_SubscriptionBillingAttemptErrorCode {
+  PAYMENT_METHOD_NOT_FOUND
+  PAYMENT_PROVIDER_IS_NOT_ENABLED
+  INVALID_PAYMENT_METHOD
+  UNEXPECTED_ERROR
+  EXPIRED_PAYMENT_METHOD
+  PAYMENT_METHOD_DECLINED
+  AUTHENTICATION_ERROR
+  TEST_MODE
+  BUYER_CANCELED_PAYMENT_METHOD
+  CUSTOMER_NOT_FOUND
+  CUSTOMER_INVALID
+  INVALID_SHIPPING_ADDRESS
+}
+
+"""Represents a Subscription Billing Policy."""
+type Shopify_SubscriptionBillingPolicy {
+  """
+  Specific anchor dates upon which the billing interval calculations should be made.
+  """
+  anchors: [Shopify_SellingPlanAnchor!]!
+
+  """
+  The kind of interval that is associated with this schedule (e.g. Monthly, Weekly, etc).
+  """
+  interval: Shopify_SellingPlanInterval!
+
+  """The number of billing intervals between invoices."""
+  intervalCount: Int!
+
+  """Maximum amount of cycles after which the subscription ends."""
+  maxCycles: Int
+
+  """Minimum amount of cycles required in the subscription."""
+  minCycles: Int
+}
+
+"""A customer's payment method."""
+type Shopify_CustomerPaymentMethod {
+  """The customer to whom the payment method belongs."""
+  customer: Shopify_Customer
+
+  """The ID of this payment method."""
+  id: ID!
+
+  """The instrument for this payment method."""
+  instrument: Shopify_CustomerPaymentInstrument
+
+  """The time that the payment method was revoked."""
+  revokedAt: DateTime
+
+  """The revocation reason for this payment method."""
+  revokedReason: Shopify_CustomerPaymentMethodRevocationReason
+
+  """List Subscription Contracts."""
+  subscriptionContracts(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SubscriptionContractConnection!
+}
+
+"""All possible instruments for CustomerPaymentMethods."""
+union Shopify_CustomerPaymentInstrument = Shopify_CustomerCreditCard | Shopify_CustomerPaypalBillingAgreement | Shopify_CustomerShopPayAgreement
+
+"""Represents a card instrument for customer payment method."""
+type Shopify_CustomerCreditCard {
+  """The billing address of the card."""
+  billingAddress: Shopify_CustomerCreditCardBillingAddress
+
+  """The brand of the card."""
+  brand: String!
+
+  """Whether the card is about to expire."""
+  expiresSoon: Boolean!
+
+  """The expiry month of the card."""
+  expiryMonth: Int!
+
+  """The expiry year of the card."""
+  expiryYear: Int!
+
+  """The card's BIN number."""
+  firstDigits: String
+
+  """
+  The payment method can be revoked if there are no active subscription contracts.
+  """
+  isRevocable: Boolean!
+
+  """The last 4 digits of the card."""
+  lastDigits: String!
+
+  """The masked card number with only the last 4 digits displayed."""
+  maskedNumber: String!
+
+  """The name of the card holder."""
+  name: String!
+
+  """The source of the card if coming from a wallet such as Apple Pay."""
+  source: String
+
+  """The last 4 digits of the Device Account Number."""
+  virtualLastDigits: String
+}
+
+"""The billing address of a credit card payment instrument."""
+type Shopify_CustomerCreditCardBillingAddress {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the country."""
+  country: String
+
+  """
+  The two-letter code for the country of the address.
+  For example, US.
+  """
+  countryCode: Shopify_CountryCode
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """
+  The two-letter code for the region.
+  For example, ON.
+  """
+  provinceCode: String
+
+  """The zip or postal code of the address."""
+  zip: String
+}
+
+"""Represents a PayPal instrument for customer payment method."""
+type Shopify_CustomerPaypalBillingAgreement {
+  """The billing address of this payment method."""
+  billingAddress: Shopify_CustomerPaymentInstrumentBillingAddress
+
+  """Whether the PayPal billing agreement is inactive."""
+  inactive: Boolean!
+
+  """
+  Whether the payment method can be revoked.The payment method can be revoked if there are no active subscription contracts.
+  """
+  isRevocable: Boolean!
+
+  """The customers's PayPal account email address."""
+  paypalAccountEmail: String
+}
+
+"""The billing address of a payment instrument."""
+type Shopify_CustomerPaymentInstrumentBillingAddress {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the country."""
+  country: String
+
+  """
+  The two-letter code for the country of the address.
+  For example, US.
+  """
+  countryCode: Shopify_CountryCode
+
+  """The name of the buyer of the address."""
+  name: String
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """
+  The two-letter code for the region.
+  For example, ON.
+  """
+  provinceCode: String
+
+  """The zip or postal code of the address."""
+  zip: String
+}
+
+"""Represents a Shop Pay card instrument for customer payment method."""
+type Shopify_CustomerShopPayAgreement {
+  """Whether the card is about to expire."""
+  expiresSoon: Boolean!
+
+  """The expiry month of the card."""
+  expiryMonth: Int!
+
+  """The expiry year of the card."""
+  expiryYear: Int!
+
+  """Whether the Shop Pay billing agreement is inactive."""
+  inactive: Boolean!
+
+  """
+  The payment method can be revoked if there are no active subscription contracts.
+  """
+  isRevocable: Boolean!
+
+  """The last 4 digits of the card."""
+  lastDigits: String!
+
+  """The masked card number with only the last 4 digits displayed."""
+  maskedNumber: String!
+
+  """The name of the card holder."""
+  name: String!
+}
+
+enum Shopify_CustomerPaymentMethodRevocationReason {
+  AUTHORIZE_NET_GATEWAY_NOT_ENABLED
+  AUTHORIZE_NET_RETURNED_NO_PAYMENT_METHOD
+  FAILED_TO_UPDATE_CREDIT_CARD
+  MANUALLY_REVOKED
+  STRIPE_API_AUTHENTICATION_ERROR
+  STRIPE_API_INVALID_REQUEST_ERROR
+  STRIPE_GATEWAY_NOT_ENABLED
+  STRIPE_RETURNED_NO_PAYMENT_METHOD
+  STRIPE_PAYMENT_METHOD_NOT_CARD
+}
+
+"""
+An auto-generated type for paginating through multiple SubscriptionContracts.
+"""
+type Shopify_SubscriptionContractConnection {
+  """A list of edges."""
+  edges: [Shopify_SubscriptionContractEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one SubscriptionContract and a cursor during pagination.
+"""
+type Shopify_SubscriptionContractEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SubscriptionContractEdge."""
+  node: Shopify_SubscriptionContract!
+}
+
+"""
+Describes the delivery method to use to get the physical goods to the customer.
+"""
+union Shopify_SubscriptionDeliveryMethod = Shopify_SubscriptionDeliveryMethodShipping
+
+"""
+Represents a shipping delivery method: a mailing address and a shipping option.
+"""
+type Shopify_SubscriptionDeliveryMethodShipping {
+  """The address to ship to."""
+  address: Shopify_SubscriptionMailingAddress!
+
+  """The details of the shipping method to use."""
+  shippingOption: Shopify_SubscriptionDeliveryMethodShippingOption!
+}
+
+"""Represents a Mailing Address on a Subscription."""
+type Shopify_SubscriptionMailingAddress {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the customer's company or organization."""
+  company: String
+
+  """The name of the country."""
+  country: String
+
+  """
+  The two-letter code for the country of the address.
+  
+  For example, US.
+  """
+  countryCode: Shopify_CountryCode
+
+  """The first name of the customer."""
+  firstName: String
+
+  """The last name of the customer."""
+  lastName: String
+
+  """The full name of the customer, based on firstName and lastName."""
+  name: String
+
+  """
+  A unique phone number for the customer. Formatted using E.164 standard. For example, _+16135551111_.
+  """
+  phone: String
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """
+  The two-letter code for the region.
+  
+  For example, ON.
+  """
+  provinceCode: String
+
+  """The zip or postal code of the address."""
+  zip: String
+}
+
+"""Represents the selected shipping option on a subscription contract."""
+type Shopify_SubscriptionDeliveryMethodShippingOption {
+  """The carrier service of the shipping option."""
+  carrierService: Shopify_DeliveryCarrierService
+
+  """The code of the shipping option."""
+  code: String
+
+  """The description of the shipping option."""
+  description: String
+
+  """The presentment title of the shipping option."""
+  presentmentTitle: String
+
+  """The title of the shipping option."""
+  title: String
+}
+
+"""Represents a Subscription Delivery Policy."""
+type Shopify_SubscriptionDeliveryPolicy {
+  """
+  Specific anchor dates upon which the delivery interval calculations should be made.
+  """
+  anchors: [Shopify_SellingPlanAnchor!]!
+
+  """
+  The kind of interval that is associated with this schedule (e.g. Monthly, Weekly, etc).
+  """
+  interval: Shopify_SellingPlanInterval!
+
+  """The number of delivery intervals between deliveries."""
+  intervalCount: Int!
+}
+
+"""
+An auto-generated type for paginating through multiple SubscriptionManualDiscounts.
+"""
+type Shopify_SubscriptionManualDiscountConnection {
+  """A list of edges."""
+  edges: [Shopify_SubscriptionManualDiscountEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one SubscriptionManualDiscount and a cursor during pagination.
+"""
+type Shopify_SubscriptionManualDiscountEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SubscriptionManualDiscountEdge."""
+  node: Shopify_SubscriptionManualDiscount!
+}
+
+"""Custom subscription discount."""
+type Shopify_SubscriptionManualDiscount {
+  """Entitled line items used to apply the subscription discount on."""
+  entitledLines: Shopify_SubscriptionDiscountEntitledLines!
+
+  """The unique identifier."""
+  id: ID!
+
+  """
+  The maximum number of times the subscription discount will be applied on orders.
+  """
+  recurringCycleLimit: Int
+
+  """The reason that the discount on the subscription draft is rejected."""
+  rejectionReason: Shopify_SubscriptionDiscountRejectionReason
+
+  """Type of line the discount applies on."""
+  targetType: Shopify_DiscountTargetType!
+
+  """The title associated with the subscription discount."""
+  title: String
+
+  """The type of the subscription discount."""
+  type: Shopify_DiscountType!
+
+  """The number of times the discount was applied."""
+  usageCount: Int!
+
+  """The value of the subscription discount."""
+  value: Shopify_SubscriptionDiscountValue!
+}
+
+"""Represents the subscription lines the discount applies on."""
+type Shopify_SubscriptionDiscountEntitledLines {
+  """
+  Specify whether the subscription discount will apply on all subscription lines.
+  """
+  all: Boolean!
+
+  """
+  The list of subscription lines associated with the subscription discount.
+  """
+  lines(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SubscriptionLineConnection!
+}
+
+"""
+An auto-generated type for paginating through multiple SubscriptionLines.
+"""
+type Shopify_SubscriptionLineConnection {
+  """A list of edges."""
+  edges: [Shopify_SubscriptionLineEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one SubscriptionLine and a cursor during pagination.
+"""
+type Shopify_SubscriptionLineEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SubscriptionLineEdge."""
+  node: Shopify_SubscriptionLine!
+}
+
+"""Represents a Subscription Line."""
+type Shopify_SubscriptionLine {
+  """
+  The price per unit for the subscription line in the contract's currency.
+  """
+  currentPrice: Shopify_MoneyV2!
+
+  """List of custom attributes associated to the line item."""
+  customAttributes: [Shopify_Attribute!]!
+
+  """Discount allocations."""
+  discountAllocations: [Shopify_SubscriptionDiscountAllocation!]!
+
+  """The unique identifier."""
+  id: ID!
+
+  """Total line price including all discounts."""
+  lineDiscountedPrice: Shopify_MoneyV2!
+
+  """Describe the price changes of the line over time."""
+  pricingPolicy: Shopify_SubscriptionPricingPolicy
+
+  """The product id associated with the subscription line."""
+  productId: ID
+
+  """The quantity of the unit selected for the subscription line."""
+  quantity: Int!
+
+  """Whether physical shipping is required for the variant."""
+  requiresShipping: Boolean!
+
+  """
+  The selling plan ID associated to the line.
+  
+  Indicates which selling plan was used to create this
+  contract line initially. The selling plan ID is also used to
+  find the associated delivery profile.
+  
+  The subscription contract, subscription line, or selling plan might have
+  changed. As a result, the selling plan's attributes might not
+  match the information on the contract.
+  """
+  sellingPlanId: ID
+
+  """
+  The selling plan name associated to the line. This name describes
+  the order line items created from this subscription line
+  for both merchants and customers.
+  
+  The value can be different from the selling plan's name, because both
+  the selling plan's name and the subscription line's selling_plan_name
+  attribute can be updated independently.
+  """
+  sellingPlanName: String
+
+  """Variant SKU number of the item associated with the subscription line."""
+  sku: String
+
+  """Whether the variant is taxable."""
+  taxable: Boolean!
+
+  """Product title of the item associated with the subscription line."""
+  title: String!
+
+  """The product variant id associated with the subscription line."""
+  variantId: ID
+
+  """The image associated with the line item's variant or product."""
+  variantImage: Shopify_Image
+
+  """
+  Product variant title of the item associated with the subscription line.
+  """
+  variantTitle: String
+}
+
+"""Represents what a particular discount reduces from a line price."""
+type Shopify_SubscriptionDiscountAllocation {
+  """Allocation amount."""
+  amount: Shopify_MoneyV2!
+
+  """Discount that created the allocation."""
+  discount: Shopify_SubscriptionDiscount!
+}
+
+"""Subscription draft discount types."""
+union Shopify_SubscriptionDiscount = Shopify_SubscriptionAppliedCodeDiscount | Shopify_SubscriptionManualDiscount
+
+"""Represents an applied code discount."""
+type Shopify_SubscriptionAppliedCodeDiscount {
+  """The unique identifier."""
+  id: ID!
+
+  """The redeem code of the discount that applies on the subscription."""
+  redeemCode: String!
+
+  """The reason that the discount on the subscription draft is rejected."""
+  rejectionReason: Shopify_SubscriptionDiscountRejectionReason
+}
+
+enum Shopify_SubscriptionDiscountRejectionReason {
+  NOT_FOUND
+  NO_ENTITLED_LINE_ITEMS
+  QUANTITY_NOT_IN_RANGE
+  PURCHASE_NOT_IN_RANGE
+  CUSTOMER_NOT_ELIGIBLE
+  USAGE_LIMIT_REACHED
+  CUSTOMER_USAGE_LIMIT_REACHED
+  CURRENTLY_INACTIVE
+  NO_ENTITLED_SHIPPING_LINES
+  INCOMPATIBLE_PURCHASE_TYPE
+  INTERNAL_ERROR
+}
+
+"""Represents a Subscription Line Pricing Policy."""
+type Shopify_SubscriptionPricingPolicy {
+  """
+  The base price per unit for the subscription line in the contract's currency.
+  """
+  basePrice: Shopify_MoneyV2!
+
+  """The adjustments per cycle for the subscription line."""
+  cycleDiscounts: [Shopify_SubscriptionCyclePriceAdjustment!]!
+}
+
+"""Represents a Subscription Line Pricing Cycle Adjustment."""
+type Shopify_SubscriptionCyclePriceAdjustment {
+  """Price adjustment type."""
+  adjustmentType: Shopify_SellingPlanPricingPolicyAdjustmentType!
+
+  """Price adjustment value."""
+  adjustmentValue: Shopify_SellingPlanPricingPolicyAdjustmentValue!
+
+  """The number of cycles required before this pricing policy applies."""
+  afterCycle: Int!
+
+  """The computed price after the adjustments applied."""
+  computedPrice: Shopify_MoneyV2!
+}
+
+enum Shopify_DiscountTargetType {
+  LINE_ITEM
+  SHIPPING_LINE
+}
+
+enum Shopify_DiscountType {
+  MANUAL
+  CODE_DISCOUNT
+}
+
+"""The value of the discount and how it will be applied."""
+union Shopify_SubscriptionDiscountValue = Shopify_SubscriptionDiscountFixedAmountValue | Shopify_SubscriptionDiscountPercentageValue
+
+"""The value of the discount and how it will be applied."""
+type Shopify_SubscriptionDiscountFixedAmountValue {
+  """The fixed amount value of the discount."""
+  amount: Shopify_MoneyV2!
+
+  """Whether the amount is applied per item."""
+  appliesOnEachItem: Boolean!
+}
+
+"""The percentage value of the discount."""
+type Shopify_SubscriptionDiscountPercentageValue {
+  """The percentage value of the discount."""
+  percentage: Int!
+}
+
+enum Shopify_SubscriptionContractLastPaymentStatus {
+  SUCCEEDED
+  FAILED
+}
+
+"""An auto-generated type for paginating through multiple Orders."""
+type Shopify_OrderConnection {
+  """A list of edges."""
+  edges: [Shopify_OrderEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Order and a cursor during pagination.
+"""
+type Shopify_OrderEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of OrderEdge."""
+  node: Shopify_Order!
+}
+
+enum Shopify_SubscriptionContractSubscriptionStatus {
+  ACTIVE
+  PAUSED
+  CANCELLED
+  EXPIRED
+  FAILED
+}
+
+"""
+An amount that's allocated to a line based on an associated discount application.
+"""
+type Shopify_DiscountAllocation {
+  """
+  The money amount that's allocated to a line based on the associated discount application.
+  """
+  allocatedAmount: Shopify_MoneyV2! @deprecated(reason: "Use `allocatedAmountSet` instead")
+
+  """
+  The money amount that's allocated to a line based on the associated discount application in shop and presentment currencies.
+  """
+  allocatedAmountSet: Shopify_MoneyBag!
+
+  """The discount application that the allocated amount originated from."""
+  discountApplication: Shopify_DiscountApplication!
+}
+
+"""The duty details for a line item."""
+type Shopify_Duty {
+  """
+  The ISO 3166-1 alpha-2 country code of the country of origin used in calculating the duty.
+  """
+  countryCodeOfOrigin: Shopify_CountryCode
+
+  """The harmonized system code of the item used in calculating the duty."""
+  harmonizedSystemCode: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The amount of the duty."""
+  price: Shopify_MoneyBag!
+
+  """A list of taxes charged on the duty."""
+  taxLines: [Shopify_TaxLine!]!
+}
+
+"""Represents the selling plan for a line item."""
+type Shopify_LineItemSellingPlan {
+  """The name of the selling plan for display purposes."""
+  name: String!
+}
+
+"""
+An auto-generated type for paginating through multiple FulfillmentOrders.
+"""
+type Shopify_FulfillmentOrderConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentOrderEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one FulfillmentOrder and a cursor during pagination.
+"""
+type Shopify_FulfillmentOrderEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentOrderEdge."""
+  node: Shopify_FulfillmentOrder!
+}
+
+"""
+Represents a fulfillment order. In Shopify, a fulfillment order represents a group of one or more items
+in an order that are to be fulfilled from the same location. There can be more than one fulfillment order
+for an order at a given location.
+"""
+type Shopify_FulfillmentOrder {
+  """
+  The fulfillment order's assigned location. This is the location expected to perform fulfillment.
+  """
+  assignedLocation: Shopify_FulfillmentOrderAssignedLocation!
+
+  """Delivery method of this fulfillment order."""
+  deliveryMethod: Shopify_DeliveryMethod
+
+  """The destination where the items should be sent."""
+  destination: Shopify_FulfillmentOrderDestination
+
+  """The date and time at which the fulfillment order will be fulfillable."""
+  fulfillAt: DateTime
+
+  """The fulfillment holds applied on the fulfillment order."""
+  fulfillmentHolds: [Shopify_FulfillmentHold!]!
+
+  """A list of fulfillments for the fulfillment order."""
+  fulfillments(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_FulfillmentConnection!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The duties delivery method of this fulfillment order."""
+  internationalDuties: Shopify_FulfillmentOrderInternationalDuties
+
+  """A list of the fulfillment order's line items."""
+  lineItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_FulfillmentOrderLineItemConnection!
+
+  """
+  A list of locations that the fulfillment order can potentially move to.
+  """
+  locationsForMove(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_FulfillmentOrderLocationForMoveConnection!
+
+  """
+  A list of requests sent by the merchant to the fulfillment service for this fulfillment order.
+  """
+  merchantRequests(
+    """The kind of request the merchant sent."""
+    kind: Shopify_FulfillmentOrderMerchantRequestKind
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_FulfillmentOrderMerchantRequestConnection!
+
+  """The order that's associated with the fulfillment order."""
+  order: Shopify_Order!
+
+  """The request status of the fulfillment order."""
+  requestStatus: Shopify_FulfillmentOrderRequestStatus!
+
+  """The status of the fulfillment order."""
+  status: Shopify_FulfillmentOrderStatus!
+
+  """The actions that can be performed on this fulfillment order."""
+  supportedActions: [Shopify_FulfillmentOrderSupportedAction!]!
+}
+
+"""
+Represents the assigned location of a fulfillment order, which is a snapshot of the location
+at which the fulfillment order was created. The assigned location is expected to perform fulfillment.
+"""
+type Shopify_FulfillmentOrderAssignedLocation {
+  """The first line of the address for the location."""
+  address1: String
+
+  """The second line of the address for the location."""
+  address2: String
+
+  """The city of the location."""
+  city: String
+
+  """The two-letter country code of the location."""
+  countryCode: Shopify_CountryCode!
+
+  """
+  The location where the fulfillment order was created. This can differ from the
+  `FulfillmentOrderAssignedLocation` if the location was updated since the fulfillment order
+  was closed.
+  """
+  location: Shopify_Location
+
+  """The name of the location."""
+  name: String!
+
+  """The phone number of the location."""
+  phone: String
+
+  """The province of the location."""
+  province: String
+
+  """The ZIP code of the location."""
+  zip: String
+}
+
+"""The delivery method used by a fulfillment order."""
+type Shopify_DeliveryMethod {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The type of the delivery method."""
+  methodType: Shopify_DeliveryMethodType!
+}
+
+enum Shopify_DeliveryMethodType {
+  SHIPPING
+  PICK_UP
+  NONE
+  RETAIL
+  LOCAL
+}
+
+"""
+Represents the destination where the items should be sent upon fulfillment.
+"""
+type Shopify_FulfillmentOrderDestination {
+  """The first line of the address of the destination."""
+  address1: String
+
+  """The second line of the address of the destination."""
+  address2: String
+
+  """The city of the destination."""
+  city: String
+
+  """The company of the destination."""
+  company: String
+
+  """The two-letter country code of the destination."""
+  countryCode: Shopify_CountryCode
+
+  """The email of the customer at the destination."""
+  email: String
+
+  """The first name of the customer at the destination."""
+  firstName: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The last name of the customer at the destination."""
+  lastName: String
+
+  """The phone number of the customer at the destination."""
+  phone: String
+
+  """The province of the destination."""
+  province: String
+
+  """The ZIP code of the destination."""
+  zip: String
+}
+
+"""A fulfillment hold currently applied on a fulfillment order."""
+type Shopify_FulfillmentHold {
+  """The reason for the fulfillment hold."""
+  reason: Shopify_FulfillmentHoldReason!
+
+  """Additional information about the fulfillment hold reason."""
+  reasonNotes: String
+}
+
+enum Shopify_FulfillmentHoldReason {
+  AWAITING_PAYMENT
+  HIGH_RISK_OF_FRAUD
+  INCORRECT_ADDRESS
+  INVENTORY_OUT_OF_STOCK
+  OTHER
+}
+
+"""An auto-generated type for paginating through multiple Fulfillments."""
+type Shopify_FulfillmentConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Fulfillment and a cursor during pagination.
+"""
+type Shopify_FulfillmentEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentEdge."""
+  node: Shopify_Fulfillment!
+}
+
+"""
+Represents a fulfillment. In Shopify, a fulfillment represents a shipment of one or more items in an order. When an order has been completely fulfilled, it means that all the items that are included in the order have been sent to the customer. There can be more than one fulfillment for an order.
+"""
+type Shopify_Fulfillment {
+  """The date and time when the fulfillment was created."""
+  createdAt: DateTime!
+
+  """The date that this fulfillment was delivered."""
+  deliveredAt: DateTime
+
+  """Human readable display status for this fulfillment."""
+  displayStatus: Shopify_FulfillmentDisplayStatus
+
+  """The estimated date that this fulfillment will arrive."""
+  estimatedDeliveryAt: DateTime
+
+  """The history of events associated with this fulfillment."""
+  events(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_FulfillmentEventSortKeys = HAPPENED_AT
+  ): Shopify_FulfillmentEventConnection!
+
+  """List of the fulfillment's line items."""
+  fulfillmentLineItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_FulfillmentLineItemConnection!
+
+  """A paginated list of fulfillment orders for the fulfillment."""
+  fulfillmentOrders(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_FulfillmentOrderConnection!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The date and time when the fulfillment went into transit."""
+  inTransitAt: DateTime
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """The location that the fulfillment was processed at."""
+  location: Shopify_Location
+
+  """Human readable reference identifier for this fulfillment."""
+  name: String!
+
+  """The order for which the fulfillment was created."""
+  order: Shopify_Order!
+
+  """
+  The address at which the fulfillment occurred. Typically this is the address of the warehouse or fulfillment center.
+  """
+  originAddress: Shopify_FulfillmentOriginAddress
+
+  """Whether any of the line items in the fulfillment require shipping."""
+  requiresShipping: Boolean!
+
+  """Fulfillment service associated with the fulfillment."""
+  service: Shopify_FulfillmentService
+
+  """The status of the fulfillment."""
+  status: Shopify_FulfillmentStatus!
+
+  """Sum of all line item quantities for the fulfillment."""
+  totalQuantity: Int!
+
+  """
+  Tracking information associated with the fulfillment,
+  such as the tracking company, tracking number, and tracking URL.
+  """
+  trackingInfo(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_FulfillmentTrackingInfo!]!
+
+  """The date and time when the fulfillment was last modified."""
+  updatedAt: DateTime!
+}
+
+enum Shopify_FulfillmentDisplayStatus {
+  ATTEMPTED_DELIVERY
+  CANCELED
+  CONFIRMED
+  DELIVERED
+  FAILURE
+  FULFILLED
+  IN_TRANSIT
+  LABEL_PRINTED
+  LABEL_PURCHASED
+  LABEL_VOIDED
+  MARKED_AS_FULFILLED
+  NOT_DELIVERED
+  OUT_FOR_DELIVERY
+  READY_FOR_PICKUP
+  PICKED_UP
+  SUBMITTED
+}
+
+"""
+An auto-generated type for paginating through multiple FulfillmentEvents.
+"""
+type Shopify_FulfillmentEventConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentEventEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one FulfillmentEvent and a cursor during pagination.
+"""
+type Shopify_FulfillmentEventEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentEventEdge."""
+  node: Shopify_FulfillmentEvent!
+}
+
+"""
+The fulfillment event that describes the fulfilllment status at a particular time.
+"""
+type Shopify_FulfillmentEvent {
+  """The time at which this fulfillment event happened."""
+  happenedAt: DateTime!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The status of this fulfillment event."""
+  status: Shopify_FulfillmentEventStatus!
+}
+
+enum Shopify_FulfillmentEventStatus {
+  LABEL_PURCHASED
+  LABEL_PRINTED
+  READY_FOR_PICKUP
+  CONFIRMED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  ATTEMPTED_DELIVERY
+  DELIVERED
+  FAILURE
+}
+
+enum Shopify_FulfillmentEventSortKeys {
+  HAPPENED_AT
+  ID
+  RELEVANCE
+}
+
+"""
+An auto-generated type for paginating through multiple FulfillmentLineItems.
+"""
+type Shopify_FulfillmentLineItemConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentLineItemEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one FulfillmentLineItem and a cursor during pagination.
+"""
+type Shopify_FulfillmentLineItemEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentLineItemEdge."""
+  node: Shopify_FulfillmentLineItem!
+}
+
+"""Represents a line item from an order that's included in a fulfillment."""
+type Shopify_FulfillmentLineItem {
+  """The total price after discounts are applied."""
+  discountedTotal: Money! @deprecated(reason: "Use `discountedTotalSet` instead")
+
+  """
+  The total price after discounts are applied in shop and presentment currencies.
+  """
+  discountedTotalSet: Shopify_MoneyBag!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The associated order's line item."""
+  lineItem: Shopify_LineItem!
+
+  """The total price before discounts are applied."""
+  originalTotal: Money! @deprecated(reason: "Use `originalTotalSet` instead")
+
+  """
+  The total price before discounts are applied in shop and presentment currencies.
+  """
+  originalTotalSet: Shopify_MoneyBag!
+
+  """Number of line items in the fulfillment."""
+  quantity: Int
+}
+
+"""
+The address at which the fulfillment occurred. Typically this is the address of the warehouse or fulfillment center.
+"""
+type Shopify_FulfillmentOriginAddress {
+  """The street address of the fulfillment location."""
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The city in which the fulfillment location is located."""
+  city: String
+
+  """The country code of the fulfillment location."""
+  countryCode: String!
+
+  """The province code of the fulfillment location."""
+  provinceCode: String
+
+  """The zip code of the fulfillment location."""
+  zip: String
+}
+
+enum Shopify_FulfillmentStatus {
+  PENDING
+  OPEN
+  SUCCESS
+  CANCELLED
+  ERROR
+  FAILURE
+}
+
+"""Represents the tracking information for a fulfillment."""
+type Shopify_FulfillmentTrackingInfo {
+  """The name of the tracking company."""
+  company: String
+
+  """The tracking number of the fulfillment."""
+  number: String
+
+  """The URLs to track the fulfillment."""
+  url: Url
+}
+
+"""The international duties relevant to a fulfillment order."""
+type Shopify_FulfillmentOrderInternationalDuties {
+  """The method of duties payment. Example values: `DDP`, `DAP`."""
+  incoterm: String!
+}
+
+"""
+An auto-generated type for paginating through multiple FulfillmentOrderLineItems.
+"""
+type Shopify_FulfillmentOrderLineItemConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentOrderLineItemEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one FulfillmentOrderLineItem and a cursor during pagination.
+"""
+type Shopify_FulfillmentOrderLineItemEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentOrderLineItemEdge."""
+  node: Shopify_FulfillmentOrderLineItem!
+}
+
+"""Represents a line item belonging to a fulfillment order."""
+type Shopify_FulfillmentOrderLineItem {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The associated order line item."""
+  lineItem: Shopify_LineItem!
+
+  """The number of units remaining to be fulfilled."""
+  remainingQuantity: Int!
+
+  """The total number of units to be fulfilled."""
+  totalQuantity: Int!
+}
+
+"""
+An auto-generated type for paginating through multiple FulfillmentOrderLocationForMoves.
+"""
+type Shopify_FulfillmentOrderLocationForMoveConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentOrderLocationForMoveEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one FulfillmentOrderLocationForMove and a cursor during pagination.
+"""
+type Shopify_FulfillmentOrderLocationForMoveEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentOrderLocationForMoveEdge."""
+  node: Shopify_FulfillmentOrderLocationForMove!
+}
+
+"""A location that a fulfillment order can potentially move to."""
+type Shopify_FulfillmentOrderLocationForMove {
+  """
+  The location being considered as the fulfillment order's new assigned location.
+  """
+  location: Shopify_Location!
+
+  """
+  A human-readable string with the reason why the fulfillment order, or some of its line items, can't be
+  moved to the location.
+  """
+  message: String
+
+  """Whether the fulfillment order can be moved to the location."""
+  movable: Boolean!
+}
+
+"""
+An auto-generated type for paginating through multiple FulfillmentOrderMerchantRequests.
+"""
+type Shopify_FulfillmentOrderMerchantRequestConnection {
+  """A list of edges."""
+  edges: [Shopify_FulfillmentOrderMerchantRequestEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one FulfillmentOrderMerchantRequest and a cursor during pagination.
+"""
+type Shopify_FulfillmentOrderMerchantRequestEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FulfillmentOrderMerchantRequestEdge."""
+  node: Shopify_FulfillmentOrderMerchantRequest!
+}
+
+"""
+Represents a request made by the merchant to a fulfillment service for a fulfillment order.
+"""
+type Shopify_FulfillmentOrderMerchantRequest {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The kind of request made."""
+  kind: Shopify_FulfillmentOrderMerchantRequestKind!
+
+  """The optional message that the merchant included in the request."""
+  message: String
+
+  """
+  Additional options requested by the merchant. These depend on the `kind` of the request.
+  For example, for a `FULFILLMENT_REQUEST`, one option is `notify_customer`, which indicates whether the
+  merchant intends to notify the customer upon fulfillment. The fulfillment service can then set
+  `notifyCustomer` when making calls to `FulfillmentCreateV2`.
+  """
+  requestOptions: Json
+
+  """The response from the fulfillment service."""
+  responseData: Json
+
+  """The timestamp when the request was made."""
+  sentAt: DateTime!
+}
+
+enum Shopify_FulfillmentOrderMerchantRequestKind {
+  FULFILLMENT_REQUEST
+  CANCELLATION_REQUEST
+}
+
+scalar Json
+
+enum Shopify_FulfillmentOrderRequestStatus {
+  UNSUBMITTED
+  SUBMITTED
+  ACCEPTED
+  REJECTED
+  CANCELLATION_REQUESTED
+  CANCELLATION_ACCEPTED
+  CANCELLATION_REJECTED
+  CLOSED
+}
+
+enum Shopify_FulfillmentOrderStatus {
+  OPEN
+  IN_PROGRESS
+  CANCELLED
+  INCOMPLETE
+  CLOSED
+  SCHEDULED
+  ON_HOLD
+}
+
+"""
+One of the actions that the fulfillment order supports in its current state.
+"""
+type Shopify_FulfillmentOrderSupportedAction {
+  """The action value."""
+  action: Shopify_FulfillmentOrderAction!
+
+  """
+  The external URL to be used to initiate the fulfillment process outside Shopify.
+  Applicable only when the `action` value is `EXTERNAL`.
+  """
+  externalUrl: Url
+}
+
+enum Shopify_FulfillmentOrderAction {
+  CREATE_FULFILLMENT
+  REQUEST_FULFILLMENT
+  CANCEL_FULFILLMENT_ORDER
+  MOVE
+  REQUEST_CANCELLATION
+  MARK_AS_OPEN
+  RELEASE_HOLD
+  HOLD
+  EXTERNAL
+}
+
+"""An auto-generated type for paginating through multiple LineItems."""
+type Shopify_LineItemConnection {
+  """A list of edges."""
+  edges: [Shopify_LineItemEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one LineItem and a cursor during pagination.
+"""
+type Shopify_LineItemEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of LineItemEdge."""
+  node: Shopify_LineItem!
+}
+
+"""
+An auto-generated type for paginating through multiple LineItemMutables.
+"""
+type Shopify_LineItemMutableConnection {
+  """A list of edges."""
+  edges: [Shopify_LineItemMutableEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one LineItemMutable and a cursor during pagination.
+"""
+type Shopify_LineItemMutableEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of LineItemMutableEdge."""
+  node: Shopify_LineItemMutable!
+}
+
+"""Represents a single line item on an order."""
+type Shopify_LineItemMutable {
+  """Whether the line item can be restocked."""
+  canRestock: Boolean! @deprecated(reason: "Use `restockable` instead")
+
+  """A list of additional information about the line item."""
+  customAttributes: [Shopify_Attribute!]!
+
+  """
+  The discounts that have been allocated onto the line item by discount applications.
+  """
+  discountAllocations: [Shopify_DiscountAllocation!]!
+
+  """The total line price after discounts are applied, in shop currency."""
+  discountedTotal: Money! @deprecated(reason: "Use `discountedTotalSet` instead")
+
+  """
+  The total line price after discounts are applied, in shop and presentment currencies.
+  """
+  discountedTotalSet: Shopify_MoneyBag!
+
+  """
+  The approximate split price of a line item unit, in shop currency. This value doesn't include discounts applied to the entire order.
+  """
+  discountedUnitPrice: Money! @deprecated(reason: "Use `discountedUnitPriceSet` instead")
+
+  """
+  The approximate split price of a line item unit, in shop and presentment currencies. This value doesn't include discounts applied to the entire order.
+  """
+  discountedUnitPriceSet: Shopify_MoneyBag!
+
+  """The total number of units to fulfill."""
+  fulfillableQuantity: Int!
+
+  """
+  The service provider that fulfills the line item.
+  
+  Deleted fulfillment services will return null.
+  """
+  fulfillmentService: Shopify_FulfillmentService
+
+  """
+  The line item's fulfillment status. Returns 'fulfilled' if fulfillableQuantity >= quantity,
+  'partial' if  fulfillableQuantity > 0, and 'unfulfilled' otherwise.
+  """
+  fulfillmentStatus: String!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The image associated to the line item's variant."""
+  image(
+    """
+    Image width in pixels between 1 and 2048. This argument is deprecated: Use `maxWidth` on `Image.transformedSrc` instead.
+    """
+    maxWidth: Int
+
+    """
+    Image height in pixels between 1 and 2048. This argument is deprecated: Use `maxHeight` on `Image.transformedSrc` instead.
+    """
+    maxHeight: Int
+
+    """
+    Crops the image according to the specified region. This argument is deprecated: Use `crop` on `Image.transformedSrc` instead.
+    """
+    crop: Shopify_CropRegion
+
+    """
+    Image size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use `scale` on `Image.transformedSrc` instead.
+    """
+    scale: Int = 1
+  ): Shopify_Image
+
+  """Whether the line item can be edited or not."""
+  merchantEditable: Boolean!
+
+  """The name of the product."""
+  name: String!
+
+  """
+  The total number of units that can't be fulfilled. For example, if items have been refunded, or the item is not something that can be fulfilled, like a tip.
+  """
+  nonFulfillableQuantity: Int!
+
+  """
+  The total price without any discounts applied, in shop currency. ""This value is based on the unit price of the variant x quantity.
+  """
+  originalTotal: Money! @deprecated(reason: "Use `originalTotalSet` instead")
+
+  """
+  The total price in shop and presentment currencies, without discounts applied. This value is based on the unit price of the variant x quantity.
+  """
+  originalTotalSet: Shopify_MoneyBag!
+
+  """The variant unit price without discounts applied, in shop currency."""
+  originalUnitPrice: Money! @deprecated(reason: "Use `originalUnitPriceSet` instead")
+
+  """
+  The variant unit price without discounts applied, in shop and presentment currencies.
+  """
+  originalUnitPriceSet: Shopify_MoneyBag!
+
+  """The Product object associated with this line item's variant."""
+  product: Shopify_Product
+
+  """The number of variant units ordered."""
+  quantity: Int!
+
+  """The line item's quantity, minus the removed quantity."""
+  refundableQuantity: Int!
+
+  """Whether physical shipping is required for the variant."""
+  requiresShipping: Boolean!
+
+  """Whether the line item can be restocked."""
+  restockable: Boolean!
+
+  """The variant SKU number."""
+  sku: String
+
+  """The TaxLine object connected to this line item."""
+  taxLines(
+    """Truncate the array result to this size."""
+    first: Int
+  ): [Shopify_TaxLine!]!
+
+  """Whether the variant is taxable."""
+  taxable: Boolean!
+
+  """The title of the product."""
+  title: String!
+
+  """The sum of all AppliedDiscounts on this line item, in shop currency."""
+  totalDiscount: Money! @deprecated(reason: "Use `totalDiscountSet` instead")
+
+  """
+  The sum of all AppliedDiscounts on this line item in shop and presentment currencies.
+  """
+  totalDiscountSet: Shopify_MoneyBag!
+
+  """The total discounted value of unfulfilled units, in shop currency."""
+  unfulfilledDiscountedTotal: Money! @deprecated(reason: "Use `unfulfilledDiscountedTotalSet` instead")
+
+  """
+  The total discounted value of unfulfilled units, in shop and presentment currencies.
+  """
+  unfulfilledDiscountedTotalSet: Shopify_MoneyBag!
+
+  """
+  The total price without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop currency.
+  """
+  unfulfilledOriginalTotal: Money! @deprecated(reason: "Use `unfulfilledOriginalTotalSet` instead")
+
+  """
+  The total price without any discounts applied. This value is based on the unit price of the variant x quantity of all unfulfilled units, in shop and presentment currencies.
+  """
+  unfulfilledOriginalTotalSet: Shopify_MoneyBag!
+
+  """The number of units not yet fulfilled."""
+  unfulfilledQuantity: Int!
+
+  """The Variant object associated with this line item."""
+  variant: Shopify_ProductVariant
+
+  """The name of the variant."""
+  variantTitle: String
+
+  """The name of the vendor who made the variant."""
+  vendor: String
+}
+
+"""
+An auto-generated type for paginating through multiple LocalizationExtensions.
+"""
+type Shopify_LocalizationExtensionConnection {
+  """A list of edges."""
+  edges: [Shopify_LocalizationExtensionEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one LocalizationExtension and a cursor during pagination.
+"""
+type Shopify_LocalizationExtensionEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of LocalizationExtensionEdge."""
+  node: Shopify_LocalizationExtension!
+}
+
+"""
+Represents the value captured by a localization extension. Localization extensions are additional fields required by certain countries on international orders. For example, some countries require additional fields for customs information or tax identification numbers.
+"""
+type Shopify_LocalizationExtension {
+  """Country ISO 3166-1 alpha-2 code."""
+  countryCode: Shopify_CountryCode!
+
+  """The localized extension keys that are allowed."""
+  key: Shopify_LocalizationExtensionKey!
+
+  """The purpose of this localization extension."""
+  purpose: Shopify_LocalizationExtensionPurpose!
+
+  """The localized extension title."""
+  title: String!
+
+  """The value of the field."""
+  value: String!
+}
+
+enum Shopify_LocalizationExtensionKey {
+  TAX_CREDENTIAL_BR
+  SHIPPING_CREDENTIAL_BR
+  SHIPPING_CREDENTIAL_CN
+  TAX_CREDENTIAL_IT
+  TAX_EMAIL_IT
+  SHIPPING_CREDENTIAL_KR
+}
+
+enum Shopify_LocalizationExtensionPurpose {
+  SHIPPING
+  TAX
+}
+
+"""
+The payment collection details for an order that requires additional payment following an edit to the order.
+"""
+type Shopify_OrderPaymentCollectionDetails {
+  """The URL to use for collecting an additional payment on the order."""
+  additionalPaymentCollectionUrl: Url
+}
+
+"""Represents the payment terms for an order or draft order."""
+type Shopify_PaymentTerms {
+  """
+  Duration of payment terms in days based on the payment terms template used to create the payment terms.
+  """
+  dueInDays: Int
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Whether the payment terms have overdue payment schedules."""
+  overdue: Boolean!
+
+  """List of schedules for the payment terms."""
+  paymentSchedules(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PaymentScheduleConnection!
+
+  """
+  The name of the payment terms template used to create the payment terms.
+  """
+  paymentTermsName: String!
+
+  """The type of a payment terms template used to create the payment terms."""
+  paymentTermsType: Shopify_PaymentTermsType!
+
+  """The translated payment terms name."""
+  translatedName: String!
+}
+
+"""
+An auto-generated type for paginating through multiple PaymentSchedules.
+"""
+type Shopify_PaymentScheduleConnection {
+  """A list of edges."""
+  edges: [Shopify_PaymentScheduleEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one PaymentSchedule and a cursor during pagination.
+"""
+type Shopify_PaymentScheduleEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of PaymentScheduleEdge."""
+  node: Shopify_PaymentSchedule!
+}
+
+"""
+Represents the payment schedule for a single payment defined in the payment terms.
+"""
+type Shopify_PaymentSchedule {
+  """Amount owed for this payment schedule."""
+  amount: Shopify_MoneyV2!
+
+  """Date and time when the payment schedule is paid or fulfilled."""
+  completedAt: DateTime
+
+  """Date and time when the payment schedule is due."""
+  dueAt: DateTime
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Date and time when the invoice is sent."""
+  issuedAt: DateTime
+}
+
+enum Shopify_PaymentTermsType {
+  RECEIPT
+  NET
+  FIXED
+  UNKNOWN
+}
+
+"""
+The record of the line items and transactions that were refunded to a customer, along with restocking instructions for refunded line items.
+"""
+type Shopify_Refund {
+  """The date and time when the refund was created."""
+  createdAt: DateTime
+
+  """A list of the refunded duties as part of this refund."""
+  duties: [Shopify_RefundDuty]
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """The optional note associated with the refund."""
+  note: String
+
+  """The order associated with the refund."""
+  order: Shopify_Order!
+
+  """The `RefundLineItem` resources attached to the refund."""
+  refundLineItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_RefundLineItemConnection!
+
+  """The total amount across all transactions for the refund."""
+  totalRefunded: Shopify_MoneyV2! @deprecated(reason: "Use `totalRefundedSet` instead")
+
+  """
+  The total amount across all transactions for the refund, in shop and presentment currencies.
+  """
+  totalRefundedSet: Shopify_MoneyBag!
+
+  """The transactions associated with the refund."""
+  transactions(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_OrderTransactionConnection!
+
+  """The date and time when the refund was updated."""
+  updatedAt: DateTime!
+}
+
+"""Represents a refunded duty."""
+type Shopify_RefundDuty {
+  """The amount of a refunded duty in shop and presentment currencies."""
+  amountSet: Shopify_MoneyBag!
+
+  """The duty associated with this refunded duty."""
+  originalDuty: Shopify_Duty
+}
+
+"""
+An auto-generated type for paginating through multiple RefundLineItems.
+"""
+type Shopify_RefundLineItemConnection {
+  """A list of edges."""
+  edges: [Shopify_RefundLineItemEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one RefundLineItem and a cursor during pagination.
+"""
+type Shopify_RefundLineItemEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of RefundLineItemEdge."""
+  node: Shopify_RefundLineItem!
+}
+
+"""A line item that's included in a refund."""
+type Shopify_RefundLineItem {
+  """The `LineItem` resource associated to the refunded line item."""
+  lineItem: Shopify_LineItem!
+
+  """The inventory restock location."""
+  location: Shopify_Location
+
+  """The price of a refunded line item."""
+  price: Money! @deprecated(reason: "Use `priceSet` instead")
+
+  """The price of a refunded line item in shop and presentment currencies."""
+  priceSet: Shopify_MoneyBag!
+
+  """The quantity of a refunded line item."""
+  quantity: Int!
+
+  """The type of restock for the refunded line item."""
+  restockType: Shopify_RefundLineItemRestockType!
+
+  """
+  Whether the refunded line item was restocked. Not applicable in the context of a SuggestedRefund.
+  """
+  restocked: Boolean!
+
+  """The subtotal price of a refunded line item."""
+  subtotal: Money! @deprecated(reason: "Use `subtotalSet` instead")
+
+  """
+  The subtotal price of a refunded line item in shop and presentment currencies.
+  """
+  subtotalSet: Shopify_MoneyBag!
+
+  """The total tax charged on a refunded line item."""
+  totalTax: Money! @deprecated(reason: "Use `totalTaxSet` instead")
+
+  """
+  The total tax charged on a refunded line item in shop and presentment currencies.
+  """
+  totalTaxSet: Shopify_MoneyBag!
+}
+
+enum Shopify_RefundLineItemRestockType {
+  RETURN
+  CANCEL
+  LEGACY_RESTOCK
+  NO_RESTOCK
+}
+
+"""
+An auto-generated type for paginating through multiple OrderTransactions.
+"""
+type Shopify_OrderTransactionConnection {
+  """A list of edges."""
+  edges: [Shopify_OrderTransactionEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one OrderTransaction and a cursor during pagination.
+"""
+type Shopify_OrderTransactionEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of OrderTransactionEdge."""
+  node: Shopify_OrderTransaction!
+}
+
+"""A payment transaction in the context of an order."""
+type Shopify_OrderTransaction {
+  """The masked account number associated with the payment method."""
+  accountNumber: String
+
+  """The amount of money."""
+  amount: Money! @deprecated(reason: "Use `amountSet` instead")
+
+  """
+  The amount and currency of the transaction in shop and presentment currencies.
+  """
+  amountSet: Shopify_MoneyBag!
+
+  """The amount and currency of the transaction."""
+  amountV2: Shopify_MoneyV2! @deprecated(reason: "Use `amountSet` instead")
+
+  """Authorization code associated with the transaction."""
+  authorizationCode: String
+
+  """
+  The time when the authorization expires. This field is available only to stores on a Shopify Plus plan and is populated only for Shopify Payments authorizations.
+  """
+  authorizationExpiresAt: DateTime
+
+  """Date and time when the transaction was created."""
+  createdAt: DateTime!
+
+  """A standardized error code, independent of the payment provider."""
+  errorCode: Shopify_OrderTransactionErrorCode
+
+  """
+  The transaction fees charged on the order transaction. Only present for Shopify Payments transactions.
+  """
+  fees: [Shopify_TransactionFee!]!
+
+  """
+  The human-readable payment gateway name used to process the transaction.
+  """
+  formattedGateway: String
+
+  """The payment gateway used to process the transaction."""
+  gateway: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The kind of transaction."""
+  kind: Shopify_OrderTransactionKind!
+
+  """Whether the transaction can be manually captured."""
+  manuallyCapturable: Boolean!
+
+  """
+  Specifies the available amount to refund on the gateway.
+  This value is only available for transactions of type `SuggestedRefund`.
+  """
+  maximumRefundable: Money @deprecated(reason: "Use `maximumRefundableV2` instead")
+
+  """
+  Specifies the available amount with currency to refund on the gateway.
+  This value is only available for transactions of type `SuggestedRefund`.
+  """
+  maximumRefundableV2: Shopify_MoneyV2
+
+  """The associated order."""
+  order: Shopify_Order
+
+  """
+  The associated parent transaction, for example the authorization of a capture.
+  """
+  parentTransaction: Shopify_OrderTransaction
+
+  """The payment icon to display for the transaction."""
+  paymentIcon(
+    """
+    Image width in pixels between 1 and 2048. This argument is deprecated: Use `maxWidth` on `Image.transformedSrc` instead.
+    """
+    maxWidth: Int
+
+    """
+    Image height in pixels between 1 and 2048. This argument is deprecated: Use `maxHeight` on `Image.transformedSrc` instead.
+    """
+    maxHeight: Int
+
+    """
+    Crops the image according to the specified region. This argument is deprecated: Use `crop` on `Image.transformedSrc` instead.
+    """
+    crop: Shopify_CropRegion
+
+    """
+    Image size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use `scale` on `Image.transformedSrc` instead.
+    """
+    scale: Int = 1
+  ): Shopify_Image
+
+  """
+  The payment method used for the transaction. This value is `null` if the payment method is unknown.
+  """
+  paymentMethod: Shopify_PaymentMethods @deprecated(reason: "Use `paymentIcon` instead")
+
+  """Date and time when the transaction was processed."""
+  processedAt: DateTime
+
+  """
+  The transaction receipt that the payment gateway attaches to the transaction.
+  The value of this field depends on which payment gateway processed the transaction.
+  """
+  receipt: String @deprecated(reason: "Use `receiptJson` instead")
+
+  """The settlement currency."""
+  settlementCurrency: Shopify_CurrencyCode
+
+  """
+  The rate used when converting the transaction amount to settlement currency.
+  """
+  settlementCurrencyRate: Decimal
+
+  """
+  Contains all Shopify Payments information related to an order transaction. This field is available only to stores on a Shopify Plus plan.
+  """
+  shopifyPaymentsSet: Shopify_ShopifyPaymentsTransactionSet
+
+  """The status of this transaction."""
+  status: Shopify_OrderTransactionStatus!
+
+  """Whether the transaction is a test transaction."""
+  test: Boolean!
+
+  """
+  Specifies the available amount to capture on the gateway.
+  Only available when an amount is capturable or manually mark as paid.
+  """
+  totalUnsettled: Money @deprecated(reason: "Use `totalUnsettledSet` instead")
+
+  """
+  Specifies the available amount with currency to capture on the gateway in shop and presentment currencies.
+  Only available when an amount is capturable or manually mark as paid.
+  """
+  totalUnsettledSet: Shopify_MoneyBag
+
+  """
+  Specifies the available amount with currency to capture on the gateway.
+  Only available when an amount is capturable or manually mark as paid.
+  """
+  totalUnsettledV2: Shopify_MoneyV2 @deprecated(reason: "Use `totalUnsettledSet` instead")
+}
+
+enum Shopify_OrderTransactionErrorCode {
+  INCORRECT_NUMBER
+  INVALID_NUMBER
+  INVALID_EXPIRY_DATE
+  INVALID_CVC
+  EXPIRED_CARD
+  INCORRECT_CVC
+  INCORRECT_ZIP
+  INCORRECT_ADDRESS
+  INCORRECT_PIN
+  CARD_DECLINED
+  PROCESSING_ERROR
+  CALL_ISSUER
+  PICK_UP_CARD
+  CONFIG_ERROR
+  TEST_MODE_LIVE_CARD
+  UNSUPPORTED_FEATURE
+  GENERIC_ERROR
+  INVALID_COUNTRY
+  INVALID_AMOUNT
+  PAYMENT_METHOD_UNAVAILABLE
+  AMAZON_PAYMENTS_INVALID_PAYMENT_METHOD
+  AMAZON_PAYMENTS_MAX_AMOUNT_CHARGED
+  AMAZON_PAYMENTS_MAX_AMOUNT_REFUNDED
+  AMAZON_PAYMENTS_MAX_AUTHORIZATIONS_CAPTURED
+  AMAZON_PAYMENTS_MAX_REFUNDS_PROCESSED
+  AMAZON_PAYMENTS_ORDER_REFERENCE_CANCELED
+  AMAZON_PAYMENTS_STALE
+}
+
+"""Transaction fee related to an order transaction."""
+type Shopify_TransactionFee {
+  """Amount of the fee."""
+  amount: Shopify_MoneyV2!
+
+  """Flat rate charge for a transaction."""
+  flatFee: Shopify_MoneyV2!
+
+  """Name of the credit card flat fee."""
+  flatFeeName: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Percentage charge."""
+  rate: Decimal!
+
+  """Name of the credit card rate."""
+  rateName: String
+
+  """Tax amount charged on the fee."""
+  taxAmount: Shopify_MoneyV2!
+
+  """Name of the type of fee."""
+  type: String!
+}
+
+enum Shopify_OrderTransactionKind {
+  SALE
+  CAPTURE
+  AUTHORIZATION
+  VOID
+  REFUND
+  CHANGE
+  EMV_AUTHORIZATION
+  SUGGESTED_REFUND
+}
+
+enum Shopify_PaymentMethods {
+  VISA
+  MASTERCARD
+  DISCOVER
+  AMERICAN_EXPRESS
+  DINERS_CLUB
+  JCB
+  UNIONPAY
+  ELO
+  DANKORT
+  MAESTRO
+  FORBRUGSFORENINGEN
+  PAYPAL
+  BOGUS
+  BITCOIN
+  LITECOIN
+  DOGECOIN
+  INTERAC
+}
+
+"""
+Presents all Shopify Payments specific information related to an order transaction.
+"""
+type Shopify_ShopifyPaymentsTransactionSet {
+  """Contains all fields related to an extended authorization."""
+  extendedAuthorizationSet: Shopify_ShopifyPaymentsExtendedAuthorization
+
+  """Contains all fields related to a refund."""
+  refundSet: Shopify_ShopifyPaymentsRefundSet
+}
+
+"""
+Presents all Shopify Payments information related to an extended authorization.
+"""
+type Shopify_ShopifyPaymentsExtendedAuthorization {
+  """
+  The time after which the extended authorization expires. After the expiry, the merchant is unable to capture the payment.
+  """
+  extendedAuthorizationExpiresAt: DateTime!
+
+  """The time after which capture will incur an additional fee."""
+  standardAuthorizationExpiresAt: DateTime!
+}
+
+"""
+Presents all Shopify Payments specific information related to an order refund.
+"""
+type Shopify_ShopifyPaymentsRefundSet {
+  """
+  The acquirer reference number (ARN) code generated for Visa/Mastercard transactions.
+  """
+  acquirerReferenceNumber: String
+}
+
+enum Shopify_OrderTransactionStatus {
+  SUCCESS
+  FAILURE
+  PENDING
+  ERROR
+  AWAITING_RESPONSE
+  UNKNOWN
+}
+
+enum Shopify_OrderRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+"""Represents a fraud check on an order."""
+type Shopify_OrderRisk {
+  """
+  Whether the risk level is shown in the Shopify admin. If false, then this order risk is ignored when Shopify determines the overall risk level for the order.
+  """
+  display: Boolean!
+
+  """
+  The likelihood that an order is fraudulent, based on this order risk.
+  
+  The level can be set by Shopify risk analysis or by an app.
+  """
+  level: Shopify_OrderRiskLevel
+
+  """The risk message that's shown to the merchant in the Shopify admin."""
+  message: String
+}
+
+"""
+Represents the shipping details that the customer chose for their order.
+"""
+type Shopify_ShippingLine {
+  """
+  A reference to the carrier service that provided the rate.
+  Present when the rate was computed by a third-party carrier service.
+  """
+  carrierIdentifier: String
+
+  """A reference to the shipping method."""
+  code: String
+
+  """Whether the shipping line is custom or not."""
+  custom: Boolean!
+
+  """The general classification of the delivery method."""
+  deliveryCategory: String
+
+  """The discounts that have been allocated to the shipping line."""
+  discountAllocations: [Shopify_DiscountAllocation!]!
+
+  """The pre-tax shipping price with discounts applied."""
+  discountedPrice: Shopify_MoneyV2! @deprecated(reason: "Use `discountedPriceSet` instead")
+
+  """The pre-tax shipping price with discounts applied."""
+  discountedPriceSet: Shopify_MoneyBag!
+
+  """A globally-unique identifier."""
+  id: ID
+
+  """The pre-tax shipping price without any discounts applied."""
+  originalPrice: Shopify_MoneyV2! @deprecated(reason: "Use `originalPriceSet` instead")
+
+  """The pre-tax shipping price without any discounts applied."""
+  originalPriceSet: Shopify_MoneyBag!
+
+  """The phone number at the shipping address."""
+  phone: String
+
+  """Returns the price of the shipping line."""
+  price: Money! @deprecated(reason: "Use `originalPriceSet` instead")
+
+  """
+  The fulfillment service requested for the shipping method.
+  Present if the shipping method requires processing by a third party fulfillment service.
+  """
+  requestedFulfillmentService: Shopify_FulfillmentService
+
+  """
+  A unique identifier for the shipping rate. The format can change without notice and is not meant to be shown to users.
+  """
+  shippingRateHandle: String
+
+  """Returns the rate source for the shipping line."""
+  source: String
+
+  """The TaxLine objects connected to this shipping line."""
+  taxLines: [Shopify_TaxLine!]!
+
+  """Returns the title of the shipping line."""
+  title: String!
+}
+
+"""An auto-generated type for paginating through multiple ShippingLines."""
+type Shopify_ShippingLineConnection {
+  """A list of edges."""
+  edges: [Shopify_ShippingLineEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ShippingLine and a cursor during pagination.
+"""
+type Shopify_ShippingLineEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ShippingLineEdge."""
+  node: Shopify_ShippingLine!
+}
+
+"""
+Represents a refund suggested by Shopify based on the items being reimbursed. You can then use the suggested refund object to generate an actual refund.
+"""
+type Shopify_SuggestedRefund {
+  """The total monetary value to be refunded."""
+  amount: Money! @deprecated(reason: "Use `amountSet` instead")
+
+  """
+  The total monetary value to be refunded in shop and presentment currencies.
+  """
+  amountSet: Shopify_MoneyBag!
+
+  """The sum of all the discounted prices of the line items being refunded."""
+  discountedSubtotalSet: Shopify_MoneyBag!
+
+  """The total monetary value available to refund."""
+  maximumRefundable: Money! @deprecated(reason: "Use `maximumRefundableSet` instead")
+
+  """
+  The total monetary value available to refund in shop and presentment currencies.
+  """
+  maximumRefundableSet: Shopify_MoneyBag!
+
+  """A list of duties to be refunded from the order."""
+  refundDuties: [Shopify_RefundDuty!]!
+
+  """A list of line items to be refunded, along with restock instructions."""
+  refundLineItems: [Shopify_RefundLineItem!]!
+
+  """The shipping costs to be refunded from the order."""
+  shipping: Shopify_ShippingRefund!
+
+  """The sum of all the prices of the line items being refunded."""
+  subtotal: Money! @deprecated(reason: "Use `subtotalSet` instead")
+
+  """
+  The sum of all the prices of the line items being refunded in shop and presentment currencies.
+  """
+  subtotalSet: Shopify_MoneyBag!
+
+  """A list of suggested order transactions."""
+  suggestedTransactions: [Shopify_SuggestedOrderTransaction!]!
+
+  """
+  The total cart discount amount that was applied to all line items in this refund.
+  """
+  totalCartDiscountAmountSet: Shopify_MoneyBag!
+
+  """
+  The sum of all the duties being refunded from the order in shop and presentment currencies. The value must be positive.
+  """
+  totalDutiesSet: Shopify_MoneyBag!
+
+  """
+  The sum of the taxes being refunded from the order in shop and presentment currencies. The value must be positive.
+  """
+  totalTaxSet: Shopify_MoneyBag!
+
+  """
+  The sum of the taxes being refunded from the order. The value must be positive.
+  """
+  totalTaxes: Money! @deprecated(reason: "Use `totalTaxSet` instead")
+}
+
+"""Represents the shipping costs refunded on the Refund."""
+type Shopify_ShippingRefund {
+  """The monetary value of the shipping fees to be refunded."""
+  amount: Money! @deprecated(reason: "Use `amountSet` instead")
+
+  """
+  The monetary value of the shipping fees to be refunded in shop and presentment currencies.
+  """
+  amountSet: Shopify_MoneyBag!
+
+  """The maximum amount of shipping fees currently refundable."""
+  maximumRefundable: Money! @deprecated(reason: "Use `maximumRefundableSet` instead")
+
+  """
+  The maximum amount of shipping fees currently refundable in shop and presentment currencies.
+  """
+  maximumRefundableSet: Shopify_MoneyBag!
+
+  """
+  The monetary value of the tax allocated to shipping fees to be refunded.
+  """
+  tax: Money! @deprecated(reason: "Use `taxSet` instead")
+
+  """
+  The monetary value of the tax allocated to shipping fees to be refunded in shop and presentment currencies.
+  """
+  taxSet: Shopify_MoneyBag!
+}
+
+"""
+A suggested transaction. Suggested transaction are usually used in the context of refunds
+and exchanges.
+"""
+type Shopify_SuggestedOrderTransaction {
+  """The masked account number associated with the payment method."""
+  accountNumber: String
+
+  """The amount of the transaction."""
+  amount: Money! @deprecated(reason: "Use `amountSet` instead")
+
+  """
+  The amount and currency of the suggested order transaction in shop and presentment currencies.
+  """
+  amountSet: Shopify_MoneyBag!
+
+  """
+  The human-readable payment gateway name suggested to process the transaction.
+  """
+  formattedGateway: String
+
+  """The suggested payment gateway used to process the transaction."""
+  gateway: String
+
+  """Specifies the kind of the suggested order transaction."""
+  kind: Shopify_SuggestedOrderTransactionKind!
+
+  """
+  Specifies the available amount to refund on the gateway. Only available within SuggestedRefund.
+  """
+  maximumRefundable: Money @deprecated(reason: "Use `maximumRefundableSet` instead")
+
+  """
+  Specifies the available amount to refund on the gateway in shop and presentment currencies. Only available within SuggestedRefund.
+  """
+  maximumRefundableSet: Shopify_MoneyBag
+
+  """
+  The associated parent transaction, for example the authorization of a capture.
+  """
+  parentTransaction: Shopify_OrderTransaction
+}
+
+enum Shopify_SuggestedOrderTransactionKind {
+  SUGGESTED_REFUND
+}
+
+"""The fields required to reimburse line items on a refund."""
+input Shopify_RefundLineItemInput {
+  """The ID of the line item in the refund."""
+  lineItemId: ID!
+
+  """The quantity of the associated line item to be refunded."""
+  quantity: Int!
+
+  """The type of restock for this line item."""
+  restockType: Shopify_RefundLineItemRestockType
+
+  """
+  The intended location for restocking. If the `restockType` is set to `NO_RESTOCK`, then this value is empty.`
+  """
+  locationId: ID
+}
+
+"""The fields required to reimburse duties on a refund."""
+input Shopify_RefundDutyInput {
+  """The ID of the duty in the refund."""
+  dutyId: ID!
+
+  """The type of refund for this duty."""
+  refundType: Shopify_RefundDutyRefundType
+}
+
+enum Shopify_RefundDutyRefundType {
+  PROPORTIONAL
+  FULL
+}
+
+enum Shopify_CustomerMarketingOptInLevel {
+  SINGLE_OPT_IN
+  CONFIRMED_OPT_IN
+  UNKNOWN
+}
+
+enum Shopify_OrderSortKeys {
+  CREATED_AT
+  CUSTOMER_NAME
+  FINANCIAL_STATUS
+  FULFILLMENT_STATUS
+  ORDER_NUMBER
+  PROCESSED_AT
+  TOTAL_PRICE
+  UPDATED_AT
+  ID
+  RELEVANCE
+}
+
+"""
+An auto-generated type for paginating through multiple CustomerPaymentMethods.
+"""
+type Shopify_CustomerPaymentMethodConnection {
+  """A list of edges."""
+  edges: [Shopify_CustomerPaymentMethodEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one CustomerPaymentMethod and a cursor during pagination.
+"""
+type Shopify_CustomerPaymentMethodEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of CustomerPaymentMethodEdge."""
+  node: Shopify_CustomerPaymentMethod!
+}
+
+enum Shopify_CustomerProductSubscriberStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  FAILED
+  NEVER_SUBSCRIBED
+  PAUSED
+}
+
+"""
+The record of when a customer consented to receive marketing material by SMS.
+
+The customer's consent state reflects the record with the most recent date when consent was updated.
+"""
+type Shopify_CustomerSmsMarketingConsentState {
+  """
+  The source from which the SMS marketing information for the customer was collected.
+  """
+  consentCollectedFrom: Shopify_CustomerConsentCollectedFrom
+
+  """
+  The date and time when the customer consented to receive marketing material by SMS.
+  If no date is provided, then the date and time when the consent information was sent is used.
+  """
+  consentUpdatedAt: DateTime
+
+  """
+  The marketing subscription opt-in level that was set when the customer consented to receive marketing information.
+  """
+  marketingOptInLevel: Shopify_CustomerMarketingOptInLevel!
+
+  """The current SMS marketing state for the customer."""
+  marketingState: Shopify_CustomerSmsMarketingState!
+}
+
+enum Shopify_CustomerConsentCollectedFrom {
+  SHOPIFY
+  OTHER
+}
+
+enum Shopify_CustomerSmsMarketingState {
+  NOT_SUBSCRIBED
+  PENDING
+  SUBSCRIBED
+  UNSUBSCRIBED
+  REDACTED
+}
+
+enum Shopify_CustomerState {
+  DECLINED
+  DISABLED
+  ENABLED
+  INVITED
+}
+
+enum Shopify_TaxExemption {
+  CA_STATUS_CARD_EXEMPTION
+  CA_BC_RESELLER_EXEMPTION
+  CA_MB_RESELLER_EXEMPTION
+  CA_SK_RESELLER_EXEMPTION
+  CA_DIPLOMAT_EXEMPTION
+  CA_BC_COMMERCIAL_FISHERY_EXEMPTION
+  CA_MB_COMMERCIAL_FISHERY_EXEMPTION
+  CA_NS_COMMERCIAL_FISHERY_EXEMPTION
+  CA_PE_COMMERCIAL_FISHERY_EXEMPTION
+  CA_SK_COMMERCIAL_FISHERY_EXEMPTION
+  CA_BC_PRODUCTION_AND_MACHINERY_EXEMPTION
+  CA_SK_PRODUCTION_AND_MACHINERY_EXEMPTION
+  CA_BC_SUB_CONTRACTOR_EXEMPTION
+  CA_SK_SUB_CONTRACTOR_EXEMPTION
+  CA_BC_CONTRACTOR_EXEMPTION
+  CA_SK_CONTRACTOR_EXEMPTION
+  CA_ON_PURCHASE_EXEMPTION
+  CA_MB_FARMER_EXEMPTION
+  CA_NS_FARMER_EXEMPTION
+  CA_SK_FARMER_EXEMPTION
+}
+
 """Asset search results"""
 type AssetSearchResults {
   results: [Asset!]!
@@ -24134,6 +29319,17 @@ type WithContext {
     """The ID of the Product to return."""
     id: ID!
   ): Shopify_Product
+  Shopify_customer(
+    """The ID of the Customer to return."""
+    id: ID!
+  ): Shopify_Customer
+  Shopify_customerPaymentMethod(
+    """The ID of the CustomerPaymentMethod to return."""
+    id: ID!
+
+    """Whether to show the customer's revoked payment method."""
+    showRevoked: Boolean = false
+  ): Shopify_CustomerPaymentMethod
   searchAssetIndex(
     terms: String
 
@@ -24279,6 +29475,9 @@ type Mutation {
   """Create a Shopify storefront cart."""
   createMyCheckoutSession(lines: [CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput!]!): ShopifyStorefront_Cart
 
+  """Create a Shopify storefront cart."""
+  createMyCheckout(email: String, lines: [CreateMyCheckoutPropertiesLinesItemsPropertyInput!]!): ShopifyStorefront_Cart
+
   """Create a Stripe checkout session for the signed-in user"""
   createMyCheckoutSession_Stripe(redirectUrl: String!, mode: String!, lineItems: [CreateMyCheckoutSession_StripePropertiesLineItemsItemsPropertyInput!]!): Stripe_CheckoutSession
 
@@ -24312,6 +29511,14 @@ type Mutation {
 
   """Update Footer"""
   updateFooter(input: UpdateFooterInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateFooterResult
+  ShopifyStorefront_cartCreate(
+    """The fields used to create a cart."""
+    input: ShopifyStorefront_CartInput
+  ): ShopifyStorefront_CartCreatePayload
+  createMyCart(
+    """The fields used to create a cart."""
+    input: ShopifyStorefront_CartInput
+  ): ShopifyStorefront_CartCreatePayload
 }
 
 """A project file stored on s3"""
@@ -27062,8 +32269,6 @@ type ShopifyStorefront_FilterValue {
   label: String!
 }
 
-scalar Json
-
 enum ShopifyStorefront_ProductCollectionSortKeys {
   TITLE
   PRICE
@@ -28103,6 +33308,12 @@ type ShopifyStorefront_CartLineEstimatedCost {
 union ShopifyStorefront_Merchandise = ShopifyStorefront_ProductVariant
 
 input CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput {
+  quantity: Int!
+  merchandiseId: String!
+  sellingPlanId: String
+}
+
+input CreateMyCheckoutPropertiesLinesItemsPropertyInput {
   quantity: Int!
   merchandiseId: String!
   sellingPlanId: String
@@ -29808,4 +35019,109 @@ input TextInput {
   primary: String
   secondary: String
   button: String
+}
+
+"""Return type for `cartCreate` mutation."""
+type ShopifyStorefront_CartCreatePayload {
+  """The new cart."""
+  cart: ShopifyStorefront_Cart
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [ShopifyStorefront_CartUserError!]!
+}
+
+"""Represents an error that happens during execution of a cart mutation."""
+type ShopifyStorefront_CartUserError {
+  """The error code."""
+  code: ShopifyStorefront_CartErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String]
+
+  """The error message."""
+  message: String!
+}
+
+enum ShopifyStorefront_CartErrorCode {
+  INVALID
+  LESS_THAN
+  INVALID_MERCHANDISE_LINE
+  MISSING_DISCOUNT_CODE
+  MISSING_NOTE
+}
+
+"""Specifies the input fields to create a cart."""
+input ShopifyStorefront_CartInput {
+  """
+  An array of key-value pairs that contains additional information about the cart.
+  """
+  attributes: [ShopifyStorefront_AttributeInput]
+
+  """A list of merchandise lines to add to the cart."""
+  lines: [ShopifyStorefront_CartLineInput]
+
+  """
+  The case-insensitive discount codes that the customer added at checkout.
+  """
+  discountCodes: [String]
+
+  """
+  A note that is associated with the cart. For example, the note can be a personalized message to the buyer.
+  """
+  note: String
+
+  """
+  The customer associated with the cart. Used to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout). Buyer identity should match the customer's shipping address.
+  """
+  buyerIdentity: ShopifyStorefront_CartBuyerIdentityInput
+}
+
+"""Specifies the input fields required for an attribute."""
+input ShopifyStorefront_AttributeInput {
+  """Key or name of the attribute."""
+  key: String!
+
+  """Value of the attribute."""
+  value: String!
+}
+
+"""Specifies the input fields to create a merchandise line on a cart."""
+input ShopifyStorefront_CartLineInput {
+  """
+  An array of key-value pairs that contains additional information about the merchandise line.
+  """
+  attributes: [ShopifyStorefront_AttributeInput]
+
+  """The quantity of the merchandise."""
+  quantity: Int = 1
+
+  """The identifier of the merchandise that the buyer intends to purchase."""
+  merchandiseId: ID!
+
+  """
+  The identifier of the selling plan that the merchandise is being purchased with.
+  """
+  sellingPlanId: ID
+}
+
+"""
+Specifies the input fields to update the buyer information associated with a cart.
+Buyer identity is used to determine
+[international pricing](https://shopify.dev/api/examples/international-pricing#create-a-checkout)
+and should match the customer's shipping address.
+"""
+input ShopifyStorefront_CartBuyerIdentityInput {
+  """The email address of the buyer that is interacting with the cart."""
+  email: String
+
+  """The phone number of the buyer that is interacting with the cart."""
+  phone: String
+
+  """The country where the buyer is located."""
+  countryCode: ShopifyStorefront_CountryCode
+
+  """
+  The access token used to identify the customer associated with the cart.
+  """
+  customerAccessToken: String
 }

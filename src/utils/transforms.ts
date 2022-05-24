@@ -82,6 +82,7 @@ function getPriceOptions(
             // This will only ever be 'percentage'
             discountType: discount_type as ProductPriceOption['discountType'],
             discountAmount,
+            // Recharge forces each product to have the same interval for all sub options
             interval: getSubscriptionInterval(order_interval_unit),
             intervalCount: Number(intervalCount),
             amount: amount - discountOffInCents,

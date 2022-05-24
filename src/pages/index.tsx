@@ -1,6 +1,8 @@
+import Alert from 'components/Alert/Alert';
 import PageLoader from 'components/PageLoader';
 import Container from 'features/Container';
-import ProductCategory from 'features/ProductCategory/ProductCategory';
+import ProductHeader from 'features/ProductCategory/Header/Header';
+import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
 import Page from 'layouts/Page';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
@@ -8,7 +10,6 @@ import type { GetProductsResponse } from 'queries';
 import { GetProductsQuery } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
 import { createStaticClient } from 'services/apollo/apolloClient';
-import { Alert } from 'theme-ui';
 import { formatError } from 'utils/errors';
 import { shopifyProductToProductListItem } from 'utils/transforms';
 
@@ -17,8 +18,9 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
     return (
       <Container>
         <Page>
-          <Alert>Error loading products</Alert>
-          <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
+          <div className="my-10">
+            <Alert status="error" primaryText="Error loading products" secondaryText={JSON.stringify(error, null, 2)} />
+          </div>
         </Page>
       </Container>
     );
@@ -28,43 +30,8 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
     <Container>
       {products ? (
         <Page>
-          <ProductCategory
-            header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }}
-            products={products}
-            setFilters={() => {}}
-            clearAllFilters={() => {}}
-            setSortOption={() => {}}
-            filters={{
-              color: [
-                { value: 'white', label: 'White', checked: false },
-                { value: 'beige', label: 'Beige', checked: false },
-                { value: 'blue', label: 'Blue', checked: true },
-                { value: 'brown', label: 'Brown', checked: false },
-                { value: 'green', label: 'Green', checked: false },
-                { value: 'purple', label: 'Purple', checked: false }
-              ],
-              size: [
-                { value: 'xs', label: 'XS', checked: false },
-                { value: 's', label: 'S', checked: true },
-                { value: 'm', label: 'M', checked: false },
-                { value: 'l', label: 'L', checked: false },
-                { value: 'xl', label: 'XL', checked: false },
-                { value: '2xl', label: '2XL', checked: false }
-              ]
-            }}
-            sortOptions={[
-              { name: 'Most Popular', href: '#', current: true },
-              { name: 'Best Rating', href: '#', current: false },
-              { name: 'Newest', href: '#', current: false },
-              { name: 'Price: Low to High', href: '#', current: false },
-              { name: 'Price: High to Low', href: '#', current: false }
-            ]}
-            pagination={{
-              pageCount: 1,
-              currentPage: 1,
-              setCurrentPage: () => {}
-            }}
-          />
+          <ProductHeader header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }} />
+          <ProductGrid products={products} />
         </Page>
       ) : (
         <PageLoader />

@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import type {
   Mutation,
   QueryShopify_ProductArgs,
+  ShopifyStorefront_CartCreatePayload,
   Shopify_Product,
   Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
@@ -379,14 +380,16 @@ export const UpsertMyCustomer = gql`
   }
 `;
 
-export const CreateMyCheckoutSession = gql`
-  mutation CreateMyCheckoutSession(
-    $redirectUrl: String!
-    $lineItems: [CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput!]!
-    $mode: String!
-  ) {
-    session: createMyCheckoutSession(lineItems: $lineItems, redirectUrl: $redirectUrl, mode: $mode) {
-      id
+export type CreateMyCartResponse = {
+  myCart: ShopifyStorefront_CartCreatePayload;
+};
+
+export const CreateMyCartQuery = gql`
+  mutation CreateMyCart($input: ShopifyStorefront_CartInput) {
+    myCart: createMyCart(input: $input) {
+      cart {
+        checkoutUrl
+      }
     }
   }
 `;

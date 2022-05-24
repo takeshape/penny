@@ -88,7 +88,7 @@ function useAddToCart(product: Product) {
       id: product.id,
       name: product.name,
       description: product.description,
-      href: `/product/${product.id}`,
+      href: product.url,
       unitAmount: price.amount,
       currency: price.currencyCode,
       quantity,

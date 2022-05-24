@@ -23,6 +23,7 @@ export type CartItemInput = SetOptional<CartItem, 'interval' | 'intervalCount' |
 
 /* Cart UI */
 export const isCartOpenAtom = atom(false);
+export const isCartCheckingOutAtom = atom(false);
 
 /* Cart Items */
 export const cartItemsAtom = atomWithStorage<CartItem[]>(cartLocalStorageKey, []);
