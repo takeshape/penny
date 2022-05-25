@@ -1,19 +1,24 @@
 import { useMutation } from '@apollo/client';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import { signIn, useSession } from 'next-auth/react';
-import { CreateMyCheckoutSession } from 'queries';
+import type { CreateMyCartResponse } from 'queries';
+import { CreateMyCartQuery } from 'queries';
 import { useCallback, useEffect } from 'react';
-import { cartItemsAtom, cartQuantityAtom } from 'services/cart/store';
-import getStripe from 'services/stripe/getStripe';
-import { getCheckoutPayload } from 'utils/checkout';
+import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from 'services/cart/store';
+import { getCheckoutPayload } from 'services/cart/utils';
+import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 
 export const Checkout = () => {
   const { status } = useSession();
 
+  const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
   const quantity = useAtomValue(cartQuantityAtom);
   const items = useAtomValue(cartItemsAtom);
 
-  const [setCheckoutPayload, { data: checkoutData }] = useMutation(CreateMyCheckoutSession);
+  const [setCheckoutPayload, { data: checkoutData }] = useMutation<
+    CreateMyCartResponse,
+    MutationShopifyStorefront_CartCreateArgs
+  >(CreateMyCartQuery);
 
   const handleCheckout = useCallback(() => {
     if (status !== 'authenticated') {
@@ -21,21 +26,15 @@ export const Checkout = () => {
       return;
     }
 
+    setIsCartCheckingOut(true);
     setCheckoutPayload({
-      variables: getCheckoutPayload(items, window.location.href)
+      variables: getCheckoutPayload(items)
     });
   }, [items, setCheckoutPayload, status]);
 
   useEffect(() => {
-    const doCheckout = async () => {
-      const stripe = await getStripe();
-      stripe.redirectToCheckout({
-        sessionId: checkoutData.session.id
-      });
-    };
-
-    if (checkoutData?.session) {
-      doCheckout();
+    if (checkoutData?.myCart?.cart?.checkoutUrl) {
+      window.location.href = checkoutData.myCart.cart.checkoutUrl;
     }
   }, [checkoutData]);
 

@@ -1,16 +1,16 @@
 import NextLink from 'next/link';
 import { Box, Card, Flex, Heading, Link } from 'theme-ui';
-import type { Stripe_Product } from 'types/takeshape';
+import type { Product } from 'types/product';
 import ProductAddToCart from './ProductAddToCart';
 import ProductImage from './ProductImage';
 export interface ProductCardProps {
-  product: Stripe_Product;
+  product: Product;
 }
 
 export const ProductCard = ({ product }: ProductCardProps) => {
-  const { name, prices, images } = product;
+  const { name, variants, featuredImage } = product;
 
-  if (!prices.length) {
+  if (!variants.length) {
     return null;
   }
 
@@ -20,7 +20,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <Box sx={{ minWidth: '8em' }}>
           <NextLink href={`/product/${product.id}`} passHref>
             <Link>
-              <ProductImage maxHeight="300px" images={images} />
+              <ProductImage maxHeight="300px" image={featuredImage} />
             </Link>
           </NextLink>
         </Box>

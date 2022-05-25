@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import Alert from 'components/Alert/Alert';
 import Section from 'components/Section';
 import UserLogout from 'features/account/AccountLogout';
 import CustomerForm from 'features/account/CustomerForm';
@@ -13,7 +14,7 @@ import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'queries';
 import { useState } from 'react';
-import { Alert, Box, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
+import { Box, Divider, Flex, Grid, Heading, Spinner } from 'theme-ui';
 
 const referralsFixtureData: ReferralListItemProps[] = [
   {
@@ -71,10 +72,13 @@ const AccountPage: NextPage = () => {
             )}
 
             {newsletterError && (
-              <>
-                <Alert>Error loading newsletter subscriptions</Alert>
-                <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
-              </>
+              <div className="my-10">
+                <Alert
+                  status="error"
+                  primaryText="Error loading newsletter subscriptions"
+                  secondaryText={JSON.stringify(newsletterError, null, 2)}
+                />
+              </div>
             )}
           </Section>
 
@@ -93,10 +97,13 @@ const AccountPage: NextPage = () => {
         </Section>
 
         {profileError && (
-          <>
-            <Alert>Error loading TakeShape profile</Alert>
-            <pre style={{ color: 'red' }}>{JSON.stringify(profileError, null, 2)}</pre>
-          </>
+          <div className="my-10">
+            <Alert
+              status="error"
+              primaryText="Error loading profile"
+              secondaryText={JSON.stringify(profileError, null, 2)}
+            />
+          </div>
         )}
       </Page>
     </Container>

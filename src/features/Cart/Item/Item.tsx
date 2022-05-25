@@ -36,11 +36,11 @@ export const Item = ({ atom, onRemove }: ItemProps) => {
             </h3>
             <div>
               <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
-              {interval === 'none' ? null : (
+              {intervalCount > 0 ? (
                 <p className="ml-4 text-right text-xs text-gray-500">
                   per {pluralizeText(intervalCount, interval, `${interval}s`)}
                 </p>
-              )}
+              ) : null}
             </div>
           </div>
           {/* Preserving example of details style */}

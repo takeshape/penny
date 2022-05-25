@@ -1,7 +1,10 @@
 import { gql } from '@apollo/client';
 import type {
   Mutation,
-  ReviewsIo_ListProductReviewsResponse,
+  QueryShopify_ProductArgs,
+  ShopifyStorefront_CartCreatePayload,
+  Shopify_Product,
+  Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
   Stripe_Product,
   Stripe_Subscription,
@@ -36,45 +39,202 @@ export const GetStripeProducts = gql`
   }
 `;
 
-export interface GetProductArgs {
-  id: string;
-}
-
-export type GetProductResponse = {
-  product: Stripe_Product;
-  reviews: ReviewsIo_ListProductReviewsResponse;
+export type GetProductIdsResponse = {
+  products: {
+    edges: Array<{
+      node: {
+        id: string;
+      };
+    }>;
+  };
 };
 
-export const GetProduct = gql`
-  query GetProduct($id: String!) {
-    product: Stripe_getProduct(id: $id) {
-      id
-      name
-      description
-      images
-      prices {
-        id
-        unit_amount
-        currency
-        recurring {
-          interval
-          interval_count
+export const GetProductIdsQuery = gql`
+  query GetProductIds {
+    products: Shopify_products(first: 100) {
+      edges {
+        node {
+          id
         }
       }
     }
-    reviews: ReviewsIo_listProductReviews(sku: $id) {
-      reviews {
-        data {
-          date_created
-          timeago
-          rating
+  }
+`;
+
+export type GetProductsResponse = {
+  products: Shopify_ProductConnection;
+};
+
+export const GetProductsQuery = gql`
+  query GetProducts {
+    products: Shopify_products(first: 10) {
+      edges {
+        node {
+          id
           title
-          review
+          description
+          descriptionHtml
+          featuredImage {
+            width
+            height
+            url
+          }
+          images(first: 10) {
+            edges {
+              node {
+                width
+                height
+                url
+              }
+            }
+          }
+          priceRangeV2 {
+            maxVariantPrice {
+              currencyCode
+              amount
+            }
+            minVariantPrice {
+              currencyCode
+              amount
+            }
+          }
+          reviews {
+            stats {
+              average
+              count
+            }
+          }
+          totalVariants
+          sellingPlanGroupCount
+          recharge {
+            discount_type
+            discount_amount
+            subscription_defaults {
+              order_interval_unit
+              order_interval_frequency_options
+              storefront_purchase_options
+            }
+          }
         }
       }
-      stats {
-        average
-        count
+    }
+  }
+`;
+
+export type GetProductArgs = QueryShopify_ProductArgs;
+
+export type GetProductResponse = {
+  product: Shopify_Product;
+};
+
+export const GetProductQuery = gql`
+  query GetProduct($id: ID!) {
+    product: Shopify_product(id: $id) {
+      id
+      title
+      description
+      descriptionHtml
+      featuredImage {
+        width
+        height
+        url
+      }
+      images(first: 10) {
+        edges {
+          node {
+            width
+            height
+            url
+          }
+        }
+      }
+      priceRangeV2 {
+        maxVariantPrice {
+          currencyCode
+          amount
+        }
+        minVariantPrice {
+          currencyCode
+          amount
+        }
+      }
+      seo {
+        title
+        description
+      }
+      publishedAt
+      totalVariants
+      variants(first: 10) {
+        edges {
+          node {
+            id
+            availableForSale
+            compareAtPrice
+            image {
+              width
+              height
+              url
+            }
+            price
+            sellableOnlineQuantity
+            sku
+            title
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+      }
+      reviews {
+        stats {
+          average
+          count
+        }
+        reviews {
+          data {
+            rating
+            title
+            review
+            date_created
+            timeago
+            reviewer {
+              first_name
+              last_name
+              verified_buyer
+              address
+              profile_picture
+              gravatar
+            }
+          }
+          per_page
+          current_page
+          total
+        }
+      }
+      sellingPlanGroupCount
+      sellingPlanGroups(first: 1) {
+        edges {
+          node {
+            sellingPlans(first: 10) {
+              edges {
+                node {
+                  id
+                  options
+                }
+              }
+            }
+          }
+        }
+      }
+      recharge {
+        discount_type
+        discount_amount
+        subscription_defaults {
+          order_interval_unit
+          order_interval_frequency_options
+          storefront_purchase_options
+        }
       }
     }
   }
@@ -185,14 +345,16 @@ export const UpsertMyCustomer = gql`
   }
 `;
 
-export const CreateMyCheckoutSession = gql`
-  mutation CreateMyCheckoutSession(
-    $redirectUrl: String!
-    $lineItems: [CreateMyCheckoutSessionPropertiesLineItemsItemsPropertyInput!]!
-    $mode: String!
-  ) {
-    session: createMyCheckoutSession(lineItems: $lineItems, redirectUrl: $redirectUrl, mode: $mode) {
-      id
+export type CreateMyCartResponse = {
+  myCart: ShopifyStorefront_CartCreatePayload;
+};
+
+export const CreateMyCartQuery = gql`
+  mutation CreateMyCart($input: ShopifyStorefront_CartInput) {
+    myCart: createMyCart(input: $input) {
+      cart {
+        checkoutUrl
+      }
     }
   }
 `;

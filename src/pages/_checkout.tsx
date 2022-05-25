@@ -3,11 +3,12 @@ import PageLoader from 'components/PageLoader';
 import { useAtomValue } from 'jotai';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
-import { CreateMyCheckoutSession } from 'queries';
+import type { CreateMyCartResponse } from 'queries';
+import { CreateMyCartQuery } from 'queries';
 import { useEffect } from 'react';
 import { cartItemsAtom } from 'services/cart/store';
-import getStripe from 'services/stripe/getStripe';
-import { getCheckoutPayload } from 'utils/checkout';
+import { getCheckoutPayload } from 'services/cart/utils';
+import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 
 // After a successful login, redirect here to automatically checkout with the cart
 const _CheckoutPage: NextPage = () => {
@@ -17,17 +18,16 @@ const _CheckoutPage: NextPage = () => {
 
   useEffect(() => {
     const doCheckout = async () => {
-      const { data } = await client.mutate({
-        mutation: CreateMyCheckoutSession,
-        variables: getCheckoutPayload(cartItems, '/')
+      const { data } = await client.mutate<CreateMyCartResponse, MutationShopifyStorefront_CartCreateArgs>({
+        mutation: CreateMyCartQuery,
+        variables: getCheckoutPayload(cartItems)
       });
 
-      const stripe = await getStripe();
-
-      stripe.redirectToCheckout({
-        sessionId: data.session.id
-      });
+      if (data?.myCart?.cart?.checkoutUrl) {
+        window.location.href = data.myCart.cart.checkoutUrl;
+      }
     };
+
     if (status === 'authenticated') {
       doCheckout();
     }
