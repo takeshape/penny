@@ -1,15 +1,15 @@
 import { useQuery } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Section from 'components/Section';
-import UserLogout from 'features/account/AccountLogout';
-import CustomerForm from 'features/account/CustomerForm';
-import NewsletterToggle from 'features/account/NewsletterToggle';
-import ProfileForm from 'features/account/ProfileForm';
-import Container from 'features/Container';
+import Wrapper from 'components/Wrapper/Content';
+import UserLogout from 'features/account-legacy/AccountLogout';
+import CustomerForm from 'features/account-legacy/CustomerForm';
+import NewsletterToggle from 'features/account-legacy/NewsletterToggle';
+import ProfileForm from 'features/account-legacy/ProfileForm';
 import ReferralsCreateReferral from 'features/referrals/CreateReferral';
 import ReferralsList from 'features/referrals/ReferralList';
 import type { ReferralListItemProps } from 'features/referrals/ReferralListItem';
-import Page from 'layouts/Page';
+import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { GetMyNewsletterSubscriptons, GetMyProfile } from 'queries';
@@ -39,8 +39,8 @@ const AccountPage: NextPage = () => {
   const [referrals, setReferrals] = useState<ReferralListItemProps[]>(referralsFixtureData);
 
   return (
-    <Container title="Account">
-      <Page>
+    <Layout title="Account">
+      <Wrapper>
         <Flex sx={{ width: '100%', gap: '2rem', alignItems: 'baseline' }}>
           <Heading as="h1" variant="styles.pageTitle">
             Account
@@ -105,8 +105,8 @@ const AccountPage: NextPage = () => {
             />
           </div>
         )}
-      </Page>
-    </Container>
+      </Wrapper>
+    </Layout>
   );
 };
 

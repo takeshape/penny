@@ -4,8 +4,7 @@ import type {
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
   ShopifyStorefront_Customer,
-  ShopifyStorefront_CustomerAccessTokenCreatePayload,
-  Shopify_Product,
+  ShopifyStorefront_CustomerAccessTokenCreatePayload, ShopifyStorefront_CustomerCreatePayload, Shopify_Product,
   Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
   Stripe_Product,
@@ -543,6 +542,10 @@ export const CreateShipment = gql`
   }
 `;
 
+/**
+ * Customer creation
+ */
+
 export type CreateCustomerAccessTokenResponse = {
   accessTokenCreate: ShopifyStorefront_CustomerAccessTokenCreatePayload;
 };
@@ -568,7 +571,7 @@ export type GetCustomerResponse = {
 };
 
 export const GetCustomerQuery = gql`
-  mutation GetCustomer($customerAccessToken: String!) {
+  query GetCustomer($customerAccessToken: String!) {
     customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
       firstName
       lastName
@@ -576,6 +579,25 @@ export const GetCustomerQuery = gql`
       phone
       email
       displayName
+    }
+  }
+`;
+
+export type CreateCustomerResponse = {
+  customerCreate: ShopifyStorefront_CustomerCreatePayload;
+};
+
+export const CreateCustomerQuery = gql`
+  query GetCustomer($input: ShopifyStorefront_CustomerCreateInput!) {
+    customerCreate: ShopifyStorefront_customerCreate(input: $input) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
     }
   }
 `;

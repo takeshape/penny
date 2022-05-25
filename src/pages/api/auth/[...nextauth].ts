@@ -1,7 +1,6 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeWebhookApiKey } from 'config';
 import NextAuth from 'next-auth';
-import Auth0Provider from 'next-auth/providers/auth0';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import path from 'path';
 import type { CreateCustomerAccessTokenResponse, GetCustomerResponse, UpsertProfileResponse } from 'queries';
@@ -23,49 +22,44 @@ const withAllAccess = createNextAuthAllAccess({
     {
       id: 'takeshape',
       audience: 'https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id',
-      expiration: '6h'
+      expiration: '6h',
+      allowedClaims: ['email', 'sub']
     }
   ]
 });
 
 export default withAllAccess(NextAuth, {
+  session: {
+    // Must be shorter than the 60 day customer access token
+    maxAge: 30 * 24 * 60 * 60 // 30 days
+  },
   providers: [
-    Auth0Provider({
-      clientId: process.env.AUTH0_ID,
-      clientSecret: process.env.AUTH0_SECRET,
-      issuer: process.env.AUTH0_ISSUER
-    }),
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
+      id: 'shopify',
       name: 'Shopify',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'jsmith' },
+        email: { label: 'Email', type: 'email', placeholder: 'name@email.com' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize(credentials, req) {
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
+      async authorize({ email, password }, req) {
         const { data: accessTokenData } = await takeshapeClient.mutate<
           CreateCustomerAccessTokenResponse,
           MutationShopifyStorefront_CustomerAccessTokenCreateArgs
         >({
           mutation: CreateCustomerAccessTokenMutation,
           variables: {
-            input: credentials
+            input: {
+              email,
+              password
+            }
           }
         });
 
-        if (accessTokenData.accessTokenCreate.customerUserErrors) {
+        if (accessTokenData.accessTokenCreate.customerUserErrors.length > 0) {
           throw new Error(formatError(accessTokenData.accessTokenCreate.customerUserErrors));
         }
+
+        const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
         const { data: customerData } = await takeshapeClient.query<
           GetCustomerResponse,
@@ -73,16 +67,18 @@ export default withAllAccess(NextAuth, {
         >({
           query: GetCustomerQuery,
           variables: {
-            customerAccessToken: accessTokenData.accessTokenCreate.customerAccessToken.accessToken
+            customerAccessToken: shopifyCustomerAccessToken
           }
         });
 
         // If no error and we have user data, return it
         if (customerData?.customer) {
-          return customerData.customer;
+          return {
+            ...customerData.customer,
+            shopifyCustomerAccessToken
+          };
         }
 
-        // Return null if user data could not be retrieved
         return null;
       }
     })
