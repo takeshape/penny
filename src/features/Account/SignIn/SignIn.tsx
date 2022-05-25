@@ -2,6 +2,7 @@ import Alert from 'components/Alert/Alert';
 import Input from 'components/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -91,9 +92,9 @@ export const AccountSignIn = ({ callbackUrl, error, isNewAccount }: AccountSignI
           <div className="mt-6">
             <div className="relative">
               <div className="mt-2 border-t border-gray-200 text-gray-500 pt-6 text-center">
-                <a href="/account/create" className="text-sm font-medium hover:text-gray-900 cursor-pointer">
-                  Sign up instead →
-                </a>
+                <Link href="/account/create">
+                  <a className="text-sm font-medium hover:text-gray-900 cursor-pointer">Sign up instead →</a>
+                </Link>
               </div>
             </div>
           </div>
