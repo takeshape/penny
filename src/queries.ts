@@ -4,7 +4,9 @@ import type {
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
   ShopifyStorefront_Customer,
-  ShopifyStorefront_CustomerAccessTokenCreatePayload, ShopifyStorefront_CustomerCreatePayload, Shopify_Product,
+  ShopifyStorefront_CustomerAccessTokenCreatePayload,
+  ShopifyStorefront_CustomerCreatePayload,
+  Shopify_Product,
   Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
   Stripe_Product,
@@ -587,8 +589,8 @@ export type CreateCustomerResponse = {
   customerCreate: ShopifyStorefront_CustomerCreatePayload;
 };
 
-export const CreateCustomerQuery = gql`
-  query GetCustomer($input: ShopifyStorefront_CustomerCreateInput!) {
+export const CreateCustomerMutation = gql`
+  mutation CreateCustomer($input: ShopifyStorefront_CustomerCreateInput!) {
     customerCreate: ShopifyStorefront_customerCreate(input: $input) {
       customer {
         id

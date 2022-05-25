@@ -29,6 +29,10 @@ const withAllAccess = createNextAuthAllAccess({
 });
 
 export default withAllAccess(NextAuth, {
+  pages: {
+    signIn: '/account/signin',
+    error: '/account/signin'
+  },
   session: {
     // Must be shorter than the 60 day customer access token
     maxAge: 30 * 24 * 60 * 60 // 30 days
@@ -38,10 +42,10 @@ export default withAllAccess(NextAuth, {
       id: 'shopify',
       name: 'Shopify',
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'name@email.com' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' }
       },
-      async authorize({ email, password }, req) {
+      async authorize({ email, password }) {
         const { data: accessTokenData } = await takeshapeClient.mutate<
           CreateCustomerAccessTokenResponse,
           MutationShopifyStorefront_CustomerAccessTokenCreateArgs
@@ -83,9 +87,6 @@ export default withAllAccess(NextAuth, {
       }
     })
   ],
-  theme: {
-    colorScheme: 'light'
-  },
   events: {
     async signIn({ user }) {
       // Await to ensure the profile is created or updated in TakeShape

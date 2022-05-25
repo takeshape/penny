@@ -1,36 +1,30 @@
-import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Input from 'components/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
-import type { CreateCustomerResponse } from 'queries';
-import { CreateCustomerMutation } from 'queries';
-import { useEffect, useRef } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationShopifyStorefront_CustomerCreateArgs } from 'types/takeshape';
 
-export interface AccountCreateForm {
+export interface AccountSignInForm {
   email: string;
   password: string;
-  passwordConfirm: string;
 }
 
-export const AccountCreate = () => {
-  const { handleSubmit, formState, control, watch } = useForm<AccountCreateForm>({ mode: 'onBlur' });
+export interface AccountSignInProps {
+  callbackUrl: string;
+  error?: string;
+  isNewAccount?: boolean;
+}
 
-  const [setCustomerPayload, { data: response }] = useMutation<
-    CreateCustomerResponse,
-    MutationShopifyStorefront_CustomerCreateArgs
-  >(CreateCustomerMutation);
+export const AccountSignIn = ({ callbackUrl, error, isNewAccount }: AccountSignInProps) => {
+  const { handleSubmit, formState, control } = useForm<AccountSignInForm>({ mode: 'onBlur' });
 
-  useEffect(() => {
-    if (response?.customerCreate?.customer?.id) {
-      window.location.href = '/account/signin?newAccount=true';
-    }
-  }, [response]);
-
-  const password = useRef({});
-  password.current = watch('password', '');
+  const onSubmit = useCallback(
+    ({ email, password }: AccountSignInForm) => {
+      signIn('shopify', { email, password, callbackUrl });
+    },
+    [callbackUrl]
+  );
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -42,21 +36,9 @@ export const AccountCreate = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form
-            action="#"
-            method="POST"
-            className="space-y-6"
-            onSubmit={handleSubmit(({ email, password }) =>
-              setCustomerPayload({ variables: { input: { email, password } } })
-            )}
-          >
-            {response?.customerCreate?.customerUserErrors?.length > 0 && (
-              <Alert
-                status="error"
-                primaryText="There was a problem with your submission"
-                secondaryText={response.customerCreate.customerUserErrors.map((e) => e.message)}
-              />
-            )}
+          <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            {isNewAccount && <Alert status="success" primaryText="Your account was successfully created!" />}
+            {error && <Alert status="error" primaryText={error} />}
 
             <Input
               className="sm:col-span-2"
@@ -95,28 +77,13 @@ export const AccountCreate = () => {
               }}
             />
 
-            <Input
-              className="sm:col-span-2"
-              control={control}
-              name="passwordConfirm"
-              id="passwordConfirm"
-              label="Confirm Password"
-              autoComplete="none"
-              defaultValue=""
-              type="password"
-              rules={{
-                required: 'This field is required',
-                validate: (value) => value === password.current || 'The passwords do not match'
-              }}
-            />
-
             <div>
               <button
                 disabled={formState.isValid === false}
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
-                Sign up
+                Sign in
               </button>
             </div>
           </form>
@@ -124,15 +91,8 @@ export const AccountCreate = () => {
           <div className="mt-6">
             <div className="relative">
               <div className="mt-2 border-t border-gray-200 text-gray-500 pt-6 text-center">
-                <a
-                  href={`/api/auth/signin`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    signIn();
-                  }}
-                  className="text-sm font-medium hover:text-gray-900 cursor-pointer"
-                >
-                  Sign in instead →
+                <a href="/account/create" className="text-sm font-medium hover:text-gray-900 cursor-pointer">
+                  Sign up instead →
                 </a>
               </div>
             </div>
@@ -143,4 +103,4 @@ export const AccountCreate = () => {
   );
 };
 
-export default AccountCreate;
+export default AccountSignIn;

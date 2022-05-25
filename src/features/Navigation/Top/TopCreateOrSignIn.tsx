@@ -1,4 +1,5 @@
 import { signIn, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 export const TopCreateOrSignIn = () => {
   const { status } = useSession();
@@ -9,16 +10,9 @@ export const TopCreateOrSignIn = () => {
 
   return (
     <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-      <a
-        href={`/api/auth/signin`}
-        onClick={(e) => {
-          e.preventDefault();
-          signIn();
-        }}
-        className="text-sm font-medium text-white hover:text-gray-100 cursor-pointer"
-      >
-        Create an account
-      </a>
+      <Link href="/account/create">
+        <a className="text-sm font-medium text-white hover:text-gray-100 cursor-pointer">Create an account</a>
+      </Link>
       <span className="h-6 w-px bg-gray-600" aria-hidden="true" />
       <a
         href={`/api/auth/signin`}
