@@ -1,30 +1,10 @@
 import { Transition } from '@headlessui/react';
-import { CheckCircleIcon, ExclamationCircleIcon, InformationCircleIcon, XIcon } from '@heroicons/react/solid';
+import { XIcon } from '@heroicons/react/solid';
+import StatusIcon from 'components/StatusIcon/StatusIcon';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { Fragment, useCallback, useEffect, useRef } from 'react';
 import { notificationAtom } from 'store';
-import type { NotificationMessage } from 'types/notification';
-
-type StatusIconProps = Pick<NotificationMessage, 'status'>;
-
-const StatusIcon = ({ status }: StatusIconProps) => {
-  switch (status) {
-    case 'error': {
-      return <ExclamationCircleIcon className="h-6 w-6 text-red-400" aria-hidden="true" />;
-    }
-    case 'warn': {
-      return <InformationCircleIcon className="h-6 w-6 text-orange-400" aria-hidden="true" />;
-    }
-    case 'success': {
-      return <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />;
-    }
-    case 'info':
-    default: {
-      return <InformationCircleIcon className="h-6 w-6 text-blue-400" aria-hidden="true" />;
-    }
-  }
-};
 
 export const Notification = () => {
   const notification = useAtomValue(notificationAtom);
@@ -75,7 +55,7 @@ export const Notification = () => {
               <div className="p-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0">
-                    <StatusIcon status={status} />
+                    <StatusIcon status={status} size={6} />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-gray-900">{title}</p>

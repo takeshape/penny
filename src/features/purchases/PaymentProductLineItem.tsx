@@ -1,4 +1,4 @@
-import ProductImage from 'features/products/ProductImage';
+import ProductImage from 'features/products/StripeProductImage';
 import NextLink from 'next/link';
 import { Box, Card, Flex, Grid, Heading, Link } from 'theme-ui';
 import { formatPrice } from 'utils/text';

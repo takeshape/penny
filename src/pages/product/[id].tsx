@@ -6,19 +6,18 @@ import ReviewList from 'features/reviews/ReviewList';
 import Page from 'layouts/Page';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { GetProduct, GetProductArgs, GetProductResponse, GetStripeProducts, StripeProducts } from 'queries';
+import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
+import { GetProductIdsQuery, GetProductQuery } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
 import { createStaticClient } from 'services/apollo/apolloClient';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
-import type {
-  ReviewsIo_ListProductReviewsResponseStatsProperty,
-  ReviewsIo_ProductReview,
-  Stripe_Product
-} from 'types/takeshape';
+import type { Product } from 'types/product';
+import type { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
+import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms';
 import { getSingle } from 'utils/types';
 
 interface ProductPageProps {
-  product: Stripe_Product;
+  product: Product;
   reviews: ReviewsIo_ProductReview[] | null;
   stats: ReviewsIo_ListProductReviewsResponseStatsProperty | null;
 }
@@ -46,7 +45,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
         </Heading>
         <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
           <Box sx={{ flex: '1 1 32rem' }}>
-            <ProductImage images={product.images} maxHeight="600px" />
+            <ProductImage image={product.featuredImage} maxHeight="600px" />
           </Box>
           <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
             <ProductAddToCart product={product} />
@@ -62,21 +61,24 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
 };
 
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
-  const id = getSingle(params.id);
+  const id = shopifyIdToGid(getSingle(params.id));
   const apolloClient = createStaticClient();
 
-  const {
-    data: { product, reviews }
-  } = await apolloClient.query<GetProductResponse, GetProductArgs>({
-    query: GetProduct,
+  const { data } = await apolloClient.query<GetProductResponse, GetProductArgs>({
+    query: GetProductQuery,
     variables: { id }
   });
+
+  const product = shopifyProductToProduct(data.product);
 
   return addApolloQueryCache(apolloClient, {
     props: {
       product,
-      reviews: reviews.reviews.data ?? null,
-      stats: reviews.stats ?? null
+      reviews: product.reviews?.data ?? {},
+      stats: {
+        average: product.reviewsAverage,
+        count: product.reviewsCount
+      }
     }
   });
 };
@@ -84,12 +86,12 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 export const getStaticPaths: GetStaticPaths = async () => {
   const apolloClient = createStaticClient();
 
-  const { data } = await apolloClient.query<StripeProducts>({
-    query: GetStripeProducts
+  const { data } = await apolloClient.query<GetProductIdsResponse>({
+    query: GetProductIdsQuery
   });
 
-  const paths = data.products.items.map((product) => ({
-    params: { id: product.id }
+  const paths = data.products.edges.map(({ node }) => ({
+    params: { id: shopifyGidToId(node.id) }
   }));
 
   return {

@@ -1,9 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
+import PageLoader from 'components/PageLoader';
 import { isStorybook } from 'config';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { Fragment } from 'react';
-import { cartItemAtomsAtom, isCartOpenAtom } from 'services/cart/store';
+import { cartItemAtomsAtom, isCartCheckingOutAtom, isCartOpenAtom } from 'services/cart/store';
 import Checkout from './Checkout/Checkout';
 import Empty from './Empty/Empty';
 import Item from './Item/Item';
@@ -11,6 +12,7 @@ import Subtotal from './Subtotal/Subtotal';
 
 export const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
+  const isCartCheckingOut = useAtomValue(isCartCheckingOutAtom);
   const [items, dispatch] = useAtom(cartItemAtomsAtom);
 
   return (
@@ -40,7 +42,13 @@ export const Cart = () => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                <Dialog.Panel className="pointer-events-auto w-screen max-w-md relative">
+                  {isCartCheckingOut && (
+                    <div className="z-20 bg-gray-500 bg-opacity-75 absolute h-full w-full">
+                      <PageLoader colorClass="text-white" />
+                    </div>
+                  )}
+
                   <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                     <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
                       <div className="flex items-start justify-between">

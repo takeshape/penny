@@ -1,9 +1,8 @@
 import { useAtom, useSetAtom } from 'jotai';
-import orderBy from 'lodash-es/orderBy';
 import { useEffect, useState } from 'react';
 import { addToCartAtom, isCartOpenAtom } from 'services/cart/store';
 import { Box, Button, Flex, Label, Radio } from 'theme-ui';
-import { Stripe_Product } from 'types/takeshape';
+import { Product } from 'types/product';
 import ProductPrice from './ProductPrice';
 import ProductQuantity from './ProductQuantity';
 
@@ -32,22 +31,22 @@ const AddToCartButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   </Button>
 );
 
-function useAddToCart(product: Stripe_Product) {
+function useAddToCart(product: Product) {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
   const addToCart = useSetAtom(addToCartAtom);
 
-  const { prices } = product;
-  const oneTimePayment = prices?.find((p) => !p.recurring);
+  // For now just use the first variant
+  const productVariant = product.variants[0];
 
-  const recurringPayments = orderBy(
-    prices?.filter((p) => p.recurring),
-    [(v) => intervalOrderMap.indexOf(v.recurring.interval), 'recurring.intervalCount'],
-    ['asc', 'asc']
-  );
-  const findPriceById = (priceId) => prices.find((p) => p.id === priceId);
+  const { hasOneTimePurchaseOption, hasSubscriptionPurchaseOption } = product;
+  const { prices } = productVariant;
 
-  const defaultPurchaseType = oneTimePayment ? oneTimePurchase : recurringPurchase;
-  const defaultPrice = oneTimePayment ? oneTimePayment : recurringPayments?.[0];
+  const oneTimePayment = prices?.find((p) => p.intervalCount === 0);
+  const recurringPayments = prices?.filter((p) => p.intervalCount > 0);
+  const findPriceById = (priceId) => prices.find((p) => p.subscriptionId === priceId);
+
+  const defaultPurchaseType = hasOneTimePurchaseOption ? oneTimePurchase : recurringPurchase;
+  const defaultPrice = hasOneTimePurchaseOption ? oneTimePayment : recurringPayments?.[0];
 
   const [purchaseType, setPurchaseType] = useState(defaultPurchaseType);
   const [quantity, setQuantity] = useState(1);
@@ -89,16 +88,17 @@ function useAddToCart(product: Stripe_Product) {
       id: product.id,
       name: product.name,
       description: product.description,
-      href: `/product/${product.id}`,
-      unitAmount: price.unit_amount,
-      currency: price.currency,
+      href: product.url,
+      unitAmount: price.amount,
+      currency: price.currencyCode,
       quantity,
-      imageSrc: product.images[0],
+      imageSrc: product.featuredImage.url,
       imageAlt: `Picture of ${product.name}`,
-      interval: price.recurring?.interval,
-      intervalCount: price.recurring?.interval_count,
+      interval: price.interval,
+      intervalCount: price.intervalCount,
       data: {
         product,
+        productVariant,
         price
       }
     });
@@ -122,7 +122,7 @@ function useAddToCart(product: Stripe_Product) {
 }
 
 export interface ProductAddToCartProps {
-  product: Stripe_Product;
+  product: Product;
 }
 
 const ProductAddToCart = ({ product }: ProductAddToCartProps) => {
@@ -136,6 +136,7 @@ const ProductAddToCart = ({ product }: ProductAddToCartProps) => {
     handleUpdateQuantity,
     handleAddToCart
   } = useAddToCart(product);
+
   return (
     <Box>
       {oneTimePayment && recurringPayments.length ? (

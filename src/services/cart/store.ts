@@ -1,4 +1,4 @@
-import { cartLocalStorageKey } from 'config';
+import { cartLocalStorageKey, defaultProductImage } from 'config';
 import { atom } from 'jotai';
 import { atomWithStorage, splitAtom } from 'jotai/utils';
 import type { SetOptional } from 'type-fest';
@@ -23,6 +23,7 @@ export type CartItemInput = SetOptional<CartItem, 'interval' | 'intervalCount' |
 
 /* Cart UI */
 export const isCartOpenAtom = atom(false);
+export const isCartCheckingOutAtom = atom(false);
 
 /* Cart Items */
 export const cartItemsAtom = atomWithStorage<CartItem[]>(cartLocalStorageKey, []);
@@ -32,7 +33,7 @@ const withItemDefaults = (item: CartItemInput): CartItem => ({
   ...item,
   interval: item.interval ?? 'none',
   intervalCount: item.intervalCount ?? 0,
-  imageSrc: item.imageSrc ?? '/images/default-product-image.webp',
+  imageSrc: item.imageSrc ?? defaultProductImage.url,
   imageAlt: item.imageAlt ?? 'Default product image',
   data: item.data ?? {}
 });

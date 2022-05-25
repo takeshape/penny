@@ -1,22 +1,26 @@
+import Alert from 'components/Alert/Alert';
 import PageLoader from 'components/PageLoader';
 import Container from 'features/Container';
-import ProductGrid from 'features/products/ProductGrid';
+import ProductHeader from 'features/ProductCategory/Header/Header';
+import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
 import Page from 'layouts/Page';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
-import { GetStripeProducts } from 'queries';
+import type { GetProductsResponse } from 'queries';
+import { GetProductsQuery } from 'queries';
 import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
 import { createStaticClient } from 'services/apollo/apolloClient';
-import { Alert, Heading } from 'theme-ui';
 import { formatError } from 'utils/errors';
+import { shopifyProductToProductListItem } from 'utils/transforms';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
       <Container>
         <Page>
-          <Alert>Error loading products</Alert>
-          <pre style={{ color: 'red' }}>{JSON.stringify(error, null, 2)}</pre>
+          <div className="my-10">
+            <Alert status="error" primaryText="Error loading products" secondaryText={JSON.stringify(error, null, 2)} />
+          </div>
         </Page>
       </Container>
     );
@@ -26,9 +30,7 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
     <Container>
       {products ? (
         <Page>
-          <Heading as="h1" sx={{ marginBottom: '2rem', fontSize: '3.2em' }}>
-            Products
-          </Heading>
+          <ProductHeader header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }} />
           <ProductGrid products={products} />
         </Page>
       ) : (
@@ -45,15 +47,11 @@ export async function getStaticProps() {
   let error = null;
 
   try {
-    const { data } = await apolloClient.query({
-      query: GetStripeProducts
+    const { data } = await apolloClient.query<GetProductsResponse>({
+      query: GetProductsQuery
     });
 
-    if (data.errors) {
-      error = data.errors;
-    } else {
-      products = data.products.items;
-    }
+    products = data.products.edges.map((e) => shopifyProductToProductListItem(e.node));
   } catch (err) {
     logger.error(err);
     error = formatError(err);
