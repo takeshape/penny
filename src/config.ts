@@ -7,6 +7,8 @@ export const takeshapeWebhookApiKey = process.env.TAKESHAPE_WEBHOOK_API_KEY;
 export const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 export const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+export const shopifyShop = process.env.SHOPIFY_SHOP;
+export const shopifyToken = process.env.SHOPIFY_TOKEN;
 
 /* Nerd Stuff */
 export const nodeEnv = process.env.NODE_ENV ?? 'development';

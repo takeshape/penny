@@ -2,6 +2,8 @@ import { gql } from '@apollo/client';
 import type {
   Mutation,
   ReviewsIo_ListProductReviewsResponse,
+  ShopifyStorefront_Customer,
+  ShopifyStorefront_CustomerAccessTokenCreatePayload,
   Stripe_PaymentIntentPaginatedList,
   Stripe_Product,
   Stripe_Subscription,
@@ -375,6 +377,43 @@ export const CreateShipment = gql`
       packages: $packages
     ) {
       shipment_id
+    }
+  }
+`;
+
+export type CreateCustomerAccessTokenResponse = {
+  accessTokenCreate: ShopifyStorefront_CustomerAccessTokenCreatePayload;
+};
+
+export const CreateCustomerAccessTokenMutation = gql`
+  mutation CrateCustomerAccesssToken($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
+    accessTokenCreate: ShopifyStorefront_customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        expiresAt
+        accessToken
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type GetCustomerResponse = {
+  customer: ShopifyStorefront_Customer;
+};
+
+export const GetCustomerQuery = gql`
+  mutation GetCustomer($customerAccessToken: String!) {
+    customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
+      firstName
+      lastName
+      id
+      phone
+      email
+      displayName
     }
   }
 `;
