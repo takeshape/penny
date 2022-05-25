@@ -1219,6 +1219,24 @@
       },
       "description": "Get a NavigationData by ID",
       "args": "TSGetSingletonArgs<NavigationData>"
+    },
+    "ShopifyStorefront_customer": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify-storefront",
+        "fieldName": "customer"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "customerAccessToken": {
+            "type": "string",
+            "description": "The customer access token."
+          }
+        },
+        "required": ["customerAccessToken"]
+      },
+      "shape": "ShopifyStorefront_Customer"
     }
   },
   "mutations": {
@@ -2383,6 +2401,42 @@
         "required": ["id"]
       },
       "shape": "Shopify_Product"
+    },
+    "ShopifyStorefront_customerAccessTokenCreate": {
+      "resolver": {
+        "name": "graphql:mutation",
+        "service": "shopify-storefront",
+        "fieldName": "customerAccessTokenCreate"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "@ref": "shopify-storefront:CustomerAccessTokenCreateInput",
+            "description": "The fields used to create a customer access token."
+          }
+        },
+        "required": ["input"]
+      },
+      "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
+    },
+    "ShopifyStorefront_customerCreate": {
+      "resolver": {
+        "name": "graphql:mutation",
+        "service": "shopify-storefront",
+        "fieldName": "customerCreate"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "@ref": "shopify-storefront:CustomerCreateInput",
+            "description": "The fields used to create a new customer."
+          }
+        },
+        "required": ["input"]
+      },
+      "shape": "ShopifyStorefront_CustomerCreatePayload"
     }
   },
   "shapes": {

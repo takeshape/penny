@@ -86,6 +86,7 @@ export default withAllAccess(NextAuth, {
         if (customerData?.customer) {
           return {
             ...customerData.customer,
+            name: customerData.customer.displayName,
             shopifyCustomerAccessToken
           };
         }
@@ -99,6 +100,35 @@ export default withAllAccess(NextAuth, {
       }
     })
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        const { firstName, lastName, shopifyCustomerAccessToken } = user;
+
+        return {
+          ...token,
+          firstName,
+          lastName,
+          shopifyCustomerAccessToken
+        };
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      const { firstName, lastName, shopifyCustomerAccessToken } = token;
+
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          firstName,
+          lastName
+        },
+        shopifyCustomerAccessToken
+      };
+    }
+  },
   events: {
     async signIn({ user }) {
       // Await to ensure the profile is created or updated in TakeShape

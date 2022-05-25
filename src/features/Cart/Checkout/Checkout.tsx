@@ -2,14 +2,14 @@ import { useMutation } from '@apollo/client';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { signIn, useSession } from 'next-auth/react';
 import type { CreateMyCartResponse } from 'queries';
-import { CreateMyCartQuery } from 'queries';
+import { CreateMyCartMutation } from 'queries';
 import { useCallback, useEffect } from 'react';
 import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from 'services/cart/store';
 import { getCheckoutPayload } from 'services/cart/utils';
 import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 
 export const Checkout = () => {
-  const { status } = useSession();
+  const { data: session } = useSession();
 
   const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
   const quantity = useAtomValue(cartQuantityAtom);
@@ -18,19 +18,19 @@ export const Checkout = () => {
   const [setCheckoutPayload, { data: checkoutData }] = useMutation<
     CreateMyCartResponse,
     MutationShopifyStorefront_CartCreateArgs
-  >(CreateMyCartQuery);
+  >(CreateMyCartMutation);
 
   const handleCheckout = useCallback(() => {
-    if (status !== 'authenticated') {
+    if (!session) {
       signIn(undefined, { callbackUrl: '/_checkout' });
       return;
     }
 
     setIsCartCheckingOut(true);
     setCheckoutPayload({
-      variables: getCheckoutPayload(items)
+      variables: getCheckoutPayload(items, session)
     });
-  }, [items, setCheckoutPayload, status]);
+  }, [items, setCheckoutPayload, setIsCartCheckingOut, session]);
 
   useEffect(() => {
     if (checkoutData?.myCart?.cart?.checkoutUrl) {

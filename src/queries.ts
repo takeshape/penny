@@ -352,7 +352,7 @@ export type CreateMyCartResponse = {
   myCart: ShopifyStorefront_CartCreatePayload;
 };
 
-export const CreateMyCartQuery = gql`
+export const CreateMyCartMutation = gql`
   mutation CreateMyCart($input: ShopifyStorefront_CartInput) {
     myCart: createMyCart(input: $input) {
       cart {
