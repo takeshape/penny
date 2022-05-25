@@ -1,5 +1,6 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeWebhookApiKey } from 'config';
+import logger from 'logger';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import path from 'path';
@@ -31,6 +32,7 @@ const withAllAccess = createNextAuthAllAccess({
 export default withAllAccess(NextAuth, {
   pages: {
     signIn: '/account/signin',
+    signOut: '/account/signout',
     error: '/account/signin'
   },
   session: {
@@ -60,6 +62,11 @@ export default withAllAccess(NextAuth, {
         });
 
         if (accessTokenData.accessTokenCreate.customerUserErrors.length > 0) {
+          logger.error({
+            email,
+            errors: accessTokenData.accessTokenCreate.customerUserErrors
+          });
+
           throw new Error(formatError(accessTokenData.accessTokenCreate.customerUserErrors));
         }
 
@@ -82,6 +89,11 @@ export default withAllAccess(NextAuth, {
             shopifyCustomerAccessToken
           };
         }
+
+        logger.error({
+          email,
+          errors: [{ message: 'No customer data found' }]
+        });
 
         return null;
       }
