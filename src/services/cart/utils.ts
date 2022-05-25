@@ -15,6 +15,7 @@ export const getCheckoutPayload = (items: CartItem[], session: Session): Mutatio
         })
       ),
       buyerIdentity: {
+        email: session.user.email,
         customerAccessToken: session.shopifyCustomerAccessToken as string
       }
     }
