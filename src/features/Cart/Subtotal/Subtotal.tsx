@@ -1,9 +1,9 @@
+import { cartSubtotalAtom } from 'features/Cart/store';
 import { useAtomValue } from 'jotai';
-import { cartSubtotalAtom } from 'services/cart/store';
 import { currencyAtom } from 'store';
 import { formatPrice } from 'utils/text';
 
-export const Subtotal = () => {
+export const CartSubtotal = () => {
   const subtotal = useAtomValue(cartSubtotalAtom);
   const currency = useAtomValue(currencyAtom);
 
@@ -15,4 +15,4 @@ export const Subtotal = () => {
   );
 };
 
-export default Subtotal;
+export default CartSubtotal;

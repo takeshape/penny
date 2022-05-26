@@ -1,6 +1,6 @@
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 
-export const Empty = () => {
+export const CartEmpty = () => {
   return (
     <button
       type="button"
@@ -14,4 +14,4 @@ export const Empty = () => {
   );
 };
 
-export default Empty;
+export default CartEmpty;

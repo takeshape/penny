@@ -1,5 +1,5 @@
+import type { CartItem } from 'features/Cart/types';
 import type { Session } from 'next-auth';
-import { CartItem } from 'services/cart/store';
 import { ProductPriceOption } from 'types/product';
 import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 import { CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput } from 'types/takeshape';

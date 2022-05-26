@@ -1,13 +1,13 @@
 import { useApolloClient } from '@apollo/client';
 import PageLoader from 'components/PageLoader';
+import { cartItemsAtom } from 'features/Cart/store';
+import { getCheckoutPayload } from 'features/Cart/utils';
 import { useAtomValue } from 'jotai';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import type { CreateMyCartResponse } from 'queries';
 import { CreateMyCartMutation } from 'queries';
 import { useEffect } from 'react';
-import { cartItemsAtom } from 'services/cart/store';
-import { getCheckoutPayload } from 'services/cart/utils';
 import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 
 // After a successful login, redirect here to automatically checkout with the cart

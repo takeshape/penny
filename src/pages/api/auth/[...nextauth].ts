@@ -1,5 +1,5 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
-import { takeshapeWebhookApiKey } from 'config';
+import { takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
 import logger from 'logger';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
@@ -8,15 +8,15 @@ import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
 import type { CreateCustomerAccessTokenResponse, GetCustomerResponse, UpsertProfileResponse } from 'queries';
 import { CreateCustomerAccessTokenMutation, GetCustomerQuery, UpsertProfile } from 'queries';
-import { createStaticClient } from 'services/apollo/apolloClient';
 import type {
   MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
   MutationUpsertProfileArgs,
   QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
+import { createStaticClient } from 'utils/apollo/client';
 import { formatError } from 'utils/errors';
 
-const takeshapeClient = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
+const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: 'https://deluxe-sample-project.vercel.app/',
@@ -53,7 +53,7 @@ const nextAuthConfig = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize({ email, password }) {
-        const { data: accessTokenData } = await takeshapeClient.mutate<
+        const { data: accessTokenData } = await apolloClient.mutate<
           CreateCustomerAccessTokenResponse,
           MutationShopifyStorefront_CustomerAccessTokenCreateArgs
         >({
@@ -77,7 +77,7 @@ const nextAuthConfig = {
 
         const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
-        const { data: customerData } = await takeshapeClient.query<
+        const { data: customerData } = await apolloClient.query<
           GetCustomerResponse,
           QueryShopifyStorefront_CustomerArgs
         >({
@@ -137,7 +137,7 @@ const nextAuthConfig = {
   events: {
     async signIn({ user }) {
       // Await to ensure the profile is created or updated in TakeShape
-      await takeshapeClient.mutate<UpsertProfileResponse, MutationUpsertProfileArgs>({
+      await apolloClient.mutate<UpsertProfileResponse, MutationUpsertProfileArgs>({
         mutation: UpsertProfile,
         variables: {
           id: user.id,

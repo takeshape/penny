@@ -1,6 +1,6 @@
 import type { NormalizedCacheObject } from '@apollo/client';
 import { GetFooterQuery } from 'features/Footer/Footer.queries';
-import { createStaticClient } from 'services/apollo/apolloClient';
+import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 interface Cache {
   footerData?: NormalizedCacheObject;
@@ -8,11 +8,12 @@ interface Cache {
 
 const cache: Cache = {};
 
+const apolloClient = createAnonymousTakeshapeApolloClient();
+
 async function getFooterData() {
   let queryCache = cache.footerData;
 
   if (!queryCache) {
-    const apolloClient = createStaticClient();
     await apolloClient.query({
       query: GetFooterQuery
     });

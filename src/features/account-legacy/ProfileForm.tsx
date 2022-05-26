@@ -3,10 +3,10 @@ import SubmitButton from 'components/SubmitButton';
 import { GetMyProfile, UploadAssets, UpsertMyProfile } from 'queries';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useUpload from 'services/hooks/useUpload';
 import { Avatar, Box, Flex, Grid, Heading, Input, Label, Progress, Textarea } from 'theme-ui';
 import type { Profile } from 'types/takeshape';
-import { buildImageUrl } from 'utils/images';
+import useUpload from 'utils/hooks/useUpload';
+import { buildImageUrl } from 'utils/takeshape';
 
 interface ProfileAvatarUploadFormProps {
   profile: Profile;

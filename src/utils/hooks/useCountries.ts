@@ -5,7 +5,7 @@ function useCountries() {
 
   useEffect(() => {
     async function getCountries() {
-      const { countries } = await import('./countries-small.json');
+      const { countries } = await import('../countries/countries-small.json');
       setData(countries);
     }
 

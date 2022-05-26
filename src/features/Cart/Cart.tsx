@@ -4,11 +4,11 @@ import PageLoader from 'components/PageLoader';
 import { isStorybook } from 'config';
 import { useAtom, useAtomValue } from 'jotai';
 import { Fragment } from 'react';
-import { cartItemAtomsAtom, isCartCheckingOutAtom, isCartOpenAtom } from 'services/cart/store';
-import Checkout from './Checkout/Checkout';
-import Empty from './Empty/Empty';
-import Item from './Item/Item';
-import Subtotal from './Subtotal/Subtotal';
+import CartCheckout from './Checkout/Checkout';
+import CartEmpty from './Empty/Empty';
+import CartItem from './Item/Item';
+import { cartItemAtomsAtom, isCartCheckingOutAtom, isCartOpenAtom } from './store';
+import CartSubtotal from './Subtotal/Subtotal';
 
 export const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
@@ -71,22 +71,22 @@ export const Cart = () => {
                             <ul role="list" className="-my-6 divide-y divide-gray-200">
                               {items.map((atom) => (
                                 <li key={atom.toString()} className="flex py-6">
-                                  <Item atom={atom} onRemove={() => dispatch({ type: 'remove', atom })} />
+                                  <CartItem atom={atom} onRemove={() => dispatch({ type: 'remove', atom })} />
                                 </li>
                               ))}
                             </ul>
                           </div>
                         ) : (
-                          <Empty />
+                          <CartEmpty />
                         )}
                       </div>
                     </div>
 
                     <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                      <Subtotal />
+                      <CartSubtotal />
                       <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
-                        <Checkout />
+                        <CartCheckout />
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>
