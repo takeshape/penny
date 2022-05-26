@@ -33,7 +33,7 @@ function getStatusTextAndColor(status: Shopify_FulfillmentDisplayStatus) {
       return {
         text: 'Processing',
         color: 'gray'
-      }
+      };
     case Shopify_FulfillmentDisplayStatus.AttemptedDelivery:
     case Shopify_FulfillmentDisplayStatus.Fulfilled:
     case Shopify_FulfillmentDisplayStatus.InTransit:
@@ -43,25 +43,25 @@ function getStatusTextAndColor(status: Shopify_FulfillmentDisplayStatus) {
       return {
         text: 'Shipped',
         color: 'green'
-      }
+      };
     case Shopify_FulfillmentDisplayStatus.Delivered:
     case Shopify_FulfillmentDisplayStatus.PickedUp:
       return {
         text: 'Delivered',
         color: 'purple'
-      }
+      };
     case Shopify_FulfillmentDisplayStatus.Canceled:
     case Shopify_FulfillmentDisplayStatus.Failure:
     case Shopify_FulfillmentDisplayStatus.NotDelivered:
       return {
         text: 'Error',
         color: 'red'
-      }
+      };
   }
 }
 
 export const PaymentItemOrderStatus = ({ status, trackingNumber }: PaymentItemOrderStatusProps) => {
-  const {color, text} = getStatusTextAndColor(status);
+  const { color, text } = getStatusTextAndColor(status);
 
   return (
     <Flex sx={{ gap: '.5rem' }}>

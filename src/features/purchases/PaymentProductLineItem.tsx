@@ -11,7 +11,7 @@ export interface PaymentProductLineItemProps {
 
 export const PaymentProductLineItem = ({
   currencyCode,
-  lineItem: {id, image, name, quantity}
+  lineItem: { id, image, name, quantity }
 }: PaymentProductLineItemProps) => {
   return (
     <Card sx={{ height: '100%', cursor: 'pointer', p: 0 }}>

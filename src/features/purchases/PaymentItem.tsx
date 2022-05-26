@@ -7,7 +7,7 @@ import PaymentProductList from './PaymentProductList';
 
 export interface PaymentItemProps {
   currencyCode: Shopify_CurrencyCode;
-  fulfillment: Shopify_Fulfillment
+  fulfillment: Shopify_Fulfillment;
 }
 
 export const PaymentItem = ({
@@ -25,10 +25,7 @@ export const PaymentItem = ({
         <PaymentProductList currencyCode={currencyCode} lineItems={fulfillmentLineItems} />
       </Box>
       <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
-        <PaymentItemOrderStatus
-          status={displayStatus}
-          trackingNumber={trackingInfo[0]?.number}
-        />
+        <PaymentItemOrderStatus status={displayStatus} trackingNumber={trackingInfo[0]?.number} />
         <Paragraph>{formatPrice(currencyCode, 0)}</Paragraph>
       </Flex>
     </Card>
