@@ -388,7 +388,23 @@ export const GetMyPurchasesData = gql`
           edges {
             node {
               fulfillments {
+                createdAt
                 displayStatus
+                fulfillmentLineItems {
+                  edges {
+                    node {
+                      id
+                      lineItem {
+                        id
+                        image {
+                          url
+                        }
+                        name
+                        quantity
+                      }
+                    }
+                  }
+                }
                 trackingInfo {
                   company
                   number
