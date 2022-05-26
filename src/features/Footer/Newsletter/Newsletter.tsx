@@ -47,7 +47,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
         <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{text.primary}</h3>
       )}
       {text?.secondary && <p className="mt-4 text-base text-gray-500">{text.secondary}</p>}
-      <form className="mt-4 sm:flex sm:max-w-md" onSubmit={subscribeToNewsletter}>
+      <form className="mt-4 sm:flex" onSubmit={subscribeToNewsletter}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>
