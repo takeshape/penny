@@ -8,10 +8,10 @@ import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import type { GetProductsResponse } from 'queries';
 import { GetProductsQuery } from 'queries';
-import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
-import { createStaticClient } from 'services/apollo/apolloClient';
+import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
-import { shopifyProductToProductListItem } from 'utils/transforms';
+import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+import { shopifyProductToProductListItem } from 'utils/transforms/shopify';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
@@ -40,9 +40,9 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
   );
 };
 
-export async function getStaticProps() {
-  const apolloClient = createStaticClient();
+const apolloClient = createAnonymousTakeshapeApolloClient();
 
+export async function getStaticProps() {
   let products = [];
   let error = null;
 

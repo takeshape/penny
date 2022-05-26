@@ -4,15 +4,15 @@ import type { PrimitiveAtom } from 'jotai';
 import { useAtom } from 'jotai';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import type { CartItem } from 'services/cart/store';
 import { formatPrice, pluralizeText } from 'utils/text';
+import type { CartItem as ICartItem } from '../types';
 
-export interface ItemProps {
-  atom: PrimitiveAtom<CartItem>;
+export interface CartItemProps {
+  atom: PrimitiveAtom<ICartItem>;
   onRemove: () => void;
 }
 
-export const Item = ({ atom, onRemove }: ItemProps) => {
+export const CartItem = ({ atom, onRemove }: CartItemProps) => {
   const [item, setItem] = useAtom(atom);
   const { imageSrc, imageAlt, name, href, currency, unitAmount, quantity, interval, intervalCount } = item;
 
@@ -83,4 +83,4 @@ export const Item = ({ atom, onRemove }: ItemProps) => {
   );
 };
 
-export default Item;
+export default CartItem;

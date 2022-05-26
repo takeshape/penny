@@ -3,9 +3,9 @@ import SubmitButton from 'components/SubmitButton';
 import { GetMyProfile, UpsertMyCustomer } from 'queries';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import useCountries from 'services/countries/useCountries';
 import { Box, Grid, Input, Label, Select } from 'theme-ui';
 import type { Stripe_Customer } from 'types/takeshape';
+import useCountries from 'utils/hooks/useCountries';
 
 export interface CustomerFormProps {
   customer: Stripe_Customer;

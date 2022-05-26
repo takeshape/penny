@@ -1,11 +1,11 @@
 import type { ComponentMeta } from '@storybook/react';
 import { atom } from 'jotai';
 import fixtures from '../Cart.fixtures.json';
-import { Item } from './Item';
+import { CartItem } from './Item';
 
-const Meta: ComponentMeta<typeof Item> = {
+const Meta: ComponentMeta<typeof CartItem> = {
   title: 'Features / Cart / Components / Item',
-  component: Item,
+  component: CartItem,
   decorators: [
     (Story) => (
       <div className="w-screen max-w-md">
@@ -22,7 +22,7 @@ const Meta: ComponentMeta<typeof Item> = {
   }
 };
 
-const Template = (args) => <Item {...args} />;
+const Template = (args) => <CartItem {...args} />;
 
 export const OneTimePurchase = Template.bind({});
 OneTimePurchase.args = {

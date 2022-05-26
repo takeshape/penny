@@ -8,12 +8,12 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
 import { GetProductIdsQuery, GetProductQuery } from 'queries';
-import addApolloQueryCache from 'services/apollo/addApolloQueryCache';
-import { createStaticClient } from 'services/apollo/apolloClient';
 import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type { Product } from 'types/product';
 import type { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
-import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms';
+import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
+import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms/shopify';
 import { getSingle } from 'utils/types';
 
 interface ProductPageProps {
@@ -60,9 +60,10 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   );
 };
 
+const apolloClient = createAnonymousTakeshapeApolloClient();
+
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
   const id = shopifyIdToGid(getSingle(params.id));
-  const apolloClient = createStaticClient();
 
   const { data } = await apolloClient.query<GetProductResponse, GetProductArgs>({
     query: GetProductQuery,
@@ -84,8 +85,6 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const apolloClient = createStaticClient();
-
   const { data } = await apolloClient.query<GetProductIdsResponse>({
     query: GetProductIdsQuery
   });

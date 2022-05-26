@@ -1,6 +1,6 @@
 import type { NormalizedCacheObject } from '@apollo/client';
 import { GetNavigationDataQuery } from 'features/Navigation/Navigation.queries';
-import { createStaticClient } from 'services/apollo/apolloClient';
+import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 interface Cache {
   navigationData?: NormalizedCacheObject;
@@ -8,11 +8,12 @@ interface Cache {
 
 const cache: Cache = {};
 
+const apolloClient = createAnonymousTakeshapeApolloClient();
+
 async function getNavigationData() {
   let queryCache = cache.navigationData;
 
   if (!queryCache) {
-    const apolloClient = createStaticClient();
     await apolloClient.query({
       query: GetNavigationDataQuery
     });
