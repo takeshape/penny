@@ -3,7 +3,7 @@ import ProductGrid from './ProductGrid';
 import { products } from './ProductGrid.fixture';
 
 const Meta: ComponentMeta<typeof ProductGrid> = {
-  title: 'Product Category / Components / Product Grid',
+  title: 'Features / Product Category / Components / Product Grid',
   component: ProductGrid,
   parameters: {
     layout: 'centered'

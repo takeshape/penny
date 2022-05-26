@@ -9,7 +9,7 @@ import Storefront from './Storefront';
 import { _TrendingProducts } from './TrendingProducts/TrendingProducts.stories';
 
 const Meta: ComponentMeta<typeof Storefront> = {
-  title: 'Storefront',
+  title: 'Features / Storefront',
   component: Storefront
 };
 

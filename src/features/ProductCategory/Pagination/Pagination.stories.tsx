@@ -3,7 +3,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Pagination from './Pagination';
 
 const Meta: ComponentMeta<typeof Pagination> = {
-  title: 'Product Category / Components / Pagination',
+  title: 'Features / Product Category / Components / Pagination',
   component: Pagination,
   parameters: {
     layout: 'centered'

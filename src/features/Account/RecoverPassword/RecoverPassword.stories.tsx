@@ -2,7 +2,7 @@ import type { ComponentMeta } from '@storybook/react';
 import { AccountRecoverPassword } from './RecoverPassword';
 
 const Meta: ComponentMeta<typeof AccountRecoverPassword> = {
-  title: 'Account / Components / Recover Password',
+  title: 'Features / Account / Components / Recover Password',
   component: AccountRecoverPassword
 };
 

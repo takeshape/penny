@@ -3,7 +3,7 @@ import Newsletter from './Newsletter';
 import { EmailSubmissionMutation } from './Newsletter.queries';
 
 const Meta: ComponentMeta<typeof Newsletter> = {
-  title: 'Footer / Components / Newsletter',
+  title: 'Features / Footer / Components / Newsletter',
   component: Newsletter
 };
 

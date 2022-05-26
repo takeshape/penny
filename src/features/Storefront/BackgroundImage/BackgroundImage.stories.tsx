@@ -6,7 +6,7 @@ import { _Sale } from '../Sale/Sale.stories';
 import BackgroundImage from './BackgroundImage';
 
 const Meta: ComponentMeta<typeof BackgroundImage> = {
-  title: 'Storefront / Components / Background Image',
+  title: 'Features / Storefront / Components / Background Image',
   component: BackgroundImage
 };
 

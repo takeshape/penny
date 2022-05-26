@@ -2,10 +2,13 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { StatusIcon } from './StatusIcon';
 
 const Meta: ComponentMeta<typeof StatusIcon> = {
-  title: 'Components / StatusIcon',
+  title: 'Components / Status Icons',
   component: StatusIcon,
   parameters: {
     layout: 'centered'
+  },
+  args: {
+    size: 6
   }
 };
 

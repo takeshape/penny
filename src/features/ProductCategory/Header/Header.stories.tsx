@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Header from './Header';
 
 const Meta: ComponentMeta<typeof Header> = {
-  title: 'Product Category / Components / Header',
+  title: 'Features / Product Category / Components / Header',
   component: Header,
   parameters: {
     layout: 'centered'

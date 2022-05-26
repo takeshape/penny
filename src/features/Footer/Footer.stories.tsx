@@ -5,7 +5,7 @@ import { GetFooterQuery } from './Footer.queries';
 import { EmailSubmissionMutation } from './Newsletter/Newsletter.queries';
 
 const Meta: ComponentMeta<typeof Footer> = {
-  title: 'Footer',
+  title: 'Features / Footer',
   component: Footer
 };
 

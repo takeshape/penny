@@ -4,7 +4,7 @@ import fixtures from '../Cart.fixtures.json';
 import { CartItem } from './Item';
 
 const Meta: ComponentMeta<typeof CartItem> = {
-  title: 'Cart / Components / Item',
+  title: 'Features / Cart / Components / Item',
   component: CartItem,
   decorators: [
     (Story) => (

@@ -3,7 +3,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Filters from './Filters';
 
 const Meta: ComponentMeta<typeof Filters> = {
-  title: 'Product Category / Components / Filters',
+  title: 'Features / Product Category / Components / Filters',
   component: Filters,
   parameters: {
     layout: 'fullscreen'

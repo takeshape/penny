@@ -6,7 +6,7 @@ import { ProductCategory } from './ProductCategory';
 import { _ProductGrid } from './ProductGrid/ProductGrid.stories';
 
 const Meta: ComponentMeta<typeof ProductCategory> = {
-  title: 'Product Category',
+  title: 'Features / Product Category',
   component: ProductCategory,
   parameters: {
     layout: 'centered'
