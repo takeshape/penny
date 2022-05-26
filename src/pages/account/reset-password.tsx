@@ -1,4 +1,4 @@
-import AccountCreate from 'features/Account/Create/Create';
+import AccountRecoverPassword from 'features/Account/RecoverPassword/RecoverPassword';
 import Layout from 'layouts/Full';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -8,8 +8,8 @@ const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
-    <Layout title="Register">
-      <AccountCreate callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'} />
+    <Layout title="Sign In">
+      <AccountRecoverPassword callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/account/signin'} />
     </Layout>
   );
 };

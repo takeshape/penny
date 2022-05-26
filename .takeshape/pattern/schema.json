@@ -2431,6 +2431,24 @@
         "required": ["input"]
       },
       "shape": "ShopifyStorefront_CustomerCreatePayload"
+    },
+    "ShopifyStorefront_customerRecover": {
+      "resolver": {
+        "name": "graphql:mutation",
+        "service": "shopify-storefront",
+        "fieldName": "customerRecover"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email address of the customer to recover."
+          }
+        },
+        "required": ["email"]
+      },
+      "shape": "ShopifyStorefront_CustomerRecoverPayload"
     }
   },
   "shapes": {

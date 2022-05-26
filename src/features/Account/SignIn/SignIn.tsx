@@ -14,10 +14,9 @@ export interface AccountSignInForm {
 export interface AccountSignInProps {
   callbackUrl: string;
   error?: string;
-  isNewAccount?: boolean;
 }
 
-export const AccountSignIn = ({ callbackUrl, error, isNewAccount }: AccountSignInProps) => {
+export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
   const { handleSubmit, formState, control } = useForm<AccountSignInForm>({ mode: 'onBlur' });
 
   const onSubmit = useCallback(
@@ -32,13 +31,12 @@ export const AccountSignIn = ({ callbackUrl, error, isNewAccount }: AccountSignI
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            {isNewAccount && <Alert status="success" primaryText="Your account was successfully created!" />}
             {error && <Alert status="error" primaryText={error} />}
 
             <Input
@@ -77,6 +75,26 @@ export const AccountSignIn = ({ callbackUrl, error, isNewAccount }: AccountSignI
                 }
               }}
             />
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                  Remember me
+                </label>
+              </div>
+
+              <div className="text-sm">
+                <Link href="/account/reset-password">
+                  <a className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
+                </Link>
+              </div>
+            </div>
 
             <div>
               <button

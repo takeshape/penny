@@ -12,7 +12,6 @@ const SignUpPage: NextPage = () => {
       <AccountSignIn
         callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}
         error={query.error ? getSingle(query.error) : ''}
-        isNewAccount={Boolean(query.newAccount)}
       />
     </Layout>
   );

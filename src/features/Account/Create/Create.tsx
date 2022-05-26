@@ -5,7 +5,7 @@ import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import type { CreateCustomerResponse } from 'queries';
 import { CreateCustomerMutation } from 'queries';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationShopifyStorefront_CustomerCreateArgs } from 'types/takeshape';
 
@@ -15,22 +15,38 @@ export interface AccountCreateForm {
   passwordConfirm: string;
 }
 
-export const AccountCreate = () => {
+export interface AccountCreateProps {
+  callbackUrl: string;
+}
+
+export const AccountCreate = ({ callbackUrl }) => {
   const { handleSubmit, formState, control, watch } = useForm<AccountCreateForm>({ mode: 'onBlur' });
 
-  const [setCustomerPayload, { data: response }] = useMutation<
+  const [setCustomerPayload, { data: customerResponse }] = useMutation<
     CreateCustomerResponse,
     MutationShopifyStorefront_CustomerCreateArgs
   >(CreateCustomerMutation);
 
-  useEffect(() => {
-    if (response?.customerCreate?.customer?.id) {
-      window.location.href = '/account/signin?newAccount=true';
-    }
-  }, [response]);
+  const watched = useRef({ email: '', password: '' });
 
-  const password = useRef({});
-  password.current = watch('password', '');
+  watched.current.email = watch('email', '');
+  watched.current.password = watch('password', '');
+
+  useEffect(() => {
+    if (customerResponse?.customerCreate?.customer?.id) {
+      const { email, password } = watched.current;
+      signIn('shopify', { email, password, callbackUrl });
+    }
+  }, [customerResponse, callbackUrl]);
+
+  const onSubmit = useCallback(
+    async ({ email, password }: AccountCreateForm) => {
+      await setCustomerPayload({ variables: { input: { email, password } } });
+    },
+    [setCustomerPayload]
+  );
+
+  const hasErrors = customerResponse?.customerCreate?.customerUserErrors?.length > 0;
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -42,19 +58,12 @@ export const AccountCreate = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form
-            action="#"
-            method="POST"
-            className="space-y-6"
-            onSubmit={handleSubmit(({ email, password }) =>
-              setCustomerPayload({ variables: { input: { email, password } } })
-            )}
-          >
-            {response?.customerCreate?.customerUserErrors?.length > 0 && (
+          <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            {hasErrors && (
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={response.customerCreate.customerUserErrors.map((e) => e.message)}
+                secondaryText={customerResponse.customerCreate.customerUserErrors.map((e) => e.message)}
               />
             )}
 
@@ -106,13 +115,15 @@ export const AccountCreate = () => {
               type="password"
               rules={{
                 required: 'This field is required',
-                validate: (value) => value === password.current || 'The passwords do not match'
+                validate: (value) => value === watched.current.password || 'The passwords do not match'
               }}
             />
 
             <div>
               <button
-                disabled={formState.isValid === false}
+                disabled={
+                  formState.isValid === false || formState.isSubmitting || (formState.isSubmitted && !hasErrors)
+                }
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >

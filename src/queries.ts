@@ -6,6 +6,7 @@ import type {
   ShopifyStorefront_Customer,
   ShopifyStorefront_CustomerAccessTokenCreatePayload,
   ShopifyStorefront_CustomerCreatePayload,
+  ShopifyStorefront_CustomerRecoverPayload,
   Shopify_Product,
   Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
@@ -595,6 +596,22 @@ export const CreateCustomerMutation = gql`
       customer {
         id
       }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type RecoverCustomerPasswordResponse = {
+  customerRecover: ShopifyStorefront_CustomerRecoverPayload;
+};
+
+export const RecoverCustomerPasswordMutation = gql`
+  mutation RecoverCustomerPassword($email: String!) {
+    customerRecover: ShopifyStorefront_customerRecover(email: $email) {
       customerUserErrors {
         code
         field
