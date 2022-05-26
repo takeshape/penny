@@ -8,6 +8,14 @@
   should define queries to get data that need to be fetched and cached during `getStaticProps` in order to prevent a
   flash of unloaded data in common high visibility components, like the navigation, footer, etc... Add to the file
   `src/services/apollo/addApolloQueryCache.ts` following the pattern there to get other common data.
+- The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for the order status page and uses the `redirect_origin` attribute set at cart creation:
+```erb
+{% if checkout.attributes.redirect_origin %}
+<script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
+{% else %}
+<script> window.location = "https://deluxe-sample-project.vercel.app/?shopify_checkout_action=success"; </script>
+{% endif %}
+```
 
 # Deluxe ™️ Sample Project
 
