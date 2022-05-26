@@ -7,6 +7,12 @@ import { CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput } from 'types/
 export const getCheckoutPayload = (items: CartItem[], session: Session): MutationShopifyStorefront_CartCreateArgs => {
   return {
     input: {
+      attributes: [
+        {
+          key: 'redirect_origin',
+          value: window.location.origin
+        }
+      ],
       lines: items?.map(
         (i): CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput => ({
           merchandiseId: (i.data.price as ProductPriceOption).merchandiseId,
