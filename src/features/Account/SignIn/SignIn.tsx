@@ -18,7 +18,7 @@ export interface AccountSignInProps {
 }
 
 export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
-  const { handleSubmit, formState, control, register } = useForm<AccountSignInForm>({ mode: 'onBlur' });
+  const { handleSubmit, formState, control, register } = useForm<AccountSignInForm>();
 
   const onSubmit = useCallback(
     async ({ email, password, rememberMe }: AccountSignInForm) => {
@@ -100,7 +100,7 @@ export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
 
             <div>
               <button
-                disabled={formState.isValid === false || formState.isSubmitting || (formState.isSubmitted && !error)}
+                disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !error)}
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >

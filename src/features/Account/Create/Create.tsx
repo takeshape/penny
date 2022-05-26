@@ -20,7 +20,7 @@ export interface AccountCreateProps {
 }
 
 export const AccountCreate = ({ callbackUrl }) => {
-  const { handleSubmit, formState, control, watch } = useForm<AccountCreateForm>({ mode: 'onBlur' });
+  const { handleSubmit, formState, control, watch } = useForm<AccountCreateForm>();
 
   const [setCustomerPayload, { data: customerResponse }] = useMutation<
     CreateCustomerResponse,
@@ -121,9 +121,7 @@ export const AccountCreate = ({ callbackUrl }) => {
 
             <div>
               <button
-                disabled={
-                  formState.isValid === false || formState.isSubmitting || (formState.isSubmitted && !hasErrors)
-                }
+                disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !hasErrors)}
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
               >
