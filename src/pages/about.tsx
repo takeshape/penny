@@ -1,6 +1,6 @@
 import Section from 'components/Section';
-import Container from 'features/Container';
-import Page from 'layouts/Page';
+import Wrapper from 'components/Wrapper/Content';
+import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
 import { Box, Divider, Heading, Link, Paragraph } from 'theme-ui';
 
@@ -34,8 +34,8 @@ const dependencies = [
 
 const AboutPage: NextPage = () => {
   return (
-    <Container title="About">
-      <Page>
+    <Layout title="About">
+      <Wrapper>
         <Heading as="h1">About</Heading>
         <Divider />
 
@@ -105,8 +105,8 @@ const AboutPage: NextPage = () => {
             ))}
           </Box>
         </Section>
-      </Page>
-    </Container>
+      </Wrapper>
+    </Layout>
   );
 };
 

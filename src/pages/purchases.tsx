@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/client';
 import Section from 'components/Section';
-import Container from 'features/Container';
+import Wrapper from 'components/Wrapper/Content';
 import LoyaltyCard from 'features/purchases/LoyaltyCard';
 import PaymentList from 'features/purchases/PaymentList';
 import SubscriptionList from 'features/SubscriptionList';
-import Page from 'layouts/Page';
+import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import type { GetMyPurchasesDataResponse } from 'queries';
@@ -23,8 +23,8 @@ const PurchasesPage: NextPage = () => {
 
   if ((!purchasesData && !error) || error) {
     return (
-      <Container title="Purchases">
-        <Page>
+      <Layout title="Purchases">
+        <Wrapper>
           <Heading as="h1" variant="styles.pageTitle">
             Purchases
           </Heading>
@@ -37,8 +37,8 @@ const PurchasesPage: NextPage = () => {
               </>
             ) : null}
           </Box>
-        </Page>
-      </Container>
+        </Wrapper>
+      </Layout>
     );
   }
 
@@ -46,8 +46,8 @@ const PurchasesPage: NextPage = () => {
   const orders = profile.shopifyCustomer?.orders.edges.map(({ node }) => node);
 
   return (
-    <Container title="Purchases">
-      <Page>
+    <Layout title="Purchases">
+      <Wrapper>
         <Heading as="h1" variant="styles.pageTitle">
           Purchases
         </Heading>
@@ -83,8 +83,8 @@ const PurchasesPage: NextPage = () => {
             </Section>
           </Box>
         </Flex>
-      </Page>
-    </Container>
+      </Wrapper>
+    </Layout>
   );
 };
 
