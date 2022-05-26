@@ -9,23 +9,43 @@ const Meta: ComponentMeta<typeof Newsletter> = {
 
 const Template: ComponentStory<typeof Newsletter> = (args) => <Newsletter {...args} />;
 
-export const _Newsletter = Template.bind({});
-_Newsletter.args = {
+export const Success = Template.bind({});
+Success.args = {
   text: {
     primary: 'Subscribe to our newsletter',
     secondary: 'The latest news, articles, and resources, sent to your inbox weekly.',
     button: 'Subscribe'
   }
 };
-_Newsletter.parameters = {
+Success.parameters = {
   apolloClient: {
     mocks: [
       {
         request: {
           query: EmailSubmissionMutation,
-          variables: { email: 'foo@bar.baz', listId: process.env.NEXT_PUBLIC_DEFAULT_KLAVYIO_LIST_ID }
+          variables: { email: 'foo@bar.baz', listId: process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID }
         },
         result: { data: { Klaviyo_addMembers: { items: [{ id: 'foo' }] } } }
+      }
+    ]
+  }
+};
+
+export const Error = Template.bind({});
+Error.args = {
+  ...Success.args
+};
+Error.parameters = {
+  apolloClient: {
+    mocks: [
+      {
+        request: {
+          query: EmailSubmissionMutation,
+          variables: { email: 'foo@bar.baz', listId: process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID }
+        },
+        error: {
+          message: 'Oops! Something went wrong.'
+        }
       }
     ]
   }
