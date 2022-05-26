@@ -3,7 +3,7 @@ import { notificationAtom } from 'store';
 import { Notification } from './Notification';
 
 const Meta: ComponentMeta<typeof Notification> = {
-  title: 'Notification',
+  title: 'Features / Notification',
   component: Notification
 };
 

@@ -2,7 +2,7 @@ import type { ComponentMeta } from '@storybook/react';
 import { AccountSignIn } from './SignIn';
 
 const Meta: ComponentMeta<typeof AccountSignIn> = {
-  title: 'Account / Components / Sign In',
+  title: 'Features / Account / Components / Sign In',
   component: AccountSignIn
 };
 

@@ -2,7 +2,7 @@ import type { ComponentMeta } from '@storybook/react';
 import { AccountCreate } from './Create';
 
 const Meta: ComponentMeta<typeof AccountCreate> = {
-  title: 'Account / Components / Create',
+  title: 'Features / Account / Components / Create',
   component: AccountCreate
 };
 

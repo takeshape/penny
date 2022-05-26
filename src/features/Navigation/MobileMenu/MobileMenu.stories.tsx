@@ -5,7 +5,7 @@ import { GetNavigationDataQuery } from '../Navigation.queries';
 import { MobileMenu } from './MobileMenu';
 
 const Meta: ComponentMeta<typeof MobileMenu> = {
-  title: 'Navigation / Components / MobileMenu',
+  title: 'Features / Navigation / Components / MobileMenu',
   component: MobileMenu,
   parameters: {
     viewport: {

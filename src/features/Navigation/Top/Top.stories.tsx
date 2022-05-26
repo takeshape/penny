@@ -5,7 +5,7 @@ import { GetNavigationDataQuery } from '../Navigation.queries';
 import { Top } from './Top';
 
 const Meta: ComponentMeta<typeof Top> = {
-  title: 'Navigation / Components / Top',
+  title: 'Features / Navigation / Components / Top',
   component: Top,
   parameters: {
     // Allows inspecting these values since they don't do anything in this context

@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import TrendingProducts from './TrendingProducts';
 
 const Meta: ComponentMeta<typeof TrendingProducts> = {
-  title: 'Storefront / Components / Trending Products',
+  title: 'Features / Storefront / Components / Trending Products',
   component: TrendingProducts
 };
 

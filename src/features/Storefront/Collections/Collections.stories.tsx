@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Collections from './Collections';
 
 const Meta: ComponentMeta<typeof Collections> = {
-  title: 'Storefront / Components / Collections',
+  title: 'Features / Storefront / Components / Collections',
   component: Collections,
   parameters: {
     layout: 'centered'
