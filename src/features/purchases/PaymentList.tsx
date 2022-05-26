@@ -1,25 +1,27 @@
 import { Box, Flex, Paragraph } from 'theme-ui';
-import type { Stripe_PaymentIntent } from 'types/takeshape';
+import type { Shopify_Order } from 'types/takeshape';
 import PaymentItemCard from './PaymentItem';
 export interface PaymentListProps {
-  payments: Stripe_PaymentIntent[];
+  orders: Shopify_Order[];
 }
 
-export const PaymentList = ({ payments }: PaymentListProps) => {
-  if (!payments || !payments.length) {
-    return <Paragraph>No payments to display!</Paragraph>;
+export const PaymentList = ({ orders }: PaymentListProps) => {
+  if (!orders || !orders.length) {
+    return <Paragraph>No orders to display!</Paragraph>;
   }
   return (
     <Flex as="ul" sx={{ flexDirection: 'column', listStyleType: 'none', padding: 0 }}>
-      {payments.map((payment) => (
-        <Box
-          as="li"
-          key={payment.id}
-          sx={{ marginBottom: '1rem', borderBottom: '1px solid', borderBlockColor: '#ccc', borderRadius: 0 }}
-        >
-          <PaymentItemCard payment={payment} />
-        </Box>
-      ))}
+      {orders.map((order) =>
+        order.fulfillments.map((fulfillment) => (
+          <Box
+            as="li"
+            key={fulfillment.id}
+            sx={{ marginBottom: '1rem', borderBottom: '1px solid', borderBlockColor: '#ccc', borderRadius: 0 }}
+          >
+            <PaymentItemCard currencyCode={order.currencyCode} fulfillment={fulfillment} />
+          </Box>
+        ))
+      )}
     </Flex>
   );
 };

@@ -104,13 +104,4 @@ export const defaultProductImage = {
 };
 
 /* Misc */
-export const shipFrom = {
-  name: 'KitchenSink',
-  phone: '919-360-0095',
-  addressLine1: '156 Kent St',
-  postalCode: '11222',
-  countryCode: 'US',
-  cityLocality: 'Brooklyn',
-  stateProvince: 'NY'
-};
 export const defaultKlaviyoListId = process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID;

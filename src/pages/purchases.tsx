@@ -42,7 +42,8 @@ const PurchasesPage: NextPage = () => {
     );
   }
 
-  const { payments, subscriptions, loyaltyCard } = purchasesData;
+  const { profile, subscriptions, loyaltyCard } = purchasesData;
+  const orders = profile.shopifyCustomer?.orders.edges.map(({ node }) => node);
 
   return (
     <Container title="Purchases">
@@ -67,8 +68,8 @@ const PurchasesPage: NextPage = () => {
                 Past Purchases
               </Heading>
               <Divider />
-              {!payments && !error ? <Spinner /> : null}
-              {payments && <PaymentList payments={payments.items} />}
+              {!orders && !error ? <Spinner /> : null}
+              {orders && <PaymentList orders={orders} />}
             </Section>
           </Box>
           <Box sx={{ flex: '1 1 32rem' }}>

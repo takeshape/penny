@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import type {
   Mutation,
+  Profile,
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
   Shopify_Product,
@@ -369,6 +370,7 @@ export const DeleteMySubscription = gql`
 `;
 
 export interface GetMyPurchasesDataResponse {
+  profile: Profile;
   payments?: Stripe_PaymentIntentPaginatedList;
   subscriptions?: Stripe_Subscription[];
   loyaltyCard?: Voucherify_LoyaltyCard;
@@ -376,6 +378,23 @@ export interface GetMyPurchasesDataResponse {
 
 export const GetMyPurchasesData = gql`
   query GetMyPurchasesDataQuery {
+    profile: getMyProfile {
+      shopifyCustomer {
+        orders(first: 10) {
+          edges {
+            node {
+              fulfillments {
+                displayStatus
+                trackingInfo {
+                  company
+                  number
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     payments: getMyPaymentsIndexed(size: 5, sort: { field: "created", order: "desc" }) {
       items {
         id
@@ -409,10 +428,6 @@ export const GetMyPurchasesData = gql`
               images
             }
           }
-        }
-        shipment {
-          tracking_number
-          tracking_status
         }
       }
     }
@@ -511,32 +526,6 @@ export const CreateLoyaltyCardOrder = gql`
   ) {
     order: Voucherify_createOrder(email: $email, amount: $amount, status: $status, items: $items) {
       id
-    }
-  }
-`;
-
-/**
- * ShipEngine Shipments
- */
-
-export const CreateShipment = gql`
-  mutation CreateShipment(
-    $carrier_id: String
-    $service_code: String
-    $external_shipment_id: String
-    $ship_to: ShipEngine_AddressInput
-    $ship_from: ShipEngine_AddressInput
-    $packages: [ShipEngine_PackageInput]
-  ) {
-    createShipment(
-      carrier_id: $carrier_id
-      service_code: $service_code
-      external_shipment_id: $external_shipment_id
-      ship_to: $ship_to
-      ship_from: $ship_from
-      packages: $packages
-    ) {
-      shipment_id
     }
   }
 `;
