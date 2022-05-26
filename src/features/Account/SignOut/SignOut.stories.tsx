@@ -2,7 +2,7 @@ import type { ComponentMeta } from '@storybook/react';
 import { AccountSignOut } from './SignOut';
 
 const Meta: ComponentMeta<typeof AccountSignOut> = {
-  title: 'Account / Components / Sign Out',
+  title: 'Features / Account / Components / Sign Out',
   component: AccountSignOut
 };
 

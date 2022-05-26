@@ -4,7 +4,7 @@ import rickAndMortyJson from '../__fixtures__/rick-and-morty.json';
 import { RickAndMortyList } from './Example';
 
 export default {
-  title: 'Features/Example',
+  title: 'Features / Example',
   component: RickAndMortyList,
   decorators: [(Story) => <div className="container mx-auto">{Story()}</div>]
 } as ComponentMeta<typeof RickAndMortyList>;

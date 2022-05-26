@@ -5,7 +5,7 @@ import NavigationFixtures from './Navigation.fixtures.json';
 import { GetNavigationDataQuery } from './Navigation.queries';
 
 const Meta: ComponentMeta<typeof Navigation> = {
-  title: 'Navigation',
+  title: 'Features / Navigation',
   component: Navigation,
   parameters: {
     // Allows inspecting these values since they don't do anything in this context
