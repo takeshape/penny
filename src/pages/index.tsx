@@ -1,9 +1,9 @@
 import Alert from 'components/Alert/Alert';
 import PageLoader from 'components/PageLoader';
-import Container from 'features/Container';
+import Wrapper from 'components/Wrapper/Content';
 import ProductHeader from 'features/ProductCategory/Header/Header';
 import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
-import Page from 'layouts/Page';
+import Layout from 'layouts/Default';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import type { GetProductsResponse } from 'queries';
@@ -16,27 +16,27 @@ import { shopifyProductToProductListItem } from 'utils/transforms';
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
-      <Container>
-        <Page>
+      <Layout>
+        <Wrapper>
           <div className="my-10">
             <Alert status="error" primaryText="Error loading products" secondaryText={JSON.stringify(error, null, 2)} />
           </div>
-        </Page>
-      </Container>
+        </Wrapper>
+      </Layout>
     );
   }
 
   return (
-    <Container>
+    <Layout>
       {products ? (
-        <Page>
+        <Wrapper>
           <ProductHeader header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }} />
           <ProductGrid products={products} />
-        </Page>
+        </Wrapper>
       ) : (
         <PageLoader />
       )}
-    </Container>
+    </Layout>
   );
 };
 

@@ -7,6 +7,8 @@ export const takeshapeWebhookApiKey = process.env.TAKESHAPE_WEBHOOK_API_KEY;
 export const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 export const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+export const shopifyShop = process.env.SHOPIFY_SHOP;
+export const shopifyToken = process.env.SHOPIFY_TOKEN;
 
 /* Nerd Stuff */
 export const nodeEnv = process.env.NODE_ENV ?? 'development';
@@ -20,6 +22,7 @@ export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
 export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'TakeShape Store';
 export const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION ?? 'We sell books.';
+export const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO_URL ?? '/images/logo.svg';
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
 export const seo: DefaultSeoProps = {
   titleTemplate: `%s - ${siteName}`,

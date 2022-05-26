@@ -3,6 +3,10 @@ import type {
   Mutation,
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
+  ShopifyStorefront_Customer,
+  ShopifyStorefront_CustomerAccessTokenCreatePayload,
+  ShopifyStorefront_CustomerCreatePayload,
+  ShopifyStorefront_CustomerRecoverPayload,
   Shopify_Product,
   Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
@@ -349,7 +353,7 @@ export type CreateMyCartResponse = {
   myCart: ShopifyStorefront_CartCreatePayload;
 };
 
-export const CreateMyCartQuery = gql`
+export const CreateMyCartMutation = gql`
   mutation CreateMyCart($input: ShopifyStorefront_CartInput) {
     myCart: createMyCart(input: $input) {
       cart {
@@ -537,6 +541,82 @@ export const CreateShipment = gql`
       packages: $packages
     ) {
       shipment_id
+    }
+  }
+`;
+
+/**
+ * Customer creation
+ */
+
+export type CreateCustomerAccessTokenResponse = {
+  accessTokenCreate: ShopifyStorefront_CustomerAccessTokenCreatePayload;
+};
+
+export const CreateCustomerAccessTokenMutation = gql`
+  mutation CrateCustomerAccesssToken($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
+    accessTokenCreate: ShopifyStorefront_customerAccessTokenCreate(input: $input) {
+      customerAccessToken {
+        expiresAt
+        accessToken
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type GetCustomerResponse = {
+  customer: ShopifyStorefront_Customer;
+};
+
+export const GetCustomerQuery = gql`
+  query GetCustomer($customerAccessToken: String!) {
+    customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
+      firstName
+      lastName
+      id
+      phone
+      email
+      displayName
+    }
+  }
+`;
+
+export type CreateCustomerResponse = {
+  customerCreate: ShopifyStorefront_CustomerCreatePayload;
+};
+
+export const CreateCustomerMutation = gql`
+  mutation CreateCustomer($input: ShopifyStorefront_CustomerCreateInput!) {
+    customerCreate: ShopifyStorefront_customerCreate(input: $input) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type RecoverCustomerPasswordResponse = {
+  customerRecover: ShopifyStorefront_CustomerRecoverPayload;
+};
+
+export const RecoverCustomerPasswordMutation = gql`
+  mutation RecoverCustomerPassword($email: String!) {
+    customerRecover: ShopifyStorefront_customerRecover(email: $email) {
+      customerUserErrors {
+        code
+        field
+        message
+      }
     }
   }
 `;

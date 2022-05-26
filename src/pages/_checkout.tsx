@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import type { CreateMyCartResponse } from 'queries';
-import { CreateMyCartQuery } from 'queries';
+import { CreateMyCartMutation } from 'queries';
 import { useEffect } from 'react';
 import { cartItemsAtom } from 'services/cart/store';
 import { getCheckoutPayload } from 'services/cart/utils';
@@ -12,15 +12,15 @@ import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 
 // After a successful login, redirect here to automatically checkout with the cart
 const _CheckoutPage: NextPage = () => {
-  const { status } = useSession();
+  const { data: session } = useSession();
   const client = useApolloClient();
   const cartItems = useAtomValue(cartItemsAtom);
 
   useEffect(() => {
     const doCheckout = async () => {
       const { data } = await client.mutate<CreateMyCartResponse, MutationShopifyStorefront_CartCreateArgs>({
-        mutation: CreateMyCartQuery,
-        variables: getCheckoutPayload(cartItems)
+        mutation: CreateMyCartMutation,
+        variables: getCheckoutPayload(cartItems, session)
       });
 
       if (data?.myCart?.cart?.checkoutUrl) {
@@ -28,10 +28,10 @@ const _CheckoutPage: NextPage = () => {
       }
     };
 
-    if (status === 'authenticated') {
+    if (session) {
       doCheckout();
     }
-  }, [client, cartItems, status]);
+  }, [client, cartItems, session]);
 
   return <PageLoader />;
 };

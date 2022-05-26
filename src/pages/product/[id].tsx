@@ -1,9 +1,9 @@
 import PageLoader from 'components/PageLoader';
-import Container from 'features/Container';
+import Wrapper from 'components/Wrapper/Content';
 import ProductAddToCart from 'features/products/ProductAddToCart';
 import ProductImage from 'features/products/ProductImage';
 import ReviewList from 'features/reviews/ReviewList';
-import Page from 'layouts/Page';
+import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
@@ -29,17 +29,17 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Container title="Product loading...">
+      <Layout title="Product loading...">
         <PageLoader />
-      </Container>
+      </Layout>
     );
   }
 
   const { product, reviews, stats } = props;
 
   return (
-    <Container title={product.name}>
-      <Page>
+    <Layout title={product.name}>
+      <Wrapper>
         <Heading as="h2" variant="styles.pageTitle">
           {product.name}
         </Heading>
@@ -55,8 +55,8 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
             </Box>
           </Flex>
         </Flex>
-      </Page>
-    </Container>
+      </Wrapper>
+    </Layout>
   );
 };
 
