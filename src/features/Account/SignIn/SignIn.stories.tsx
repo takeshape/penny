@@ -12,6 +12,6 @@ const Template = (args) => <AccountSignIn {...args} />;
  * TODO: When we can mock mutations we might want to show more states.
  */
 
-export const Renders = Template.bind({});
+export const SignIn = Template.bind({});
 
 export default Meta;
