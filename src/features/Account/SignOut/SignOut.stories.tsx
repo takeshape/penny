@@ -12,6 +12,6 @@ const Template = (args) => <AccountSignOut {...args} />;
  * TODO: When we can mock mutations we might want to show more states.
  */
 
-export const Renders = Template.bind({});
+export const SignOut = Template.bind({});
 
 export default Meta;
