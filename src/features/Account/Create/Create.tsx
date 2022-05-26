@@ -139,7 +139,7 @@ export const AccountCreate = ({ callbackUrl }) => {
                   href={`/api/auth/signin`}
                   onClick={(e) => {
                     e.preventDefault();
-                    signIn();
+                    signIn(undefined, { callbackUrl });
                   }}
                   className="text-sm font-medium hover:text-gray-900 cursor-pointer"
                 >
