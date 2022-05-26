@@ -18,7 +18,7 @@ export const PaymentItem = ({
     <Card sx={{ width: '100%' }}>
       <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
         <Paragraph variant="smallHeading" sx={{ lineHeight: '2' }}>
-          {format(createdAt, 'PP')}
+          {format(new Date(createdAt), 'PP')}
         </Paragraph>
       </Flex>
       <Box>
