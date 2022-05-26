@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 export interface AccountSignInForm {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 export interface AccountSignInProps {
@@ -17,11 +18,11 @@ export interface AccountSignInProps {
 }
 
 export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
-  const { handleSubmit, formState, control } = useForm<AccountSignInForm>({ mode: 'onBlur' });
+  const { handleSubmit, formState, control, register } = useForm<AccountSignInForm>({ mode: 'onBlur' });
 
   const onSubmit = useCallback(
-    async ({ email, password }: AccountSignInForm) => {
-      await signIn('shopify', { email, password, callbackUrl });
+    async ({ email, password, rememberMe }: AccountSignInForm) => {
+      await signIn('shopify', { email, password, rememberMe, callbackUrl });
     },
     [callbackUrl]
   );
@@ -79,9 +80,10 @@ export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
+                  {...register('rememberMe')}
                   id="remember-me"
-                  name="remember-me"
                   type="checkbox"
+                  defaultChecked
                   className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">

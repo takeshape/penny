@@ -49,6 +49,7 @@
     "next-compose-plugins": "^2.2.1",
     "next-seo": "^5.4.0",
     "node-fetch": "^3.2.4",
+    "nookies": "^2.5.2",
     "pino": "^7.11.0",
     "preact": "^10.7.2",
     "react": "^17.0.2",

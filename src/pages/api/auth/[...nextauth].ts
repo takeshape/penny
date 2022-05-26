@@ -1,8 +1,10 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeWebhookApiKey } from 'config';
 import logger from 'logger';
+import type { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
 import type { CreateCustomerAccessTokenResponse, GetCustomerResponse, UpsertProfileResponse } from 'queries';
 import { CreateCustomerAccessTokenMutation, GetCustomerQuery, UpsertProfile } from 'queries';
@@ -29,15 +31,18 @@ const withAllAccess = createNextAuthAllAccess({
   ]
 });
 
-export default withAllAccess(NextAuth, {
+// Must be shorter than the 60 day customer access token
+const maxAgeRememberMe = 30 * 24 * 60 * 60; // 30 days
+const maxAgeForgetMe = 60 * 60; // 1 hour
+
+const nextAuthConfig = {
   pages: {
     signIn: '/account/signin',
     signOut: '/account/signout',
     error: '/account/signin'
   },
   session: {
-    // Must be shorter than the 60 day customer access token
-    maxAge: 30 * 24 * 60 * 60 // 30 days
+    maxAge: maxAgeRememberMe
   },
   providers: [
     CredentialsProvider({
@@ -141,4 +146,26 @@ export default withAllAccess(NextAuth, {
       });
     }
   }
-});
+};
+
+export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+  const cookies = parseCookies({ req });
+  const rememberMe = cookies['remember-me'] ?? req.body.rememberMe;
+  const maxAge = rememberMe === 'false' ? maxAgeForgetMe : maxAgeRememberMe;
+
+  if (req.body.rememberMe) {
+    setCookie({ res }, 'remember-me', req.body.rememberMe, {
+      maxAge,
+      path: '/'
+    });
+  }
+
+  nextAuthConfig.session = {
+    ...nextAuthConfig.session,
+    maxAge
+  };
+
+  const nextAuth = withAllAccess(NextAuth, nextAuthConfig);
+
+  return await nextAuth(req, res);
+}
