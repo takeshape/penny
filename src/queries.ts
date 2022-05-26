@@ -390,7 +390,7 @@ export const GetMyPurchasesData = gql`
               fulfillments {
                 createdAt
                 displayStatus
-                fulfillmentLineItems {
+                fulfillmentLineItems(first: 10) {
                   edges {
                     node {
                       id
