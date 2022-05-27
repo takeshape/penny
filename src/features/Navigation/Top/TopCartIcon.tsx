@@ -1,7 +1,7 @@
 import { ShoppingCartIcon } from '@heroicons/react/outline';
 import ClientOnly from 'components/ClientOnly';
+import { cartQuantityAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useAtom, useAtomValue } from 'jotai';
-import { cartQuantityAtom, isCartOpenAtom } from 'services/cart/store';
 
 export const TopCartIcon = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);

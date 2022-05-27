@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Navigation from './Navigation';
 
 const Meta: ComponentMeta<typeof Navigation> = {
-  title: 'Footer / Components / Navigation',
+  title: 'Features / Footer / Components / Navigation',
   component: Navigation
 };
 

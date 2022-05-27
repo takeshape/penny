@@ -2,8 +2,8 @@ import { useLazyQuery } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
 import type { Dispatch } from 'react';
 import { useEffect, useState } from 'react';
-import useDebounce from 'services/hooks/useDebounce';
 import type { Stripe_Product } from 'types/takeshape';
+import useDebounce from 'utils/hooks/useDebounce';
 
 export interface UseSearchProps {
   graphqlQuery: DocumentNode;

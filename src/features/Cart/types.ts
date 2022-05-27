@@ -1,3 +1,5 @@
+import type { SetOptional } from 'type-fest';
+
 export type CartItem = {
   id: string;
   name: string;
@@ -13,3 +15,5 @@ export type CartItem = {
   // Freeform data, for display or later API calls
   data: Record<string, unknown>;
 };
+
+export type CartItemInput = SetOptional<CartItem, 'interval' | 'intervalCount' | 'imageSrc' | 'imageAlt' | 'data'>;

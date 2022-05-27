@@ -5,23 +5,27 @@ import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCach
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import type { ServerError } from '@apollo/client/link/utils';
-import { isSsr, takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+import { isSsr } from 'config';
 import logger from 'logger';
-import { useMemo } from 'react';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
-
-interface InitializeApolloProps {
+export interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
   getAccessToken?: () => string | Promise<string>;
+  accessToken?: string;
   ssrMode?: boolean;
+  uri: string;
 }
 
-function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloProps, 'getAccessToken' | 'ssrMode'>) {
+function createApolloClient({
+  getAccessToken,
+  accessToken,
+  uri,
+  ssrMode
+}: Pick<InitializeApolloProps, 'getAccessToken' | 'accessToken' | 'ssrMode' | 'uri'>) {
   const httpLink = createHttpLink({
-    uri: takeshapeApiUrl
+    uri
   });
 
   const withToken = setContext(async () => {
@@ -31,17 +35,19 @@ function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloPr
       token = await getAccessToken();
     } else {
       // Anonymous authentication is the default
-      token = takeshapeAnonymousApiKey;
+      token = accessToken;
     }
 
     return { token };
   });
 
   const withError = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
+    if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path }) =>
         logger.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
       );
+    }
+
     if (networkError) {
       // When unauthenticated, redirect to sign in
       if ((networkError as ServerError).statusCode === 401 && !isSsr) {
@@ -55,7 +61,7 @@ function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloPr
   const authLink = new ApolloLink((operation, forward) => {
     const { token, headers } = operation.getContext();
 
-    if (!headers?.Authorization) {
+    if (!headers?.Authorization && token) {
       operation.setContext(() => ({
         headers: {
           Authorization: token ? `Bearer ${token}` : ''
@@ -85,36 +91,34 @@ function createApolloClient({ getAccessToken, ssrMode }: Pick<InitializeApolloPr
   });
 }
 
+const staticClientCache = {};
+
 /**
  * The static client is used during static generation. Existing clients will be
  * reused to ensure the cache is complete.
  */
-export function createStaticClient({ getAccessToken }: InitializeApolloProps = {}) {
-  const _apolloClient = apolloClient ?? createApolloClient({ getAccessToken, ssrMode: true });
+export function createStaticClient({ accessToken, uri }: InitializeApolloProps) {
+  const cacheKey = `${uri}:${accessToken}`;
 
-  if (!apolloClient) {
-    apolloClient = _apolloClient;
+  if (staticClientCache[cacheKey]) {
+    return staticClientCache[cacheKey];
   }
 
-  return _apolloClient;
+  staticClientCache[cacheKey] = createApolloClient({ accessToken, uri, ssrMode: true });
+
+  return staticClientCache[cacheKey];
 }
 
 /**
  * Creates a client and  restores the cache. Always returns a new client. Suitable
  * for use inside useMemo.
  */
-export function createClient({ initialCache, getAccessToken }: InitializeApolloProps = {}) {
-  const _apolloClient = createApolloClient({ getAccessToken });
+export function createClient({ initialCache, accessToken, uri }: InitializeApolloProps) {
+  const client = createApolloClient({ accessToken, uri });
 
   if (initialCache) {
-    _apolloClient.cache.restore(initialCache);
+    client.cache.restore(initialCache);
   }
 
-  return _apolloClient;
-}
-
-export function useApollo(pageProps: any, getAccessToken?: InitializeApolloProps['getAccessToken']) {
-  const initialCache = pageProps[APOLLO_CACHE_PROP_NAME];
-  const client = useMemo(() => createClient({ initialCache, getAccessToken }), [initialCache, getAccessToken]);
   return client;
 }

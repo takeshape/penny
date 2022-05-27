@@ -3,7 +3,7 @@ import * as Icons from 'components/Icons/Icons';
 import Social from './Social';
 
 const Meta: ComponentMeta<typeof Social> = {
-  title: 'Footer / Components / Social',
+  title: 'Features / Footer / Components / Social',
   component: Social
 };
 

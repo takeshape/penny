@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Contact from './Contact';
 
 const Meta: ComponentMeta<typeof Contact> = {
-  title: 'Contact',
+  title: 'Features / Contact',
   component: Contact,
   argTypes: {
     onSubmit: {

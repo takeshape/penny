@@ -1,11 +1,11 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { cartItemsAtom, isCartOpenAtom } from 'services/cart/store';
+import { cartItemsAtom, isCartOpenAtom } from 'features/Cart/store';
 import { currencyAtom } from 'store';
 import { Cart } from './Cart';
 import fixtures from './Cart.fixtures.json';
 
 const Meta: ComponentMeta<typeof Cart> = {
-  title: 'Cart',
+  title: 'Features / Cart',
   component: Cart
 };
 

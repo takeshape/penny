@@ -2,9 +2,9 @@ import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import getFooterData from 'data/getFooterData';
 import getNavigationData from 'data/getNavigationData';
 import { mergeWithArrayMerge } from 'utils/merge';
-import { APOLLO_CACHE_PROP_NAME } from './apolloClient';
+import { APOLLO_CACHE_PROP_NAME } from './client';
 
-export async function addApolloQueryCache(client: ApolloClient<NormalizedCacheObject>, pageProps: any) {
+async function addApolloQueryCache(client: ApolloClient<NormalizedCacheObject>, pageProps: any) {
   if (pageProps?.props) {
     const clientCache = client.cache.extract();
 

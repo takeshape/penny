@@ -1,9 +1,8 @@
-import { siteUrl, stripeSecretKey, stripeWebhookSecret, takeshapeWebhookApiKey } from 'config';
+import { siteUrl, stripeSecretKey, stripeWebhookSecret, takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
 import logger from 'logger';
 import { buffer } from 'micro';
 import type { NextApiHandler, NextConfig } from 'next';
 import { CreateInvitation, CreateLoyaltyCardOrder } from 'queries';
-import { createStaticClient } from 'services/apollo/apolloClient';
 import Stripe from 'stripe';
 import type { SetRequired } from 'type-fest';
 import type {
@@ -14,9 +13,10 @@ import type {
   Voucherify_Order,
   Voucherify_OrderItemInput
 } from 'types/takeshape';
+import { createStaticClient } from 'utils/apollo/client';
 
 const stripe = new Stripe(stripeSecretKey, { apiVersion: '2020-08-27' });
-const client = createStaticClient({ getAccessToken: () => takeshapeWebhookApiKey });
+const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
 
 function isValidShippingAddress(
   address: Stripe.Address
@@ -43,7 +43,7 @@ async function handleReviews(customer: Stripe.Customer, session: Stripe.Checkout
       };
     });
 
-    const response = await client.mutate<
+    const response = await apolloClient.mutate<
       ReviewsIo_CreateInvitationResponse,
       ReviewsIo_CreateInvitationPropertiesPropertyInput
     >({
@@ -75,7 +75,7 @@ async function handleLoyaltyCard(customer: Stripe.Customer, session: Stripe.Chec
       };
     });
 
-    const response = await client.mutate<{ order: Voucherify_Order }, MutationVoucherify_CreateOrderArgs>({
+    const response = await apolloClient.mutate<{ order: Voucherify_Order }, MutationVoucherify_CreateOrderArgs>({
       mutation: CreateLoyaltyCardOrder,
       variables: {
         email: customer.email,

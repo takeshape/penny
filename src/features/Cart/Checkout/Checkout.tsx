@@ -4,11 +4,11 @@ import { useSession } from 'next-auth/react';
 import type { CreateMyCartResponse } from 'queries';
 import { CreateMyCartMutation } from 'queries';
 import { useCallback, useEffect } from 'react';
-import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from 'services/cart/store';
-import { getCheckoutPayload } from 'services/cart/utils';
 import type { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
+import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
+import { getCheckoutPayload } from '../utils';
 
-export const Checkout = () => {
+export const CartCheckout = () => {
   const { data: session } = useSession();
 
   const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
@@ -44,4 +44,4 @@ export const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default CartCheckout;

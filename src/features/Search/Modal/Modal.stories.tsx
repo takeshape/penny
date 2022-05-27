@@ -5,7 +5,7 @@ import { SearchStripeProducts } from '../Search.queries';
 import { Modal } from './Modal';
 
 const Meta: ComponentMeta<typeof Modal> = {
-  title: 'Search / Components / Modal',
+  title: 'Features / Search / Components / Modal',
   component: Modal,
   parameters: {
     jotai: {

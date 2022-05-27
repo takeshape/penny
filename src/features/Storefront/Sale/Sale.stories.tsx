@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Sale from './Sale';
 
 const Meta: ComponentMeta<typeof Sale> = {
-  title: 'Storefront / Components / Sale',
+  title: 'Features / Storefront / Components / Sale',
   component: Sale,
   parameters: {
     layout: 'centered'

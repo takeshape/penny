@@ -1,6 +1,6 @@
+import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useAtom, useSetAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { addToCartAtom, isCartOpenAtom } from 'services/cart/store';
 import { Box, Button, Flex, Label, Radio } from 'theme-ui';
 import { Product } from 'types/product';
 import ProductPrice from './ProductPrice';
