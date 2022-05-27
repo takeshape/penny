@@ -387,6 +387,7 @@ export const GetMyPurchasesData = gql`
         orders(first: 10) {
           edges {
             node {
+              currencyCode
               fulfillments {
                 createdAt
                 displayStatus
