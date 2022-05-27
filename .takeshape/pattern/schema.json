@@ -3150,10 +3150,10 @@
             "title": "Shopify Customer Id"
           },
           "shopifyCustomer": {
-            "@ref": "deluxe-sample-project:Customer",
+            "@ref": "shopify:Customer",
             "@resolver": {
               "name": "graphql:query",
-              "service": "deluxe-sample-project",
+              "service": "shopify",
               "fieldName": "customer",
               "args": {
                 "ops": [{"path": "id", "mapping": "$source.shopifyCustomerId"}]
