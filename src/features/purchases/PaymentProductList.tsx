@@ -1,18 +1,19 @@
 import { Box, Card } from 'theme-ui';
-import type { PaymentProductLineItemProps } from './PaymentProductLineItem';
+import { Shopify_CurrencyCode, Shopify_FulfillmentLineItemConnection } from '../../types/takeshape';
 import PaymentProductLineItem from './PaymentProductLineItem';
 
 export interface PaymentProductListProps {
-  lineItems: PaymentProductLineItemProps[];
+  currencyCode: Shopify_CurrencyCode;
+  lineItems: Shopify_FulfillmentLineItemConnection;
 }
 
-export const PaymentProductList = ({ lineItems }: PaymentProductListProps) => {
+export const PaymentProductList = ({ currencyCode, lineItems }: PaymentProductListProps) => {
   return (
     <Card sx={{ p: 0 }}>
-      {lineItems.map((line) => {
+      {lineItems.edges.map((edge) => {
         return (
-          <Box key={line.id} sx={{ px: 0, py: 2 }}>
-            <PaymentProductLineItem {...line} />
+          <Box key={edge.node.id} sx={{ px: 0, py: 2 }}>
+            <PaymentProductLineItem currencyCode={currencyCode} lineItem={edge.node.lineItem} />
           </Box>
         );
       })}

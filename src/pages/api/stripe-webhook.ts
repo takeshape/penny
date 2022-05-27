@@ -1,25 +1,15 @@
-import {
-  shipFrom,
-  siteUrl,
-  stripeSecretKey,
-  stripeWebhookSecret,
-  takeshapeApiUrl,
-  takeshapeWebhookApiKey
-} from 'config';
+import { siteUrl, stripeSecretKey, stripeWebhookSecret, takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
 import logger from 'logger';
 import { buffer } from 'micro';
 import type { NextApiHandler, NextConfig } from 'next';
-import { CreateInvitation, CreateLoyaltyCardOrder, CreateShipment } from 'queries';
+import { CreateInvitation, CreateLoyaltyCardOrder } from 'queries';
 import Stripe from 'stripe';
 import type { SetRequired } from 'type-fest';
 import type {
-  MutationCreateShipmentArgs,
   MutationVoucherify_CreateOrderArgs,
   ReviewsIo_CreateInvitationPropertiesPropertyInput,
   ReviewsIo_CreateInvitationResponse,
   ReviewsIo_InvitationProductInput,
-  ShipEngine_Label,
-  ShipEngine_Package,
   Voucherify_Order,
   Voucherify_OrderItemInput
 } from 'types/takeshape';
@@ -101,96 +91,6 @@ async function handleLoyaltyCard(customer: Stripe.Customer, session: Stripe.Chec
   }
 }
 
-async function handleShipping(customer: Stripe.Customer, session: Stripe.Checkout.Session, event: Stripe.Event) {
-  try {
-    let shipmentId = session.payment_intent as string;
-
-    if (!shipmentId) {
-      // This is required for subscriptions, which don't reveal their payment intent
-      // Find the most recent successful payment intent before this checkout session event
-      const paymentIntentList = await stripe.paymentIntents.search({
-        query: `customer:'${session.customer}' AND status:'succeeded' AND created<=${event.created}`,
-        limit: 1
-      });
-
-      if (paymentIntentList.data.length) {
-        const paymentIntent = paymentIntentList.data[0];
-        shipmentId = paymentIntent.id;
-      }
-    }
-
-    if (!shipmentId) {
-      return { errors: ['Could not find a shipment ID'] };
-    }
-
-    const shippingOption = session.shipping_options.find((o) => o.shipping_rate === session.shipping_rate) ?? {
-      shipping_amount: 0
-    };
-    const shippingAddress = session.shipping.address ?? customer.shipping.address ?? customer.address;
-
-    if (!isValidShippingAddress(shippingAddress)) {
-      return { errors: ['No valid shipping address'] };
-    }
-
-    const packages = session.line_items.data
-      .map((lineItem): ShipEngine_Package => {
-        const product = lineItem.price.product as Stripe.Product;
-        if (product.shippable) {
-          return {
-            weight: {
-              value: product.package_dimensions.weight,
-              unit: 'ounce'
-            },
-            dimensions: {
-              unit: 'inch',
-              length: product.package_dimensions.length,
-              width: product.package_dimensions.width,
-              height: product.package_dimensions.height
-            }
-          };
-        }
-      })
-      .filter((x) => x);
-
-    if (!packages.length) {
-      return { errors: ['No shippable packages'] };
-    }
-
-    const response = await apolloClient.mutate<ShipEngine_Label, MutationCreateShipmentArgs>({
-      mutation: CreateShipment,
-      variables: {
-        carrier_id: 'se-2074501',
-        service_code: shippingOption.shipping_amount === 0 ? 'ups_ground' : 'ups_2nd_day_air',
-        external_shipment_id: shipmentId,
-        ship_to: {
-          name: session.shipping.name ?? customer.name,
-          phone: shipFrom.phone,
-          address_line1: shippingAddress.line1,
-          address_line2: shippingAddress.line2,
-          postal_code: shippingAddress.postal_code,
-          country_code: shippingAddress.country,
-          city_locality: shippingAddress.city,
-          state_province: shippingAddress.state
-        },
-        ship_from: {
-          name: shipFrom.name,
-          phone: shipFrom.phone,
-          address_line1: shipFrom.addressLine1,
-          postal_code: shipFrom.postalCode,
-          country_code: shipFrom.countryCode,
-          city_locality: shipFrom.cityLocality,
-          state_province: shipFrom.stateProvince
-        },
-        packages
-      }
-    });
-
-    return response;
-  } catch (err) {
-    return { errors: [err.message] };
-  }
-}
-
 const handler: NextApiHandler = async (req, res) => {
   const { headers } = req;
 
@@ -227,7 +127,6 @@ const handler: NextApiHandler = async (req, res) => {
 
         tasks.push(handleReviews(customer, fullSession));
         tasks.push(handleLoyaltyCard(customer, fullSession));
-        tasks.push(handleShipping(customer, fullSession, event));
 
         const results = await Promise.all(tasks);
 
