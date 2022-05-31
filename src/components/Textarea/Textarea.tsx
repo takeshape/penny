@@ -34,12 +34,12 @@ const Textarea = (props: TextareaProps) => {
           rows={props.rows ?? 4}
           defaultValue={props.defaultValue ?? ''}
           placeholder={props.placeholder}
-          className={classNames([
+          className={classNames(
             error
               ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
               : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 ',
             'py-3 px-4 block w-full rounded-md placeholder-gray-400'
-          ])}
+          )}
         />
         {error && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-start pointer-events-none">

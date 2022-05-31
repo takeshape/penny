@@ -27,26 +27,24 @@ const Input = (props: InputProps) => {
           </span>
         )}
       </div>
-      <div className="mt-1 relative shadow-sm rounded-md">
-        <input
-          {...field}
-          type={props.type}
-          id={props.id}
-          autoComplete={props.autoComplete}
-          placeholder={props.placeholder}
-          className={classNames([
-            error
-              ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
-              : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 ',
-            'py-3 px-4 block w-full rounded-md placeholder-gray-400'
-          ])}
-        />
-        {error && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
-          </div>
+      <input
+        {...field}
+        type={props.type}
+        id={props.id}
+        autoComplete={props.autoComplete}
+        placeholder={props.placeholder}
+        className={classNames(
+          error
+            ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
+            : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
+          'mt-1 block w-full shadow-sm sm:text-sm rounded-md'
         )}
-      </div>
+      />
+      {error && (
+        <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+          <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+        </div>
+      )}
       {props.helpText && (
         <p className="mt-2 text-sm text-gray-500" id={`${props.id}-help-text`}>
           {props.helpText}
