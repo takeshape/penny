@@ -40,9 +40,7 @@ export const decorators = [
   (Story) => (
     <SessionProvider session={{ expires: '2050-10-05T14:48:00.000Z' }} refetchInterval={0}>
       <ApolloProvider client={createClient({})}>
-        <div className="container">
-          <Story />
-        </div>
+        <Story />
       </ApolloProvider>
     </SessionProvider>
   )
