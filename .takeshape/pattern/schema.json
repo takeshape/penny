@@ -3791,6 +3791,7 @@
                   "name": "rest:get",
                   "service": "reviews-io",
                   "path": "/product/review",
+                  "options": {"ignoreErrors": true, "ttl": 3600},
                   "searchParams": {
                     "ops": [
                       {
