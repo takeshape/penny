@@ -75,6 +75,9 @@
           "avatar": {
             "widget": "image"
           },
+          "shopifyCustomerId": {
+            "widget": "singleLineText"
+          },
           "stripeCustomerId": {
             "widget": "singleLineText"
           }
@@ -85,6 +88,7 @@
           "email",
           "bio",
           "avatar",
+          "shopifyCustomerId",
           "stripeCustomerId"
         ]
       }
@@ -216,17 +220,6 @@
       "authenticationType": "none",
       "options": {
         "endpoint": "https://my.referralcandy.com/api/v1/"
-      }
-    },
-    "ship-engine": {
-      "id": "ship-engine",
-      "provider": "generic",
-      "title": "Ship Engine",
-      "namespace": "Shipping",
-      "serviceType": "rest",
-      "authenticationType": "bearer",
-      "options": {
-        "endpoint": "https://api.shipengine.com"
       }
     },
     "shopify": {
@@ -1259,24 +1252,6 @@
       },
       "description": "Update NavigationData",
       "args": "UpdateArgs<NavigationData>"
-    },
-    "createShipment": {
-      "shape": "ShipEngine_Label",
-      "resolver": {
-        "name": "rest:post",
-        "service": "ship-engine",
-        "path": "v1/labels",
-        "json": {
-          "ops": [
-            {
-              "path": "shipment",
-              "mapping": "$args"
-            }
-          ]
-        }
-      },
-      "description": "Create a shipment with ShipEngine.",
-      "args": "ShipEngine_Shipment"
     },
     "upsertProfile": {
       "description": "A privileged user or webhook can upsert a user's profile, updating ShapeDB and Stripe.",
@@ -2741,30 +2716,6 @@
                     ]
                   }
                 }
-              },
-              "shipment": {
-                "description": "The ShipEngine label associated with this payment.",
-                "title": "ShipEngine Label",
-                "@ref": "local:ShipEngine_Label",
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "ship-engine",
-                  "options": {
-                    "ignoreErrors": true,
-                    "ttl": 60
-                  },
-                  "path": {
-                    "ops": [
-                      {
-                        "path": "id",
-                        "mapping": "$source.id"
-                      }
-                    ],
-                    "serialize": {
-                      "template": "v1/labels/external_shipment_id/{id}"
-                    }
-                  }
-                }
               }
             }
           }
@@ -3192,6 +3143,23 @@
               "options": {"nullable": true}
             }
           },
+          "shopifyCustomerId": {
+            "type": "string",
+            "minLength": 0,
+            "description": "",
+            "title": "Shopify Customer Id"
+          },
+          "shopifyCustomer": {
+            "@ref": "shopify:Customer",
+            "@resolver": {
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "customer",
+              "args": {
+                "ops": [{"path": "id", "mapping": "$source.shopifyCustomerId"}]
+              }
+            }
+          },
           "stripeCustomerId": {
             "type": "string",
             "minLength": 0,
@@ -3402,278 +3370,6 @@
                   }
                 ]
               }
-            }
-          }
-        }
-      }
-    },
-    "ShipEngine_Weight": {
-      "name": "ShipEngine_Weight",
-      "id": "ShipEngine_Weight",
-      "title": "ShipEngine_Weight",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "number"
-          },
-          "unit": {
-            "type": "string",
-            "enum": [
-              "pound",
-              "ounce",
-              "gram",
-              "kilogram"
-            ]
-          }
-        }
-      }
-    },
-    "ShipEngine_Dimensions": {
-      "name": "ShipEngine_Dimensions",
-      "id": "ShipEngine_Dimensions",
-      "title": "ShipEngine_Dimensions",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "length": {
-            "type": "number"
-          },
-          "width": {
-            "type": "number"
-          },
-          "height": {
-            "type": "number"
-          },
-          "unit": {
-            "type": "string",
-            "enum": [
-              "inch",
-              "centimeter"
-            ]
-          }
-        }
-      }
-    },
-    "ShipEngine_Address": {
-      "name": "ShipEngine_Address",
-      "id": "ShipEngine_Address",
-      "title": "ShipEngine_Address",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "address_line1": {
-            "type": "string"
-          },
-          "address_line2": {
-            "type": "string"
-          },
-          "city_locality": {
-            "type": "string"
-          },
-          "state_province": {
-            "type": "string"
-          },
-          "postal_code": {
-            "type": "string"
-          },
-          "country_code": {
-            "type": "string"
-          },
-          "address_residential_indicator": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ShipEngine_LabelDownload": {
-      "name": "ShipEngine_LabelDownload",
-      "id": "ShipEngine_LabelDownload",
-      "title": "ShipEngine_LabelDownload",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string"
-          },
-          "pdf": {
-            "type": "string"
-          },
-          "png": {
-            "type": "string"
-          },
-          "zpl": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ShipEngine_Package": {
-      "name": "ShipEngine_Package",
-      "id": "ShipEngine_Package",
-      "title": "ShipEngine_Package",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "package_id": {
-            "type": "integer"
-          },
-          "description": {
-            "type": "string"
-          },
-          "package_code": {
-            "type": "string"
-          },
-          "tracking_number": {
-            "type": "string"
-          },
-          "label_download": {
-            "@ref": "local:ShipEngine_LabelDownload"
-          },
-          "weight": {
-            "@ref": "local:ShipEngine_Weight"
-          },
-          "dimensions": {
-            "@ref": "local:ShipEngine_Dimensions"
-          }
-        }
-      }
-    },
-    "ShipEngine_Shipment": {
-      "name": "ShipEngine_Shipment",
-      "id": "ShipEngine_Shipment",
-      "title": "ShipEngine_Shipment",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "shipment_id": {
-            "type": "string"
-          },
-          "carrier_id": {
-            "type": "string"
-          },
-          "service_code": {
-            "type": "string"
-          },
-          "external_order_id": {
-            "type": "string"
-          },
-          "external_shipment_id": {
-            "type": "string"
-          },
-          "ship_date": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "modified_at": {
-            "type": "string"
-          },
-          "shipment_status": {
-            "type": "string"
-          },
-          "origin_type": {
-            "type": "string"
-          },
-          "insurance_provider": {
-            "type": "string"
-          },
-          "order_source_code": {
-            "type": "string"
-          },
-          "packages": {
-            "type": "array",
-            "items": {
-              "@ref": "local:ShipEngine_Package"
-            }
-          },
-          "ship_to": {
-            "@ref": "local:ShipEngine_Address"
-          },
-          "ship_from": {
-            "@ref": "local:ShipEngine_Address"
-          }
-        }
-      }
-    },
-    "ShipEngine_Label": {
-      "name": "ShipEngine_Label",
-      "id": "ShipEngine_Label",
-      "title": "ShipEngine_Label",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "label_id": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string"
-          },
-          "shipment_id": {
-            "type": "string"
-          },
-          "ship_date": {
-            "type": "string"
-          },
-          "created_at": {
-            "type": "string"
-          },
-          "tracking_number": {
-            "type": "string"
-          },
-          "batch_id": {
-            "type": "string"
-          },
-          "carrier_id": {
-            "type": "string"
-          },
-          "charge_event": {
-            "type": "string"
-          },
-          "service_code": {
-            "type": "string"
-          },
-          "package_code": {
-            "type": "string"
-          },
-          "voided_at": {
-            "type": "string"
-          },
-          "label_format": {
-            "type": "string"
-          },
-          "display_scheme": {
-            "type": "string"
-          },
-          "label_layout": {
-            "type": "string"
-          },
-          "label_image_id": {
-            "type": "string"
-          },
-          "carrier_code": {
-            "type": "string"
-          },
-          "tracking_status": {
-            "type": "string"
-          },
-          "label_download": {
-            "@ref": "local:ShipEngine_LabelDownload"
-          },
-          "trackable": {
-            "type": "boolean"
-          },
-          "packages": {
-            "type": "array",
-            "items": {
-              "@ref": "local:ShipEngine_Package"
             }
           }
         }
@@ -4095,6 +3791,7 @@
                   "name": "rest:get",
                   "service": "reviews-io",
                   "path": "/product/review",
+                  "options": {"ignoreErrors": true, "ttl": 3600},
                   "searchParams": {
                     "ops": [
                       {
