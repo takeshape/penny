@@ -1,25 +1,25 @@
 import type { ComponentMeta } from '@storybook/react';
+import { graphql } from 'msw';
 import { isMobileMenuOpenAtom } from 'store';
 import NavigationFixtures from '../Navigation.fixtures.json';
-import { GetNavigationDataQuery } from '../Navigation.queries';
 import { MobileMenu } from './MobileMenu';
 
 const Meta: ComponentMeta<typeof MobileMenu> = {
   title: 'Features / Navigation / Components / MobileMenu',
   component: MobileMenu,
   parameters: {
+    layout: 'fullscreen',
     viewport: {
       defaultViewport: 'mobile2'
     },
-    apolloClient: {
-      mocks: [
-        {
-          request: {
-            query: GetNavigationDataQuery
-          },
-          result: NavigationFixtures.GetNavigationDataQuery.result
-        }
-      ]
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.query('GetNavigationData', (req, res, ctx) => {
+            return res(ctx.data(NavigationFixtures.GetNavigationDataQuery.result.data));
+          })
+        ]
+      }
     }
   }
 };
