@@ -15,20 +15,37 @@
     "Text": {
       "default": {
         "properties": {
-          "primary": {"widget": "singleLineText"},
-          "secondary": {"widget": "singleLineText"},
-          "button": {"widget": "singleLineText"}
+          "primary": {
+            "widget": "singleLineText"
+          },
+          "secondary": {
+            "widget": "singleLineText"
+          },
+          "button": {
+            "widget": "singleLineText"
+          }
         },
-        "order": ["primary", "secondary", "button"]
+        "order": [
+          "primary",
+          "secondary",
+          "button"
+        ]
       }
     },
     "NavigationLink": {
       "default": {
         "properties": {
-          "name": {"widget": "singleLineText"},
-          "href": {"widget": "singleLineText"}
+          "name": {
+            "widget": "singleLineText"
+          },
+          "href": {
+            "widget": "singleLineText"
+          }
         },
-        "order": ["name", "href"]
+        "order": [
+          "name",
+          "href"
+        ]
       }
     },
     "Footer": {
@@ -40,21 +57,39 @@
               "sections": {
                 "widget": "repeater",
                 "properties": {
-                  "name": {"widget": "singleLineText"},
-                  "items": {"widget": "shapeArray"}
+                  "name": {
+                    "widget": "singleLineText"
+                  },
+                  "items": {
+                    "widget": "shapeArray"
+                  }
                 },
-                "order": ["name", "items"]
+                "order": [
+                  "name",
+                  "items"
+                ]
               }
             },
-            "order": ["sections"]
+            "order": [
+              "sections"
+            ]
           },
           "newsletter": {
             "widget": "object",
-            "properties": {"text": {"widget": "shapeObject"}},
-            "order": ["text"]
+            "properties": {
+              "text": {
+                "widget": "shapeObject"
+              }
+            },
+            "order": [
+              "text"
+            ]
           }
         },
-        "order": ["navigation", "newsletter"]
+        "order": [
+          "navigation",
+          "newsletter"
+        ]
       }
     },
     "Profile": {
@@ -92,45 +127,77 @@
     "NavigationData": {
       "default": {
         "properties": {
-          "message": {"widget": "singleLineText"},
+          "message": {
+            "widget": "singleLineText"
+          },
           "links": {
             "widget": "object",
             "properties": {
               "categories": {
                 "widget": "repeater",
                 "properties": {
-                  "name": {"widget": "singleLineText"},
+                  "name": {
+                    "widget": "singleLineText"
+                  },
                   "featured": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   },
                   "collection": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   },
                   "categories": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   },
                   "brands": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   }
                 },
                 "order": [
@@ -144,20 +211,44 @@
               "pages": {
                 "widget": "repeater",
                 "properties": {
-                  "name": {"widget": "singleLineText"},
-                  "href": {"widget": "singleLineText"}
+                  "name": {
+                    "widget": "singleLineText"
+                  },
+                  "href": {
+                    "widget": "singleLineText"
+                  }
                 },
-                "order": ["name", "href"]
+                "order": [
+                  "name",
+                  "href"
+                ]
               }
             },
-            "order": ["categories", "pages"]
+            "order": [
+              "categories",
+              "pages"
+            ]
           }
         },
-        "order": ["message", "links"]
+        "order": [
+          "message",
+          "links"
+        ]
       }
     }
   },
   "services": {
+    "gorgias": {
+      "id": "gorgias",
+      "provider": "generic",
+      "title": "Gorgias",
+      "namespace": "Gorgias",
+      "serviceType": "rest",
+      "authenticationType": "basic",
+      "options": {
+        "endpoint": ""
+      }
+    },
     "reviews-io": {
       "id": "reviews-io",
       "provider": "reviewsIo",
@@ -604,7 +695,9 @@
             "description": "The customer access token."
           }
         },
-        "required": ["customerAccessToken"]
+        "required": [
+          "customerAccessToken"
+        ]
       },
       "shape": "ShopifyStorefront_Customer"
     }
@@ -711,7 +804,10 @@
             "type": "string"
           }
         },
-        "required": ["id", "email"]
+        "required": [
+          "id",
+          "email"
+        ]
       }
     },
     "upsertMyProfile": {
@@ -1242,6 +1338,62 @@
         "required": [
           "list_id"
         ]
+      },
+      "Gorgias_createTicket": {
+        "shape": "Gorgias_CreateTicketResponse",
+        "resolver": {
+          "name": "rest:post",
+          "service": "gorgias",
+          "path": "/tickets",
+          "json": {
+            "ops": [
+              {
+                "path": "customer.email",
+                "mapping": "$args.email"
+              },
+              {
+                "path": "messages",
+                "value": [
+                  {
+                    "channel": "email",
+                    "from_agent": false,
+                    "source": {
+                      "to": [
+                        {
+                          "address": "qw72eg20ez05v4dy@emails.gorgias.com"
+                        }
+                      ]
+                    },
+                    "via": "api"
+                  }
+                ]
+              },
+              {
+                "path": "messages[0].body_text",
+                "mapping": "$args.message"
+              },
+              {
+                "path": "messages[0].source.from.address",
+                "mapping": "$args.email"
+              }
+            ]
+          }
+        },
+        "args": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "body",
+            "email"
+          ]
+        }
       }
     },
     "Shopify_products": {
@@ -1307,7 +1459,9 @@
             "description": "The ID of the Product to return."
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "shape": "Shopify_Product"
     },
@@ -1325,7 +1479,9 @@
             "description": "The fields used to create a customer access token."
           }
         },
-        "required": ["input"]
+        "required": [
+          "input"
+        ]
       },
       "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
     },
@@ -1343,7 +1499,9 @@
             "description": "The fields used to create a new customer."
           }
         },
-        "required": ["input"]
+        "required": [
+          "input"
+        ]
       },
       "shape": "ShopifyStorefront_CustomerCreatePayload"
     },
@@ -1361,7 +1519,9 @@
             "description": "The email address of the customer to recover."
           }
         },
-        "required": ["email"]
+        "required": [
+          "email"
+        ]
       },
       "shape": "ShopifyStorefront_CustomerRecoverPayload"
     }
@@ -1547,12 +1707,16 @@
             "@ref": "local:Asset",
             "title": "Avatar",
             "@mapping": "takeshape:local:Profile.k0Ha4O7oV",
-            "@input": {"@ref": "local:TSRelationship"},
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
             "@args": "TSRelationshipArgs",
             "@resolver": {
               "name": "takeshape:getRelated",
               "service": "takeshape:local",
-              "options": {"nullable": true}
+              "options": {
+                "nullable": true
+              }
             }
           },
           "shopifyCustomerId": {
@@ -1568,7 +1732,12 @@
               "service": "shopify",
               "fieldName": "customer",
               "args": {
-                "ops": [{"path": "id", "mapping": "$source.shopifyCustomerId"}]
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.shopifyCustomerId"
+                  }
+                ]
               }
             }
           },
@@ -1840,28 +2009,36 @@
           "featured": {
             "title": "featured",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesFeatured"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesFeatured"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.68vvVsGMR"
           },
           "collection": {
             "title": "collection",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesCollection"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesCollection"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.wyJWNPt3z"
           },
           "categories": {
             "title": "categories",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesCategories"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesCategories"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.l8hbX9gQa"
           },
           "brands": {
             "title": "brands",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesBrands"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesBrands"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.ZN1Zl5dGX"
           }
@@ -1902,14 +2079,18 @@
           "categories": {
             "title": "categories",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategories"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategories"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinks.gFm-OwTpX"
           },
           "pages": {
             "title": "pages",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksPages"},
+            "items": {
+              "@ref": "local:NavigationDataLinksPages"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinks.w2GofQlUo"
           }
@@ -1921,7 +2102,9 @@
       "name": "NavigationData",
       "title": "Navigation Data",
       "workflow": "default",
-      "model": {"type": "single"},
+      "model": {
+        "type": "single"
+      },
       "schema": {
         "type": "object",
         "properties": {
@@ -2051,7 +2234,13 @@
           },
           "items": {
             "type": "array",
-            "items": {"oneOf": [{"@ref": "local:NavigationLink"}]},
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:NavigationLink"
+                }
+              ]
+            },
             "description": "",
             "title": "Items",
             "@mapping": "takeshape:local:FooterNavigationSections.vwvZ3gpJ6"
@@ -2070,7 +2259,9 @@
             "title": "Sections",
             "description": "",
             "type": "array",
-            "items": {"@ref": "local:FooterNavigationSections"},
+            "items": {
+              "@ref": "local:FooterNavigationSections"
+            },
             "@mapping": "takeshape:local:FooterNavigation.RcAzYGCEA"
           }
         }
@@ -2084,7 +2275,11 @@
         "type": "object",
         "properties": {
           "text": {
-            "oneOf": [{"@ref": "local:Text"}],
+            "oneOf": [
+              {
+                "@ref": "local:Text"
+              }
+            ],
             "description": "",
             "title": "Text",
             "@mapping": "takeshape:local:FooterNewsletter.lJadcfQQm"
@@ -2097,7 +2292,9 @@
       "name": "Footer",
       "title": "Footer",
       "workflow": "default",
-      "model": {"type": "single"},
+      "model": {
+        "type": "single"
+      },
       "schema": {
         "type": "object",
         "properties": {
@@ -2122,7 +2319,9 @@
       "title": "Shopify_Product",
       "schema": {
         "extends": [
-          {"@ref": "shopify:Product"},
+          {
+            "@ref": "shopify:Product"
+          },
           {
             "type": "object",
             "properties": {
@@ -2132,13 +2331,21 @@
                   "name": "rest:get",
                   "service": "reviews-io",
                   "path": "/product/review",
-                  "options": {"ignoreErrors": true, "ttl": 3600},
+                  "options": {
+                    "ignoreErrors": true,
+                    "ttl": 3600
+                  },
                   "searchParams": {
                     "ops": [
                       {
                         "path": "sku",
                         "mapping": [
-                          ["get", {"path": "$source.id"}],
+                          [
+                            "get",
+                            {
+                              "path": "$source.id"
+                            }
+                          ],
                           [
                             "replace",
                             {
@@ -2159,14 +2366,22 @@
                 "@resolver": {
                   "name": "rest:get",
                   "service": "recharge",
-                  "options": {"ignoreErrors": true, "ttl": 3600},
+                  "options": {
+                    "ignoreErrors": true,
+                    "ttl": 3600
+                  },
                   "path": "/products",
                   "searchParams": {
                     "ops": [
                       {
                         "path": "shopify_product_id",
                         "mapping": [
-                          ["get", {"path": "$source.id"}],
+                          [
+                            "get",
+                            {
+                              "path": "$source.id"
+                            }
+                          ],
                           [
                             "replace",
                             {
@@ -2180,7 +2395,10 @@
                   },
                   "results": {
                     "ops": [
-                      {"path": "$", "mapping": "$finalResolver.products[0]"}
+                      {
+                        "path": "$",
+                        "mapping": "$finalResolver.products[0]"
+                      }
                     ]
                   }
                 }
@@ -2197,30 +2415,61 @@
       "schema": {
         "type": "object",
         "properties": {
-          "id": {"type": "number", "title": "ID"},
-          "product_id": {"type": "number", "title": "product_id"},
+          "id": {
+            "type": "number",
+            "title": "ID"
+          },
+          "product_id": {
+            "type": "number",
+            "title": "product_id"
+          },
           "shopify_product_id": {
             "type": "number",
             "title": "shopify_product_id"
           },
-          "discount_type": {"type": "string"},
-          "discount_amount": {"type": "number", "title": "discount_amount"},
+          "discount_type": {
+            "type": "string"
+          },
+          "discount_amount": {
+            "type": "number",
+            "title": "discount_amount"
+          },
           "subscription_defaults": {
             "type": "object",
             "title": "subscription_defaults",
             "properties": {
-              "charge_interval_frequency": {"type": "number"},
-              "cutoff_day_of_month": {"type": "number"},
-              "cutoff_day_of_week": {"type": "number"},
-              "expire_after_specific_number_of_charges": {"type": "number"},
-              "order_day_of_month": {"type": "number"},
-              "order_day_of_week": {"type": "number"},
-              "order_interval_frequency": {"type": "number"},
-              "order_interval_unit": {"type": "string"},
-              "storefront_purchase_options": {"type": "string"},
+              "charge_interval_frequency": {
+                "type": "number"
+              },
+              "cutoff_day_of_month": {
+                "type": "number"
+              },
+              "cutoff_day_of_week": {
+                "type": "number"
+              },
+              "expire_after_specific_number_of_charges": {
+                "type": "number"
+              },
+              "order_day_of_month": {
+                "type": "number"
+              },
+              "order_day_of_week": {
+                "type": "number"
+              },
+              "order_interval_frequency": {
+                "type": "number"
+              },
+              "order_interval_unit": {
+                "type": "string"
+              },
+              "storefront_purchase_options": {
+                "type": "string"
+              },
               "order_interval_frequency_options": {
                 "type": "array",
-                "items": {"type": "string"}
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -2228,19 +2477,53 @@
             "type": "string",
             "title": "external_product_id"
           },
-          "brand": {"type": "string", "title": "brand"},
+          "brand": {
+            "type": "string",
+            "title": "brand"
+          },
           "images": {
             "type": "object",
             "title": "images",
             "properties": {
-              "large": {"type": "string", "title": "large"},
-              "medium": {"type": "string", "title": "medium"},
-              "original": {"type": "string", "title": "original"},
-              "small": {"type": "string", "title": "small"}
+              "large": {
+                "type": "string",
+                "title": "large"
+              },
+              "medium": {
+                "type": "string",
+                "title": "medium"
+              },
+              "original": {
+                "type": "string",
+                "title": "original"
+              },
+              "small": {
+                "type": "string",
+                "title": "small"
+              }
             }
           },
-          "title": {"type": "string", "title": "title"}
+          "title": {
+            "type": "string",
+            "title": "title"
+          }
         }
+      }
+    },
+    "Gorgias_CreateTicketResponse": {
+      "id": "Gorgias_CreateTicketResponse",
+      "name": "Gorgias_CreateTicketResponse",
+      "title": "Gorgias_CreateTicketResponse",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ]
       }
     }
   },
