@@ -1,10 +1,13 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { graphql } from 'msw';
 import Newsletter from './Newsletter';
-import { EmailSubmissionMutation } from './Newsletter.queries';
 
 const Meta: ComponentMeta<typeof Newsletter> = {
   title: 'Features / Footer / Components / Newsletter',
-  component: Newsletter
+  component: Newsletter,
+  parameters: {
+    layout: 'centered'
+  }
 };
 
 const Template: ComponentStory<typeof Newsletter> = (args) => <Newsletter {...args} />;
@@ -18,16 +21,30 @@ Success.args = {
   }
 };
 Success.parameters = {
-  apolloClient: {
-    mocks: [
-      {
-        request: {
-          query: EmailSubmissionMutation,
-          variables: { email: 'foo@bar.baz', listId: process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID }
-        },
-        result: { data: { Klaviyo_addMembers: { items: [{ id: 'foo' }] } } }
-      }
-    ]
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+          return res(ctx.data({ Klaviyo_addMembers: { items: [{ id: 'foo' }] } }));
+        })
+      ]
+    }
+  }
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  ...Success.args
+};
+Loading.parameters = {
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+          return res(ctx.delay('infinite'), ctx.data({}));
+        })
+      ]
+    }
   }
 };
 
@@ -36,18 +53,14 @@ Error.args = {
   ...Success.args
 };
 Error.parameters = {
-  apolloClient: {
-    mocks: [
-      {
-        request: {
-          query: EmailSubmissionMutation,
-          variables: { email: 'foo@bar.baz', listId: process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID }
-        },
-        error: {
-          message: 'Oops! Something went wrong.'
-        }
-      }
-    ]
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+          return res(ctx.errors([{ message: 'Oops! Something went wrong' }]));
+        })
+      ]
+    }
   }
 };
 
