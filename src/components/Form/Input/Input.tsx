@@ -24,7 +24,7 @@ const Input = ({
   const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
   const { error } = fieldState;
   return (
-    <div className={className}>
+    <div className={`${className} relative`}>
       <div className="flex justify-between">
         <label htmlFor={id} className="block text-sm font-medium text-gray-700">
           {label}

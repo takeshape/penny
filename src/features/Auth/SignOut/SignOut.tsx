@@ -1,7 +1,7 @@
 import { siteLogo } from 'config';
 import { signOut } from 'next-auth/react';
 
-export const AccountSignOut = () => {
+export const AuthSignOut = () => {
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -30,4 +30,4 @@ export const AccountSignOut = () => {
   );
 };
 
-export default AccountSignOut;
+export default AuthSignOut;

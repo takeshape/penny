@@ -8,16 +8,16 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
 
-export interface AccountRecoverPasswordForm {
+export interface AuthRecoverPasswordForm {
   email: string;
 }
 
-export interface AccountRecoverPasswordProps {
+export interface AuthRecoverPasswordProps {
   callbackUrl: string;
 }
 
-export const AccountRecoverPassword = ({ callbackUrl }: AccountRecoverPasswordProps) => {
-  const { handleSubmit, formState, control } = useForm<AccountRecoverPasswordForm>({ mode: 'onBlur' });
+export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
+  const { handleSubmit, formState, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordResponse,
@@ -25,7 +25,7 @@ export const AccountRecoverPassword = ({ callbackUrl }: AccountRecoverPasswordPr
   >(RecoverCustomerPasswordMutation);
 
   const onSubmit = useCallback(
-    async ({ email }: AccountRecoverPasswordForm) => {
+    async ({ email }: AuthRecoverPasswordForm) => {
       await setRecoverPasswordPayload({ variables: { email } });
     },
     [setRecoverPasswordPayload]
@@ -96,4 +96,4 @@ export const AccountRecoverPassword = ({ callbackUrl }: AccountRecoverPasswordPr
   );
 };
 
-export default AccountRecoverPassword;
+export default AuthRecoverPassword;

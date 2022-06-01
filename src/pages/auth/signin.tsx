@@ -1,4 +1,4 @@
-import AccountSignIn from 'features/Account/SignIn/SignIn';
+import AuthSignIn from 'features/Auth/SignIn/SignIn';
 import Layout from 'layouts/Full';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -9,7 +9,7 @@ const SignUpPage: NextPage = () => {
 
   return (
     <Layout title="Sign In">
-      <AccountSignIn
+      <AuthSignIn
         callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}
         error={query.error ? getSingle(query.error) : ''}
       />

@@ -9,7 +9,7 @@ import type { NextPage } from 'next';
 const AccountPage: NextPage = () => {
   return (
     <Layout title="Account">
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 flex flex-col grow">
         <Wrapper>
           <Account>
             <AccountOverviewProfile />

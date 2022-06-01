@@ -22,8 +22,7 @@ import type {
   MutationUpdateMyCustomerArgs
 } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import AccountOverfiewFormActions from './FormActions/FormActions';
-import AccountSection from './Section/Section';
+import AccountForm from '../Form/Form';
 
 interface AccountOverviewMarketingForm {
   newsletters: Record<string, boolean>;
@@ -122,56 +121,54 @@ export const AccountOverviewMarketing = () => {
     formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
-    <AccountSection primaryText="Marketing &amp; Newsletters" secondaryText="What should you send you?">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="shadow overflow-hidden sm:rounded-md">
-          <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
-            <fieldset>
-              <legend className="sr-only">Newsletters</legend>
-              <div className="text-base font-medium text-gray-900" aria-hidden="true">
-                Newsletters
-              </div>
-              <div className="mt-4 space-y-4">
-                {newsletterData?.newsletters?.map((newsletter) => {
-                  return (
-                    <div key={newsletter.listId}>
-                      <SwitchWithRightLabel
-                        control={control}
-                        name={`newsletters.${newsletter.listId}`}
-                        labelPrimary={newsletter.listName}
-                        className="flex items-center h-5"
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </fieldset>
-            <fieldset>
-              <legend className="sr-only">Marketing</legend>
-              <div className="text-base font-medium text-gray-900" aria-hidden="true">
-                Marketing
-              </div>
-              <div className="mt-4 space-y-4">
-                <SwitchWithRightLabel
-                  control={control}
-                  disabled={!isReady}
-                  name="acceptsMarketing"
-                  labelPrimary="Allow marketing communications"
-                  className="flex items-center h-5"
-                />
-              </div>
-            </fieldset>
+    <AccountForm
+      primaryText="Marketing &amp; Newsletters"
+      secondaryText="What should you send you?"
+      onSubmit={handleSubmit(onSubmit)}
+      isReady={isReady}
+      isSubmitting={isSubmitting}
+      isSubmitSuccessful={isSubmitSuccessful}
+      isValid={Object.entries(errors).length === 0}
+      error={error}
+    >
+      <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+        <fieldset>
+          <legend className="sr-only">Newsletters</legend>
+          <div className="text-base font-medium text-gray-900" aria-hidden="true">
+            Newsletters
           </div>
-          <AccountOverfiewFormActions
-            isReady={isReady}
-            isSubmitting={isSubmitting}
-            isSubmitSuccessful={isSubmitSuccessful}
-            isValid={Object.entries(errors).length === 0}
-            error={error}
-          />
-        </div>
-      </form>
-    </AccountSection>
+          <div className="mt-4 space-y-4">
+            {newsletterData?.newsletters?.map((newsletter) => {
+              return (
+                <div key={newsletter.listId}>
+                  <SwitchWithRightLabel
+                    control={control}
+                    name={`newsletters.${newsletter.listId}`}
+                    labelPrimary={newsletter.listName}
+                    className="flex items-center h-5"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend className="sr-only">Marketing</legend>
+          <div className="text-base font-medium text-gray-900" aria-hidden="true">
+            Marketing
+          </div>
+          <div className="mt-4 space-y-4">
+            <SwitchWithRightLabel
+              control={control}
+              disabled={!isReady}
+              name="acceptsMarketing"
+              labelPrimary="Allow marketing communications"
+              className="flex items-center h-5"
+            />
+          </div>
+        </fieldset>
+      </div>
+    </AccountForm>
   );
 };
 

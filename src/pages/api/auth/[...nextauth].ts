@@ -39,9 +39,9 @@ const maxAgeForgetMe = 60 * 60; // 1 hour
 
 const nextAuthConfig = {
   pages: {
-    signIn: '/account/signin',
-    signOut: '/account/signout',
-    error: '/account/signin'
+    signIn: '/auth/signin',
+    signOut: '/auth/signout',
+    error: '/auth/signin'
   },
   session: {
     maxAge: maxAgeRememberMe

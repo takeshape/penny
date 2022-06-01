@@ -9,18 +9,18 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationShopifyStorefront_CustomerCreateArgs } from 'types/takeshape';
 
-export interface AccountCreateForm {
+export interface AuthCreateAccountForm {
   email: string;
   password: string;
   passwordConfirm: string;
 }
 
-export interface AccountCreateProps {
+export interface AuthCreateAccountProps {
   callbackUrl: string;
 }
 
-export const AccountCreate = ({ callbackUrl }) => {
-  const { handleSubmit, formState, control, watch } = useForm<AccountCreateForm>();
+export const AuthCreateAccount = ({ callbackUrl }) => {
+  const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
 
   const [setCustomerPayload, { data: customerResponse }] = useMutation<
     CreateCustomerResponse,
@@ -40,7 +40,7 @@ export const AccountCreate = ({ callbackUrl }) => {
   }, [customerResponse, callbackUrl]);
 
   const onSubmit = useCallback(
-    async ({ email, password }: AccountCreateForm) => {
+    async ({ email, password }: AuthCreateAccountForm) => {
       await setCustomerPayload({ variables: { input: { email, password } } });
     },
     [setCustomerPayload]
@@ -152,4 +152,4 @@ export const AccountCreate = ({ callbackUrl }) => {
   );
 };
 
-export default AccountCreate;
+export default AuthCreateAccount;

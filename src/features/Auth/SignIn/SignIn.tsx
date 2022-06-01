@@ -7,15 +7,15 @@ import Link from 'next/link';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
-export interface AccountSignInForm {
+export interface AuthSignInForm {
   email: string;
   password: string;
   rememberMe: boolean;
 }
 
-export interface AccountSignInProps {
+export interface AuthSignInProps {
   callbackUrl: string;
-  error?: SignInErrorTypes;
+  error?: string;
 }
 
 const errors: Record<SignInErrorTypes, string> = {
@@ -32,11 +32,11 @@ const errors: Record<SignInErrorTypes, string> = {
   default: 'Unable to sign in.'
 };
 
-export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
-  const { handleSubmit, formState, control, register } = useForm<AccountSignInForm>();
+export const AuthSignIn = ({ callbackUrl, error }: AuthSignInProps) => {
+  const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
 
   const onSubmit = useCallback(
-    async ({ email, password, rememberMe }: AccountSignInForm) => {
+    async ({ email, password, rememberMe }: AuthSignInForm) => {
       await signIn('shopify', { email, password, rememberMe, callbackUrl });
     },
     [callbackUrl]
@@ -110,7 +110,7 @@ export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
               </div>
 
               <div className="text-sm">
-                <Link href="/account/reset-password">
+                <Link href="/auth/reset-password">
                   <a className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
                 </Link>
               </div>
@@ -130,7 +130,7 @@ export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
           <div className="mt-6">
             <div className="relative">
               <div className="mt-2 border-t border-gray-200 text-gray-500 pt-6 text-center">
-                <Link href="/account/create">
+                <Link href="/auth/create">
                   <a className="text-sm font-medium hover:text-gray-900 cursor-pointer">Sign up instead →</a>
                 </Link>
               </div>
@@ -142,4 +142,4 @@ export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
   );
 };
 
-export default AccountSignIn;
+export default AuthSignIn;
