@@ -30,8 +30,6 @@
     "@headlessui/react": "^1.6.1",
     "@heroicons/react": "^1.0.6",
     "@next/bundle-analyzer": "^12.1.6",
-    "@stripe/react-stripe-js": "^1.7.2",
-    "@stripe/stripe-js": "^1.29.0",
     "@tailwindcss/typography": "^0.5.2",
     "@takeshape/next-auth-all-access": "^0.3.0",
     "@theme-ui/color": "^0.14.5",
@@ -59,7 +57,6 @@
     "react-phone-number-input": "^3.2.2",
     "react-star-ratings": "^2.3.0",
     "sharp": "^0.30.4",
-    "stripe": "^8.219.0",
     "theme-ui": "^0.14.5"
   },
   "devDependencies": {

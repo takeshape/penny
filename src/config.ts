@@ -89,7 +89,7 @@ export const seo: DefaultSeoProps = {
 };
 
 /* Commerce */
-// Lowercase matches Stripe
+// Lowercase matches Stripe format
 export const currencyList = ['cad', 'usd', 'aud', 'eur', 'gbp'] as const;
 export const defaultCurrency = 'usd';
 
