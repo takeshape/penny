@@ -21,13 +21,11 @@ export const FormSelect = ({
   id,
   label,
   options,
-
   name,
   control,
   defaultValue,
   rules,
   shouldUnregister,
-
   ...props
 }: SelectProps & UseControllerProps<any, any>) => {
   const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
@@ -41,7 +39,7 @@ export const FormSelect = ({
         id={id}
         {...props}
         {...field}
-        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
       >
         {options.map(({ key, value, title, selected }) => (
           <option key={key} value={value} selected={selected}>

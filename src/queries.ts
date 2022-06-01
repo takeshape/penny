@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 import type {
+  Klaviyo_200Ok,
+  Klaviyo_AddMembersResponse,
   Mutation,
   Profile,
   QueryShopify_ProductArgs,
@@ -522,7 +524,7 @@ export const GetMyNewsletterSubscriptons = gql`
   }
 `;
 
-export const SubscribeToNewsletter = gql`
+export const SubscribeToNewsletterMutation = gql`
   mutation SubscribeToNewsletterMutation($listId: String!, $email: String!) {
     Klaviyo_addMembers(list_id: $listId, input: { profiles: [{ email: $email }] }) {
       items {
@@ -532,9 +534,35 @@ export const SubscribeToNewsletter = gql`
   }
 `;
 
-export const UnsubscribeFromNewsletter = gql`
+export const UnsubscribeFromNewsletterMutation = gql`
   mutation UnsubscribeFromNewsletterMutation($listId: String!, $email: String!) {
     Klaviyo_removeMembers(list_id: $listId, input: { emails: [$email] }) {
+      result
+    }
+  }
+`;
+
+export interface SubscribeMyEmailToNewsletterResponse {
+  result: Klaviyo_AddMembersResponse;
+}
+
+export const SubscribeMyEmailToNewsletterMutation = gql`
+  mutation SubscribeMyEmailToNewsletter($list_id: String!) {
+    result: subscribeMyEmailToNewsletter(list_id: $list_id) {
+      items {
+        id
+      }
+    }
+  }
+`;
+
+export interface UnsubscribeMyEmailFromNewsletterResponse {
+  result: Klaviyo_200Ok;
+}
+
+export const UnsubscribeMyEmailFromNewsletterMutation = gql`
+  mutation UnsubscribeMyEmailFromNewsletter($list_id: String!) {
+    result: unsubscribeMyEmailFromNewsletter(list_id: $list_id) {
       result
     }
   }
@@ -680,7 +708,7 @@ export const UpdateCustomerMutation = gql`
 `;
 
 export type UpdateCustomerAddressResponse = {
-  customerUpdate: ShopifyStorefront_CustomerAddressUpdatePayload;
+  customerAddressUpdate: ShopifyStorefront_CustomerAddressUpdatePayload;
 };
 
 export const UpdateCustomerAddressMutation = gql`

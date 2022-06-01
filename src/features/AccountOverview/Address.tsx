@@ -7,8 +7,10 @@ import { GetCustomerQuery, UpdateCustomerAddressMutation } from 'queries';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
+import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
-import AccountSection from '../Section/Section';
+import AccountOverviewFormActions from './FormActions/FormActions';
+import AccountSection from './Section/Section';
 
 interface AccountOverviewAddressForm {
   firstName: string;
@@ -23,7 +25,13 @@ interface AccountOverviewAddressForm {
 
 export const AccountOverviewAddress = () => {
   const { data: session } = useSession({ required: true });
-  const { handleSubmit, formState, control, watch, reset, register } = useForm<AccountOverviewAddressForm>();
+  const {
+    handleSubmit,
+    control,
+    watch,
+    reset,
+    formState: { isSubmitting, isSubmitSuccessful, errors }
+  } = useForm<AccountOverviewAddressForm>();
 
   const { data: customerData, error: customerError } = useQuery<
     GetCustomerResponse,
@@ -53,6 +61,13 @@ export const AccountOverviewAddress = () => {
     }
   }, [customerData, reset]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [isSubmitSuccessful, reset]);
+
   const countries = useCountries();
   const watchCountry = watch('countryCodeV2', 'US');
   const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
@@ -61,7 +76,10 @@ export const AccountOverviewAddress = () => {
     return null;
   }
 
-  const ready = Boolean(customerData);
+  const isReady = Boolean(customerData);
+  const error =
+    customerAddressResponse?.customerAddressUpdate?.customerUserErrors &&
+    formatError(customerAddressResponse.customerAddressUpdate.customerUserErrors);
 
   return (
     <AccountSection primaryText="Shipping Address" secondaryText="Use a permanent address where you can receive mail.">
@@ -69,61 +87,56 @@ export const AccountOverviewAddress = () => {
         <div className="shadow overflow-hidden sm:rounded-md">
           <div className="px-4 py-5 bg-white sm:p-6">
             <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <Input
-                  control={control}
-                  disabled={!ready}
-                  name="firstName"
-                  id="firstName"
-                  label="First name"
-                  autoComplete="given-name"
-                  defaultValue=""
-                  type="text"
-                  rules={{
-                    required: 'This field is required'
-                  }}
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <Input
-                  control={control}
-                  disabled={!ready}
-                  name="lastName"
-                  id="lastName"
-                  label="Last name"
-                  autoComplete="family-name"
-                  defaultValue=""
-                  type="text"
-                  rules={{
-                    required: 'This field is required'
-                  }}
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                  Country
-                </label>
-                {countries?.length ? (
-                  <select
-                    {...register('countryCodeV2')}
-                    id="countryCodeV2"
-                    autoComplete="country-name"
-                    className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  >
-                    {countries.map(({ name, iso2, iso3 }) => (
-                      <option key={iso3} value={iso2}>
-                        {name}
-                      </option>
-                    ))}
-                  </select>
-                ) : null}
-              </div>
+              <Input
+                control={control}
+                disabled={!isReady}
+                name="firstName"
+                id="firstName"
+                label="First name"
+                autoComplete="given-name"
+                defaultValue=""
+                type="text"
+                rules={{
+                  required: 'This field is required'
+                }}
+                className="col-span-6 sm:col-span-3"
+              />
 
               <Input
                 control={control}
-                disabled={!ready}
+                disabled={!isReady}
+                name="lastName"
+                id="lastName"
+                label="Last name"
+                autoComplete="family-name"
+                defaultValue=""
+                type="text"
+                rules={{
+                  required: 'This field is required'
+                }}
+                className="col-span-6 sm:col-span-3"
+              />
+
+              <Select
+                control={control}
+                disabled={!isReady}
+                id="countryCodeV2"
+                name="countryCodeV2"
+                autoComplete="country-name"
+                label="Country"
+                options={
+                  countries?.map(({ name, iso2 }) => ({
+                    key: iso2,
+                    value: iso2,
+                    title: name
+                  })) ?? []
+                }
+                className="col-span-6 sm:col-span-3"
+              />
+
+              <Input
+                control={control}
+                disabled={!isReady}
                 name="address1"
                 id="address1"
                 label="Address line 1"
@@ -138,7 +151,7 @@ export const AccountOverviewAddress = () => {
 
               <Input
                 control={control}
-                disabled={!ready}
+                disabled={!isReady}
                 name="address2"
                 id="address2"
                 label="Address line 2"
@@ -150,7 +163,7 @@ export const AccountOverviewAddress = () => {
 
               <Input
                 control={control}
-                disabled={!ready}
+                disabled={!isReady}
                 name="city"
                 id="city"
                 label="City"
@@ -165,7 +178,7 @@ export const AccountOverviewAddress = () => {
 
               <Select
                 control={control}
-                disabled={!ready}
+                disabled={!isReady}
                 id="provinceCode"
                 name="provinceCode"
                 autoComplete="address-level2"
@@ -182,7 +195,7 @@ export const AccountOverviewAddress = () => {
 
               <Input
                 control={control}
-                disabled={!ready}
+                disabled={!isReady}
                 name="zip"
                 id="zip"
                 label="ZIP / Postal code"
@@ -196,14 +209,13 @@ export const AccountOverviewAddress = () => {
               />
             </div>
           </div>
-          <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <button
-              type="submit"
-              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Save
-            </button>
-          </div>
+          <AccountOverviewFormActions
+            isReady={isReady}
+            isSubmitting={isSubmitting}
+            isSubmitSuccessful={isSubmitSuccessful}
+            isValid={Object.entries(errors).length === 0}
+            error={error}
+          />
         </div>
       </form>
     </AccountSection>

@@ -81,6 +81,7 @@ export type Query = {
   Shopify_customer?: Maybe<Shopify_Customer>;
   Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
+  getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -26771,6 +26772,7 @@ export type WithContext = {
   Shopify_customer?: Maybe<Shopify_Customer>;
   Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
+  getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -27161,6 +27163,8 @@ export type Mutation = {
   createMyCheckoutSession?: Maybe<ShopifyStorefront_Cart>;
   /** Create a Shopify storefront cart. */
   createMyCheckout?: Maybe<ShopifyStorefront_Cart>;
+  subscribeMyEmailToNewsletter?: Maybe<Klaviyo_AddMembersResponse>;
+  unsubscribeMyEmailFromNewsletter?: Maybe<Klaviyo_200Ok>;
   /** Create a Stripe checkout session for the signed-in user */
   createMyCheckoutSession_Stripe?: Maybe<Stripe_CheckoutSession>;
   /** Update Profile */
@@ -27318,6 +27322,16 @@ export type MutationCreateMyCheckoutSessionArgs = {
 export type MutationCreateMyCheckoutArgs = {
   email?: InputMaybe<Scalars['String']>;
   lines: Array<CreateMyCheckoutPropertiesLinesItemsPropertyInput>;
+};
+
+
+export type MutationSubscribeMyEmailToNewsletterArgs = {
+  list_id: Scalars['String'];
+};
+
+
+export type MutationUnsubscribeMyEmailFromNewsletterArgs = {
+  list_id: Scalars['String'];
 };
 
 
@@ -27906,6 +27920,23 @@ export type CreateMyCheckoutPropertiesLinesItemsPropertyInput = {
   quantity: Scalars['Int'];
   merchandiseId: Scalars['String'];
   sellingPlanId?: InputMaybe<Scalars['String']>;
+};
+
+export type Klaviyo_AddMembersResponse = {
+  __typename?: 'Klaviyo_AddMembersResponse';
+  items?: Maybe<Array<Maybe<Klaviyo_AddMembersResponseItemsProperty>>>;
+};
+
+export type Klaviyo_AddMembersResponseItemsProperty = {
+  __typename?: 'Klaviyo_AddMembersResponseItemsProperty';
+  id?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  phone_number?: Maybe<Scalars['String']>;
+};
+
+export type Klaviyo_200Ok = {
+  __typename?: 'Klaviyo_200Ok';
+  result?: Maybe<Scalars['JSONObject']>;
 };
 
 export type Stripe_CheckoutSession = {
@@ -29089,6 +29120,7 @@ export type UpdateProfileInput = {
   avatar?: InputMaybe<TsRelationshipInput>;
   shopifyCustomerId?: InputMaybe<Scalars['String']>;
   stripeCustomerId?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<Array<InputMaybe<Stripe_InvoiceInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
   _shapeName?: InputMaybe<Scalars['String']>;
@@ -29111,6 +29143,7904 @@ export type TsRelationshipInput = {
   id: Scalars['String'];
 };
 
+export type Stripe_InvoiceInput = {
+  /** The country of the business associated with this invoice, most often the business creating the invoice. */
+  account_country?: InputMaybe<Scalars['String']>;
+  /** The public name of the business associated with this invoice, most often the business creating the invoice. */
+  account_name?: InputMaybe<Scalars['String']>;
+  /** The account tax IDs associated with the invoice. Only editable when the invoice is a draft. */
+  account_tax_ids?: InputMaybe<Array<InputMaybe<TaxIdWrappedStringInputUnion>>>;
+  /** Final amount due at this time for this invoice. If the invoice's total is smaller than the minimum charge amount, for example, or if there is account credit that can be applied to the invoice, the `amount_due` may be 0. If there is a positive `starting_balance` for the invoice (the customer owes money), the `amount_due` will also take that into account. The charge that gets generated for the invoice will be for the amount specified in `amount_due`. */
+  amount_due?: InputMaybe<Scalars['Int']>;
+  /** The amount, in %s, that was paid. */
+  amount_paid?: InputMaybe<Scalars['Int']>;
+  /** The amount remaining, in %s, that is due. */
+  amount_remaining?: InputMaybe<Scalars['Int']>;
+  /** The fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account when the invoice is paid. */
+  application_fee_amount?: InputMaybe<Scalars['Int']>;
+  /** Number of payment attempts made for this invoice, from the perspective of the payment retry schedule. Any payment attempt counts as the first attempt, and subsequently only automatic retries increment the attempt count. In other words, manual payment attempts after the first attempt do not affect the retry schedule. */
+  attempt_count?: InputMaybe<Scalars['Int']>;
+  /** Whether an attempt has been made to pay the invoice. An invoice is not attempted until 1 hour after the `invoice.created` webhook, for example, so you might not want to display that invoice as unpaid to your users. */
+  attempted?: InputMaybe<Scalars['Boolean']>;
+  /** Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice. When `false`, the invoice's state will not automatically advance without an explicit action. */
+  auto_advance?: InputMaybe<Scalars['Boolean']>;
+  automatic_tax?: InputMaybe<Stripe_AutomaticTaxInput>;
+  /** Indicates the reason why the invoice was created. `subscription_cycle` indicates an invoice created by a subscription advancing into a new period. `subscription_create` indicates an invoice created due to creating a subscription. `subscription_update` indicates an invoice created due to updating a subscription. `subscription` is set for all old invoices to indicate either a change to a subscription or a period advancement. `manual` is set for all invoices unrelated to a subscription (for example: created via the invoice editor). The `upcoming` value is reserved for simulated invoices per the upcoming invoice endpoint. `subscription_threshold` indicates an invoice created due to a billing threshold being reached. */
+  billing_reason?: InputMaybe<UpdateProfileResultBillingReason>;
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this invoice using the default source attached to the customer. When sending an invoice, Stripe will email this invoice to the customer with payment instructions. */
+  collection_method?: InputMaybe<UpdateProfileResultCollectionMethod>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Custom fields displayed on the invoice. */
+  custom_fields?: InputMaybe<Array<InputMaybe<Stripe_InvoiceSettingCustomFieldInput>>>;
+  customer?: InputMaybe<Scalars['String']>;
+  customer_address?: InputMaybe<Stripe_AddressInput>;
+  /** The customer's email. Until the invoice is finalized, this field will equal `customer.email`. Once the invoice is finalized, this field will no longer be updated. */
+  customer_email?: InputMaybe<Scalars['String']>;
+  /** The customer's name. Until the invoice is finalized, this field will equal `customer.name`. Once the invoice is finalized, this field will no longer be updated. */
+  customer_name?: InputMaybe<Scalars['String']>;
+  /** The customer's phone number. Until the invoice is finalized, this field will equal `customer.phone`. Once the invoice is finalized, this field will no longer be updated. */
+  customer_phone?: InputMaybe<Scalars['String']>;
+  customer_shipping?: InputMaybe<Stripe_ShippingInput>;
+  /** The customer's tax exempt status. Until the invoice is finalized, this field will equal `customer.tax_exempt`. Once the invoice is finalized, this field will no longer be updated. */
+  customer_tax_exempt?: InputMaybe<UpdateProfileResultCustomerTaxExempt>;
+  /** The customer's tax IDs. Until the invoice is finalized, this field will contain the same tax IDs as `customer.tax_ids`. Once the invoice is finalized, this field will no longer be updated. */
+  customer_tax_ids?: InputMaybe<Array<InputMaybe<Stripe_InvoicesResourceInvoiceTaxIdInput>>>;
+  default_payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  default_source?: InputMaybe<AlipayAccountBankAccountBitcoinReceiverCardSourceWrappedStringInputUnion>;
+  /** The tax rates applied to this invoice, if any. */
+  default_tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard. */
+  description?: InputMaybe<Scalars['String']>;
+  discount?: InputMaybe<Stripe_DiscountInput>;
+  discounts?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The date on which payment for this invoice is due. This value will be `null` for invoices where `collection_method=charge_automatically`. */
+  due_date?: InputMaybe<Scalars['Int']>;
+  /** Ending customer balance after the invoice is finalized. Invoices are finalized approximately an hour after successful webhook delivery or when payment collection is attempted for the invoice. If the invoice has not been finalized yet, this will be null. */
+  ending_balance?: InputMaybe<Scalars['Int']>;
+  /** Footer displayed on the invoice. */
+  footer?: InputMaybe<Scalars['String']>;
+  /** The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null. */
+  hosted_invoice_url?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The link to download the PDF for the invoice. If the invoice has not been finalized yet, this will be null. */
+  invoice_pdf?: InputMaybe<Scalars['String']>;
+  last_finalization_error?: InputMaybe<Stripe_ApiErrorsInput>;
+  /** The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any. */
+  lines?: InputMaybe<UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLinesPropertyInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The time at which payment will next be attempted. This value will be `null` for invoices where `collection_method=send_invoice`. */
+  next_payment_attempt?: InputMaybe<Scalars['Int']>;
+  /** A unique, identifying string that appears on emails sent to the customer for this invoice. This starts with the customer's unique invoice_prefix if it is specified. */
+  number?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  on_behalf_of?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** Whether payment was successfully collected for this invoice. An invoice can be paid (most commonly) with a charge or with credit from the customer's account balance. */
+  paid?: InputMaybe<Scalars['Boolean']>;
+  /** Returns true if the invoice was manually marked paid, returns false if the invoice hasn't been paid yet or was paid on Stripe. */
+  paid_out_of_band?: InputMaybe<Scalars['Boolean']>;
+  payment_intent?: InputMaybe<PaymentIntentWrappedStringInputUnion>;
+  payment_settings?: InputMaybe<Stripe_InvoicesPaymentSettingsInput>;
+  /** End of the usage period during which invoice items were added to this invoice. */
+  period_end?: InputMaybe<Scalars['Int']>;
+  /** Start of the usage period during which invoice items were added to this invoice. */
+  period_start?: InputMaybe<Scalars['Int']>;
+  /** Total amount of all post-payment credit notes issued for this invoice. */
+  post_payment_credit_notes_amount?: InputMaybe<Scalars['Int']>;
+  /** Total amount of all pre-payment credit notes issued for this invoice. */
+  pre_payment_credit_notes_amount?: InputMaybe<Scalars['Int']>;
+  quote?: InputMaybe<QuoteWrappedStringInputUnion>;
+  /** This is the transaction number that appears on email receipts sent for this invoice. */
+  receipt_number?: InputMaybe<Scalars['String']>;
+  /** Starting customer balance before the invoice is finalized. If the invoice has not been finalized yet, this will be the current customer balance. */
+  starting_balance?: InputMaybe<Scalars['Int']>;
+  /** Extra information about an invoice for the customer's credit card statement. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview) */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  status_transitions?: InputMaybe<Stripe_InvoicesStatusTransitionsInput>;
+  subscription?: InputMaybe<SubscriptionWrappedStringInputUnion>;
+  /** Only set for upcoming invoices that preview prorations. The time used to calculate prorations. */
+  subscription_proration_date?: InputMaybe<Scalars['Int']>;
+  /** Total of all subscriptions, invoice items, and prorations on the invoice before any invoice level discount or tax is applied. Item discounts are already incorporated */
+  subtotal?: InputMaybe<Scalars['Int']>;
+  /** The amount of tax on this invoice. This is the sum of all the tax amounts on this invoice. */
+  tax?: InputMaybe<Scalars['Int']>;
+  test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
+  threshold_reason?: InputMaybe<Stripe_InvoiceThresholdReasonInput>;
+  /** Total after discounts and taxes. */
+  total?: InputMaybe<Scalars['Int']>;
+  /** The aggregate amounts calculated per discount across all line items. */
+  total_discount_amounts?: InputMaybe<Array<InputMaybe<Stripe_DiscountsResourceDiscountAmountInput>>>;
+  /** The aggregate amounts calculated per tax rate for all line items. */
+  total_tax_amounts?: InputMaybe<Array<InputMaybe<Stripe_InvoiceTaxAmountInput>>>;
+  transfer_data?: InputMaybe<Stripe_InvoiceTransferDataInput>;
+  /** Invoices are automatically paid or sent 1 hour after webhooks are delivered, or until all webhook delivery attempts have [been exhausted](https://stripe.com/docs/billing/webhooks#understand). This field tracks the time when webhooks for this invoice were successfully delivered. If the invoice had no webhooks to deliver, this will be set while the invoice is being created. */
+  webhooks_delivered_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type TaxIdWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  taxId?: InputMaybe<Stripe_TaxIdInput>;
+};
+
+export type WrappedStringInput = {
+  value: Scalars['String'];
+};
+
+export type Stripe_TaxIdInput = {
+  /** Two-letter ISO code representing the country of the tax ID. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<CustomerWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** Type of the tax ID, one of `ae_trn`, `au_abn`, `au_arn`, `bg_uic`, `br_cnpj`, `br_cpf`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `ch_vat`, `cl_tin`, `es_cif`, `eu_vat`, `gb_vat`, `ge_vat`, `hk_br`, `hu_tin`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `jp_cn`, `jp_rn`, `kr_brn`, `li_uid`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `no_vat`, `nz_gst`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `th_vat`, `tw_vat`, `ua_vat`, `us_ein`, or `za_vat`. Note that some legacy tax IDs have type `unknown` */
+  type?: InputMaybe<UpdateProfileResultType>;
+  /** Value of the tax ID. */
+  value?: InputMaybe<Scalars['String']>;
+  verification?: InputMaybe<Stripe_TaxIdVerificationInput>;
+};
+
+export type CustomerWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  customer?: InputMaybe<Stripe_CustomerInput>;
+};
+
+export type Stripe_CustomerInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+  /** Current balance, if any, being stored on the customer. If negative, the customer has credit to apply to their next invoice. If positive, the customer has an amount owed that will be added to their next invoice. The balance does not refer to any unpaid invoices; it solely takes into account amounts that have yet to be successfully applied to any invoice. This balance is only taken into account as invoices are finalized. */
+  balance?: InputMaybe<Scalars['Int']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) the customer can be charged in for recurring billing purposes. */
+  currency?: InputMaybe<Scalars['String']>;
+  default_source?: InputMaybe<AlipayAccountBankAccountBitcoinReceiverCardSourceWrappedStringInputUnion>;
+  /**
+   * When the customer's latest invoice is billed by charging automatically, `delinquent` is `true` if the invoice's latest charge failed. When the customer's latest invoice is billed by sending an invoice, `delinquent` is `true` if the invoice isn't paid by its due date.
+   *
+   * If an invoice is marked uncollectible by [dunning](https://stripe.com/docs/billing/automatic-collection), `delinquent` doesn't get reset to `false`.
+   */
+  delinquent?: InputMaybe<Scalars['Boolean']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  discount?: InputMaybe<Stripe_DiscountInput>;
+  /** The customer's email address. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The prefix for the customer used to generate unique invoice numbers. */
+  invoice_prefix?: InputMaybe<Scalars['String']>;
+  invoice_settings?: InputMaybe<Stripe_InvoiceSettingCustomerSettingInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The customer's full name or business name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** The suffix of the customer's next invoice number, e.g., 0001. */
+  next_invoice_sequence?: InputMaybe<Scalars['Int']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The customer's phone number. */
+  phone?: InputMaybe<Scalars['String']>;
+  /** The customer's preferred locales (languages), ordered by preference. */
+  preferred_locales?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  shipping?: InputMaybe<Stripe_ShippingInput>;
+  /** The customer's payment sources, if any. */
+  sources?: InputMaybe<PropertiesCustomerPropertiesSourcesPropertyInput>;
+  /** The customer's current subscriptions, if any. */
+  subscriptions?: InputMaybe<PropertiesCustomerPropertiesSubscriptionsPropertyInput>;
+  tax?: InputMaybe<Stripe_CustomerTaxInput>;
+  /** Describes the customer's tax exemption status. One of `none`, `exempt`, or `reverse`. When set to `reverse`, invoice and receipt PDFs include the text **"Reverse charge"**. */
+  tax_exempt?: InputMaybe<UpdateProfileResultTaxExempt>;
+  /** The customer's tax IDs. */
+  tax_ids?: InputMaybe<PropertiesCustomerPropertiesTaxIdsPropertyInput>;
+  test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
+};
+
+export type Stripe_AddressInput = {
+  /** City, district, suburb, town, or village. */
+  city?: InputMaybe<Scalars['String']>;
+  /** Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
+  country?: InputMaybe<Scalars['String']>;
+  /** Address line 1 (e.g., street, PO Box, or company name). */
+  line1?: InputMaybe<Scalars['String']>;
+  /** Address line 2 (e.g., apartment, suite, unit, or building). */
+  line2?: InputMaybe<Scalars['String']>;
+  /** ZIP or postal code. */
+  postal_code?: InputMaybe<Scalars['String']>;
+  /** State, county, province, or region. */
+  state?: InputMaybe<Scalars['String']>;
+};
+
+export type AlipayAccountBankAccountBitcoinReceiverCardSourceWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  alipayAccount?: InputMaybe<Stripe_AlipayAccountInput>;
+  bankAccount?: InputMaybe<Stripe_BankAccountInput>;
+  bitcoinReceiver?: InputMaybe<Stripe_BitcoinReceiverInput>;
+  card?: InputMaybe<Stripe_CardInput>;
+  source?: InputMaybe<Stripe_SourceInput>;
+};
+
+export type Stripe_AlipayAccountInput = {
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies the account and will be the same across all Alipay account objects that are linked to the same Alipay account. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** If the Alipay account object is not reusable, the exact amount that you can create a charge for. */
+  payment_amount?: InputMaybe<Scalars['Int']>;
+  /** If the Alipay account object is not reusable, the exact currency that you can create a charge for. */
+  payment_currency?: InputMaybe<Scalars['String']>;
+  /** True if you can create multiple payments using this account. If the account is reusable, then you can freely choose the amount of each payment. */
+  reusable?: InputMaybe<Scalars['Boolean']>;
+  /** Whether this Alipay account object has ever been used for a payment. */
+  used?: InputMaybe<Scalars['Boolean']>;
+  /** The username for the Alipay account. */
+  username?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultObject {
+  Invoice = 'invoice'
+}
+
+export type Stripe_BankAccountInput = {
+  account?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** The name of the person or business that owns the bank account. */
+  account_holder_name?: InputMaybe<Scalars['String']>;
+  /** The type of entity that holds the account. This can be either `individual` or `company`. */
+  account_holder_type?: InputMaybe<Scalars['String']>;
+  /** The bank account type. This can only be `checking` or `savings` in most countries. In Japan, this can only be `futsu` or `toza`. */
+  account_type?: InputMaybe<Scalars['String']>;
+  /** A set of available payout methods for this bank account. Only values from this set should be passed as the `method` when creating a payout. */
+  available_payout_methods?: InputMaybe<Array<InputMaybe<UpdateProfileResultAvailablePayoutMethods>>>;
+  /** Name of the bank associated with the routing number (e.g., `WELLS FARGO`). */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country the bank account is located in. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account. */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** Whether this bank account is the default external account for its currency. */
+  default_for_currency?: InputMaybe<Scalars['Boolean']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The routing transit number for the bank account. */
+  routing_number?: InputMaybe<Scalars['String']>;
+  /**
+   * For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, or `errored`. A bank account that hasn't had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If a transfer sent to this bank account fails, we'll set the status to `errored` and will not continue to send transfers until the bank details are updated.
+   *
+   * For external accounts, possible values are `new` and `errored`. Validations aren't run against external accounts because they're only used for payouts. This means the other statuses don't apply. If a transfer fails, the status is set to `errored` and transfers are stopped until account details are updated.
+   */
+  status?: InputMaybe<Scalars['String']>;
+};
+
+export type AccountWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  account?: InputMaybe<Stripe_AccountInput>;
+};
+
+export type Stripe_AccountInput = {
+  business_profile?: InputMaybe<Stripe_AccountBusinessProfileInput>;
+  /** The business type. */
+  business_type?: InputMaybe<UpdateProfileResultBusinessType>;
+  capabilities?: InputMaybe<Stripe_AccountCapabilitiesInput>;
+  /** Whether the account can create live charges. */
+  charges_enabled?: InputMaybe<Scalars['Boolean']>;
+  company?: InputMaybe<Stripe_LegalEntityCompanyInput>;
+  controller?: InputMaybe<Stripe_AccountUnificationAccountControllerInput>;
+  /** The account's country. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Time at which the account was connected. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts). */
+  default_currency?: InputMaybe<Scalars['String']>;
+  /** Whether account details have been submitted. Standard accounts cannot receive payouts before this is true. */
+  details_submitted?: InputMaybe<Scalars['Boolean']>;
+  /** An email address associated with the account. You can treat this as metadata: it is not used for authentication or messaging account holders. */
+  email?: InputMaybe<Scalars['String']>;
+  /** External accounts (bank accounts and debit cards) currently attached to this account */
+  external_accounts?: InputMaybe<PropertiesAccountPropertiesExternalAccountsPropertyInput>;
+  future_requirements?: InputMaybe<Stripe_AccountFutureRequirementsInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  individual?: InputMaybe<Stripe_PersonInput>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** Whether Stripe can send payouts to this account. */
+  payouts_enabled?: InputMaybe<Scalars['Boolean']>;
+  requirements?: InputMaybe<Stripe_AccountRequirementsInput>;
+  settings?: InputMaybe<Stripe_AccountSettingsInput>;
+  tos_acceptance?: InputMaybe<Stripe_AccountTosAcceptanceInput>;
+  /** The Stripe account type. Can be `standard`, `express`, or `custom`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_AccountBusinessProfileInput = {
+  /** [The merchant category code for the account](https://stripe.com/docs/connect/setting-mcc). MCCs are used to classify businesses based on the goods or services they provide. */
+  mcc?: InputMaybe<Scalars['String']>;
+  /** The customer-facing business name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Internal-only description of the product sold or service provided by the business. It's used by Stripe for risk and underwriting purposes. */
+  product_description?: InputMaybe<Scalars['String']>;
+  support_address?: InputMaybe<Stripe_AddressInput>;
+  /** A publicly available email address for sending support issues to. */
+  support_email?: InputMaybe<Scalars['String']>;
+  /** A publicly available phone number to call with support issues. */
+  support_phone?: InputMaybe<Scalars['String']>;
+  /** A publicly available website for handling support issues. */
+  support_url?: InputMaybe<Scalars['String']>;
+  /** The business's publicly available website. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultBusinessType {
+  Company = 'company',
+  GovernmentEntity = 'government_entity',
+  Individual = 'individual',
+  NonProfit = 'non_profit'
+}
+
+export type Stripe_AccountCapabilitiesInput = {
+  /** The status of the Canadian pre-authorized debits payments capability of the account, or whether the account can directly process Canadian pre-authorized debits charges. */
+  acss_debit_payments?: InputMaybe<UpdateProfileResultAcssDebitPayments>;
+  /** The status of the Afterpay Clearpay capability of the account, or whether the account can directly process Afterpay Clearpay charges. */
+  afterpay_clearpay_payments?: InputMaybe<UpdateProfileResultAfterpayClearpayPayments>;
+  /** The status of the BECS Direct Debit (AU) payments capability of the account, or whether the account can directly process BECS Direct Debit (AU) charges. */
+  au_becs_debit_payments?: InputMaybe<UpdateProfileResultAuBecsDebitPayments>;
+  /** The status of the Bacs Direct Debits payments capability of the account, or whether the account can directly process Bacs Direct Debits charges. */
+  bacs_debit_payments?: InputMaybe<UpdateProfileResultBacsDebitPayments>;
+  /** The status of the Bancontact payments capability of the account, or whether the account can directly process Bancontact charges. */
+  bancontact_payments?: InputMaybe<UpdateProfileResultBancontactPayments>;
+  /** The status of the customer_balance payments capability of the account, or whether the account can directly process customer_balance charges. */
+  bank_transfer_payments?: InputMaybe<UpdateProfileResultBankTransferPayments>;
+  /** The status of the boleto payments capability of the account, or whether the account can directly process boleto charges. */
+  boleto_payments?: InputMaybe<UpdateProfileResultBoletoPayments>;
+  /** The status of the card issuing capability of the account, or whether you can use Issuing to distribute funds on cards */
+  card_issuing?: InputMaybe<UpdateProfileResultCardIssuing>;
+  /** The status of the card payments capability of the account, or whether the account can directly process credit and debit card charges. */
+  card_payments?: InputMaybe<UpdateProfileResultCardPayments>;
+  /** The status of the Cartes Bancaires payments capability of the account, or whether the account can directly process Cartes Bancaires card charges in EUR currency. */
+  cartes_bancaires_payments?: InputMaybe<UpdateProfileResultCartesBancairesPayments>;
+  /** The status of the EPS payments capability of the account, or whether the account can directly process EPS charges. */
+  eps_payments?: InputMaybe<UpdateProfileResultEpsPayments>;
+  /** The status of the FPX payments capability of the account, or whether the account can directly process FPX charges. */
+  fpx_payments?: InputMaybe<UpdateProfileResultFpxPayments>;
+  /** The status of the giropay payments capability of the account, or whether the account can directly process giropay charges. */
+  giropay_payments?: InputMaybe<UpdateProfileResultGiropayPayments>;
+  /** The status of the GrabPay payments capability of the account, or whether the account can directly process GrabPay charges. */
+  grabpay_payments?: InputMaybe<UpdateProfileResultGrabpayPayments>;
+  /** The status of the iDEAL payments capability of the account, or whether the account can directly process iDEAL charges. */
+  ideal_payments?: InputMaybe<UpdateProfileResultIdealPayments>;
+  /** The status of the JCB payments capability of the account, or whether the account (Japan only) can directly process JCB credit card charges in JPY currency. */
+  jcb_payments?: InputMaybe<UpdateProfileResultJcbPayments>;
+  /** The status of the Klarna payments capability of the account, or whether the account can directly process Klarna charges. */
+  klarna_payments?: InputMaybe<UpdateProfileResultKlarnaPayments>;
+  /** The status of the konbini payments capability of the account, or whether the account can directly process konbini charges. */
+  konbini_payments?: InputMaybe<UpdateProfileResultKonbiniPayments>;
+  /** The status of the legacy payments capability of the account. */
+  legacy_payments?: InputMaybe<UpdateProfileResultLegacyPayments>;
+  /** The status of the OXXO payments capability of the account, or whether the account can directly process OXXO charges. */
+  oxxo_payments?: InputMaybe<UpdateProfileResultOxxoPayments>;
+  /** The status of the P24 payments capability of the account, or whether the account can directly process P24 charges. */
+  p24_payments?: InputMaybe<UpdateProfileResultP24Payments>;
+  /** The status of the paynow payments capability of the account, or whether the account can directly process paynow charges. */
+  paynow_payments?: InputMaybe<UpdateProfileResultPaynowPayments>;
+  /** The status of the SEPA Direct Debits payments capability of the account, or whether the account can directly process SEPA Direct Debits charges. */
+  sepa_debit_payments?: InputMaybe<UpdateProfileResultSepaDebitPayments>;
+  /** The status of the Sofort payments capability of the account, or whether the account can directly process Sofort charges. */
+  sofort_payments?: InputMaybe<UpdateProfileResultSofortPayments>;
+  /** The status of the tax reporting 1099-K (US) capability of the account. */
+  tax_reporting_us_1099_k?: InputMaybe<UpdateProfileResultTaxReportingUs1099K>;
+  /** The status of the tax reporting 1099-MISC (US) capability of the account. */
+  tax_reporting_us_1099_misc?: InputMaybe<UpdateProfileResultTaxReportingUs1099Misc>;
+  /** The status of the transfers capability of the account, or whether your platform can transfer funds to the account. */
+  transfers?: InputMaybe<UpdateProfileResultTransfers>;
+  /** The status of the US bank account ACH payments capability of the account, or whether the account can directly process US bank account charges. */
+  us_bank_account_ach_payments?: InputMaybe<UpdateProfileResultUsBankAccountAchPayments>;
+};
+
+export enum UpdateProfileResultAcssDebitPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultAfterpayClearpayPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultAuBecsDebitPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultBacsDebitPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultBancontactPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultBankTransferPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultBoletoPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultCardIssuing {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultCardPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultCartesBancairesPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultEpsPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultFpxPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultGiropayPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultGrabpayPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultIdealPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultJcbPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultKlarnaPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultKonbiniPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultLegacyPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultOxxoPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultP24Payments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultPaynowPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultSepaDebitPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultSofortPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultTaxReportingUs1099K {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultTaxReportingUs1099Misc {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultTransfers {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export enum UpdateProfileResultUsBankAccountAchPayments {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+export type Stripe_LegalEntityCompanyInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+  address_kana?: InputMaybe<Stripe_LegalEntityJapanAddressInput>;
+  address_kanji?: InputMaybe<Stripe_LegalEntityJapanAddressInput>;
+  /** Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-directors_provided). */
+  directors_provided?: InputMaybe<Scalars['Boolean']>;
+  /** Whether the company's executives have been provided. This Boolean will be `true` if you've manually indicated that all executives are provided via [the `executives_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-executives_provided), or if Stripe determined that sufficient executives were provided. */
+  executives_provided?: InputMaybe<Scalars['Boolean']>;
+  /** The company's legal name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** The Kana variation of the company's legal name (Japan only). */
+  name_kana?: InputMaybe<Scalars['String']>;
+  /** The Kanji variation of the company's legal name (Japan only). */
+  name_kanji?: InputMaybe<Scalars['String']>;
+  /** Whether the company's owners have been provided. This Boolean will be `true` if you've manually indicated that all owners are provided via [the `owners_provided` parameter](https://stripe.com/docs/api/accounts/update#update_account-company-owners_provided), or if Stripe determined that sufficient owners were provided. Stripe determines ownership requirements using both the number of owners provided and their total percent ownership (calculated by adding the `percent_ownership` of each owner together). */
+  owners_provided?: InputMaybe<Scalars['Boolean']>;
+  ownership_declaration?: InputMaybe<Stripe_LegalEntityUboDeclarationInput>;
+  /** The company's phone number (used for verification). */
+  phone?: InputMaybe<Scalars['String']>;
+  /** The category identifying the legal structure of the company or legal entity. See [Business structure](https://stripe.com/docs/connect/identity-verification#business-structure) for more details. */
+  structure?: InputMaybe<UpdateProfileResultStructure>;
+  /** Whether the company's business ID number was provided. */
+  tax_id_provided?: InputMaybe<Scalars['Boolean']>;
+  /** The jurisdiction in which the `tax_id` is registered (Germany-based companies only). */
+  tax_id_registrar?: InputMaybe<Scalars['String']>;
+  /** Whether the company's business VAT number was provided. */
+  vat_id_provided?: InputMaybe<Scalars['Boolean']>;
+  verification?: InputMaybe<Stripe_LegalEntityCompanyVerificationInput>;
+};
+
+export type Stripe_LegalEntityJapanAddressInput = {
+  /** City/Ward. */
+  city?: InputMaybe<Scalars['String']>;
+  /** Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
+  country?: InputMaybe<Scalars['String']>;
+  /** Block/Building number. */
+  line1?: InputMaybe<Scalars['String']>;
+  /** Building details. */
+  line2?: InputMaybe<Scalars['String']>;
+  /** ZIP or postal code. */
+  postal_code?: InputMaybe<Scalars['String']>;
+  /** Prefecture. */
+  state?: InputMaybe<Scalars['String']>;
+  /** Town/cho-me. */
+  town?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_LegalEntityUboDeclarationInput = {
+  /** The Unix timestamp marking when the beneficial owner attestation was made. */
+  date?: InputMaybe<Scalars['Int']>;
+  /** The IP address from which the beneficial owner attestation was made. */
+  ip?: InputMaybe<Scalars['String']>;
+  /** The user-agent string from the browser where the beneficial owner attestation was made. */
+  user_agent?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultStructure {
+  FreeZoneEstablishment = 'free_zone_establishment',
+  FreeZoneLlc = 'free_zone_llc',
+  GovernmentInstrumentality = 'government_instrumentality',
+  GovernmentalUnit = 'governmental_unit',
+  IncorporatedNonProfit = 'incorporated_non_profit',
+  LimitedLiabilityPartnership = 'limited_liability_partnership',
+  Llc = 'llc',
+  MultiMemberLlc = 'multi_member_llc',
+  PrivateCompany = 'private_company',
+  PrivateCorporation = 'private_corporation',
+  PrivatePartnership = 'private_partnership',
+  PublicCompany = 'public_company',
+  PublicCorporation = 'public_corporation',
+  PublicPartnership = 'public_partnership',
+  SingleMemberLlc = 'single_member_llc',
+  SoleEstablishment = 'sole_establishment',
+  SoleProprietorship = 'sole_proprietorship',
+  TaxExemptGovernmentInstrumentality = 'tax_exempt_government_instrumentality',
+  UnincorporatedAssociation = 'unincorporated_association',
+  UnincorporatedNonProfit = 'unincorporated_non_profit'
+}
+
+export type Stripe_LegalEntityCompanyVerificationInput = {
+  document?: InputMaybe<Stripe_LegalEntityCompanyVerificationDocumentInput>;
+};
+
+export type Stripe_LegalEntityCompanyVerificationDocumentInput = {
+  back?: InputMaybe<FileWrappedStringInputUnion>;
+  /** A user-displayable string describing the verification state of this document. */
+  details?: InputMaybe<Scalars['String']>;
+  /** One of `document_corrupt`, `document_expired`, `document_failed_copy`, `document_failed_greyscale`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_not_readable`, `document_not_uploaded`, `document_type_not_supported`, or `document_too_large`. A machine-readable code specifying the verification state for this document. */
+  details_code?: InputMaybe<Scalars['String']>;
+  front?: InputMaybe<FileWrappedStringInputUnion>;
+};
+
+export type FileWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  file?: InputMaybe<Stripe_FileInput>;
+};
+
+export type Stripe_FileInput = {
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** The time at which the file expires and is no longer available in epoch seconds. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** A filename for the file, suitable for saving to a filesystem. */
+  filename?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** A list of [file links](https://stripe.com/docs/api#file_links) that point at this file. */
+  links?: InputMaybe<PropertiesFilePropertiesLinksPropertyInput>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The [purpose](https://stripe.com/docs/file-upload#uploading-a-file) of the uploaded file. */
+  purpose?: InputMaybe<UpdateProfileResultPurpose>;
+  /** The size in bytes of the file object. */
+  size?: InputMaybe<Scalars['Int']>;
+  /** A user friendly title for the document. */
+  title?: InputMaybe<Scalars['String']>;
+  /** The type of the file returned (e.g., `csv`, `pdf`, `jpg`, or `png`). */
+  type?: InputMaybe<Scalars['String']>;
+  /** The URL from which the file can be downloaded using your live secret API key. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+/** A list of [file links](https://stripe.com/docs/api#file_links) that point at this file. */
+export type PropertiesFilePropertiesLinksPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_FileLinkInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_FileLinkInput = {
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Whether this link is already expired. */
+  expired?: InputMaybe<Scalars['Boolean']>;
+  /** Time at which the link expires. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  file?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The publicly accessible URL to download the file. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultPurpose {
+  AccountRequirement = 'account_requirement',
+  AdditionalVerification = 'additional_verification',
+  BusinessIcon = 'business_icon',
+  BusinessLogo = 'business_logo',
+  CustomerSignature = 'customer_signature',
+  DisputeEvidence = 'dispute_evidence',
+  DocumentProviderIdentityDocument = 'document_provider_identity_document',
+  FinanceReportRun = 'finance_report_run',
+  IdentityDocument = 'identity_document',
+  IdentityDocumentDownloadable = 'identity_document_downloadable',
+  PciDocument = 'pci_document',
+  Selfie = 'selfie',
+  SigmaScheduledQuery = 'sigma_scheduled_query',
+  TaxDocumentUserUpload = 'tax_document_user_upload'
+}
+
+export type Stripe_AccountUnificationAccountControllerInput = {
+  /** `true` if the Connect application retrieving the resource controls the account and can therefore exercise [platform controls](https://stripe.com/docs/connect/platform-controls-for-standard-accounts). Otherwise, this field is null. */
+  is_controller?: InputMaybe<Scalars['Boolean']>;
+  /** The controller type. Can be `application`, if a Connect application controls the account, or `account`, if the account controls itself. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export enum UpdateProfileResultType {
+  AeTrn = 'ae_trn',
+  AuAbn = 'au_abn',
+  AuArn = 'au_arn',
+  BgUic = 'bg_uic',
+  BrCnpj = 'br_cnpj',
+  BrCpf = 'br_cpf',
+  CaBn = 'ca_bn',
+  CaGstHst = 'ca_gst_hst',
+  CaPstBc = 'ca_pst_bc',
+  CaPstMb = 'ca_pst_mb',
+  CaPstSk = 'ca_pst_sk',
+  CaQst = 'ca_qst',
+  ChVat = 'ch_vat',
+  ClTin = 'cl_tin',
+  EsCif = 'es_cif',
+  EuVat = 'eu_vat',
+  GbVat = 'gb_vat',
+  GeVat = 'ge_vat',
+  HkBr = 'hk_br',
+  HuTin = 'hu_tin',
+  IdNpwp = 'id_npwp',
+  IlVat = 'il_vat',
+  InGst = 'in_gst',
+  IsVat = 'is_vat',
+  JpCn = 'jp_cn',
+  JpRn = 'jp_rn',
+  KrBrn = 'kr_brn',
+  LiUid = 'li_uid',
+  MxRfc = 'mx_rfc',
+  MyFrp = 'my_frp',
+  MyItn = 'my_itn',
+  MySst = 'my_sst',
+  NoVat = 'no_vat',
+  NzGst = 'nz_gst',
+  RuInn = 'ru_inn',
+  RuKpp = 'ru_kpp',
+  SaVat = 'sa_vat',
+  SgGst = 'sg_gst',
+  SgUen = 'sg_uen',
+  SiTin = 'si_tin',
+  ThVat = 'th_vat',
+  TwVat = 'tw_vat',
+  UaVat = 'ua_vat',
+  Unknown = 'unknown',
+  UsEin = 'us_ein',
+  ZaVat = 'za_vat'
+}
+
+/** External accounts (bank accounts and debit cards) currently attached to this account */
+export type PropertiesAccountPropertiesExternalAccountsPropertyInput = {
+  /** The list contains all external accounts that have been attached to the Stripe account. These may be bank accounts or cards. */
+  data: Array<BankAccountCardInputUnion>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type BankAccountCardInputUnion = {
+  bankAccount?: InputMaybe<Stripe_BankAccountInput>;
+  card?: InputMaybe<Stripe_CardInput>;
+};
+
+export type Stripe_CardInput = {
+  account?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** City/District/Suburb/Town/Village. */
+  address_city?: InputMaybe<Scalars['String']>;
+  /** Billing address country, if provided when creating card. */
+  address_country?: InputMaybe<Scalars['String']>;
+  /** Address line 1 (Street address/PO Box/Company name). */
+  address_line1?: InputMaybe<Scalars['String']>;
+  /** If `address_line1` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. */
+  address_line1_check?: InputMaybe<Scalars['String']>;
+  /** Address line 2 (Apartment/Suite/Unit/Building). */
+  address_line2?: InputMaybe<Scalars['String']>;
+  /** State/County/Province/Region. */
+  address_state?: InputMaybe<Scalars['String']>;
+  /** ZIP or postal code. */
+  address_zip?: InputMaybe<Scalars['String']>;
+  /** If `address_zip` was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. */
+  address_zip_check?: InputMaybe<Scalars['String']>;
+  /** A set of available payout methods for this card. Only values from this set should be passed as the `method` when creating a payout. */
+  available_payout_methods?: InputMaybe<Array<InputMaybe<UpdateProfileResultAvailablePayoutMethods>>>;
+  /** Card brand. Can be `American Express`, `Diners Club`, `Discover`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`. */
+  brand?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Three-letter [ISO code for currency](https://stripe.com/docs/payouts). Only applicable on accounts (not customers or recipients). The card can be used as a transfer destination for funds in this currency. */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** If a CVC was provided, results of the check: `pass`, `fail`, `unavailable`, or `unchecked`. A result of unchecked indicates that CVC was provided but hasn't been checked yet. Checks are typically performed when attaching a card to a Customer object, or when creating a charge. For more details, see [Check if a card is valid without a charge](https://support.stripe.com/questions/check-if-a-card-is-valid-without-a-charge). */
+  cvc_check?: InputMaybe<Scalars['String']>;
+  /** Whether this card is the default external account for its currency. */
+  default_for_currency?: InputMaybe<Scalars['Boolean']>;
+  /** (For tokenized numbers only.) The last four digits of the device account number. */
+  dynamic_last4?: InputMaybe<Scalars['String']>;
+  /** Two-digit number representing the card's expiration month. */
+  exp_month?: InputMaybe<Scalars['Int']>;
+  /** Four-digit number representing the card's expiration year. */
+  exp_year?: InputMaybe<Scalars['Int']>;
+  /**
+   * Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+   *
+   * *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
+   */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`. */
+  funding?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The last four digits of the card. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** Cardholder name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  recipient?: InputMaybe<RecipientWrappedStringInputUnion>;
+  /** For external accounts, possible values are `new` and `errored`. If a transfer fails, the status is set to `errored` and transfers are stopped until account details are updated. */
+  status?: InputMaybe<Scalars['String']>;
+  /** If the card number is tokenized, this is the method that was used. Can be `android_pay` (includes Google Pay), `apple_pay`, `masterpass`, `visa_checkout`, or null. */
+  tokenization_method?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultAvailablePayoutMethods {
+  Instant = 'instant',
+  Standard = 'standard'
+}
+
+export type RecipientWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  recipient?: InputMaybe<Stripe_RecipientInput>;
+};
+
+export type Stripe_RecipientInput = {
+  active_account?: InputMaybe<Stripe_BankAccountInput>;
+  cards?: InputMaybe<PropertiesRecipientPropertiesCardsPropertyInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  default_card?: InputMaybe<CardWrappedStringInputUnion>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  migrated_to?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** Full, legal name of the recipient. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  rolled_back_from?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** Type of the recipient, one of `individual` or `corporation`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type PropertiesRecipientPropertiesCardsPropertyInput = {
+  data: Array<Stripe_CardInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type CardWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  card?: InputMaybe<Stripe_CardInput>;
+};
+
+export type Stripe_AccountFutureRequirementsInput = {
+  /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
+  alternatives?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsAlternativeInput>>>;
+  /** Date on which `future_requirements` merges with the main `requirements` hash and `future_requirements` becomes empty. After the transition, `currently_due` requirements may immediately become `past_due`, but the account may also be given a grace period depending on its enablement state prior to transitioning. */
+  current_deadline?: InputMaybe<Scalars['Int']>;
+  /** Fields that need to be collected to keep the account enabled. If not collected by `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash. */
+  currently_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** This is typed as a string for consistency with `requirements.disabled_reason`, but it safe to assume `future_requirements.disabled_reason` is empty because fields in `future_requirements` will never disable the account. */
+  disabled_reason?: InputMaybe<Scalars['String']>;
+  /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
+  errors?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsErrorInput>>>;
+  /** Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well. */
+  eventually_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that weren't collected by `requirements.current_deadline`. These fields need to be collected to enable the capability on the account. New fields will never appear here; `future_requirements.past_due` will always be a subset of `requirements.past_due`. */
+  past_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due` or `currently_due`. */
+  pending_verification?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Stripe_AccountRequirementsAlternativeInput = {
+  /** Fields that can be provided to satisfy all fields in `original_fields_due`. */
+  alternative_fields_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that are due and can be satisfied by providing all fields in `alternative_fields_due`. */
+  original_fields_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Stripe_AccountRequirementsErrorInput = {
+  /** The code for the type of error. */
+  code?: InputMaybe<UpdateProfileResultCode>;
+  /** An informative message that indicates the error type and provides additional details about the error. */
+  reason?: InputMaybe<Scalars['String']>;
+  /** The specific user onboarding requirement field (in the requirements hash) that needs to be resolved. */
+  requirement?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultCode {
+  InvalidAddressCityStatePostalCode = 'invalid_address_city_state_postal_code',
+  InvalidStreetAddress = 'invalid_street_address',
+  InvalidValueOther = 'invalid_value_other',
+  VerificationDocumentAddressMismatch = 'verification_document_address_mismatch',
+  VerificationDocumentAddressMissing = 'verification_document_address_missing',
+  VerificationDocumentCorrupt = 'verification_document_corrupt',
+  VerificationDocumentCountryNotSupported = 'verification_document_country_not_supported',
+  VerificationDocumentDobMismatch = 'verification_document_dob_mismatch',
+  VerificationDocumentDuplicateType = 'verification_document_duplicate_type',
+  VerificationDocumentExpired = 'verification_document_expired',
+  VerificationDocumentFailedCopy = 'verification_document_failed_copy',
+  VerificationDocumentFailedGreyscale = 'verification_document_failed_greyscale',
+  VerificationDocumentFailedOther = 'verification_document_failed_other',
+  VerificationDocumentFailedTestMode = 'verification_document_failed_test_mode',
+  VerificationDocumentFraudulent = 'verification_document_fraudulent',
+  VerificationDocumentIdNumberMismatch = 'verification_document_id_number_mismatch',
+  VerificationDocumentIdNumberMissing = 'verification_document_id_number_missing',
+  VerificationDocumentIncomplete = 'verification_document_incomplete',
+  VerificationDocumentInvalid = 'verification_document_invalid',
+  VerificationDocumentIssueOrExpiryDateMissing = 'verification_document_issue_or_expiry_date_missing',
+  VerificationDocumentManipulated = 'verification_document_manipulated',
+  VerificationDocumentMissingBack = 'verification_document_missing_back',
+  VerificationDocumentMissingFront = 'verification_document_missing_front',
+  VerificationDocumentNameMismatch = 'verification_document_name_mismatch',
+  VerificationDocumentNameMissing = 'verification_document_name_missing',
+  VerificationDocumentNationalityMismatch = 'verification_document_nationality_mismatch',
+  VerificationDocumentNotReadable = 'verification_document_not_readable',
+  VerificationDocumentNotSigned = 'verification_document_not_signed',
+  VerificationDocumentNotUploaded = 'verification_document_not_uploaded',
+  VerificationDocumentPhotoMismatch = 'verification_document_photo_mismatch',
+  VerificationDocumentTooLarge = 'verification_document_too_large',
+  VerificationDocumentTypeNotSupported = 'verification_document_type_not_supported',
+  VerificationFailedAddressMatch = 'verification_failed_address_match',
+  VerificationFailedBusinessIecNumber = 'verification_failed_business_iec_number',
+  VerificationFailedDocumentMatch = 'verification_failed_document_match',
+  VerificationFailedIdNumberMatch = 'verification_failed_id_number_match',
+  VerificationFailedKeyedIdentity = 'verification_failed_keyed_identity',
+  VerificationFailedKeyedMatch = 'verification_failed_keyed_match',
+  VerificationFailedNameMatch = 'verification_failed_name_match',
+  VerificationFailedOther = 'verification_failed_other',
+  VerificationFailedTaxIdMatch = 'verification_failed_tax_id_match',
+  VerificationFailedTaxIdNotIssued = 'verification_failed_tax_id_not_issued',
+  VerificationMissingExecutives = 'verification_missing_executives',
+  VerificationMissingOwners = 'verification_missing_owners',
+  VerificationRequiresAdditionalMemorandumOfAssociations = 'verification_requires_additional_memorandum_of_associations'
+}
+
+export type Stripe_PersonInput = {
+  /** The account the person is associated with. */
+  account?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Stripe_AddressInput>;
+  address_kana?: InputMaybe<Stripe_LegalEntityJapanAddressInput>;
+  address_kanji?: InputMaybe<Stripe_LegalEntityJapanAddressInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  dob?: InputMaybe<Stripe_LegalEntityDobInput>;
+  /** The person's email address. */
+  email?: InputMaybe<Scalars['String']>;
+  /** The person's first name. */
+  first_name?: InputMaybe<Scalars['String']>;
+  /** The Kana variation of the person's first name (Japan only). */
+  first_name_kana?: InputMaybe<Scalars['String']>;
+  /** The Kanji variation of the person's first name (Japan only). */
+  first_name_kanji?: InputMaybe<Scalars['String']>;
+  /** A list of alternate names or aliases that the person is known by. */
+  full_name_aliases?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  future_requirements?: InputMaybe<Stripe_PersonFutureRequirementsInput>;
+  /** The person's gender (International regulations require either "male" or "female"). */
+  gender?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Whether the person's `id_number` was provided. */
+  id_number_provided?: InputMaybe<Scalars['Boolean']>;
+  /** The person's last name. */
+  last_name?: InputMaybe<Scalars['String']>;
+  /** The Kana variation of the person's last name (Japan only). */
+  last_name_kana?: InputMaybe<Scalars['String']>;
+  /** The Kanji variation of the person's last name (Japan only). */
+  last_name_kanji?: InputMaybe<Scalars['String']>;
+  /** The person's maiden name. */
+  maiden_name?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The country where the person is a national. */
+  nationality?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The person's phone number. */
+  phone?: InputMaybe<Scalars['String']>;
+  /** Indicates if the person or any of their representatives, family members, or other closely related persons, declares that they hold or have held an important public job or function, in any jurisdiction. */
+  political_exposure?: InputMaybe<UpdateProfileResultPoliticalExposure>;
+  relationship?: InputMaybe<Stripe_PersonRelationshipInput>;
+  requirements?: InputMaybe<Stripe_PersonRequirementsInput>;
+  /** Whether the last four digits of the person's Social Security number have been provided (U.S. only). */
+  ssn_last_4_provided?: InputMaybe<Scalars['Boolean']>;
+  verification?: InputMaybe<Stripe_LegalEntityPersonVerificationInput>;
+};
+
+export type Stripe_LegalEntityDobInput = {
+  /** The day of birth, between 1 and 31. */
+  day?: InputMaybe<Scalars['Int']>;
+  /** The month of birth, between 1 and 12. */
+  month?: InputMaybe<Scalars['Int']>;
+  /** The four-digit year of birth. */
+  year?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_PersonFutureRequirementsInput = {
+  /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
+  alternatives?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsAlternativeInput>>>;
+  /** Fields that need to be collected to keep the person's account enabled. If not collected by the account's `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash, and may immediately become `past_due`, but the account may also be given a grace period depending on the account's enablement state prior to transition. */
+  currently_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
+  errors?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsErrorInput>>>;
+  /** Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `future_requirements[current_deadline]` becomes set. */
+  eventually_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that weren't collected by the account's `requirements.current_deadline`. These fields need to be collected to enable the person's account. New fields will never appear here; `future_requirements.past_due` will always be a subset of `requirements.past_due`. */
+  past_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due` or `currently_due`. */
+  pending_verification?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export enum UpdateProfileResultPoliticalExposure {
+  Existing = 'existing',
+  None = 'none'
+}
+
+export type Stripe_PersonRelationshipInput = {
+  /** Whether the person is a director of the account's legal entity. Directors are typically members of the governing board of the company, or responsible for ensuring the company meets its regulatory obligations. */
+  director?: InputMaybe<Scalars['Boolean']>;
+  /** Whether the person has significant responsibility to control, manage, or direct the organization. */
+  executive?: InputMaybe<Scalars['Boolean']>;
+  /** Whether the person is an owner of the account’s legal entity. */
+  owner?: InputMaybe<Scalars['Boolean']>;
+  /** The percent owned by the person of the account's legal entity. */
+  percent_ownership?: InputMaybe<Scalars['Float']>;
+  /** Whether the person is authorized as the primary representative of the account. This is the person nominated by the business to provide information about themselves, and general information about the account. There can only be one representative at any given time. At the time the account is created, this person should be set to the person responsible for opening the account. */
+  representative?: InputMaybe<Scalars['Boolean']>;
+  /** The person's title (e.g., CEO, Support Engineer). */
+  title?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PersonRequirementsInput = {
+  /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
+  alternatives?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsAlternativeInput>>>;
+  /** Fields that need to be collected to keep the person's account enabled. If not collected by the account's `current_deadline`, these fields appear in `past_due` as well, and the account is disabled. */
+  currently_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
+  errors?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsErrorInput>>>;
+  /** Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `current_deadline` becomes set. */
+  eventually_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that weren't collected by the account's `current_deadline`. These fields need to be collected to enable the person's account. */
+  past_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due`, `currently_due`, or `past_due`. */
+  pending_verification?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Stripe_LegalEntityPersonVerificationInput = {
+  additional_document?: InputMaybe<Stripe_LegalEntityPersonVerificationDocumentInput>;
+  /** A user-displayable string describing the verification state for the person. For example, this may say "Provided identity information could not be verified". */
+  details?: InputMaybe<Scalars['String']>;
+  /** One of `document_address_mismatch`, `document_dob_mismatch`, `document_duplicate_type`, `document_id_number_mismatch`, `document_name_mismatch`, `document_nationality_mismatch`, `failed_keyed_identity`, or `failed_other`. A machine-readable code specifying the verification state for the person. */
+  details_code?: InputMaybe<Scalars['String']>;
+  document?: InputMaybe<Stripe_LegalEntityPersonVerificationDocumentInput>;
+  /** The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`. */
+  status?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_LegalEntityPersonVerificationDocumentInput = {
+  back?: InputMaybe<FileWrappedStringInputUnion>;
+  /** A user-displayable string describing the verification state of this document. For example, if a document is uploaded and the picture is too fuzzy, this may say "Identity document is too unclear to read". */
+  details?: InputMaybe<Scalars['String']>;
+  /** One of `document_corrupt`, `document_country_not_supported`, `document_expired`, `document_failed_copy`, `document_failed_other`, `document_failed_test_mode`, `document_fraudulent`, `document_failed_greyscale`, `document_incomplete`, `document_invalid`, `document_manipulated`, `document_missing_back`, `document_missing_front`, `document_not_readable`, `document_not_uploaded`, `document_photo_mismatch`, `document_too_large`, or `document_type_not_supported`. A machine-readable code specifying the verification state for this document. */
+  details_code?: InputMaybe<Scalars['String']>;
+  front?: InputMaybe<FileWrappedStringInputUnion>;
+};
+
+export type Stripe_AccountRequirementsInput = {
+  /** Fields that are due and can be satisfied by providing the corresponding alternative fields instead. */
+  alternatives?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsAlternativeInput>>>;
+  /** Date by which the fields in `currently_due` must be collected to keep the account enabled. These fields may disable the account sooner if the next threshold is reached before they are collected. */
+  current_deadline?: InputMaybe<Scalars['Int']>;
+  /** Fields that need to be collected to keep the account enabled. If not collected by `current_deadline`, these fields appear in `past_due` as well, and the account is disabled. */
+  currently_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** If the account is disabled, this string describes why. Can be `requirements.past_due`, `requirements.pending_verification`, `listed`, `platform_paused`, `rejected.fraud`, `rejected.listed`, `rejected.terms_of_service`, `rejected.other`, `under_review`, or `other`. */
+  disabled_reason?: InputMaybe<Scalars['String']>;
+  /** Fields that are `currently_due` and need to be collected again because validation or verification failed. */
+  errors?: InputMaybe<Array<InputMaybe<Stripe_AccountRequirementsErrorInput>>>;
+  /** Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set. */
+  eventually_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that weren't collected by `current_deadline`. These fields need to be collected to enable the account. */
+  past_due?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due`, `currently_due`, or `past_due`. */
+  pending_verification?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Stripe_AccountSettingsInput = {
+  bacs_debit_payments?: InputMaybe<Stripe_AccountBacsDebitPaymentsSettingsInput>;
+  branding?: InputMaybe<Stripe_AccountBrandingSettingsInput>;
+  card_issuing?: InputMaybe<Stripe_AccountCardIssuingSettingsInput>;
+  card_payments?: InputMaybe<Stripe_AccountCardPaymentsSettingsInput>;
+  dashboard?: InputMaybe<Stripe_AccountDashboardSettingsInput>;
+  payments?: InputMaybe<Stripe_AccountPaymentsSettingsInput>;
+  payouts?: InputMaybe<Stripe_AccountPayoutSettingsInput>;
+  sepa_debit_payments?: InputMaybe<Stripe_AccountSepaDebitPaymentsSettingsInput>;
+};
+
+export type Stripe_AccountBacsDebitPaymentsSettingsInput = {
+  /** The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this will appear on the mandate, and as the statement descriptor. */
+  display_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountBrandingSettingsInput = {
+  icon?: InputMaybe<FileWrappedStringInputUnion>;
+  logo?: InputMaybe<FileWrappedStringInputUnion>;
+  /** A CSS hex color value representing the primary branding color for this account */
+  primary_color?: InputMaybe<Scalars['String']>;
+  /** A CSS hex color value representing the secondary branding color for this account */
+  secondary_color?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountCardIssuingSettingsInput = {
+  tos_acceptance?: InputMaybe<Stripe_CardIssuingAccountTermsOfServiceInput>;
+};
+
+export type Stripe_CardIssuingAccountTermsOfServiceInput = {
+  /** The Unix timestamp marking when the account representative accepted the service agreement. */
+  date?: InputMaybe<Scalars['Int']>;
+  /** The IP address from which the account representative accepted the service agreement. */
+  ip?: InputMaybe<Scalars['String']>;
+  /** The user agent of the browser from which the account representative accepted the service agreement. */
+  user_agent?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountCardPaymentsSettingsInput = {
+  decline_on?: InputMaybe<Stripe_AccountDeclineChargeOnInput>;
+  /** The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion. */
+  statement_descriptor_prefix?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountDeclineChargeOnInput = {
+  /** Whether Stripe automatically declines charges with an incorrect ZIP or postal code. This setting only applies when a ZIP or postal code is provided and they fail bank verification. */
+  avs_failure?: InputMaybe<Scalars['Boolean']>;
+  /** Whether Stripe automatically declines charges with an incorrect CVC. This setting only applies when a CVC is provided and it fails bank verification. */
+  cvc_failure?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_AccountDashboardSettingsInput = {
+  /** The display name for this account. This is used on the Stripe Dashboard to differentiate between accounts. */
+  display_name?: InputMaybe<Scalars['String']>;
+  /** The timezone used in the Stripe Dashboard for this account. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). */
+  timezone?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountPaymentsSettingsInput = {
+  /** The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** The Kana variation of the default text that appears on credit card statements when a charge is made (Japan only) */
+  statement_descriptor_kana?: InputMaybe<Scalars['String']>;
+  /** The Kanji variation of the default text that appears on credit card statements when a charge is made (Japan only) */
+  statement_descriptor_kanji?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountPayoutSettingsInput = {
+  /** A Boolean indicating if Stripe should try to reclaim negative balances from an attached bank account. See our [Understanding Connect Account Balances](https://stripe.com/docs/connect/account-balances) documentation for details. Default value is `false` for Custom accounts, otherwise `true`. */
+  debit_negative_balances?: InputMaybe<Scalars['Boolean']>;
+  schedule?: InputMaybe<Stripe_TransferScheduleInput>;
+  /** The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_TransferScheduleInput = {
+  /** The number of days charges for the account will be held before being paid out. */
+  delay_days?: InputMaybe<Scalars['Int']>;
+  /** How frequently funds will be paid out. One of `manual` (payouts only created via API call), `daily`, `weekly`, or `monthly`. */
+  interval?: InputMaybe<Scalars['String']>;
+  /** The day of the month funds will be paid out. Only shown if `interval` is monthly. Payouts scheduled between the 29th and 31st of the month are sent on the last day of shorter months. */
+  monthly_anchor?: InputMaybe<Scalars['Int']>;
+  /** The day of the week funds will be paid out, of the style 'monday', 'tuesday', etc. Only shown if `interval` is weekly. */
+  weekly_anchor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountSepaDebitPaymentsSettingsInput = {
+  /** SEPA creditor identifier that identifies the company making the payment. */
+  creditor_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AccountTosAcceptanceInput = {
+  /** The Unix timestamp marking when the account representative accepted their service agreement */
+  date?: InputMaybe<Scalars['Int']>;
+  /** The IP address from which the account representative accepted their service agreement */
+  ip?: InputMaybe<Scalars['String']>;
+  /** The user's service agreement type */
+  service_agreement?: InputMaybe<Scalars['String']>;
+  /** The user agent of the browser from which the account representative accepted their service agreement */
+  user_agent?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_BitcoinReceiverInput = {
+  /** True when this bitcoin receiver has received a non-zero amount of bitcoin. */
+  active?: InputMaybe<Scalars['Boolean']>;
+  /** The amount of `currency` that you are collecting as payment. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** The amount of `currency` to which `bitcoin_amount_received` has been converted. */
+  amount_received?: InputMaybe<Scalars['Int']>;
+  /** The amount of bitcoin that the customer should send to fill the receiver. The `bitcoin_amount` is denominated in Satoshi: there are 10^8 Satoshi in one bitcoin. */
+  bitcoin_amount?: InputMaybe<Scalars['Int']>;
+  /** The amount of bitcoin that has been sent by the customer to this receiver. */
+  bitcoin_amount_received?: InputMaybe<Scalars['Int']>;
+  /** This URI can be displayed to the customer as a clickable link (to activate their bitcoin client) or as a QR code (for mobile wallets). */
+  bitcoin_uri?: InputMaybe<Scalars['String']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) to which the bitcoin will be converted. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** The customer ID of the bitcoin receiver. */
+  customer?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The customer's email address, set by the API call that creates the receiver. */
+  email?: InputMaybe<Scalars['String']>;
+  /** This flag is initially false and updates to true when the customer sends the `bitcoin_amount` to this receiver. */
+  filled?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** A bitcoin address that is specific to this receiver. The customer can send bitcoin to this address to fill the receiver. */
+  inbound_address?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The ID of the payment created from the receiver, if any. Hidden when viewing the receiver with a publishable key. */
+  payment?: InputMaybe<Scalars['String']>;
+  /** The refund address of this bitcoin receiver. */
+  refund_address?: InputMaybe<Scalars['String']>;
+  /** A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key. */
+  transactions?: InputMaybe<PropertiesBitcoinReceiverPropertiesTransactionsPropertyInput>;
+  /** This receiver contains uncaptured funds that can be used for a payment or refunded. */
+  uncaptured_funds?: InputMaybe<Scalars['Boolean']>;
+  /** Indicate if this source is used for payment. */
+  used_for_payment?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** A list with one entry for each time that the customer sent bitcoin to the receiver. Hidden when viewing the receiver with a publishable key. */
+export type PropertiesBitcoinReceiverPropertiesTransactionsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_BitcoinTransactionInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_BitcoinTransactionInput = {
+  /** The amount of `currency` that the transaction was converted to in real-time. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** The amount of bitcoin contained in the transaction. */
+  bitcoin_amount?: InputMaybe<Scalars['Int']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) to which this transaction was converted. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The receiver to which this transaction was sent. */
+  receiver?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceInput = {
+  ach_credit_transfer?: InputMaybe<Stripe_SourceTypeAchCreditTransferInput>;
+  ach_debit?: InputMaybe<Stripe_SourceTypeAchDebitInput>;
+  acss_debit?: InputMaybe<Stripe_SourceTypeAcssDebitInput>;
+  alipay?: InputMaybe<Stripe_SourceTypeAlipayInput>;
+  /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount associated with the source. This is the amount for which the source will be chargeable once ready. Required for `single_use` sources. */
+  amount?: InputMaybe<Scalars['Int']>;
+  au_becs_debit?: InputMaybe<Stripe_SourceTypeAuBecsDebitInput>;
+  bancontact?: InputMaybe<Stripe_SourceTypeBancontactInput>;
+  card?: InputMaybe<Stripe_SourceTypeCardInput>;
+  card_present?: InputMaybe<Stripe_SourceTypeCardPresentInput>;
+  /** The client secret of the source. Used for client-side retrieval using a publishable key. */
+  client_secret?: InputMaybe<Scalars['String']>;
+  code_verification?: InputMaybe<Stripe_SourceCodeVerificationFlowInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer. */
+  customer?: InputMaybe<Scalars['String']>;
+  eps?: InputMaybe<Stripe_SourceTypeEpsInput>;
+  /** The authentication `flow` of the source. `flow` is one of `redirect`, `receiver`, `code_verification`, `none`. */
+  flow?: InputMaybe<Scalars['String']>;
+  giropay?: InputMaybe<Stripe_SourceTypeGiropayInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  ideal?: InputMaybe<Stripe_SourceTypeIdealInput>;
+  klarna?: InputMaybe<Stripe_SourceTypeKlarnaInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  multibanco?: InputMaybe<Stripe_SourceTypeMultibancoInput>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  owner?: InputMaybe<Stripe_SourceOwnerInput>;
+  p24?: InputMaybe<Stripe_SourceTypeP24Input>;
+  receiver?: InputMaybe<Stripe_SourceReceiverFlowInput>;
+  redirect?: InputMaybe<Stripe_SourceRedirectFlowInput>;
+  sepa_debit?: InputMaybe<Stripe_SourceTypeSepaDebitInput>;
+  sofort?: InputMaybe<Stripe_SourceTypeSofortInput>;
+  source_order?: InputMaybe<Stripe_SourceOrderInput>;
+  /** Extra information about a source. This will appear on your customer's statement every time you charge the source. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge. */
+  status?: InputMaybe<Scalars['String']>;
+  three_d_secure?: InputMaybe<Stripe_SourceTypeThreeDSecureInput>;
+  /** The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  /** Either `reusable` or `single_use`. Whether this source should be reusable or not. Some source types may or may not be reusable by construction, while others may leave the option at creation. If an incompatible value is passed, an error will be returned. */
+  usage?: InputMaybe<Scalars['String']>;
+  wechat?: InputMaybe<Stripe_SourceTypeWechatInput>;
+};
+
+export type Stripe_SourceTypeAchCreditTransferInput = {
+  account_number?: InputMaybe<Scalars['String']>;
+  bank_name?: InputMaybe<Scalars['String']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  refund_account_holder_name?: InputMaybe<Scalars['String']>;
+  refund_account_holder_type?: InputMaybe<Scalars['String']>;
+  refund_routing_number?: InputMaybe<Scalars['String']>;
+  routing_number?: InputMaybe<Scalars['String']>;
+  swift_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeAchDebitInput = {
+  bank_name?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+  routing_number?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeAcssDebitInput = {
+  bank_address_city?: InputMaybe<Scalars['String']>;
+  bank_address_line_1?: InputMaybe<Scalars['String']>;
+  bank_address_line_2?: InputMaybe<Scalars['String']>;
+  bank_address_postal_code?: InputMaybe<Scalars['String']>;
+  bank_name?: InputMaybe<Scalars['String']>;
+  category?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+  routing_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeAlipayInput = {
+  data_string?: InputMaybe<Scalars['String']>;
+  native_url?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeAuBecsDebitInput = {
+  bsb_number?: InputMaybe<Scalars['String']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeBancontactInput = {
+  bank_code?: InputMaybe<Scalars['String']>;
+  bank_name?: InputMaybe<Scalars['String']>;
+  bic?: InputMaybe<Scalars['String']>;
+  iban_last4?: InputMaybe<Scalars['String']>;
+  preferred_language?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeCardInput = {
+  address_line1_check?: InputMaybe<Scalars['String']>;
+  address_zip_check?: InputMaybe<Scalars['String']>;
+  brand?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  cvc_check?: InputMaybe<Scalars['String']>;
+  dynamic_last4?: InputMaybe<Scalars['String']>;
+  exp_month?: InputMaybe<Scalars['Int']>;
+  exp_year?: InputMaybe<Scalars['Int']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  funding?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  three_d_secure?: InputMaybe<Scalars['String']>;
+  tokenization_method?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeCardPresentInput = {
+  application_cryptogram?: InputMaybe<Scalars['String']>;
+  application_preferred_name?: InputMaybe<Scalars['String']>;
+  authorization_code?: InputMaybe<Scalars['String']>;
+  authorization_response_code?: InputMaybe<Scalars['String']>;
+  brand?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  cvm_type?: InputMaybe<Scalars['String']>;
+  data_type?: InputMaybe<Scalars['String']>;
+  dedicated_file_name?: InputMaybe<Scalars['String']>;
+  emv_auth_data?: InputMaybe<Scalars['String']>;
+  evidence_customer_signature?: InputMaybe<Scalars['String']>;
+  evidence_transaction_certificate?: InputMaybe<Scalars['String']>;
+  exp_month?: InputMaybe<Scalars['Int']>;
+  exp_year?: InputMaybe<Scalars['Int']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  funding?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+  pos_device_id?: InputMaybe<Scalars['String']>;
+  pos_entry_mode?: InputMaybe<Scalars['String']>;
+  read_method?: InputMaybe<Scalars['String']>;
+  reader?: InputMaybe<Scalars['String']>;
+  terminal_verification_results?: InputMaybe<Scalars['String']>;
+  transaction_status_information?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceCodeVerificationFlowInput = {
+  /** The number of attempts remaining to authenticate the source object with a verification code. */
+  attempts_remaining?: InputMaybe<Scalars['Int']>;
+  /** The status of the code verification, either `pending` (awaiting verification, `attempts_remaining` should be greater than 0), `succeeded` (successful verification) or `failed` (failed verification, cannot be verified anymore as `attempts_remaining` should be 0). */
+  status?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeEpsInput = {
+  reference?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeGiropayInput = {
+  bank_code?: InputMaybe<Scalars['String']>;
+  bank_name?: InputMaybe<Scalars['String']>;
+  bic?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeIdealInput = {
+  bank?: InputMaybe<Scalars['String']>;
+  bic?: InputMaybe<Scalars['String']>;
+  iban_last4?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeKlarnaInput = {
+  background_image_url?: InputMaybe<Scalars['String']>;
+  client_token?: InputMaybe<Scalars['String']>;
+  first_name?: InputMaybe<Scalars['String']>;
+  last_name?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  logo_url?: InputMaybe<Scalars['String']>;
+  page_title?: InputMaybe<Scalars['String']>;
+  pay_later_asset_urls_descriptive?: InputMaybe<Scalars['String']>;
+  pay_later_asset_urls_standard?: InputMaybe<Scalars['String']>;
+  pay_later_name?: InputMaybe<Scalars['String']>;
+  pay_later_redirect_url?: InputMaybe<Scalars['String']>;
+  pay_now_asset_urls_descriptive?: InputMaybe<Scalars['String']>;
+  pay_now_asset_urls_standard?: InputMaybe<Scalars['String']>;
+  pay_now_name?: InputMaybe<Scalars['String']>;
+  pay_now_redirect_url?: InputMaybe<Scalars['String']>;
+  pay_over_time_asset_urls_descriptive?: InputMaybe<Scalars['String']>;
+  pay_over_time_asset_urls_standard?: InputMaybe<Scalars['String']>;
+  pay_over_time_name?: InputMaybe<Scalars['String']>;
+  pay_over_time_redirect_url?: InputMaybe<Scalars['String']>;
+  payment_method_categories?: InputMaybe<Scalars['String']>;
+  purchase_country?: InputMaybe<Scalars['String']>;
+  purchase_type?: InputMaybe<Scalars['String']>;
+  redirect_url?: InputMaybe<Scalars['String']>;
+  shipping_delay?: InputMaybe<Scalars['Int']>;
+  shipping_first_name?: InputMaybe<Scalars['String']>;
+  shipping_last_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeMultibancoInput = {
+  entity?: InputMaybe<Scalars['String']>;
+  reference?: InputMaybe<Scalars['String']>;
+  refund_account_holder_address_city?: InputMaybe<Scalars['String']>;
+  refund_account_holder_address_country?: InputMaybe<Scalars['String']>;
+  refund_account_holder_address_line1?: InputMaybe<Scalars['String']>;
+  refund_account_holder_address_line2?: InputMaybe<Scalars['String']>;
+  refund_account_holder_address_postal_code?: InputMaybe<Scalars['String']>;
+  refund_account_holder_address_state?: InputMaybe<Scalars['String']>;
+  refund_account_holder_name?: InputMaybe<Scalars['String']>;
+  refund_iban?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceOwnerInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+  /** Owner's email address. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Owner's full name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Owner's phone number (including extension). */
+  phone?: InputMaybe<Scalars['String']>;
+  verified_address?: InputMaybe<Stripe_AddressInput>;
+  /** Verified owner's email address. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  verified_email?: InputMaybe<Scalars['String']>;
+  /** Verified owner's full name. Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  verified_name?: InputMaybe<Scalars['String']>;
+  /** Verified owner's phone number (including extension). Verified values are verified or provided by the payment method directly (and if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  verified_phone?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeP24Input = {
+  reference?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceReceiverFlowInput = {
+  /** The address of the receiver source. This is the value that should be communicated to the customer to send their funds to. */
+  address?: InputMaybe<Scalars['String']>;
+  /** The total amount that was moved to your balance. This is almost always equal to the amount charged. In rare cases when customers deposit excess funds and we are unable to refund those, those funds get moved to your balance and show up in amount_charged as well. The amount charged is expressed in the source's currency. */
+  amount_charged?: InputMaybe<Scalars['Int']>;
+  /** The total amount received by the receiver source. `amount_received = amount_returned + amount_charged` should be true for consumed sources unless customers deposit excess funds. The amount received is expressed in the source's currency. */
+  amount_received?: InputMaybe<Scalars['Int']>;
+  /** The total amount that was returned to the customer. The amount returned is expressed in the source's currency. */
+  amount_returned?: InputMaybe<Scalars['Int']>;
+  /** Type of refund attribute method, one of `email`, `manual`, or `none`. */
+  refund_attributes_method?: InputMaybe<Scalars['String']>;
+  /** Type of refund attribute status, one of `missing`, `requested`, or `available`. */
+  refund_attributes_status?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceRedirectFlowInput = {
+  /** The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`. */
+  failure_reason?: InputMaybe<Scalars['String']>;
+  /** The URL you provide to redirect the customer to after they authenticated their payment. */
+  return_url?: InputMaybe<Scalars['String']>;
+  /** The status of the redirect, either `pending` (ready to be used by your customer to authenticate the transaction), `succeeded` (succesful authentication, cannot be reused) or `not_required` (redirect should not be used) or `failed` (failed authentication, cannot be reused). */
+  status?: InputMaybe<Scalars['String']>;
+  /** The URL provided to you to redirect a customer to as part of a `redirect` authentication flow. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeSepaDebitInput = {
+  bank_code?: InputMaybe<Scalars['String']>;
+  branch_code?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+  mandate_reference?: InputMaybe<Scalars['String']>;
+  mandate_url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeSofortInput = {
+  bank_code?: InputMaybe<Scalars['String']>;
+  bank_name?: InputMaybe<Scalars['String']>;
+  bic?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  iban_last4?: InputMaybe<Scalars['String']>;
+  preferred_language?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceOrderInput = {
+  /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** The email address of the customer placing the order. */
+  email?: InputMaybe<Scalars['String']>;
+  /** List of items constituting the order. */
+  items?: InputMaybe<Array<InputMaybe<Stripe_SourceOrderItemInput>>>;
+  shipping?: InputMaybe<Stripe_ShippingInput>;
+};
+
+export type Stripe_SourceOrderItemInput = {
+  /** The amount (price) for this order item. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** This currency of this order item. Required when `amount` is present. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Human-readable description for this order item. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The ID of the associated object for this line item. Expandable if not null (e.g., expandable to a SKU). */
+  parent?: InputMaybe<Scalars['String']>;
+  /** The quantity of this order item. When type is `sku`, this is the number of instances of the SKU to be ordered. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The type of this order item. Must be `sku`, `tax`, or `shipping`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_ShippingInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+  /** The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. */
+  carrier?: InputMaybe<Scalars['String']>;
+  /** Recipient name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Recipient phone (including extension). */
+  phone?: InputMaybe<Scalars['String']>;
+  /** The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas. */
+  tracking_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeThreeDSecureInput = {
+  address_line1_check?: InputMaybe<Scalars['String']>;
+  address_zip_check?: InputMaybe<Scalars['String']>;
+  authenticated?: InputMaybe<Scalars['Boolean']>;
+  brand?: InputMaybe<Scalars['String']>;
+  card?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  cvc_check?: InputMaybe<Scalars['String']>;
+  dynamic_last4?: InputMaybe<Scalars['String']>;
+  exp_month?: InputMaybe<Scalars['Int']>;
+  exp_year?: InputMaybe<Scalars['Int']>;
+  fingerprint?: InputMaybe<Scalars['String']>;
+  funding?: InputMaybe<Scalars['String']>;
+  last4?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  three_d_secure?: InputMaybe<Scalars['String']>;
+  tokenization_method?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SourceTypeWechatInput = {
+  prepay_id?: InputMaybe<Scalars['String']>;
+  qr_code_url?: InputMaybe<Scalars['String']>;
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_DiscountInput = {
+  /** The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode. */
+  checkout_session?: InputMaybe<Scalars['String']>;
+  coupon?: InputMaybe<Stripe_CouponInput>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null. */
+  end?: InputMaybe<Scalars['Int']>;
+  /** The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice. */
+  invoice?: InputMaybe<Scalars['String']>;
+  /** The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item. */
+  invoice_item?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  promotion_code?: InputMaybe<PromotionCodeWrappedStringInputUnion>;
+  /** Date that the coupon was applied. */
+  start?: InputMaybe<Scalars['Int']>;
+  /** The subscription that this coupon is applied to, if it is applied to a particular subscription. */
+  subscription?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_CouponInput = {
+  /** Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer. */
+  amount_off?: InputMaybe<Scalars['Int']>;
+  applies_to?: InputMaybe<Stripe_CouponAppliesToInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** If `amount_off` has been set, the three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the amount to take off. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** One of `forever`, `once`, and `repeating`. Describes how long a customer who applies this coupon will get the discount. */
+  duration?: InputMaybe<UpdateProfileResultDuration>;
+  /** If `duration` is `repeating`, the number of months the coupon applies. Null if coupon `duration` is `forever` or `once`. */
+  duration_in_months?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Maximum number of times this coupon can be redeemed, in total, across all customers, before it is no longer valid. */
+  max_redemptions?: InputMaybe<Scalars['Int']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** Name of the coupon displayed to customers on for instance invoices or receipts. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** Percent that will be taken off the subtotal of any invoices for this customer for the duration of the coupon. For example, a coupon with percent_off of 50 will make a %s100 invoice %s50 instead. */
+  percent_off?: InputMaybe<Scalars['Float']>;
+  /** Date after which the coupon can no longer be redeemed. */
+  redeem_by?: InputMaybe<Scalars['Int']>;
+  /** Number of times this coupon has been applied to a customer. */
+  times_redeemed?: InputMaybe<Scalars['Int']>;
+  /** Taking account of the above properties, whether this coupon can still be applied to a customer. */
+  valid?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_CouponAppliesToInput = {
+  /** A list of product IDs this coupon applies to */
+  products?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export enum UpdateProfileResultDuration {
+  Forever = 'forever',
+  Once = 'once',
+  Repeating = 'repeating'
+}
+
+export type PromotionCodeWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  promotionCode?: InputMaybe<Stripe_PromotionCodeInput>;
+};
+
+export type Stripe_PromotionCodeInput = {
+  /** Whether the promotion code is currently active. A promotion code is only active if the coupon is also valid. */
+  active?: InputMaybe<Scalars['Boolean']>;
+  /** The customer-facing code. Regardless of case, this code must be unique across all active promotion codes for each customer. */
+  code?: InputMaybe<Scalars['String']>;
+  coupon?: InputMaybe<Stripe_CouponInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<CustomerDeletedCustomerWrappedStringInputUnion>;
+  /** Date at which the promotion code can no longer be redeemed. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Maximum number of times this promotion code can be redeemed. */
+  max_redemptions?: InputMaybe<Scalars['Int']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  restrictions?: InputMaybe<Stripe_PromotionCodesResourceRestrictionsInput>;
+  /** Number of times this promotion code has been used. */
+  times_redeemed?: InputMaybe<Scalars['Int']>;
+};
+
+export type CustomerDeletedCustomerWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  customer?: InputMaybe<Stripe_CustomerInput>;
+  deletedCustomer?: InputMaybe<Stripe_DeletedCustomerInput>;
+};
+
+export type Stripe_DeletedCustomerInput = {
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_PromotionCodesResourceRestrictionsInput = {
+  /** A Boolean indicating if the Promotion Code should only be redeemed for Customers without any successful payments or invoices */
+  first_time_transaction?: InputMaybe<Scalars['Boolean']>;
+  /** Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work). */
+  minimum_amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO code](https://stripe.com/docs/currencies) for minimum_amount */
+  minimum_amount_currency?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_InvoiceSettingCustomerSettingInput = {
+  /** Default custom fields to be displayed on invoices for this customer. */
+  custom_fields?: InputMaybe<Array<InputMaybe<Stripe_InvoiceSettingCustomFieldInput>>>;
+  default_payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  /** Default footer to be displayed on invoices for this customer. */
+  footer?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_InvoiceSettingCustomFieldInput = {
+  /** The name of the custom field. */
+  name?: InputMaybe<Scalars['String']>;
+  /** The value of the custom field. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+export type PaymentMethodWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  paymentMethod?: InputMaybe<Stripe_PaymentMethodInput>;
+};
+
+export type Stripe_PaymentMethodInput = {
+  acss_debit?: InputMaybe<Stripe_PaymentMethodAcssDebitInput>;
+  afterpay_clearpay?: InputMaybe<Stripe_PaymentMethodAfterpayClearpayInput>;
+  alipay?: InputMaybe<Stripe_PaymentFlowsPrivatePaymentMethodsAlipayInput>;
+  au_becs_debit?: InputMaybe<Stripe_PaymentMethodAuBecsDebitInput>;
+  bacs_debit?: InputMaybe<Stripe_PaymentMethodBacsDebitInput>;
+  bancontact?: InputMaybe<Stripe_PaymentMethodBancontactInput>;
+  billing_details?: InputMaybe<Stripe_BillingDetailsInput>;
+  boleto?: InputMaybe<Stripe_PaymentMethodBoletoInput>;
+  card?: InputMaybe<Stripe_PaymentMethodCardInput>;
+  card_present?: InputMaybe<Stripe_PaymentMethodCardPresentInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<CustomerWrappedStringInputUnion>;
+  customer_balance?: InputMaybe<Stripe_PaymentMethodCustomerBalanceInput>;
+  eps?: InputMaybe<Stripe_PaymentMethodEpsInput>;
+  fpx?: InputMaybe<Stripe_PaymentMethodFpxInput>;
+  giropay?: InputMaybe<Stripe_PaymentMethodGiropayInput>;
+  grabpay?: InputMaybe<Stripe_PaymentMethodGrabpayInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  ideal?: InputMaybe<Stripe_PaymentMethodIdealInput>;
+  interac_present?: InputMaybe<Stripe_PaymentMethodInteracPresentInput>;
+  klarna?: InputMaybe<Stripe_PaymentMethodKlarnaInput>;
+  konbini?: InputMaybe<Stripe_PaymentMethodKonbiniInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  oxxo?: InputMaybe<Stripe_PaymentMethodOxxoInput>;
+  p24?: InputMaybe<Stripe_PaymentMethodP24Input>;
+  paynow?: InputMaybe<Stripe_PaymentMethodPaynowInput>;
+  sepa_debit?: InputMaybe<Stripe_PaymentMethodSepaDebitInput>;
+  sofort?: InputMaybe<Stripe_PaymentMethodSofortInput>;
+  /** The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  us_bank_account?: InputMaybe<Stripe_PaymentMethodUsBankAccountInput>;
+  wechat_pay?: InputMaybe<Stripe_PaymentMethodWechatPayInput>;
+};
+
+export type Stripe_PaymentMethodAcssDebitInput = {
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Institution number of the bank account. */
+  institution_number?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Transit number of the bank account. */
+  transit_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodAfterpayClearpayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentFlowsPrivatePaymentMethodsAlipayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodAuBecsDebitInput = {
+  /** Six-digit number identifying bank and branch associated with this bank account. */
+  bsb_number?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodBacsDebitInput = {
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Sort code of the bank account. (e.g., `10-20-30`) */
+  sort_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodBancontactInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_BillingDetailsInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+  /** Email address. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Full name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Billing phone number (including extension). */
+  phone?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodBoletoInput = {
+  /** Uniquely identifies the customer tax id (CNPJ or CPF) */
+  tax_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodCardInput = {
+  /** Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
+  brand?: InputMaybe<Scalars['String']>;
+  checks?: InputMaybe<Stripe_PaymentMethodCardChecksInput>;
+  /** Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Two-digit number representing the card's expiration month. */
+  exp_month?: InputMaybe<Scalars['Int']>;
+  /** Four-digit number representing the card's expiration year. */
+  exp_year?: InputMaybe<Scalars['Int']>;
+  /**
+   * Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+   *
+   * *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
+   */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`. */
+  funding?: InputMaybe<Scalars['String']>;
+  generated_from?: InputMaybe<Stripe_PaymentMethodCardGeneratedCardInput>;
+  /** The last four digits of the card. */
+  last4?: InputMaybe<Scalars['String']>;
+  networks?: InputMaybe<Stripe_NetworksInput>;
+  three_d_secure_usage?: InputMaybe<Stripe_ThreeDSecureUsageInput>;
+  wallet?: InputMaybe<Stripe_PaymentMethodCardWalletInput>;
+};
+
+export type Stripe_PaymentMethodCardChecksInput = {
+  /** If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
+  address_line1_check?: InputMaybe<Scalars['String']>;
+  /** If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
+  address_postal_code_check?: InputMaybe<Scalars['String']>;
+  /** If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
+  cvc_check?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodCardGeneratedCardInput = {
+  /** The charge that created this object. */
+  charge?: InputMaybe<Scalars['String']>;
+  payment_method_details?: InputMaybe<Stripe_CardGeneratedFromPaymentMethodDetailsInput>;
+  setup_attempt?: InputMaybe<SetupAttemptWrappedStringInputUnion>;
+};
+
+export type Stripe_CardGeneratedFromPaymentMethodDetailsInput = {
+  card_present?: InputMaybe<Stripe_PaymentMethodDetailsCardPresentInput>;
+  /** The type of payment method transaction-specific details from the transaction that generated this `card` payment method. Always `card_present`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardPresentInput = {
+  /** The authorized amount */
+  amount_authorized?: InputMaybe<Scalars['Int']>;
+  /** Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
+  brand?: InputMaybe<Scalars['String']>;
+  /** When using manual capture, a future timestamp after which the charge will be automatically refunded if uncaptured. */
+  capture_before?: InputMaybe<Scalars['Int']>;
+  /** The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay. */
+  cardholder_name?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Authorization response cryptogram. */
+  emv_auth_data?: InputMaybe<Scalars['String']>;
+  /** Two-digit number representing the card's expiration month. */
+  exp_month?: InputMaybe<Scalars['Int']>;
+  /** Four-digit number representing the card's expiration year. */
+  exp_year?: InputMaybe<Scalars['Int']>;
+  /**
+   * Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+   *
+   * *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
+   */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`. */
+  funding?: InputMaybe<Scalars['String']>;
+  /** ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod. */
+  generated_card?: InputMaybe<Scalars['String']>;
+  /** Whether this [PaymentIntent](https://stripe.com/docs/api/payment_intents) is eligible for incremental authorizations. Request support using [request_incremental_authorization_support](https://stripe.com/docs/api/payment_intents/create#create_payment_intent-payment_method_options-card_present-request_incremental_authorization_support). */
+  incremental_authorization_supported?: InputMaybe<Scalars['Boolean']>;
+  /** The last four digits of the card. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
+  network?: InputMaybe<Scalars['String']>;
+  /** Defines whether the authorized amount can be over-captured or not */
+  overcapture_supported?: InputMaybe<Scalars['Boolean']>;
+  /** How card details were read in this transaction. */
+  read_method?: InputMaybe<UpdateProfileResultReadMethod>;
+  receipt?: InputMaybe<Stripe_PaymentMethodDetailsCardPresentReceiptInput>;
+};
+
+export enum UpdateProfileResultReadMethod {
+  ContactEmv = 'contact_emv',
+  ContactlessEmv = 'contactless_emv',
+  ContactlessMagstripeMode = 'contactless_magstripe_mode',
+  MagneticStripeFallback = 'magnetic_stripe_fallback',
+  MagneticStripeTrack2 = 'magnetic_stripe_track2'
+}
+
+export type Stripe_PaymentMethodDetailsCardPresentReceiptInput = {
+  /** The type of account being debited or credited */
+  account_type?: InputMaybe<UpdateProfileResultAccountType>;
+  /** EMV tag 9F26, cryptogram generated by the integrated circuit chip. */
+  application_cryptogram?: InputMaybe<Scalars['String']>;
+  /** Mnenomic of the Application Identifier. */
+  application_preferred_name?: InputMaybe<Scalars['String']>;
+  /** Identifier for this transaction. */
+  authorization_code?: InputMaybe<Scalars['String']>;
+  /** EMV tag 8A. A code returned by the card issuer. */
+  authorization_response_code?: InputMaybe<Scalars['String']>;
+  /** How the cardholder verified ownership of the card. */
+  cardholder_verification_method?: InputMaybe<Scalars['String']>;
+  /** EMV tag 84. Similar to the application identifier stored on the integrated circuit chip. */
+  dedicated_file_name?: InputMaybe<Scalars['String']>;
+  /** The outcome of a series of EMV functions performed by the card reader. */
+  terminal_verification_results?: InputMaybe<Scalars['String']>;
+  /** An indication of various EMV functions performed during the transaction. */
+  transaction_status_information?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultAccountType {
+  Checking = 'checking',
+  Credit = 'credit',
+  Prepaid = 'prepaid',
+  Unknown = 'unknown'
+}
+
+export type SetupAttemptWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  setupAttempt?: InputMaybe<Stripe_SetupAttemptInput>;
+};
+
+export type Stripe_SetupAttemptInput = {
+  application?: InputMaybe<ApplicationWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<CustomerDeletedCustomerWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  on_behalf_of?: InputMaybe<AccountWrappedStringInputUnion>;
+  payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  payment_method_details?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsInput>;
+  setup_error?: InputMaybe<Stripe_ApiErrorsInput>;
+  setup_intent?: InputMaybe<SetupIntentWrappedStringInputUnion>;
+  /** Status of this SetupAttempt, one of `requires_confirmation`, `requires_action`, `processing`, `succeeded`, `failed`, or `abandoned`. */
+  status?: InputMaybe<Scalars['String']>;
+  /** The value of [usage](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`. */
+  usage?: InputMaybe<Scalars['String']>;
+};
+
+export type ApplicationWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  application?: InputMaybe<Stripe_ApplicationInput>;
+};
+
+export type Stripe_ApplicationInput = {
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The name of the application. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsInput = {
+  acss_debit?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsAcssDebitInput>;
+  au_becs_debit?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsAuBecsDebitInput>;
+  bacs_debit?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsBacsDebitInput>;
+  bancontact?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsBancontactInput>;
+  boleto?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsBoletoInput>;
+  card?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsCardInput>;
+  card_present?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsCardPresentInput>;
+  ideal?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsIdealInput>;
+  sepa_debit?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsSepaDebitInput>;
+  sofort?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsSofortInput>;
+  /** The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method. */
+  type?: InputMaybe<Scalars['String']>;
+  us_bank_account?: InputMaybe<Stripe_SetupAttemptPaymentMethodDetailsUsBankAccountInput>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsAcssDebitInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsAuBecsDebitInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsBacsDebitInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsBancontactInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Bank Identifier Code of the bank associated with the bank account. */
+  bic?: InputMaybe<Scalars['String']>;
+  generated_sepa_debit?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  generated_sepa_debit_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Last four characters of the IBAN. */
+  iban_last4?: InputMaybe<Scalars['String']>;
+  /**
+   * Preferred language of the Bancontact authorization page that the customer is redirected to.
+   * Can be one of `en`, `de`, `fr`, or `nl`
+   */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+  /**
+   * Owner's verified full name. Values are verified or provided by Bancontact directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type MandateWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  mandate?: InputMaybe<Stripe_MandateInput>;
+};
+
+export type Stripe_MandateInput = {
+  customer_acceptance?: InputMaybe<Stripe_CustomerAcceptanceInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  multi_use?: InputMaybe<Stripe_MandateMultiUseInput>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  payment_method_details?: InputMaybe<Stripe_MandatePaymentMethodDetailsInput>;
+  single_use?: InputMaybe<Stripe_MandateSingleUseInput>;
+  /** The status of the mandate, which indicates whether it can be used to initiate a payment. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** The type of the mandate. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_CustomerAcceptanceInput = {
+  /** The time at which the customer accepted the Mandate. */
+  accepted_at?: InputMaybe<Scalars['Int']>;
+  offline?: InputMaybe<Stripe_OfflineAcceptanceInput>;
+  online?: InputMaybe<Stripe_OnlineAcceptanceInput>;
+  /** The type of customer acceptance information included with the Mandate. One of `online` or `offline`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_OfflineAcceptanceInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_OnlineAcceptanceInput = {
+  /** The IP address from which the Mandate was accepted by the customer. */
+  ip_address?: InputMaybe<Scalars['String']>;
+  /** The user agent of the browser from which the Mandate was accepted by the customer. */
+  user_agent?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_MandateMultiUseInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_MandatePaymentMethodDetailsInput = {
+  acss_debit?: InputMaybe<Stripe_MandateAcssDebitInput>;
+  au_becs_debit?: InputMaybe<Stripe_MandateAuBecsDebitInput>;
+  bacs_debit?: InputMaybe<Stripe_MandateBacsDebitInput>;
+  card?: InputMaybe<Stripe_CardMandatePaymentMethodDetailsInput>;
+  sepa_debit?: InputMaybe<Stripe_MandateSepaDebitInput>;
+  /** The type of the payment method associated with this mandate. An additional hash is included on `payment_method_details` with a name matching this value. It contains mandate information specific to the payment method. */
+  type?: InputMaybe<Scalars['String']>;
+  us_bank_account?: InputMaybe<Stripe_MandateUsBankAccountInput>;
+};
+
+export type Stripe_MandateAcssDebitInput = {
+  /** List of Stripe products where this mandate can be selected automatically. */
+  default_for?: InputMaybe<Array<InputMaybe<UpdateProfileResultDefaultFor>>>;
+  /** Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'. */
+  interval_description?: InputMaybe<Scalars['String']>;
+  /** Payment schedule for the mandate. */
+  payment_schedule?: InputMaybe<UpdateProfileResultPaymentSchedule>;
+  /** Transaction type of the mandate. */
+  transaction_type?: InputMaybe<UpdateProfileResultTransactionType>;
+};
+
+export enum UpdateProfileResultDefaultFor {
+  Invoice = 'invoice',
+  Subscription = 'subscription'
+}
+
+export enum UpdateProfileResultPaymentSchedule {
+  Combined = 'combined',
+  Interval = 'interval',
+  Sporadic = 'sporadic'
+}
+
+export enum UpdateProfileResultTransactionType {
+  Business = 'business',
+  Personal = 'personal'
+}
+
+export type Stripe_MandateAuBecsDebitInput = {
+  /** The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_MandateBacsDebitInput = {
+  /** The status of the mandate on the Bacs network. Can be one of `pending`, `revoked`, `refused`, or `accepted`. */
+  network_status?: InputMaybe<UpdateProfileResultNetworkStatus>;
+  /** The unique reference identifying the mandate on the Bacs network. */
+  reference?: InputMaybe<Scalars['String']>;
+  /** The URL that will contain the mandate that the customer has signed. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultNetworkStatus {
+  Accepted = 'accepted',
+  Pending = 'pending',
+  Refused = 'refused',
+  Revoked = 'revoked'
+}
+
+export type Stripe_CardMandatePaymentMethodDetailsInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_MandateSepaDebitInput = {
+  /** The unique reference of the mandate. */
+  reference?: InputMaybe<Scalars['String']>;
+  /** The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_MandateUsBankAccountInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_MandateSingleUseInput = {
+  /** On a single use mandate, the amount of the payment. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** On a single use mandate, the currency of the payment. */
+  currency?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultStatus {
+  Deleted = 'deleted',
+  Draft = 'draft',
+  Open = 'open',
+  Paid = 'paid',
+  Uncollectible = 'uncollectible',
+  Void = 'void'
+}
+
+export enum UpdateProfileResultPreferredLanguage {
+  De = 'de',
+  En = 'en',
+  Fr = 'fr',
+  Nl = 'nl'
+}
+
+export type Stripe_SetupAttemptPaymentMethodDetailsBoletoInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsCardInput = {
+  three_d_secure?: InputMaybe<Stripe_ThreeDSecureDetailsInput>;
+};
+
+export type Stripe_ThreeDSecureDetailsInput = {
+  /**
+   * For authenticated transactions: how the customer was authenticated by
+   * the issuing bank.
+   */
+  authentication_flow?: InputMaybe<UpdateProfileResultAuthenticationFlow>;
+  /** Indicates the outcome of 3D Secure authentication. */
+  result?: InputMaybe<UpdateProfileResultResult>;
+  /**
+   * Additional information about why 3D Secure succeeded or failed based
+   * on the `result`.
+   */
+  result_reason?: InputMaybe<UpdateProfileResultResultReason>;
+  /** The version of 3D Secure that was used. */
+  version?: InputMaybe<UpdateProfileResultVersion>;
+};
+
+export enum UpdateProfileResultAuthenticationFlow {
+  Challenge = 'challenge',
+  Frictionless = 'frictionless'
+}
+
+export enum UpdateProfileResultResult {
+  AttemptAcknowledged = 'attempt_acknowledged',
+  Authenticated = 'authenticated',
+  Failed = 'failed',
+  NotSupported = 'not_supported',
+  ProcessingError = 'processing_error'
+}
+
+export enum UpdateProfileResultResultReason {
+  Abandoned = 'abandoned',
+  Bypassed = 'bypassed',
+  Canceled = 'canceled',
+  CardNotEnrolled = 'card_not_enrolled',
+  NetworkNotSupported = 'network_not_supported',
+  ProtocolError = 'protocol_error',
+  Rejected = 'rejected'
+}
+
+export enum UpdateProfileResultVersion {
+  Onedot0Dot2 = 'ONEDOT0DOT2',
+  Twodot1Dot0 = 'TWODOT1DOT0',
+  Twodot2Dot0 = 'TWODOT2DOT0'
+}
+
+export type Stripe_SetupAttemptPaymentMethodDetailsCardPresentInput = {
+  generated_card?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsIdealInput = {
+  /** The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `revolut`, `sns_bank`, `triodos_bank`, or `van_lanschot`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+  /** The Bank Identifier Code of the customer's bank. */
+  bic?: InputMaybe<UpdateProfileResultBic>;
+  generated_sepa_debit?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  generated_sepa_debit_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Last four characters of the IBAN. */
+  iban_last4?: InputMaybe<Scalars['String']>;
+  /**
+   * Owner's verified full name. Values are verified or provided by iDEAL directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultBank {
+  AbnAmro = 'abn_amro',
+  AsnBank = 'asn_bank',
+  Bunq = 'bunq',
+  Handelsbanken = 'handelsbanken',
+  Ing = 'ing',
+  Knab = 'knab',
+  Moneyou = 'moneyou',
+  Rabobank = 'rabobank',
+  Regiobank = 'regiobank',
+  Revolut = 'revolut',
+  SnsBank = 'sns_bank',
+  TriodosBank = 'triodos_bank',
+  VanLanschot = 'van_lanschot'
+}
+
+export enum UpdateProfileResultBic {
+  Abnanl2A = 'ABNANL2A',
+  Asnbnl21 = 'ASNBNL21',
+  Bunqnl2A = 'BUNQNL2A',
+  Fvlbnl22 = 'FVLBNL22',
+  Handnl2A = 'HANDNL2A',
+  Ingbnl2A = 'INGBNL2A',
+  Knabnl2H = 'KNABNL2H',
+  Moyonl21 = 'MOYONL21',
+  Rabonl2U = 'RABONL2U',
+  Rbrbnl21 = 'RBRBNL21',
+  Revolt21 = 'REVOLT21',
+  Snsbnl2A = 'SNSBNL2A',
+  Trionl2U = 'TRIONL2U'
+}
+
+export type Stripe_SetupAttemptPaymentMethodDetailsSepaDebitInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsSofortInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Bank Identifier Code of the bank associated with the bank account. */
+  bic?: InputMaybe<Scalars['String']>;
+  generated_sepa_debit?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  generated_sepa_debit_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Last four characters of the IBAN. */
+  iban_last4?: InputMaybe<Scalars['String']>;
+  /**
+   * Preferred language of the Sofort authorization page that the customer is redirected to.
+   * Can be one of `en`, `de`, `fr`, or `nl`
+   */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+  /**
+   * Owner's verified full name. Values are verified or provided by Sofort directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SetupAttemptPaymentMethodDetailsUsBankAccountInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_ApiErrorsInput = {
+  /** For card errors, the ID of the failed charge. */
+  charge?: InputMaybe<Scalars['String']>;
+  /** For some errors that could be handled programmatically, a short string indicating the [error code](https://stripe.com/docs/error-codes) reported. */
+  code?: InputMaybe<Scalars['String']>;
+  /** For card errors resulting from a card issuer decline, a short string indicating the [card issuer's reason for the decline](https://stripe.com/docs/declines#issuer-declines) if they provide one. */
+  decline_code?: InputMaybe<Scalars['String']>;
+  /** A URL to more information about the [error code](https://stripe.com/docs/error-codes) reported. */
+  doc_url?: InputMaybe<Scalars['String']>;
+  /** A human-readable message providing more details about the error. For card errors, these messages can be shown to your users. */
+  message?: InputMaybe<Scalars['String']>;
+  /** If the error is parameter-specific, the parameter related to the error. For example, you can use this to display a message near the correct form field. */
+  param?: InputMaybe<Scalars['String']>;
+  payment_intent?: InputMaybe<Stripe_PaymentIntentInput>;
+  payment_method?: InputMaybe<Stripe_PaymentMethodInput>;
+  /** If the error is specific to the type of payment method, the payment method type that had a problem. This field is only populated for invoice-related errors. */
+  payment_method_type?: InputMaybe<Scalars['String']>;
+  setup_intent?: InputMaybe<Stripe_SetupIntentInput>;
+  source?: InputMaybe<BankAccountCardSourceInputUnion>;
+  /** The type of error returned. One of `api_error`, `card_error`, `idempotency_error`, or `invalid_request_error` */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_PaymentIntentInput = {
+  /** Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99). */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Amount that can be captured from this PaymentIntent. */
+  amount_capturable?: InputMaybe<Scalars['Int']>;
+  amount_details?: InputMaybe<Stripe_PaymentFlowsAmountDetailsInput>;
+  /** Amount that was collected by this PaymentIntent. */
+  amount_received?: InputMaybe<Scalars['Int']>;
+  application?: InputMaybe<ApplicationWrappedStringInputUnion>;
+  /** The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. The amount of the application fee collected will be capped at the total payment amount. For more information, see the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts). */
+  application_fee_amount?: InputMaybe<Scalars['Int']>;
+  automatic_payment_methods?: InputMaybe<Stripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput>;
+  /** Populated when `status` is `canceled`, this is the time at which the PaymentIntent was canceled. Measured in seconds since the Unix epoch. */
+  canceled_at?: InputMaybe<Scalars['Int']>;
+  /** Reason for cancellation of this PaymentIntent, either user-provided (`duplicate`, `fraudulent`, `requested_by_customer`, or `abandoned`) or generated by Stripe internally (`failed_invoice`, `void_invoice`, or `automatic`). */
+  cancellation_reason?: InputMaybe<UpdateProfileResultCancellationReason>;
+  /** Controls when the funds will be captured from the customer's account. */
+  capture_method?: InputMaybe<UpdateProfileResultCaptureMethod>;
+  /** Charges that were created by this PaymentIntent, if any. */
+  charges?: InputMaybe<UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertyInput>;
+  /**
+   * The client secret of this PaymentIntent. Used for client-side retrieval using a publishable key.
+   *
+   * The client secret can be used to complete a payment from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+   *
+   * Refer to our docs to [accept a payment](https://stripe.com/docs/payments/accept-a-payment?ui=elements) and learn about how `client_secret` should be handled.
+   */
+  client_secret?: InputMaybe<Scalars['String']>;
+  confirmation_method?: InputMaybe<UpdateProfileResultConfirmationMethod>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  invoice?: InputMaybe<InvoiceWrappedStringInputUnion>;
+  last_payment_error?: InputMaybe<Stripe_ApiErrorsInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. For more information, see the [documentation](https://stripe.com/docs/payments/payment-intents/creating-payment-intents#storing-information-in-metadata). */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  next_action?: InputMaybe<Stripe_PaymentIntentNextActionInput>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  on_behalf_of?: InputMaybe<AccountWrappedStringInputUnion>;
+  payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  payment_method_options?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsInput>;
+  /** The list of payment method types (e.g. card) that this PaymentIntent is allowed to use. */
+  payment_method_types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  processing?: InputMaybe<Stripe_PaymentIntentProcessingInput>;
+  /** Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails). */
+  receipt_email?: InputMaybe<Scalars['String']>;
+  review?: InputMaybe<ReviewWrappedStringInputUnion>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+  shipping?: InputMaybe<Stripe_ShippingInput>;
+  /** For non-card charges, you can use this value as the complete description that appears on your customers’ statements. Must contain at least one letter, maximum 22 characters. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** Provides information about a card payment that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor. */
+  statement_descriptor_suffix?: InputMaybe<Scalars['String']>;
+  /** Status of this PaymentIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `requires_capture`, `canceled`, or `succeeded`. Read more about each PaymentIntent [status](https://stripe.com/docs/payments/intents#intent-statuses). */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  transfer_data?: InputMaybe<Stripe_TransferDataInput>;
+  /** A string that identifies the resulting payment as part of a group. See the PaymentIntents [use case for connected accounts](https://stripe.com/docs/payments/connected-accounts) for details. */
+  transfer_group?: InputMaybe<Scalars['String']>;
+  invoiceItems?: InputMaybe<Array<InputMaybe<Stripe_InvoiceitemInput>>>;
+  /** The Stripe checkout session associated with this payment. */
+  sessionItems?: InputMaybe<Array<InputMaybe<Stripe_ItemInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+};
+
+export type Stripe_PaymentFlowsAmountDetailsInput = {
+  tip?: InputMaybe<Stripe_PaymentFlowsAmountDetailsResourceTipInput>;
+};
+
+export type Stripe_PaymentFlowsAmountDetailsResourceTipInput = {
+  /** Portion of the amount that corresponds to a tip. */
+  amount?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput = {
+  /** Automatically calculates compatible payment methods */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export enum UpdateProfileResultCancellationReason {
+  Abandoned = 'abandoned',
+  Automatic = 'automatic',
+  Duplicate = 'duplicate',
+  FailedInvoice = 'failed_invoice',
+  Fraudulent = 'fraudulent',
+  RequestedByCustomer = 'requested_by_customer',
+  VoidInvoice = 'void_invoice'
+}
+
+export enum UpdateProfileResultCaptureMethod {
+  Automatic = 'automatic',
+  Manual = 'manual'
+}
+
+/** Charges that were created by this PaymentIntent, if any. */
+export type UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertyInput = {
+  /** This list only contains the latest charge, even if there were previously multiple unsuccessful charges. To view all previous charges for a PaymentIntent, you can filter the charges list using the `payment_intent` [parameter](https://stripe.com/docs/api/charges/list#list_charges-payment_intent). */
+  data: Array<Stripe_ChargeInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_ChargeInput = {
+  /** Amount intended to be collected by this payment. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99). */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Amount in %s captured (can be less than the amount attribute on the charge if a partial capture was made). */
+  amount_captured?: InputMaybe<Scalars['Int']>;
+  /** Amount in %s refunded (can be less than the amount attribute on the charge if a partial refund was issued). */
+  amount_refunded?: InputMaybe<Scalars['Int']>;
+  application?: InputMaybe<ApplicationWrappedStringInputUnion>;
+  application_fee?: InputMaybe<ApplicationFeeWrappedStringInputUnion>;
+  /** The amount of the application fee (if any) requested for the charge. [See the Connect documentation](https://stripe.com/docs/connect/direct-charges#collecting-fees) for details. */
+  application_fee_amount?: InputMaybe<Scalars['Int']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  billing_details?: InputMaybe<Stripe_BillingDetailsInput>;
+  /** The full statement descriptor that is passed to card networks, and that is displayed on your customers' credit card and bank statements. Allows you to see what the statement descriptor looks like after the static and dynamic portions are combined. */
+  calculated_statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** If the charge was created without capturing, this Boolean represents whether it is still uncaptured or has since been captured. */
+  captured?: InputMaybe<Scalars['Boolean']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Whether the charge has been disputed. */
+  disputed?: InputMaybe<Scalars['Boolean']>;
+  failure_balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Error code explaining reason for charge failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes). */
+  failure_code?: InputMaybe<Scalars['String']>;
+  /** Message to user further explaining reason for charge failure if available. */
+  failure_message?: InputMaybe<Scalars['String']>;
+  fraud_details?: InputMaybe<Stripe_ChargeFraudDetailsInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  invoice?: InputMaybe<InvoiceWrappedStringInputUnion>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  on_behalf_of?: InputMaybe<AccountWrappedStringInputUnion>;
+  order?: InputMaybe<OrderWrappedStringInputUnion>;
+  outcome?: InputMaybe<Stripe_ChargeOutcomeInput>;
+  /** `true` if the charge succeeded, or was successfully authorized for later capture. */
+  paid?: InputMaybe<Scalars['Boolean']>;
+  payment_intent?: InputMaybe<PaymentIntentWrappedStringInputUnion>;
+  /** ID of the payment method used in this charge. */
+  payment_method?: InputMaybe<Scalars['String']>;
+  payment_method_details?: InputMaybe<Stripe_PaymentMethodDetailsInput>;
+  /** This is the email address that the receipt for this charge was sent to. */
+  receipt_email?: InputMaybe<Scalars['String']>;
+  /** This is the transaction number that appears on email receipts sent for this charge. This attribute will be `null` until a receipt has been sent. */
+  receipt_number?: InputMaybe<Scalars['String']>;
+  /** This is the URL to view the receipt for this charge. The receipt is kept up-to-date to the latest state of the charge, including any refunds. If the charge is for an Invoice, the receipt will be stylized as an Invoice receipt. */
+  receipt_url?: InputMaybe<Scalars['String']>;
+  /** Whether the charge has been fully refunded. If the charge is only partially refunded, this attribute will still be false. */
+  refunded?: InputMaybe<Scalars['Boolean']>;
+  /** A list of refunds that have been applied to the charge. */
+  refunds?: InputMaybe<UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertiesDataItemsPropertiesRefundsPropertyInput>;
+  review?: InputMaybe<ReviewWrappedStringInputUnion>;
+  shipping?: InputMaybe<Stripe_ShippingInput>;
+  source_transfer?: InputMaybe<TransferWrappedStringInputUnion>;
+  /** For card charges, use `statement_descriptor_suffix` instead. Otherwise, you can use this value as the complete description of a charge on your customers’ statements. Must contain at least one letter, maximum 22 characters. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** Provides information about the charge that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor. */
+  statement_descriptor_suffix?: InputMaybe<Scalars['String']>;
+  /** The status of the payment is either `succeeded`, `pending`, or `failed`. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  transfer?: InputMaybe<TransferWrappedStringInputUnion>;
+  transfer_data?: InputMaybe<Stripe_ChargeTransferDataInput>;
+  /** A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details. */
+  transfer_group?: InputMaybe<Scalars['String']>;
+};
+
+export type ApplicationFeeWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  applicationFee?: InputMaybe<Stripe_ApplicationFeeInput>;
+};
+
+export type Stripe_ApplicationFeeInput = {
+  account?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** Amount earned, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Amount in %s refunded (can be less than the amount attribute on the fee if a partial refund was issued) */
+  amount_refunded?: InputMaybe<Scalars['Int']>;
+  application?: InputMaybe<ApplicationWrappedStringInputUnion>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  originating_transaction?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Whether the fee has been fully refunded. If the fee is only partially refunded, this attribute will still be false. */
+  refunded?: InputMaybe<Scalars['Boolean']>;
+  /** A list of refunds that have been applied to the fee. */
+  refunds?: InputMaybe<PropertiesApplicationFeePropertiesRefundsPropertyInput>;
+};
+
+export type BalanceTransactionWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  balanceTransaction?: InputMaybe<Stripe_BalanceTransactionInput>;
+};
+
+export type Stripe_BalanceTransactionInput = {
+  /** Gross amount of the transaction, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** The date the transaction's net funds will become available in the Stripe balance. */
+  available_on?: InputMaybe<Scalars['Int']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The exchange rate used, if applicable, for this transaction. Specifically, if money was converted from currency A to currency B, then the `amount` in currency A, times `exchange_rate`, would be the `amount` in currency B. For example, suppose you charged a customer 10.00 EUR. Then the PaymentIntent's `amount` would be `1000` and `currency` would be `eur`. Suppose this was converted into 12.34 USD in your Stripe account. Then the BalanceTransaction's `amount` would be `1234`, `currency` would be `usd`, and `exchange_rate` would be `1.234`. */
+  exchange_rate?: InputMaybe<Scalars['Float']>;
+  /** Fees (in %s) paid for this transaction. */
+  fee?: InputMaybe<Scalars['Int']>;
+  /** Detailed breakdown of fees (in %s) paid for this transaction. */
+  fee_details?: InputMaybe<Array<InputMaybe<Stripe_FeeInput>>>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Net amount of the transaction, in %s. */
+  net?: InputMaybe<Scalars['Int']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** [Learn more](https://stripe.com/docs/reports/reporting-categories) about how reporting categories can help you understand balance transactions from an accounting perspective. */
+  reporting_category?: InputMaybe<Scalars['String']>;
+  source?: InputMaybe<ApplicationFeeChargeConnectCollectionTransferDisputeFeeRefundIssuingAuthorizationIssuingDisputeIssuingTransactionPayoutPlatformTaxFeeRefundReserveTransactionTaxDeductedAtSourceTopupTransferTransferReversalWrappedStringInputUnion>;
+  /** If the transaction's net funds are available in the Stripe balance yet. Either `available` or `pending`. */
+  status?: InputMaybe<Scalars['String']>;
+  /** Transaction type: `adjustment`, `advance`, `advance_funding`, `anticipation_repayment`, `application_fee`, `application_fee_refund`, `charge`, `connect_collection_transfer`, `contribution`, `issuing_authorization_hold`, `issuing_authorization_release`, `issuing_dispute`, `issuing_transaction`, `payment`, `payment_failure_refund`, `payment_refund`, `payout`, `payout_cancel`, `payout_failure`, `refund`, `refund_failure`, `reserve_transaction`, `reserved_funds`, `stripe_fee`, `stripe_fx_fee`, `tax_fee`, `topup`, `topup_reversal`, `transfer`, `transfer_cancel`, `transfer_failure`, or `transfer_refund`. [Learn more](https://stripe.com/docs/reports/balance-transaction-types) about balance transaction types and what they represent. If you are looking to classify transactions for accounting purposes, you might want to consider `reporting_category` instead. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_FeeInput = {
+  /** Amount of the fee, in cents. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** ID of the Connect application that earned the fee. */
+  application?: InputMaybe<Scalars['String']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Type of the fee, one of: `application_fee`, `stripe_fee` or `tax`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type ApplicationFeeChargeConnectCollectionTransferDisputeFeeRefundIssuingAuthorizationIssuingDisputeIssuingTransactionPayoutPlatformTaxFeeRefundReserveTransactionTaxDeductedAtSourceTopupTransferTransferReversalWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  applicationFee?: InputMaybe<Stripe_ApplicationFeeInput>;
+  charge?: InputMaybe<Stripe_ChargeInput>;
+  connectCollectionTransfer?: InputMaybe<Stripe_ConnectCollectionTransferInput>;
+  dispute?: InputMaybe<Stripe_DisputeInput>;
+  feeRefund?: InputMaybe<Stripe_FeeRefundInput>;
+  issuingAuthorization?: InputMaybe<Stripe_IssuingAuthorizationInput>;
+  issuingDispute?: InputMaybe<Stripe_IssuingDisputeInput>;
+  issuingTransaction?: InputMaybe<Stripe_IssuingTransactionInput>;
+  payout?: InputMaybe<Stripe_PayoutInput>;
+  platformTaxFee?: InputMaybe<Stripe_PlatformTaxFeeInput>;
+  refund?: InputMaybe<Stripe_RefundInput>;
+  reserveTransaction?: InputMaybe<Stripe_ReserveTransactionInput>;
+  taxDeductedAtSource?: InputMaybe<Stripe_TaxDeductedAtSourceInput>;
+  topup?: InputMaybe<Stripe_TopupInput>;
+  transfer?: InputMaybe<Stripe_TransferInput>;
+  transferReversal?: InputMaybe<Stripe_TransferReversalInput>;
+};
+
+export type Stripe_ConnectCollectionTransferInput = {
+  /** Amount transferred, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_DisputeInput = {
+  /** Disputed amount. Usually the amount of the charge, but can differ (usually because of currency fluctuation or because only part of the order is disputed). */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute. */
+  balance_transactions?: InputMaybe<Array<InputMaybe<Stripe_BalanceTransactionInput>>>;
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  evidence?: InputMaybe<Stripe_DisputeEvidenceInput>;
+  evidence_details?: InputMaybe<Stripe_DisputeEvidenceDetailsInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** If true, it is still possible to refund the disputed payment. Once the payment has been fully refunded, no further funds will be withdrawn from your Stripe account as a result of this dispute. */
+  is_charge_refundable?: InputMaybe<Scalars['Boolean']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  payment_intent?: InputMaybe<PaymentIntentWrappedStringInputUnion>;
+  /** Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Read more about [dispute reasons](https://stripe.com/docs/disputes/categories). */
+  reason?: InputMaybe<Scalars['String']>;
+  /** Current status of dispute. Possible values are `warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `charge_refunded`, `won`, or `lost`. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+};
+
+export type ChargeWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  charge?: InputMaybe<Stripe_ChargeInput>;
+};
+
+export type Stripe_DisputeEvidenceInput = {
+  /** Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity. */
+  access_activity_log?: InputMaybe<Scalars['String']>;
+  /** The billing address provided by the customer. */
+  billing_address?: InputMaybe<Scalars['String']>;
+  cancellation_policy?: InputMaybe<FileWrappedStringInputUnion>;
+  /** An explanation of how and when the customer was shown your refund policy prior to purchase. */
+  cancellation_policy_disclosure?: InputMaybe<Scalars['String']>;
+  /** A justification for why the customer's subscription was not canceled. */
+  cancellation_rebuttal?: InputMaybe<Scalars['String']>;
+  customer_communication?: InputMaybe<FileWrappedStringInputUnion>;
+  /** The email address of the customer. */
+  customer_email_address?: InputMaybe<Scalars['String']>;
+  /** The name of the customer. */
+  customer_name?: InputMaybe<Scalars['String']>;
+  /** The IP address that the customer used when making the purchase. */
+  customer_purchase_ip?: InputMaybe<Scalars['String']>;
+  customer_signature?: InputMaybe<FileWrappedStringInputUnion>;
+  duplicate_charge_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** An explanation of the difference between the disputed charge versus the prior charge that appears to be a duplicate. */
+  duplicate_charge_explanation?: InputMaybe<Scalars['String']>;
+  /** The Stripe ID for the prior charge which appears to be a duplicate of the disputed charge. */
+  duplicate_charge_id?: InputMaybe<Scalars['String']>;
+  /** A description of the product or service that was sold. */
+  product_description?: InputMaybe<Scalars['String']>;
+  receipt?: InputMaybe<FileWrappedStringInputUnion>;
+  refund_policy?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Documentation demonstrating that the customer was shown your refund policy prior to purchase. */
+  refund_policy_disclosure?: InputMaybe<Scalars['String']>;
+  /** A justification for why the customer is not entitled to a refund. */
+  refund_refusal_explanation?: InputMaybe<Scalars['String']>;
+  /** The date on which the customer received or began receiving the purchased service, in a clear human-readable format. */
+  service_date?: InputMaybe<Scalars['String']>;
+  service_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** The address to which a physical product was shipped. You should try to include as complete address information as possible. */
+  shipping_address?: InputMaybe<Scalars['String']>;
+  /** The delivery service that shipped a physical product, such as Fedex, UPS, USPS, etc. If multiple carriers were used for this purchase, please separate them with commas. */
+  shipping_carrier?: InputMaybe<Scalars['String']>;
+  /** The date on which a physical product began its route to the shipping address, in a clear human-readable format. */
+  shipping_date?: InputMaybe<Scalars['String']>;
+  shipping_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** The tracking number for a physical product, obtained from the delivery service. If multiple tracking numbers were generated for this purchase, please separate them with commas. */
+  shipping_tracking_number?: InputMaybe<Scalars['String']>;
+  uncategorized_file?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Any additional evidence or statements. */
+  uncategorized_text?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_DisputeEvidenceDetailsInput = {
+  /** Date by which evidence must be submitted in order to successfully challenge dispute. Will be null if the customer's bank or credit card company doesn't allow a response for this particular dispute. */
+  due_by?: InputMaybe<Scalars['Int']>;
+  /** Whether evidence has been staged for this dispute. */
+  has_evidence?: InputMaybe<Scalars['Boolean']>;
+  /** Whether the last evidence submission was submitted past the due date. Defaults to `false` if no evidence submissions have occurred. If `true`, then delivery of the latest evidence is *not* guaranteed. */
+  past_due?: InputMaybe<Scalars['Boolean']>;
+  /** The number of times evidence has been submitted. Typically, you may only submit evidence once. */
+  submission_count?: InputMaybe<Scalars['Int']>;
+};
+
+export type PaymentIntentWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  paymentIntent?: InputMaybe<Stripe_PaymentIntentInput>;
+};
+
+export type Stripe_FeeRefundInput = {
+  /** Amount, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  fee?: InputMaybe<ApplicationFeeWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_IssuingAuthorizationInput = {
+  /** The total amount that was authorized or rejected. This amount is in the card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
+  amount?: InputMaybe<Scalars['Int']>;
+  amount_details?: InputMaybe<Stripe_IssuingAuthorizationAmountDetailsInput>;
+  /** Whether the authorization has been approved. */
+  approved?: InputMaybe<Scalars['Boolean']>;
+  /** How the card details were provided. */
+  authorization_method?: InputMaybe<UpdateProfileResultAuthorizationMethod>;
+  /** List of balance transactions associated with this authorization. */
+  balance_transactions?: InputMaybe<Array<InputMaybe<Stripe_BalanceTransactionInput>>>;
+  card?: InputMaybe<Stripe_IssuingCardInput>;
+  cardholder?: InputMaybe<IssuingCardholderWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** The total amount that was authorized or rejected. This amount is in the `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
+  merchant_amount?: InputMaybe<Scalars['Int']>;
+  /** The currency that was presented to the cardholder for the authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  merchant_currency?: InputMaybe<Scalars['String']>;
+  merchant_data?: InputMaybe<Stripe_IssuingAuthorizationMerchantDataInput>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  pending_request?: InputMaybe<Stripe_IssuingAuthorizationPendingRequestInput>;
+  /** History of every time `pending_request` was approved/denied, either by you directly or by Stripe (e.g. based on your `spending_controls`). If the merchant changes the authorization by performing an [incremental authorization](https://stripe.com/docs/issuing/purchases/authorizations), you can look at this field to see the previous requests for the authorization. */
+  request_history?: InputMaybe<Array<InputMaybe<Stripe_IssuingAuthorizationRequestInput>>>;
+  /** The current status of the authorization in its lifecycle. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** List of [transactions](https://stripe.com/docs/api/issuing/transactions) associated with this authorization. */
+  transactions?: InputMaybe<Array<InputMaybe<Stripe_IssuingTransactionInput>>>;
+  verification_data?: InputMaybe<Stripe_IssuingAuthorizationVerificationDataInput>;
+  /** The digital wallet used for this authorization. One of `apple_pay`, `google_pay`, or `samsung_pay`. */
+  wallet?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingAuthorizationAmountDetailsInput = {
+  /** The fee charged by the ATM for the cash withdrawal. */
+  atm_fee?: InputMaybe<Scalars['Int']>;
+};
+
+export enum UpdateProfileResultAuthorizationMethod {
+  Chip = 'chip',
+  Contactless = 'contactless',
+  KeyedIn = 'keyed_in',
+  Online = 'online',
+  Swipe = 'swipe'
+}
+
+export type Stripe_IssuingCardInput = {
+  /** The brand of the card. */
+  brand?: InputMaybe<Scalars['String']>;
+  /** The reason why the card was canceled. */
+  cancellation_reason?: InputMaybe<UpdateProfileResultCancellationReason>;
+  cardholder?: InputMaybe<Stripe_IssuingCardholderInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint. */
+  cvc?: InputMaybe<Scalars['String']>;
+  /** The expiration month of the card. */
+  exp_month?: InputMaybe<Scalars['Int']>;
+  /** The expiration year of the card. */
+  exp_year?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The last 4 digits of the card number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint. */
+  number?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  replaced_by?: InputMaybe<IssuingCardWrappedStringInputUnion>;
+  replacement_for?: InputMaybe<IssuingCardWrappedStringInputUnion>;
+  /** The reason why the previous card needed to be replaced. */
+  replacement_reason?: InputMaybe<UpdateProfileResultReplacementReason>;
+  shipping?: InputMaybe<Stripe_IssuingCardShippingInput>;
+  spending_controls?: InputMaybe<Stripe_IssuingCardAuthorizationControlsInput>;
+  /** Whether authorizations can be approved on this card. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** The type of the card. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  wallets?: InputMaybe<Stripe_IssuingCardWalletsInput>;
+};
+
+export type Stripe_IssuingCardholderInput = {
+  billing?: InputMaybe<Stripe_IssuingCardholderAddressInput>;
+  company?: InputMaybe<Stripe_IssuingCardholderCompanyInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** The cardholder's email address. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  individual?: InputMaybe<Stripe_IssuingCardholderIndividualInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The cardholder's name. This will be printed on cards issued to them. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The cardholder's phone number. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://stripe.com/docs/issuing/3d-secure#when-is-3d-secure-applied) for more details. */
+  phone_number?: InputMaybe<Scalars['String']>;
+  requirements?: InputMaybe<Stripe_IssuingCardholderRequirementsInput>;
+  spending_controls?: InputMaybe<Stripe_IssuingCardholderAuthorizationControlsInput>;
+  /** Specifies whether to permit authorizations on this cardholder's cards. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** One of `individual` or `company`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_IssuingCardholderAddressInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+};
+
+export type Stripe_IssuingCardholderCompanyInput = {
+  /** Whether the company's business ID number was provided. */
+  tax_id_provided?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_IssuingCardholderIndividualInput = {
+  dob?: InputMaybe<Stripe_IssuingCardholderIndividualDobInput>;
+  /** The first name of this cardholder. */
+  first_name?: InputMaybe<Scalars['String']>;
+  /** The last name of this cardholder. */
+  last_name?: InputMaybe<Scalars['String']>;
+  verification?: InputMaybe<Stripe_IssuingCardholderVerificationInput>;
+};
+
+export type Stripe_IssuingCardholderIndividualDobInput = {
+  /** The day of birth, between 1 and 31. */
+  day?: InputMaybe<Scalars['Int']>;
+  /** The month of birth, between 1 and 12. */
+  month?: InputMaybe<Scalars['Int']>;
+  /** The four-digit year of birth. */
+  year?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_IssuingCardholderVerificationInput = {
+  document?: InputMaybe<Stripe_IssuingCardholderIdDocumentInput>;
+};
+
+export type Stripe_IssuingCardholderIdDocumentInput = {
+  back?: InputMaybe<FileWrappedStringInputUnion>;
+  front?: InputMaybe<FileWrappedStringInputUnion>;
+};
+
+export type Stripe_IssuingCardholderRequirementsInput = {
+  /** If `disabled_reason` is present, all cards will decline authorizations with `cardholder_verification_required` reason. */
+  disabled_reason?: InputMaybe<UpdateProfileResultDisabledReason>;
+  /** Array of fields that need to be collected in order to verify and re-enable the cardholder. */
+  past_due?: InputMaybe<Array<InputMaybe<UpdateProfileResultPastDue>>>;
+};
+
+export enum UpdateProfileResultDisabledReason {
+  Listed = 'listed',
+  RejectedDoTlisted = 'rejectedDOTlisted',
+  UnderReview = 'under_review'
+}
+
+export enum UpdateProfileResultPastDue {
+  CompanyDoTtaxId = 'companyDOTtax_id',
+  IndividualDoTdobDoTday = 'individualDOTdobDOTday',
+  IndividualDoTdobDoTmonth = 'individualDOTdobDOTmonth',
+  IndividualDoTdobDoTyear = 'individualDOTdobDOTyear',
+  IndividualDoTfirstName = 'individualDOTfirst_name',
+  IndividualDoTlastName = 'individualDOTlast_name',
+  IndividualDoTverificationDoTdocument = 'individualDOTverificationDOTdocument'
+}
+
+export type Stripe_IssuingCardholderAuthorizationControlsInput = {
+  /** Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`. */
+  allowed_categories?: InputMaybe<Array<InputMaybe<UpdateProfileResultAllowedCategories>>>;
+  /** Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`. */
+  blocked_categories?: InputMaybe<Array<InputMaybe<UpdateProfileResultBlockedCategories>>>;
+  /** Limit spending with amount-based rules that apply across this cardholder's cards. */
+  spending_limits?: InputMaybe<Array<InputMaybe<Stripe_IssuingCardholderSpendingLimitInput>>>;
+  /** Currency of the amounts within `spending_limits`. */
+  spending_limits_currency?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultAllowedCategories {
+  AcRefrigerationRepair = 'ac_refrigeration_repair',
+  AccountingBookkeepingServices = 'accounting_bookkeeping_services',
+  AdvertisingServices = 'advertising_services',
+  AgriculturalCooperative = 'agricultural_cooperative',
+  AirlinesAirCarriers = 'airlines_air_carriers',
+  AirportsFlyingFields = 'airports_flying_fields',
+  AmbulanceServices = 'ambulance_services',
+  AmusementParksCarnivals = 'amusement_parks_carnivals',
+  AntiqueReproductions = 'antique_reproductions',
+  AntiqueShops = 'antique_shops',
+  Aquariums = 'aquariums',
+  ArchitecturalSurveyingServices = 'architectural_surveying_services',
+  ArtDealersAndGalleries = 'art_dealers_and_galleries',
+  ArtistsSupplyAndCraftShops = 'artists_supply_and_craft_shops',
+  AutoAndHomeSupplyStores = 'auto_and_home_supply_stores',
+  AutoBodyRepairShops = 'auto_body_repair_shops',
+  AutoPaintShops = 'auto_paint_shops',
+  AutoServiceShops = 'auto_service_shops',
+  AutomatedCashDisburse = 'automated_cash_disburse',
+  AutomatedFuelDispensers = 'automated_fuel_dispensers',
+  AutomobileAssociations = 'automobile_associations',
+  AutomotivePartsAndAccessoriesStores = 'automotive_parts_and_accessories_stores',
+  AutomotiveTireStores = 'automotive_tire_stores',
+  BailAndBondPayments = 'bail_and_bond_payments',
+  Bakeries = 'bakeries',
+  BandsOrchestras = 'bands_orchestras',
+  BarberAndBeautyShops = 'barber_and_beauty_shops',
+  BettingCasinoGambling = 'betting_casino_gambling',
+  BicycleShops = 'bicycle_shops',
+  BilliardPoolEstablishments = 'billiard_pool_establishments',
+  BoatDealers = 'boat_dealers',
+  BoatRentalsAndLeases = 'boat_rentals_and_leases',
+  BookStores = 'book_stores',
+  BooksPeriodicalsAndNewspapers = 'books_periodicals_and_newspapers',
+  BowlingAlleys = 'bowling_alleys',
+  BusLines = 'bus_lines',
+  BusinessSecretarialSchools = 'business_secretarial_schools',
+  BuyingShoppingServices = 'buying_shopping_services',
+  CableSatelliteAndOtherPayTelevisionAndRadio = 'cable_satellite_and_other_pay_television_and_radio',
+  CameraAndPhotographicSupplyStores = 'camera_and_photographic_supply_stores',
+  CandyNutAndConfectioneryStores = 'candy_nut_and_confectionery_stores',
+  CarAndTruckDealersNewUsed = 'car_and_truck_dealers_new_used',
+  CarAndTruckDealersUsedOnly = 'car_and_truck_dealers_used_only',
+  CarRentalAgencies = 'car_rental_agencies',
+  CarWashes = 'car_washes',
+  CarpentryServices = 'carpentry_services',
+  CarpetUpholsteryCleaning = 'carpet_upholstery_cleaning',
+  Caterers = 'caterers',
+  CharitableAndSocialServiceOrganizationsFundraising = 'charitable_and_social_service_organizations_fundraising',
+  ChemicalsAndAlliedProducts = 'chemicals_and_allied_products',
+  ChildCareServices = 'child_care_services',
+  ChildrensAndInfantsWearStores = 'childrens_and_infants_wear_stores',
+  ChiropodistsPodiatrists = 'chiropodists_podiatrists',
+  Chiropractors = 'chiropractors',
+  CigarStoresAndStands = 'cigar_stores_and_stands',
+  CivicSocialFraternalAssociations = 'civic_social_fraternal_associations',
+  CleaningAndMaintenance = 'cleaning_and_maintenance',
+  ClothingRental = 'clothing_rental',
+  CollegesUniversities = 'colleges_universities',
+  CommercialEquipment = 'commercial_equipment',
+  CommercialFootwear = 'commercial_footwear',
+  CommercialPhotographyArtAndGraphics = 'commercial_photography_art_and_graphics',
+  CommuterTransportAndFerries = 'commuter_transport_and_ferries',
+  ComputerNetworkServices = 'computer_network_services',
+  ComputerProgramming = 'computer_programming',
+  ComputerRepair = 'computer_repair',
+  ComputerSoftwareStores = 'computer_software_stores',
+  ComputersPeripheralsAndSoftware = 'computers_peripherals_and_software',
+  ConcreteWorkServices = 'concrete_work_services',
+  ConstructionMaterials = 'construction_materials',
+  ConsultingPublicRelations = 'consulting_public_relations',
+  CorrespondenceSchools = 'correspondence_schools',
+  CosmeticStores = 'cosmetic_stores',
+  CounselingServices = 'counseling_services',
+  CountryClubs = 'country_clubs',
+  CourierServices = 'courier_services',
+  CourtCosts = 'court_costs',
+  CreditReportingAgencies = 'credit_reporting_agencies',
+  CruiseLines = 'cruise_lines',
+  DairyProductsStores = 'dairy_products_stores',
+  DanceHallStudiosSchools = 'dance_hall_studios_schools',
+  DatingEscortServices = 'dating_escort_services',
+  DentistsOrthodontists = 'dentists_orthodontists',
+  DepartmentStores = 'department_stores',
+  DetectiveAgencies = 'detective_agencies',
+  DigitalGoodsApplications = 'digital_goods_applications',
+  DigitalGoodsGames = 'digital_goods_games',
+  DigitalGoodsLargeVolume = 'digital_goods_large_volume',
+  DigitalGoodsMedia = 'digital_goods_media',
+  DirectMarketingCatalogMerchant = 'direct_marketing_catalog_merchant',
+  DirectMarketingCombinationCatalogAndRetailMerchant = 'direct_marketing_combination_catalog_and_retail_merchant',
+  DirectMarketingInboundTelemarketing = 'direct_marketing_inbound_telemarketing',
+  DirectMarketingInsuranceServices = 'direct_marketing_insurance_services',
+  DirectMarketingOther = 'direct_marketing_other',
+  DirectMarketingOutboundTelemarketing = 'direct_marketing_outbound_telemarketing',
+  DirectMarketingSubscription = 'direct_marketing_subscription',
+  DirectMarketingTravel = 'direct_marketing_travel',
+  DiscountStores = 'discount_stores',
+  Doctors = 'doctors',
+  DoorToDoorSales = 'door_to_door_sales',
+  DraperyWindowCoveringAndUpholsteryStores = 'drapery_window_covering_and_upholstery_stores',
+  DrinkingPlaces = 'drinking_places',
+  DrugStoresAndPharmacies = 'drug_stores_and_pharmacies',
+  DrugsDrugProprietariesAndDruggistSundries = 'drugs_drug_proprietaries_and_druggist_sundries',
+  DryCleaners = 'dry_cleaners',
+  DurableGoods = 'durable_goods',
+  DutyFreeStores = 'duty_free_stores',
+  EatingPlacesRestaurants = 'eating_places_restaurants',
+  EducationalServices = 'educational_services',
+  ElectricRazorStores = 'electric_razor_stores',
+  ElectricalPartsAndEquipment = 'electrical_parts_and_equipment',
+  ElectricalServices = 'electrical_services',
+  ElectronicsRepairShops = 'electronics_repair_shops',
+  ElectronicsStores = 'electronics_stores',
+  ElementarySecondarySchools = 'elementary_secondary_schools',
+  EmploymentTempAgencies = 'employment_temp_agencies',
+  EquipmentRental = 'equipment_rental',
+  ExterminatingServices = 'exterminating_services',
+  FamilyClothingStores = 'family_clothing_stores',
+  FastFoodRestaurants = 'fast_food_restaurants',
+  FinancialInstitutions = 'financial_institutions',
+  FinesGovernmentAdministrativeEntities = 'fines_government_administrative_entities',
+  FireplaceFireplaceScreensAndAccessoriesStores = 'fireplace_fireplace_screens_and_accessories_stores',
+  FloorCoveringStores = 'floor_covering_stores',
+  Florists = 'florists',
+  FloristsSuppliesNurseryStockAndFlowers = 'florists_supplies_nursery_stock_and_flowers',
+  FreezerAndLockerMeatProvisioners = 'freezer_and_locker_meat_provisioners',
+  FuelDealersNonAutomotive = 'fuel_dealers_non_automotive',
+  FuneralServicesCrematories = 'funeral_services_crematories',
+  FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances = 'furniture_home_furnishings_and_equipment_stores_except_appliances',
+  FurnitureRepairRefinishing = 'furniture_repair_refinishing',
+  FurriersAndFurShops = 'furriers_and_fur_shops',
+  GeneralServices = 'general_services',
+  GiftCardNoveltyAndSouvenirShops = 'gift_card_novelty_and_souvenir_shops',
+  GlassPaintAndWallpaperStores = 'glass_paint_and_wallpaper_stores',
+  GlasswareCrystalStores = 'glassware_crystal_stores',
+  GolfCoursesPublic = 'golf_courses_public',
+  GovernmentServices = 'government_services',
+  GroceryStoresSupermarkets = 'grocery_stores_supermarkets',
+  HardwareEquipmentAndSupplies = 'hardware_equipment_and_supplies',
+  HardwareStores = 'hardware_stores',
+  HealthAndBeautySpas = 'health_and_beauty_spas',
+  HearingAidsSalesAndSupplies = 'hearing_aids_sales_and_supplies',
+  HeatingPlumbingAC = 'heating_plumbing_a_c',
+  HobbyToyAndGameShops = 'hobby_toy_and_game_shops',
+  HomeSupplyWarehouseStores = 'home_supply_warehouse_stores',
+  Hospitals = 'hospitals',
+  HotelsMotelsAndResorts = 'hotels_motels_and_resorts',
+  HouseholdApplianceStores = 'household_appliance_stores',
+  IndustrialSupplies = 'industrial_supplies',
+  InformationRetrievalServices = 'information_retrieval_services',
+  InsuranceDefault = 'insurance_default',
+  InsuranceUnderwritingPremiums = 'insurance_underwriting_premiums',
+  IntraCompanyPurchases = 'intra_company_purchases',
+  JewelryStoresWatchesClocksAndSilverwareStores = 'jewelry_stores_watches_clocks_and_silverware_stores',
+  LandscapingServices = 'landscaping_services',
+  Laundries = 'laundries',
+  LaundryCleaningServices = 'laundry_cleaning_services',
+  LegalServicesAttorneys = 'legal_services_attorneys',
+  LuggageAndLeatherGoodsStores = 'luggage_and_leather_goods_stores',
+  LumberBuildingMaterialsStores = 'lumber_building_materials_stores',
+  ManualCashDisburse = 'manual_cash_disburse',
+  MarinasServiceAndSupplies = 'marinas_service_and_supplies',
+  MasonryStoneworkAndPlaster = 'masonry_stonework_and_plaster',
+  MassageParlors = 'massage_parlors',
+  MedicalAndDentalLabs = 'medical_and_dental_labs',
+  MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies = 'medical_dental_ophthalmic_and_hospital_equipment_and_supplies',
+  MedicalServices = 'medical_services',
+  MembershipOrganizations = 'membership_organizations',
+  MensAndBoysClothingAndAccessoriesStores = 'mens_and_boys_clothing_and_accessories_stores',
+  MensWomensClothingStores = 'mens_womens_clothing_stores',
+  MetalServiceCenters = 'metal_service_centers',
+  Miscellaneous = 'miscellaneous',
+  MiscellaneousApparelAndAccessoryShops = 'miscellaneous_apparel_and_accessory_shops',
+  MiscellaneousAutoDealers = 'miscellaneous_auto_dealers',
+  MiscellaneousBusinessServices = 'miscellaneous_business_services',
+  MiscellaneousFoodStores = 'miscellaneous_food_stores',
+  MiscellaneousGeneralMerchandise = 'miscellaneous_general_merchandise',
+  MiscellaneousGeneralServices = 'miscellaneous_general_services',
+  MiscellaneousHomeFurnishingSpecialtyStores = 'miscellaneous_home_furnishing_specialty_stores',
+  MiscellaneousPublishingAndPrinting = 'miscellaneous_publishing_and_printing',
+  MiscellaneousRecreationServices = 'miscellaneous_recreation_services',
+  MiscellaneousRepairShops = 'miscellaneous_repair_shops',
+  MiscellaneousSpecialtyRetail = 'miscellaneous_specialty_retail',
+  MobileHomeDealers = 'mobile_home_dealers',
+  MotionPictureTheaters = 'motion_picture_theaters',
+  MotorFreightCarriersAndTrucking = 'motor_freight_carriers_and_trucking',
+  MotorHomesDealers = 'motor_homes_dealers',
+  MotorVehicleSuppliesAndNewParts = 'motor_vehicle_supplies_and_new_parts',
+  MotorcycleShopsAndDealers = 'motorcycle_shops_and_dealers',
+  MotorcycleShopsDealers = 'motorcycle_shops_dealers',
+  MusicStoresMusicalInstrumentsPianosAndSheetMusic = 'music_stores_musical_instruments_pianos_and_sheet_music',
+  NewsDealersAndNewsstands = 'news_dealers_and_newsstands',
+  NonFiMoneyOrders = 'non_fi_money_orders',
+  NonFiStoredValueCardPurchaseLoad = 'non_fi_stored_value_card_purchase_load',
+  NondurableGoods = 'nondurable_goods',
+  NurseriesLawnAndGardenSupplyStores = 'nurseries_lawn_and_garden_supply_stores',
+  NursingPersonalCare = 'nursing_personal_care',
+  OfficeAndCommercialFurniture = 'office_and_commercial_furniture',
+  OpticiansEyeglasses = 'opticians_eyeglasses',
+  OptometristsOphthalmologist = 'optometrists_ophthalmologist',
+  OrthopedicGoodsProstheticDevices = 'orthopedic_goods_prosthetic_devices',
+  Osteopaths = 'osteopaths',
+  PackageStoresBeerWineAndLiquor = 'package_stores_beer_wine_and_liquor',
+  PaintsVarnishesAndSupplies = 'paints_varnishes_and_supplies',
+  ParkingLotsGarages = 'parking_lots_garages',
+  PassengerRailways = 'passenger_railways',
+  PawnShops = 'pawn_shops',
+  PetShopsPetFoodAndSupplies = 'pet_shops_pet_food_and_supplies',
+  PetroleumAndPetroleumProducts = 'petroleum_and_petroleum_products',
+  PhotoDeveloping = 'photo_developing',
+  PhotographicPhotocopyMicrofilmEquipmentAndSupplies = 'photographic_photocopy_microfilm_equipment_and_supplies',
+  PhotographicStudios = 'photographic_studios',
+  PictureVideoProduction = 'picture_video_production',
+  PieceGoodsNotionsAndOtherDryGoods = 'piece_goods_notions_and_other_dry_goods',
+  PlumbingHeatingEquipmentAndSupplies = 'plumbing_heating_equipment_and_supplies',
+  PoliticalOrganizations = 'political_organizations',
+  PostalServicesGovernmentOnly = 'postal_services_government_only',
+  PreciousStonesAndMetalsWatchesAndJewelry = 'precious_stones_and_metals_watches_and_jewelry',
+  ProfessionalServices = 'professional_services',
+  PublicWarehousingAndStorage = 'public_warehousing_and_storage',
+  QuickCopyReproAndBlueprint = 'quick_copy_repro_and_blueprint',
+  Railroads = 'railroads',
+  RealEstateAgentsAndManagersRentals = 'real_estate_agents_and_managers_rentals',
+  RecordStores = 'record_stores',
+  RecreationalVehicleRentals = 'recreational_vehicle_rentals',
+  ReligiousGoodsStores = 'religious_goods_stores',
+  ReligiousOrganizations = 'religious_organizations',
+  RoofingSidingSheetMetal = 'roofing_siding_sheet_metal',
+  SecretarialSupportServices = 'secretarial_support_services',
+  SecurityBrokersDealers = 'security_brokers_dealers',
+  ServiceStations = 'service_stations',
+  SewingNeedleworkFabricAndPieceGoodsStores = 'sewing_needlework_fabric_and_piece_goods_stores',
+  ShoeRepairHatCleaning = 'shoe_repair_hat_cleaning',
+  ShoeStores = 'shoe_stores',
+  SmallApplianceRepair = 'small_appliance_repair',
+  SnowmobileDealers = 'snowmobile_dealers',
+  SpecialTradeServices = 'special_trade_services',
+  SpecialtyCleaning = 'specialty_cleaning',
+  SportingGoodsStores = 'sporting_goods_stores',
+  SportingRecreationCamps = 'sporting_recreation_camps',
+  SportsAndRidingApparelStores = 'sports_and_riding_apparel_stores',
+  SportsClubsFields = 'sports_clubs_fields',
+  StampAndCoinStores = 'stamp_and_coin_stores',
+  StationaryOfficeSuppliesPrintingAndWritingPaper = 'stationary_office_supplies_printing_and_writing_paper',
+  StationeryStoresOfficeAndSchoolSupplyStores = 'stationery_stores_office_and_school_supply_stores',
+  SwimmingPoolsSales = 'swimming_pools_sales',
+  TUiTravelGermany = 't_ui_travel_germany',
+  TailorsAlterations = 'tailors_alterations',
+  TaxPaymentsGovernmentAgencies = 'tax_payments_government_agencies',
+  TaxPreparationServices = 'tax_preparation_services',
+  TaxicabsLimousines = 'taxicabs_limousines',
+  TelecommunicationEquipmentAndTelephoneSales = 'telecommunication_equipment_and_telephone_sales',
+  TelecommunicationServices = 'telecommunication_services',
+  TelegraphServices = 'telegraph_services',
+  TentAndAwningShops = 'tent_and_awning_shops',
+  TestingLaboratories = 'testing_laboratories',
+  TheatricalTicketAgencies = 'theatrical_ticket_agencies',
+  Timeshares = 'timeshares',
+  TireRetreadingAndRepair = 'tire_retreading_and_repair',
+  TollsBridgeFees = 'tolls_bridge_fees',
+  TouristAttractionsAndExhibits = 'tourist_attractions_and_exhibits',
+  TowingServices = 'towing_services',
+  TrailerParksCampgrounds = 'trailer_parks_campgrounds',
+  TransportationServices = 'transportation_services',
+  TravelAgenciesTourOperators = 'travel_agencies_tour_operators',
+  TruckStopIteration = 'truck_stop_iteration',
+  TruckUtilityTrailerRentals = 'truck_utility_trailer_rentals',
+  TypesettingPlateMakingAndRelatedServices = 'typesetting_plate_making_and_related_services',
+  TypewriterStores = 'typewriter_stores',
+  USFederalGovernmentAgenciesOrDepartments = 'u_s_federal_government_agencies_or_departments',
+  UniformsCommercialClothing = 'uniforms_commercial_clothing',
+  UsedMerchandiseAndSecondhandStores = 'used_merchandise_and_secondhand_stores',
+  Utilities = 'utilities',
+  VarietyStores = 'variety_stores',
+  VeterinaryServices = 'veterinary_services',
+  VideoAmusementGameSupplies = 'video_amusement_game_supplies',
+  VideoGameArcades = 'video_game_arcades',
+  VideoTapeRentalStores = 'video_tape_rental_stores',
+  VocationalTradeSchools = 'vocational_trade_schools',
+  WatchJewelryRepair = 'watch_jewelry_repair',
+  WeldingRepair = 'welding_repair',
+  WholesaleClubs = 'wholesale_clubs',
+  WigAndToupeeStores = 'wig_and_toupee_stores',
+  WiresMoneyOrders = 'wires_money_orders',
+  WomensAccessoryAndSpecialtyShops = 'womens_accessory_and_specialty_shops',
+  WomensReadyToWearStores = 'womens_ready_to_wear_stores',
+  WreckingAndSalvageYards = 'wrecking_and_salvage_yards'
+}
+
+export enum UpdateProfileResultBlockedCategories {
+  AcRefrigerationRepair = 'ac_refrigeration_repair',
+  AccountingBookkeepingServices = 'accounting_bookkeeping_services',
+  AdvertisingServices = 'advertising_services',
+  AgriculturalCooperative = 'agricultural_cooperative',
+  AirlinesAirCarriers = 'airlines_air_carriers',
+  AirportsFlyingFields = 'airports_flying_fields',
+  AmbulanceServices = 'ambulance_services',
+  AmusementParksCarnivals = 'amusement_parks_carnivals',
+  AntiqueReproductions = 'antique_reproductions',
+  AntiqueShops = 'antique_shops',
+  Aquariums = 'aquariums',
+  ArchitecturalSurveyingServices = 'architectural_surveying_services',
+  ArtDealersAndGalleries = 'art_dealers_and_galleries',
+  ArtistsSupplyAndCraftShops = 'artists_supply_and_craft_shops',
+  AutoAndHomeSupplyStores = 'auto_and_home_supply_stores',
+  AutoBodyRepairShops = 'auto_body_repair_shops',
+  AutoPaintShops = 'auto_paint_shops',
+  AutoServiceShops = 'auto_service_shops',
+  AutomatedCashDisburse = 'automated_cash_disburse',
+  AutomatedFuelDispensers = 'automated_fuel_dispensers',
+  AutomobileAssociations = 'automobile_associations',
+  AutomotivePartsAndAccessoriesStores = 'automotive_parts_and_accessories_stores',
+  AutomotiveTireStores = 'automotive_tire_stores',
+  BailAndBondPayments = 'bail_and_bond_payments',
+  Bakeries = 'bakeries',
+  BandsOrchestras = 'bands_orchestras',
+  BarberAndBeautyShops = 'barber_and_beauty_shops',
+  BettingCasinoGambling = 'betting_casino_gambling',
+  BicycleShops = 'bicycle_shops',
+  BilliardPoolEstablishments = 'billiard_pool_establishments',
+  BoatDealers = 'boat_dealers',
+  BoatRentalsAndLeases = 'boat_rentals_and_leases',
+  BookStores = 'book_stores',
+  BooksPeriodicalsAndNewspapers = 'books_periodicals_and_newspapers',
+  BowlingAlleys = 'bowling_alleys',
+  BusLines = 'bus_lines',
+  BusinessSecretarialSchools = 'business_secretarial_schools',
+  BuyingShoppingServices = 'buying_shopping_services',
+  CableSatelliteAndOtherPayTelevisionAndRadio = 'cable_satellite_and_other_pay_television_and_radio',
+  CameraAndPhotographicSupplyStores = 'camera_and_photographic_supply_stores',
+  CandyNutAndConfectioneryStores = 'candy_nut_and_confectionery_stores',
+  CarAndTruckDealersNewUsed = 'car_and_truck_dealers_new_used',
+  CarAndTruckDealersUsedOnly = 'car_and_truck_dealers_used_only',
+  CarRentalAgencies = 'car_rental_agencies',
+  CarWashes = 'car_washes',
+  CarpentryServices = 'carpentry_services',
+  CarpetUpholsteryCleaning = 'carpet_upholstery_cleaning',
+  Caterers = 'caterers',
+  CharitableAndSocialServiceOrganizationsFundraising = 'charitable_and_social_service_organizations_fundraising',
+  ChemicalsAndAlliedProducts = 'chemicals_and_allied_products',
+  ChildCareServices = 'child_care_services',
+  ChildrensAndInfantsWearStores = 'childrens_and_infants_wear_stores',
+  ChiropodistsPodiatrists = 'chiropodists_podiatrists',
+  Chiropractors = 'chiropractors',
+  CigarStoresAndStands = 'cigar_stores_and_stands',
+  CivicSocialFraternalAssociations = 'civic_social_fraternal_associations',
+  CleaningAndMaintenance = 'cleaning_and_maintenance',
+  ClothingRental = 'clothing_rental',
+  CollegesUniversities = 'colleges_universities',
+  CommercialEquipment = 'commercial_equipment',
+  CommercialFootwear = 'commercial_footwear',
+  CommercialPhotographyArtAndGraphics = 'commercial_photography_art_and_graphics',
+  CommuterTransportAndFerries = 'commuter_transport_and_ferries',
+  ComputerNetworkServices = 'computer_network_services',
+  ComputerProgramming = 'computer_programming',
+  ComputerRepair = 'computer_repair',
+  ComputerSoftwareStores = 'computer_software_stores',
+  ComputersPeripheralsAndSoftware = 'computers_peripherals_and_software',
+  ConcreteWorkServices = 'concrete_work_services',
+  ConstructionMaterials = 'construction_materials',
+  ConsultingPublicRelations = 'consulting_public_relations',
+  CorrespondenceSchools = 'correspondence_schools',
+  CosmeticStores = 'cosmetic_stores',
+  CounselingServices = 'counseling_services',
+  CountryClubs = 'country_clubs',
+  CourierServices = 'courier_services',
+  CourtCosts = 'court_costs',
+  CreditReportingAgencies = 'credit_reporting_agencies',
+  CruiseLines = 'cruise_lines',
+  DairyProductsStores = 'dairy_products_stores',
+  DanceHallStudiosSchools = 'dance_hall_studios_schools',
+  DatingEscortServices = 'dating_escort_services',
+  DentistsOrthodontists = 'dentists_orthodontists',
+  DepartmentStores = 'department_stores',
+  DetectiveAgencies = 'detective_agencies',
+  DigitalGoodsApplications = 'digital_goods_applications',
+  DigitalGoodsGames = 'digital_goods_games',
+  DigitalGoodsLargeVolume = 'digital_goods_large_volume',
+  DigitalGoodsMedia = 'digital_goods_media',
+  DirectMarketingCatalogMerchant = 'direct_marketing_catalog_merchant',
+  DirectMarketingCombinationCatalogAndRetailMerchant = 'direct_marketing_combination_catalog_and_retail_merchant',
+  DirectMarketingInboundTelemarketing = 'direct_marketing_inbound_telemarketing',
+  DirectMarketingInsuranceServices = 'direct_marketing_insurance_services',
+  DirectMarketingOther = 'direct_marketing_other',
+  DirectMarketingOutboundTelemarketing = 'direct_marketing_outbound_telemarketing',
+  DirectMarketingSubscription = 'direct_marketing_subscription',
+  DirectMarketingTravel = 'direct_marketing_travel',
+  DiscountStores = 'discount_stores',
+  Doctors = 'doctors',
+  DoorToDoorSales = 'door_to_door_sales',
+  DraperyWindowCoveringAndUpholsteryStores = 'drapery_window_covering_and_upholstery_stores',
+  DrinkingPlaces = 'drinking_places',
+  DrugStoresAndPharmacies = 'drug_stores_and_pharmacies',
+  DrugsDrugProprietariesAndDruggistSundries = 'drugs_drug_proprietaries_and_druggist_sundries',
+  DryCleaners = 'dry_cleaners',
+  DurableGoods = 'durable_goods',
+  DutyFreeStores = 'duty_free_stores',
+  EatingPlacesRestaurants = 'eating_places_restaurants',
+  EducationalServices = 'educational_services',
+  ElectricRazorStores = 'electric_razor_stores',
+  ElectricalPartsAndEquipment = 'electrical_parts_and_equipment',
+  ElectricalServices = 'electrical_services',
+  ElectronicsRepairShops = 'electronics_repair_shops',
+  ElectronicsStores = 'electronics_stores',
+  ElementarySecondarySchools = 'elementary_secondary_schools',
+  EmploymentTempAgencies = 'employment_temp_agencies',
+  EquipmentRental = 'equipment_rental',
+  ExterminatingServices = 'exterminating_services',
+  FamilyClothingStores = 'family_clothing_stores',
+  FastFoodRestaurants = 'fast_food_restaurants',
+  FinancialInstitutions = 'financial_institutions',
+  FinesGovernmentAdministrativeEntities = 'fines_government_administrative_entities',
+  FireplaceFireplaceScreensAndAccessoriesStores = 'fireplace_fireplace_screens_and_accessories_stores',
+  FloorCoveringStores = 'floor_covering_stores',
+  Florists = 'florists',
+  FloristsSuppliesNurseryStockAndFlowers = 'florists_supplies_nursery_stock_and_flowers',
+  FreezerAndLockerMeatProvisioners = 'freezer_and_locker_meat_provisioners',
+  FuelDealersNonAutomotive = 'fuel_dealers_non_automotive',
+  FuneralServicesCrematories = 'funeral_services_crematories',
+  FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances = 'furniture_home_furnishings_and_equipment_stores_except_appliances',
+  FurnitureRepairRefinishing = 'furniture_repair_refinishing',
+  FurriersAndFurShops = 'furriers_and_fur_shops',
+  GeneralServices = 'general_services',
+  GiftCardNoveltyAndSouvenirShops = 'gift_card_novelty_and_souvenir_shops',
+  GlassPaintAndWallpaperStores = 'glass_paint_and_wallpaper_stores',
+  GlasswareCrystalStores = 'glassware_crystal_stores',
+  GolfCoursesPublic = 'golf_courses_public',
+  GovernmentServices = 'government_services',
+  GroceryStoresSupermarkets = 'grocery_stores_supermarkets',
+  HardwareEquipmentAndSupplies = 'hardware_equipment_and_supplies',
+  HardwareStores = 'hardware_stores',
+  HealthAndBeautySpas = 'health_and_beauty_spas',
+  HearingAidsSalesAndSupplies = 'hearing_aids_sales_and_supplies',
+  HeatingPlumbingAC = 'heating_plumbing_a_c',
+  HobbyToyAndGameShops = 'hobby_toy_and_game_shops',
+  HomeSupplyWarehouseStores = 'home_supply_warehouse_stores',
+  Hospitals = 'hospitals',
+  HotelsMotelsAndResorts = 'hotels_motels_and_resorts',
+  HouseholdApplianceStores = 'household_appliance_stores',
+  IndustrialSupplies = 'industrial_supplies',
+  InformationRetrievalServices = 'information_retrieval_services',
+  InsuranceDefault = 'insurance_default',
+  InsuranceUnderwritingPremiums = 'insurance_underwriting_premiums',
+  IntraCompanyPurchases = 'intra_company_purchases',
+  JewelryStoresWatchesClocksAndSilverwareStores = 'jewelry_stores_watches_clocks_and_silverware_stores',
+  LandscapingServices = 'landscaping_services',
+  Laundries = 'laundries',
+  LaundryCleaningServices = 'laundry_cleaning_services',
+  LegalServicesAttorneys = 'legal_services_attorneys',
+  LuggageAndLeatherGoodsStores = 'luggage_and_leather_goods_stores',
+  LumberBuildingMaterialsStores = 'lumber_building_materials_stores',
+  ManualCashDisburse = 'manual_cash_disburse',
+  MarinasServiceAndSupplies = 'marinas_service_and_supplies',
+  MasonryStoneworkAndPlaster = 'masonry_stonework_and_plaster',
+  MassageParlors = 'massage_parlors',
+  MedicalAndDentalLabs = 'medical_and_dental_labs',
+  MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies = 'medical_dental_ophthalmic_and_hospital_equipment_and_supplies',
+  MedicalServices = 'medical_services',
+  MembershipOrganizations = 'membership_organizations',
+  MensAndBoysClothingAndAccessoriesStores = 'mens_and_boys_clothing_and_accessories_stores',
+  MensWomensClothingStores = 'mens_womens_clothing_stores',
+  MetalServiceCenters = 'metal_service_centers',
+  Miscellaneous = 'miscellaneous',
+  MiscellaneousApparelAndAccessoryShops = 'miscellaneous_apparel_and_accessory_shops',
+  MiscellaneousAutoDealers = 'miscellaneous_auto_dealers',
+  MiscellaneousBusinessServices = 'miscellaneous_business_services',
+  MiscellaneousFoodStores = 'miscellaneous_food_stores',
+  MiscellaneousGeneralMerchandise = 'miscellaneous_general_merchandise',
+  MiscellaneousGeneralServices = 'miscellaneous_general_services',
+  MiscellaneousHomeFurnishingSpecialtyStores = 'miscellaneous_home_furnishing_specialty_stores',
+  MiscellaneousPublishingAndPrinting = 'miscellaneous_publishing_and_printing',
+  MiscellaneousRecreationServices = 'miscellaneous_recreation_services',
+  MiscellaneousRepairShops = 'miscellaneous_repair_shops',
+  MiscellaneousSpecialtyRetail = 'miscellaneous_specialty_retail',
+  MobileHomeDealers = 'mobile_home_dealers',
+  MotionPictureTheaters = 'motion_picture_theaters',
+  MotorFreightCarriersAndTrucking = 'motor_freight_carriers_and_trucking',
+  MotorHomesDealers = 'motor_homes_dealers',
+  MotorVehicleSuppliesAndNewParts = 'motor_vehicle_supplies_and_new_parts',
+  MotorcycleShopsAndDealers = 'motorcycle_shops_and_dealers',
+  MotorcycleShopsDealers = 'motorcycle_shops_dealers',
+  MusicStoresMusicalInstrumentsPianosAndSheetMusic = 'music_stores_musical_instruments_pianos_and_sheet_music',
+  NewsDealersAndNewsstands = 'news_dealers_and_newsstands',
+  NonFiMoneyOrders = 'non_fi_money_orders',
+  NonFiStoredValueCardPurchaseLoad = 'non_fi_stored_value_card_purchase_load',
+  NondurableGoods = 'nondurable_goods',
+  NurseriesLawnAndGardenSupplyStores = 'nurseries_lawn_and_garden_supply_stores',
+  NursingPersonalCare = 'nursing_personal_care',
+  OfficeAndCommercialFurniture = 'office_and_commercial_furniture',
+  OpticiansEyeglasses = 'opticians_eyeglasses',
+  OptometristsOphthalmologist = 'optometrists_ophthalmologist',
+  OrthopedicGoodsProstheticDevices = 'orthopedic_goods_prosthetic_devices',
+  Osteopaths = 'osteopaths',
+  PackageStoresBeerWineAndLiquor = 'package_stores_beer_wine_and_liquor',
+  PaintsVarnishesAndSupplies = 'paints_varnishes_and_supplies',
+  ParkingLotsGarages = 'parking_lots_garages',
+  PassengerRailways = 'passenger_railways',
+  PawnShops = 'pawn_shops',
+  PetShopsPetFoodAndSupplies = 'pet_shops_pet_food_and_supplies',
+  PetroleumAndPetroleumProducts = 'petroleum_and_petroleum_products',
+  PhotoDeveloping = 'photo_developing',
+  PhotographicPhotocopyMicrofilmEquipmentAndSupplies = 'photographic_photocopy_microfilm_equipment_and_supplies',
+  PhotographicStudios = 'photographic_studios',
+  PictureVideoProduction = 'picture_video_production',
+  PieceGoodsNotionsAndOtherDryGoods = 'piece_goods_notions_and_other_dry_goods',
+  PlumbingHeatingEquipmentAndSupplies = 'plumbing_heating_equipment_and_supplies',
+  PoliticalOrganizations = 'political_organizations',
+  PostalServicesGovernmentOnly = 'postal_services_government_only',
+  PreciousStonesAndMetalsWatchesAndJewelry = 'precious_stones_and_metals_watches_and_jewelry',
+  ProfessionalServices = 'professional_services',
+  PublicWarehousingAndStorage = 'public_warehousing_and_storage',
+  QuickCopyReproAndBlueprint = 'quick_copy_repro_and_blueprint',
+  Railroads = 'railroads',
+  RealEstateAgentsAndManagersRentals = 'real_estate_agents_and_managers_rentals',
+  RecordStores = 'record_stores',
+  RecreationalVehicleRentals = 'recreational_vehicle_rentals',
+  ReligiousGoodsStores = 'religious_goods_stores',
+  ReligiousOrganizations = 'religious_organizations',
+  RoofingSidingSheetMetal = 'roofing_siding_sheet_metal',
+  SecretarialSupportServices = 'secretarial_support_services',
+  SecurityBrokersDealers = 'security_brokers_dealers',
+  ServiceStations = 'service_stations',
+  SewingNeedleworkFabricAndPieceGoodsStores = 'sewing_needlework_fabric_and_piece_goods_stores',
+  ShoeRepairHatCleaning = 'shoe_repair_hat_cleaning',
+  ShoeStores = 'shoe_stores',
+  SmallApplianceRepair = 'small_appliance_repair',
+  SnowmobileDealers = 'snowmobile_dealers',
+  SpecialTradeServices = 'special_trade_services',
+  SpecialtyCleaning = 'specialty_cleaning',
+  SportingGoodsStores = 'sporting_goods_stores',
+  SportingRecreationCamps = 'sporting_recreation_camps',
+  SportsAndRidingApparelStores = 'sports_and_riding_apparel_stores',
+  SportsClubsFields = 'sports_clubs_fields',
+  StampAndCoinStores = 'stamp_and_coin_stores',
+  StationaryOfficeSuppliesPrintingAndWritingPaper = 'stationary_office_supplies_printing_and_writing_paper',
+  StationeryStoresOfficeAndSchoolSupplyStores = 'stationery_stores_office_and_school_supply_stores',
+  SwimmingPoolsSales = 'swimming_pools_sales',
+  TUiTravelGermany = 't_ui_travel_germany',
+  TailorsAlterations = 'tailors_alterations',
+  TaxPaymentsGovernmentAgencies = 'tax_payments_government_agencies',
+  TaxPreparationServices = 'tax_preparation_services',
+  TaxicabsLimousines = 'taxicabs_limousines',
+  TelecommunicationEquipmentAndTelephoneSales = 'telecommunication_equipment_and_telephone_sales',
+  TelecommunicationServices = 'telecommunication_services',
+  TelegraphServices = 'telegraph_services',
+  TentAndAwningShops = 'tent_and_awning_shops',
+  TestingLaboratories = 'testing_laboratories',
+  TheatricalTicketAgencies = 'theatrical_ticket_agencies',
+  Timeshares = 'timeshares',
+  TireRetreadingAndRepair = 'tire_retreading_and_repair',
+  TollsBridgeFees = 'tolls_bridge_fees',
+  TouristAttractionsAndExhibits = 'tourist_attractions_and_exhibits',
+  TowingServices = 'towing_services',
+  TrailerParksCampgrounds = 'trailer_parks_campgrounds',
+  TransportationServices = 'transportation_services',
+  TravelAgenciesTourOperators = 'travel_agencies_tour_operators',
+  TruckStopIteration = 'truck_stop_iteration',
+  TruckUtilityTrailerRentals = 'truck_utility_trailer_rentals',
+  TypesettingPlateMakingAndRelatedServices = 'typesetting_plate_making_and_related_services',
+  TypewriterStores = 'typewriter_stores',
+  USFederalGovernmentAgenciesOrDepartments = 'u_s_federal_government_agencies_or_departments',
+  UniformsCommercialClothing = 'uniforms_commercial_clothing',
+  UsedMerchandiseAndSecondhandStores = 'used_merchandise_and_secondhand_stores',
+  Utilities = 'utilities',
+  VarietyStores = 'variety_stores',
+  VeterinaryServices = 'veterinary_services',
+  VideoAmusementGameSupplies = 'video_amusement_game_supplies',
+  VideoGameArcades = 'video_game_arcades',
+  VideoTapeRentalStores = 'video_tape_rental_stores',
+  VocationalTradeSchools = 'vocational_trade_schools',
+  WatchJewelryRepair = 'watch_jewelry_repair',
+  WeldingRepair = 'welding_repair',
+  WholesaleClubs = 'wholesale_clubs',
+  WigAndToupeeStores = 'wig_and_toupee_stores',
+  WiresMoneyOrders = 'wires_money_orders',
+  WomensAccessoryAndSpecialtyShops = 'womens_accessory_and_specialty_shops',
+  WomensReadyToWearStores = 'womens_ready_to_wear_stores',
+  WreckingAndSalvageYards = 'wrecking_and_salvage_yards'
+}
+
+export type Stripe_IssuingCardholderSpendingLimitInput = {
+  /** Maximum amount allowed to spend per interval. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories. */
+  categories?: InputMaybe<Array<InputMaybe<UpdateProfileResultCategories>>>;
+  /** Interval (or event) to which the amount applies. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+};
+
+export enum UpdateProfileResultCategories {
+  AcRefrigerationRepair = 'ac_refrigeration_repair',
+  AccountingBookkeepingServices = 'accounting_bookkeeping_services',
+  AdvertisingServices = 'advertising_services',
+  AgriculturalCooperative = 'agricultural_cooperative',
+  AirlinesAirCarriers = 'airlines_air_carriers',
+  AirportsFlyingFields = 'airports_flying_fields',
+  AmbulanceServices = 'ambulance_services',
+  AmusementParksCarnivals = 'amusement_parks_carnivals',
+  AntiqueReproductions = 'antique_reproductions',
+  AntiqueShops = 'antique_shops',
+  Aquariums = 'aquariums',
+  ArchitecturalSurveyingServices = 'architectural_surveying_services',
+  ArtDealersAndGalleries = 'art_dealers_and_galleries',
+  ArtistsSupplyAndCraftShops = 'artists_supply_and_craft_shops',
+  AutoAndHomeSupplyStores = 'auto_and_home_supply_stores',
+  AutoBodyRepairShops = 'auto_body_repair_shops',
+  AutoPaintShops = 'auto_paint_shops',
+  AutoServiceShops = 'auto_service_shops',
+  AutomatedCashDisburse = 'automated_cash_disburse',
+  AutomatedFuelDispensers = 'automated_fuel_dispensers',
+  AutomobileAssociations = 'automobile_associations',
+  AutomotivePartsAndAccessoriesStores = 'automotive_parts_and_accessories_stores',
+  AutomotiveTireStores = 'automotive_tire_stores',
+  BailAndBondPayments = 'bail_and_bond_payments',
+  Bakeries = 'bakeries',
+  BandsOrchestras = 'bands_orchestras',
+  BarberAndBeautyShops = 'barber_and_beauty_shops',
+  BettingCasinoGambling = 'betting_casino_gambling',
+  BicycleShops = 'bicycle_shops',
+  BilliardPoolEstablishments = 'billiard_pool_establishments',
+  BoatDealers = 'boat_dealers',
+  BoatRentalsAndLeases = 'boat_rentals_and_leases',
+  BookStores = 'book_stores',
+  BooksPeriodicalsAndNewspapers = 'books_periodicals_and_newspapers',
+  BowlingAlleys = 'bowling_alleys',
+  BusLines = 'bus_lines',
+  BusinessSecretarialSchools = 'business_secretarial_schools',
+  BuyingShoppingServices = 'buying_shopping_services',
+  CableSatelliteAndOtherPayTelevisionAndRadio = 'cable_satellite_and_other_pay_television_and_radio',
+  CameraAndPhotographicSupplyStores = 'camera_and_photographic_supply_stores',
+  CandyNutAndConfectioneryStores = 'candy_nut_and_confectionery_stores',
+  CarAndTruckDealersNewUsed = 'car_and_truck_dealers_new_used',
+  CarAndTruckDealersUsedOnly = 'car_and_truck_dealers_used_only',
+  CarRentalAgencies = 'car_rental_agencies',
+  CarWashes = 'car_washes',
+  CarpentryServices = 'carpentry_services',
+  CarpetUpholsteryCleaning = 'carpet_upholstery_cleaning',
+  Caterers = 'caterers',
+  CharitableAndSocialServiceOrganizationsFundraising = 'charitable_and_social_service_organizations_fundraising',
+  ChemicalsAndAlliedProducts = 'chemicals_and_allied_products',
+  ChildCareServices = 'child_care_services',
+  ChildrensAndInfantsWearStores = 'childrens_and_infants_wear_stores',
+  ChiropodistsPodiatrists = 'chiropodists_podiatrists',
+  Chiropractors = 'chiropractors',
+  CigarStoresAndStands = 'cigar_stores_and_stands',
+  CivicSocialFraternalAssociations = 'civic_social_fraternal_associations',
+  CleaningAndMaintenance = 'cleaning_and_maintenance',
+  ClothingRental = 'clothing_rental',
+  CollegesUniversities = 'colleges_universities',
+  CommercialEquipment = 'commercial_equipment',
+  CommercialFootwear = 'commercial_footwear',
+  CommercialPhotographyArtAndGraphics = 'commercial_photography_art_and_graphics',
+  CommuterTransportAndFerries = 'commuter_transport_and_ferries',
+  ComputerNetworkServices = 'computer_network_services',
+  ComputerProgramming = 'computer_programming',
+  ComputerRepair = 'computer_repair',
+  ComputerSoftwareStores = 'computer_software_stores',
+  ComputersPeripheralsAndSoftware = 'computers_peripherals_and_software',
+  ConcreteWorkServices = 'concrete_work_services',
+  ConstructionMaterials = 'construction_materials',
+  ConsultingPublicRelations = 'consulting_public_relations',
+  CorrespondenceSchools = 'correspondence_schools',
+  CosmeticStores = 'cosmetic_stores',
+  CounselingServices = 'counseling_services',
+  CountryClubs = 'country_clubs',
+  CourierServices = 'courier_services',
+  CourtCosts = 'court_costs',
+  CreditReportingAgencies = 'credit_reporting_agencies',
+  CruiseLines = 'cruise_lines',
+  DairyProductsStores = 'dairy_products_stores',
+  DanceHallStudiosSchools = 'dance_hall_studios_schools',
+  DatingEscortServices = 'dating_escort_services',
+  DentistsOrthodontists = 'dentists_orthodontists',
+  DepartmentStores = 'department_stores',
+  DetectiveAgencies = 'detective_agencies',
+  DigitalGoodsApplications = 'digital_goods_applications',
+  DigitalGoodsGames = 'digital_goods_games',
+  DigitalGoodsLargeVolume = 'digital_goods_large_volume',
+  DigitalGoodsMedia = 'digital_goods_media',
+  DirectMarketingCatalogMerchant = 'direct_marketing_catalog_merchant',
+  DirectMarketingCombinationCatalogAndRetailMerchant = 'direct_marketing_combination_catalog_and_retail_merchant',
+  DirectMarketingInboundTelemarketing = 'direct_marketing_inbound_telemarketing',
+  DirectMarketingInsuranceServices = 'direct_marketing_insurance_services',
+  DirectMarketingOther = 'direct_marketing_other',
+  DirectMarketingOutboundTelemarketing = 'direct_marketing_outbound_telemarketing',
+  DirectMarketingSubscription = 'direct_marketing_subscription',
+  DirectMarketingTravel = 'direct_marketing_travel',
+  DiscountStores = 'discount_stores',
+  Doctors = 'doctors',
+  DoorToDoorSales = 'door_to_door_sales',
+  DraperyWindowCoveringAndUpholsteryStores = 'drapery_window_covering_and_upholstery_stores',
+  DrinkingPlaces = 'drinking_places',
+  DrugStoresAndPharmacies = 'drug_stores_and_pharmacies',
+  DrugsDrugProprietariesAndDruggistSundries = 'drugs_drug_proprietaries_and_druggist_sundries',
+  DryCleaners = 'dry_cleaners',
+  DurableGoods = 'durable_goods',
+  DutyFreeStores = 'duty_free_stores',
+  EatingPlacesRestaurants = 'eating_places_restaurants',
+  EducationalServices = 'educational_services',
+  ElectricRazorStores = 'electric_razor_stores',
+  ElectricalPartsAndEquipment = 'electrical_parts_and_equipment',
+  ElectricalServices = 'electrical_services',
+  ElectronicsRepairShops = 'electronics_repair_shops',
+  ElectronicsStores = 'electronics_stores',
+  ElementarySecondarySchools = 'elementary_secondary_schools',
+  EmploymentTempAgencies = 'employment_temp_agencies',
+  EquipmentRental = 'equipment_rental',
+  ExterminatingServices = 'exterminating_services',
+  FamilyClothingStores = 'family_clothing_stores',
+  FastFoodRestaurants = 'fast_food_restaurants',
+  FinancialInstitutions = 'financial_institutions',
+  FinesGovernmentAdministrativeEntities = 'fines_government_administrative_entities',
+  FireplaceFireplaceScreensAndAccessoriesStores = 'fireplace_fireplace_screens_and_accessories_stores',
+  FloorCoveringStores = 'floor_covering_stores',
+  Florists = 'florists',
+  FloristsSuppliesNurseryStockAndFlowers = 'florists_supplies_nursery_stock_and_flowers',
+  FreezerAndLockerMeatProvisioners = 'freezer_and_locker_meat_provisioners',
+  FuelDealersNonAutomotive = 'fuel_dealers_non_automotive',
+  FuneralServicesCrematories = 'funeral_services_crematories',
+  FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances = 'furniture_home_furnishings_and_equipment_stores_except_appliances',
+  FurnitureRepairRefinishing = 'furniture_repair_refinishing',
+  FurriersAndFurShops = 'furriers_and_fur_shops',
+  GeneralServices = 'general_services',
+  GiftCardNoveltyAndSouvenirShops = 'gift_card_novelty_and_souvenir_shops',
+  GlassPaintAndWallpaperStores = 'glass_paint_and_wallpaper_stores',
+  GlasswareCrystalStores = 'glassware_crystal_stores',
+  GolfCoursesPublic = 'golf_courses_public',
+  GovernmentServices = 'government_services',
+  GroceryStoresSupermarkets = 'grocery_stores_supermarkets',
+  HardwareEquipmentAndSupplies = 'hardware_equipment_and_supplies',
+  HardwareStores = 'hardware_stores',
+  HealthAndBeautySpas = 'health_and_beauty_spas',
+  HearingAidsSalesAndSupplies = 'hearing_aids_sales_and_supplies',
+  HeatingPlumbingAC = 'heating_plumbing_a_c',
+  HobbyToyAndGameShops = 'hobby_toy_and_game_shops',
+  HomeSupplyWarehouseStores = 'home_supply_warehouse_stores',
+  Hospitals = 'hospitals',
+  HotelsMotelsAndResorts = 'hotels_motels_and_resorts',
+  HouseholdApplianceStores = 'household_appliance_stores',
+  IndustrialSupplies = 'industrial_supplies',
+  InformationRetrievalServices = 'information_retrieval_services',
+  InsuranceDefault = 'insurance_default',
+  InsuranceUnderwritingPremiums = 'insurance_underwriting_premiums',
+  IntraCompanyPurchases = 'intra_company_purchases',
+  JewelryStoresWatchesClocksAndSilverwareStores = 'jewelry_stores_watches_clocks_and_silverware_stores',
+  LandscapingServices = 'landscaping_services',
+  Laundries = 'laundries',
+  LaundryCleaningServices = 'laundry_cleaning_services',
+  LegalServicesAttorneys = 'legal_services_attorneys',
+  LuggageAndLeatherGoodsStores = 'luggage_and_leather_goods_stores',
+  LumberBuildingMaterialsStores = 'lumber_building_materials_stores',
+  ManualCashDisburse = 'manual_cash_disburse',
+  MarinasServiceAndSupplies = 'marinas_service_and_supplies',
+  MasonryStoneworkAndPlaster = 'masonry_stonework_and_plaster',
+  MassageParlors = 'massage_parlors',
+  MedicalAndDentalLabs = 'medical_and_dental_labs',
+  MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies = 'medical_dental_ophthalmic_and_hospital_equipment_and_supplies',
+  MedicalServices = 'medical_services',
+  MembershipOrganizations = 'membership_organizations',
+  MensAndBoysClothingAndAccessoriesStores = 'mens_and_boys_clothing_and_accessories_stores',
+  MensWomensClothingStores = 'mens_womens_clothing_stores',
+  MetalServiceCenters = 'metal_service_centers',
+  Miscellaneous = 'miscellaneous',
+  MiscellaneousApparelAndAccessoryShops = 'miscellaneous_apparel_and_accessory_shops',
+  MiscellaneousAutoDealers = 'miscellaneous_auto_dealers',
+  MiscellaneousBusinessServices = 'miscellaneous_business_services',
+  MiscellaneousFoodStores = 'miscellaneous_food_stores',
+  MiscellaneousGeneralMerchandise = 'miscellaneous_general_merchandise',
+  MiscellaneousGeneralServices = 'miscellaneous_general_services',
+  MiscellaneousHomeFurnishingSpecialtyStores = 'miscellaneous_home_furnishing_specialty_stores',
+  MiscellaneousPublishingAndPrinting = 'miscellaneous_publishing_and_printing',
+  MiscellaneousRecreationServices = 'miscellaneous_recreation_services',
+  MiscellaneousRepairShops = 'miscellaneous_repair_shops',
+  MiscellaneousSpecialtyRetail = 'miscellaneous_specialty_retail',
+  MobileHomeDealers = 'mobile_home_dealers',
+  MotionPictureTheaters = 'motion_picture_theaters',
+  MotorFreightCarriersAndTrucking = 'motor_freight_carriers_and_trucking',
+  MotorHomesDealers = 'motor_homes_dealers',
+  MotorVehicleSuppliesAndNewParts = 'motor_vehicle_supplies_and_new_parts',
+  MotorcycleShopsAndDealers = 'motorcycle_shops_and_dealers',
+  MotorcycleShopsDealers = 'motorcycle_shops_dealers',
+  MusicStoresMusicalInstrumentsPianosAndSheetMusic = 'music_stores_musical_instruments_pianos_and_sheet_music',
+  NewsDealersAndNewsstands = 'news_dealers_and_newsstands',
+  NonFiMoneyOrders = 'non_fi_money_orders',
+  NonFiStoredValueCardPurchaseLoad = 'non_fi_stored_value_card_purchase_load',
+  NondurableGoods = 'nondurable_goods',
+  NurseriesLawnAndGardenSupplyStores = 'nurseries_lawn_and_garden_supply_stores',
+  NursingPersonalCare = 'nursing_personal_care',
+  OfficeAndCommercialFurniture = 'office_and_commercial_furniture',
+  OpticiansEyeglasses = 'opticians_eyeglasses',
+  OptometristsOphthalmologist = 'optometrists_ophthalmologist',
+  OrthopedicGoodsProstheticDevices = 'orthopedic_goods_prosthetic_devices',
+  Osteopaths = 'osteopaths',
+  PackageStoresBeerWineAndLiquor = 'package_stores_beer_wine_and_liquor',
+  PaintsVarnishesAndSupplies = 'paints_varnishes_and_supplies',
+  ParkingLotsGarages = 'parking_lots_garages',
+  PassengerRailways = 'passenger_railways',
+  PawnShops = 'pawn_shops',
+  PetShopsPetFoodAndSupplies = 'pet_shops_pet_food_and_supplies',
+  PetroleumAndPetroleumProducts = 'petroleum_and_petroleum_products',
+  PhotoDeveloping = 'photo_developing',
+  PhotographicPhotocopyMicrofilmEquipmentAndSupplies = 'photographic_photocopy_microfilm_equipment_and_supplies',
+  PhotographicStudios = 'photographic_studios',
+  PictureVideoProduction = 'picture_video_production',
+  PieceGoodsNotionsAndOtherDryGoods = 'piece_goods_notions_and_other_dry_goods',
+  PlumbingHeatingEquipmentAndSupplies = 'plumbing_heating_equipment_and_supplies',
+  PoliticalOrganizations = 'political_organizations',
+  PostalServicesGovernmentOnly = 'postal_services_government_only',
+  PreciousStonesAndMetalsWatchesAndJewelry = 'precious_stones_and_metals_watches_and_jewelry',
+  ProfessionalServices = 'professional_services',
+  PublicWarehousingAndStorage = 'public_warehousing_and_storage',
+  QuickCopyReproAndBlueprint = 'quick_copy_repro_and_blueprint',
+  Railroads = 'railroads',
+  RealEstateAgentsAndManagersRentals = 'real_estate_agents_and_managers_rentals',
+  RecordStores = 'record_stores',
+  RecreationalVehicleRentals = 'recreational_vehicle_rentals',
+  ReligiousGoodsStores = 'religious_goods_stores',
+  ReligiousOrganizations = 'religious_organizations',
+  RoofingSidingSheetMetal = 'roofing_siding_sheet_metal',
+  SecretarialSupportServices = 'secretarial_support_services',
+  SecurityBrokersDealers = 'security_brokers_dealers',
+  ServiceStations = 'service_stations',
+  SewingNeedleworkFabricAndPieceGoodsStores = 'sewing_needlework_fabric_and_piece_goods_stores',
+  ShoeRepairHatCleaning = 'shoe_repair_hat_cleaning',
+  ShoeStores = 'shoe_stores',
+  SmallApplianceRepair = 'small_appliance_repair',
+  SnowmobileDealers = 'snowmobile_dealers',
+  SpecialTradeServices = 'special_trade_services',
+  SpecialtyCleaning = 'specialty_cleaning',
+  SportingGoodsStores = 'sporting_goods_stores',
+  SportingRecreationCamps = 'sporting_recreation_camps',
+  SportsAndRidingApparelStores = 'sports_and_riding_apparel_stores',
+  SportsClubsFields = 'sports_clubs_fields',
+  StampAndCoinStores = 'stamp_and_coin_stores',
+  StationaryOfficeSuppliesPrintingAndWritingPaper = 'stationary_office_supplies_printing_and_writing_paper',
+  StationeryStoresOfficeAndSchoolSupplyStores = 'stationery_stores_office_and_school_supply_stores',
+  SwimmingPoolsSales = 'swimming_pools_sales',
+  TUiTravelGermany = 't_ui_travel_germany',
+  TailorsAlterations = 'tailors_alterations',
+  TaxPaymentsGovernmentAgencies = 'tax_payments_government_agencies',
+  TaxPreparationServices = 'tax_preparation_services',
+  TaxicabsLimousines = 'taxicabs_limousines',
+  TelecommunicationEquipmentAndTelephoneSales = 'telecommunication_equipment_and_telephone_sales',
+  TelecommunicationServices = 'telecommunication_services',
+  TelegraphServices = 'telegraph_services',
+  TentAndAwningShops = 'tent_and_awning_shops',
+  TestingLaboratories = 'testing_laboratories',
+  TheatricalTicketAgencies = 'theatrical_ticket_agencies',
+  Timeshares = 'timeshares',
+  TireRetreadingAndRepair = 'tire_retreading_and_repair',
+  TollsBridgeFees = 'tolls_bridge_fees',
+  TouristAttractionsAndExhibits = 'tourist_attractions_and_exhibits',
+  TowingServices = 'towing_services',
+  TrailerParksCampgrounds = 'trailer_parks_campgrounds',
+  TransportationServices = 'transportation_services',
+  TravelAgenciesTourOperators = 'travel_agencies_tour_operators',
+  TruckStopIteration = 'truck_stop_iteration',
+  TruckUtilityTrailerRentals = 'truck_utility_trailer_rentals',
+  TypesettingPlateMakingAndRelatedServices = 'typesetting_plate_making_and_related_services',
+  TypewriterStores = 'typewriter_stores',
+  USFederalGovernmentAgenciesOrDepartments = 'u_s_federal_government_agencies_or_departments',
+  UniformsCommercialClothing = 'uniforms_commercial_clothing',
+  UsedMerchandiseAndSecondhandStores = 'used_merchandise_and_secondhand_stores',
+  Utilities = 'utilities',
+  VarietyStores = 'variety_stores',
+  VeterinaryServices = 'veterinary_services',
+  VideoAmusementGameSupplies = 'video_amusement_game_supplies',
+  VideoGameArcades = 'video_game_arcades',
+  VideoTapeRentalStores = 'video_tape_rental_stores',
+  VocationalTradeSchools = 'vocational_trade_schools',
+  WatchJewelryRepair = 'watch_jewelry_repair',
+  WeldingRepair = 'welding_repair',
+  WholesaleClubs = 'wholesale_clubs',
+  WigAndToupeeStores = 'wig_and_toupee_stores',
+  WiresMoneyOrders = 'wires_money_orders',
+  WomensAccessoryAndSpecialtyShops = 'womens_accessory_and_specialty_shops',
+  WomensReadyToWearStores = 'womens_ready_to_wear_stores',
+  WreckingAndSalvageYards = 'wrecking_and_salvage_yards'
+}
+
+export enum UpdateProfileResultInterval {
+  AllTime = 'all_time',
+  Daily = 'daily',
+  Monthly = 'monthly',
+  PerAuthorization = 'per_authorization',
+  Weekly = 'weekly',
+  Yearly = 'yearly'
+}
+
+export type IssuingCardWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  issuingCard?: InputMaybe<Stripe_IssuingCardInput>;
+};
+
+export enum UpdateProfileResultReplacementReason {
+  Damaged = 'damaged',
+  Expired = 'expired',
+  Lost = 'lost',
+  Stolen = 'stolen'
+}
+
+export type Stripe_IssuingCardShippingInput = {
+  address?: InputMaybe<Stripe_AddressInput>;
+  /** The delivery company that shipped a card. */
+  carrier?: InputMaybe<UpdateProfileResultCarrier>;
+  /** A unix timestamp representing a best estimate of when the card will be delivered. */
+  eta?: InputMaybe<Scalars['Int']>;
+  /** Recipient name. */
+  name?: InputMaybe<Scalars['String']>;
+  /** Shipment service, such as `standard` or `express`. */
+  service?: InputMaybe<UpdateProfileResultService>;
+  /** The delivery status of the card. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** A tracking number for a card shipment. */
+  tracking_number?: InputMaybe<Scalars['String']>;
+  /** A link to the shipping carrier's site where you can view detailed information about a card shipment. */
+  tracking_url?: InputMaybe<Scalars['String']>;
+  /** Packaging options. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export enum UpdateProfileResultCarrier {
+  Dhl = 'dhl',
+  Fedex = 'fedex',
+  RoyalMail = 'royal_mail',
+  Usps = 'usps'
+}
+
+export enum UpdateProfileResultService {
+  Express = 'express',
+  Priority = 'priority',
+  Standard = 'standard'
+}
+
+export type Stripe_IssuingCardAuthorizationControlsInput = {
+  /** Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`. */
+  allowed_categories?: InputMaybe<Array<InputMaybe<UpdateProfileResultAllowedCategories>>>;
+  /** Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`. */
+  blocked_categories?: InputMaybe<Array<InputMaybe<UpdateProfileResultBlockedCategories>>>;
+  /** Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain). */
+  spending_limits?: InputMaybe<Array<InputMaybe<Stripe_IssuingCardSpendingLimitInput>>>;
+  /** Currency of the amounts within `spending_limits`. Always the same as the currency of the card. */
+  spending_limits_currency?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingCardSpendingLimitInput = {
+  /** Maximum amount allowed to spend per interval. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Array of strings containing [categories](https://stripe.com/docs/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories. */
+  categories?: InputMaybe<Array<InputMaybe<UpdateProfileResultCategories>>>;
+  /** Interval (or event) to which the amount applies. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+};
+
+export type Stripe_IssuingCardWalletsInput = {
+  apple_pay?: InputMaybe<Stripe_IssuingCardApplePayInput>;
+  google_pay?: InputMaybe<Stripe_IssuingCardGooglePayInput>;
+  /** Unique identifier for a card used with digital wallets */
+  primary_account_identifier?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingCardApplePayInput = {
+  /** Apple Pay Eligibility */
+  eligible?: InputMaybe<Scalars['Boolean']>;
+  /** Reason the card is ineligible for Apple Pay */
+  ineligible_reason?: InputMaybe<UpdateProfileResultIneligibleReason>;
+};
+
+export enum UpdateProfileResultIneligibleReason {
+  MissingAgreement = 'missing_agreement',
+  MissingCardholderContact = 'missing_cardholder_contact',
+  UnsupportedRegion = 'unsupported_region'
+}
+
+export type Stripe_IssuingCardGooglePayInput = {
+  /** Google Pay Eligibility */
+  eligible?: InputMaybe<Scalars['Boolean']>;
+  /** Reason the card is ineligible for Google Pay */
+  ineligible_reason?: InputMaybe<UpdateProfileResultIneligibleReason>;
+};
+
+export type IssuingCardholderWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  issuingCardholder?: InputMaybe<Stripe_IssuingCardholderInput>;
+};
+
+export type Stripe_IssuingAuthorizationMerchantDataInput = {
+  /** A categorization of the seller's type of business. See our [merchant categories guide](https://stripe.com/docs/issuing/merchant-categories) for a list of possible values. */
+  category?: InputMaybe<Scalars['String']>;
+  /** The merchant category code for the seller’s business */
+  category_code?: InputMaybe<Scalars['String']>;
+  /** City where the seller is located */
+  city?: InputMaybe<Scalars['String']>;
+  /** Country where the seller is located */
+  country?: InputMaybe<Scalars['String']>;
+  /** Name of the seller */
+  name?: InputMaybe<Scalars['String']>;
+  /** Identifier assigned to the seller by the card brand */
+  network_id?: InputMaybe<Scalars['String']>;
+  /** Postal code where the seller is located */
+  postal_code?: InputMaybe<Scalars['String']>;
+  /** State where the seller is located */
+  state?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingAuthorizationPendingRequestInput = {
+  /** The additional amount Stripe will hold if the authorization is approved, in the card's [currency](https://stripe.com/docs/api#issuing_authorization_object-pending-request-currency) and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
+  amount?: InputMaybe<Scalars['Int']>;
+  amount_details?: InputMaybe<Stripe_IssuingAuthorizationAmountDetailsInput>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** If set `true`, you may provide [amount](https://stripe.com/docs/api/issuing/authorizations/approve#approve_issuing_authorization-amount) to control how much to hold for the authorization. */
+  is_amount_controllable?: InputMaybe<Scalars['Boolean']>;
+  /** The amount the merchant is requesting to be authorized in the `merchant_currency`. The amount is in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
+  merchant_amount?: InputMaybe<Scalars['Int']>;
+  /** The local currency the merchant is requesting to authorize. */
+  merchant_currency?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingAuthorizationRequestInput = {
+  /** The `pending_request.amount` at the time of the request, presented in your card's currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). Stripe held this amount from your account to fund the authorization if the request was approved. */
+  amount?: InputMaybe<Scalars['Int']>;
+  amount_details?: InputMaybe<Stripe_IssuingAuthorizationAmountDetailsInput>;
+  /** Whether this request was approved. */
+  approved?: InputMaybe<Scalars['Boolean']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** The `pending_request.merchant_amount` at the time of the request, presented in the `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
+  merchant_amount?: InputMaybe<Scalars['Int']>;
+  /** The currency that was collected by the merchant and presented to the cardholder for the authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  merchant_currency?: InputMaybe<Scalars['String']>;
+  /** The reason for the approval or decline. */
+  reason?: InputMaybe<UpdateProfileResultReason>;
+};
+
+export enum UpdateProfileResultReason {
+  AccountDisabled = 'account_disabled',
+  CardActive = 'card_active',
+  CardInactive = 'card_inactive',
+  CardholderInactive = 'cardholder_inactive',
+  CardholderVerificationRequired = 'cardholder_verification_required',
+  InsufficientFunds = 'insufficient_funds',
+  NotAllowed = 'not_allowed',
+  SpendingControls = 'spending_controls',
+  SuspectedFraud = 'suspected_fraud',
+  VerificationFailed = 'verification_failed',
+  WebhookApproved = 'webhook_approved',
+  WebhookDeclined = 'webhook_declined',
+  WebhookTimeout = 'webhook_timeout'
+}
+
+export type Stripe_IssuingTransactionInput = {
+  /** The transaction amount, which will be reflected in your balance. This amount is in your currency and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). */
+  amount?: InputMaybe<Scalars['Int']>;
+  amount_details?: InputMaybe<Stripe_IssuingTransactionAmountDetailsInput>;
+  authorization?: InputMaybe<IssuingAuthorizationWrappedStringInputUnion>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  card?: InputMaybe<IssuingCardWrappedStringInputUnion>;
+  cardholder?: InputMaybe<IssuingCardholderWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  dispute?: InputMaybe<IssuingDisputeWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** The amount that the merchant will receive, denominated in `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal). It will be different from `amount` if the merchant is taking payment in a different currency. */
+  merchant_amount?: InputMaybe<Scalars['Int']>;
+  /** The currency with which the merchant is taking payment. */
+  merchant_currency?: InputMaybe<Scalars['String']>;
+  merchant_data?: InputMaybe<Stripe_IssuingAuthorizationMerchantDataInput>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  purchase_details?: InputMaybe<Stripe_IssuingTransactionPurchaseDetailsInput>;
+  /** The nature of the transaction. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  /** The digital wallet used for this transaction. One of `apple_pay`, `google_pay`, or `samsung_pay`. */
+  wallet?: InputMaybe<UpdateProfileResultWallet>;
+};
+
+export type Stripe_IssuingTransactionAmountDetailsInput = {
+  /** The fee charged by the ATM for the cash withdrawal. */
+  atm_fee?: InputMaybe<Scalars['Int']>;
+};
+
+export type IssuingAuthorizationWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  issuingAuthorization?: InputMaybe<Stripe_IssuingAuthorizationInput>;
+};
+
+export type IssuingDisputeWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  issuingDispute?: InputMaybe<Stripe_IssuingDisputeInput>;
+};
+
+export type Stripe_IssuingDisputeInput = {
+  /** Disputed amount. Usually the amount of the `transaction`, but can differ (usually because of currency fluctuation). */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** List of balance transactions associated with the dispute. */
+  balance_transactions?: InputMaybe<Array<InputMaybe<Stripe_BalanceTransactionInput>>>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** The currency the `transaction` was made in. */
+  currency?: InputMaybe<Scalars['String']>;
+  evidence?: InputMaybe<Stripe_IssuingDisputeEvidenceInput>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** Current status of the dispute. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  transaction?: InputMaybe<IssuingTransactionWrappedStringInputUnion>;
+};
+
+export type Stripe_IssuingDisputeEvidenceInput = {
+  canceled?: InputMaybe<Stripe_IssuingDisputeCanceledEvidenceInput>;
+  duplicate?: InputMaybe<Stripe_IssuingDisputeDuplicateEvidenceInput>;
+  fraudulent?: InputMaybe<Stripe_IssuingDisputeFraudulentEvidenceInput>;
+  merchandise_not_as_described?: InputMaybe<Stripe_IssuingDisputeMerchandiseNotAsDescribedEvidenceInput>;
+  not_received?: InputMaybe<Stripe_IssuingDisputeNotReceivedEvidenceInput>;
+  other?: InputMaybe<Stripe_IssuingDisputeOtherEvidenceInput>;
+  /** The reason for filing the dispute. Its value will match the field containing the evidence. */
+  reason?: InputMaybe<UpdateProfileResultReason>;
+  service_not_as_described?: InputMaybe<Stripe_IssuingDisputeServiceNotAsDescribedEvidenceInput>;
+};
+
+export type Stripe_IssuingDisputeCanceledEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Date when order was canceled. */
+  canceled_at?: InputMaybe<Scalars['Int']>;
+  /** Whether the cardholder was provided with a cancellation policy. */
+  cancellation_policy_provided?: InputMaybe<Scalars['Boolean']>;
+  /** Reason for canceling the order. */
+  cancellation_reason?: InputMaybe<Scalars['String']>;
+  /** Date when the cardholder expected to receive the product. */
+  expected_at?: InputMaybe<Scalars['Int']>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+  /** Description of the merchandise or service that was purchased. */
+  product_description?: InputMaybe<Scalars['String']>;
+  /** Whether the product was a merchandise or service. */
+  product_type?: InputMaybe<UpdateProfileResultProductType>;
+  /** Result of cardholder's attempt to return the product. */
+  return_status?: InputMaybe<UpdateProfileResultReturnStatus>;
+  /** Date when the product was returned or attempted to be returned. */
+  returned_at?: InputMaybe<Scalars['Int']>;
+};
+
+export enum UpdateProfileResultProductType {
+  Merchandise = 'merchandise',
+  Service = 'service'
+}
+
+export enum UpdateProfileResultReturnStatus {
+  MerchantRejected = 'merchant_rejected',
+  Successful = 'successful'
+}
+
+export type Stripe_IssuingDisputeDuplicateEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  card_statement?: InputMaybe<FileWrappedStringInputUnion>;
+  cash_receipt?: InputMaybe<FileWrappedStringInputUnion>;
+  check_image?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+  /** Transaction (e.g., ipi_...) that the disputed transaction is a duplicate of. Of the two or more transactions that are copies of each other, this is original undisputed one. */
+  original_transaction?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingDisputeFraudulentEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingDisputeMerchandiseNotAsDescribedEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+  /** Date when the product was received. */
+  received_at?: InputMaybe<Scalars['Int']>;
+  /** Description of the cardholder's attempt to return the product. */
+  return_description?: InputMaybe<Scalars['String']>;
+  /** Result of cardholder's attempt to return the product. */
+  return_status?: InputMaybe<UpdateProfileResultReturnStatus>;
+  /** Date when the product was returned or attempted to be returned. */
+  returned_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_IssuingDisputeNotReceivedEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Date when the cardholder expected to receive the product. */
+  expected_at?: InputMaybe<Scalars['Int']>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+  /** Description of the merchandise or service that was purchased. */
+  product_description?: InputMaybe<Scalars['String']>;
+  /** Whether the product was a merchandise or service. */
+  product_type?: InputMaybe<UpdateProfileResultProductType>;
+};
+
+export type Stripe_IssuingDisputeOtherEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+  /** Description of the merchandise or service that was purchased. */
+  product_description?: InputMaybe<Scalars['String']>;
+  /** Whether the product was a merchandise or service. */
+  product_type?: InputMaybe<UpdateProfileResultProductType>;
+};
+
+export type Stripe_IssuingDisputeServiceNotAsDescribedEvidenceInput = {
+  additional_documentation?: InputMaybe<FileWrappedStringInputUnion>;
+  /** Date when order was canceled. */
+  canceled_at?: InputMaybe<Scalars['Int']>;
+  /** Reason for canceling the order. */
+  cancellation_reason?: InputMaybe<Scalars['String']>;
+  /** Explanation of why the cardholder is disputing this transaction. */
+  explanation?: InputMaybe<Scalars['String']>;
+  /** Date when the product was received. */
+  received_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type IssuingTransactionWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  issuingTransaction?: InputMaybe<Stripe_IssuingTransactionInput>;
+};
+
+export type Stripe_IssuingTransactionPurchaseDetailsInput = {
+  flight?: InputMaybe<Stripe_IssuingTransactionFlightDataInput>;
+  fuel?: InputMaybe<Stripe_IssuingTransactionFuelDataInput>;
+  lodging?: InputMaybe<Stripe_IssuingTransactionLodgingDataInput>;
+  /** The line items in the purchase. */
+  receipt?: InputMaybe<Array<InputMaybe<Stripe_IssuingTransactionReceiptDataInput>>>;
+  /** A merchant-specific order number. */
+  reference?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingTransactionFlightDataInput = {
+  /** The time that the flight departed. */
+  departure_at?: InputMaybe<Scalars['Int']>;
+  /** The name of the passenger. */
+  passenger_name?: InputMaybe<Scalars['String']>;
+  /** Whether the ticket is refundable. */
+  refundable?: InputMaybe<Scalars['Boolean']>;
+  /** The legs of the trip. */
+  segments?: InputMaybe<Array<InputMaybe<Stripe_IssuingTransactionFlightDataLegInput>>>;
+  /** The travel agency that issued the ticket. */
+  travel_agency?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingTransactionFlightDataLegInput = {
+  /** The three-letter IATA airport code of the flight's destination. */
+  arrival_airport_code?: InputMaybe<Scalars['String']>;
+  /** The airline carrier code. */
+  carrier?: InputMaybe<Scalars['String']>;
+  /** The three-letter IATA airport code that the flight departed from. */
+  departure_airport_code?: InputMaybe<Scalars['String']>;
+  /** The flight number. */
+  flight_number?: InputMaybe<Scalars['String']>;
+  /** The flight's service class. */
+  service_class?: InputMaybe<Scalars['String']>;
+  /** Whether a stopover is allowed on this flight. */
+  stopover_allowed?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_IssuingTransactionFuelDataInput = {
+  /** The type of fuel that was purchased. One of `diesel`, `unleaded_plus`, `unleaded_regular`, `unleaded_super`, or `other`. */
+  type?: InputMaybe<Scalars['String']>;
+  /** The units for `volume_decimal`. One of `us_gallon` or `liter`. */
+  unit?: InputMaybe<Scalars['String']>;
+  /** The cost in cents per each unit of fuel, represented as a decimal string with at most 12 decimal places. */
+  unit_cost_decimal?: InputMaybe<Scalars['String']>;
+  /** The volume of the fuel that was pumped, represented as a decimal string with at most 12 decimal places. */
+  volume_decimal?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_IssuingTransactionLodgingDataInput = {
+  /** The time of checking into the lodging. */
+  check_in_at?: InputMaybe<Scalars['Int']>;
+  /** The number of nights stayed at the lodging. */
+  nights?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_IssuingTransactionReceiptDataInput = {
+  /** The description of the item. The maximum length of this field is 26 characters. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The quantity of the item. */
+  quantity?: InputMaybe<Scalars['Float']>;
+  /** The total for this line item in cents. */
+  total?: InputMaybe<Scalars['Int']>;
+  /** The unit cost of the item in cents. */
+  unit_cost?: InputMaybe<Scalars['Int']>;
+};
+
+export enum UpdateProfileResultWallet {
+  ApplePay = 'apple_pay',
+  GooglePay = 'google_pay',
+  SamsungPay = 'samsung_pay'
+}
+
+export type Stripe_IssuingAuthorizationVerificationDataInput = {
+  /** Whether the cardholder provided an address first line and if it matched the cardholder’s `billing.address.line1`. */
+  address_line1_check?: InputMaybe<UpdateProfileResultAddressLine1Check>;
+  /** Whether the cardholder provided a postal code and if it matched the cardholder’s `billing.address.postal_code`. */
+  address_postal_code_check?: InputMaybe<UpdateProfileResultAddressPostalCodeCheck>;
+  /** Whether the cardholder provided a CVC and if it matched Stripe’s record. */
+  cvc_check?: InputMaybe<UpdateProfileResultCvcCheck>;
+  /** Whether the cardholder provided an expiry date and if it matched Stripe’s record. */
+  expiry_check?: InputMaybe<UpdateProfileResultExpiryCheck>;
+};
+
+export enum UpdateProfileResultAddressLine1Check {
+  Match = 'match',
+  Mismatch = 'mismatch',
+  NotProvided = 'not_provided'
+}
+
+export enum UpdateProfileResultAddressPostalCodeCheck {
+  Match = 'match',
+  Mismatch = 'mismatch',
+  NotProvided = 'not_provided'
+}
+
+export enum UpdateProfileResultCvcCheck {
+  Match = 'match',
+  Mismatch = 'mismatch',
+  NotProvided = 'not_provided'
+}
+
+export enum UpdateProfileResultExpiryCheck {
+  Match = 'match',
+  Mismatch = 'mismatch',
+  NotProvided = 'not_provided'
+}
+
+export type Stripe_PayoutInput = {
+  /** Amount (in %s) to be transferred to your bank account or debit card. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Date the payout is expected to arrive in the bank. This factors in delays like weekends or bank holidays. */
+  arrival_date?: InputMaybe<Scalars['Int']>;
+  /** Returns `true` if the payout was created by an [automated payout schedule](https://stripe.com/docs/payouts#payout-schedule), and `false` if it was [requested manually](https://stripe.com/docs/payouts#manual-payouts). */
+  automatic?: InputMaybe<Scalars['Boolean']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  destination?: InputMaybe<BankAccountCardDeletedBankAccountDeletedCardWrappedStringInputUnion>;
+  failure_balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Error code explaining reason for payout failure if available. See [Types of payout failures](https://stripe.com/docs/api#payout_failures) for a list of failure codes. */
+  failure_code?: InputMaybe<Scalars['String']>;
+  /** Message to user further explaining reason for payout failure if available. */
+  failure_message?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The method used to send this payout, which can be `standard` or `instant`. `instant` is only supported for payouts to debit cards. (See [Instant payouts for marketplaces](https://stripe.com/blog/instant-payouts-for-marketplaces) for more information.) */
+  method?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  original_payout?: InputMaybe<PayoutWrappedStringInputUnion>;
+  reversed_by?: InputMaybe<PayoutWrappedStringInputUnion>;
+  /** The source balance this payout came from. One of `card`, `fpx`, or `bank_account`. */
+  source_type?: InputMaybe<Scalars['String']>;
+  /** Extra information about a payout to be displayed on the user's bank statement. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it is submitted to the bank, when it becomes `in_transit`. The status then changes to `paid` if the transaction goes through, or to `failed` or `canceled` (within 5 business days). Some failed payouts may initially show as `paid` but then change to `failed`. */
+  status?: InputMaybe<Scalars['String']>;
+  /** Can be `bank_account` or `card`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type BankAccountCardDeletedBankAccountDeletedCardWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  bankAccount?: InputMaybe<Stripe_BankAccountInput>;
+  card?: InputMaybe<Stripe_CardInput>;
+  deletedBankAccount?: InputMaybe<Stripe_DeletedBankAccountInput>;
+  deletedCard?: InputMaybe<Stripe_DeletedCardInput>;
+};
+
+export type Stripe_DeletedBankAccountInput = {
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_DeletedCardInput = {
+  /** Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account. */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type PayoutWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  payout?: InputMaybe<Stripe_PayoutInput>;
+};
+
+export type Stripe_PlatformTaxFeeInput = {
+  /** The Connected account that incurred this charge. */
+  account?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The payment object that caused this tax to be inflicted. */
+  source_transaction?: InputMaybe<Scalars['String']>;
+  /** The type of tax (VAT). */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_RefundInput = {
+  /** Amount, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. (Available on non-card refunds only) */
+  description?: InputMaybe<Scalars['String']>;
+  failure_balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** If the refund failed, the reason for refund failure if known. Possible values are `lost_or_stolen_card`, `expired_or_canceled_card`, or `unknown`. */
+  failure_reason?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  next_action?: InputMaybe<Stripe_RefundNextActionInput>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  payment_intent?: InputMaybe<PaymentIntentWrappedStringInputUnion>;
+  /** Reason for the refund, either user-provided (`duplicate`, `fraudulent`, or `requested_by_customer`) or generated by Stripe internally (`expired_uncaptured_charge`). */
+  reason?: InputMaybe<UpdateProfileResultReason>;
+  /** This is the transaction number that appears on email receipts sent for this refund. */
+  receipt_number?: InputMaybe<Scalars['String']>;
+  source_transfer_reversal?: InputMaybe<TransferReversalWrappedStringInputUnion>;
+  /** Status of the refund. For credit card refunds, this can be `pending`, `succeeded`, or `failed`. For other types of refunds, it can be `pending`, `succeeded`, `failed`, or `canceled`. Refer to our [refunds](https://stripe.com/docs/refunds#failed-refunds) documentation for more details. */
+  status?: InputMaybe<Scalars['String']>;
+  transfer_reversal?: InputMaybe<TransferReversalWrappedStringInputUnion>;
+};
+
+export type Stripe_RefundNextActionInput = {
+  display_details?: InputMaybe<Stripe_RefundNextActionDisplayDetailsInput>;
+  /** Type of the next action to perform. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_RefundNextActionDisplayDetailsInput = {
+  email_sent?: InputMaybe<Stripe_EmailSentInput>;
+  /** The expiry timestamp. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_EmailSentInput = {
+  /** The timestamp when the email was sent. */
+  email_sent_at?: InputMaybe<Scalars['Int']>;
+  /** The recipient's email address. */
+  email_sent_to?: InputMaybe<Scalars['String']>;
+};
+
+export type TransferReversalWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  transferReversal?: InputMaybe<Stripe_TransferReversalInput>;
+};
+
+export type Stripe_TransferReversalInput = {
+  /** Amount, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  destination_payment_refund?: InputMaybe<RefundWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  source_refund?: InputMaybe<RefundWrappedStringInputUnion>;
+  transfer?: InputMaybe<TransferWrappedStringInputUnion>;
+};
+
+export type RefundWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  refund?: InputMaybe<Stripe_RefundInput>;
+};
+
+export type TransferWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  transfer?: InputMaybe<Stripe_TransferInput>;
+};
+
+export type Stripe_TransferInput = {
+  /** Amount in %s to be transferred. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Amount in %s reversed (can be less than the amount attribute on the transfer if a partial reversal was issued). */
+  amount_reversed?: InputMaybe<Scalars['Int']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Time that this record of the transfer was first created. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+  destination_payment?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** A list of reversals that have been applied to the transfer. */
+  reversals?: InputMaybe<PropertiesTransferPropertiesReversalsPropertyInput>;
+  /** Whether the transfer has been fully reversed. If the transfer is only partially reversed, this attribute will still be false. */
+  reversed?: InputMaybe<Scalars['Boolean']>;
+  source_transaction?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** The source balance this transfer came from. One of `card`, `fpx`, or `bank_account`. */
+  source_type?: InputMaybe<Scalars['String']>;
+  /** A string that identifies this transaction as part of a group. See the [Connect documentation](https://stripe.com/docs/connect/charges-transfers#transfer-options) for details. */
+  transfer_group?: InputMaybe<Scalars['String']>;
+};
+
+/** A list of reversals that have been applied to the transfer. */
+export type PropertiesTransferPropertiesReversalsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_TransferReversalInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_ReserveTransactionInput = {
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_TaxDeductedAtSourceInput = {
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The end of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period. */
+  period_end?: InputMaybe<Scalars['Int']>;
+  /** The start of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period. */
+  period_start?: InputMaybe<Scalars['Int']>;
+  /** The TAN that was supplied to Stripe when TDS was assessed */
+  tax_deduction_account_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_TopupInput = {
+  /** Amount transferred. */
+  amount?: InputMaybe<Scalars['Int']>;
+  balance_transaction?: InputMaybe<BalanceTransactionWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Date the funds are expected to arrive in your Stripe account for payouts. This factors in delays like weekends or bank holidays. May not be specified depending on status of top-up. */
+  expected_availability_date?: InputMaybe<Scalars['Int']>;
+  /** Error code explaining reason for top-up failure if available (see [the errors section](https://stripe.com/docs/api#errors) for a list of codes). */
+  failure_code?: InputMaybe<Scalars['String']>;
+  /** Message to user further explaining reason for top-up failure if available. */
+  failure_message?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  source?: InputMaybe<Stripe_SourceInput>;
+  /** Extra information about a top-up. This will appear on your source's bank statement. It must contain at least one letter. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  /** The status of the top-up is either `canceled`, `failed`, `pending`, `reversed`, or `succeeded`. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** A string that identifies this top-up as part of a group. */
+  transfer_group?: InputMaybe<Scalars['String']>;
+};
+
+/** A list of refunds that have been applied to the fee. */
+export type PropertiesApplicationFeePropertiesRefundsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_FeeRefundInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_ChargeFraudDetailsInput = {
+  /** Assessments from Stripe. If set, the value is `fraudulent`. */
+  stripe_report?: InputMaybe<Scalars['String']>;
+  /** Assessments reported by you. If set, possible values of are `safe` and `fraudulent`. */
+  user_report?: InputMaybe<Scalars['String']>;
+};
+
+export type InvoiceWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  invoice?: InputMaybe<Stripe_InvoiceInput>;
+};
+
+export type OrderWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  order?: InputMaybe<Stripe_OrderInput>;
+};
+
+export type Stripe_OrderInput = {
+  /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the order. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** The total amount that was returned to the customer. */
+  amount_returned?: InputMaybe<Scalars['Int']>;
+  /** ID of the Connect Application that created the order. */
+  application?: InputMaybe<Scalars['String']>;
+  /** A fee in cents that will be applied to the order and transferred to the application owner’s Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees documentation. */
+  application_fee?: InputMaybe<Scalars['Int']>;
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** The email address of the customer placing the order. */
+  email?: InputMaybe<Scalars['String']>;
+  /** External coupon code to load for this order. */
+  external_coupon_code?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** List of items constituting the order. An order can have up to 25 items. */
+  items?: InputMaybe<Array<InputMaybe<Stripe_OrderItemInput>>>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** A list of returns that have taken place for this order. */
+  returns?: InputMaybe<PropertiesOrderPropertiesReturnsPropertyInput>;
+  /** The shipping method that is currently selected for this order, if any. If present, it is equal to one of the `id`s of shipping methods in the `shipping_methods` array. At order creation time, if there are multiple shipping methods, Stripe will automatically selected the first method. */
+  selected_shipping_method?: InputMaybe<Scalars['String']>;
+  shipping?: InputMaybe<Stripe_ShippingInput>;
+  /** A list of supported shipping methods for this order. The desired shipping method can be specified either by updating the order, or when paying it. */
+  shipping_methods?: InputMaybe<Array<InputMaybe<Stripe_ShippingMethodInput>>>;
+  /** Current order status. One of `created`, `paid`, `canceled`, `fulfilled`, or `returned`. More details in the [Orders Guide](https://stripe.com/docs/orders/guide#understanding-order-statuses). */
+  status?: InputMaybe<Scalars['String']>;
+  status_transitions?: InputMaybe<Stripe_StatusTransitionsInput>;
+  /** Time at which the object was last updated. Measured in seconds since the Unix epoch. */
+  updated?: InputMaybe<Scalars['Int']>;
+  /** The user's order ID if it is different from the Stripe order ID. */
+  upstream_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_OrderItemInput = {
+  /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the line item. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Description of the line item, meant to be displayable to the user (e.g., `"Express shipping"`). */
+  description?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  parent?: InputMaybe<SkuWrappedStringInputUnion>;
+  /** A positive integer representing the number of instances of `parent` that are included in this order item. Applicable/present only if `type` is `sku`. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The type of line item. One of `sku`, `tax`, `shipping`, or `discount`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type SkuWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  sku?: InputMaybe<Stripe_SkuInput>;
+};
+
+export type Stripe_SkuInput = {
+  /** Whether the SKU is available for purchase. */
+  active?: InputMaybe<Scalars['Boolean']>;
+  /** A dictionary of attributes and values for the attributes defined by the product. If, for example, a product's attributes are `["size", "gender"]`, a valid SKU has the following dictionary of attributes: `{"size": "Medium", "gender": "Unisex"}`. */
+  attributes?: InputMaybe<Scalars['JSONObject']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The URL of an image for this SKU, meant to be displayable to the customer. */
+  image?: InputMaybe<Scalars['String']>;
+  inventory?: InputMaybe<Stripe_SkuInventoryInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  package_dimensions?: InputMaybe<Stripe_PackageDimensionsInput>;
+  /** The cost of the item as a positive integer in the smallest currency unit (that is, 100 cents to charge $1.00, or 100 to charge ¥100, Japanese Yen being a zero-decimal currency). */
+  price?: InputMaybe<Scalars['Int']>;
+  product?: InputMaybe<ProductWrappedStringInputUnion>;
+  /** Time at which the object was last updated. Measured in seconds since the Unix epoch. */
+  updated?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_SkuInventoryInput = {
+  /** The count of inventory available. Will be present if and only if `type` is `finite`. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`. */
+  type?: InputMaybe<Scalars['String']>;
+  /** An indicator of the inventory available. Possible values are `in_stock`, `limited`, and `out_of_stock`. Will be present if and only if `type` is `bucket`. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PackageDimensionsInput = {
+  /** Height, in inches. */
+  height?: InputMaybe<Scalars['Float']>;
+  /** Length, in inches. */
+  length?: InputMaybe<Scalars['Float']>;
+  /** Weight, in ounces. */
+  weight?: InputMaybe<Scalars['Float']>;
+  /** Width, in inches. */
+  width?: InputMaybe<Scalars['Float']>;
+};
+
+export type ProductWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  product?: InputMaybe<Stripe_ProductInput>;
+};
+
+export type Stripe_ProductInput = {
+  /** Whether the product is currently available for purchase. */
+  active?: InputMaybe<Scalars['Boolean']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** A list of up to 8 URLs of images for this product, meant to be displayable to the customer. */
+  images?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** The product's name, meant to be displayable to the customer. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  package_dimensions?: InputMaybe<Stripe_PackageDimensionsInput>;
+  /** Whether this product is shipped (i.e., physical goods). */
+  shippable?: InputMaybe<Scalars['Boolean']>;
+  /** Extra information about a product which will appear on your customer's credit card statement. In the case that multiple products are billed at once, the first statement descriptor will be used. */
+  statement_descriptor?: InputMaybe<Scalars['String']>;
+  tax_code?: InputMaybe<TaxCodeWrappedStringInputUnion>;
+  /** A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions. */
+  unit_label?: InputMaybe<Scalars['String']>;
+  /** Time at which the object was last updated. Measured in seconds since the Unix epoch. */
+  updated?: InputMaybe<Scalars['Int']>;
+  /** A URL of a publicly-accessible webpage for this product. */
+  url?: InputMaybe<Scalars['String']>;
+  prices?: InputMaybe<Array<InputMaybe<Stripe_PriceInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+};
+
+export type TaxCodeWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  taxCode?: InputMaybe<Stripe_TaxCodeInput>;
+};
+
+export type Stripe_TaxCodeInput = {
+  /** A detailed description of which types of products the tax code represents. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** A short name for the tax code. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_PriceInput = {
+  /** Whether the price can be used for new purchases. */
+  active?: InputMaybe<Scalars['Boolean']>;
+  /** Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `unit_amount` or `unit_amount_decimal`) will be charged per unit in `quantity` (for prices with `usage_type=licensed`), or per unit of total usage (for prices with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes. */
+  billing_scheme?: InputMaybe<UpdateProfileResultBillingScheme>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** A lookup key used to retrieve prices dynamically from a static string. This may be up to 200 characters. */
+  lookup_key?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** A brief description of the price, hidden from customers. */
+  nickname?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  recurring?: InputMaybe<Stripe_RecurringInput>;
+  /** Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed. */
+  tax_behavior?: InputMaybe<UpdateProfileResultTaxBehavior>;
+  /** Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`. */
+  tiers?: InputMaybe<Array<InputMaybe<Stripe_PriceTierInput>>>;
+  /** Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows. */
+  tiers_mode?: InputMaybe<UpdateProfileResultTiersMode>;
+  transform_quantity?: InputMaybe<Stripe_TransformQuantityInput>;
+  /** One of `one_time` or `recurring` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  /** The unit amount in %s to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`. */
+  unit_amount?: InputMaybe<Scalars['Int']>;
+  /** The unit amount in %s to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`. */
+  unit_amount_decimal?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultBillingScheme {
+  PerUnit = 'per_unit',
+  Tiered = 'tiered'
+}
+
+export type Stripe_RecurringInput = {
+  /** Specifies a usage aggregation strategy for prices of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`. */
+  aggregate_usage?: InputMaybe<UpdateProfileResultAggregateUsage>;
+  /** The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+  /** The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. */
+  interval_count?: InputMaybe<Scalars['Int']>;
+  /** Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`. */
+  usage_type?: InputMaybe<UpdateProfileResultUsageType>;
+};
+
+export enum UpdateProfileResultAggregateUsage {
+  LastDuringPeriod = 'last_during_period',
+  LastEver = 'last_ever',
+  Max = 'max',
+  Sum = 'sum'
+}
+
+export enum UpdateProfileResultUsageType {
+  Licensed = 'licensed',
+  Metered = 'metered'
+}
+
+export enum UpdateProfileResultTaxBehavior {
+  Exclusive = 'exclusive',
+  Inclusive = 'inclusive',
+  Unspecified = 'unspecified'
+}
+
+export type Stripe_PriceTierInput = {
+  /** Price for the entire tier. */
+  flat_amount?: InputMaybe<Scalars['Int']>;
+  /** Same as `flat_amount`, but contains a decimal value with at most 12 decimal places. */
+  flat_amount_decimal?: InputMaybe<Scalars['String']>;
+  /** Per unit price for units relevant to the tier. */
+  unit_amount?: InputMaybe<Scalars['Int']>;
+  /** Same as `unit_amount`, but contains a decimal value with at most 12 decimal places. */
+  unit_amount_decimal?: InputMaybe<Scalars['String']>;
+  /** Up to and including to this quantity will be contained in the tier. */
+  up_to?: InputMaybe<Scalars['Int']>;
+};
+
+export enum UpdateProfileResultTiersMode {
+  Graduated = 'graduated',
+  Volume = 'volume'
+}
+
+export type Stripe_TransformQuantityInput = {
+  /** Divide usage by this number. */
+  divide_by?: InputMaybe<Scalars['Int']>;
+  /** After division, either round the result `up` or `down`. */
+  round?: InputMaybe<UpdateProfileResultRound>;
+};
+
+export enum UpdateProfileResultRound {
+  Down = 'down',
+  Up = 'up'
+}
+
+/** A list of returns that have taken place for this order. */
+export type PropertiesOrderPropertiesReturnsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_OrderReturnInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_OrderReturnInput = {
+  /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the returned line item. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The items included in this order return. */
+  items?: InputMaybe<Array<InputMaybe<Stripe_OrderItemInput>>>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  order?: InputMaybe<OrderWrappedStringInputUnion>;
+  refund?: InputMaybe<RefundWrappedStringInputUnion>;
+};
+
+export type Stripe_ShippingMethodInput = {
+  /** A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the total amount for the line item. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  delivery_estimate?: InputMaybe<Stripe_DeliveryEstimateInput>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_DeliveryEstimateInput = {
+  /** If `type` is `"exact"`, `date` will be the expected delivery date in the format YYYY-MM-DD. */
+  date?: InputMaybe<Scalars['String']>;
+  /** If `type` is `"range"`, `earliest` will be be the earliest delivery date in the format YYYY-MM-DD. */
+  earliest?: InputMaybe<Scalars['String']>;
+  /** If `type` is `"range"`, `latest` will be the latest delivery date in the format YYYY-MM-DD. */
+  latest?: InputMaybe<Scalars['String']>;
+  /** The type of estimate. Must be either `"range"` or `"exact"`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_StatusTransitionsInput = {
+  /** The time that the order was canceled. */
+  canceled?: InputMaybe<Scalars['Int']>;
+  /** The time that the order was fulfilled. */
+  fulfiled?: InputMaybe<Scalars['Int']>;
+  /** The time that the order was paid. */
+  paid?: InputMaybe<Scalars['Int']>;
+  /** The time that the order was returned. */
+  returned?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_ChargeOutcomeInput = {
+  /** Possible values are `approved_by_network`, `declined_by_network`, `not_sent_to_network`, and `reversed_after_approval`. The value `reversed_after_approval` indicates the payment was [blocked by Stripe](https://stripe.com/docs/declines#blocked-payments) after bank authorization, and may temporarily appear as "pending" on a cardholder's statement. */
+  network_status?: InputMaybe<Scalars['String']>;
+  /** An enumerated value providing a more detailed explanation of the outcome's `type`. Charges blocked by Radar's default block rule have the value `highest_risk_level`. Charges placed in review by Radar's default review rule have the value `elevated_risk_level`. Charges authorized, blocked, or placed in review by custom rules have the value `rule`. See [understanding declines](https://stripe.com/docs/declines) for more details. */
+  reason?: InputMaybe<Scalars['String']>;
+  /** Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are `normal`, `elevated`, `highest`. For non-card payments, and card-based payments predating the public assignment of risk levels, this field will have the value `not_assessed`. In the event of an error in the evaluation, this field will have the value `unknown`. This field is only available with Radar. */
+  risk_level?: InputMaybe<Scalars['String']>;
+  /** Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams. */
+  risk_score?: InputMaybe<Scalars['Int']>;
+  rule?: InputMaybe<RuleWrappedStringInputUnion>;
+  /** A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer. */
+  seller_message?: InputMaybe<Scalars['String']>;
+  /** Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://stripe.com/docs/declines) and [Radar reviews](https://stripe.com/docs/radar/reviews) for details. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type RuleWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  rule?: InputMaybe<Stripe_RuleInput>;
+};
+
+export type Stripe_RuleInput = {
+  /** The action taken on the payment. */
+  action?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The predicate to evaluate the payment against. */
+  predicate?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsInput = {
+  ach_credit_transfer?: InputMaybe<Stripe_PaymentMethodDetailsAchCreditTransferInput>;
+  ach_debit?: InputMaybe<Stripe_PaymentMethodDetailsAchDebitInput>;
+  acss_debit?: InputMaybe<Stripe_PaymentMethodDetailsAcssDebitInput>;
+  afterpay_clearpay?: InputMaybe<Stripe_PaymentMethodDetailsAfterpayClearpayInput>;
+  alipay?: InputMaybe<Stripe_PaymentFlowsPrivatePaymentMethodsAlipayDetailsInput>;
+  au_becs_debit?: InputMaybe<Stripe_PaymentMethodDetailsAuBecsDebitInput>;
+  bacs_debit?: InputMaybe<Stripe_PaymentMethodDetailsBacsDebitInput>;
+  bancontact?: InputMaybe<Stripe_PaymentMethodDetailsBancontactInput>;
+  boleto?: InputMaybe<Stripe_PaymentMethodDetailsBoletoInput>;
+  card?: InputMaybe<Stripe_PaymentMethodDetailsCardInput>;
+  card_present?: InputMaybe<Stripe_PaymentMethodDetailsCardPresentInput>;
+  customer_balance?: InputMaybe<Stripe_PaymentMethodDetailsCustomerBalanceInput>;
+  eps?: InputMaybe<Stripe_PaymentMethodDetailsEpsInput>;
+  fpx?: InputMaybe<Stripe_PaymentMethodDetailsFpxInput>;
+  giropay?: InputMaybe<Stripe_PaymentMethodDetailsGiropayInput>;
+  grabpay?: InputMaybe<Stripe_PaymentMethodDetailsGrabpayInput>;
+  ideal?: InputMaybe<Stripe_PaymentMethodDetailsIdealInput>;
+  interac_present?: InputMaybe<Stripe_PaymentMethodDetailsInteracPresentInput>;
+  klarna?: InputMaybe<Stripe_PaymentMethodDetailsKlarnaInput>;
+  konbini?: InputMaybe<Stripe_PaymentMethodDetailsKonbiniInput>;
+  multibanco?: InputMaybe<Stripe_PaymentMethodDetailsMultibancoInput>;
+  oxxo?: InputMaybe<Stripe_PaymentMethodDetailsOxxoInput>;
+  p24?: InputMaybe<Stripe_PaymentMethodDetailsP24Input>;
+  paynow?: InputMaybe<Stripe_PaymentMethodDetailsPaynowInput>;
+  sepa_debit?: InputMaybe<Stripe_PaymentMethodDetailsSepaDebitInput>;
+  sofort?: InputMaybe<Stripe_PaymentMethodDetailsSofortInput>;
+  stripe_account?: InputMaybe<Stripe_PaymentMethodDetailsStripeAccountInput>;
+  /**
+   * The type of transaction-specific details of the payment method used in the payment, one of `ach_credit_transfer`, `ach_debit`, `acss_debit`, `alipay`, `au_becs_debit`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `klarna`, `multibanco`, `p24`, `sepa_debit`, `sofort`, `stripe_account`, or `wechat`.
+   * An additional hash is included on `payment_method_details` with a name matching this value.
+   * It contains information specific to the payment method.
+   */
+  type?: InputMaybe<Scalars['String']>;
+  us_bank_account?: InputMaybe<Stripe_PaymentMethodDetailsUsBankAccountInput>;
+  wechat?: InputMaybe<Stripe_PaymentMethodDetailsWechatInput>;
+  wechat_pay?: InputMaybe<Stripe_PaymentMethodDetailsWechatPayInput>;
+};
+
+export type Stripe_PaymentMethodDetailsAchCreditTransferInput = {
+  /** Account number to transfer funds to. */
+  account_number?: InputMaybe<Scalars['String']>;
+  /** Name of the bank associated with the routing number. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Routing transit number for the bank account to transfer funds to. */
+  routing_number?: InputMaybe<Scalars['String']>;
+  /** SWIFT code of the bank associated with the routing number. */
+  swift_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsAchDebitInput = {
+  /** Type of entity that holds the account. This can be either `individual` or `company`. */
+  account_holder_type?: InputMaybe<UpdateProfileResultAccountHolderType>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country the bank account is located in. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Routing transit number of the bank account. */
+  routing_number?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultAccountHolderType {
+  Company = 'company',
+  Individual = 'individual'
+}
+
+export type Stripe_PaymentMethodDetailsAcssDebitInput = {
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Institution number of the bank account */
+  institution_number?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** ID of the mandate used to make this payment. */
+  mandate?: InputMaybe<Scalars['String']>;
+  /** Transit number of the bank account. */
+  transit_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsAfterpayClearpayInput = {
+  /** Order identifier shown to the merchant in Afterpay’s online portal. */
+  reference?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentFlowsPrivatePaymentMethodsAlipayDetailsInput = {
+  /** Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same. */
+  buyer_id?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Transaction ID of this particular Alipay transaction. */
+  transaction_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsAuBecsDebitInput = {
+  /** Bank-State-Branch number of the bank account. */
+  bsb_number?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** ID of the mandate used to make this payment. */
+  mandate?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsBacsDebitInput = {
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** ID of the mandate used to make this payment. */
+  mandate?: InputMaybe<Scalars['String']>;
+  /** Sort code of the bank account. (e.g., `10-20-30`) */
+  sort_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsBancontactInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Bank Identifier Code of the bank associated with the bank account. */
+  bic?: InputMaybe<Scalars['String']>;
+  generated_sepa_debit?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  generated_sepa_debit_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Last four characters of the IBAN. */
+  iban_last4?: InputMaybe<Scalars['String']>;
+  /**
+   * Preferred language of the Bancontact authorization page that the customer is redirected to.
+   * Can be one of `en`, `de`, `fr`, or `nl`
+   */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+  /**
+   * Owner's verified full name. Values are verified or provided by Bancontact directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsBoletoInput = {
+  /** The tax ID of the customer (CPF for individuals consumers or CNPJ for businesses consumers) */
+  tax_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardInput = {
+  /** Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
+  brand?: InputMaybe<Scalars['String']>;
+  checks?: InputMaybe<Stripe_PaymentMethodDetailsCardChecksInput>;
+  /** Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Two-digit number representing the card's expiration month. */
+  exp_month?: InputMaybe<Scalars['Int']>;
+  /** Four-digit number representing the card's expiration year. */
+  exp_year?: InputMaybe<Scalars['Int']>;
+  /**
+   * Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+   *
+   * *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
+   */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`. */
+  funding?: InputMaybe<Scalars['String']>;
+  installments?: InputMaybe<Stripe_PaymentMethodDetailsCardInstallmentsInput>;
+  /** The last four digits of the card. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** ID of the mandate used to make this payment or created by it. */
+  mandate?: InputMaybe<Scalars['String']>;
+  /** Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
+  network?: InputMaybe<Scalars['String']>;
+  three_d_secure?: InputMaybe<Stripe_ThreeDSecureDetailsInput>;
+  wallet?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletInput>;
+};
+
+export type Stripe_PaymentMethodDetailsCardChecksInput = {
+  /** If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
+  address_line1_check?: InputMaybe<Scalars['String']>;
+  /** If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
+  address_postal_code_check?: InputMaybe<Scalars['String']>;
+  /** If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`. */
+  cvc_check?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardInstallmentsInput = {
+  plan?: InputMaybe<Stripe_PaymentMethodDetailsCardInstallmentsPlanInput>;
+};
+
+export type Stripe_PaymentMethodDetailsCardInstallmentsPlanInput = {
+  /** For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card. */
+  count?: InputMaybe<Scalars['Int']>;
+  /**
+   * For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
+   * One of `month`.
+   */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+  /** Type of installment plan, one of `fixed_count`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletInput = {
+  amex_express_checkout?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletAmexExpressCheckoutInput>;
+  apple_pay?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletApplePayInput>;
+  /** (For tokenized numbers only.) The last four digits of the device account number. */
+  dynamic_last4?: InputMaybe<Scalars['String']>;
+  google_pay?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletGooglePayInput>;
+  masterpass?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletMasterpassInput>;
+  samsung_pay?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletSamsungPayInput>;
+  /** The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, or `visa_checkout`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  visa_checkout?: InputMaybe<Stripe_PaymentMethodDetailsCardWalletVisaCheckoutInput>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletAmexExpressCheckoutInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletApplePayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletGooglePayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletMasterpassInput = {
+  billing_address?: InputMaybe<Stripe_AddressInput>;
+  /** Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  name?: InputMaybe<Scalars['String']>;
+  shipping_address?: InputMaybe<Stripe_AddressInput>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletSamsungPayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsCardWalletVisaCheckoutInput = {
+  billing_address?: InputMaybe<Stripe_AddressInput>;
+  /** Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  name?: InputMaybe<Scalars['String']>;
+  shipping_address?: InputMaybe<Stripe_AddressInput>;
+};
+
+export type Stripe_PaymentMethodDetailsCustomerBalanceInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsEpsInput = {
+  /** The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+  /**
+   * Owner's verified full name. Values are verified or provided by EPS directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   * EPS rarely provides this information so the attribute is usually empty.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsFpxInput = {
+  /** The customer's bank. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+  /** Unique transaction id generated by FPX for every request from the merchant */
+  transaction_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsGiropayInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Bank Identifier Code of the bank associated with the bank account. */
+  bic?: InputMaybe<Scalars['String']>;
+  /**
+   * Owner's verified full name. Values are verified or provided by Giropay directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   * Giropay rarely provides this information so the attribute is usually empty.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsGrabpayInput = {
+  /** Unique transaction id generated by GrabPay */
+  transaction_id?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsIdealInput = {
+  /** The customer's bank. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `revolut`, `sns_bank`, `triodos_bank`, or `van_lanschot`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+  /** The Bank Identifier Code of the customer's bank. */
+  bic?: InputMaybe<UpdateProfileResultBic>;
+  generated_sepa_debit?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  generated_sepa_debit_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Last four characters of the IBAN. */
+  iban_last4?: InputMaybe<Scalars['String']>;
+  /**
+   * Owner's verified full name. Values are verified or provided by iDEAL directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsInteracPresentInput = {
+  /** Card brand. Can be `interac`, `mastercard` or `visa`. */
+  brand?: InputMaybe<Scalars['String']>;
+  /** The cardholder name as read from the card, in [ISO 7813](https://en.wikipedia.org/wiki/ISO/IEC_7813) format. May include alphanumeric characters, special characters and first/last name separator (`/`). In some cases, the cardholder name may not be available depending on how the issuer has configured the card. Cardholder name is typically not available on swipe or contactless payments, such as those made with Apple Pay and Google Pay. */
+  cardholder_name?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Authorization response cryptogram. */
+  emv_auth_data?: InputMaybe<Scalars['String']>;
+  /** Two-digit number representing the card's expiration month. */
+  exp_month?: InputMaybe<Scalars['Int']>;
+  /** Four-digit number representing the card's expiration year. */
+  exp_year?: InputMaybe<Scalars['Int']>;
+  /**
+   * Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+   *
+   * *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
+   */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`. */
+  funding?: InputMaybe<Scalars['String']>;
+  /** ID of a card PaymentMethod generated from the card_present PaymentMethod that may be attached to a Customer for future transactions. Only present if it was possible to generate a card PaymentMethod. */
+  generated_card?: InputMaybe<Scalars['String']>;
+  /** The last four digits of the card. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`. */
+  network?: InputMaybe<Scalars['String']>;
+  /** EMV tag 5F2D. Preferred languages specified by the integrated circuit chip. */
+  preferred_locales?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** How card details were read in this transaction. */
+  read_method?: InputMaybe<UpdateProfileResultReadMethod>;
+  receipt?: InputMaybe<Stripe_PaymentMethodDetailsInteracPresentReceiptInput>;
+};
+
+export type Stripe_PaymentMethodDetailsInteracPresentReceiptInput = {
+  /** The type of account being debited or credited */
+  account_type?: InputMaybe<UpdateProfileResultAccountType>;
+  /** EMV tag 9F26, cryptogram generated by the integrated circuit chip. */
+  application_cryptogram?: InputMaybe<Scalars['String']>;
+  /** Mnenomic of the Application Identifier. */
+  application_preferred_name?: InputMaybe<Scalars['String']>;
+  /** Identifier for this transaction. */
+  authorization_code?: InputMaybe<Scalars['String']>;
+  /** EMV tag 8A. A code returned by the card issuer. */
+  authorization_response_code?: InputMaybe<Scalars['String']>;
+  /** How the cardholder verified ownership of the card. */
+  cardholder_verification_method?: InputMaybe<Scalars['String']>;
+  /** EMV tag 84. Similar to the application identifier stored on the integrated circuit chip. */
+  dedicated_file_name?: InputMaybe<Scalars['String']>;
+  /** The outcome of a series of EMV functions performed by the card reader. */
+  terminal_verification_results?: InputMaybe<Scalars['String']>;
+  /** An indication of various EMV functions performed during the transaction. */
+  transaction_status_information?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsKlarnaInput = {
+  /**
+   * The Klarna payment method used for this transaction.
+   * Can be one of `pay_later`, `pay_now`, `pay_with_financing`, or `pay_in_installments`
+   */
+  payment_method_category?: InputMaybe<Scalars['String']>;
+  /**
+   * Preferred language of the Klarna authorization page that the customer is redirected to.
+   * Can be one of `de-AT`, `en-AT`, `nl-BE`, `fr-BE`, `en-BE`, `de-DE`, `en-DE`, `da-DK`, `en-DK`, `es-ES`, `en-ES`, `fi-FI`, `sv-FI`, `en-FI`, `en-GB`, `en-IE`, `it-IT`, `en-IT`, `nl-NL`, `en-NL`, `nb-NO`, `en-NO`, `sv-SE`, `en-SE`, `en-US`, `es-US`, `fr-FR`, or `en-FR`
+   */
+  preferred_locale?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsKonbiniInput = {
+  store?: InputMaybe<Stripe_PaymentMethodDetailsKonbiniStoreInput>;
+};
+
+export type Stripe_PaymentMethodDetailsKonbiniStoreInput = {
+  /** The name of the convenience store chain where the payment was completed. */
+  chain?: InputMaybe<UpdateProfileResultChain>;
+};
+
+export enum UpdateProfileResultChain {
+  Familymart = 'familymart',
+  Lawson = 'lawson',
+  Ministop = 'ministop',
+  Seicomart = 'seicomart'
+}
+
+export type Stripe_PaymentMethodDetailsMultibancoInput = {
+  /** Entity number associated with this Multibanco payment. */
+  entity?: InputMaybe<Scalars['String']>;
+  /** Reference number associated with this Multibanco payment. */
+  reference?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsOxxoInput = {
+  /** OXXO reference number */
+  number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsP24Input = {
+  /** The customer's bank. Can be one of `ing`, `citi_handlowy`, `tmobile_usbugi_bankowe`, `plus_bank`, `etransfer_pocztowy24`, `banki_spbdzielcze`, `bank_nowy_bfg_sa`, `getin_bank`, `blik`, `noble_pay`, `ideabank`, `envelobank`, `santander_przelew24`, `nest_przelew`, `mbank_mtransfer`, `inteligo`, `pbac_z_ipko`, `bnp_paribas`, `credit_agricole`, `toyota_bank`, `bank_pekao_sa`, `volkswagen_bank`, `bank_millennium`, `alior_bank`, or `boz`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+  /** Unique reference for this Przelewy24 payment. */
+  reference?: InputMaybe<Scalars['String']>;
+  /**
+   * Owner's verified full name. Values are verified or provided by Przelewy24 directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   * Przelewy24 rarely provides this information so the attribute is usually empty.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsPaynowInput = {
+  /** Reference number associated with this PayNow payment */
+  reference?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsSepaDebitInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Branch code of bank associated with the bank account. */
+  branch_code?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country the bank account is located in. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four characters of the IBAN. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** ID of the mandate used to make this payment. */
+  mandate?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsSofortInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Bank Identifier Code of the bank associated with the bank account. */
+  bic?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country the bank account is located in. */
+  country?: InputMaybe<Scalars['String']>;
+  generated_sepa_debit?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  generated_sepa_debit_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Last four characters of the IBAN. */
+  iban_last4?: InputMaybe<Scalars['String']>;
+  /**
+   * Preferred language of the SOFORT authorization page that the customer is redirected to.
+   * Can be one of `de`, `en`, `es`, `fr`, `it`, `nl`, or `pl`
+   */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+  /**
+   * Owner's verified full name. Values are verified or provided by SOFORT directly
+   * (if supported) at the time of authorization or settlement. They cannot be set or mutated.
+   */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsStripeAccountInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsUsBankAccountInput = {
+  /** Account holder type: individual or company. */
+  account_holder_type?: InputMaybe<UpdateProfileResultAccountHolderType>;
+  /** Account type: checkings or savings. Defaults to checking if omitted. */
+  account_type?: InputMaybe<UpdateProfileResultAccountType>;
+  /** Name of the bank associated with the bank account. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Routing number of the bank account. */
+  routing_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodDetailsWechatInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodDetailsWechatPayInput = {
+  /** Uniquely identifies this particular WeChat Pay account. You can use this attribute to check whether two WeChat accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Transaction ID of this particular WeChat Pay transaction. */
+  transaction_id?: InputMaybe<Scalars['String']>;
+};
+
+/** A list of refunds that have been applied to the charge. */
+export type UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLastFinalizationErrorPropertiesPaymentIntentPropertiesChargesPropertiesDataItemsPropertiesRefundsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_RefundInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type ReviewWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  review?: InputMaybe<Stripe_ReviewInput>;
+};
+
+export type Stripe_ReviewInput = {
+  /** The ZIP or postal code of the card used, if applicable. */
+  billing_zip?: InputMaybe<Scalars['String']>;
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  /** The reason the review was closed, or null if it has not yet been closed. One of `approved`, `refunded`, `refunded_as_fraud`, `disputed`, or `redacted`. */
+  closed_reason?: InputMaybe<UpdateProfileResultClosedReason>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The IP address where the payment originated. */
+  ip_address?: InputMaybe<Scalars['String']>;
+  ip_address_location?: InputMaybe<Stripe_RadarReviewResourceLocationInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** If `true`, the review needs action. */
+  open?: InputMaybe<Scalars['Boolean']>;
+  /** The reason the review was opened. One of `rule` or `manual`. */
+  opened_reason?: InputMaybe<UpdateProfileResultOpenedReason>;
+  payment_intent?: InputMaybe<PaymentIntentWrappedStringInputUnion>;
+  /** The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, `disputed`, or `redacted`. */
+  reason?: InputMaybe<Scalars['String']>;
+  session?: InputMaybe<Stripe_RadarReviewResourceSessionInput>;
+};
+
+export enum UpdateProfileResultClosedReason {
+  Approved = 'approved',
+  Disputed = 'disputed',
+  Redacted = 'redacted',
+  Refunded = 'refunded',
+  RefundedAsFraud = 'refunded_as_fraud'
+}
+
+export type Stripe_RadarReviewResourceLocationInput = {
+  /** The city where the payment originated. */
+  city?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country where the payment originated. */
+  country?: InputMaybe<Scalars['String']>;
+  /** The geographic latitude where the payment originated. */
+  latitude?: InputMaybe<Scalars['Float']>;
+  /** The geographic longitude where the payment originated. */
+  longitude?: InputMaybe<Scalars['Float']>;
+  /** The state/county/province/region where the payment originated. */
+  region?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultOpenedReason {
+  Manual = 'manual',
+  Rule = 'rule'
+}
+
+export type Stripe_RadarReviewResourceSessionInput = {
+  /** The browser used in this browser session (e.g., `Chrome`). */
+  browser?: InputMaybe<Scalars['String']>;
+  /** Information about the device used for the browser session (e.g., `Samsung SM-G930T`). */
+  device?: InputMaybe<Scalars['String']>;
+  /** The platform for the browser session (e.g., `Macintosh`). */
+  platform?: InputMaybe<Scalars['String']>;
+  /** The version for the browser session (e.g., `61.0.3163.100`). */
+  version?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_ChargeTransferDataInput = {
+  /** The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account. */
+  amount?: InputMaybe<Scalars['Int']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+};
+
+export enum UpdateProfileResultConfirmationMethod {
+  Automatic = 'automatic',
+  Manual = 'manual'
+}
+
+export type Stripe_PaymentIntentNextActionInput = {
+  alipay_handle_redirect?: InputMaybe<Stripe_PaymentIntentNextActionAlipayHandleRedirectInput>;
+  boleto_display_details?: InputMaybe<Stripe_PaymentIntentNextActionBoletoInput>;
+  card_await_notification?: InputMaybe<Stripe_PaymentIntentNextActionCardAwaitNotificationInput>;
+  display_bank_transfer_instructions?: InputMaybe<Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput>;
+  konbini_display_details?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniInput>;
+  oxxo_display_details?: InputMaybe<Stripe_PaymentIntentNextActionDisplayOxxoDetailsInput>;
+  paynow_display_qr_code?: InputMaybe<Stripe_PaymentIntentNextActionPaynowDisplayQrCodeInput>;
+  redirect_to_url?: InputMaybe<Stripe_PaymentIntentNextActionRedirectToUrlInput>;
+  /** Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, `oxxo_display_details`, or `verify_with_microdeposits`. */
+  type?: InputMaybe<Scalars['String']>;
+  /** When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js. */
+  use_stripe_sdk?: InputMaybe<Scalars['JSONObject']>;
+  verify_with_microdeposits?: InputMaybe<Stripe_PaymentIntentNextActionVerifyWithMicrodepositsInput>;
+  wechat_pay_display_qr_code?: InputMaybe<Stripe_PaymentIntentNextActionWechatPayDisplayQrCodeInput>;
+  wechat_pay_redirect_to_android_app?: InputMaybe<Stripe_PaymentIntentNextActionWechatPayRedirectToAndroidAppInput>;
+  wechat_pay_redirect_to_ios_app?: InputMaybe<Stripe_PaymentIntentNextActionWechatPayRedirectToIosAppInput>;
+};
+
+export type Stripe_PaymentIntentNextActionAlipayHandleRedirectInput = {
+  /** The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App. */
+  native_data?: InputMaybe<Scalars['String']>;
+  /** The native URL you must redirect your customer to in order to authenticate the payment in an iOS App. */
+  native_url?: InputMaybe<Scalars['String']>;
+  /** If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion. */
+  return_url?: InputMaybe<Scalars['String']>;
+  /** The URL you must redirect your customer to in order to authenticate the payment. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionBoletoInput = {
+  /** The timestamp after which the boleto expires. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** The URL to the hosted boleto voucher page, which allows customers to view the boleto voucher. */
+  hosted_voucher_url?: InputMaybe<Scalars['String']>;
+  /** The boleto number. */
+  number?: InputMaybe<Scalars['String']>;
+  /** The URL to the downloadable boleto voucher PDF. */
+  pdf?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionCardAwaitNotificationInput = {
+  /** The time that payment will be attempted. If customer approval is required, they need to provide approval before this time. */
+  charge_attempt_at?: InputMaybe<Scalars['Int']>;
+  /** For payments greater than INR 5000, the customer must provide explicit approval of the payment with their bank. For payments of lower amount, no customer action is required. */
+  customer_approval_required?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput = {
+  /** The remaining amount that needs to be transferred to complete the payment. */
+  amount_remaining?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** A list of financial addresses that can be used to fund the customer balance */
+  financial_addresses?: InputMaybe<Array<InputMaybe<Stripe_FundingInstructionsBankTransferFinancialAddressInput>>>;
+  /** A string identifying this payment. Instruct your customer to include this code in the reference or memo field of their bank transfer. */
+  reference?: InputMaybe<Scalars['String']>;
+  /** Type of bank transfer */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_FundingInstructionsBankTransferFinancialAddressInput = {
+  /** The payment networks supported by this FinancialAddress */
+  supported_networks?: InputMaybe<Array<InputMaybe<UpdateProfileResultSupportedNetworks>>>;
+  /** The type of financial address */
+  type?: InputMaybe<UpdateProfileResultType>;
+  zengin?: InputMaybe<Stripe_FundingInstructionsBankTransferZenginRecordInput>;
+};
+
+export enum UpdateProfileResultSupportedNetworks {
+  Sepa = 'sepa',
+  Zengin = 'zengin'
+}
+
+export type Stripe_FundingInstructionsBankTransferZenginRecordInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentIntentNextActionKonbiniInput = {
+  /** The timestamp at which the pending Konbini payment expires. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** The URL for the Konbini payment instructions page, which allows customers to view and print a Konbini voucher. */
+  hosted_voucher_url?: InputMaybe<Scalars['String']>;
+  stores?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniStoresInput>;
+};
+
+export type Stripe_PaymentIntentNextActionKonbiniStoresInput = {
+  familymart?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniFamilymartInput>;
+  lawson?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniLawsonInput>;
+  ministop?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniMinistopInput>;
+  seicomart?: InputMaybe<Stripe_PaymentIntentNextActionKonbiniSeicomartInput>;
+};
+
+export type Stripe_PaymentIntentNextActionKonbiniFamilymartInput = {
+  /** The confirmation number. */
+  confirmation_number?: InputMaybe<Scalars['String']>;
+  /** The payment code. */
+  payment_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionKonbiniLawsonInput = {
+  /** The confirmation number. */
+  confirmation_number?: InputMaybe<Scalars['String']>;
+  /** The payment code. */
+  payment_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionKonbiniMinistopInput = {
+  /** The confirmation number. */
+  confirmation_number?: InputMaybe<Scalars['String']>;
+  /** The payment code. */
+  payment_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionKonbiniSeicomartInput = {
+  /** The confirmation number. */
+  confirmation_number?: InputMaybe<Scalars['String']>;
+  /** The payment code. */
+  payment_code?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionDisplayOxxoDetailsInput = {
+  /** The timestamp after which the OXXO voucher expires. */
+  expires_after?: InputMaybe<Scalars['Int']>;
+  /** The URL for the hosted OXXO voucher page, which allows customers to view and print an OXXO voucher. */
+  hosted_voucher_url?: InputMaybe<Scalars['String']>;
+  /** OXXO reference number. */
+  number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionPaynowDisplayQrCodeInput = {
+  /** The raw data string used to generate QR code, it should be used together with QR code library. */
+  data?: InputMaybe<Scalars['String']>;
+  /** The image_url_png string used to render QR code */
+  image_url_png?: InputMaybe<Scalars['String']>;
+  /** The image_url_svg string used to render QR code */
+  image_url_svg?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionRedirectToUrlInput = {
+  /** If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion. */
+  return_url?: InputMaybe<Scalars['String']>;
+  /** The URL you must redirect your customer to in order to authenticate the payment. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionVerifyWithMicrodepositsInput = {
+  /** The timestamp when the microdeposits are expected to land. */
+  arrival_date?: InputMaybe<Scalars['Int']>;
+  /** The URL for the hosted verification page, which allows customers to verify their bank account. */
+  hosted_verification_url?: InputMaybe<Scalars['String']>;
+  /** The type of the microdeposit sent to the customer. Used to distinguish between different verification methods. */
+  microdeposit_type?: InputMaybe<UpdateProfileResultMicrodepositType>;
+};
+
+export enum UpdateProfileResultMicrodepositType {
+  Amounts = 'amounts',
+  DescriptorCode = 'descriptor_code'
+}
+
+export type Stripe_PaymentIntentNextActionWechatPayDisplayQrCodeInput = {
+  /** The data being used to generate QR code */
+  data?: InputMaybe<Scalars['String']>;
+  /** The base64 image data for a pre-generated QR code */
+  image_data_url?: InputMaybe<Scalars['String']>;
+  /** The image_url_png string used to render QR code */
+  image_url_png?: InputMaybe<Scalars['String']>;
+  /** The image_url_svg string used to render QR code */
+  image_url_svg?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionWechatPayRedirectToAndroidAppInput = {
+  /** app_id is the APP ID registered on WeChat open platform */
+  app_id?: InputMaybe<Scalars['String']>;
+  /** nonce_str is a random string */
+  nonce_str?: InputMaybe<Scalars['String']>;
+  /** package is static value */
+  package?: InputMaybe<Scalars['String']>;
+  /** an unique merchant ID assigned by WeChat Pay */
+  partner_id?: InputMaybe<Scalars['String']>;
+  /** an unique trading ID assigned by WeChat Pay */
+  prepay_id?: InputMaybe<Scalars['String']>;
+  /** A signature */
+  sign?: InputMaybe<Scalars['String']>;
+  /** Specifies the current time in epoch format */
+  timestamp?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentNextActionWechatPayRedirectToIosAppInput = {
+  /** An universal link that redirect to WeChat Pay app */
+  native_url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsInput = {
+  acss_debit?: InputMaybe<PaymentIntentPaymentMethodOptionsAcssDebitPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  afterpay_clearpay?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsAfterpayClearpayInputUnion>;
+  alipay?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsAlipayInputUnion>;
+  au_becs_debit?: InputMaybe<PaymentIntentPaymentMethodOptionsAuBecsDebitPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  bacs_debit?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBacsDebitInputUnion>;
+  bancontact?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBancontactInputUnion>;
+  boleto?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBoletoInputUnion>;
+  card?: InputMaybe<PaymentIntentPaymentMethodOptionsCardPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  card_present?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCardPresentInputUnion>;
+  customer_balance?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCustomerBalanceInputUnion>;
+  eps?: InputMaybe<PaymentIntentPaymentMethodOptionsEpsPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  fpx?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsFpxInputUnion>;
+  giropay?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsGiropayInputUnion>;
+  grabpay?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsGrabpayInputUnion>;
+  ideal?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsIdealInputUnion>;
+  interac_present?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsInteracPresentInputUnion>;
+  klarna?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsKlarnaInputUnion>;
+  konbini?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsKonbiniInputUnion>;
+  oxxo?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsOxxoInputUnion>;
+  p24?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsP24InputUnion>;
+  paynow?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsPaynowInputUnion>;
+  sepa_debit?: InputMaybe<PaymentIntentPaymentMethodOptionsSepaDebitPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  sofort?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsSofortInputUnion>;
+  us_bank_account?: InputMaybe<PaymentIntentPaymentMethodOptionsUsBankAccountPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  wechat_pay?: InputMaybe<PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsWechatPayInputUnion>;
+};
+
+export type PaymentIntentPaymentMethodOptionsAcssDebitPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  paymentIntentPaymentMethodOptionsAcssDebit?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsAcssDebitInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsAcssDebitInput = {
+  mandate_options?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitInput>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitInput = {
+  /** A URL for custom mandate text */
+  custom_mandate_url?: InputMaybe<Scalars['String']>;
+  /** Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'. */
+  interval_description?: InputMaybe<Scalars['String']>;
+  /** Payment schedule for the mandate. */
+  payment_schedule?: InputMaybe<UpdateProfileResultPaymentSchedule>;
+  /** Transaction type of the mandate. */
+  transaction_type?: InputMaybe<UpdateProfileResultTransactionType>;
+};
+
+export enum UpdateProfileResultSetupFutureUsage {
+  OffSession = 'off_session',
+  OnSession = 'on_session'
+}
+
+export enum UpdateProfileResultVerificationMethod {
+  Automatic = 'automatic',
+  Instant = 'instant',
+  Microdeposits = 'microdeposits'
+}
+
+export type Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput = {
+  /** Controls when the funds will be captured from the customer's account. */
+  capture_method?: InputMaybe<UpdateProfileResultCaptureMethod>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsAfterpayClearpayInputUnion = {
+  paymentMethodOptionsAfterpayClearpay?: InputMaybe<Stripe_PaymentMethodOptionsAfterpayClearpayInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsAfterpayClearpayInput = {
+  /** Controls when the funds will be captured from the customer's account. */
+  capture_method?: InputMaybe<UpdateProfileResultCaptureMethod>;
+  /**
+   * Order identifier shown to the customer in Afterpay’s online portal. We recommend using a value that helps you answer any questions a customer might have about
+   * the payment. The identifier is limited to 128 characters and may contain only letters, digits, underscores, backslashes and dashes.
+   */
+  reference?: InputMaybe<Scalars['String']>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsAlipayInputUnion = {
+  paymentMethodOptionsAlipay?: InputMaybe<Stripe_PaymentMethodOptionsAlipayInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsAlipayInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentPaymentMethodOptionsAuBecsDebitPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  paymentIntentPaymentMethodOptionsAuBecsDebit?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsAuBecsDebitInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsAuBecsDebitInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBacsDebitInputUnion = {
+  paymentMethodOptionsBacsDebit?: InputMaybe<Stripe_PaymentMethodOptionsBacsDebitInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsBacsDebitInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBancontactInputUnion = {
+  paymentMethodOptionsBancontact?: InputMaybe<Stripe_PaymentMethodOptionsBancontactInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsBancontactInput = {
+  /** Preferred language of the Bancontact authorization page that the customer is redirected to. */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsBoletoInputUnion = {
+  paymentMethodOptionsBoleto?: InputMaybe<Stripe_PaymentMethodOptionsBoletoInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsBoletoInput = {
+  /** The number of calendar days before a Boleto voucher expires. For example, if you create a Boleto voucher on Monday and you set expires_after_days to 2, the Boleto voucher will expire on Wednesday at 23:59 America/Sao_Paulo time. */
+  expires_after_days?: InputMaybe<Scalars['Int']>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentPaymentMethodOptionsCardPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  paymentIntentPaymentMethodOptionsCard?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsCardInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsCardInput = {
+  /** Controls when the funds will be captured from the customer's account. */
+  capture_method?: InputMaybe<UpdateProfileResultCaptureMethod>;
+  installments?: InputMaybe<Stripe_PaymentMethodOptionsCardInstallmentsInput>;
+  mandate_options?: InputMaybe<Stripe_PaymentMethodOptionsCardMandateOptionsInput>;
+  /** Selected network to process this payment intent on. Depends on the available networks of the card attached to the payment intent. Can be only set confirm-time. */
+  network?: InputMaybe<UpdateProfileResultNetwork>;
+  /** We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Permitted values include: `automatic` or `any`. If not provided, defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine. */
+  request_three_d_secure?: InputMaybe<UpdateProfileResultRequestThreeDSecure>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type Stripe_PaymentMethodOptionsCardInstallmentsInput = {
+  /** Installment plans that may be selected for this PaymentIntent. */
+  available_plans?: InputMaybe<Array<InputMaybe<Stripe_PaymentMethodDetailsCardInstallmentsPlanInput>>>;
+  /** Whether Installments are enabled for this PaymentIntent. */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+  plan?: InputMaybe<Stripe_PaymentMethodDetailsCardInstallmentsPlanInput>;
+};
+
+export type Stripe_PaymentMethodOptionsCardMandateOptionsInput = {
+  /** Amount to be charged for future payments. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param. */
+  amount_type?: InputMaybe<UpdateProfileResultAmountType>;
+  /** A description of the mandate or subscription that is meant to be displayed to the customer. */
+  description?: InputMaybe<Scalars['String']>;
+  /** End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date. */
+  end_date?: InputMaybe<Scalars['Int']>;
+  /** Specifies payment frequency. One of `day`, `week`, `month`, `year`, or `sporadic`. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+  /** The number of intervals between payments. For example, `interval=month` and `interval_count=3` indicates one payment every three months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks). This parameter is optional when `interval=sporadic`. */
+  interval_count?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the mandate or subscription. */
+  reference?: InputMaybe<Scalars['String']>;
+  /** Start date of the mandate or subscription. Start date should not be lesser than yesterday. */
+  start_date?: InputMaybe<Scalars['Int']>;
+  /** Specifies the type of mandates supported. Possible values are `india`. */
+  supported_types?: InputMaybe<Array<InputMaybe<UpdateProfileResultSupportedTypes>>>;
+};
+
+export enum UpdateProfileResultAmountType {
+  Fixed = 'fixed',
+  Maximum = 'maximum'
+}
+
+export enum UpdateProfileResultSupportedTypes {
+  India = 'india'
+}
+
+export enum UpdateProfileResultNetwork {
+  Amex = 'amex',
+  CartesBancaires = 'cartes_bancaires',
+  Diners = 'diners',
+  Discover = 'discover',
+  Interac = 'interac',
+  Jcb = 'jcb',
+  Mastercard = 'mastercard',
+  Unionpay = 'unionpay',
+  Unknown = 'unknown',
+  Visa = 'visa'
+}
+
+export enum UpdateProfileResultRequestThreeDSecure {
+  Any = 'any',
+  Automatic = 'automatic',
+  ChallengeOnly = 'challenge_only'
+}
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCardPresentInputUnion = {
+  paymentMethodOptionsCardPresent?: InputMaybe<Stripe_PaymentMethodOptionsCardPresentInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsCardPresentInput = {
+  /** Request ability to capture this payment beyond the standard [authorization validity window](https://stripe.com/docs/terminal/features/extended-authorizations#authorization-validity) */
+  request_extended_authorization?: InputMaybe<Scalars['Boolean']>;
+  /** Request ability to [increment](https://stripe.com/docs/terminal/features/incremental-authorizations) this PaymentIntent if the combination of MCC and card brand is eligible. Check [incremental_authorization_supported](https://stripe.com/docs/api/charges/object#charge_object-payment_method_details-card_present-incremental_authorization_supported) in the [Confirm](https://stripe.com/docs/api/payment_intents/confirm) response to verify support. */
+  request_incremental_authorization_support?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsCustomerBalanceInputUnion = {
+  paymentMethodOptionsCustomerBalance?: InputMaybe<Stripe_PaymentMethodOptionsCustomerBalanceInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsCustomerBalanceInput = {
+  bank_transfer?: InputMaybe<Stripe_PaymentMethodOptionsCustomerBalanceBankTransferInput>;
+  /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
+  funding_type?: InputMaybe<UpdateProfileResultFundingType>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type Stripe_PaymentMethodOptionsCustomerBalanceBankTransferInput = {
+  /**
+   * List of address types that should be returned in the financial_addresses response. If not specified, all valid types will be returned.
+   *
+   * Permitted values include: `zengin`.
+   */
+  requested_address_types?: InputMaybe<Array<InputMaybe<UpdateProfileResultRequestedAddressTypes>>>;
+  /** The bank transfer type that this PaymentIntent is allowed to use for funding. Permitted values include: `us_bank_account`, `eu_bank_account`, `id_bank_account`, `gb_bank_account`, `jp_bank_account`, `mx_bank_account`, `eu_bank_transfer`, `gb_bank_transfer`, `id_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export enum UpdateProfileResultRequestedAddressTypes {
+  Zengin = 'zengin'
+}
+
+export enum UpdateProfileResultFundingType {
+  BankTransfer = 'bank_transfer'
+}
+
+export type PaymentIntentPaymentMethodOptionsEpsPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  paymentIntentPaymentMethodOptionsEps?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsEpsInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsEpsInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsFpxInputUnion = {
+  paymentMethodOptionsFpx?: InputMaybe<Stripe_PaymentMethodOptionsFpxInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsFpxInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsGiropayInputUnion = {
+  paymentMethodOptionsGiropay?: InputMaybe<Stripe_PaymentMethodOptionsGiropayInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsGiropayInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsGrabpayInputUnion = {
+  paymentMethodOptionsGrabpay?: InputMaybe<Stripe_PaymentMethodOptionsGrabpayInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsGrabpayInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsIdealInputUnion = {
+  paymentMethodOptionsIdeal?: InputMaybe<Stripe_PaymentMethodOptionsIdealInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsIdealInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsInteracPresentInputUnion = {
+  paymentMethodOptionsInteracPresent?: InputMaybe<Stripe_PaymentMethodOptionsInteracPresentInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsInteracPresentInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsKlarnaInputUnion = {
+  paymentMethodOptionsKlarna?: InputMaybe<Stripe_PaymentMethodOptionsKlarnaInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsKlarnaInput = {
+  /** Controls when the funds will be captured from the customer's account. */
+  capture_method?: InputMaybe<UpdateProfileResultCaptureMethod>;
+  /** Preferred locale of the Klarna checkout page that the customer is redirected to. */
+  preferred_locale?: InputMaybe<Scalars['String']>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsKonbiniInputUnion = {
+  paymentMethodOptionsKonbini?: InputMaybe<Stripe_PaymentMethodOptionsKonbiniInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsKonbiniInput = {
+  /** An optional 10 to 11 digit numeric-only string determining the confirmation code at applicable convenience stores. */
+  confirmation_number?: InputMaybe<Scalars['String']>;
+  /** The number of calendar days (between 1 and 60) after which Konbini payment instructions will expire. For example, if a PaymentIntent is confirmed with Konbini and `expires_after_days` set to 2 on Monday JST, the instructions will expire on Wednesday 23:59:59 JST. */
+  expires_after_days?: InputMaybe<Scalars['Int']>;
+  /** The timestamp at which the Konbini payment instructions will expire. Only one of `expires_after_days` or `expires_at` may be set. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** A product descriptor of up to 22 characters, which will appear to customers at the convenience store. */
+  product_description?: InputMaybe<Scalars['String']>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsOxxoInputUnion = {
+  paymentMethodOptionsOxxo?: InputMaybe<Stripe_PaymentMethodOptionsOxxoInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsOxxoInput = {
+  /** The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time. */
+  expires_after_days?: InputMaybe<Scalars['Int']>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsP24InputUnion = {
+  paymentMethodOptionsP24?: InputMaybe<Stripe_PaymentMethodOptionsP24Input>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsP24Input = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsPaynowInputUnion = {
+  paymentMethodOptionsPaynow?: InputMaybe<Stripe_PaymentMethodOptionsPaynowInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsPaynowInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentPaymentMethodOptionsSepaDebitPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  paymentIntentPaymentMethodOptionsSepaDebit?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsSepaDebitInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsSepaDebitInput = {
+  mandate_options?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebitInput>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebitInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsSofortInputUnion = {
+  paymentMethodOptionsSofort?: InputMaybe<Stripe_PaymentMethodOptionsSofortInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsSofortInput = {
+  /** Preferred language of the SOFORT authorization page that the customer is redirected to. */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export type PaymentIntentPaymentMethodOptionsUsBankAccountPaymentIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  paymentIntentPaymentMethodOptionsUsBankAccount?: InputMaybe<Stripe_PaymentIntentPaymentMethodOptionsUsBankAccountInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentIntentPaymentMethodOptionsUsBankAccountInput = {
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export type PaymentIntentTypeSpecificPaymentMethodOptionsClientPaymentMethodOptionsWechatPayInputUnion = {
+  paymentMethodOptionsWechatPay?: InputMaybe<Stripe_PaymentMethodOptionsWechatPayInput>;
+  paymentIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_PaymentIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_PaymentMethodOptionsWechatPayInput = {
+  /** The app ID registered with WeChat Pay. Only required when client is ios or android. */
+  app_id?: InputMaybe<Scalars['String']>;
+  /** The client type that the end customer will pay from */
+  client?: InputMaybe<UpdateProfileResultClient>;
+  /**
+   * Indicates that you intend to make future payments with this PaymentIntent's payment method.
+   *
+   * Providing this parameter will [attach the payment method](https://stripe.com/docs/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete. If no Customer was provided, the payment method can still be [attached](https://stripe.com/docs/api/payment_methods/attach) to a Customer after the transaction completes.
+   *
+   * When processing card payments, Stripe also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as [SCA](https://stripe.com/docs/strong-customer-authentication).
+   */
+  setup_future_usage?: InputMaybe<UpdateProfileResultSetupFutureUsage>;
+};
+
+export enum UpdateProfileResultClient {
+  Android = 'android',
+  Ios = 'ios',
+  Web = 'web'
+}
+
+export type Stripe_PaymentIntentProcessingInput = {
+  card?: InputMaybe<Stripe_PaymentIntentCardProcessingInput>;
+  /** Type of the payment method for which payment is in `processing` state, one of `card`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_PaymentIntentCardProcessingInput = {
+  customer_notification?: InputMaybe<Stripe_PaymentIntentProcessingCustomerNotificationInput>;
+};
+
+export type Stripe_PaymentIntentProcessingCustomerNotificationInput = {
+  /** Whether customer approval has been requested for this payment. For payments greater than INR 5000 or mandate amount, the customer must provide explicit approval of the payment with their bank. */
+  approval_requested?: InputMaybe<Scalars['Boolean']>;
+  /** If customer approval is required, they need to provide approval before this time. */
+  completes_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_TransferDataInput = {
+  /** Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99). */
+  amount?: InputMaybe<Scalars['Int']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+};
+
+export type Stripe_InvoiceitemInput = {
+  /** Amount (in the `currency` specified) of the invoice item. This should always be equal to `unit_amount * quantity`. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  date?: InputMaybe<Scalars['Int']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** If true, discounts will apply to this invoice item. Always false for prorations. */
+  discountable?: InputMaybe<Scalars['Boolean']>;
+  /** The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount. */
+  discounts?: InputMaybe<Array<InputMaybe<DiscountWrappedStringInputUnion>>>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  invoice?: InputMaybe<InvoiceWrappedStringInputUnion>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  period?: InputMaybe<Stripe_InvoiceLineItemPeriodInput>;
+  price?: InputMaybe<Stripe_PriceInput>;
+  /** Whether the invoice item was created automatically as a proration adjustment when the customer switched plans. */
+  proration?: InputMaybe<Scalars['Boolean']>;
+  /** Quantity of units for the invoice item. If the invoice item is a proration, the quantity of the subscription that the proration was computed for. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  subscription?: InputMaybe<SubscriptionWrappedStringInputUnion>;
+  /** The subscription item that this invoice item has been created for, if any. */
+  subscription_item?: InputMaybe<Scalars['String']>;
+  /** The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item. */
+  tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+  test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
+  /** Unit amount (in the `currency` specified) of the invoice item. */
+  unit_amount?: InputMaybe<Scalars['Int']>;
+  /** Same as `unit_amount`, but contains a decimal value with at most 12 decimal places. */
+  unit_amount_decimal?: InputMaybe<Scalars['String']>;
+};
+
+export type DiscountWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  discount?: InputMaybe<Stripe_DiscountInput>;
+};
+
+export type Stripe_InvoiceLineItemPeriodInput = {
+  /** The end of the period, which must be greater than or equal to the start. */
+  end?: InputMaybe<Scalars['Int']>;
+  /** The start of the period. */
+  start?: InputMaybe<Scalars['Int']>;
+};
+
+export type SubscriptionWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  subscription?: InputMaybe<Stripe_SubscriptionInput>;
+};
+
+export type Stripe_SubscriptionInput = {
+  /** A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. */
+  application_fee_percent?: InputMaybe<Scalars['Float']>;
+  automatic_tax?: InputMaybe<Stripe_SubscriptionAutomaticTaxInput>;
+  /** Determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. */
+  billing_cycle_anchor?: InputMaybe<Scalars['Int']>;
+  billing_thresholds?: InputMaybe<Stripe_SubscriptionBillingThresholdsInput>;
+  /** A date in the future at which the subscription will automatically get canceled */
+  cancel_at?: InputMaybe<Scalars['Int']>;
+  /** If the subscription has been canceled with the `at_period_end` flag set to `true`, `cancel_at_period_end` on the subscription will be true. You can use this attribute to determine whether a subscription that has a status of active is scheduled to be canceled at the end of the current period. */
+  cancel_at_period_end?: InputMaybe<Scalars['Boolean']>;
+  /** If the subscription has been canceled, the date of that cancellation. If the subscription was canceled with `cancel_at_period_end`, `canceled_at` will reflect the time of the most recent update request, not the end of the subscription period when the subscription is automatically moved to a canceled state. */
+  canceled_at?: InputMaybe<Scalars['Int']>;
+  /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. */
+  collection_method?: InputMaybe<UpdateProfileResultCollectionMethod>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** End of the current period that the subscription has been invoiced for. At the end of this period, a new invoice will be created. */
+  current_period_end?: InputMaybe<Scalars['Int']>;
+  /** Start of the current period that the subscription has been invoiced for. */
+  current_period_start?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** Number of days a customer has to pay invoices generated by this subscription. This value will be `null` for subscriptions where `collection_method=charge_automatically`. */
+  days_until_due?: InputMaybe<Scalars['Int']>;
+  default_payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  default_source?: InputMaybe<AlipayAccountBankAccountBitcoinReceiverCardSourceWrappedStringInputUnion>;
+  /** The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription. */
+  default_tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+  discount?: InputMaybe<Stripe_DiscountInput>;
+  /** If the subscription has ended, the date the subscription ended. */
+  ended_at?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** List of subscription items, each with an attached price. */
+  items?: InputMaybe<PropertiesSubscriptionPropertiesItemsPropertyInput>;
+  latest_invoice?: InputMaybe<InvoiceWrappedStringInputUnion>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** Specifies the approximate timestamp on which any pending invoice items will be billed according to the schedule provided at `pending_invoice_item_interval`. */
+  next_pending_invoice_item_invoice?: InputMaybe<Scalars['Int']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  pause_collection?: InputMaybe<Stripe_SubscriptionsResourcePauseCollectionInput>;
+  payment_settings?: InputMaybe<Stripe_SubscriptionsResourcePaymentSettingsInput>;
+  pending_invoice_item_interval?: InputMaybe<Stripe_SubscriptionPendingInvoiceItemIntervalInput>;
+  pending_setup_intent?: InputMaybe<SetupIntentWrappedStringInputUnion>;
+  pending_update?: InputMaybe<Stripe_SubscriptionsResourcePendingUpdateInput>;
+  schedule?: InputMaybe<SubscriptionScheduleWrappedStringInputUnion>;
+  /** Date when the subscription was first created. The date might differ from the `created` date due to backdating. */
+  start_date?: InputMaybe<Scalars['Int']>;
+  /**
+   * Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, or `unpaid`.
+   *
+   * For `collection_method=charge_automatically` a subscription moves into `incomplete` if the initial payment attempt fails. A subscription in this state can only have metadata and default_source updated. Once the first invoice is paid, the subscription moves into an `active` state. If the first invoice is not paid within 23 hours, the subscription transitions to `incomplete_expired`. This is a terminal state, the open invoice will be voided and no further invoices will be generated.
+   *
+   * A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over.
+   *
+   * If subscription `collection_method=charge_automatically` it becomes `past_due` when payment to renew it fails and `canceled` or `unpaid` (depending on your subscriptions settings) when Stripe has exhausted all payment retry attempts.
+   *
+   * If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
+   */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
+  transfer_data?: InputMaybe<Stripe_SubscriptionTransferDataInput>;
+  /** If the subscription has a trial, the end of that trial. */
+  trial_end?: InputMaybe<Scalars['Int']>;
+  /** If the subscription has a trial, the beginning of that trial. */
+  trial_start?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_SubscriptionAutomaticTaxInput = {
+  /** Whether Stripe automatically computes tax on this subscription. */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_SubscriptionBillingThresholdsInput = {
+  /** Monetary threshold that triggers the subscription to create an invoice */
+  amount_gte?: InputMaybe<Scalars['Int']>;
+  /** Indicates if the `billing_cycle_anchor` should be reset when a threshold is reached. If true, `billing_cycle_anchor` will be updated to the date/time the threshold was last reached; otherwise, the value will remain unchanged. This value may not be `true` if the subscription contains items with plans that have `aggregate_usage=last_ever`. */
+  reset_billing_cycle_anchor?: InputMaybe<Scalars['Boolean']>;
+};
+
+export enum UpdateProfileResultCollectionMethod {
+  ChargeAutomatically = 'charge_automatically',
+  SendInvoice = 'send_invoice'
+}
+
+export type Stripe_TaxRateInput = {
+  /** Defaults to `true`. When set to `false`, this tax rate cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set. */
+  active?: InputMaybe<Scalars['Boolean']>;
+  /** Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)). */
+  country?: InputMaybe<Scalars['String']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page. */
+  display_name?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** This specifies if the tax rate is inclusive or exclusive. */
+  inclusive?: InputMaybe<Scalars['Boolean']>;
+  /** The jurisdiction for the tax rate. You can use this label field for tax reporting purposes. It also appears on your customer’s invoice. */
+  jurisdiction?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** This represents the tax rate percent out of 100. */
+  percentage?: InputMaybe<Scalars['Float']>;
+  /** [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2:US), without country prefix. For example, "NY" for New York, United States. */
+  state?: InputMaybe<Scalars['String']>;
+  /** The high-level tax type, such as `vat` or `sales_tax`. */
+  tax_type?: InputMaybe<UpdateProfileResultTaxType>;
+};
+
+export enum UpdateProfileResultTaxType {
+  Gst = 'gst',
+  Hst = 'hst',
+  Jct = 'jct',
+  Pst = 'pst',
+  Qst = 'qst',
+  Rst = 'rst',
+  SalesTax = 'sales_tax',
+  Vat = 'vat'
+}
+
+/** List of subscription items, each with an attached price. */
+export type PropertiesSubscriptionPropertiesItemsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_SubscriptionItemInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_SubscriptionItemInput = {
+  billing_thresholds?: InputMaybe<Stripe_SubscriptionItemBillingThresholdsInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  price?: InputMaybe<Stripe_PriceInput>;
+  /** The [quantity](https://stripe.com/docs/subscriptions/quantities) of the plan to which the customer should be subscribed. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The `subscription` this `subscription_item` belongs to. */
+  subscription?: InputMaybe<Scalars['String']>;
+  /** The tax rates which apply to this `subscription_item`. When set, the `default_tax_rates` on the subscription do not apply to this `subscription_item`. */
+  tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+};
+
+export type Stripe_SubscriptionItemBillingThresholdsInput = {
+  /** Usage threshold that triggers the subscription to create an invoice */
+  usage_gte?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_SubscriptionsResourcePauseCollectionInput = {
+  /** The payment collection behavior for this subscription while paused. One of `keep_as_draft`, `mark_uncollectible`, or `void`. */
+  behavior?: InputMaybe<UpdateProfileResultBehavior>;
+  /** The time after which the subscription will resume collecting payments. */
+  resumes_at?: InputMaybe<Scalars['Int']>;
+};
+
+export enum UpdateProfileResultBehavior {
+  KeepAsDraft = 'keep_as_draft',
+  MarkUncollectible = 'mark_uncollectible',
+  Void = 'void'
+}
+
+export type Stripe_SubscriptionsResourcePaymentSettingsInput = {
+  payment_method_options?: InputMaybe<Stripe_SubscriptionsResourcePaymentMethodOptionsInput>;
+  /** The list of payment method types to provide to every invoice created by the subscription. If not set, Stripe attempts to automatically determine the types to use by looking at the invoice’s default payment method, the subscription’s default payment method, the customer’s default payment method, and your [invoice template settings](https://dashboard.stripe.com/settings/billing/invoice). */
+  payment_method_types?: InputMaybe<Array<InputMaybe<UpdateProfileResultPaymentMethodTypes>>>;
+};
+
+export type Stripe_SubscriptionsResourcePaymentMethodOptionsInput = {
+  acss_debit?: InputMaybe<Stripe_InvoicePaymentMethodOptionsAcssDebitInput>;
+  bancontact?: InputMaybe<Stripe_InvoicePaymentMethodOptionsBancontactInput>;
+  card?: InputMaybe<Stripe_SubscriptionPaymentMethodOptionsCardInput>;
+  customer_balance?: InputMaybe<Stripe_InvoicePaymentMethodOptionsCustomerBalanceInput>;
+  konbini?: InputMaybe<Stripe_InvoicePaymentMethodOptionsKonbiniInput>;
+  us_bank_account?: InputMaybe<Stripe_InvoicePaymentMethodOptionsUsBankAccountInput>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsAcssDebitInput = {
+  mandate_options?: InputMaybe<Stripe_InvoicePaymentMethodOptionsAcssDebitMandateOptionsInput>;
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsAcssDebitMandateOptionsInput = {
+  /** Transaction type of the mandate. */
+  transaction_type?: InputMaybe<UpdateProfileResultTransactionType>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsBancontactInput = {
+  /** Preferred language of the Bancontact authorization page that the customer is redirected to. */
+  preferred_language?: InputMaybe<UpdateProfileResultPreferredLanguage>;
+};
+
+export type Stripe_SubscriptionPaymentMethodOptionsCardInput = {
+  mandate_options?: InputMaybe<Stripe_InvoiceMandateOptionsCardInput>;
+  /** We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine. */
+  request_three_d_secure?: InputMaybe<UpdateProfileResultRequestThreeDSecure>;
+};
+
+export type Stripe_InvoiceMandateOptionsCardInput = {
+  /** Amount to be charged for future payments. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param. */
+  amount_type?: InputMaybe<UpdateProfileResultAmountType>;
+  /** A description of the mandate or subscription that is meant to be displayed to the customer. */
+  description?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsCustomerBalanceInput = {
+  bank_transfer?: InputMaybe<Stripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput>;
+  /** The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`. */
+  funding_type?: InputMaybe<UpdateProfileResultFundingType>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput = {
+  /** The bank transfer type that can be used for funding. Permitted values include: `us_bank_account`, `eu_bank_account`, `id_bank_account`, `gb_bank_account`, `jp_bank_account`, `mx_bank_account`, `eu_bank_transfer`, `gb_bank_transfer`, `id_bank_transfer`, `jp_bank_transfer`, `mx_bank_transfer`, or `us_bank_transfer`. */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsKonbiniInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsUsBankAccountInput = {
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export enum UpdateProfileResultPaymentMethodTypes {
+  AchCreditTransfer = 'ach_credit_transfer',
+  AchDebit = 'ach_debit',
+  AcssDebit = 'acss_debit',
+  AuBecsDebit = 'au_becs_debit',
+  BacsDebit = 'bacs_debit',
+  Bancontact = 'bancontact',
+  Boleto = 'boleto',
+  Card = 'card',
+  CustomerBalance = 'customer_balance',
+  Fpx = 'fpx',
+  Giropay = 'giropay',
+  Grabpay = 'grabpay',
+  Ideal = 'ideal',
+  Konbini = 'konbini',
+  Paynow = 'paynow',
+  SepaDebit = 'sepa_debit',
+  Sofort = 'sofort',
+  UsBankAccount = 'us_bank_account',
+  WechatPay = 'wechat_pay'
+}
+
+export type Stripe_SubscriptionPendingInvoiceItemIntervalInput = {
+  /** Specifies invoicing frequency. Either `day`, `week`, `month` or `year`. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+  /** The number of intervals between invoices. For example, `interval=month` and `interval_count=3` bills every 3 months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks). */
+  interval_count?: InputMaybe<Scalars['Int']>;
+};
+
+export type SetupIntentWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  setupIntent?: InputMaybe<Stripe_SetupIntentInput>;
+};
+
+export type Stripe_SetupIntentInput = {
+  application?: InputMaybe<ApplicationWrappedStringInputUnion>;
+  /** Reason for cancellation of this SetupIntent, one of `abandoned`, `requested_by_customer`, or `duplicate`. */
+  cancellation_reason?: InputMaybe<UpdateProfileResultCancellationReason>;
+  /**
+   * The client secret of this SetupIntent. Used for client-side retrieval using a publishable key.
+   *
+   * The client secret can be used to complete payment setup from your frontend. It should not be stored, logged, or exposed to anyone other than the customer. Make sure that you have TLS enabled on any page that includes the client secret.
+   */
+  client_secret?: InputMaybe<Scalars['String']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  last_setup_error?: InputMaybe<Stripe_ApiErrorsInput>;
+  latest_attempt?: InputMaybe<SetupAttemptWrappedStringInputUnion>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  next_action?: InputMaybe<Stripe_SetupIntentNextActionInput>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  on_behalf_of?: InputMaybe<AccountWrappedStringInputUnion>;
+  payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  payment_method_options?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsInput>;
+  /** The list of payment method types (e.g. card) that this SetupIntent is allowed to set up. */
+  payment_method_types?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  single_use_mandate?: InputMaybe<MandateWrappedStringInputUnion>;
+  /** [Status](https://stripe.com/docs/payments/intents#intent-statuses) of this SetupIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `canceled`, or `succeeded`. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /**
+   * Indicates how the payment method is intended to be used in the future.
+   *
+   * Use `on_session` if you intend to only reuse the payment method when the customer is in your checkout flow. Use `off_session` if your customer may or may not be in your checkout flow. If not provided, this value defaults to `off_session`.
+   */
+  usage?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SetupIntentNextActionInput = {
+  redirect_to_url?: InputMaybe<Stripe_SetupIntentNextActionRedirectToUrlInput>;
+  /** Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, `oxxo_display_details`, or `verify_with_microdeposits`. */
+  type?: InputMaybe<Scalars['String']>;
+  /** When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js. */
+  use_stripe_sdk?: InputMaybe<Scalars['JSONObject']>;
+  verify_with_microdeposits?: InputMaybe<Stripe_SetupIntentNextActionVerifyWithMicrodepositsInput>;
+};
+
+export type Stripe_SetupIntentNextActionRedirectToUrlInput = {
+  /** If the customer does not exit their browser while authenticating, they will be redirected to this specified URL after completion. */
+  return_url?: InputMaybe<Scalars['String']>;
+  /** The URL you must redirect your customer to in order to authenticate. */
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SetupIntentNextActionVerifyWithMicrodepositsInput = {
+  /** The timestamp when the microdeposits are expected to land. */
+  arrival_date?: InputMaybe<Scalars['Int']>;
+  /** The URL for the hosted verification page, which allows customers to verify their bank account. */
+  hosted_verification_url?: InputMaybe<Scalars['String']>;
+  /** The type of the microdeposit sent to the customer. Used to distinguish between different verification methods. */
+  microdeposit_type?: InputMaybe<UpdateProfileResultMicrodepositType>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsInput = {
+  acss_debit?: InputMaybe<SetupIntentPaymentMethodOptionsAcssDebitSetupIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  card?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsCardInput>;
+  sepa_debit?: InputMaybe<SetupIntentPaymentMethodOptionsSepaDebitSetupIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+  us_bank_account?: InputMaybe<SetupIntentPaymentMethodOptionsUsBankAccountSetupIntentTypeSpecificPaymentMethodOptionsClientInputUnion>;
+};
+
+export type SetupIntentPaymentMethodOptionsAcssDebitSetupIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  setupIntentPaymentMethodOptionsAcssDebit?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsAcssDebitInput>;
+  setupIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_SetupIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsAcssDebitInput = {
+  /** Currency supported by the bank account */
+  currency?: InputMaybe<UpdateProfileResultCurrency>;
+  mandate_options?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitInput>;
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export enum UpdateProfileResultCurrency {
+  Cad = 'cad',
+  Usd = 'usd'
+}
+
+export type Stripe_SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitInput = {
+  /** A URL for custom mandate text */
+  custom_mandate_url?: InputMaybe<Scalars['String']>;
+  /** List of Stripe products where this mandate can be selected automatically. */
+  default_for?: InputMaybe<Array<InputMaybe<UpdateProfileResultDefaultFor>>>;
+  /** Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'. */
+  interval_description?: InputMaybe<Scalars['String']>;
+  /** Payment schedule for the mandate. */
+  payment_schedule?: InputMaybe<UpdateProfileResultPaymentSchedule>;
+  /** Transaction type of the mandate. */
+  transaction_type?: InputMaybe<UpdateProfileResultTransactionType>;
+};
+
+export type Stripe_SetupIntentTypeSpecificPaymentMethodOptionsClientInput = {
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsCardInput = {
+  mandate_options?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsCardMandateOptionsInput>;
+  /** We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Permitted values include: `automatic` or `any`. If not provided, defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine. */
+  request_three_d_secure?: InputMaybe<UpdateProfileResultRequestThreeDSecure>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsCardMandateOptionsInput = {
+  /** Amount to be charged for future payments. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param. */
+  amount_type?: InputMaybe<UpdateProfileResultAmountType>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** A description of the mandate or subscription that is meant to be displayed to the customer. */
+  description?: InputMaybe<Scalars['String']>;
+  /** End date of the mandate or subscription. If not provided, the mandate will be active until canceled. If provided, end date should be after start date. */
+  end_date?: InputMaybe<Scalars['Int']>;
+  /** Specifies payment frequency. One of `day`, `week`, `month`, `year`, or `sporadic`. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+  /** The number of intervals between payments. For example, `interval=month` and `interval_count=3` indicates one payment every three months. Maximum of one year interval allowed (1 year, 12 months, or 52 weeks). This parameter is optional when `interval=sporadic`. */
+  interval_count?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the mandate or subscription. */
+  reference?: InputMaybe<Scalars['String']>;
+  /** Start date of the mandate or subscription. Start date should not be lesser than yesterday. */
+  start_date?: InputMaybe<Scalars['Int']>;
+  /** Specifies the type of mandates supported. Possible values are `india`. */
+  supported_types?: InputMaybe<Array<InputMaybe<UpdateProfileResultSupportedTypes>>>;
+};
+
+export type SetupIntentPaymentMethodOptionsSepaDebitSetupIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  setupIntentPaymentMethodOptionsSepaDebit?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsSepaDebitInput>;
+  setupIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_SetupIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsSepaDebitInput = {
+  mandate_options?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsMandateOptionsSepaDebitInput>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsMandateOptionsSepaDebitInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type SetupIntentPaymentMethodOptionsUsBankAccountSetupIntentTypeSpecificPaymentMethodOptionsClientInputUnion = {
+  setupIntentPaymentMethodOptionsUsBankAccount?: InputMaybe<Stripe_SetupIntentPaymentMethodOptionsUsBankAccountInput>;
+  setupIntentTypeSpecificPaymentMethodOptionsClient?: InputMaybe<Stripe_SetupIntentTypeSpecificPaymentMethodOptionsClientInput>;
+};
+
+export type Stripe_SetupIntentPaymentMethodOptionsUsBankAccountInput = {
+  /** Bank account verification method. */
+  verification_method?: InputMaybe<UpdateProfileResultVerificationMethod>;
+};
+
+export type Stripe_SubscriptionsResourcePendingUpdateInput = {
+  /** If the update is applied, determines the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. */
+  billing_cycle_anchor?: InputMaybe<Scalars['Int']>;
+  /** The point after which the changes reflected by this update will be discarded and no longer applied. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** List of subscription items, each with an attached plan, that will be set if the update is applied. */
+  subscription_items?: InputMaybe<Array<InputMaybe<Stripe_SubscriptionItemInput>>>;
+  /** Unix timestamp representing the end of the trial period the customer will get before being charged for the first time, if the update is applied. */
+  trial_end?: InputMaybe<Scalars['Int']>;
+  /** Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://stripe.com/docs/billing/subscriptions/trials) to learn more. */
+  trial_from_plan?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type SubscriptionScheduleWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  subscriptionSchedule?: InputMaybe<Stripe_SubscriptionScheduleInput>;
+};
+
+export type Stripe_SubscriptionScheduleInput = {
+  /** Time at which the subscription schedule was canceled. Measured in seconds since the Unix epoch. */
+  canceled_at?: InputMaybe<Scalars['Int']>;
+  /** Time at which the subscription schedule was completed. Measured in seconds since the Unix epoch. */
+  completed_at?: InputMaybe<Scalars['Int']>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  current_phase?: InputMaybe<Stripe_SubscriptionScheduleCurrentPhaseInput>;
+  customer?: InputMaybe<CustomerDeletedCustomerWrappedStringInputUnion>;
+  default_settings?: InputMaybe<Stripe_SubscriptionSchedulesResourceDefaultSettingsInput>;
+  /** Behavior of the subscription schedule and underlying subscription when it ends. Possible values are `release` and `cancel`. */
+  end_behavior?: InputMaybe<UpdateProfileResultEndBehavior>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** Configuration for the subscription schedule's phases. */
+  phases?: InputMaybe<Array<InputMaybe<Stripe_SubscriptionSchedulePhaseConfigurationInput>>>;
+  /** Time at which the subscription schedule was released. Measured in seconds since the Unix epoch. */
+  released_at?: InputMaybe<Scalars['Int']>;
+  /** ID of the subscription once managed by the subscription schedule (if it is released). */
+  released_subscription?: InputMaybe<Scalars['String']>;
+  /** The present status of the subscription schedule. Possible values are `not_started`, `active`, `completed`, `released`, and `canceled`. You can read more about the different states in our [behavior guide](https://stripe.com/docs/billing/subscriptions/subscription-schedules). */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  subscription?: InputMaybe<SubscriptionWrappedStringInputUnion>;
+  test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
+};
+
+export type Stripe_SubscriptionScheduleCurrentPhaseInput = {
+  /** The end of this phase of the subscription schedule. */
+  end_date?: InputMaybe<Scalars['Int']>;
+  /** The start of this phase of the subscription schedule. */
+  start_date?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_SubscriptionSchedulesResourceDefaultSettingsInput = {
+  /** A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account during this phase of the schedule. */
+  application_fee_percent?: InputMaybe<Scalars['Float']>;
+  automatic_tax?: InputMaybe<Stripe_SubscriptionSchedulesResourceDefaultSettingsAutomaticTaxInput>;
+  /** Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle). */
+  billing_cycle_anchor?: InputMaybe<UpdateProfileResultBillingCycleAnchor>;
+  billing_thresholds?: InputMaybe<Stripe_SubscriptionBillingThresholdsInput>;
+  /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. */
+  collection_method?: InputMaybe<UpdateProfileResultCollectionMethod>;
+  default_payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  invoice_settings?: InputMaybe<Stripe_InvoiceSettingSubscriptionScheduleSettingInput>;
+  transfer_data?: InputMaybe<Stripe_SubscriptionTransferDataInput>;
+};
+
+export type Stripe_SubscriptionSchedulesResourceDefaultSettingsAutomaticTaxInput = {
+  /** Whether Stripe automatically computes tax on invoices created during this phase. */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export enum UpdateProfileResultBillingCycleAnchor {
+  Automatic = 'automatic',
+  PhaseStart = 'phase_start'
+}
+
+export type Stripe_InvoiceSettingSubscriptionScheduleSettingInput = {
+  /** Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`. */
+  days_until_due?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_SubscriptionTransferDataInput = {
+  /** A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the destination account. By default, the entire amount is transferred to the destination. */
+  amount_percent?: InputMaybe<Scalars['Float']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+};
+
+export enum UpdateProfileResultEndBehavior {
+  Cancel = 'cancel',
+  None = 'none',
+  Release = 'release',
+  Renew = 'renew'
+}
+
+export type Stripe_SubscriptionSchedulePhaseConfigurationInput = {
+  /** A list of prices and quantities that will generate invoice items appended to the first invoice for this phase. */
+  add_invoice_items?: InputMaybe<Array<InputMaybe<Stripe_SubscriptionScheduleAddInvoiceItemInput>>>;
+  /** A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account during this phase of the schedule. */
+  application_fee_percent?: InputMaybe<Scalars['Float']>;
+  automatic_tax?: InputMaybe<Stripe_SchedulesPhaseAutomaticTaxInput>;
+  /** Possible values are `phase_start` or `automatic`. If `phase_start` then billing cycle anchor of the subscription is set to the start of the phase when entering the phase. If `automatic` then the billing cycle anchor is automatically modified as needed when entering the phase. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle). */
+  billing_cycle_anchor?: InputMaybe<UpdateProfileResultBillingCycleAnchor>;
+  billing_thresholds?: InputMaybe<Stripe_SubscriptionBillingThresholdsInput>;
+  /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. */
+  collection_method?: InputMaybe<UpdateProfileResultCollectionMethod>;
+  coupon?: InputMaybe<CouponDeletedCouponWrappedStringInputUnion>;
+  default_payment_method?: InputMaybe<PaymentMethodWrappedStringInputUnion>;
+  /** The default tax rates to apply to the subscription during this phase of the subscription schedule. */
+  default_tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+  /** The end of this phase of the subscription schedule. */
+  end_date?: InputMaybe<Scalars['Int']>;
+  invoice_settings?: InputMaybe<Stripe_InvoiceSettingSubscriptionScheduleSettingInput>;
+  /** Subscription items to configure the subscription to during this phase of the subscription schedule. */
+  items?: InputMaybe<Array<InputMaybe<Stripe_SubscriptionScheduleConfigurationItemInput>>>;
+  /** If the subscription schedule will prorate when transitioning to this phase. Possible values are `create_prorations` and `none`. */
+  proration_behavior?: InputMaybe<UpdateProfileResultProrationBehavior>;
+  /** The start of this phase of the subscription schedule. */
+  start_date?: InputMaybe<Scalars['Int']>;
+  transfer_data?: InputMaybe<Stripe_SubscriptionTransferDataInput>;
+  /** When the trial ends within the phase. */
+  trial_end?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_SubscriptionScheduleAddInvoiceItemInput = {
+  price?: InputMaybe<DeletedPricePriceWrappedStringInputUnion>;
+  /** The quantity of the invoice item. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The tax rates which apply to the item. When set, the `default_tax_rates` do not apply to this item. */
+  tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+};
+
+export type DeletedPricePriceWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  price?: InputMaybe<Stripe_PriceInput>;
+  deletedPrice?: InputMaybe<Stripe_DeletedPriceInput>;
+};
+
+export type Stripe_DeletedPriceInput = {
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_SchedulesPhaseAutomaticTaxInput = {
+  /** Whether Stripe automatically computes tax on invoices created during this phase. */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CouponDeletedCouponWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  coupon?: InputMaybe<Stripe_CouponInput>;
+  deletedCoupon?: InputMaybe<Stripe_DeletedCouponInput>;
+};
+
+export type Stripe_DeletedCouponInput = {
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_SubscriptionScheduleConfigurationItemInput = {
+  billing_thresholds?: InputMaybe<Stripe_SubscriptionItemBillingThresholdsInput>;
+  price?: InputMaybe<DeletedPricePriceWrappedStringInputUnion>;
+  /** Quantity of the plan to which the customer should be subscribed. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`. */
+  tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+};
+
+export enum UpdateProfileResultProrationBehavior {
+  AlwaysInvoice = 'always_invoice',
+  CreateProrations = 'create_prorations',
+  None = 'none'
+}
+
+export type TestHelpersTestClockWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  testHelpersTestClock?: InputMaybe<Stripe_TestHelpersTestClockInput>;
+};
+
+export type Stripe_TestHelpersTestClockInput = {
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Time at which this clock is scheduled to auto delete. */
+  deletes_after?: InputMaybe<Scalars['Int']>;
+  /** Time at which all objects belonging to this clock are frozen. */
+  frozen_time?: InputMaybe<Scalars['Int']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** The custom name supplied at creation. */
+  name?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  /** The status of the Test Clock. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+};
+
+export type Stripe_ItemInput = {
+  /** Total before any discounts or taxes are applied. */
+  amount_subtotal?: InputMaybe<Scalars['Int']>;
+  /** Total after discounts and taxes. */
+  amount_total?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. Defaults to product name. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The discounts applied to the line item. */
+  discounts?: InputMaybe<Array<InputMaybe<Stripe_LineItemsDiscountAmountInput>>>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  price?: InputMaybe<Stripe_PriceInput>;
+  /** The quantity of products being purchased. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The taxes applied to the line item. */
+  taxes?: InputMaybe<Array<InputMaybe<Stripe_LineItemsTaxAmountInput>>>;
+};
+
+export type Stripe_LineItemsDiscountAmountInput = {
+  /** The amount discounted. */
+  amount?: InputMaybe<Scalars['Int']>;
+  discount?: InputMaybe<Stripe_DiscountInput>;
+};
+
+export type Stripe_LineItemsTaxAmountInput = {
+  /** Amount of tax applied for this rate. */
+  amount?: InputMaybe<Scalars['Int']>;
+  rate?: InputMaybe<Stripe_TaxRateInput>;
+};
+
+export type BankAccountCardSourceInputUnion = {
+  bankAccount?: InputMaybe<Stripe_BankAccountInput>;
+  card?: InputMaybe<Stripe_CardInput>;
+  source?: InputMaybe<Stripe_SourceInput>;
+};
+
+export type Stripe_NetworksInput = {
+  /** All available networks for the card. */
+  available?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The preferred network for the card. */
+  preferred?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_ThreeDSecureUsageInput = {
+  /** Whether 3D Secure is supported on this card. */
+  supported?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type Stripe_PaymentMethodCardWalletInput = {
+  amex_express_checkout?: InputMaybe<Stripe_PaymentMethodCardWalletAmexExpressCheckoutInput>;
+  apple_pay?: InputMaybe<Stripe_PaymentMethodCardWalletApplePayInput>;
+  /** (For tokenized numbers only.) The last four digits of the device account number. */
+  dynamic_last4?: InputMaybe<Scalars['String']>;
+  google_pay?: InputMaybe<Stripe_PaymentMethodCardWalletGooglePayInput>;
+  masterpass?: InputMaybe<Stripe_PaymentMethodCardWalletMasterpassInput>;
+  samsung_pay?: InputMaybe<Stripe_PaymentMethodCardWalletSamsungPayInput>;
+  /** The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, or `visa_checkout`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type. */
+  type?: InputMaybe<UpdateProfileResultType>;
+  visa_checkout?: InputMaybe<Stripe_PaymentMethodCardWalletVisaCheckoutInput>;
+};
+
+export type Stripe_PaymentMethodCardWalletAmexExpressCheckoutInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodCardWalletApplePayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodCardWalletGooglePayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodCardWalletMasterpassInput = {
+  billing_address?: InputMaybe<Stripe_AddressInput>;
+  /** Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  name?: InputMaybe<Scalars['String']>;
+  shipping_address?: InputMaybe<Stripe_AddressInput>;
+};
+
+export type Stripe_PaymentMethodCardWalletSamsungPayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodCardWalletVisaCheckoutInput = {
+  billing_address?: InputMaybe<Stripe_AddressInput>;
+  /** Owner's verified email. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  email?: InputMaybe<Scalars['String']>;
+  /** Owner's verified full name. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated. */
+  name?: InputMaybe<Scalars['String']>;
+  shipping_address?: InputMaybe<Stripe_AddressInput>;
+};
+
+export type Stripe_PaymentMethodCardPresentInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodCustomerBalanceInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodEpsInput = {
+  /** The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+};
+
+export type Stripe_PaymentMethodFpxInput = {
+  /** The customer's bank, if provided. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+};
+
+export type Stripe_PaymentMethodGiropayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodGrabpayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodIdealInput = {
+  /** The customer's bank, if provided. Can be one of `abn_amro`, `asn_bank`, `bunq`, `handelsbanken`, `ing`, `knab`, `moneyou`, `rabobank`, `regiobank`, `revolut`, `sns_bank`, `triodos_bank`, or `van_lanschot`. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+  /** The Bank Identifier Code of the customer's bank, if the bank was provided. */
+  bic?: InputMaybe<UpdateProfileResultBic>;
+};
+
+export type Stripe_PaymentMethodInteracPresentInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodKlarnaInput = {
+  dob?: InputMaybe<Stripe_PaymentFlowsPrivatePaymentMethodsKlarnaDobInput>;
+};
+
+export type Stripe_PaymentFlowsPrivatePaymentMethodsKlarnaDobInput = {
+  /** The day of birth, between 1 and 31. */
+  day?: InputMaybe<Scalars['Int']>;
+  /** The month of birth, between 1 and 12. */
+  month?: InputMaybe<Scalars['Int']>;
+  /** The four-digit year of birth. */
+  year?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_PaymentMethodKonbiniInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodOxxoInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodP24Input = {
+  /** The customer's bank, if provided. */
+  bank?: InputMaybe<UpdateProfileResultBank>;
+};
+
+export type Stripe_PaymentMethodPaynowInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+export type Stripe_PaymentMethodSepaDebitInput = {
+  /** Bank code of bank associated with the bank account. */
+  bank_code?: InputMaybe<Scalars['String']>;
+  /** Branch code of bank associated with the bank account. */
+  branch_code?: InputMaybe<Scalars['String']>;
+  /** Two-letter ISO code representing the country the bank account is located in. */
+  country?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  generated_from?: InputMaybe<Stripe_SepaDebitGeneratedFromInput>;
+  /** Last four characters of the IBAN. */
+  last4?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_SepaDebitGeneratedFromInput = {
+  charge?: InputMaybe<ChargeWrappedStringInputUnion>;
+  setup_attempt?: InputMaybe<SetupAttemptWrappedStringInputUnion>;
+};
+
+export type Stripe_PaymentMethodSofortInput = {
+  /** Two-letter ISO code representing the country the bank account is located in. */
+  country?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodUsBankAccountInput = {
+  /** Account holder type: individual or company. */
+  account_holder_type?: InputMaybe<UpdateProfileResultAccountHolderType>;
+  /** Account type: checkings or savings. Defaults to checking if omitted. */
+  account_type?: InputMaybe<UpdateProfileResultAccountType>;
+  /** The name of the bank. */
+  bank_name?: InputMaybe<Scalars['String']>;
+  /** Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same. */
+  fingerprint?: InputMaybe<Scalars['String']>;
+  /** Last four digits of the bank account number. */
+  last4?: InputMaybe<Scalars['String']>;
+  /** Routing number of the bank account. */
+  routing_number?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_PaymentMethodWechatPayInput = {
+  result?: InputMaybe<Scalars['JSONObject']>;
+};
+
+/** The customer's payment sources, if any. */
+export type PropertiesCustomerPropertiesSourcesPropertyInput = {
+  /** Details about each object. */
+  data: Array<AlipayAccountBankAccountBitcoinReceiverCardSourceInputUnion>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type AlipayAccountBankAccountBitcoinReceiverCardSourceInputUnion = {
+  alipayAccount?: InputMaybe<Stripe_AlipayAccountInput>;
+  bankAccount?: InputMaybe<Stripe_BankAccountInput>;
+  bitcoinReceiver?: InputMaybe<Stripe_BitcoinReceiverInput>;
+  card?: InputMaybe<Stripe_CardInput>;
+  source?: InputMaybe<Stripe_SourceInput>;
+};
+
+/** The customer's current subscriptions, if any. */
+export type PropertiesCustomerPropertiesSubscriptionsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_SubscriptionInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_CustomerTaxInput = {
+  /** Surfaces if automatic tax computation is possible given the current customer location information. */
+  automatic_tax?: InputMaybe<UpdateProfileResultAutomaticTax>;
+  /** A recent IP address of the customer used for tax reporting and tax location inference. */
+  ip_address?: InputMaybe<Scalars['String']>;
+  location?: InputMaybe<Stripe_CustomerTaxLocationInput>;
+};
+
+export enum UpdateProfileResultAutomaticTax {
+  Failed = 'failed',
+  NotCollecting = 'not_collecting',
+  Supported = 'supported',
+  UnrecognizedLocation = 'unrecognized_location'
+}
+
+export type Stripe_CustomerTaxLocationInput = {
+  /** The customer's country as identified by Stripe Tax. */
+  country?: InputMaybe<Scalars['String']>;
+  /** The data source used to infer the customer's location. */
+  source?: InputMaybe<UpdateProfileResultSource>;
+  /** The customer's state, county, province, or region as identified by Stripe Tax. */
+  state?: InputMaybe<Scalars['String']>;
+};
+
+export enum UpdateProfileResultSource {
+  BillingAddress = 'billing_address',
+  IpAddress = 'ip_address',
+  PaymentMethod = 'payment_method',
+  ShippingDestination = 'shipping_destination'
+}
+
+export enum UpdateProfileResultTaxExempt {
+  Exempt = 'exempt',
+  None = 'none',
+  Reverse = 'reverse'
+}
+
+/** The customer's tax IDs. */
+export type PropertiesCustomerPropertiesTaxIdsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_TaxIdInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_TaxIdVerificationInput = {
+  /** Verification status, one of `pending`, `verified`, `unverified`, or `unavailable`. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  /** Verified address. */
+  verified_address?: InputMaybe<Scalars['String']>;
+  /** Verified name. */
+  verified_name?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_AutomaticTaxInput = {
+  /** Whether Stripe automatically computes tax on this invoice. */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+  /** The status of the most recent automated tax calculation for this invoice. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+};
+
+export enum UpdateProfileResultBillingReason {
+  AutomaticPendingInvoiceItemInvoice = 'automatic_pending_invoice_item_invoice',
+  Manual = 'manual',
+  QuoteAccept = 'quote_accept',
+  Subscription = 'subscription',
+  SubscriptionCreate = 'subscription_create',
+  SubscriptionCycle = 'subscription_cycle',
+  SubscriptionThreshold = 'subscription_threshold',
+  SubscriptionUpdate = 'subscription_update',
+  Upcoming = 'upcoming'
+}
+
+export enum UpdateProfileResultCustomerTaxExempt {
+  Exempt = 'exempt',
+  None = 'none',
+  Reverse = 'reverse'
+}
+
+export type Stripe_InvoicesResourceInvoiceTaxIdInput = {
+  /** The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, or `unknown` */
+  type?: InputMaybe<UpdateProfileResultType>;
+  /** The value of the tax ID. */
+  value?: InputMaybe<Scalars['String']>;
+};
+
+/** The individual line items that make up the invoice. `lines` is sorted as follows: invoice items in reverse chronological order, followed by the subscription, if any. */
+export type UpdateProfilePropertiesPropertiesOrdersItemsPropertiesLinesPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_LineItemInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_LineItemInput = {
+  /** The amount, in %s. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  /** An arbitrary string attached to the object. Often useful for displaying to users. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The amount of discount calculated per discount for this line item. */
+  discount_amounts?: InputMaybe<Array<InputMaybe<Stripe_DiscountsResourceDiscountAmountInput>>>;
+  /** If true, discounts will apply to this line item. Always false for prorations. */
+  discountable?: InputMaybe<Scalars['Boolean']>;
+  /** The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount. */
+  discounts?: InputMaybe<Array<InputMaybe<DiscountWrappedStringInputUnion>>>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any. */
+  invoice_item?: InputMaybe<Scalars['String']>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Note that for line items with `type=subscription` this will reflect the metadata of the subscription that caused the line item to be created. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  period?: InputMaybe<Stripe_InvoiceLineItemPeriodInput>;
+  price?: InputMaybe<Stripe_PriceInput>;
+  /** Whether this is a proration. */
+  proration?: InputMaybe<Scalars['Boolean']>;
+  proration_details?: InputMaybe<Stripe_InvoicesLineItemsProrationDetailsInput>;
+  /** The quantity of the subscription, if the line item is a subscription or a proration. */
+  quantity?: InputMaybe<Scalars['Int']>;
+  /** The subscription that the invoice item pertains to, if any. */
+  subscription?: InputMaybe<Scalars['String']>;
+  /** The subscription item that generated this invoice item. Left empty if the line item is not an explicit result of a subscription. */
+  subscription_item?: InputMaybe<Scalars['String']>;
+  /** The amount of tax calculated per tax rate for this line item */
+  tax_amounts?: InputMaybe<Array<InputMaybe<Stripe_InvoiceTaxAmountInput>>>;
+  /** The tax rates which apply to the line item. */
+  tax_rates?: InputMaybe<Array<InputMaybe<Stripe_TaxRateInput>>>;
+  /** A string identifying the type of the source of this line item, either an `invoiceitem` or a `subscription`. */
+  type?: InputMaybe<UpdateProfileResultType>;
+};
+
+export type Stripe_DiscountsResourceDiscountAmountInput = {
+  /** The amount, in %s, of the discount. */
+  amount?: InputMaybe<Scalars['Int']>;
+  discount?: InputMaybe<DeletedDiscountDiscountWrappedStringInputUnion>;
+};
+
+export type DeletedDiscountDiscountWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  discount?: InputMaybe<Stripe_DiscountInput>;
+  deletedDiscount?: InputMaybe<Stripe_DeletedDiscountInput>;
+};
+
+export type Stripe_DeletedDiscountInput = {
+  /** The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode. */
+  checkout_session?: InputMaybe<Scalars['String']>;
+  coupon?: InputMaybe<Stripe_CouponInput>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array. */
+  id?: InputMaybe<Scalars['String']>;
+  /** The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice. */
+  invoice?: InputMaybe<Scalars['String']>;
+  /** The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item. */
+  invoice_item?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  promotion_code?: InputMaybe<PromotionCodeWrappedStringInputUnion>;
+  /** Date that the coupon was applied. */
+  start?: InputMaybe<Scalars['Int']>;
+  /** The subscription that this coupon is applied to, if it is applied to a particular subscription. */
+  subscription?: InputMaybe<Scalars['String']>;
+};
+
+export type Stripe_InvoicesLineItemsProrationDetailsInput = {
+  credited_items?: InputMaybe<Stripe_InvoicesLineItemsCreditedItemsInput>;
+};
+
+export type Stripe_InvoicesLineItemsCreditedItemsInput = {
+  /** Invoice containing the credited invoice line items */
+  invoice?: InputMaybe<Scalars['String']>;
+  /** Credited invoice line items */
+  invoice_line_items?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Stripe_InvoiceTaxAmountInput = {
+  /** The amount, in %s, of the tax. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** Whether this tax amount is inclusive or exclusive. */
+  inclusive?: InputMaybe<Scalars['Boolean']>;
+  tax_rate?: InputMaybe<TaxRateWrappedStringInputUnion>;
+};
+
+export type TaxRateWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  taxRate?: InputMaybe<Stripe_TaxRateInput>;
+};
+
+export type Stripe_InvoicesPaymentSettingsInput = {
+  payment_method_options?: InputMaybe<Stripe_InvoicesPaymentMethodOptionsInput>;
+  /** The list of payment method types (e.g. card) to provide to the invoice’s PaymentIntent. If not set, Stripe attempts to automatically determine the types to use by looking at the invoice’s default payment method, the subscription’s default payment method, the customer’s default payment method, and your [invoice template settings](https://dashboard.stripe.com/settings/billing/invoice). */
+  payment_method_types?: InputMaybe<Array<InputMaybe<UpdateProfileResultPaymentMethodTypes>>>;
+};
+
+export type Stripe_InvoicesPaymentMethodOptionsInput = {
+  acss_debit?: InputMaybe<Stripe_InvoicePaymentMethodOptionsAcssDebitInput>;
+  bancontact?: InputMaybe<Stripe_InvoicePaymentMethodOptionsBancontactInput>;
+  card?: InputMaybe<Stripe_InvoicePaymentMethodOptionsCardInput>;
+  customer_balance?: InputMaybe<Stripe_InvoicePaymentMethodOptionsCustomerBalanceInput>;
+  konbini?: InputMaybe<Stripe_InvoicePaymentMethodOptionsKonbiniInput>;
+  us_bank_account?: InputMaybe<Stripe_InvoicePaymentMethodOptionsUsBankAccountInput>;
+};
+
+export type Stripe_InvoicePaymentMethodOptionsCardInput = {
+  /** We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://stripe.com/docs/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. Read our guide on [manually requesting 3D Secure](https://stripe.com/docs/payments/3d-secure#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine. */
+  request_three_d_secure?: InputMaybe<UpdateProfileResultRequestThreeDSecure>;
+};
+
+export type QuoteWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  quote?: InputMaybe<Stripe_QuoteInput>;
+};
+
+export type Stripe_QuoteInput = {
+  /** Total before any discounts or taxes are applied. */
+  amount_subtotal?: InputMaybe<Scalars['Int']>;
+  /** Total after discounts and taxes are applied. */
+  amount_total?: InputMaybe<Scalars['Int']>;
+  /** The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. Only applicable if there are no line items with recurring prices on the quote. */
+  application_fee_amount?: InputMaybe<Scalars['Int']>;
+  /** A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner's Stripe account. Only applicable if there are line items with recurring prices on the quote. */
+  application_fee_percent?: InputMaybe<Scalars['Float']>;
+  automatic_tax?: InputMaybe<Stripe_QuotesResourceAutomaticTaxInput>;
+  /** Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay invoices at the end of the subscription cycle or on finalization using the default payment method attached to the subscription or customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. Defaults to `charge_automatically`. */
+  collection_method?: InputMaybe<UpdateProfileResultCollectionMethod>;
+  computed?: InputMaybe<Stripe_QuotesResourceComputedInput>;
+  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
+  created?: InputMaybe<Scalars['Int']>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). */
+  currency?: InputMaybe<Scalars['String']>;
+  customer?: InputMaybe<Scalars['String']>;
+  /** The tax rates applied to this quote. */
+  default_tax_rates?: InputMaybe<Array<InputMaybe<TaxRateWrappedStringInputUnion>>>;
+  /** A description that will be displayed on the quote PDF. */
+  description?: InputMaybe<Scalars['String']>;
+  /** The discounts applied to this quote. */
+  discounts?: InputMaybe<Array<InputMaybe<DiscountWrappedStringInputUnion>>>;
+  /** The date on which the quote will be canceled if in `open` or `draft` status. Measured in seconds since the Unix epoch. */
+  expires_at?: InputMaybe<Scalars['Int']>;
+  /** A footer that will be displayed on the quote PDF. */
+  footer?: InputMaybe<Scalars['String']>;
+  from_quote?: InputMaybe<Stripe_QuotesResourceFromQuoteInput>;
+  /** A header that will be displayed on the quote PDF. */
+  header?: InputMaybe<Scalars['String']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  invoice?: InputMaybe<DeletedInvoiceInvoiceWrappedStringInputUnion>;
+  invoice_settings?: InputMaybe<Stripe_InvoiceSettingQuoteSettingInput>;
+  /** A list of items the customer is being quoted for. */
+  line_items?: InputMaybe<PropertiesQuotePropertiesLineItemsPropertyInput>;
+  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
+  livemode?: InputMaybe<Scalars['Boolean']>;
+  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
+  metadata?: InputMaybe<Scalars['JSONObject']>;
+  /** A unique number that identifies this particular quote. This number is assigned once the quote is [finalized](https://stripe.com/docs/quotes/overview#finalize). */
+  number?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+  on_behalf_of?: InputMaybe<AccountWrappedStringInputUnion>;
+  /** The status of the quote. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+  status_transitions?: InputMaybe<Stripe_QuotesResourceStatusTransitionsInput>;
+  subscription?: InputMaybe<SubscriptionWrappedStringInputUnion>;
+  subscription_data?: InputMaybe<Stripe_QuotesResourceSubscriptionDataInput>;
+  subscription_schedule?: InputMaybe<SubscriptionScheduleWrappedStringInputUnion>;
+  test_clock?: InputMaybe<TestHelpersTestClockWrappedStringInputUnion>;
+  total_details?: InputMaybe<Stripe_QuotesResourceTotalDetailsInput>;
+  transfer_data?: InputMaybe<Stripe_QuotesResourceTransferDataInput>;
+};
+
+export type Stripe_QuotesResourceAutomaticTaxInput = {
+  /** Automatically calculate taxes */
+  enabled?: InputMaybe<Scalars['Boolean']>;
+  /** The status of the most recent automated tax calculation for this quote. */
+  status?: InputMaybe<UpdateProfileResultStatus>;
+};
+
+export type Stripe_QuotesResourceComputedInput = {
+  recurring?: InputMaybe<Stripe_QuotesResourceRecurringInput>;
+  upfront?: InputMaybe<Stripe_QuotesResourceUpfrontInput>;
+};
+
+export type Stripe_QuotesResourceRecurringInput = {
+  /** Total before any discounts or taxes are applied. */
+  amount_subtotal?: InputMaybe<Scalars['Int']>;
+  /** Total after discounts and taxes are applied. */
+  amount_total?: InputMaybe<Scalars['Int']>;
+  /** The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`. */
+  interval?: InputMaybe<UpdateProfileResultInterval>;
+  /** The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months. */
+  interval_count?: InputMaybe<Scalars['Int']>;
+  total_details?: InputMaybe<Stripe_QuotesResourceTotalDetailsInput>;
+};
+
+export type Stripe_QuotesResourceTotalDetailsInput = {
+  /** This is the sum of all the discounts. */
+  amount_discount?: InputMaybe<Scalars['Int']>;
+  /** This is the sum of all the shipping amounts. */
+  amount_shipping?: InputMaybe<Scalars['Int']>;
+  /** This is the sum of all the tax amounts. */
+  amount_tax?: InputMaybe<Scalars['Int']>;
+  breakdown?: InputMaybe<Stripe_QuotesResourceTotalDetailsResourceBreakdownInput>;
+};
+
+export type Stripe_QuotesResourceTotalDetailsResourceBreakdownInput = {
+  /** The aggregated discounts. */
+  discounts?: InputMaybe<Array<InputMaybe<Stripe_LineItemsDiscountAmountInput>>>;
+  /** The aggregated tax amounts by rate. */
+  taxes?: InputMaybe<Array<InputMaybe<Stripe_LineItemsTaxAmountInput>>>;
+};
+
+export type Stripe_QuotesResourceUpfrontInput = {
+  /** Total before any discounts or taxes are applied. */
+  amount_subtotal?: InputMaybe<Scalars['Int']>;
+  /** Total after discounts and taxes are applied. */
+  amount_total?: InputMaybe<Scalars['Int']>;
+  /** The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice. */
+  line_items?: InputMaybe<PropertiesQuotePropertiesComputedPropertiesUpfrontPropertiesLineItemsPropertyInput>;
+  total_details?: InputMaybe<Stripe_QuotesResourceTotalDetailsInput>;
+};
+
+/** The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice. */
+export type PropertiesQuotePropertiesComputedPropertiesUpfrontPropertiesLineItemsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_ItemInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_QuotesResourceFromQuoteInput = {
+  /** Whether this quote is a revision of a different quote. */
+  is_revision?: InputMaybe<Scalars['Boolean']>;
+  quote?: InputMaybe<QuoteWrappedStringInputUnion>;
+};
+
+export type DeletedInvoiceInvoiceWrappedStringInputUnion = {
+  wrappedString?: InputMaybe<WrappedStringInput>;
+  invoice?: InputMaybe<Stripe_InvoiceInput>;
+  deletedInvoice?: InputMaybe<Stripe_DeletedInvoiceInput>;
+};
+
+export type Stripe_DeletedInvoiceInput = {
+  /** Always true for a deleted object */
+  deleted?: InputMaybe<Scalars['Boolean']>;
+  /** Unique identifier for the object. */
+  id?: InputMaybe<Scalars['String']>;
+  /** String representing the object's type. Objects of the same type share the same value. */
+  object?: InputMaybe<UpdateProfileResultObject>;
+};
+
+export type Stripe_InvoiceSettingQuoteSettingInput = {
+  /** Number of days within which a customer must pay invoices generated by this quote. This value will be `null` for quotes where `collection_method=charge_automatically`. */
+  days_until_due?: InputMaybe<Scalars['Int']>;
+};
+
+/** A list of items the customer is being quoted for. */
+export type PropertiesQuotePropertiesLineItemsPropertyInput = {
+  /** Details about each object. */
+  data: Array<Stripe_ItemInput>;
+  /** True if this list has another page of items after this one that can be fetched. */
+  has_more: Scalars['Boolean'];
+  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
+  object: UpdateProfileResultObject;
+  /** The URL where this list can be accessed. */
+  url: Scalars['String'];
+};
+
+export type Stripe_QuotesResourceStatusTransitionsInput = {
+  /** The time that the quote was accepted. Measured in seconds since Unix epoch. */
+  accepted_at?: InputMaybe<Scalars['Int']>;
+  /** The time that the quote was canceled. Measured in seconds since Unix epoch. */
+  canceled_at?: InputMaybe<Scalars['Int']>;
+  /** The time that the quote was finalized. Measured in seconds since Unix epoch. */
+  finalized_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_QuotesResourceSubscriptionDataInput = {
+  /** When creating a new subscription, the date of which the subscription schedule will start after the quote is accepted. This date is ignored if it is in the past when the quote is accepted. Measured in seconds since the Unix epoch. */
+  effective_date?: InputMaybe<Scalars['Int']>;
+  /** Integer representing the number of trial period days before the customer is charged for the first time. */
+  trial_period_days?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_QuotesResourceTransferDataInput = {
+  /** The amount in %s that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination. */
+  amount?: InputMaybe<Scalars['Int']>;
+  /** A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the destination account. By default, the entire amount will be transferred to the destination. */
+  amount_percent?: InputMaybe<Scalars['Float']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+};
+
+export type Stripe_InvoicesStatusTransitionsInput = {
+  /** The time that the invoice draft was finalized. */
+  finalized_at?: InputMaybe<Scalars['Int']>;
+  /** The time that the invoice was marked uncollectible. */
+  marked_uncollectible_at?: InputMaybe<Scalars['Int']>;
+  /** The time that the invoice was paid. */
+  paid_at?: InputMaybe<Scalars['Int']>;
+  /** The time that the invoice was voided. */
+  voided_at?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_InvoiceThresholdReasonInput = {
+  /** The total invoice amount threshold boundary if it triggered the threshold invoice. */
+  amount_gte?: InputMaybe<Scalars['Int']>;
+  /** Indicates which line items triggered a threshold invoice. */
+  item_reasons?: InputMaybe<Array<InputMaybe<Stripe_InvoiceItemThresholdReasonInput>>>;
+};
+
+export type Stripe_InvoiceItemThresholdReasonInput = {
+  /** The IDs of the line items that triggered the threshold invoice. */
+  line_item_ids?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The quantity threshold boundary that applied to the given line item. */
+  usage_gte?: InputMaybe<Scalars['Int']>;
+};
+
+export type Stripe_InvoiceTransferDataInput = {
+  /** The amount in %s that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination. */
+  amount?: InputMaybe<Scalars['Int']>;
+  destination?: InputMaybe<AccountWrappedStringInputUnion>;
+};
+
 export type CreateProfileResult = {
   __typename?: 'CreateProfileResult';
   clientMutationId?: Maybe<Scalars['String']>;
@@ -29126,6 +37056,7 @@ export type CreateProfileInput = {
   avatar?: InputMaybe<TsRelationshipInput>;
   shopifyCustomerId?: InputMaybe<Scalars['String']>;
   stripeCustomerId?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<Array<InputMaybe<Stripe_InvoiceInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _id?: InputMaybe<Scalars['ID']>;
   _version?: InputMaybe<Scalars['Int']>;
@@ -29158,6 +37089,7 @@ export type DuplicateProfileInput = {
   avatar?: InputMaybe<TsRelationshipInput>;
   shopifyCustomerId?: InputMaybe<Scalars['String']>;
   stripeCustomerId?: InputMaybe<Scalars['String']>;
+  orders?: InputMaybe<Array<InputMaybe<Stripe_InvoiceInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
   _shapeName?: InputMaybe<Scalars['String']>;
@@ -29196,29 +37128,12 @@ export type Voucherify_OrderItemInput = {
   price?: InputMaybe<Scalars['Int']>;
 };
 
-export type Klaviyo_AddMembersResponse = {
-  __typename?: 'Klaviyo_AddMembersResponse';
-  items?: Maybe<Array<Maybe<Klaviyo_AddMembersResponseItemsProperty>>>;
-};
-
-export type Klaviyo_AddMembersResponseItemsProperty = {
-  __typename?: 'Klaviyo_AddMembersResponseItemsProperty';
-  id?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  phone_number?: Maybe<Scalars['String']>;
-};
-
 export type AddListMembersInput = {
   profiles: Array<Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput>;
 };
 
 export type Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput = {
   email?: InputMaybe<Scalars['String']>;
-};
-
-export type Klaviyo_200Ok = {
-  __typename?: 'Klaviyo_200Ok';
-  result?: Maybe<Scalars['JSONObject']>;
 };
 
 /**

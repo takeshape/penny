@@ -2126,6 +2126,126 @@
         ]
       }
     },
+    "subscribeMyEmailToNewsletter": {
+      "shape": "Klaviyo_AddMembersResponse",
+      "resolver": {
+        "name": "rest:post",
+        "service": "klaviyo",
+        "path": {
+          "ops": [
+            {
+              "path": "list_id",
+              "mapping": "$args.list_id"
+            }
+          ],
+          "serialize": {
+            "template": "/v2/list/{list_id}/members",
+            "paths": {
+              "list_id": {
+                "style": "simple"
+              }
+            }
+          }
+        },
+        "body": {
+          "ops": [
+            {
+              "path": "profiles[0].email",
+              "mapping": "$claims.email"
+            }
+          ],
+          "serialize": {
+            "content": {
+              "contentType": "application/json"
+            }
+          }
+        },
+        "headers": {
+          "ops": [
+            {
+              "path": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "results": {
+          "ops": [
+            {
+              "path": "items",
+              "mapping": "$resolvers[0]"
+            }
+          ]
+        }
+      },
+      "summary": "Add Members to a List",
+      "args": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "list_id"
+        ]
+      }
+    },
+    "unsubscribeMyEmailFromNewsletter": {
+      "shape": "Klaviyo_200Ok",
+      "resolver": {
+        "name": "rest:delete",
+        "service": "klaviyo",
+        "path": {
+          "ops": [
+            {
+              "path": "list_id",
+              "mapping": "$args.list_id"
+            }
+          ],
+          "serialize": {
+            "template": "/v2/list/{list_id}/members",
+            "paths": {
+              "list_id": {
+                "style": "simple"
+              }
+            }
+          }
+        },
+        "body": {
+          "ops": [
+            {
+              "path": "emails[0]",
+              "mapping": "$claims.email"
+            }
+          ],
+          "serialize": {
+            "content": {
+              "contentType": "application/json"
+            }
+          }
+        },
+        "headers": {
+          "ops": [
+            {
+              "path": "content-type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "summary": "Remove Profiles From List",
+      "args": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "list_id"
+        ]
+      }
+    },
     "Klaviyo_removeMembers": {
       "shape": "Klaviyo_200Ok",
       "resolver": {

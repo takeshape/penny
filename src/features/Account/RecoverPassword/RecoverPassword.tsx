@@ -44,7 +44,7 @@ export const AccountRecoverPassword = ({ callbackUrl }: AccountRecoverPasswordPr
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form action="#" method="POST" className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {hasErrors && (
               <Alert
                 status="error"

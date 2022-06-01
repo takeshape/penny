@@ -1,32 +1,45 @@
 import { Switch } from '@headlessui/react';
+import type { PropsWithChildren } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
-export interface SwitchWithRightLabelProps extends React.PropsWithChildren<UseControllerProps<any, any>> {
+export interface SwitchWithRightLabelProps extends PropsWithChildren<{}> {
   labelPrimary: string;
   labelSecondary?: string;
   className?: string;
+  disabled?: boolean;
 }
 
-const SwitchWithRightLabel = ({ labelPrimary, labelSecondary, className, ...props }: SwitchWithRightLabelProps) => {
-  const { field } = useController(props);
+const SwitchWithRightLabel = ({
+  labelPrimary,
+  labelSecondary,
+  className,
+  name,
+  control,
+  defaultValue,
+  rules,
+  shouldUnregister,
+  ...props
+}: SwitchWithRightLabelProps & UseControllerProps<any, any>) => {
+  const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
 
-  const enabled = field.value === true;
+  const isChecked = field.value === true;
 
   return (
     <Switch.Group as="div" className={className ? className : 'flex items-center'}>
       <Switch
         {...field}
-        checked={enabled}
+        {...props}
+        checked={isChecked}
         className={classNames(
-          enabled ? 'bg-indigo-600' : 'bg-gray-200',
-          'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+          isChecked ? 'bg-indigo-600' : 'bg-gray-200',
+          'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-500'
         )}
       >
         <span
           aria-hidden="true"
           className={classNames(
-            enabled ? 'translate-x-5' : 'translate-x-0',
+            isChecked ? 'translate-x-5' : 'translate-x-0',
             'pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
           )}
         />
