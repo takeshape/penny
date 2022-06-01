@@ -1,16 +1,15 @@
 import Wrapper from 'components/Wrapper/Content';
 import Account from 'features/Account/Account';
-import AccountPassword from 'features/Account/Password/Password';
 import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
 
-const AccountPasswordPage: NextPage = () => {
+const AccountPurchasesPage: NextPage = () => {
   return (
     <Layout title="Account">
       <div className="bg-gray-100 flex flex-col grow">
         <Wrapper>
           <Account>
-            <AccountPassword />
+            <div>PLACEHOLDER</div>
           </Account>
         </Wrapper>
       </div>
@@ -18,4 +17,4 @@ const AccountPasswordPage: NextPage = () => {
   );
 };
 
-export default AccountPasswordPage;
+export default AccountPurchasesPage;

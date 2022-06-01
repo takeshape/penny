@@ -1,10 +1,11 @@
-import { KeyIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { KeyIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { PropsWithChildren } from 'react';
 import AccountNavigation from './Navigation/Navigation';
 
 const navigation = [
   { name: 'Account', href: '/account', icon: UserCircleIcon, current: false },
+  { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
   { name: 'Password', href: '/account/password', icon: KeyIcon, current: false }
 ];
 

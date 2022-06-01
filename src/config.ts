@@ -4,9 +4,6 @@ import type { DefaultSeoProps } from 'next-seo';
 export const takeshapeApiUrl = process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;
 export const takeshapeAnonymousApiKey = process.env.NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY;
 export const takeshapeWebhookApiKey = process.env.TAKESHAPE_WEBHOOK_API_KEY;
-export const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
-export const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 export const shopifyShop = process.env.SHOPIFY_SHOP;
 export const shopifyToken = process.env.SHOPIFY_TOKEN;
 

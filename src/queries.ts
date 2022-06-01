@@ -259,19 +259,6 @@ export const GetMyProfile = gql`
       avatar {
         path
       }
-      customer: stripeCustomer {
-        id
-        name
-        description
-        address {
-          line1
-          line2
-          city
-          state
-          postal_code
-          country
-        }
-      }
     }
   }
 `;
@@ -289,19 +276,6 @@ export const UpsertMyProfile = gql`
       bio
       avatar {
         path
-      }
-      customer: stripeCustomer {
-        id
-        name
-        description
-        address {
-          line1
-          line2
-          city
-          state
-          postal_code
-          country
-        }
       }
     }
   }
