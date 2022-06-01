@@ -9,24 +9,24 @@ export const parameters = {
   controls: {
     matchers: {
       color: /(background|color)$/i,
-      date: /Date$/,
+      date: /Date$/
     }
   },
   nextRouter: {
-    Provider: RouterContext.Provider,
+    Provider: RouterContext.Provider
   },
   apolloClient: {
     MockedProvider
-  },
-}
+  }
+};
 
 export const decorators = [
   withJotai,
   (Story) => (
     <SessionProvider session={{ expires: '2050-10-05T14:48:00.000Z' }} refetchInterval={0}>
-        <div className="container">
-          <Story />
-        </div>
+      <div className="container">
+        <Story />
+      </div>
     </SessionProvider>
   )
 ];
