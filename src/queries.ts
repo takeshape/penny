@@ -14,39 +14,8 @@ import type {
   ShopifyStorefront_CustomerUpdatePayload,
   Shopify_Product,
   Shopify_ProductConnection,
-  Stripe_PaymentIntentPaginatedList,
-  Stripe_Product,
-  Stripe_Subscription,
   Voucherify_LoyaltyCard
 } from 'types/takeshape';
-
-export interface StripeProducts {
-  products: {
-    items: Stripe_Product[];
-  };
-}
-
-export const GetStripeProducts = gql`
-  query GetStripeProductsQuery {
-    products: getIndexedProductList(where: { active: { eq: true } }) {
-      items {
-        id
-        name
-        description
-        images
-        prices {
-          id
-          unit_amount
-          currency
-          recurring {
-            interval
-            interval_count
-          }
-        }
-      }
-    }
-  }
-`;
 
 export type GetProductIdsResponse = {
   products: {
@@ -353,8 +322,6 @@ export const DeleteMySubscription = gql`
 
 export interface GetMyPurchasesDataResponse {
   profile: Profile;
-  payments?: Stripe_PaymentIntentPaginatedList;
-  subscriptions?: Stripe_Subscription[];
   loyaltyCard?: Voucherify_LoyaltyCard;
 }
 
@@ -389,66 +356,6 @@ export const GetMyPurchasesData = gql`
                   number
                 }
               }
-            }
-          }
-        }
-      }
-    }
-    payments: getMyPaymentsIndexed(size: 5, sort: { field: "created", order: "desc" }) {
-      items {
-        id
-        amount
-        currency
-        created
-        invoiceItems {
-          object
-          id
-          amount
-          currency
-          quantity
-          price {
-            product {
-              id
-              name
-              images
-            }
-          }
-        }
-        sessionItems {
-          object
-          id
-          amount_total
-          currency
-          quantity
-          price {
-            product {
-              id
-              name
-              images
-            }
-          }
-        }
-      }
-    }
-    subscriptions: getMySubscriptions(
-      expand: ["data.items", "data.plan.product", "data.latest_invoice.payment_intent"]
-    ) {
-      id
-      current_period_end
-      items {
-        data {
-          id
-          price {
-            currency
-            unit_amount
-            product {
-              id
-              name
-              description
-              images
-            }
-            recurring {
-              interval
             }
           }
         }
