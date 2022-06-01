@@ -266,6 +266,15 @@
       "options": {
         "idClaim": "sub"
       }
+    },
+    "gorgias": {
+      "id": "gorgias",
+      "provider": "generic",
+      "title": "Gorgias",
+      "namespace": "Gorgias",
+      "serviceType": "rest",
+      "authenticationType": "basic",
+      "options": {"endpoint": ""}
     }
   },
   "indexedShapes": {
@@ -2424,6 +2433,45 @@
         "required": ["email"]
       },
       "shape": "ShopifyStorefront_CustomerRecoverPayload"
+    },
+    "Gorgias_createTicket": {
+      "shape": "Gorgias_CreateTicketResponse",
+      "resolver": {
+        "name": "rest:post",
+        "service": "gorgias",
+        "path": "/tickets",
+        "json": {
+          "ops": [
+            {"path": "customer.email", "mapping": "$args.email"},
+            {
+              "path": "messages",
+              "value": [
+                {
+                  "channel": "email",
+                  "from_agent": false,
+                  "source": {
+                    "to": [{"address": "qw72eg20ez05v4dy@emails.gorgias.com"}]
+                  },
+                  "via": "api"
+                }
+              ]
+            },
+            {"path": "messages[0].body_text", "mapping": "$args.message"},
+            {
+              "path": "messages[0].source.from.address",
+              "mapping": "$args.email"
+            }
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "message": {"type": "string"},
+          "email": {"type": "string"}
+        },
+        "required": ["body", "email"]
+      }
     }
   },
   "shapes": {
@@ -3900,6 +3948,16 @@
           },
           "title": {"type": "string", "title": "title"}
         }
+      }
+    },
+    "Gorgias_CreateTicketResponse": {
+      "id": "Gorgias_CreateTicketResponse",
+      "name": "Gorgias_CreateTicketResponse",
+      "title": "Gorgias_CreateTicketResponse",
+      "schema": {
+        "type": "object",
+        "properties": {"id": {"type": "integer"}},
+        "required": ["id"]
       }
     }
   },

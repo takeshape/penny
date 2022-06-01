@@ -1,13 +1,14 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { graphql } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from './Navigation';
 import NavigationFixtures from './Navigation.fixtures.json';
-import { GetNavigationDataQuery } from './Navigation.queries';
 
 const Meta: ComponentMeta<typeof Navigation> = {
   title: 'Features / Navigation',
   component: Navigation,
   parameters: {
+    layout: 'fullscreen',
     // Allows inspecting these values since they don't do anything in this context
     jotai: {
       atoms: {
@@ -19,15 +20,14 @@ const Meta: ComponentMeta<typeof Navigation> = {
         isMobileMenuOpen: false
       }
     },
-    apolloClient: {
-      mocks: [
-        {
-          request: {
-            query: GetNavigationDataQuery
-          },
-          result: NavigationFixtures.GetNavigationDataQuery.result
-        }
-      ]
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.query('GetNavigationData', (req, res, ctx) => {
+            return res(ctx.data(NavigationFixtures.GetNavigationDataQuery.result.data));
+          })
+        ]
+      }
     }
   }
 };

@@ -1,13 +1,14 @@
 import type { ComponentMeta } from '@storybook/react';
+import { graphql } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import NavigationFixtures from '../Navigation.fixtures.json';
-import { GetNavigationDataQuery } from '../Navigation.queries';
 import { Top } from './Top';
 
 const Meta: ComponentMeta<typeof Top> = {
   title: 'Features / Navigation / Components / Top',
   component: Top,
   parameters: {
+    layout: 'fullscreen',
     // Allows inspecting these values since they don't do anything in this context
     jotai: {
       atoms: {
@@ -19,15 +20,14 @@ const Meta: ComponentMeta<typeof Top> = {
         isMobileMenuOpen: false
       }
     },
-    apolloClient: {
-      mocks: [
-        {
-          request: {
-            query: GetNavigationDataQuery
-          },
-          result: NavigationFixtures.GetNavigationDataQuery.result
-        }
-      ]
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.query('GetNavigationData', (req, res, ctx) => {
+            return res(ctx.data(NavigationFixtures.GetNavigationDataQuery.result.data));
+          })
+        ]
+      }
     }
   }
 };

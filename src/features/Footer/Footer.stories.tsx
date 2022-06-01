@@ -1,8 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { graphql } from 'msw';
 import Footer from './Footer';
 import { GetFooterQueryData } from './Footer.fixtures';
-import { GetFooterQuery } from './Footer.queries';
-import { EmailSubmissionMutation } from './Newsletter/Newsletter.queries';
 
 const Meta: ComponentMeta<typeof Footer> = {
   title: 'Features / Footer',
@@ -13,22 +12,17 @@ const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
 
 export const _Footer = Template.bind({});
 _Footer.parameters = {
-  apolloClient: {
-    mocks: [
-      {
-        request: {
-          query: GetFooterQuery
-        },
-        result: { data: GetFooterQueryData }
-      },
-      {
-        request: {
-          query: EmailSubmissionMutation,
-          variables: { email: 'foo@bar.baz', listId: undefined }
-        },
-        result: { data: { Klaviyo_addMembers: { items: [{ id: 'foo' }] } } }
-      }
-    ]
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.query('GetFooter', (req, res, ctx) => {
+          return res(ctx.data(GetFooterQueryData));
+        }),
+        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+          return res(ctx.data({ Klaviyo_addMembers: { items: [{ id: 'foo' }] } }));
+        })
+      ]
+    }
   }
 };
 
