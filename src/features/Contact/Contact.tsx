@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react';
-import Input from 'components/Input/Input';
-import Textarea from 'components/Textarea/Textarea';
+import Input from 'components/Form/Input/Input';
+import Textarea from 'components/Form/Textarea/Textarea';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';

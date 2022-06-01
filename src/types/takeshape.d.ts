@@ -27187,6 +27187,10 @@ export type Mutation = {
   ShopifyStorefront_customerAccessTokenCreate?: Maybe<ShopifyStorefront_CustomerAccessTokenCreatePayload>;
   ShopifyStorefront_customerCreate?: Maybe<ShopifyStorefront_CustomerCreatePayload>;
   ShopifyStorefront_customerRecover?: Maybe<ShopifyStorefront_CustomerRecoverPayload>;
+  ShopifyStorefront_customerUpdate?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
+  ShopifyStorefront_customerAddressUpdate?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
+  updateMyCustomer?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
+  updateMyCustomerAddress?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
 };
 
 
@@ -27428,6 +27432,32 @@ export type MutationShopifyStorefront_CustomerCreateArgs = {
 
 export type MutationShopifyStorefront_CustomerRecoverArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationShopifyStorefront_CustomerUpdateArgs = {
+  customerAccessToken: Scalars['String'];
+  customer: ShopifyStorefront_CustomerUpdateInput;
+};
+
+
+export type MutationShopifyStorefront_CustomerAddressUpdateArgs = {
+  customerAccessToken: Scalars['String'];
+  id: Scalars['ID'];
+  address: ShopifyStorefront_MailingAddressInput;
+};
+
+
+export type MutationUpdateMyCustomerArgs = {
+  customerAccessToken?: InputMaybe<Scalars['String']>;
+  customer: ShopifyStorefront_CustomerUpdateInput;
+};
+
+
+export type MutationUpdateMyCustomerAddressArgs = {
+  customerAccessToken?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  address: ShopifyStorefront_MailingAddressInput;
 };
 
 /** A project file stored on s3 */
@@ -29586,4 +29616,85 @@ export type ShopifyStorefront_CustomerRecoverPayload = {
    * @deprecated Use `customerUserErrors` instead
    */
   userErrors: Array<ShopifyStorefront_UserError>;
+};
+
+/** Return type for `customerUpdate` mutation. */
+export type ShopifyStorefront_CustomerUpdatePayload = {
+  __typename?: 'ShopifyStorefront_CustomerUpdatePayload';
+  /** The updated customer object. */
+  customer?: Maybe<ShopifyStorefront_Customer>;
+  /**
+   * The newly created customer access token. If the customer's password is updated, all previous access tokens
+   * (including the one used to perform this mutation) become invalid, and a new token is generated.
+   */
+  customerAccessToken?: Maybe<ShopifyStorefront_CustomerAccessToken>;
+  /** The list of errors that occurred from executing the mutation. */
+  customerUserErrors: Array<ShopifyStorefront_CustomerUserError>;
+  /**
+   * The list of errors that occurred from executing the mutation.
+   * @deprecated Use `customerUserErrors` instead
+   */
+  userErrors: Array<ShopifyStorefront_UserError>;
+};
+
+/** Specifies the fields required to update the Customer information. */
+export type ShopifyStorefront_CustomerUpdateInput = {
+  /** The customer’s first name. */
+  firstName?: InputMaybe<Scalars['String']>;
+  /** The customer’s last name. */
+  lastName?: InputMaybe<Scalars['String']>;
+  /** The customer’s email. */
+  email?: InputMaybe<Scalars['String']>;
+  /**
+   * A unique phone number for the customer.
+   *
+   * Formatted using E.164 standard. For example, _+16135551111_. To remove the phone number, specify `null`.
+   */
+  phone?: InputMaybe<Scalars['String']>;
+  /** The login password used by the customer. */
+  password?: InputMaybe<Scalars['String']>;
+  /** Indicates whether the customer has consented to be sent marketing material via email. */
+  acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** Return type for `customerAddressUpdate` mutation. */
+export type ShopifyStorefront_CustomerAddressUpdatePayload = {
+  __typename?: 'ShopifyStorefront_CustomerAddressUpdatePayload';
+  /** The customer’s updated mailing address. */
+  customerAddress?: Maybe<ShopifyStorefront_MailingAddress>;
+  /** The list of errors that occurred from executing the mutation. */
+  customerUserErrors: Array<ShopifyStorefront_CustomerUserError>;
+  /**
+   * The list of errors that occurred from executing the mutation.
+   * @deprecated Use `customerUserErrors` instead
+   */
+  userErrors: Array<ShopifyStorefront_UserError>;
+};
+
+/** Specifies the fields accepted to create or update a mailing address. */
+export type ShopifyStorefront_MailingAddressInput = {
+  /** The first line of the address. Typically the street address or PO Box number. */
+  address1?: InputMaybe<Scalars['String']>;
+  /** The second line of the address. Typically the number of the apartment, suite, or unit. */
+  address2?: InputMaybe<Scalars['String']>;
+  /** The name of the city, district, village, or town. */
+  city?: InputMaybe<Scalars['String']>;
+  /** The name of the customer's company or organization. */
+  company?: InputMaybe<Scalars['String']>;
+  /** The name of the country. */
+  country?: InputMaybe<Scalars['String']>;
+  /** The first name of the customer. */
+  firstName?: InputMaybe<Scalars['String']>;
+  /** The last name of the customer. */
+  lastName?: InputMaybe<Scalars['String']>;
+  /**
+   * A unique phone number for the customer.
+   *
+   * Formatted using E.164 standard. For example, _+16135551111_.
+   */
+  phone?: InputMaybe<Scalars['String']>;
+  /** The region of the address, such as the province, state, or district. */
+  province?: InputMaybe<Scalars['String']>;
+  /** The zip or postal code of the address. */
+  zip?: InputMaybe<Scalars['String']>;
 };

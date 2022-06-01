@@ -6,15 +6,14 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
-import type { CreateCustomerAccessTokenResponse, GetCustomerResponse, UpsertProfileResponse } from 'queries';
-import { CreateCustomerAccessTokenMutation, GetCustomerQuery, UpsertProfile } from 'queries';
+import type { CreateCustomerAccessTokenResponse, GetCustomerTokenDataResponse, UpsertProfileResponse } from 'queries';
+import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery, UpsertProfile } from 'queries';
 import type {
   MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
   MutationUpsertProfileArgs,
   QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
 import { createStaticClient } from 'utils/apollo/client';
-import { formatError } from 'utils/errors';
 
 const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
 
@@ -26,7 +25,10 @@ const withAllAccess = createNextAuthAllAccess({
       id: 'takeshape',
       audience: 'https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id',
       expiration: '6h',
-      allowedClaims: ['email', 'sub']
+      allowedClaims: ['email', 'sub', 'shopifyCustomerAccessToken'],
+      renameClaims: {
+        shopifyCustomerAccessToken: 'https://takeshape.io/customer_access_token'
+      }
     }
   ]
 });
@@ -72,16 +74,16 @@ const nextAuthConfig = {
             errors: accessTokenData.accessTokenCreate.customerUserErrors
           });
 
-          throw new Error(formatError(accessTokenData.accessTokenCreate.customerUserErrors));
+          throw new Error('CredentialsSignin');
         }
 
         const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
         const { data: customerData } = await apolloClient.query<
-          GetCustomerResponse,
+          GetCustomerTokenDataResponse,
           QueryShopifyStorefront_CustomerArgs
         >({
-          query: GetCustomerQuery,
+          query: GetCustomerTokenDataQuery,
           variables: {
             customerAccessToken: shopifyCustomerAccessToken
           }

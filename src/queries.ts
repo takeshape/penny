@@ -6,8 +6,10 @@ import type {
   ShopifyStorefront_CartCreatePayload,
   ShopifyStorefront_Customer,
   ShopifyStorefront_CustomerAccessTokenCreatePayload,
+  ShopifyStorefront_CustomerAddressUpdatePayload,
   ShopifyStorefront_CustomerCreatePayload,
   ShopifyStorefront_CustomerRecoverPayload,
+  ShopifyStorefront_CustomerUpdatePayload,
   Shopify_Product,
   Shopify_ProductConnection,
   Stripe_PaymentIntentPaginatedList,
@@ -575,12 +577,12 @@ export const CreateCustomerAccessTokenMutation = gql`
   }
 `;
 
-export type GetCustomerResponse = {
+export type GetCustomerTokenDataResponse = {
   customer: ShopifyStorefront_Customer;
 };
 
-export const GetCustomerQuery = gql`
-  query GetCustomer($customerAccessToken: String!) {
+export const GetCustomerTokenDataQuery = gql`
+  query GetCustomerTokenData($customerAccessToken: String!) {
     customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
       firstName
       lastName
@@ -588,6 +590,37 @@ export const GetCustomerQuery = gql`
       phone
       email
       displayName
+    }
+  }
+`;
+
+export type GetCustomerResponse = {
+  customer: ShopifyStorefront_Customer;
+};
+
+export const GetCustomerQuery = gql`
+  query GetCustomer {
+    customer: getMyCustomer {
+      firstName
+      lastName
+      id
+      phone
+      email
+      displayName
+      acceptsMarketing
+      defaultAddress {
+        id
+        firstName
+        lastName
+        address1
+        address2
+        city
+        country
+        countryCodeV2
+        province
+        provinceCode
+        zip
+      }
     }
   }
 `;
@@ -618,6 +651,44 @@ export type RecoverCustomerPasswordResponse = {
 export const RecoverCustomerPasswordMutation = gql`
   mutation RecoverCustomerPassword($email: String!) {
     customerRecover: ShopifyStorefront_customerRecover(email: $email) {
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type UpdateCustomerResponse = {
+  customerUpdate: ShopifyStorefront_CustomerUpdatePayload;
+};
+
+export const UpdateCustomerMutation = gql`
+  mutation UpdateCustomer($customer: ShopifyStorefront_CustomerUpdateInput!) {
+    customerUpdate: updateMyCustomer(customer: $customer) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type UpdateCustomerAddressResponse = {
+  customerUpdate: ShopifyStorefront_CustomerAddressUpdatePayload;
+};
+
+export const UpdateCustomerAddressMutation = gql`
+  mutation UpdateCustomerAddress($address: ShopifyStorefront_MailingAddressInput!, $id: ID!) {
+    customerAddressUpdate: updateMyCustomerAddress(address: $address, id: $id) {
+      customerAddress {
+        id
+      }
       customerUserErrors {
         code
         field

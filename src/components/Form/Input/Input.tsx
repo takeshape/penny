@@ -1,43 +1,49 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import type { InputHTMLAttributes } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
-export interface InputProps extends React.PropsWithChildren<UseControllerProps<any, any>> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
-  type: React.HTMLInputTypeAttribute;
-  autoComplete?: string;
   helpText?: string;
-  placeholder?: string;
-  className?: string;
 }
 
-const Input = (props: InputProps) => {
-  const { field, fieldState } = useController(props);
+const Input = ({
+  className,
+  id,
+  label,
+  helpText,
+  name,
+  control,
+  defaultValue,
+  rules,
+  shouldUnregister,
+  ...props
+}: InputProps & UseControllerProps<any, any>) => {
+  const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
   const { error } = fieldState;
   return (
-    <div className={props.className}>
+    <div className={className}>
       <div className="flex justify-between">
-        <label htmlFor={props.id} className="block text-sm font-medium text-gray-700">
-          {props.label}
+        <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+          {label}
         </label>
-        {props.rules?.required && (
-          <span className="text-sm text-gray-400" id={`${props.id}-required`}>
+        {rules?.required && (
+          <span className="text-sm text-gray-400" id={`${id}-required`}>
             Required
           </span>
         )}
       </div>
       <input
+        {...props}
         {...field}
-        type={props.type}
-        id={props.id}
-        autoComplete={props.autoComplete}
-        placeholder={props.placeholder}
+        id={id}
         className={classNames(
           error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
             : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
-          'mt-1 block w-full shadow-sm sm:text-sm rounded-md'
+          'mt-1 block w-full shadow-sm sm:text-sm rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed'
         )}
       />
       {error && (
@@ -45,13 +51,13 @@ const Input = (props: InputProps) => {
           <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
         </div>
       )}
-      {props.helpText && (
-        <p className="mt-2 text-sm text-gray-500" id={`${props.id}-help-text`}>
-          {props.helpText}
+      {helpText && (
+        <p className="mt-2 text-sm text-gray-500" id={`${id}-help-text`}>
+          {helpText}
         </p>
       )}
       {error && (
-        <p className="mt-2 text-sm text-red-600" id={`${props.id}-error`}>
+        <p className="mt-2 text-sm text-red-600" id={`${id}-error`}>
           {error.message}
         </p>
       )}

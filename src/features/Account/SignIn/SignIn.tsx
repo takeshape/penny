@@ -1,6 +1,7 @@
 import Alert from 'components/Alert/Alert';
-import Input from 'components/Input/Input';
+import Input from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
+import type { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useCallback } from 'react';
@@ -14,8 +15,22 @@ export interface AccountSignInForm {
 
 export interface AccountSignInProps {
   callbackUrl: string;
-  error?: string;
+  error?: SignInErrorTypes;
 }
+
+const errors: Record<SignInErrorTypes, string> = {
+  Signin: 'Try signing in with a different account.',
+  OAuthSignin: 'Try signing in with a different account.',
+  OAuthCallback: 'Try signing in with a different account.',
+  OAuthCreateAccount: 'Try signing in with a different account.',
+  EmailCreateAccount: 'Try signing in with a different account.',
+  Callback: 'Try signing in with a different account.',
+  OAuthAccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
+  EmailSignin: 'The e-mail could not be sent.',
+  CredentialsSignin: 'Email address or password are incorrect.',
+  SessionRequired: 'Please sign in to access this page.',
+  default: 'Unable to sign in.'
+};
 
 export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
   const { handleSubmit, formState, control, register } = useForm<AccountSignInForm>();
@@ -28,7 +43,7 @@ export const AccountSignIn = ({ callbackUrl, error }: AccountSignInProps) => {
   );
 
   const hasErrors = Boolean(error);
-  const errorMessage = error === 'Unidentified customer' ? 'Email address or password are incorrect' : error;
+  const errorMessage = error && (errors[error] ?? errors.default);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">

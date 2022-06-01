@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
-import Input from 'components/Input/Input';
+import Input from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import type { RecoverCustomerPasswordResponse } from 'queries';
 import { RecoverCustomerPasswordMutation } from 'queries';

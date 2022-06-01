@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
-import Input from 'components/Input/Input';
+import Input from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import type { CreateCustomerResponse } from 'queries';

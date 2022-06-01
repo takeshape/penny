@@ -32852,6 +32852,40 @@ type Mutation {
     """The email address of the customer to recover."""
     email: String!
   ): ShopifyStorefront_CustomerRecoverPayload
+  ShopifyStorefront_customerUpdate(
+    """The access token used to identify the customer."""
+    customerAccessToken: String!
+
+    """The customer object input."""
+    customer: ShopifyStorefront_CustomerUpdateInput!
+  ): ShopifyStorefront_CustomerUpdatePayload
+  ShopifyStorefront_customerAddressUpdate(
+    """The access token used to identify the customer."""
+    customerAccessToken: String!
+
+    """Specifies the customer address to update."""
+    id: ID!
+
+    """The customer’s mailing address."""
+    address: ShopifyStorefront_MailingAddressInput!
+  ): ShopifyStorefront_CustomerAddressUpdatePayload
+  updateMyCustomer(
+    """The access token used to identify the customer."""
+    customerAccessToken: String
+
+    """The customer object input."""
+    customer: ShopifyStorefront_CustomerUpdateInput!
+  ): ShopifyStorefront_CustomerUpdatePayload
+  updateMyCustomerAddress(
+    """The access token used to identify the customer."""
+    customerAccessToken: String
+
+    """Specifies the customer address to update."""
+    id: ID!
+
+    """The customer’s mailing address."""
+    address: ShopifyStorefront_MailingAddressInput!
+  ): ShopifyStorefront_CustomerAddressUpdatePayload
 }
 
 """A project file stored on s3"""
@@ -35280,4 +35314,102 @@ type ShopifyStorefront_CustomerRecoverPayload {
 
   """The list of errors that occurred from executing the mutation."""
   userErrors: [ShopifyStorefront_UserError!]! @deprecated(reason: "Use `customerUserErrors` instead")
+}
+
+"""Return type for `customerUpdate` mutation."""
+type ShopifyStorefront_CustomerUpdatePayload {
+  """The updated customer object."""
+  customer: ShopifyStorefront_Customer
+
+  """
+  The newly created customer access token. If the customer's password is updated, all previous access tokens
+  (including the one used to perform this mutation) become invalid, and a new token is generated.
+  """
+  customerAccessToken: ShopifyStorefront_CustomerAccessToken
+
+  """The list of errors that occurred from executing the mutation."""
+  customerUserErrors: [ShopifyStorefront_CustomerUserError!]!
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [ShopifyStorefront_UserError!]! @deprecated(reason: "Use `customerUserErrors` instead")
+}
+
+"""Specifies the fields required to update the Customer information."""
+input ShopifyStorefront_CustomerUpdateInput {
+  """The customer’s first name."""
+  firstName: String
+
+  """The customer’s last name."""
+  lastName: String
+
+  """The customer’s email."""
+  email: String
+
+  """
+  A unique phone number for the customer.
+  
+  Formatted using E.164 standard. For example, _+16135551111_. To remove the phone number, specify `null`.
+  """
+  phone: String
+
+  """The login password used by the customer."""
+  password: String
+
+  """
+  Indicates whether the customer has consented to be sent marketing material via email.
+  """
+  acceptsMarketing: Boolean
+}
+
+"""Return type for `customerAddressUpdate` mutation."""
+type ShopifyStorefront_CustomerAddressUpdatePayload {
+  """The customer’s updated mailing address."""
+  customerAddress: ShopifyStorefront_MailingAddress
+
+  """The list of errors that occurred from executing the mutation."""
+  customerUserErrors: [ShopifyStorefront_CustomerUserError!]!
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [ShopifyStorefront_UserError!]! @deprecated(reason: "Use `customerUserErrors` instead")
+}
+
+"""Specifies the fields accepted to create or update a mailing address."""
+input ShopifyStorefront_MailingAddressInput {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the customer's company or organization."""
+  company: String
+
+  """The name of the country."""
+  country: String
+
+  """The first name of the customer."""
+  firstName: String
+
+  """The last name of the customer."""
+  lastName: String
+
+  """
+  A unique phone number for the customer.
+  
+  Formatted using E.164 standard. For example, _+16135551111_.
+  """
+  phone: String
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """The zip or postal code of the address."""
+  zip: String
 }
