@@ -1,3 +1,5 @@
+import Button from 'components/Button/Button';
+
 export interface SaleProps {
   text: {
     primary: string;
@@ -17,12 +19,9 @@ const Sale = ({ text }: React.PropsWithChildren<SaleProps>) => {
           {text.primary}
         </h2>
         <p className="mt-4 max-w-xl mx-auto text-xl text-gray-600">{text.secondary}</p>
-        <a
-          href="#"
-          className="mt-6 inline-block w-full bg-gray-900 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-gray-800 sm:w-auto"
-        >
+        <Button as="a" href="#" size="large" className="mt-6 w-full sm:w-auto">
           {text.button}
-        </a>
+        </Button>
       </div>
     </section>
   );
