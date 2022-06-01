@@ -115,6 +115,6 @@
     "node": ">=14"
   },
   "msw": {
-    "workerDirectory": "public"
+    "workerDirectory": "mocks"
   }
 }

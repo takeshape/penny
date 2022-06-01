@@ -26,7 +26,7 @@ module.exports = {
   core: {
     builder: '@storybook/builder-webpack5'
   },
-  staticDirs: ['../public'],
+  staticDirs: ['../public', '../mocks'],
   webpackFinal: (config) => {
     // Because `tsconfig.baseUrl`
     config.resolve.modules.push(`${cwd}/src`);
