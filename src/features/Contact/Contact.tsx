@@ -1,6 +1,7 @@
 import { Switch } from '@headlessui/react';
 import Input from 'components/Input/Input';
 import Textarea from 'components/Textarea/Textarea';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -185,13 +186,13 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 <div className="ml-3">
                   <p className="text-base text-gray-500">
                     By selecting this, you agree to the{' '}
-                    <a href="#" className="font-medium text-gray-700 underline">
+                    <Link href="#" className="font-medium text-gray-700 underline">
                       Privacy Policy
-                    </a>{' '}
+                    </Link>{' '}
                     and{' '}
-                    <a href="#" className="font-medium text-gray-700 underline">
+                    <Link href="#" className="font-medium text-gray-700 underline">
                       Cookie Policy
-                    </a>
+                    </Link>
                     .
                   </p>
                 </div>

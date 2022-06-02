@@ -1,5 +1,6 @@
 import { StarIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
+import Link from 'next/link';
 import type { Product } from 'types/product';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
@@ -30,10 +31,12 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
             </div>
             <div className="pt-10 pb-4 text-center">
               <h3 className="text-sm font-medium text-gray-900">
-                <a href={product.url}>
-                  <span aria-hidden="true" className="absolute inset-0" />
-                  {product.name}
-                </a>
+                <Link href={product.url} passHref>
+                  <a href={product.url}>
+                    <span aria-hidden="true" className="absolute inset-0" />
+                    {product.name}
+                  </a>
+                </Link>
               </h3>
               {product.reviewsAverage ? (
                 <div className="mt-3 flex flex-col items-center">

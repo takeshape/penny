@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useMemo } from 'react';
 
 interface NavigationItemProps {
@@ -6,9 +7,9 @@ interface NavigationItemProps {
 }
 
 const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => (
-  <a href={props.href} className="text-base text-gray-500 hover:text-gray-900">
+  <Link href={props.href} className="text-base text-gray-500 hover:text-gray-900">
     {props.name}
-  </a>
+  </Link>
 );
 
 interface NavigationSectionProps {
