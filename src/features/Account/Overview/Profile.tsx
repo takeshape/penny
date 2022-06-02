@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import Input from 'components/Form/Input/Input';
+import FormInput from 'components/Form/Input/Input';
 import { useSession } from 'next-auth/react';
 import type { GetCustomerResponse, UpdateCustomerResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerMutation } from 'queries';
@@ -26,7 +26,7 @@ export const AccountOverviewAccountProfile = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<AccountOverviewAccountProfileForm>();
 
-  const { data: customerData } = useQuery<GetCustomerResponse>(GetCustomerQuery, {
+  const { data: customerData, error: customerDataError } = useQuery<GetCustomerResponse>(GetCustomerQuery, {
     skip: !session
   });
 
@@ -81,7 +81,7 @@ export const AccountOverviewAccountProfile = () => {
       error={error}
     >
       <div className="grid grid-cols-6 gap-6">
-        <Input
+        <FormInput
           disabled={!isReady}
           control={control}
           name="firstName"
@@ -96,7 +96,7 @@ export const AccountOverviewAccountProfile = () => {
           className="col-span-6 sm:col-span-3"
         />
 
-        <Input
+        <FormInput
           disabled={!isReady}
           control={control}
           name="lastName"
@@ -111,7 +111,7 @@ export const AccountOverviewAccountProfile = () => {
           className="col-span-6 sm:col-span-3"
         />
 
-        <Input
+        <FormInput
           disabled={!isReady}
           control={control}
           name="email"

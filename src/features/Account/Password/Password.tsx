@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import Input from 'components/Form/Input/Input';
+import FormInput from 'components/Form/Input/Input';
 import { signOut, useSession } from 'next-auth/react';
 import type { UpdateCustomerResponse } from 'queries';
 import { UpdateCustomerMutation } from 'queries';
@@ -71,7 +71,7 @@ export const AccountPassword = () => {
       error={error}
     >
       <div className="grid grid-cols-6 gap-6">
-        <Input
+        <FormInput
           className="col-span-4"
           control={control}
           name="password"
@@ -89,7 +89,7 @@ export const AccountPassword = () => {
           }}
         />
 
-        <Input
+        <FormInput
           className="col-span-4"
           control={control}
           name="passwordConfirm"

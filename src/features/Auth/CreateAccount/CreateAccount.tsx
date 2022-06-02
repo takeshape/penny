@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
-import Input from 'components/Form/Input/Input';
+import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import type { CreateCustomerResponse } from 'queries';
@@ -67,7 +67,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
               />
             )}
 
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="email"
@@ -86,7 +86,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
               }}
             />
 
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="password"
@@ -104,7 +104,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
               }}
             />
 
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="passwordConfirm"

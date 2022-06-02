@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
-import Input from 'components/Form/Input/Input';
-import Select from 'components/Form/Select/Select';
+import FormInput from 'components/Form/Input/Input';
+import FormSelect from 'components/Form/Select/Select';
 import { useSession } from 'next-auth/react';
 import type { GetCustomerResponse, UpdateCustomerAddressResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerAddressMutation } from 'queries';
@@ -92,7 +92,7 @@ export const AccountAddress = () => {
       error={error}
     >
       <div className="grid grid-cols-6 gap-6">
-        <Input
+        <FormInput
           control={control}
           disabled={!isReady}
           name="firstName"
@@ -107,7 +107,7 @@ export const AccountAddress = () => {
           className="col-span-6 sm:col-span-3"
         />
 
-        <Input
+        <FormInput
           control={control}
           disabled={!isReady}
           name="lastName"
@@ -122,7 +122,7 @@ export const AccountAddress = () => {
           className="col-span-6 sm:col-span-3"
         />
 
-        <Select
+        <FormSelect
           control={control}
           disabled={!isReady}
           id="countryCodeV2"
@@ -139,7 +139,7 @@ export const AccountAddress = () => {
           className="col-span-6 sm:col-span-3"
         />
 
-        <Input
+        <FormInput
           control={control}
           disabled={!isReady}
           name="address1"
@@ -154,7 +154,7 @@ export const AccountAddress = () => {
           className="col-span-6"
         />
 
-        <Input
+        <FormInput
           control={control}
           disabled={!isReady}
           name="address2"
@@ -166,7 +166,7 @@ export const AccountAddress = () => {
           className="col-span-6"
         />
 
-        <Input
+        <FormInput
           control={control}
           disabled={!isReady}
           name="city"
@@ -181,7 +181,7 @@ export const AccountAddress = () => {
           className="col-span-3"
         />
 
-        <Select
+        <FormSelect
           control={control}
           disabled={!isReady}
           id="provinceCode"
@@ -198,7 +198,7 @@ export const AccountAddress = () => {
           className="col-span-6 sm:col-span-3"
         />
 
-        <Input
+        <FormInput
           control={control}
           disabled={!isReady}
           name="zip"

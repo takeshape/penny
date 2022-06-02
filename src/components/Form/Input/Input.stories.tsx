@@ -1,18 +1,18 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useForm } from 'react-hook-form';
-import Input from './Input';
+import { FormInput } from './Input';
 
-const Meta: ComponentMeta<typeof Input> = {
-  title: 'Components / Input',
-  component: Input,
+const Meta: ComponentMeta<typeof FormInput> = {
+  title: 'Components / Form / Input',
+  component: FormInput,
   parameters: {
     layout: 'centered'
   }
 };
 
-const Template: ComponentStory<typeof Input> = (args) => {
+const Template: ComponentStory<typeof FormInput> = (args) => {
   const { control } = useForm();
-  return <Input control={control} {...args} />;
+  return <FormInput control={control} {...args} />;
 };
 
 export const Basic = Template.bind({});
@@ -32,10 +32,10 @@ Required.args = {
   rules: { required: true }
 };
 
-export const Error: ComponentStory<typeof Input> = (args) => {
+export const Error: ComponentStory<typeof FormInput> = (args) => {
   const { control, setError } = useForm();
   setError('input', { type: 'min', message: 'Needs at least 6 characters' });
-  return <Input control={control} name="input" {...args} />;
+  return <FormInput control={control} name="input" {...args} />;
 };
 Error.args = {
   id: 'input',

@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react';
-import Input from 'components/Form/Input/Input';
-import Textarea from 'components/Form/Textarea/Textarea';
+import FormInput from 'components/Form/Input/Input';
+import FormTextarea from 'components/Form/Textarea/Textarea';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -91,7 +91,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Input
+            <FormInput
               control={control}
               name="first-name"
               id="first-name"
@@ -100,7 +100,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               type="text"
               rules={{ required: 'This field is required' }}
             />
-            <Input
+            <FormInput
               control={control}
               name="last-name"
               id="last-name"
@@ -109,7 +109,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               type="text"
               rules={{ required: 'This field is required' }}
             />
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="company"
@@ -119,7 +119,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               type="text"
               rules={{ required: 'This field is required' }}
             />
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="email"
@@ -136,7 +136,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 }
               }}
             />
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="phone-number"
@@ -153,7 +153,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 }
               }}
             />
-            <Textarea
+            <FormTextarea
               className="sm:col-span-2"
               control={control}
               name="message"

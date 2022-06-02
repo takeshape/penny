@@ -3,13 +3,13 @@ import type { InputHTMLAttributes } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label: string;
   helpText?: string;
 }
 
-const Input = ({
+export const FormInput = ({
   className,
   id,
   label,
@@ -20,7 +20,7 @@ const Input = ({
   rules,
   shouldUnregister,
   ...props
-}: InputProps & UseControllerProps<any, any>) => {
+}: FormInputProps & UseControllerProps<any, any>) => {
   const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
   const { error } = fieldState;
   return (
@@ -65,4 +65,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default FormInput;

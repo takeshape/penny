@@ -1,16 +1,15 @@
 import { Switch } from '@headlessui/react';
-import type { PropsWithChildren } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
-export interface SwitchWithRightLabelProps extends PropsWithChildren<{}> {
+export interface FormToggleWithRightLabelProps {
   labelPrimary: string;
   labelSecondary?: string;
   className?: string;
   disabled?: boolean;
 }
 
-const SwitchWithRightLabel = ({
+export const FormToggleWithRightLabel = ({
   labelPrimary,
   labelSecondary,
   className,
@@ -20,7 +19,7 @@ const SwitchWithRightLabel = ({
   rules,
   shouldUnregister,
   ...props
-}: SwitchWithRightLabelProps & UseControllerProps<any, any>) => {
+}: FormToggleWithRightLabelProps & UseControllerProps<any, any>) => {
   const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
 
   const isChecked = field.value === true;
@@ -46,10 +45,10 @@ const SwitchWithRightLabel = ({
       </Switch>
       <Switch.Label as="span" className="ml-3">
         <span className="text-sm font-medium text-gray-900">{labelPrimary}</span>
-        {labelSecondary && <span className="text-sm text-gray-500">{labelSecondary}</span>}
+        {labelSecondary && <span className="ml-1 text-sm text-gray-500">{labelSecondary}</span>}
       </Switch.Label>
     </Switch.Group>
   );
 };
 
-export default SwitchWithRightLabel;
+export default FormToggleWithRightLabel;

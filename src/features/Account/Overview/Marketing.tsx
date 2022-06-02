@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import SwitchWithRightLabel from 'components/Form/Switch/SwitchWithRightLabel';
+import FormToggleWithRightLabel from 'components/Form/Toggle/ToggleWithRightLabel';
 import { useSession } from 'next-auth/react';
 import type {
   GetCustomerResponse,
@@ -141,7 +141,7 @@ export const AccountOverviewMarketing = () => {
             {newsletterData?.newsletters?.map((newsletter) => {
               return (
                 <div key={newsletter.listId}>
-                  <SwitchWithRightLabel
+                  <FormToggleWithRightLabel
                     control={control}
                     name={`newsletters.${newsletter.listId}`}
                     labelPrimary={newsletter.listName}
@@ -158,7 +158,7 @@ export const AccountOverviewMarketing = () => {
             Marketing
           </div>
           <div className="mt-4 space-y-4">
-            <SwitchWithRightLabel
+            <FormToggleWithRightLabel
               control={control}
               disabled={!isReady}
               name="acceptsMarketing"

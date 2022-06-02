@@ -4,9 +4,9 @@ import { useController } from 'react-hook-form';
 
 export interface SelectOption {
   key: string;
-  value: string;
+  value?: string;
   title: string;
-  selected?: boolean;
+  disabled?: boolean;
 }
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
@@ -18,6 +18,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 export const FormSelect = ({
   className,
+  helpText,
   id,
   label,
   options,
@@ -28,25 +29,37 @@ export const FormSelect = ({
   shouldUnregister,
   ...props
 }: SelectProps & UseControllerProps<any, any>) => {
-  const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
+  const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
 
   return (
     <div className={className}>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
-        {label}
-      </label>
+      <div className="flex justify-between">
+        <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+        {rules?.required && (
+          <span className="text-sm text-gray-400" id={`${id}-required`}>
+            Required
+          </span>
+        )}
+      </div>
       <select
         id={id}
         {...props}
         {...field}
         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
       >
-        {options.map(({ key, value, title, selected }) => (
-          <option key={key} value={value} selected={selected}>
+        {options.map(({ key, value, title, disabled }) => (
+          <option key={key} value={value} disabled={disabled}>
             {title}
           </option>
         ))}
       </select>
+      {helpText && (
+        <p className="mt-2 text-sm text-gray-500" id={`${id}-help-text`}>
+          {helpText}
+        </p>
+      )}
     </div>
   );
 };

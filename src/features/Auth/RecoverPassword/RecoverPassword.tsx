@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
-import Input from 'components/Form/Input/Input';
+import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import type { RecoverCustomerPasswordResponse } from 'queries';
 import { RecoverCustomerPasswordMutation } from 'queries';
@@ -59,7 +59,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
             {!hasData && (
               <>
-                <Input
+                <FormInput
                   className="sm:col-span-2"
                   control={control}
                   name="email"

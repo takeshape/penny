@@ -1,18 +1,18 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useForm } from 'react-hook-form';
-import Textarea from './Textarea';
+import { FormTextarea } from './Textarea';
 
-const Meta: ComponentMeta<typeof Textarea> = {
-  title: 'Components / Textarea',
-  component: Textarea,
+const Meta: ComponentMeta<typeof FormTextarea> = {
+  title: 'Components / Form / Textarea',
+  component: FormTextarea,
   parameters: {
     layout: 'centered'
   }
 };
 
-const Template: ComponentStory<typeof Textarea> = (args) => {
+const Template: ComponentStory<typeof FormTextarea> = (args) => {
   const { control } = useForm();
-  return <Textarea control={control} {...args} />;
+  return <FormTextarea control={control} {...args} />;
 };
 
 export const Basic = Template.bind({});
@@ -28,10 +28,10 @@ Required.args = {
   rules: { required: true }
 };
 
-export const Error: ComponentStory<typeof Textarea> = (args) => {
+export const Error: ComponentStory<typeof FormTextarea> = (args) => {
   const { control, setError } = useForm();
   setError('textarea', { type: 'required', message: 'This field is required' });
-  return <Textarea control={control} name="input" {...args} />;
+  return <FormTextarea control={control} name="input" {...args} />;
 };
 Error.args = {
   ...Basic.args,

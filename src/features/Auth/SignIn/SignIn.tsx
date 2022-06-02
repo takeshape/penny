@@ -1,5 +1,5 @@
 import Alert from 'components/Alert/Alert';
-import Input from 'components/Form/Input/Input';
+import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import type { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
@@ -58,7 +58,7 @@ export const AuthSignIn = ({ callbackUrl, error }: AuthSignInProps) => {
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {hasErrors && <Alert status="error" primaryText={errorMessage} />}
 
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="email"
@@ -77,7 +77,7 @@ export const AuthSignIn = ({ callbackUrl, error }: AuthSignInProps) => {
               }}
             />
 
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="password"

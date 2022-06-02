@@ -325,6 +325,7 @@ export interface GetMyPurchasesDataResponse {
   loyaltyCard?: Voucherify_LoyaltyCard;
 }
 
+// TODO: shopifyCustomer can be a standalone query and use the customerAccessToken claim
 export const GetMyPurchasesData = gql`
   query GetMyPurchasesDataQuery {
     profile: getMyProfile {

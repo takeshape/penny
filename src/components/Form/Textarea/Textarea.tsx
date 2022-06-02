@@ -1,18 +1,15 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import type { TextareaHTMLAttributes } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
-export interface TextareaProps extends React.PropsWithChildren<UseControllerProps<any, any>> {
+export interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   id: string;
   label: string;
-  className?: string;
   helpText?: string;
-  placeholder?: string;
-  defaultValue?: string;
-  rows?: number;
 }
 
-const Textarea = (props: TextareaProps) => {
+export const FormTextarea = (props: FormTextareaProps & UseControllerProps<any, any>) => {
   const { field, fieldState } = useController(props);
   const { error } = fieldState;
   return (
@@ -61,4 +58,4 @@ const Textarea = (props: TextareaProps) => {
   );
 };
 
-export default Textarea;
+export default FormTextarea;
