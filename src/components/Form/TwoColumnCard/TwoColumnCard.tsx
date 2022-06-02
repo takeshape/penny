@@ -1,20 +1,20 @@
 import type { PropsWithChildren, ReactEventHandler } from 'react';
-import type { AccountOverviewFormActionsProps } from '../FormActions/FormActions';
-import AccountOverviewFormActions from '../FormActions/FormActions';
+import type { FormTwoColumnCardActionsProps } from './TwoColumnCardActions';
+import FormTwoColumnCardActions from './TwoColumnCardActions';
 
-export interface AccountFormProps extends AccountOverviewFormActionsProps {
+export interface FormTwoColumnCardProps extends FormTwoColumnCardActionsProps {
   primaryText: string;
   secondaryText?: string;
   onSubmit: ReactEventHandler;
 }
 
-export const AccountForm = ({
+export const FormTwoColumnCard = ({
   primaryText,
   secondaryText,
   onSubmit,
   children,
   ...props
-}: PropsWithChildren<AccountFormProps>) => {
+}: PropsWithChildren<FormTwoColumnCardProps>) => {
   return (
     <form onSubmit={onSubmit}>
       <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -26,10 +26,10 @@ export const AccountForm = ({
 
           {children}
         </div>
-        <AccountOverviewFormActions {...props} />
+        <FormTwoColumnCardActions {...props} />
       </div>
     </form>
   );
 };
 
-export default AccountForm;
+export default FormTwoColumnCard;

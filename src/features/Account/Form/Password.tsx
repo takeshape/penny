@@ -7,14 +7,14 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import AccountForm from '../Form/Form';
+import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
 
-export interface AccountPasswordForm {
+export interface AccountFormPasswordForm {
   password: string;
   passwordConfirm: string;
 }
 
-export const AccountPassword = () => {
+export const AccountFormPassword = () => {
   const { data: session } = useSession({ required: true });
   const {
     handleSubmit,
@@ -22,7 +22,7 @@ export const AccountPassword = () => {
     reset,
     formState: { isSubmitting, isSubmitSuccessful, errors },
     watch
-  } = useForm<AccountPasswordForm>();
+  } = useForm<AccountFormPasswordForm>();
 
   const [updateCustomer, { data: customerResponse }] = useMutation<
     UpdateCustomerResponse,
@@ -30,7 +30,7 @@ export const AccountPassword = () => {
   >(UpdateCustomerMutation);
 
   const onSubmit = useCallback(
-    async ({ password }: AccountPasswordForm) => {
+    async ({ password }: AccountFormPasswordForm) => {
       await updateCustomer({
         variables: {
           customer: { password }
@@ -60,7 +60,7 @@ export const AccountPassword = () => {
     formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
-    <AccountForm
+    <FormTwoColumnCard
       primaryText="New Password"
       secondaryText="Setting a new password will sign you out."
       onSubmit={handleSubmit(onSubmit)}
@@ -104,8 +104,8 @@ export const AccountPassword = () => {
           }}
         />
       </div>
-    </AccountForm>
+    </FormTwoColumnCard>
   );
 };
 
-export default AccountPassword;
+export default AccountFormPassword;

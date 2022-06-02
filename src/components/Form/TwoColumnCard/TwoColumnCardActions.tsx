@@ -1,20 +1,22 @@
 import { PropsWithChildren } from 'react';
 
-export interface AccountOverviewFormActionsProps {
+export interface FormTwoColumnCardActionsProps {
   error?: string;
   isReady?: boolean;
-  isSubmitting?: boolean;
-  isSubmitSuccessful?: boolean;
+  isSubmitting: boolean;
+  isSubmitSuccessful: boolean;
   isValid?: boolean;
 }
 
-export const AccountOverviewFormActions = ({
+export const FormTwoColumnCardActions = ({
   error,
   isReady,
   isSubmitting,
   isSubmitSuccessful,
   isValid
-}: PropsWithChildren<AccountOverviewFormActionsProps>) => {
+}: PropsWithChildren<FormTwoColumnCardActionsProps>) => {
+  isReady = isReady ?? true;
+  isValid = isValid ?? true;
   return (
     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
       <div className="flex justify-end">
@@ -39,4 +41,4 @@ export const AccountOverviewFormActions = ({
   );
 };
 
-export default AccountOverviewFormActions;
+export default FormTwoColumnCardActions;

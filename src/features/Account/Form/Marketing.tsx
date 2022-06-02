@@ -22,14 +22,14 @@ import type {
   MutationUpdateMyCustomerArgs
 } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import AccountForm from '../Form/Form';
+import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
 
-interface AccountOverviewMarketingForm {
+interface AccountFormMarketingForm {
   newsletters: Record<string, boolean>;
   acceptsMarketing: boolean;
 }
 
-export const AccountOverviewMarketing = () => {
+export const AccountFormMarketing = () => {
   const { data: session } = useSession({ required: true });
 
   const {
@@ -37,7 +37,7 @@ export const AccountOverviewMarketing = () => {
     control,
     reset,
     formState: { isSubmitting, isSubmitSuccessful, errors, dirtyFields }
-  } = useForm<AccountOverviewMarketingForm>();
+  } = useForm<AccountFormMarketingForm>();
 
   const skip = !session?.shopifyCustomerAccessToken;
 
@@ -65,7 +65,7 @@ export const AccountOverviewMarketing = () => {
   >(UnsubscribeMyEmailFromNewsletterMutation);
 
   const onSubmit = useCallback(
-    async ({ acceptsMarketing, newsletters }: AccountOverviewMarketingForm) => {
+    async ({ acceptsMarketing, newsletters }: AccountFormMarketingForm) => {
       if (dirtyFields.acceptsMarketing) {
         await updateCustomer({ variables: { customer: { acceptsMarketing } } });
       }
@@ -121,7 +121,7 @@ export const AccountOverviewMarketing = () => {
     formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
-    <AccountForm
+    <FormTwoColumnCard
       primaryText="Marketing &amp; Newsletters"
       secondaryText="What should you send you?"
       onSubmit={handleSubmit(onSubmit)}
@@ -168,8 +168,8 @@ export const AccountOverviewMarketing = () => {
           </div>
         </fieldset>
       </div>
-    </AccountForm>
+    </FormTwoColumnCard>
   );
 };
 
-export default AccountOverviewMarketing;
+export default AccountFormMarketing;

@@ -8,23 +8,23 @@ import { useForm } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input/react-hook-form-input';
 import type { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import AccountForm from '../Form/Form';
+import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
 
-interface AccountOverviewAccountProfileForm {
+interface AccountFormProfileForm {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
 }
 
-export const AccountOverviewAccountProfile = () => {
+export const AccountFormProfile = () => {
   const { data: session } = useSession({ required: true });
   const {
     handleSubmit,
     control,
     reset,
     formState: { isSubmitting, isSubmitSuccessful, errors }
-  } = useForm<AccountOverviewAccountProfileForm>();
+  } = useForm<AccountFormProfileForm>();
 
   const { data: customerData, error: customerDataError } = useQuery<GetCustomerResponse>(GetCustomerQuery, {
     skip: !session
@@ -36,7 +36,7 @@ export const AccountOverviewAccountProfile = () => {
   >(UpdateCustomerMutation);
 
   const onSubmit = useCallback(
-    async ({ firstName, lastName, email, phone }: AccountOverviewAccountProfileForm) => {
+    async ({ firstName, lastName, email, phone }: AccountFormProfileForm) => {
       await updateCustomer({
         variables: {
           customer: { firstName, lastName, email, phone }
@@ -70,7 +70,7 @@ export const AccountOverviewAccountProfile = () => {
     formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
-    <AccountForm
+    <FormTwoColumnCard
       primaryText="Profile"
       secondaryText="Tell us about yourself."
       onSubmit={handleSubmit(onSubmit)}
@@ -147,8 +147,8 @@ export const AccountOverviewAccountProfile = () => {
           />
         </div>
       </div>
-    </AccountForm>
+    </FormTwoColumnCard>
   );
 };
 
-export default AccountOverviewAccountProfile;
+export default AccountFormProfile;

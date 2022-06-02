@@ -9,9 +9,9 @@ import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
-import AccountForm from '../Form/Form';
+import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
 
-interface AccountAddressForm {
+interface AccountFormAddressForm {
   firstName: string;
   lastName: string;
   address1: string;
@@ -22,7 +22,7 @@ interface AccountAddressForm {
   postalCode: string;
 }
 
-export const AccountAddress = () => {
+export const AccountFormAddress = () => {
   const { data: session } = useSession({ required: true });
   const {
     handleSubmit,
@@ -30,7 +30,7 @@ export const AccountAddress = () => {
     watch,
     reset,
     formState: { isSubmitting, isSubmitSuccessful, errors }
-  } = useForm<AccountAddressForm>();
+  } = useForm<AccountFormAddressForm>();
 
   const { data: customerData, error: customerError } = useQuery<
     GetCustomerResponse,
@@ -43,7 +43,7 @@ export const AccountAddress = () => {
   >(UpdateCustomerAddressMutation);
 
   const onSubmit = useCallback(
-    async ({ firstName, lastName, address1, address2 }: AccountAddressForm) => {
+    async ({ firstName, lastName, address1, address2 }: AccountFormAddressForm) => {
       await setCustomerAddressPayload({
         variables: {
           address: { firstName, lastName, address1, address2 },
@@ -81,7 +81,7 @@ export const AccountAddress = () => {
     formatError(customerAddressResponse.customerAddressUpdate.customerUserErrors);
 
   return (
-    <AccountForm
+    <FormTwoColumnCard
       primaryText="Shipping Address"
       secondaryText="Use a permanent address where you can receive mail."
       onSubmit={handleSubmit(onSubmit)}
@@ -213,8 +213,8 @@ export const AccountAddress = () => {
           className="col-span-6"
         />
       </div>
-    </AccountForm>
+    </FormTwoColumnCard>
   );
 };
 
-export default AccountAddress;
+export default AccountFormAddress;

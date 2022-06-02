@@ -1,19 +1,11 @@
-import Wrapper from 'components/Wrapper/Content';
-import Account from 'features/Account/Account';
-import AccountPassword from 'features/Account/Password/Password';
-import Layout from 'layouts/Default';
+import AccountFormPassword from 'features/Account/Form/Password';
+import Layout from 'layouts/Account';
 import type { NextPage } from 'next';
 
 const AccountPasswordPage: NextPage = () => {
   return (
-    <Layout title="Account">
-      <div className="bg-gray-100 flex flex-col grow">
-        <Wrapper>
-          <Account>
-            <AccountPassword />
-          </Account>
-        </Wrapper>
-      </div>
+    <Layout title="Password Reset">
+      <AccountFormPassword />
     </Layout>
   );
 };
