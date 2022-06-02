@@ -30,8 +30,10 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
           <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
             Trending products
           </h2>
-          <Link href="#" className="hidden sm:block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
-            See everything<span aria-hidden="true"> &rarr;</span>
+          <Link href="#" passHref>
+            <a href="#" className="hidden sm:block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+              See everything<span aria-hidden="true"> &rarr;</span>
+            </a>
           </Link>
         </div>
 
@@ -85,8 +87,10 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
         </div>
 
         <div className="mt-12 px-4 sm:hidden">
-          <Link href="#" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
-            See everything<span aria-hidden="true"> &rarr;</span>
+          <Link href="#" passHref>
+            <a href="#" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+              See everything<span aria-hidden="true"> &rarr;</span>
+            </a>
           </Link>
         </div>
       </div>
