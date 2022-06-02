@@ -1,6 +1,6 @@
 import { MailIcon } from '@heroicons/react/solid';
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import Button from './Button';
+import { Button } from './Button';
 
 const Meta: ComponentMeta<typeof Button> = {
   title: 'Components / Button',
