@@ -33,7 +33,7 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
       router.events.off('routeChangeError', handleRouteChangeEnd);
       router.events.off('routeChangeComplete', handleRouteChangeEnd);
     };
-  }, [router]);
+  }, [router, setLoadingRouteChange]);
 
   return (
     <SessionProvider session={pageProps.session} refetchInterval={30 * 60} refetchOnWindowFocus={true}>
