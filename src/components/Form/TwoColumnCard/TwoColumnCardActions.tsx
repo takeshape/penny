@@ -21,12 +21,12 @@ export const FormTwoColumnCardActions = ({
     <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
       <div className="flex justify-end">
         {error && (
-          <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-red-800">Error: {error}</div>
+          <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-red-800">[Error] {error}</div>
         )}
-        {isSubmitting && (
+        {!error && isSubmitting && (
           <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-gray-500">Saving...</div>
         )}
-        {isSubmitSuccessful && (
+        {!error && isSubmitSuccessful && (
           <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-gray-500">Saved</div>
         )}
         <button

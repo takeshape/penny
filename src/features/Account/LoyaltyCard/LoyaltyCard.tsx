@@ -1,16 +1,13 @@
-import { Box, Card, Image, Text } from 'theme-ui';
+import CardPanel from 'components/Card/Panel/Panel';
+import { Box, Image, Text } from 'theme-ui';
 import type { SetRequired } from 'type-fest';
 import type { Voucherify_LoyaltyCard } from 'types/takeshape';
 
-export type LoyaltyCardProps = SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>;
+export type AccountLoyaltyCardProps = SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>;
 
-export const LoyaltyCard = ({ code, loyalty_card, assets }: LoyaltyCardProps) => {
+export const AccountLoyaltyCard = ({ code, loyalty_card, assets }: AccountLoyaltyCardProps) => {
   return (
-    <Card variant="loyalty" sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', padding: '1rem' }}>
-      <Text variant="styles.shopName" sx={{ fontWeight: 'bold', flex: '1 1 100%' }}>
-        Kitchen<span>Sink</span> Membership
-      </Text>
-
+    <CardPanel primaryText="Deluxe ™️ Membership">
       <Box>
         <Box>
           <Image src={assets.qr.url} alt="QR Code" height={84} width={84} />
@@ -31,8 +28,8 @@ export const LoyaltyCard = ({ code, loyalty_card, assets }: LoyaltyCardProps) =>
           {loyalty_card.balance} points
         </Text>
       </Box>
-    </Card>
+    </CardPanel>
   );
 };
 
-export default LoyaltyCard;
+export default AccountLoyaltyCard;

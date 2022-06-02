@@ -1,11 +1,13 @@
-import { KeyIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import type { ComponentMeta } from '@storybook/react';
 import { AccountNavigation } from './Navigation';
 
 const navigation = [
   { name: 'Account', href: '/account', icon: UserCircleIcon, current: false },
+  { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
-  { name: 'Password', href: '/account/password', icon: KeyIcon, current: false }
+  { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
+  { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
 
 const Meta: ComponentMeta<typeof AccountNavigation> = {

@@ -1,4 +1,4 @@
-import { KeyIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import Wrapper from 'components/Wrapper/Content';
 import AccountNavigation from 'features/Account/Navigation/Navigation';
 import type { NextSeoProps } from 'next-seo';
@@ -8,8 +8,10 @@ import DefaultLayout from './Default';
 
 const navigation = [
   { name: 'Account', href: '/account', icon: UserCircleIcon, current: false },
+  { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
-  { name: 'Password', href: '/account/password', icon: KeyIcon, current: false }
+  { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
+  { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
 
 export const Layout = ({ children, ...seo }: PropsWithChildren<NextSeoProps>) => {

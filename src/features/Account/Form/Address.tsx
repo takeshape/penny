@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
-import { useSession } from 'next-auth/react';
 import type { GetCustomerResponse, UpdateCustomerAddressResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerAddressMutation } from 'queries';
 import { useCallback, useEffect } from 'react';
@@ -23,7 +22,6 @@ interface AccountFormAddressForm {
 }
 
 export const AccountFormAddress = () => {
-  const { data: session } = useSession({ required: true });
   const {
     handleSubmit,
     control,
@@ -35,7 +33,7 @@ export const AccountFormAddress = () => {
   const { data: customerData, error: customerError } = useQuery<
     GetCustomerResponse,
     QueryShopifyStorefront_CustomerArgs
-  >(GetCustomerQuery, { skip: !session });
+  >(GetCustomerQuery);
 
   const [setCustomerAddressPayload, { data: customerAddressResponse }] = useMutation<
     UpdateCustomerAddressResponse,
@@ -54,26 +52,26 @@ export const AccountFormAddress = () => {
     [setCustomerAddressPayload, customerData]
   );
 
+  // Set initial values
   useEffect(() => {
     if (customerData?.customer?.defaultAddress) {
       reset(customerData.customer.defaultAddress);
     }
   }, [customerData, reset]);
 
+  // Reset form notices
   useEffect(() => {
-    const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
-    return () => {
-      clearTimeout(timer);
-    };
+    if (isSubmitSuccessful) {
+      const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   }, [isSubmitSuccessful, reset]);
 
   const countries = useCountries();
   const watchCountry = watch('countryCodeV2', 'US');
   const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
-
-  if (!session) {
-    return null;
-  }
 
   const isReady = Boolean(customerData);
   const error =
@@ -129,6 +127,7 @@ export const AccountFormAddress = () => {
           name="countryCodeV2"
           autoComplete="country-name"
           label="Country"
+          defaultValue="US"
           options={
             countries?.map(({ name, iso2 }) => ({
               key: iso2,

@@ -1,0 +1,122 @@
+{
+  "GetCustomerQuery": {
+    "ok": {
+      "customer": {
+        "firstName": "Michael",
+        "lastName": "Shick",
+        "id": "Z2lkOi8vc2hvcGlmeS9DdXN0b21lci81NTA0MzQ4Mzg5NDc2",
+        "phone": "+19193600095",
+        "email": "michael@takeshape.io",
+        "displayName": "Michael Shick",
+        "acceptsMarketing": false,
+        "defaultAddress": {
+          "id": "Z2lkOi8vc2hvcGlmeS9NYWlsaW5nQWRkcmVzcy82NzQ5MDQ3NTU0MTQ4P21vZGVsX25hbWU9Q3VzdG9tZXJBZGRyZXNzJmN1c3RvbWVyX2FjY2Vzc190b2tlbj05dDIta0hCZlc0X3NBc2FLMHJUODdtVEtWc1RYUjdwcVE3SXRwUFFRZmk4VGNpTjl1SXV3c042MlRBa09XTEZDTFRCendRcHBKRUdDMDk5YmlFS1RPd1VUQV9kVVA4WkViYkdSX25ZMC10T2c1X2tjdFVpbXpPdFpkanNCZk10WlFoMlM2Nkp1Vy1VQlMyc0V6cGtnR2NRemZtRGJpTUFialhSd1EyNDVQSTFpR0hsMGtxY0hBV25uM1Zkc21UZTktWVBkN1lOV1N2MWwtQUptcnQyUG5KRlV0ZmxhWUFPa19fMnV0Z1lsNDgwa01mR1Z4MDg1TlUzcDFOWWZMNW54",
+          "firstName": "Michael",
+          "lastName": "Shick",
+          "address1": "156 Kent Street",
+          "address2": "Apt 2",
+          "city": "Brooklyn",
+          "country": "United States",
+          "countryCodeV2": "US",
+          "province": "New York",
+          "provinceCode": "NY",
+          "zip": "11222",
+          "__typename": "ShopifyStorefront_MailingAddress"
+        },
+        "__typename": "ShopifyStorefront_Customer"
+      }
+    },
+    "error": {}
+  },
+  "UpdateCustomerMutation": {
+    "ok": {
+      "customerUpdate": {
+        "customer": {
+          "id": "Z2lkOi8vc2hvcGlmeS9DdXN0b21lci81NTA0MzQ4Mzg5NDc2",
+          "__typename": "ShopifyStorefront_Customer"
+        },
+        "customerUserErrors": [],
+        "__typename": "ShopifyStorefront_CustomerUpdatePayload"
+      }
+    },
+    "error": {
+      "customerUpdate": {
+        "customer": null,
+        "customerUserErrors": [
+          {
+            "code": "INVALID",
+            "field": "firstName",
+            "message": "Something went wrong."
+          }
+        ],
+        "__typename": "ShopifyStorefront_CustomerUpdatePayload"
+      }
+    }
+  },
+  "UpdateCustomerAddressMutation": {
+    "ok": {
+      "customerAddressUpdate": {
+        "customerAddress": {
+          "id": "Z2lkOi8vc2hvcGlmeS9NYWlsaW5nQWRkcmVzcy82NzQ5MDQ3NTU0MTQ4P21vZGVsX25hbWU9Q3VzdG9tZXJBZGRyZXNzJmN1c3RvbWVyX2FjY2Vzc190b2tlbj0zdElySmU1ajF2N1JFTlRJVGlaMlQxSHYycWdGTXIzanNXSlduUFMyNVc1TDZ4YXlFMmFaQjlqNDBfcDlZTFNtTWVkM3pWQVZKS2JUSDlRejFYOUZVejFKUHpxaDJ5M1JHcEJyNmg2ZEtNQmppQzJHajlkeENUMGVKX3hzaEhEQ3c1TzdZUWtMZmw2clhOSVJraFk3bjNzcHBqTDE2dWtjNmpHYnlHSnNvanZmWXlNLTFrUTE0c3ltbHpMUmhzQ3JrSHNzazhROUxoZ1ZhT2pNRUNDNkd1bG9fcmhZMzZzZlphaG9JSmZBUTZKVVJ0U2tQMjg0djJ6dFZsaWJYc3Z2",
+          "__typename": "ShopifyStorefront_MailingAddress"
+        },
+        "customerUserErrors": [],
+        "__typename": "ShopifyStorefront_CustomerAddressUpdatePayload"
+      }
+    },
+    "error": {
+      "customerAddressUpdate": {
+        "customerAddress": null,
+        "customerUserErrors": [
+          {
+            "code": "INVALID",
+            "field": "address1",
+            "message": "Something went wrong."
+          }
+        ],
+        "__typename": "ShopifyStorefront_CustomerAddressUpdatePayload"
+      }
+    }
+  },
+  "SubscribeMyEmailToNewsletterMutation": {
+    "ok": {
+      "result": {
+        "items": [
+          {
+            "id": "01FCEDG0W79KENQA9TMAFK2S76",
+            "__typename": "Klaviyo_AddMembersResponseItemsProperty"
+          }
+        ],
+        "__typename": "Klaviyo_AddMembersResponse"
+      }
+    },
+    "error": {}
+  },
+  "UnsubscribeMyEmailFromNewsletterMutation": {
+    "ok": {
+      "result": {
+        "result": null,
+        "__typename": "Klaviyo_200Ok"
+      }
+    },
+    "error": {}
+  },
+  "GetMyNewsletterSubscriptionsQuery": {
+    "ok": {
+      "newsletters": [
+        {
+          "listId": "S8i5Fc",
+          "listName": "Preview List",
+          "subscribed": true,
+          "__typename": "ProfileNewsletterStatus"
+        },
+        {
+          "listId": "WkaTiM",
+          "listName": "Newsletter",
+          "subscribed": true,
+          "__typename": "ProfileNewsletterStatus"
+        }
+      ]
+    }
+  }
+}

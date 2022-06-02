@@ -370,6 +370,7 @@ type Query {
     customerAccessToken: String!
   ): ShopifyStorefront_Customer
   getMyCustomer: ShopifyStorefront_Customer
+  getMyAdminCustomer: Shopify_Customer
   searchAssetIndex(
     terms: String
 
@@ -32653,6 +32654,7 @@ type WithContext {
     customerAccessToken: String!
   ): ShopifyStorefront_Customer
   getMyCustomer: ShopifyStorefront_Customer
+  getMyAdminCustomer: Shopify_Customer
   searchAssetIndex(
     terms: String
 
@@ -32890,6 +32892,7 @@ type Mutation {
     """The customer’s mailing address."""
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
+  Gorgias_createTicket(message: String, email: String!): Gorgias_CreateTicketResponse
 }
 
 """A project file stored on s3"""
@@ -46649,4 +46652,8 @@ input ShopifyStorefront_MailingAddressInput {
 
   """The zip or postal code of the address."""
   zip: String
+}
+
+type Gorgias_CreateTicketResponse {
+  id: Int!
 }

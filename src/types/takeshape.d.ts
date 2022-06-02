@@ -82,6 +82,7 @@ export type Query = {
   Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
   getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
+  getMyAdminCustomer?: Maybe<Shopify_Customer>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -26773,6 +26774,7 @@ export type WithContext = {
   Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
   getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
+  getMyAdminCustomer?: Maybe<Shopify_Customer>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -27195,6 +27197,7 @@ export type Mutation = {
   ShopifyStorefront_customerAddressUpdate?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
   updateMyCustomer?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   updateMyCustomerAddress?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
+  Gorgias_createTicket?: Maybe<Gorgias_CreateTicketResponse>;
 };
 
 
@@ -27472,6 +27475,12 @@ export type MutationUpdateMyCustomerAddressArgs = {
   customerAccessToken?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   address: ShopifyStorefront_MailingAddressInput;
+};
+
+
+export type MutationGorgias_CreateTicketArgs = {
+  message?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
 };
 
 /** A project file stored on s3 */
@@ -37612,4 +37621,9 @@ export type ShopifyStorefront_MailingAddressInput = {
   province?: InputMaybe<Scalars['String']>;
   /** The zip or postal code of the address. */
   zip?: InputMaybe<Scalars['String']>;
+};
+
+export type Gorgias_CreateTicketResponse = {
+  __typename?: 'Gorgias_CreateTicketResponse';
+  id: Scalars['Int'];
 };

@@ -568,28 +568,71 @@
       "description": "Returns a list of profiles in natural order.",
       "args": "TSListArgs<Profile>"
     },
+    "getMyCustomer": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify-storefront",
+        "fieldName": "customer",
+        "args": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$args"
+            },
+            {
+              "path": "customerAccessToken",
+              "mapping": "$claims.custom.customer_access_token"
+            }
+          ]
+        }
+      },
+      "shape": "ShopifyStorefront_Customer"
+    },
+    "getMyAdminCustomer": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "customer",
+        "args": {
+          "ops": [
+            {
+              "path": "id",
+              "mapping": "$claims.sub"
+            }
+          ]
+        }
+      },
+      "shape": "Shopify_Customer"
+    },
     "getMyLoyaltyCard": {
       "description": "Get a loyalty card from Voucherify",
       "shape": "local:Voucherify_LoyaltyCard",
       "resolver": {
         "compose": [
           {
-            "if": "!isEmpty($claims.sub)",
-            "shapeName": "Profile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "id": "profile",
+            "if": "!isEmpty($claims.custom.customer_access_token)",
+            "id": "customer",
+            "name": "graphql:query",
+            "service": "shopify-storefront",
+            "fieldName": "customer",
+            "options": {
+              "selectionSet": "{ displayName email }"
+            },
             "args": {
               "ops": [
                 {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
+                  "path": "$",
+                  "mapping": "$args"
+                },
+                {
+                  "path": "customerAccessToken",
+                  "mapping": "$claims.custom.customer_access_token"
                 }
               ]
             }
           },
           {
-            "if": "!isEmpty($resolvers.profile)",
+            "if": "!isEmpty($resolvers.customer)",
             "id": "loyaltyCard",
             "name": "rest:post",
             "service": "voucherify",
@@ -611,15 +654,15 @@
                   "ops": [
                     {
                       "path": "source_id",
-                      "mapping": "$resolvers.profile.email"
+                      "mapping": "$resolvers.customer.email"
                     },
                     {
                       "path": "email",
-                      "mapping": "$resolvers.profile.email"
+                      "mapping": "$resolvers.customer.email"
                     },
                     {
                       "path": "name",
-                      "mapping": "$resolvers.profile.name"
+                      "mapping": "$resolvers.customer.displayName"
                     }
                   ]
                 }

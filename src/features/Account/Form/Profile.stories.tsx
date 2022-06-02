@@ -1,4 +1,6 @@
 import type { ComponentMeta } from '@storybook/react';
+import { graphql } from 'msw';
+import fixtures from 'queries.fixtures.json';
 import { AccountFormProfile } from './Profile';
 
 const Meta: ComponentMeta<typeof AccountFormProfile> = {
@@ -8,8 +10,38 @@ const Meta: ComponentMeta<typeof AccountFormProfile> = {
 
 const Template = (args) => <AccountFormProfile {...args} />;
 
-export const Basic = Template.bind({});
+export const NotReady = Template.bind({});
 
-// TODO: More states when we can mock mutations
+export const Success = Template.bind({});
+Success.parameters = {
+  msw: {
+    handlers: {
+      customer: [
+        graphql.query('GetCustomerQuery', (req, res, ctx) => {
+          return res(ctx.data(fixtures.GetCustomerQuery.ok));
+        }),
+        graphql.mutation('UpdateCustomerMutation', (req, res, ctx) => {
+          return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerMutation.ok));
+        })
+      ]
+    }
+  }
+};
+
+export const Error = Template.bind({});
+Error.parameters = {
+  msw: {
+    handlers: {
+      customer: [
+        graphql.query('GetCustomerQuery', (req, res, ctx) => {
+          return res(ctx.data(fixtures.GetCustomerQuery.ok));
+        }),
+        graphql.mutation('UpdateCustomerMutation', (req, res, ctx) => {
+          return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerMutation.error));
+        })
+      ]
+    }
+  }
+};
 
 export default Meta;

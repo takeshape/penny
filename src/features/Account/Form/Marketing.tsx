@@ -1,15 +1,15 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormToggleWithRightLabel from 'components/Form/Toggle/ToggleWithRightLabel';
-import { useSession } from 'next-auth/react';
 import type {
   GetCustomerResponse,
+  GetMyNewsletterSubscriptionsResponse,
   SubscribeMyEmailToNewsletterResponse,
   UnsubscribeMyEmailFromNewsletterResponse,
   UpdateCustomerResponse
 } from 'queries';
 import {
   GetCustomerQuery,
-  GetMyNewsletterSubscriptons,
+  GetMyNewsletterSubscriptionsQuery,
   SubscribeMyEmailToNewsletterMutation,
   UnsubscribeMyEmailFromNewsletterMutation,
   UpdateCustomerMutation
@@ -30,8 +30,6 @@ interface AccountFormMarketingForm {
 }
 
 export const AccountFormMarketing = () => {
-  const { data: session } = useSession({ required: true });
-
   const {
     handleSubmit,
     control,
@@ -39,27 +37,17 @@ export const AccountFormMarketing = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors, dirtyFields }
   } = useForm<AccountFormMarketingForm>();
 
-  const skip = !session?.shopifyCustomerAccessToken;
-
-  const { data: newsletterData, error: newsletterError } = useQuery(GetMyNewsletterSubscriptons, {
-    skip
-  });
-
-  const { data: customerData, error: customerError } = useQuery<GetCustomerResponse>(GetCustomerQuery, {
-    skip
-  });
-
+  const { data: newsletterData } = useQuery<GetMyNewsletterSubscriptionsResponse>(GetMyNewsletterSubscriptionsQuery);
+  const { data: customerData } = useQuery<GetCustomerResponse>(GetCustomerQuery);
   const [updateCustomer, { data: customerResponse }] = useMutation<
     UpdateCustomerResponse,
     MutationUpdateMyCustomerArgs
   >(UpdateCustomerMutation);
 
-  const [subscribe, { data: subscribeResponse }] = useMutation<
-    SubscribeMyEmailToNewsletterResponse,
-    MutationSubscribeMyEmailToNewsletterArgs
-  >(SubscribeMyEmailToNewsletterMutation);
-
-  const [unsubscribe, { data: unsubscribeResponse }] = useMutation<
+  const [subscribe] = useMutation<SubscribeMyEmailToNewsletterResponse, MutationSubscribeMyEmailToNewsletterArgs>(
+    SubscribeMyEmailToNewsletterMutation
+  );
+  const [unsubscribe] = useMutation<
     UnsubscribeMyEmailFromNewsletterResponse,
     MutationUnsubscribeMyEmailFromNewsletterArgs
   >(UnsubscribeMyEmailFromNewsletterMutation);
@@ -89,11 +77,12 @@ export const AccountFormMarketing = () => {
     [dirtyFields.acceptsMarketing, dirtyFields.newsletters, reset, updateCustomer, subscribe, unsubscribe]
   );
 
+  // Set initial values
   useEffect(() => {
     if (newsletterData?.newsletters && customerData?.customer) {
       reset({
         acceptsMarketing: customerData.customer.acceptsMarketing,
-        newsletters: newsletterData.newsletters.reduce(
+        newsletters: newsletterData.newsletters.reduce<AccountFormMarketingForm['newsletters']>(
           (p, c) => ({
             ...p,
             [c.listId]: c.subscribed
@@ -104,16 +93,15 @@ export const AccountFormMarketing = () => {
     }
   }, [newsletterData, customerData, reset]);
 
+  // Reset form notices
   useEffect(() => {
-    const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
-    return () => {
-      clearTimeout(timer);
-    };
+    if (isSubmitSuccessful) {
+      const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   }, [isSubmitSuccessful, reset]);
-
-  if (!session) {
-    return null;
-  }
 
   const isReady = Boolean(newsletterData && customerData);
   const error =

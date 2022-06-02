@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
-import { useSession } from 'next-auth/react';
 import type { GetCustomerResponse, UpdateCustomerResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerMutation } from 'queries';
 import { useCallback, useEffect } from 'react';
@@ -18,7 +17,6 @@ interface AccountFormProfileForm {
 }
 
 export const AccountFormProfile = () => {
-  const { data: session } = useSession({ required: true });
   const {
     handleSubmit,
     control,
@@ -26,9 +24,7 @@ export const AccountFormProfile = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<AccountFormProfileForm>();
 
-  const { data: customerData, error: customerDataError } = useQuery<GetCustomerResponse>(GetCustomerQuery, {
-    skip: !session
-  });
+  const { data: customerData, error: customerDataError } = useQuery<GetCustomerResponse>(GetCustomerQuery);
 
   const [updateCustomer, { data: customerResponse }] = useMutation<
     UpdateCustomerResponse,
@@ -46,22 +42,22 @@ export const AccountFormProfile = () => {
     [updateCustomer]
   );
 
+  // Set initial values
   useEffect(() => {
     if (customerData?.customer) {
       reset(customerData.customer);
     }
   }, [customerData, reset]);
 
+  // Reset form notices
   useEffect(() => {
-    const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
-    return () => {
-      clearTimeout(timer);
-    };
+    if (isSubmitSuccessful) {
+      const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   }, [isSubmitSuccessful, reset]);
-
-  if (!session) {
-    return null;
-  }
 
   const isReady = Boolean(customerData);
 

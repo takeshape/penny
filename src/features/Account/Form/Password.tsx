@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import type { UpdateCustomerResponse } from 'queries';
 import { UpdateCustomerMutation } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
@@ -15,7 +15,6 @@ export interface AccountFormPasswordForm {
 }
 
 export const AccountFormPassword = () => {
-  const { data: session } = useSession({ required: true });
   const {
     handleSubmit,
     control,
@@ -40,24 +39,20 @@ export const AccountFormPassword = () => {
     [updateCustomer]
   );
 
+  const error =
+    customerResponse?.customerUpdate?.customerUserErrors &&
+    formatError(customerResponse.customerUpdate.customerUserErrors);
+
   useEffect(() => {
-    if (isSubmitSuccessful) {
+    if (isSubmitSuccessful && !error) {
       signOut({ callbackUrl: '/auth/signin' });
     }
-  }, [isSubmitSuccessful, reset]);
+  }, [isSubmitSuccessful, error, reset]);
 
   const watched = useRef({ password: '' });
   watched.current.password = watch('password', '');
 
-  if (!session) {
-    return null;
-  }
-
   const isReady = true;
-
-  const error =
-    customerResponse?.customerUpdate?.customerUserErrors &&
-    formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
     <FormTwoColumnCard

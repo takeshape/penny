@@ -3,7 +3,7 @@ import type {
   Klaviyo_200Ok,
   Klaviyo_AddMembersResponse,
   Mutation,
-  Profile,
+  ProfileNewsletterStatus,
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
   ShopifyStorefront_Customer,
@@ -12,6 +12,7 @@ import type {
   ShopifyStorefront_CustomerCreatePayload,
   ShopifyStorefront_CustomerRecoverPayload,
   ShopifyStorefront_CustomerUpdatePayload,
+  Shopify_Customer,
   Shopify_Product,
   Shopify_ProductConnection,
   Voucherify_LoyaltyCard
@@ -320,41 +321,59 @@ export const DeleteMySubscription = gql`
   }
 `;
 
-export interface GetMyPurchasesDataResponse {
-  profile: Profile;
-  loyaltyCard?: Voucherify_LoyaltyCard;
+export interface GetMyAdminCustomerOrdersResponse {
+  customer: Shopify_Customer;
 }
 
-// TODO: shopifyCustomer can be a standalone query and use the customerAccessToken claim
-export const GetMyPurchasesData = gql`
-  query GetMyPurchasesDataQuery {
-    profile: getMyProfile {
-      shopifyCustomer {
-        orders(first: 10) {
-          edges {
-            node {
-              currencyCode
-              fulfillments {
-                createdAt
-                displayStatus
-                fulfillmentLineItems(first: 10) {
-                  edges {
-                    node {
+export const GetMyAdminCustomerOrdersQuery = gql`
+  query GetMyAdminCustomerOrdersQuery {
+    customer: getMyAdminCustomer {
+      orders(first: 10) {
+        edges {
+          node {
+            id
+            createdAt
+            displayFulfillmentStatus
+            totalPriceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            fulfillments {
+              id
+              displayStatus
+              deliveredAt
+              estimatedDeliveryAt
+              inTransitAt
+              updatedAt
+              trackingInfo {
+                company
+                number
+              }
+              fulfillmentLineItems(first: 10) {
+                edges {
+                  node {
+                    lineItem {
                       id
-                      lineItem {
+                      image {
+                        url
+                        height
+                        width
+                      }
+                      name
+                      quantity
+                      product {
                         id
-                        image {
-                          url
+                      }
+                      originalTotalSet {
+                        shopMoney {
+                          amount
+                          currencyCode
                         }
-                        name
-                        quantity
                       }
                     }
                   }
-                }
-                trackingInfo {
-                  company
-                  number
                 }
               }
             }
@@ -362,6 +381,15 @@ export const GetMyPurchasesData = gql`
         }
       }
     }
+  }
+`;
+
+export interface GetMyLoyaltyCardResponse {
+  loyaltyCard: Voucherify_LoyaltyCard;
+}
+
+export const GetMyLoyaltyCardQuery = gql`
+  query GetMyLoyaltyCardQuery {
     loyaltyCard: getMyLoyaltyCard {
       id
       code
@@ -396,7 +424,11 @@ export const CreateInvitation = gql`
   }
 `;
 
-export const GetMyNewsletterSubscriptons = gql`
+export interface GetMyNewsletterSubscriptionsResponse {
+  newsletters: ProfileNewsletterStatus[];
+}
+
+export const GetMyNewsletterSubscriptionsQuery = gql`
   query GetMyNewsletterSubscriptionsQuery {
     newsletters: getMyNewsletterSubscriptions {
       listId
@@ -406,30 +438,12 @@ export const GetMyNewsletterSubscriptons = gql`
   }
 `;
 
-export const SubscribeToNewsletterMutation = gql`
-  mutation SubscribeToNewsletterMutation($listId: String!, $email: String!) {
-    Klaviyo_addMembers(list_id: $listId, input: { profiles: [{ email: $email }] }) {
-      items {
-        id
-      }
-    }
-  }
-`;
-
-export const UnsubscribeFromNewsletterMutation = gql`
-  mutation UnsubscribeFromNewsletterMutation($listId: String!, $email: String!) {
-    Klaviyo_removeMembers(list_id: $listId, input: { emails: [$email] }) {
-      result
-    }
-  }
-`;
-
 export interface SubscribeMyEmailToNewsletterResponse {
   result: Klaviyo_AddMembersResponse;
 }
 
 export const SubscribeMyEmailToNewsletterMutation = gql`
-  mutation SubscribeMyEmailToNewsletter($list_id: String!) {
+  mutation SubscribeMyEmailToNewsletterMutation($list_id: String!) {
     result: subscribeMyEmailToNewsletter(list_id: $list_id) {
       items {
         id
@@ -443,7 +457,7 @@ export interface UnsubscribeMyEmailFromNewsletterResponse {
 }
 
 export const UnsubscribeMyEmailFromNewsletterMutation = gql`
-  mutation UnsubscribeMyEmailFromNewsletter($list_id: String!) {
+  mutation UnsubscribeMyEmailFromNewsletterMutation($list_id: String!) {
     result: unsubscribeMyEmailFromNewsletter(list_id: $list_id) {
       result
     }
@@ -492,7 +506,7 @@ export type GetCustomerTokenDataResponse = {
 };
 
 export const GetCustomerTokenDataQuery = gql`
-  query GetCustomerTokenData($customerAccessToken: String!) {
+  query GetCustomerTokenDataQuery($customerAccessToken: String!) {
     customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
       firstName
       lastName
@@ -509,7 +523,7 @@ export type GetCustomerResponse = {
 };
 
 export const GetCustomerQuery = gql`
-  query GetCustomer {
+  query GetCustomerQuery {
     customer: getMyCustomer {
       firstName
       lastName
@@ -540,7 +554,7 @@ export type CreateCustomerResponse = {
 };
 
 export const CreateCustomerMutation = gql`
-  mutation CreateCustomer($input: ShopifyStorefront_CustomerCreateInput!) {
+  mutation CreateCustomerMutation($input: ShopifyStorefront_CustomerCreateInput!) {
     customerCreate: ShopifyStorefront_customerCreate(input: $input) {
       customer {
         id
@@ -559,7 +573,7 @@ export type RecoverCustomerPasswordResponse = {
 };
 
 export const RecoverCustomerPasswordMutation = gql`
-  mutation RecoverCustomerPassword($email: String!) {
+  mutation RecoverCustomerPasswordMutation($email: String!) {
     customerRecover: ShopifyStorefront_customerRecover(email: $email) {
       customerUserErrors {
         code
@@ -575,7 +589,7 @@ export type UpdateCustomerResponse = {
 };
 
 export const UpdateCustomerMutation = gql`
-  mutation UpdateCustomer($customer: ShopifyStorefront_CustomerUpdateInput!) {
+  mutation UpdateCustomerMutation($customer: ShopifyStorefront_CustomerUpdateInput!) {
     customerUpdate: updateMyCustomer(customer: $customer) {
       customer {
         id
@@ -594,7 +608,7 @@ export type UpdateCustomerAddressResponse = {
 };
 
 export const UpdateCustomerAddressMutation = gql`
-  mutation UpdateCustomerAddress($address: ShopifyStorefront_MailingAddressInput!, $id: ID!) {
+  mutation UpdateCustomerAddressMutation($address: ShopifyStorefront_MailingAddressInput!, $id: ID!) {
     customerAddressUpdate: updateMyCustomerAddress(address: $address, id: $id) {
       customerAddress {
         id
