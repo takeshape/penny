@@ -1,13 +1,14 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
+import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import type { GetCustomerResponse, UpdateCustomerResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerMutation } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import PhoneInput from 'react-phone-number-input/react-hook-form-input';
 import type { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
+
 interface AccountFormProfileForm {
   firstName: string;
   lastName: string;
@@ -136,21 +137,17 @@ export const AccountFormProfile = () => {
           className="col-span-6 sm:col-span-4"
         />
 
-        <div className="col-span-6 sm:col-span-4">
-          <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
-            Phone number
-          </label>
-          <PhoneInput
-            disabled={!isReady}
-            name="phone"
-            type="tel"
-            defaultCountry="US"
-            withCountryCallingCode={true}
-            autoComplete="tel"
-            control={control}
-            className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed"
-          />
-        </div>
+        <FormPhoneInput
+          disabled={!isReady}
+          label="Phone number"
+          id="phone"
+          name="phone"
+          defaultCountry="US"
+          withCountryCallingCode={true}
+          control={control}
+          defaultErrorMessage="Please enter a valid phone number"
+          className="col-span-6 sm:col-span-4"
+        />
       </div>
     </FormTwoColumnCard>
   );

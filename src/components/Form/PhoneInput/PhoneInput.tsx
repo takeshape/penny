@@ -1,15 +1,22 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
-import type { InputHTMLAttributes } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
+import {
+  DefaultInputComponentProps,
+  FeatureProps as PhoneInputProps,
+  isPossiblePhoneNumber
+} from 'react-phone-number-input';
+import PhoneInput from 'react-phone-number-input/input';
 import classNames from 'utils/classNames';
 
-export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface FormPhoneInputProps extends PhoneInputProps<DefaultInputComponentProps> {
   id: string;
   label: string;
   helpText?: string;
+  // Because the phone # validation gives no way to set a message
+  defaultErrorMessage?: string;
 }
 
-export const FormInput = ({
+export const FormPhoneInput = ({
   className,
   id,
   label,
@@ -19,10 +26,18 @@ export const FormInput = ({
   defaultValue,
   rules,
   shouldUnregister,
+  inputComponent,
+  defaultErrorMessage,
   ...props
-}: FormInputProps & UseControllerProps<any, any>) => {
+}: FormPhoneInputProps & UseControllerProps<any, any>) => {
+  rules = {
+    ...rules,
+    validate: isPossiblePhoneNumber
+  };
+
   const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
   const { error } = fieldState;
+
   return (
     <div className={`${className} relative`}>
       <div className="flex justify-between">
@@ -35,10 +50,12 @@ export const FormInput = ({
           </span>
         )}
       </div>
-      <input
+      <PhoneInput
         {...props}
         {...field}
         id={id}
+        type="tel"
+        autoComplete="tel"
         className={classNames(
           error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
@@ -58,11 +75,11 @@ export const FormInput = ({
       )}
       {error && (
         <p className="mt-1 text-sm text-red-600" id={`${id}-error`}>
-          {error.message}
+          {error.message === '' ? defaultErrorMessage : error.message}
         </p>
       )}
     </div>
   );
 };
 
-export default FormInput;
+export default FormPhoneInput;
