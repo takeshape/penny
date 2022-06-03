@@ -112,11 +112,7 @@ export const GetProductsQuery = gql`
           totalVariants
           sellingPlanGroupCount
           recharge {
-            discount_type
-            discount_amount
             subscription_defaults {
-              order_interval_unit
-              order_interval_frequency_options
               storefront_purchase_options
             }
           }
@@ -226,6 +222,45 @@ export const GetProductQuery = gql`
                 node {
                   id
                   options
+                  pricingPolicies {
+                    ... on Shopify_SellingPlanFixedPricingPolicy {
+                      adjustmentType
+                      adjustmentValue {
+                        ... on Shopify_MoneyV2 {
+                          currencyCode
+                          amount
+                        }
+                        ... on Shopify_SellingPlanPricingPolicyPercentageValue {
+                          percentage
+                        }
+                      }
+                    }
+                    ... on Shopify_SellingPlanRecurringPricingPolicy {
+                      adjustmentType
+                      adjustmentValue {
+                        ... on Shopify_MoneyV2 {
+                          currencyCode
+                          amount
+                        }
+                        ... on Shopify_SellingPlanPricingPolicyPercentageValue {
+                          percentage
+                        }
+                      }
+                    }
+                  }
+                  billingPolicy {
+                    ... on Shopify_SellingPlanRecurringBillingPolicy {
+                      anchors {
+                        day
+                        month
+                        type
+                      }
+                      maxCycles
+                      minCycles
+                      intervalCount
+                      interval
+                    }
+                  }
                 }
               }
             }
@@ -233,11 +268,7 @@ export const GetProductQuery = gql`
         }
       }
       recharge {
-        discount_type
-        discount_amount
         subscription_defaults {
-          order_interval_unit
-          order_interval_frequency_options
           storefront_purchase_options
         }
       }

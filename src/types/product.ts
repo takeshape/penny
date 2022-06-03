@@ -6,13 +6,26 @@ export type ProductImage = {
   width: number;
 };
 
+export type ProductPriceRecurringAnchor = {
+  day: number;
+  month?: number;
+  type: 'WEEKDAY' | 'MONTHDAY' | 'YEARDAY';
+};
+
+/**
+ * All amounts in cents
+ */
 export type ProductPriceOption = {
   merchandiseId: string;
   subscriptionId?: string;
-  interval: 'day' | 'week' | 'month' | 'year';
+  interval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
   intervalCount: number;
-  discountType: 'percentage' | 'none';
+  intervalMaxCycles?: number | null;
+  intervalMinCycles?: number | null;
+  intervalAnchor?: ProductPriceRecurringAnchor | null;
+  discountType: 'PERCENTAGE' | 'FIXED_AMOUNT' | 'PRICE';
   discountAmount: number;
+  amountBeforeDiscount: number;
   amount: number;
   currencyCode: ProductPriceCurrencyCode;
 };
