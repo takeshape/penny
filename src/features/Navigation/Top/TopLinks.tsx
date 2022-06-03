@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { Popover, Transition } from '@headlessui/react';
-import Link from 'next/link';
+import { NextLink } from 'components/NextLink';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import type { NavigationDataResults } from '../Navigation.queries';
@@ -60,9 +60,9 @@ export const TopLinks = () => {
                                 >
                                   {category.featured?.map((item) => (
                                     <li key={item.name} className="flex">
-                                      <Link href={item.href} className="hover:text-gray-800">
+                                      <NextLink href={item.href} className="hover:text-gray-800">
                                         {item.name}
-                                      </Link>
+                                      </NextLink>
                                     </li>
                                   ))}
                                 </ul>
@@ -78,9 +78,9 @@ export const TopLinks = () => {
                                 >
                                   {category.categories?.map((item) => (
                                     <li key={item.name} className="flex">
-                                      <Link href={item.href} className="hover:text-gray-800">
+                                      <NextLink href={item.href} className="hover:text-gray-800">
                                         {item.name}
-                                      </Link>
+                                      </NextLink>
                                     </li>
                                   ))}
                                 </ul>
@@ -98,9 +98,9 @@ export const TopLinks = () => {
                                 >
                                   {category.collection?.map((item) => (
                                     <li key={item.name} className="flex">
-                                      <Link href={item.href} className="hover:text-gray-800">
+                                      <NextLink href={item.href} className="hover:text-gray-800">
                                         {item.name}
-                                      </Link>
+                                      </NextLink>
                                     </li>
                                   ))}
                                 </ul>
@@ -117,9 +117,9 @@ export const TopLinks = () => {
                                 >
                                   {category.brands?.map((item) => (
                                     <li key={item.name} className="flex">
-                                      <Link href={item.href} className="hover:text-gray-800">
+                                      <NextLink href={item.href} className="hover:text-gray-800">
                                         {item.name}
-                                      </Link>
+                                      </NextLink>
                                     </li>
                                   ))}
                                 </ul>

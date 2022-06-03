@@ -1,5 +1,5 @@
 import NextImage from 'components/NextImage';
-import Link from 'next/link';
+import { NextLink } from 'components/NextLink';
 
 interface Collection {
   name: string;
@@ -35,12 +35,10 @@ const Collections = ({ collections }: React.PropsWithChildren<CollectionsProps>)
                   />
                 </div>
                 <h3 className="mt-6 text-sm text-gray-500">
-                  <Link href={collection.href} passHref>
-                    <a href={collection.href}>
-                      <span className="absolute inset-0" />
-                      {collection.name}
-                    </a>
-                  </Link>
+                  <NextLink href={collection.href}>
+                    <span className="absolute inset-0" />
+                    {collection.name}
+                  </NextLink>
                 </h3>
                 <p className="text-base font-semibold text-gray-900">{collection.description}</p>
               </div>

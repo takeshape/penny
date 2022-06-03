@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { Tab } from '@headlessui/react';
-import Link from 'next/link';
+import { NextLink } from 'components/NextLink';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import type { NavigationDataResults } from '../Navigation.queries';
@@ -47,9 +47,9 @@ export const MobileMenuLinks = () => {
                     >
                       {category.featured?.map((item) => (
                         <li key={item.name} className="flex">
-                          <Link href={item.href} className="text-gray-500">
+                          <NextLink href={item.href} className="text-gray-500">
                             {item.name}
-                          </Link>
+                          </NextLink>
                         </li>
                       ))}
                     </ul>
@@ -61,9 +61,9 @@ export const MobileMenuLinks = () => {
                     <ul role="list" aria-labelledby="mobile-categories-heading" className="mt-6 space-y-6">
                       {category.categories?.map((item) => (
                         <li key={item.name} className="flex">
-                          <Link href={item.href} className="text-gray-500">
+                          <NextLink href={item.href} className="text-gray-500">
                             {item.name}
-                          </Link>
+                          </NextLink>
                         </li>
                       ))}
                     </ul>
@@ -77,9 +77,9 @@ export const MobileMenuLinks = () => {
                     <ul role="list" aria-labelledby="mobile-collection-heading" className="mt-6 space-y-6">
                       {category.collection?.map((item) => (
                         <li key={item.name} className="flex">
-                          <Link href={item.href} className="text-gray-500">
+                          <NextLink href={item.href} className="text-gray-500">
                             {item.name}
-                          </Link>
+                          </NextLink>
                         </li>
                       ))}
                     </ul>
@@ -92,9 +92,9 @@ export const MobileMenuLinks = () => {
                     <ul role="list" aria-labelledby="mobile-brand-heading" className="mt-6 space-y-6">
                       {category.brands?.map((item) => (
                         <li key={item.name} className="flex">
-                          <Link href={item.href} className="text-gray-500">
+                          <NextLink href={item.href} className="text-gray-500">
                             {item.name}
-                          </Link>
+                          </NextLink>
                         </li>
                       ))}
                     </ul>
@@ -109,9 +109,9 @@ export const MobileMenuLinks = () => {
       <div className="border-t border-gray-200 py-6 px-4 space-y-6">
         {links?.pages?.map((page) => (
           <div key={page.name} className="flow-root">
-            <Link href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
+            <NextLink href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
               {page.name}
-            </Link>
+            </NextLink>
           </div>
         ))}
       </div>

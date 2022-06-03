@@ -1,6 +1,6 @@
 import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
+import { NextLink } from 'components/NextLink';
 import { useSetAtom } from 'jotai';
-import Link from 'next/link';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import TopAccountIcon from './TopAccountIcon';
 import TopCartIcon from './TopCartIcon';
@@ -16,11 +16,9 @@ export const Top = () => {
   return (
     <>
       <nav aria-label="Top">
-        <Link href="#content" passHref>
-          <a href="#content" className="sr-only focus:not-sr-only">
-            Skip to content
-          </a>
-        </Link>
+        <NextLink href="#content" className="sr-only focus:not-sr-only">
+          Skip to content
+        </NextLink>
 
         {/* Top navigation */}
         <div className="bg-gray-900">
@@ -66,15 +64,13 @@ export const Top = () => {
               <div className="h-16 flex items-center justify-between">
                 {/* Logo (lg+) */}
                 <div className="hidden lg:flex lg:items-center">
-                  <Link href="#" passHref>
-                    <a href="#">
-                      <span className="sr-only">Workflow</span>
-                      <div className="h-8 w-8 relative">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
-                      </div>
-                    </a>
-                  </Link>
+                  <NextLink href="#">
+                    <span className="sr-only">Workflow</span>
+                    <div className="h-8 w-8 relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
+                    </div>
+                  </NextLink>
                 </div>
 
                 <TopLinks />
@@ -98,15 +94,13 @@ export const Top = () => {
                 </div>
 
                 {/* Logo (lg-) */}
-                <Link href="#" passHref>
-                  <a href="#" className="lg:hidden">
-                    <span className="sr-only">Workflow</span>
-                    <div className="h-8 w-8 relative">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
-                    </div>
-                  </a>
-                </Link>
+                <NextLink href="#" className="lg:hidden">
+                  <span className="sr-only">Workflow</span>
+                  <div className="h-8 w-8 relative">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
+                  </div>
+                </NextLink>
 
                 <div className="flex-1 flex items-center justify-end">
                   <div className="flex items-center lg:ml-8">
