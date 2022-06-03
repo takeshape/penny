@@ -121,7 +121,7 @@ export const AccountFormMarketing = () => {
   return (
     <FormCardPanel
       primaryText="Marketing &amp; Newsletters"
-      secondaryText="What should you send you?"
+      secondaryText="What should we send you?"
       onSubmit={handleSubmit(onSubmit)}
       isReady={isReady}
       isSubmitting={isSubmitting}
