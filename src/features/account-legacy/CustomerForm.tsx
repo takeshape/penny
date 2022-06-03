@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import SubmitButton from 'components/SubmitButton';
+import Button from 'components/Button/Button';
 import { GetMyProfile, UpsertMyCustomer } from 'queries';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -80,7 +80,9 @@ export const CustomerForm = ({ customer }) => {
           </Box>
         </Box>
 
-        <SubmitButton text="Update" isSubmitting={loading} type="submit" />
+        <Button loading={loading} type="submit">
+          Update
+        </Button>
       </Box>
     </>
   );
