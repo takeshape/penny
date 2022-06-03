@@ -3,13 +3,10 @@ import AccountLoyaltyCard from 'features/Account/LoyaltyCard/LoyaltyCard';
 import AccountReferrals from 'features/Account/Referrals/Referrals';
 import Layout from 'layouts/Account';
 import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
 import type { GetMyLoyaltyCardResponse } from 'queries';
 import { GetMyLoyaltyCardQuery } from 'queries';
 
 const AccountRewardsPage: NextPage = () => {
-  useSession({ required: true });
-
   const { data } = useQuery<GetMyLoyaltyCardResponse>(GetMyLoyaltyCardQuery);
 
   if (!data) {

@@ -1,6 +1,7 @@
 import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import Wrapper from 'components/Wrapper/Content';
 import AccountNavigation from 'features/Account/Navigation/Navigation';
+import { useSession } from 'next-auth/react';
 import type { NextSeoProps } from 'next-seo';
 import { useRouter } from 'next/router';
 import type { PropsWithChildren } from 'react';
@@ -15,6 +16,8 @@ const navigation = [
 ];
 
 export const Layout = ({ children, ...seo }: PropsWithChildren<NextSeoProps>) => {
+  useSession({ required: true });
+
   const { pathname } = useRouter();
 
   const items = navigation.map((item) => ({ ...item, current: item.href === pathname }));
