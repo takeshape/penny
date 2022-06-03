@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import SubmitButton from 'components/SubmitButton';
+import Button from 'components/Button/Button';
 import { GetMyProfile, UploadAssets, UpsertMyProfile } from 'queries';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -126,7 +126,9 @@ const ProfileTextForm = ({ profile }: ProfileTextFormProps) => {
         <Textarea {...register('bio')} rows={4} cols={50}></Textarea>
       </Box>
 
-      <SubmitButton type="submit" isSubmitting={loading} text="Update" />
+      <Button type="submit" loading={loading}>
+        Update
+      </Button>
     </Box>
   );
 };

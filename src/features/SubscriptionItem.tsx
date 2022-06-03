@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import SubmitButton from 'components/SubmitButton';
+import Button from 'components/Button/Button';
 import { locale } from 'config';
 import ProductImage from 'features/products/StripeProductImage';
 import { DeleteMySubscription, GetMyPurchasesData } from 'queries';
@@ -62,7 +62,9 @@ export const SubscriptionItem = ({ subscription, subscriptionItem }: Subscriptio
           </>
         )}
 
-        <SubmitButton text="Cancel" onClick={handleCancelSubscription} isSubmitting={cancelLoading} />
+        <Button onClick={handleCancelSubscription} loading={cancelLoading}>
+          Cancel
+        </Button>
       </Box>
     </Card>
   );
