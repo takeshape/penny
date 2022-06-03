@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import FormToggleWithRightLabel from 'components/Form/Toggle/ToggleWithRightLabel';
+import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
 import type {
   GetCustomerResponse,
   GetMyNewsletterSubscriptionsResponse,
@@ -139,7 +139,7 @@ export const AccountFormMarketing = () => {
             {newsletterData?.newsletters?.map((newsletter) => {
               return (
                 <div key={newsletter.listId}>
-                  <FormToggleWithRightLabel
+                  <FormToggleWithLabel
                     control={control}
                     name={`newsletters.${newsletter.listId}`}
                     labelPrimary={newsletter.listName}
@@ -156,7 +156,7 @@ export const AccountFormMarketing = () => {
             Marketing
           </div>
           <div className="mt-4 space-y-4">
-            <FormToggleWithRightLabel
+            <FormToggleWithLabel
               control={control}
               disabled={!isReady}
               name="acceptsMarketing"

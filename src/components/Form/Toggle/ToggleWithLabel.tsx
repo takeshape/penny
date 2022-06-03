@@ -2,16 +2,18 @@ import { Switch } from '@headlessui/react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
-export interface FormToggleWithRightLabelProps {
+export interface FormToggleWithLabelProps {
   labelPrimary: string;
   labelSecondary?: string;
+  labelPosition?: 'right' | 'left';
   className?: string;
   disabled?: boolean;
 }
 
-export const FormToggleWithRightLabel = ({
+export const FormToggleWithLabel = ({
   labelPrimary,
   labelSecondary,
+  labelPosition,
   className,
   name,
   control,
@@ -19,13 +21,21 @@ export const FormToggleWithRightLabel = ({
   rules,
   shouldUnregister,
   ...props
-}: FormToggleWithRightLabelProps & UseControllerProps<any, any>) => {
-  const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
+}: FormToggleWithLabelProps & UseControllerProps<any, any>) => {
+  labelPosition = labelPosition ?? 'right';
 
+  const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
   const isChecked = field.value === true;
 
   return (
-    <Switch.Group as="div" className={className ? className : 'flex items-center'}>
+    <Switch.Group
+      as="div"
+      className={classNames(
+        labelPosition === 'right' ? 'flex-row' : 'flex-row-reverse',
+        className,
+        'flex items-center gap-3'
+      )}
+    >
       <Switch
         {...field}
         {...props}
@@ -43,7 +53,7 @@ export const FormToggleWithRightLabel = ({
           )}
         />
       </Switch>
-      <Switch.Label as="span" className="ml-3">
+      <Switch.Label as="span">
         <span className="text-sm font-medium text-gray-900">{labelPrimary}</span>
         {labelSecondary && <span className="ml-1 text-sm text-gray-500">{labelSecondary}</span>}
       </Switch.Label>
@@ -51,4 +61,4 @@ export const FormToggleWithRightLabel = ({
   );
 };
 
-export default FormToggleWithRightLabel;
+export default FormToggleWithLabel;
