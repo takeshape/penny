@@ -15,7 +15,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const {
     replace,
     pathname,
-    query: { stripe_checkout_action: action, ...query }
+    query: { shopify_checkout_action: action, ...query }
   } = useRouter();
 
   useEffect(() => {
