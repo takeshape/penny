@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { Tab } from '@headlessui/react';
-import { NextLink } from 'components/NextLink';
+import NextLink from 'components/NextLink';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import type { NavigationDataResults } from '../Navigation.queries';

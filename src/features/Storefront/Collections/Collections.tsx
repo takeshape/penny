@@ -1,5 +1,5 @@
 import NextImage from 'components/NextImage';
-import { NextLink } from 'components/NextLink';
+import NextLink from 'components/NextLink';
 
 interface Collection {
   name: string;

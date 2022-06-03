@@ -1,4 +1,4 @@
-import { NextLink } from 'components/NextLink';
+import NextLink from 'components/NextLink';
 import { useMemo } from 'react';
 
 interface NavigationItemProps {

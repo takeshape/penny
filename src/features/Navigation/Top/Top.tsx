@@ -1,5 +1,5 @@
 import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
-import { NextLink } from 'components/NextLink';
+import NextLink from 'components/NextLink';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import TopAccountIcon from './TopAccountIcon';

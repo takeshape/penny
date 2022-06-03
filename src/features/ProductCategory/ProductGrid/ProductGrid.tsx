@@ -1,6 +1,6 @@
 import { StarIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
-import { NextLink } from 'components/NextLink';
+import NextLink from 'components/NextLink';
 import type { Product } from 'types/product';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
