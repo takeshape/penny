@@ -2416,6 +2416,59 @@
       },
       "shape": "ShopifyStorefront_CustomerCreatePayload"
     },
+    "createCustomer": {
+      "resolver": {
+        "name": "rest:post",
+        "service": "shopify",
+        "path": "/admin/api/2022-04/customers.json",
+        "options": {
+          "endpoint": "https://deluxe-sample-project.myshopify.com/"
+        },
+        "json": {
+          "ops": [
+            {"path": "customer.first_name", "mapping": "$args.input.firstName"},
+            {"path": "customer.last_name", "mapping": "$args.input.lastName"},
+            {"path": "customer.email", "mapping": "$args.input.email"},
+            {"path": "customer.password", "mapping": "$args.input.password"},
+            {"path": "customer.password_confirmation", "mapping": "$args.input.password"},
+            {"path": "customer.phone", "mapping": "$args.input.phone"},
+            {"path": "customer.send_email_welcome", "value": false},
+            {"path": "customer.verified_email", "value": true}
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "object",
+            "properties": {
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "acceptsMarketing": {
+                "type": "boolean"
+              }
+            },
+            "required": ["email", "password"]
+          }
+        },
+        "required": ["input"]
+      },
+      "shape": "CreateCustomerPayload"
+    },
     "ShopifyStorefront_customerRecover": {
       "resolver": {
         "name": "graphql:mutation",
@@ -3958,6 +4011,40 @@
         "type": "object",
         "properties": {"id": {"type": "integer"}},
         "required": ["id"]
+      }
+    },
+    "CreateCustomerPayload": {
+      "id": "CreateCustomerPayload",
+      "name": "CreateCustomerPayload",
+      "title": "CreateCustomerPayload",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "email": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "verified_email": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "required": ["customer"]
       }
     }
   },
