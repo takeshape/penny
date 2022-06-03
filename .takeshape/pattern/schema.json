@@ -15,20 +15,37 @@
     "Text": {
       "default": {
         "properties": {
-          "primary": {"widget": "singleLineText"},
-          "secondary": {"widget": "singleLineText"},
-          "button": {"widget": "singleLineText"}
+          "primary": {
+            "widget": "singleLineText"
+          },
+          "secondary": {
+            "widget": "singleLineText"
+          },
+          "button": {
+            "widget": "singleLineText"
+          }
         },
-        "order": ["primary", "secondary", "button"]
+        "order": [
+          "primary",
+          "secondary",
+          "button"
+        ]
       }
     },
     "NavigationLink": {
       "default": {
         "properties": {
-          "name": {"widget": "singleLineText"},
-          "href": {"widget": "singleLineText"}
+          "name": {
+            "widget": "singleLineText"
+          },
+          "href": {
+            "widget": "singleLineText"
+          }
         },
-        "order": ["name", "href"]
+        "order": [
+          "name",
+          "href"
+        ]
       }
     },
     "Footer": {
@@ -40,21 +57,39 @@
               "sections": {
                 "widget": "repeater",
                 "properties": {
-                  "name": {"widget": "singleLineText"},
-                  "items": {"widget": "shapeArray"}
+                  "name": {
+                    "widget": "singleLineText"
+                  },
+                  "items": {
+                    "widget": "shapeArray"
+                  }
                 },
-                "order": ["name", "items"]
+                "order": [
+                  "name",
+                  "items"
+                ]
               }
             },
-            "order": ["sections"]
+            "order": [
+              "sections"
+            ]
           },
           "newsletter": {
             "widget": "object",
-            "properties": {"text": {"widget": "shapeObject"}},
-            "order": ["text"]
+            "properties": {
+              "text": {
+                "widget": "shapeObject"
+              }
+            },
+            "order": [
+              "text"
+            ]
           }
         },
-        "order": ["navigation", "newsletter"]
+        "order": [
+          "navigation",
+          "newsletter"
+        ]
       }
     },
     "Profile": {
@@ -77,9 +112,6 @@
           },
           "shopifyCustomerId": {
             "widget": "singleLineText"
-          },
-          "stripeCustomerId": {
-            "widget": "singleLineText"
           }
         },
         "order": [
@@ -88,53 +120,84 @@
           "email",
           "bio",
           "avatar",
-          "shopifyCustomerId",
-          "stripeCustomerId"
+          "shopifyCustomerId"
         ]
       }
     },
     "NavigationData": {
       "default": {
         "properties": {
-          "message": {"widget": "singleLineText"},
+          "message": {
+            "widget": "singleLineText"
+          },
           "links": {
             "widget": "object",
             "properties": {
               "categories": {
                 "widget": "repeater",
                 "properties": {
-                  "name": {"widget": "singleLineText"},
+                  "name": {
+                    "widget": "singleLineText"
+                  },
                   "featured": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   },
                   "collection": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   },
                   "categories": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   },
                   "brands": {
                     "widget": "repeater",
                     "properties": {
-                      "name": {"widget": "singleLineText"},
-                      "href": {"widget": "singleLineText"}
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
                     },
-                    "order": ["name", "href"]
+                    "order": [
+                      "name",
+                      "href"
+                    ]
                   }
                 },
                 "order": [
@@ -148,31 +211,42 @@
               "pages": {
                 "widget": "repeater",
                 "properties": {
-                  "name": {"widget": "singleLineText"},
-                  "href": {"widget": "singleLineText"}
+                  "name": {
+                    "widget": "singleLineText"
+                  },
+                  "href": {
+                    "widget": "singleLineText"
+                  }
                 },
-                "order": ["name", "href"]
+                "order": [
+                  "name",
+                  "href"
+                ]
               }
             },
-            "order": ["categories", "pages"]
+            "order": [
+              "categories",
+              "pages"
+            ]
           }
         },
-        "order": ["message", "links"]
+        "order": [
+          "message",
+          "links"
+        ]
       }
     }
   },
   "services": {
-    "stripe": {
-      "id": "stripe",
-      "provider": "stripe",
-      "title": "Stripe",
-      "namespace": "Stripe",
-      "serviceType": "openapi",
-      "authenticationType": "bearer",
+    "gorgias": {
+      "id": "gorgias",
+      "provider": "generic",
+      "title": "Gorgias",
+      "namespace": "Gorgias",
+      "serviceType": "rest",
+      "authenticationType": "basic",
       "options": {
-        "endpoint": "https://api.stripe.com/",
-        "spec": "https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json",
-        "useRestfulNames": true
+        "endpoint": ""
       }
     },
     "reviews-io": {
@@ -266,114 +340,9 @@
       "options": {
         "idClaim": "sub"
       }
-    },
-    "gorgias": {
-      "id": "gorgias",
-      "provider": "generic",
-      "title": "Gorgias",
-      "namespace": "Gorgias",
-      "serviceType": "rest",
-      "authenticationType": "basic",
-      "options": {"endpoint": ""}
     }
   },
-  "indexedShapes": {
-    "Stripe_Product": {
-      "queries": {
-        "list": {
-          "name": "Stripe_listProducts",
-          "pagination": {
-            "type": "cursor",
-            "cursorPath": "data[(@.length-1)].id",
-            "itemsToIndexPath": "data",
-            "hasMorePath": "has_more",
-            "cursorArg": "starting_after",
-            "pageSizeArg": "limit"
-          }
-        }
-      },
-      "triggers": [
-        {
-          "type": "schedule",
-          "query": "list",
-          "interval": 1640
-        },
-        {
-          "query": "list",
-          "type": "webhook",
-          "service": "stripe",
-          "events": [
-            "product.updated",
-            "product.created",
-            "product.deleted"
-          ]
-        }
-      ]
-    },
-    "Stripe_PaymentIntent": {
-      "queries": {
-        "list": {
-          "name": "Stripe_listPaymentIntents",
-          "pagination": {
-            "type": "cursor",
-            "cursorPath": "data[(@.length-1)].id",
-            "itemsToIndexPath": "data",
-            "hasMorePath": "has_more",
-            "cursorArg": "starting_after",
-            "pageSizeArg": "limit"
-          },
-          "objectDepthLimit": 4,
-          "ignoreFields": [
-            "application",
-            "application_fee_amount",
-            "automatic_payment_methods",
-            "canceled_at",
-            "cancellation_reason",
-            "capture_method",
-            "charges",
-            "last_payment_error",
-            "livemode",
-            "next_action",
-            "transfer_data",
-            "statement_descriptor_suffix",
-            "statement_descriptor",
-            "amount_captured",
-            "amount_received",
-            "discounts",
-            "failure_balance_transaction",
-            "shipping_options",
-            "setup_intent",
-            "payment_link",
-            "review",
-            "payment_method_options",
-            "payment_method",
-            "on_behalf_of",
-            "quote",
-            "latest_invoice",
-            "invoice",
-            "schedule",
-            "subscription",
-            "payment_intent"
-          ]
-        }
-      },
-      "triggers": [
-        {
-          "type": "schedule",
-          "query": "list",
-          "interval": 1640
-        },
-        {
-          "query": "list",
-          "type": "webhook",
-          "service": "stripe",
-          "events": [
-            "payment_intent.succeeded"
-          ]
-        }
-      ]
-    }
-  },
+  "indexedShapes": {},
   "queries": {
     "getFooter": {
       "shape": "Footer",
@@ -562,19 +531,6 @@
         }
       }
     },
-    "getIndexedProductList": {
-      "shape": "PaginatedList<Stripe_Product>",
-      "resolver": {
-        "shapeName": "Stripe_Product",
-        "name": "takeshape:queryApiIndex",
-        "service": "takeshape:local",
-        "options": {
-          "indexedShape": "Stripe_Product"
-        }
-      },
-      "description": "Get Stripe products from the TakeShape API Index",
-      "args": "TSListArgs<Stripe_Product>"
-    },
     "getMyProfile": {
       "shape": "Profile",
       "resolver": {
@@ -591,236 +547,6 @@
         }
       },
       "description": "Get the signed in user's profile from ShapeDB"
-    },
-    "getMySubscriptions": {
-      "shape": {
-        "type": "array",
-        "items": {
-          "@ref": "stripe:Subscription"
-        }
-      },
-      "resolver": {
-        "compose": [
-          {
-            "if": "!isEmpty($claims.sub)",
-            "id": "profile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($resolvers.profile.stripeCustomerId)",
-            "id": "subscriptions",
-            "name": "rest:get",
-            "service": "stripe",
-            "path": "/v1/subscriptions",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "customer",
-                  "mapping": "$resolvers.profile.stripeCustomerId"
-                },
-                {
-                  "path": "expand",
-                  "mapping": "$args.expand"
-                }
-              ],
-              "serialize": {
-                "paths": {
-                  "expand": {
-                    "style": "deepObject"
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$resolvers.subscriptions.data"
-            }
-          ]
-        }
-      },
-      "description": "Get the signed in user's subscriptions from Stripe",
-      "args": {
-        "type": "object",
-        "properties": {
-          "expand": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "getMyPayments": {
-      "shape": {
-        "type": "array",
-        "items": {
-          "@ref": "stripe:PaymentIntent"
-        }
-      },
-      "resolver": {
-        "compose": [
-          {
-            "if": "!isEmpty($claims.sub)",
-            "id": "profile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($resolvers.profile.stripeCustomerId)",
-            "id": "payments",
-            "name": "rest:get",
-            "service": "stripe",
-            "path": "/v1/payment_intents",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "$",
-                  "mapping": "$args"
-                },
-                {
-                  "path": "starting_after",
-                  "mapping": "$args.startingAfter"
-                },
-                {
-                  "path": "ending_before",
-                  "mapping": "$args.endingBefore"
-                },
-                {
-                  "path": "customer",
-                  "mapping": "$resolvers.profile.stripeCustomerId"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": [
-                [
-                  "get",
-                  {
-                    "path": "$resolvers.payments.data"
-                  }
-                ],
-                [
-                  "filter",
-                  {
-                    "predicate": [
-                      "status",
-                      "succeeded"
-                    ]
-                  }
-                ]
-              ]
-            }
-          ]
-        }
-      },
-      "description": "Get the signed-in user's payments from Stripe",
-      "args": {
-        "type": "object",
-        "properties": {
-          "expand": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "limit": {
-            "type": "number"
-          },
-          "created": {},
-          "startingAfter": {
-            "type": "string"
-          },
-          "endingBefore": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "getMyPaymentsIndexed": {
-      "shape": "PaginatedList<Stripe_PaymentIntent>",
-      "resolver": {
-        "compose": [
-          {
-            "if": "!isEmpty($claims.sub)",
-            "id": "profile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($resolvers.profile.stripeCustomerId)",
-            "id": "payments",
-            "name": "takeshape:queryApiIndex",
-            "service": "takeshape:local",
-            "shapeName": "Stripe_PaymentIntent",
-            "options": {
-              "indexedShape": "Stripe_PaymentIntent",
-              "selectionSet": "..._parentFragment"
-            },
-            "args": {
-              "ops": [
-                {
-                  "path": "$",
-                  "mapping": "$args"
-                },
-                {
-                  "path": "where.customer.eq",
-                  "mapping": "$resolvers.profile.stripeCustomerId"
-                },
-                {
-                  "path": "where.status.eq",
-                  "value": "succeeded"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "description": "Get the signed-in user's payments from Stripe",
-      "args": "TSListArgs<Stripe_PaymentIntent>"
     },
     "getProfile": {
       "shape": "Profile",
@@ -842,185 +568,41 @@
       "description": "Returns a list of profiles in natural order.",
       "args": "TSListArgs<Profile>"
     },
-    "Stripe_listProducts": {
-      "shape": "Stripe_ListProductsResponse",
+    "getMyCustomer": {
       "resolver": {
-        "name": "rest:get",
-        "service": "stripe",
-        "path": "/v1/products",
-        "searchParams": {
+        "name": "graphql:query",
+        "service": "shopify-storefront",
+        "fieldName": "customer",
+        "args": {
           "ops": [
             {
-              "path": "active",
-              "mapping": "$args.active"
+              "path": "$",
+              "mapping": "$args"
             },
             {
-              "path": "created",
-              "mapping": "$args.created"
-            },
-            {
-              "path": "ending_before",
-              "mapping": "$args.ending_before"
-            },
-            {
-              "path": "expand",
-              "mapping": "$args.expand"
-            },
-            {
-              "path": "ids",
-              "mapping": "$args.ids"
-            },
-            {
-              "path": "limit",
-              "mapping": "$args.limit"
-            },
-            {
-              "path": "shippable",
-              "mapping": "$args.shippable"
-            },
-            {
-              "path": "starting_after",
-              "mapping": "$args.starting_after"
-            },
-            {
-              "path": "url",
-              "mapping": "$args.url"
+              "path": "customerAccessToken",
+              "mapping": "$claims.custom.customer_access_token"
             }
-          ],
-          "serialize": {
-            "paths": {
-              "active": {
-                "style": "form"
-              },
-              "created": {
-                "explode": true,
-                "style": "deepObject"
-              },
-              "ending_before": {
-                "style": "form"
-              },
-              "expand": {
-                "explode": true,
-                "style": "deepObject"
-              },
-              "ids": {
-                "explode": true,
-                "style": "deepObject"
-              },
-              "limit": {
-                "style": "form"
-              },
-              "shippable": {
-                "style": "form"
-              },
-              "starting_after": {
-                "style": "form"
-              },
-              "url": {
-                "style": "form"
-              }
-            }
-          }
+          ]
         }
       },
-      "description": "<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>",
-      "args": {
-        "type": "object",
-        "properties": {
-          "active": {
-            "type": "boolean"
-          },
-          "created": {},
-          "ending_before": {
-            "type": "string"
-          },
-          "expand": {
-            "type": "array",
-            "items": {
-              "maxLength": 5000,
-              "type": "string"
-            }
-          },
-          "ids": {
-            "type": "array",
-            "items": {
-              "maxLength": 5000,
-              "type": "string"
-            }
-          },
-          "limit": {
-            "type": "integer"
-          },
-          "shippable": {
-            "type": "boolean"
-          },
-          "starting_after": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          }
-        },
-        "required": []
-      }
+      "shape": "ShopifyStorefront_Customer"
     },
-    "Stripe_getProduct": {
-      "shape": "Stripe_Product",
+    "getMyAdminCustomer": {
       "resolver": {
-        "name": "rest:get",
-        "service": "stripe",
-        "path": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "customer",
+        "args": {
           "ops": [
             {
               "path": "id",
-              "mapping": "$args.id"
+              "mapping": "$claims.sub"
             }
-          ],
-          "serialize": {
-            "template": "/v1/products/{id}",
-            "paths": {
-              "id": {
-                "style": "simple"
-              }
-            }
-          }
-        },
-        "searchParams": {
-          "ops": [
-            {
-              "path": "expand",
-              "mapping": "$args.expand"
-            }
-          ],
-          "serialize": {
-            "paths": {
-              "expand": {
-                "explode": true,
-                "style": "deepObject"
-              }
-            }
-          }
+          ]
         }
       },
-      "description": "<p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p>",
-      "args": {
-        "type": "object",
-        "properties": {
-          "expand": {
-            "type": "array",
-            "items": {
-              "maxLength": 5000,
-              "type": "string"
-            }
-          },
-          "id": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "id"
-        ]
-      }
+      "shape": "Shopify_Customer"
     },
     "getMyLoyaltyCard": {
       "description": "Get a loyalty card from Voucherify",
@@ -1028,22 +610,29 @@
       "resolver": {
         "compose": [
           {
-            "if": "!isEmpty($claims.sub)",
-            "shapeName": "Profile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "id": "profile",
+            "if": "!isEmpty($claims.custom.customer_access_token)",
+            "id": "customer",
+            "name": "graphql:query",
+            "service": "shopify-storefront",
+            "fieldName": "customer",
+            "options": {
+              "selectionSet": "{ displayName email }"
+            },
             "args": {
               "ops": [
                 {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
+                  "path": "$",
+                  "mapping": "$args"
+                },
+                {
+                  "path": "customerAccessToken",
+                  "mapping": "$claims.custom.customer_access_token"
                 }
               ]
             }
           },
           {
-            "if": "!isEmpty($resolvers.profile)",
+            "if": "!isEmpty($resolvers.customer)",
             "id": "loyaltyCard",
             "name": "rest:post",
             "service": "voucherify",
@@ -1065,15 +654,15 @@
                   "ops": [
                     {
                       "path": "source_id",
-                      "mapping": "$resolvers.profile.email"
+                      "mapping": "$resolvers.customer.email"
                     },
                     {
                       "path": "email",
-                      "mapping": "$resolvers.profile.email"
+                      "mapping": "$resolvers.customer.email"
                     },
                     {
                       "path": "name",
-                      "mapping": "$resolvers.profile.name"
+                      "mapping": "$resolvers.customer.displayName"
                     }
                   ]
                 }
@@ -1125,93 +714,6 @@
         }
       }
     },
-    "Stripe_listPaymentIntents": {
-      "shape": "Stripe_ListPaymentIntentsResponse",
-      "resolver": {
-        "name": "rest:get",
-        "service": "stripe",
-        "path": "/v1/payment_intents",
-        "searchParams": {
-          "ops": [
-            {
-              "path": "created",
-              "mapping": "$args.created"
-            },
-            {
-              "path": "customer",
-              "mapping": "$args.customer"
-            },
-            {
-              "path": "ending_before",
-              "mapping": "$args.ending_before"
-            },
-            {
-              "path": "expand",
-              "mapping": "$args.expand"
-            },
-            {
-              "path": "limit",
-              "mapping": "$args.limit"
-            },
-            {
-              "path": "starting_after",
-              "mapping": "$args.starting_after"
-            }
-          ],
-          "serialize": {
-            "paths": {
-              "created": {
-                "explode": true,
-                "style": "deepObject"
-              },
-              "customer": {
-                "style": "form"
-              },
-              "ending_before": {
-                "style": "form"
-              },
-              "expand": {
-                "explode": true,
-                "style": "deepObject"
-              },
-              "limit": {
-                "style": "form"
-              },
-              "starting_after": {
-                "style": "form"
-              }
-            }
-          }
-        }
-      },
-      "description": "<p>Returns a list of PaymentIntents.</p>",
-      "args": {
-        "type": "object",
-        "properties": {
-          "created": {},
-          "customer": {
-            "type": "string"
-          },
-          "ending_before": {
-            "type": "string"
-          },
-          "expand": {
-            "type": "array",
-            "items": {
-              "maxLength": 5000,
-              "type": "string"
-            }
-          },
-          "limit": {
-            "type": "integer"
-          },
-          "starting_after": {
-            "type": "string"
-          }
-        },
-        "required": []
-      }
-    },
     "getNavigationData": {
       "shape": "NavigationData",
       "resolver": {
@@ -1236,7 +738,9 @@
             "description": "The customer access token."
           }
         },
-        "required": ["customerAccessToken"]
+        "required": [
+          "customerAccessToken"
+        ]
       },
       "shape": "ShopifyStorefront_Customer"
     }
@@ -1263,7 +767,7 @@
       "args": "UpdateArgs<NavigationData>"
     },
     "upsertProfile": {
-      "description": "A privileged user or webhook can upsert a user's profile, updating ShapeDB and Stripe.",
+      "description": "A privileged user or webhook can upsert a user's profile in ShapeDB.",
       "shape": "Profile",
       "resolver": {
         "results": {
@@ -1294,86 +798,6 @@
             }
           },
           {
-            "if": "isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "existingCustomerByEmail",
-            "name": "rest:get",
-            "service": "stripe",
-            "path": "/v1/customers",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$args.email"
-                }
-              ]
-            }
-          },
-          {
-            "if": "isEmpty($resolvers.existingProfile.stripeCustomerId) && isEmpty($resolvers.existingCustomerByEmail.data[0].id)",
-            "id": "createCustomer",
-            "name": "rest:post",
-            "service": "stripe",
-            "path": "/v1/customers",
-            "form": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$args.email"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          },
-          {
-            "if": "(!isEmpty($resolvers.existingProfile.stripeCustomerId) || !isEmpty($resolvers.existingCustomerByEmail.data[0].id)) && isEmpty($resolvers.createCustomer)",
-            "id": "updateCustomer",
-            "name": "rest:post",
-            "service": "stripe",
-            "path": {
-              "ops": [
-                {
-                  "path": "customer",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingProfile.stripeCustomerId"
-                      }
-                    ]
-                  ]
-                }
-              ],
-              "serialize": {
-                "template": "/v1/customers/{customer}"
-              }
-            },
-            "form": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$args.email"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          },
-          {
             "if": "isEmpty($resolvers.existingProfile)",
             "id": "createProfile",
             "name": "takeshape:create",
@@ -1388,23 +812,6 @@
                 {
                   "path": "input.email",
                   "mapping": "$args.email"
-                },
-                {
-                  "path": "input.stripeCustomerId",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.createCustomer.id"
-                      }
-                    ]
-                  ]
                 }
               ]
             }
@@ -1424,29 +831,6 @@
                 {
                   "path": "input.email",
                   "mapping": "$claims.email"
-                },
-                {
-                  "path": "input.stripeCustomerId",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingProfile.stripeCustomerId"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.createCustomer.id"
-                      }
-                    ]
-                  ]
                 }
               ]
             }
@@ -1463,11 +847,14 @@
             "type": "string"
           }
         },
-        "required": ["id", "email"]
+        "required": [
+          "id",
+          "email"
+        ]
       }
     },
     "upsertMyProfile": {
-      "description": "Upsert the signed-in user's profile, updating ShapeDB and Stripe",
+      "description": "Upsert the signed-in user's profile in ShapeDB.",
       "shape": "Profile",
       "resolver": {
         "results": {
@@ -1499,94 +886,6 @@
             }
           },
           {
-            "if": "!isEmpty($claims.email) && isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "existingCustomerByEmail",
-            "name": "rest:get",
-            "service": "stripe",
-            "path": "/v1/customers",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$claims.email"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($claims.email) && isEmpty($resolvers.existingProfile.stripeCustomerId) && isEmpty($resolvers.existingCustomerByEmail.data[0].id)",
-            "id": "createCustomer",
-            "name": "rest:post",
-            "service": "stripe",
-            "path": "/v1/customers",
-            "form": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$claims.email"
-                },
-                {
-                  "path": "name",
-                  "mapping": "$args.name"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && (!isEmpty($resolvers.existingProfile.stripeCustomerId) || !isEmpty($resolvers.existingCustomerByEmail.data[0].id)) && isEmpty($resolvers.createCustomer)",
-            "id": "updateCustomer",
-            "name": "rest:post",
-            "service": "stripe",
-            "path": {
-              "ops": [
-                {
-                  "path": "customer",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingProfile.stripeCustomerId"
-                      }
-                    ]
-                  ]
-                }
-              ],
-              "serialize": {
-                "template": "/v1/customers/{customer}"
-              }
-            },
-            "form": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$claims.email"
-                },
-                {
-                  "path": "name",
-                  "mapping": "$args.name"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          },
-          {
             "if": "!isEmpty($claims.sub) && !isEmpty($claims.email) && isEmpty($resolvers.existingProfile)",
             "id": "createProfile",
             "name": "takeshape:create",
@@ -1613,23 +912,6 @@
                 {
                   "path": "input.avatar.id",
                   "mapping": "$args.avatarId"
-                },
-                {
-                  "path": "input.stripeCustomerId",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.createCustomer.id"
-                      }
-                    ]
-                  ]
                 }
               ]
             }
@@ -1661,29 +943,6 @@
                 {
                   "path": "input.avatar.id",
                   "mapping": "$args.avatarId"
-                },
-                {
-                  "path": "input.stripeCustomerId",
-                  "mapping": [
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingProfile.stripeCustomerId"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.existingCustomerByEmail.data[0].id"
-                      }
-                    ],
-                    [
-                      "get",
-                      {
-                        "path": "$resolvers.createCustomer.id"
-                      }
-                    ]
-                  ]
                 }
               ]
             }
@@ -1703,220 +962,6 @@
             "type": "string"
           }
         }
-      }
-    },
-    "upsertMyCustomer": {
-      "description": "Upsert the signed-in user's Stripe customer",
-      "shape": "stripe:Customer",
-      "resolver": {
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$resolvers.updatedCustomer"
-            }
-          ]
-        },
-        "compose": [
-          {
-            "if": "!isEmpty($claims.sub)",
-            "id": "existingProfile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && !isEmpty($claims.email) && isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "existingCustomerByEmail",
-            "name": "rest:get",
-            "service": "stripe",
-            "path": "/v1/customers",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$claims.email"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && !isEmpty($claims.email) && !isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "existingCustomerById",
-            "name": "rest:get",
-            "service": "stripe",
-            "path": {
-              "ops": [
-                {
-                  "path": "customer",
-                  "mapping": "$resolvers.existingProfile.stripeCustomerId"
-                }
-              ],
-              "serialize": {
-                "template": "/v1/customers/{customer}"
-              }
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && !isEmpty($claims.email)",
-            "id": "updatedCustomer",
-            "name": "rest:post",
-            "service": "stripe",
-            "path": {
-              "ops": [
-                {
-                  "path": "customer",
-                  "mapping": "$resolvers.existingCustomerByEmail.data[0].id"
-                },
-                {
-                  "path": "customer",
-                  "mapping": "$resolvers.existingCustomerById.id"
-                }
-              ],
-              "serialize": {
-                "template": "/v1/customers/{customer}"
-              }
-            },
-            "form": {
-              "ops": [
-                {
-                  "path": "$",
-                  "mapping": "$args"
-                },
-                {
-                  "path": "email",
-                  "mapping": "$claims.email"
-                }
-              ],
-              "serialize": {
-                "defaults": {
-                  "style": "deepObject",
-                  "explode": true
-                }
-              }
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && !isEmpty($resolvers.existingProfile) && isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "updatedProfile",
-            "name": "takeshape:update",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "input._id",
-                  "mapping": "$resolvers.existingProfile._id"
-                },
-                {
-                  "path": "input.stripeCustomerId",
-                  "mapping": "$resolvers.updatedCustomer.id"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "address": {
-            "type": "object",
-            "properties": {
-              "line1": {
-                "type": "string"
-              },
-              "line2": {
-                "type": "string"
-              },
-              "city": {
-                "type": "string"
-              },
-              "country": {
-                "type": "string"
-              },
-              "postal_code": {
-                "type": "string"
-              },
-              "state": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "deleteMySubscription": {
-      "description": "Delete the signed-in user's subscription in Stripe",
-      "shape": "stripe:Subscription",
-      "resolver": {
-        "compose": [
-          {
-            "if": "!isEmpty($claims.sub)",
-            "id": "existingProfile",
-            "name": "takeshape:find",
-            "service": "takeshape:local",
-            "shapeName": "Profile",
-            "args": {
-              "ops": [
-                {
-                  "path": "where.id.eq",
-                  "mapping": "$claims.sub"
-                }
-              ]
-            }
-          },
-          {
-            "if": "!isEmpty($claims.sub) && !isEmpty($resolvers.existingProfile.stripeCustomerId)",
-            "id": "deleteSubscription",
-            "name": "rest:delete",
-            "service": "stripe",
-            "path": {
-              "ops": [
-                {
-                  "path": "subscriptionId",
-                  "mapping": "$args.subscriptionId"
-                }
-              ],
-              "serialize": {
-                "template": "/v1/subscriptions/{subscriptionId}"
-              }
-            },
-            "form": {
-              "ops": [
-                {
-                  "path": "invoice_now",
-                  "value": "true"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "subscriptionId": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "subscriptionId"
-        ]
       }
     },
     "createMyCart": {
@@ -2135,6 +1180,126 @@
         ]
       }
     },
+    "subscribeMyEmailToNewsletter": {
+      "shape": "Klaviyo_AddMembersResponse",
+      "resolver": {
+        "name": "rest:post",
+        "service": "klaviyo",
+        "path": {
+          "ops": [
+            {
+              "path": "list_id",
+              "mapping": "$args.list_id"
+            }
+          ],
+          "serialize": {
+            "template": "/v2/list/{list_id}/members",
+            "paths": {
+              "list_id": {
+                "style": "simple"
+              }
+            }
+          }
+        },
+        "body": {
+          "ops": [
+            {
+              "path": "profiles[0].email",
+              "mapping": "$claims.email"
+            }
+          ],
+          "serialize": {
+            "content": {
+              "contentType": "application/json"
+            }
+          }
+        },
+        "headers": {
+          "ops": [
+            {
+              "path": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "results": {
+          "ops": [
+            {
+              "path": "items",
+              "mapping": "$resolvers[0]"
+            }
+          ]
+        }
+      },
+      "summary": "Add Members to a List",
+      "args": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "list_id"
+        ]
+      }
+    },
+    "unsubscribeMyEmailFromNewsletter": {
+      "shape": "Klaviyo_200Ok",
+      "resolver": {
+        "name": "rest:delete",
+        "service": "klaviyo",
+        "path": {
+          "ops": [
+            {
+              "path": "list_id",
+              "mapping": "$args.list_id"
+            }
+          ],
+          "serialize": {
+            "template": "/v2/list/{list_id}/members",
+            "paths": {
+              "list_id": {
+                "style": "simple"
+              }
+            }
+          }
+        },
+        "body": {
+          "ops": [
+            {
+              "path": "emails[0]",
+              "mapping": "$claims.email"
+            }
+          ],
+          "serialize": {
+            "content": {
+              "contentType": "application/json"
+            }
+          }
+        },
+        "headers": {
+          "ops": [
+            {
+              "path": "content-type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "summary": "Remove Profiles From List",
+      "args": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "list_id"
+        ]
+      }
+    },
     "Klaviyo_removeMembers": {
       "shape": "Klaviyo_200Ok",
       "resolver": {
@@ -2216,101 +1381,62 @@
         "required": [
           "list_id"
         ]
-      }
-    },
-    "listCheckoutSessions": {
-      "shape": "Stripe_ListCheckoutSessionsResponse",
-      "resolver": {
-        "name": "rest:get",
-        "service": "stripe",
-        "path": "/v1/checkout/sessions",
-        "searchParams": {
-          "ops": [
-            {
-              "path": "ending_before",
-              "mapping": "$args.ending_before"
-            },
-            {
-              "path": "expand",
-              "value": [
-                "data.line_items"
-              ]
-            },
-            {
-              "path": "expand",
-              "op": "concat",
-              "mapping": "$args.expand"
-            },
-            {
-              "path": "limit",
-              "mapping": "$args.limit"
-            },
-            {
-              "path": "payment_intent",
-              "mapping": "$args.payment_intent"
-            },
-            {
-              "path": "starting_after",
-              "mapping": "$args.starting_after"
-            },
-            {
-              "path": "subscription",
-              "mapping": "$args.subscription"
-            }
-          ],
-          "serialize": {
-            "paths": {
-              "ending_before": {
-                "style": "form"
-              },
-              "expand": {
-                "explode": true,
-                "style": "deepObject"
-              },
-              "limit": {
-                "style": "form"
-              },
-              "payment_intent": {
-                "style": "form"
-              },
-              "starting_after": {
-                "style": "form"
-              },
-              "subscription": {
-                "style": "form"
-              }
-            }
-          }
-        }
       },
-      "description": "<p>Returns a list of Checkout Sessions.</p>",
-      "args": {
-        "type": "object",
-        "properties": {
-          "ending_before": {
-            "type": "string"
-          },
-          "expand": {
-            "type": "array",
-            "items": {
-              "maxLength": 5000,
+      "Gorgias_createTicket": {
+        "shape": "Gorgias_CreateTicketResponse",
+        "resolver": {
+          "name": "rest:post",
+          "service": "gorgias",
+          "path": "/tickets",
+          "json": {
+            "ops": [
+              {
+                "path": "customer.email",
+                "mapping": "$args.email"
+              },
+              {
+                "path": "messages",
+                "value": [
+                  {
+                    "channel": "email",
+                    "from_agent": false,
+                    "source": {
+                      "to": [
+                        {
+                          "address": "qw72eg20ez05v4dy@emails.gorgias.com"
+                        }
+                      ]
+                    },
+                    "via": "api"
+                  }
+                ]
+              },
+              {
+                "path": "messages[0].body_text",
+                "mapping": "$args.message"
+              },
+              {
+                "path": "messages[0].source.from.address",
+                "mapping": "$args.email"
+              }
+            ]
+          }
+        },
+        "args": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            },
+            "email": {
               "type": "string"
             }
           },
-          "limit": {
-            "type": "integer"
-          },
-          "payment_intent": {
-            "type": "string"
-          },
-          "starting_after": {
-            "type": "string"
-          },
-          "subscription": {
-            "type": "string"
-          }
-        },
-        "required": []
+          "required": [
+            "body",
+            "email"
+          ]
+        }
       }
     },
     "Shopify_products": {
@@ -2376,7 +1502,9 @@
             "description": "The ID of the Product to return."
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "shape": "Shopify_Product"
     },
@@ -2394,7 +1522,9 @@
             "description": "The fields used to create a customer access token."
           }
         },
-        "required": ["input"]
+        "required": [
+          "input"
+        ]
       },
       "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
     },
@@ -2412,7 +1542,9 @@
             "description": "The fields used to create a new customer."
           }
         },
-        "required": ["input"]
+        "required": [
+          "input"
+        ]
       },
       "shape": "ShopifyStorefront_CustomerCreatePayload"
     },
@@ -2430,48 +1562,11 @@
             "description": "The email address of the customer to recover."
           }
         },
-        "required": ["email"]
+        "required": [
+          "email"
+        ]
       },
       "shape": "ShopifyStorefront_CustomerRecoverPayload"
-    },
-    "Gorgias_createTicket": {
-      "shape": "Gorgias_CreateTicketResponse",
-      "resolver": {
-        "name": "rest:post",
-        "service": "gorgias",
-        "path": "/tickets",
-        "json": {
-          "ops": [
-            {"path": "customer.email", "mapping": "$args.email"},
-            {
-              "path": "messages",
-              "value": [
-                {
-                  "channel": "email",
-                  "from_agent": false,
-                  "source": {
-                    "to": [{"address": "qw72eg20ez05v4dy@emails.gorgias.com"}]
-                  },
-                  "via": "api"
-                }
-              ]
-            },
-            {"path": "messages[0].body_text", "mapping": "$args.message"},
-            {
-              "path": "messages[0].source.from.address",
-              "mapping": "$args.email"
-            }
-          ]
-        }
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "message": {"type": "string"},
-          "email": {"type": "string"}
-        },
-        "required": ["body", "email"]
-      }
     }
   },
   "shapes": {
@@ -2611,534 +1706,6 @@
         }
       }
     },
-    "Stripe_CheckoutSession": {
-      "id": "Stripe_CheckoutSession",
-      "name": "Stripe_CheckoutSession",
-      "title": "Stripe_CheckoutSession",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:CheckoutSession"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              },
-              "object": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Invoice": {
-      "id": "Stripe_Invoice",
-      "name": "Stripe_Invoice",
-      "title": "Stripe_Invoice",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Invoice"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              },
-              "discounts": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_PaymentIntent": {
-      "id": "Stripe_PaymentIntent",
-      "name": "Stripe_PaymentIntent",
-      "title": "Stripe_PaymentIntent",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:PaymentIntent"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              },
-              "invoiceItems": {
-                "type": "array",
-                "items": {
-                  "@ref": "stripe:Invoiceitem"
-                },
-                "@resolver": {
-                  "compose": [
-                    {
-                      "if": "!isEmpty($source.invoice)",
-                      "name": "rest:get",
-                      "service": "stripe",
-                      "path": "v1/invoiceitems",
-                      "searchParams": {
-                        "ops": [
-                          {
-                            "path": "invoice",
-                            "mapping": "$source.invoice"
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "results": {
-                    "ops": [
-                      {
-                        "path": "$",
-                        "value": []
-                      },
-                      {
-                        "path": "$",
-                        "mapping": "$finalResolver.data"
-                      }
-                    ]
-                  }
-                }
-              },
-              "sessionItems": {
-                "description": "The Stripe checkout session associated with this payment.",
-                "title": "Stripe Checkout Session Line Items",
-                "type": "array",
-                "items": {
-                  "@ref": "stripe:Item"
-                },
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "stripe",
-                  "options": {
-                    "ignoreErrors": true,
-                    "ttl": 3600
-                  },
-                  "path": "v1/checkout/sessions",
-                  "searchParams": {
-                    "ops": [
-                      {
-                        "path": "payment_intent",
-                        "mapping": "$source.id"
-                      },
-                      {
-                        "path": "expand",
-                        "value": [
-                          "data.line_items"
-                        ]
-                      }
-                    ],
-                    "serialize": {
-                      "paths": {
-                        "expand": {
-                          "explode": true,
-                          "style": "deepObject"
-                        },
-                        "payment_intent": {
-                          "style": "form"
-                        }
-                      }
-                    }
-                  },
-                  "results": {
-                    "ops": [
-                      {
-                        "path": "$",
-                        "value": []
-                      },
-                      {
-                        "path": "$",
-                        "mapping": "$finalResolver.data[0].line_items.data"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_SetupIntent": {
-      "id": "Stripe_SetupIntent",
-      "name": "Stripe_SetupIntent",
-      "title": "Stripe_SetupIntent",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:SetupIntent"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Subscription": {
-      "id": "Stripe_Subscription",
-      "name": "Stripe_Subscription",
-      "title": "Stripe_Subscription",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Subscription"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Discount": {
-      "id": "Stripe_Discount",
-      "name": "Stripe_Discount",
-      "title": "Stripe_Discount",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Discount"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_DeletedDiscount": {
-      "id": "Stripe_DeletedDiscount",
-      "name": "Stripe_DeletedDiscount",
-      "title": "Stripe_DeletedDiscount",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:DeletedDiscount"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Order": {
-      "id": "Stripe_Order",
-      "name": "Stripe_Order",
-      "title": "Stripe_Order",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Order"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_AlipayAccount": {
-      "id": "Stripe_AlipayAccount",
-      "name": "Stripe_AlipayAccount",
-      "title": "Stripe_AlipayAccount",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:AlipayAccount"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_BankAccount": {
-      "id": "Stripe_BankAccount",
-      "name": "Stripe_BankAccount",
-      "title": "Stripe_BankAccount",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:BankAccount"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Card": {
-      "id": "Stripe_Card",
-      "name": "Stripe_Card",
-      "title": "Stripe_Card",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Card"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Charge": {
-      "id": "Stripe_Charge",
-      "name": "Stripe_Charge",
-      "title": "Stripe_Charge",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Charge"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Quote": {
-      "id": "Stripe_Quote",
-      "name": "Stripe_Quote",
-      "title": "Stripe_Quote",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Quote"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Product": {
-      "id": "Stripe_Product",
-      "name": "Stripe_Product",
-      "title": "Stripe_Product",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Product"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "prices": {
-                "type": "array",
-                "items": {
-                  "@ref": "stripe:Price"
-                },
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "stripe",
-                  "path": "/v1/prices",
-                  "searchParams": {
-                    "ops": [
-                      {
-                        "path": "active",
-                        "value": "true"
-                      },
-                      {
-                        "path": "product",
-                        "mapping": "$source.id"
-                      }
-                    ]
-                  },
-                  "results": {
-                    "ops": [
-                      {
-                        "path": "$",
-                        "mapping": "$finalResolver.data"
-                      }
-                    ]
-                  }
-                }
-              },
-              "reviews": {
-                "@ref": "reviews-io:ListProductReviewsResponse",
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "reviews-io",
-                  "path": "/product/review",
-                  "searchParams": {
-                    "ops": [
-                      {
-                        "path": "sku",
-                        "mapping": "$source.id"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Invoiceitem": {
-      "id": "Stripe_Invoiceitem",
-      "name": "Stripe_Invoiceitem",
-      "title": "Stripe_Invoiceitem",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Invoiceitem"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "customer": {
-                "type": "string"
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_Price": {
-      "id": "Stripe_Price",
-      "name": "Stripe_Price",
-      "title": "Stripe_Price",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:Price"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "recurring": {
-                "@ref": "stripe:Recurring"
-              },
-              "product": {
-                "description": "The Stripe product associated with this subscription.",
-                "title": "Stripe Product",
-                "@ref": "stripe:Product",
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "stripe",
-                  "options": {
-                    "ignoreErrors": true,
-                    "ttl": 3600
-                  },
-                  "path": {
-                    "ops": [
-                      {
-                        "path": "product",
-                        "mapping": "$source.product"
-                      }
-                    ],
-                    "serialize": {
-                      "template": "/v1/products/{product}"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
-    "Stripe_CheckoutSessionLineItemsProperty": {
-      "id": "Stripe_CheckoutSessionLineItemsProperty",
-      "name": "Stripe_CheckoutSessionLineItemsProperty",
-      "title": "Stripe_CheckoutSessionLineItemsProperty",
-      "schema": {
-        "extends": [
-          {
-            "@ref": "stripe:CheckoutSessionLineItemsProperty"
-          },
-          {
-            "type": "object",
-            "properties": {
-              "price": {
-                "description": "The Stripe price associated with this line item.",
-                "title": "Stripe Price",
-                "@ref": "stripe:Price",
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "stripe",
-                  "options": {
-                    "ignoreErrors": true,
-                    "ttl": 3600
-                  },
-                  "path": {
-                    "ops": [
-                      {
-                        "path": "price",
-                        "mapping": "$source.price"
-                      }
-                    ],
-                    "serialize": {
-                      "template": "/v1/prices/{price}"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    },
     "Profile": {
       "id": "K1WGTS1Yn",
       "name": "Profile",
@@ -3183,12 +1750,16 @@
             "@ref": "local:Asset",
             "title": "Avatar",
             "@mapping": "takeshape:local:Profile.k0Ha4O7oV",
-            "@input": {"@ref": "local:TSRelationship"},
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
             "@args": "TSRelationshipArgs",
             "@resolver": {
               "name": "takeshape:getRelated",
               "service": "takeshape:local",
-              "options": {"nullable": true}
+              "options": {
+                "nullable": true
+              }
             }
           },
           "shopifyCustomerId": {
@@ -3204,37 +1775,12 @@
               "service": "shopify",
               "fieldName": "customer",
               "args": {
-                "ops": [{"path": "id", "mapping": "$source.shopifyCustomerId"}]
-              }
-            }
-          },
-          "stripeCustomerId": {
-            "type": "string",
-            "minLength": 0,
-            "description": "",
-            "title": "Stripe Customer ID",
-            "@mapping": "takeshape:local:Profile.Z8JJPxO0B"
-          },
-          "stripeCustomer": {
-            "title": "Stripe Customer",
-            "description": "",
-            "@ref": "stripe:Customer",
-            "@resolver": {
-              "name": "rest:get",
-              "service": "stripe",
-              "options": {
-                "ignoreErrors": true
-              },
-              "path": {
                 "ops": [
                   {
-                    "path": "customer",
-                    "mapping": "$source.stripeCustomerId"
+                    "path": "id",
+                    "mapping": "$source.shopifyCustomerId"
                   }
-                ],
-                "serialize": {
-                  "template": "/v1/customers/{customer}"
-                }
+                ]
               }
             }
           },
@@ -3277,47 +1823,6 @@
                         "mapping": "$source.name"
                       }
                     ]
-                  }
-                ]
-              }
-            }
-          },
-          "orders": {
-            "title": "Orders",
-            "description": "",
-            "type": "array",
-            "items": {
-              "@ref": "stripe:Invoice"
-            },
-            "@resolver": {
-              "if": "!isEmpty($source.stripeCustomerId)",
-              "id": "invoices",
-              "name": "rest:get",
-              "service": "stripe",
-              "path": "/v1/invoices",
-              "searchParams": {
-                "ops": [
-                  {
-                    "path": "$",
-                    "mapping": "$args"
-                  },
-                  {
-                    "path": "customer",
-                    "mapping": "$source.stripeCustomerId"
-                  }
-                ],
-                "serialize": {
-                  "defaults": {
-                    "style": "deepObject",
-                    "explode": true
-                  }
-                }
-              },
-              "results": {
-                "ops": [
-                  {
-                    "path": "$",
-                    "mapping": "$resolvers.invoices.data"
                   }
                 ]
               }
@@ -3547,28 +2052,36 @@
           "featured": {
             "title": "featured",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesFeatured"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesFeatured"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.68vvVsGMR"
           },
           "collection": {
             "title": "collection",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesCollection"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesCollection"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.wyJWNPt3z"
           },
           "categories": {
             "title": "categories",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesCategories"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesCategories"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.l8hbX9gQa"
           },
           "brands": {
             "title": "brands",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategoriesBrands"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategoriesBrands"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinksCategories.ZN1Zl5dGX"
           }
@@ -3609,14 +2122,18 @@
           "categories": {
             "title": "categories",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksCategories"},
+            "items": {
+              "@ref": "local:NavigationDataLinksCategories"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinks.gFm-OwTpX"
           },
           "pages": {
             "title": "pages",
             "description": "",
-            "items": {"@ref": "local:NavigationDataLinksPages"},
+            "items": {
+              "@ref": "local:NavigationDataLinksPages"
+            },
             "type": "array",
             "@mapping": "takeshape:local:NavigationDataLinks.w2GofQlUo"
           }
@@ -3628,7 +2145,9 @@
       "name": "NavigationData",
       "title": "Navigation Data",
       "workflow": "default",
-      "model": {"type": "single"},
+      "model": {
+        "type": "single"
+      },
       "schema": {
         "type": "object",
         "properties": {
@@ -3758,7 +2277,13 @@
           },
           "items": {
             "type": "array",
-            "items": {"oneOf": [{"@ref": "local:NavigationLink"}]},
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:NavigationLink"
+                }
+              ]
+            },
             "description": "",
             "title": "Items",
             "@mapping": "takeshape:local:FooterNavigationSections.vwvZ3gpJ6"
@@ -3777,7 +2302,9 @@
             "title": "Sections",
             "description": "",
             "type": "array",
-            "items": {"@ref": "local:FooterNavigationSections"},
+            "items": {
+              "@ref": "local:FooterNavigationSections"
+            },
             "@mapping": "takeshape:local:FooterNavigation.RcAzYGCEA"
           }
         }
@@ -3791,7 +2318,11 @@
         "type": "object",
         "properties": {
           "text": {
-            "oneOf": [{"@ref": "local:Text"}],
+            "oneOf": [
+              {
+                "@ref": "local:Text"
+              }
+            ],
             "description": "",
             "title": "Text",
             "@mapping": "takeshape:local:FooterNewsletter.lJadcfQQm"
@@ -3804,7 +2335,9 @@
       "name": "Footer",
       "title": "Footer",
       "workflow": "default",
-      "model": {"type": "single"},
+      "model": {
+        "type": "single"
+      },
       "schema": {
         "type": "object",
         "properties": {
@@ -3829,7 +2362,9 @@
       "title": "Shopify_Product",
       "schema": {
         "extends": [
-          {"@ref": "shopify:Product"},
+          {
+            "@ref": "shopify:Product"
+          },
           {
             "type": "object",
             "properties": {
@@ -3839,13 +2374,21 @@
                   "name": "rest:get",
                   "service": "reviews-io",
                   "path": "/product/review",
-                  "options": {"ignoreErrors": true, "ttl": 3600},
+                  "options": {
+                    "ignoreErrors": true,
+                    "ttl": 3600
+                  },
                   "searchParams": {
                     "ops": [
                       {
                         "path": "sku",
                         "mapping": [
-                          ["get", {"path": "$source.id"}],
+                          [
+                            "get",
+                            {
+                              "path": "$source.id"
+                            }
+                          ],
                           [
                             "replace",
                             {
@@ -3866,14 +2409,22 @@
                 "@resolver": {
                   "name": "rest:get",
                   "service": "recharge",
-                  "options": {"ignoreErrors": true, "ttl": 3600},
+                  "options": {
+                    "ignoreErrors": true,
+                    "ttl": 3600
+                  },
                   "path": "/products",
                   "searchParams": {
                     "ops": [
                       {
                         "path": "shopify_product_id",
                         "mapping": [
-                          ["get", {"path": "$source.id"}],
+                          [
+                            "get",
+                            {
+                              "path": "$source.id"
+                            }
+                          ],
                           [
                             "replace",
                             {
@@ -3887,7 +2438,10 @@
                   },
                   "results": {
                     "ops": [
-                      {"path": "$", "mapping": "$finalResolver.products[0]"}
+                      {
+                        "path": "$",
+                        "mapping": "$finalResolver.products[0]"
+                      }
                     ]
                   }
                 }
@@ -3904,30 +2458,61 @@
       "schema": {
         "type": "object",
         "properties": {
-          "id": {"type": "number", "title": "ID"},
-          "product_id": {"type": "number", "title": "product_id"},
+          "id": {
+            "type": "number",
+            "title": "ID"
+          },
+          "product_id": {
+            "type": "number",
+            "title": "product_id"
+          },
           "shopify_product_id": {
             "type": "number",
             "title": "shopify_product_id"
           },
-          "discount_type": {"type": "string"},
-          "discount_amount": {"type": "number", "title": "discount_amount"},
+          "discount_type": {
+            "type": "string"
+          },
+          "discount_amount": {
+            "type": "number",
+            "title": "discount_amount"
+          },
           "subscription_defaults": {
             "type": "object",
             "title": "subscription_defaults",
             "properties": {
-              "charge_interval_frequency": {"type": "number"},
-              "cutoff_day_of_month": {"type": "number"},
-              "cutoff_day_of_week": {"type": "number"},
-              "expire_after_specific_number_of_charges": {"type": "number"},
-              "order_day_of_month": {"type": "number"},
-              "order_day_of_week": {"type": "number"},
-              "order_interval_frequency": {"type": "number"},
-              "order_interval_unit": {"type": "string"},
-              "storefront_purchase_options": {"type": "string"},
+              "charge_interval_frequency": {
+                "type": "number"
+              },
+              "cutoff_day_of_month": {
+                "type": "number"
+              },
+              "cutoff_day_of_week": {
+                "type": "number"
+              },
+              "expire_after_specific_number_of_charges": {
+                "type": "number"
+              },
+              "order_day_of_month": {
+                "type": "number"
+              },
+              "order_day_of_week": {
+                "type": "number"
+              },
+              "order_interval_frequency": {
+                "type": "number"
+              },
+              "order_interval_unit": {
+                "type": "string"
+              },
+              "storefront_purchase_options": {
+                "type": "string"
+              },
               "order_interval_frequency_options": {
                 "type": "array",
-                "items": {"type": "string"}
+                "items": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -3935,18 +2520,36 @@
             "type": "string",
             "title": "external_product_id"
           },
-          "brand": {"type": "string", "title": "brand"},
+          "brand": {
+            "type": "string",
+            "title": "brand"
+          },
           "images": {
             "type": "object",
             "title": "images",
             "properties": {
-              "large": {"type": "string", "title": "large"},
-              "medium": {"type": "string", "title": "medium"},
-              "original": {"type": "string", "title": "original"},
-              "small": {"type": "string", "title": "small"}
+              "large": {
+                "type": "string",
+                "title": "large"
+              },
+              "medium": {
+                "type": "string",
+                "title": "medium"
+              },
+              "original": {
+                "type": "string",
+                "title": "original"
+              },
+              "small": {
+                "type": "string",
+                "title": "small"
+              }
             }
           },
-          "title": {"type": "string", "title": "title"}
+          "title": {
+            "type": "string",
+            "title": "title"
+          }
         }
       }
     },
@@ -3956,8 +2559,14 @@
       "title": "Gorgias_CreateTicketResponse",
       "schema": {
         "type": "object",
-        "properties": {"id": {"type": "integer"}},
-        "required": ["id"]
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ]
       }
     }
   },

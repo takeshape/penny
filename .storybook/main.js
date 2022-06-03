@@ -1,9 +1,7 @@
 const cwd = process.cwd();
 
 module.exports = {
-  stories: [
-    '../src/**/*.stories.@(tsx|mdx)'
-  ],
+  stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -12,12 +10,12 @@ module.exports = {
       name: '@storybook/addon-postcss',
       options: {
         cssLoaderOptions: {
-          importLoaders: 1,
+          importLoaders: 1
         },
         postcssLoaderOptions: {
-          implementation: require('postcss'),
-        },
-      },
+          implementation: require('postcss')
+        }
+      }
     },
     'storybook-addon-jotai',
     'storybook-addon-next-router'
@@ -32,4 +30,4 @@ module.exports = {
     config.resolve.modules.push(`${cwd}/src`);
     return config;
   }
-}
+};

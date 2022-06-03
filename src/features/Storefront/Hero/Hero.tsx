@@ -1,3 +1,4 @@
+import Button from 'components/Button/Button';
 import NextImage from 'components/NextImage';
 
 export interface HeroProps {
@@ -21,12 +22,9 @@ export const Hero = (props: React.PropsWithChildren<HeroProps>) => {
             </h1>
             <p className="mt-4 text-xl text-gray-600">{text.secondary}</p>
             <div className="mt-6">
-              <a
-                href="#"
-                className="inline-block bg-indigo-600 border border-transparent py-3 px-8 rounded-md font-medium text-white hover:bg-indigo-700"
-              >
+              <Button as="a" href="#" color="primary" size="large">
                 {text.button}
-              </a>
+              </Button>
             </div>
           </div>
         </div>

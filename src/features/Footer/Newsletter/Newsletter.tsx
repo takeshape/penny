@@ -1,5 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
+import Button from 'components/Button/Button';
 import { defaultKlaviyoListId } from 'config';
 import { useCallback, useState } from 'react';
 import { Klaviyo_AddMembersResponse } from 'types/takeshape';
@@ -61,13 +62,9 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
           placeholder="Enter your email"
         />
         <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-indigo-600 disabled:bg-indigo-400 flex items-center justify-center border border-transparent rounded-md py-2 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
+          <Button type="submit" loading={loading ? true : undefined} color="primary" className="w-full h-full">
             {loading ? 'Subscribing…' : text?.button ?? 'Subscribe'}
-          </button>
+          </Button>
         </div>
       </form>
       {feedback && (

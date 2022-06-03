@@ -25,6 +25,7 @@
     "source.fixAll.eslint": true,
     "source.organizeImports": true
   },
+  "eslint.onIgnoredFiles": "warn",
   "[markdown]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
