@@ -14,7 +14,7 @@ import {
   UnsubscribeMyEmailFromNewsletterMutation,
   UpdateCustomerMutation
 } from 'queries';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type {
   MutationSubscribeMyEmailToNewsletterArgs,
@@ -52,8 +52,15 @@ export const AccountFormMarketing = () => {
     MutationUnsubscribeMyEmailFromNewsletterArgs
   >(UnsubscribeMyEmailFromNewsletterMutation);
 
+  const timer = useRef<NodeJS.Timer>(null);
+
   const onSubmit = useCallback(
     async ({ acceptsMarketing, newsletters }: AccountFormMarketingForm) => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+        timer.current = null;
+      }
+
       if (dirtyFields.acceptsMarketing) {
         await updateCustomer({ variables: { customer: { acceptsMarketing } } });
       }
@@ -96,9 +103,12 @@ export const AccountFormMarketing = () => {
   // Reset form notices
   useEffect(() => {
     if (isSubmitSuccessful) {
-      const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+      timer.current = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
       return () => {
-        clearTimeout(timer);
+        if (timer.current) {
+          clearTimeout(timer.current);
+          timer.current = null;
+        }
       };
     }
   }, [isSubmitSuccessful, reset]);

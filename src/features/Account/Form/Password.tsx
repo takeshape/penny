@@ -71,7 +71,7 @@ export const AccountFormPassword = () => {
           control={control}
           name="password"
           id="password"
-          label="Password"
+          label="New Password"
           autoComplete="new-password"
           defaultValue=""
           type="password"
@@ -89,7 +89,7 @@ export const AccountFormPassword = () => {
           control={control}
           name="passwordConfirm"
           id="passwordConfirm"
-          label="Confirm Password"
+          label="Confirm New Password"
           autoComplete="new-password"
           defaultValue=""
           type="password"

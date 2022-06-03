@@ -3,7 +3,7 @@ import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
 import type { GetCustomerResponse, UpdateCustomerAddressResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerAddressMutation } from 'queries';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
@@ -40,8 +40,15 @@ export const AccountFormAddress = () => {
     MutationUpdateMyCustomerAddressArgs
   >(UpdateCustomerAddressMutation);
 
+  const timer = useRef<NodeJS.Timer>(null);
+
   const onSubmit = useCallback(
     async ({ firstName, lastName, address1, address2 }: AccountFormAddressForm) => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+        timer.current = null;
+      }
+
       await setCustomerAddressPayload({
         variables: {
           address: { firstName, lastName, address1, address2 },
@@ -62,9 +69,12 @@ export const AccountFormAddress = () => {
   // Reset form notices
   useEffect(() => {
     if (isSubmitSuccessful) {
-      const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+      timer.current = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
       return () => {
-        clearTimeout(timer);
+        if (timer.current) {
+          clearTimeout(timer.current);
+          timer.current = null;
+        }
       };
     }
   }, [isSubmitSuccessful, reset]);

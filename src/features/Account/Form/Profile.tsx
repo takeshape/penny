@@ -2,13 +2,12 @@ import { useMutation, useQuery } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
 import type { GetCustomerResponse, UpdateCustomerResponse } from 'queries';
 import { GetCustomerQuery, UpdateCustomerMutation } from 'queries';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import PhoneInput from 'react-phone-number-input/react-hook-form-input';
 import type { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
-
 interface AccountFormProfileForm {
   firstName: string;
   lastName: string;
@@ -31,8 +30,15 @@ export const AccountFormProfile = () => {
     MutationUpdateMyCustomerArgs
   >(UpdateCustomerMutation);
 
+  const timer = useRef<NodeJS.Timer>(null);
+
   const onSubmit = useCallback(
     async ({ firstName, lastName, email, phone }: AccountFormProfileForm) => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+        timer.current = null;
+      }
+
       await updateCustomer({
         variables: {
           customer: { firstName, lastName, email, phone }
@@ -52,9 +58,12 @@ export const AccountFormProfile = () => {
   // Reset form notices
   useEffect(() => {
     if (isSubmitSuccessful) {
-      const timer = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
+      timer.current = setTimeout(() => reset(undefined, { keepValues: true }), 5000);
       return () => {
-        clearTimeout(timer);
+        if (timer.current) {
+          clearTimeout(timer.current);
+          timer.current = null;
+        }
       };
     }
   }, [isSubmitSuccessful, reset]);
