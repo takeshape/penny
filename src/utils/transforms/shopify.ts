@@ -6,15 +6,11 @@ import type {
   ProductPrice,
   ProductPriceCurrencyCode,
   ProductPriceOption,
-  ProductReview,
-  ProductReviews,
   ProductSeo,
   ProductVariant
 } from 'types/product';
 import type {
   Recharge_Product,
-  ReviewsIo_ListProductReviewsResponseReviewsProperty,
-  ReviewsIo_ProductReview,
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
@@ -135,37 +131,6 @@ function getPrice(price: Shopify_MoneyV2): ProductPrice {
   };
 }
 
-function getReview(review: ReviewsIo_ProductReview): ProductReview {
-  const { rating, title, review: body, date_created, timeago, reviewer } = review;
-
-  return {
-    rating,
-    title,
-    body,
-    // Reviews.io is ISO 9075, convert to ISO 8601
-    createdAt: new Date(`${date_created}.000Z`).toISOString(),
-    timeAgo: timeago,
-    reviewer: {
-      firstName: reviewer.first_name,
-      lastName: reviewer.last_name,
-      verifiedBuyer: reviewer.verified_buyer,
-      address: reviewer.address,
-      imageUrl: reviewer.profile_picture ?? reviewer.gravatar
-    }
-  };
-}
-
-function getReviews(reviews?: ReviewsIo_ListProductReviewsResponseReviewsProperty): ProductReviews {
-  const { total, per_page, current_page, data } = reviews;
-
-  return {
-    currentPage: current_page,
-    totalPages: total,
-    perPage: per_page,
-    data: data.map(getReview)
-  };
-}
-
 function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
   return {
     title: shopifyProduct.seo.title ?? shopifyProduct.title,
@@ -210,8 +175,6 @@ export function shopifyProductToProductListItem(shopifyProduct: Shopify_Product)
     priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
     priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
     variantsCount: shopifyProduct.totalVariants,
-    reviewsAverage: shopifyProduct.reviews?.stats?.average ?? null,
-    reviewsCount: shopifyProduct.reviews?.stats?.count ?? 0,
     hasOneTimePurchaseOption: purchaseOptions.hasOneTime,
     hasSubscriptionPurchaseOption: purchaseOptions.hasSubscription,
     data: {}
@@ -233,9 +196,6 @@ export function shopifyProductToProduct(shopifyProduct: Shopify_Product): Produc
     priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
     variantsCount: shopifyProduct.totalVariants,
     variants: getVariants(shopifyProduct),
-    reviews: shopifyProduct.reviews?.reviews ? getReviews(shopifyProduct.reviews.reviews) : null,
-    reviewsAverage: shopifyProduct.reviews?.stats?.average ?? null,
-    reviewsCount: shopifyProduct.reviews?.stats?.count ?? 0,
     seo: getSeo(shopifyProduct),
     hasOneTimePurchaseOption: purchaseOptions.hasOneTime,
     hasSubscriptionPurchaseOption: purchaseOptions.hasSubscription,

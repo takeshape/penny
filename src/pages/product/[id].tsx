@@ -1,18 +1,15 @@
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
-import ProductAddToCart from 'features/products/ProductAddToCart';
-import ProductImage from 'features/products/ProductImage';
-import ReviewList from 'features/reviews/ReviewList';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
 import { GetProductIdsQuery, GetProductQuery } from 'queries';
-import { Box, Flex, Heading, Paragraph } from 'theme-ui';
 import type { Product } from 'types/product';
 import type { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+import { reviewsIoProductReviewsToReviewList, reviewsIoProductReviewsToReviewStats } from 'utils/transforms/reviewsIo';
 import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms/shopify';
 import { getSingle } from 'utils/types';
 
@@ -39,23 +36,7 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
 
   return (
     <Layout title={product.name}>
-      <Wrapper>
-        <Heading as="h2" variant="styles.pageTitle">
-          {product.name}
-        </Heading>
-        <Flex sx={{ margin: '2rem 0', gap: '2rem' }}>
-          <Box sx={{ flex: '1 1 32rem' }}>
-            <ProductImage image={product.featuredImage} maxHeight="600px" />
-          </Box>
-          <Flex sx={{ flex: '1 1 24rem', flexDirection: 'column' }}>
-            <ProductAddToCart product={product} />
-            <Paragraph sx={{ textAlign: 'left' }}>{product.description}</Paragraph>
-            <Box sx={{ fontSize: '.8em' }}>
-              <ReviewList reviews={reviews} stats={stats} />
-            </Box>
-          </Flex>
-        </Flex>
-      </Wrapper>
+      <Wrapper>{/* <ProductPageComponent /> */}</Wrapper>
     </Layout>
   );
 };
@@ -71,15 +52,14 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   });
 
   const product = shopifyProductToProduct(data.product);
+  const reviews = reviewsIoProductReviewsToReviewList(data.product.reviews);
+  const reviewStats = reviewsIoProductReviewsToReviewStats(data.product.reviews);
 
   return addApolloQueryCache(apolloClient, {
     props: {
       product,
-      reviews: product.reviews?.data ?? {},
-      stats: {
-        average: product.reviewsAverage,
-        count: product.reviewsCount
-      }
+      reviews: reviews ?? {},
+      reviewStats
     }
   });
 };

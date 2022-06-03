@@ -41,30 +41,6 @@ export type ProductVariant = {
   options: ProductVariantOption[];
 };
 
-export type ProductReviewReviewer = {
-  firstName: string;
-  lastName: string;
-  verifiedBuyer: string;
-  address: string;
-  imageUrl: string;
-};
-
-export type ProductReview = {
-  rating: number;
-  title: string;
-  body: string;
-  createdAt: string;
-  timeAgo: string;
-  reviewer: ProductReviewReviewer;
-};
-
-export type ProductReviews = {
-  perPage: number;
-  currentPage: number;
-  totalPages: number;
-  data: ProductReview[];
-};
-
 export type ProductSeo = {
   title: string;
   description: string;
@@ -86,9 +62,6 @@ export type ProductBase = {
   hasSubscriptionPurchaseOption: boolean;
   // Freeform data, for display or later API calls
   data: Record<string, unknown>;
-  reviewsCount: number;
-  reviewsAverage: number;
-  reviews?: ProductReviews;
   seo?: ProductSeo;
 };
 
