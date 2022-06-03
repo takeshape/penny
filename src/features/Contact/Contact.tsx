@@ -1,6 +1,7 @@
 import { Switch } from '@headlessui/react';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
+import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormTextarea from 'components/Form/Textarea/Textarea';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -137,7 +138,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 }
               }}
             />
-            <FormInput
+            <FormPhoneInput
               className="sm:col-span-2"
               control={control}
               name="phone-number"
@@ -145,13 +146,12 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Phone Number"
               autoComplete="tel"
               placeholder="+1 (555) 987-6543"
+              defaultCountry="US"
+              defaultErrorMessage="Please enter a valid phone number"
+              withCountryCallingCode={true}
               type="text"
               rules={{
-                required: 'This field is required',
-                pattern: {
-                  value: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
-                  message: 'Please enter a valid phone number'
-                }
+                required: 'This field is required'
               }}
             />
             <FormTextarea
