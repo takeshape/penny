@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import Button from 'components/Button/Button';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import type { CreateMyCartResponse } from 'queries';
@@ -34,13 +35,15 @@ export const CartCheckout = () => {
   }, [checkoutData]);
 
   return (
-    <button
+    <Button
       onClick={handleCheckout}
       disabled={quantity === 0}
-      className="flex items-center justify-center w-full cursor-pointer rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+      color="primary"
+      size="large"
+      className="flex justify-center w-full cursor-pointer"
     >
       Checkout
-    </button>
+    </Button>
   );
 };
 
