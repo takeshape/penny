@@ -1,7 +1,8 @@
 import { Switch } from '@headlessui/react';
 import Button from 'components/Button/Button';
-import Input from 'components/Input/Input';
-import Textarea from 'components/Textarea/Textarea';
+import FormInput from 'components/Form/Input/Input';
+import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
+import FormTextarea from 'components/Form/Textarea/Textarea';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -92,7 +93,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <Input
+            <FormInput
               control={control}
               name="first-name"
               id="first-name"
@@ -101,7 +102,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               type="text"
               rules={{ required: 'This field is required' }}
             />
-            <Input
+            <FormInput
               control={control}
               name="last-name"
               id="last-name"
@@ -110,7 +111,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               type="text"
               rules={{ required: 'This field is required' }}
             />
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="company"
@@ -120,7 +121,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               type="text"
               rules={{ required: 'This field is required' }}
             />
-            <Input
+            <FormInput
               className="sm:col-span-2"
               control={control}
               name="email"
@@ -137,7 +138,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 }
               }}
             />
-            <Input
+            <FormPhoneInput
               className="sm:col-span-2"
               control={control}
               name="phone-number"
@@ -145,16 +146,15 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Phone Number"
               autoComplete="tel"
               placeholder="+1 (555) 987-6543"
+              defaultCountry="US"
+              defaultErrorMessage="Please enter a valid phone number"
+              withCountryCallingCode={true}
               type="text"
               rules={{
-                required: 'This field is required',
-                pattern: {
-                  value: /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/,
-                  message: 'Please enter a valid phone number'
-                }
+                required: 'This field is required'
               }}
             />
-            <Textarea
+            <FormTextarea
               className="sm:col-span-2"
               control={control}
               name="message"

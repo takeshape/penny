@@ -248,7 +248,7 @@ function getPurchaseOptions(recharge?: Recharge_Product) {
 }
 
 export function shopifyGidToId(gid: string): string {
-  return gid.replace(/gid:\/\/shopify\/Product\//, '');
+  return gid.replace(/gid:\/\/shopify\/\w+\//, '');
 }
 
 export function shopifyIdToGid(id: string): string {

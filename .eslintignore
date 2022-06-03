@@ -1,2 +1,6 @@
 src/types/takeshape.ts
 tsconfig.json
+!.takeshape
+!.storybook
+!.lighthouse
+!.jest

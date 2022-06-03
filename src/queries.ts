@@ -1,48 +1,22 @@
 import { gql } from '@apollo/client';
 import type {
+  Klaviyo_200Ok,
+  Klaviyo_AddMembersResponse,
   Mutation,
-  Profile,
+  ProfileNewsletterStatus,
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
   ShopifyStorefront_Customer,
   ShopifyStorefront_CustomerAccessTokenCreatePayload,
+  ShopifyStorefront_CustomerAddressUpdatePayload,
   ShopifyStorefront_CustomerCreatePayload,
   ShopifyStorefront_CustomerRecoverPayload,
+  ShopifyStorefront_CustomerUpdatePayload,
+  Shopify_Customer,
   Shopify_Product,
   Shopify_ProductConnection,
-  Stripe_PaymentIntentPaginatedList,
-  Stripe_Product,
-  Stripe_Subscription,
   Voucherify_LoyaltyCard
 } from 'types/takeshape';
-
-export interface StripeProducts {
-  products: {
-    items: Stripe_Product[];
-  };
-}
-
-export const GetStripeProducts = gql`
-  query GetStripeProductsQuery {
-    products: getIndexedProductList(where: { active: { eq: true } }) {
-      items {
-        id
-        name
-        description
-        images
-        prices {
-          id
-          unit_amount
-          currency
-          recurring {
-            interval
-            interval_count
-          }
-        }
-      }
-    }
-  }
-`;
 
 export type GetProductIdsResponse = {
   products: {
@@ -286,19 +260,6 @@ export const GetMyProfile = gql`
       avatar {
         path
       }
-      customer: stripeCustomer {
-        id
-        name
-        description
-        address {
-          line1
-          line2
-          city
-          state
-          postal_code
-          country
-        }
-      }
     }
   }
 `;
@@ -316,19 +277,6 @@ export const UpsertMyProfile = gql`
       bio
       avatar {
         path
-      }
-      customer: stripeCustomer {
-        id
-        name
-        description
-        address {
-          line1
-          line2
-          city
-          state
-          postal_code
-          country
-        }
       }
     }
   }
@@ -404,42 +352,59 @@ export const DeleteMySubscription = gql`
   }
 `;
 
-export interface GetMyPurchasesDataResponse {
-  profile: Profile;
-  payments?: Stripe_PaymentIntentPaginatedList;
-  subscriptions?: Stripe_Subscription[];
-  loyaltyCard?: Voucherify_LoyaltyCard;
+export interface GetMyAdminCustomerOrdersResponse {
+  customer: Shopify_Customer;
 }
 
-export const GetMyPurchasesData = gql`
-  query GetMyPurchasesDataQuery {
-    profile: getMyProfile {
-      shopifyCustomer {
-        orders(first: 10) {
-          edges {
-            node {
-              currencyCode
-              fulfillments {
-                createdAt
-                displayStatus
-                fulfillmentLineItems(first: 10) {
-                  edges {
-                    node {
+export const GetMyAdminCustomerOrdersQuery = gql`
+  query GetMyAdminCustomerOrdersQuery {
+    customer: getMyAdminCustomer {
+      orders(first: 10) {
+        edges {
+          node {
+            id
+            createdAt
+            displayFulfillmentStatus
+            totalPriceSet {
+              shopMoney {
+                amount
+                currencyCode
+              }
+            }
+            fulfillments {
+              id
+              displayStatus
+              deliveredAt
+              estimatedDeliveryAt
+              inTransitAt
+              updatedAt
+              trackingInfo {
+                company
+                number
+              }
+              fulfillmentLineItems(first: 10) {
+                edges {
+                  node {
+                    lineItem {
                       id
-                      lineItem {
+                      image {
+                        url
+                        height
+                        width
+                      }
+                      name
+                      quantity
+                      product {
                         id
-                        image {
-                          url
+                      }
+                      originalTotalSet {
+                        shopMoney {
+                          amount
+                          currencyCode
                         }
-                        name
-                        quantity
                       }
                     }
                   }
-                }
-                trackingInfo {
-                  company
-                  number
                 }
               }
             }
@@ -447,66 +412,15 @@ export const GetMyPurchasesData = gql`
         }
       }
     }
-    payments: getMyPaymentsIndexed(size: 5, sort: { field: "created", order: "desc" }) {
-      items {
-        id
-        amount
-        currency
-        created
-        invoiceItems {
-          object
-          id
-          amount
-          currency
-          quantity
-          price {
-            product {
-              id
-              name
-              images
-            }
-          }
-        }
-        sessionItems {
-          object
-          id
-          amount_total
-          currency
-          quantity
-          price {
-            product {
-              id
-              name
-              images
-            }
-          }
-        }
-      }
-    }
-    subscriptions: getMySubscriptions(
-      expand: ["data.items", "data.plan.product", "data.latest_invoice.payment_intent"]
-    ) {
-      id
-      current_period_end
-      items {
-        data {
-          id
-          price {
-            currency
-            unit_amount
-            product {
-              id
-              name
-              description
-              images
-            }
-            recurring {
-              interval
-            }
-          }
-        }
-      }
-    }
+  }
+`;
+
+export interface GetMyLoyaltyCardResponse {
+  loyaltyCard: Voucherify_LoyaltyCard;
+}
+
+export const GetMyLoyaltyCardQuery = gql`
+  query GetMyLoyaltyCardQuery {
     loyaltyCard: getMyLoyaltyCard {
       id
       code
@@ -541,7 +455,11 @@ export const CreateInvitation = gql`
   }
 `;
 
-export const GetMyNewsletterSubscriptons = gql`
+export interface GetMyNewsletterSubscriptionsResponse {
+  newsletters: ProfileNewsletterStatus[];
+}
+
+export const GetMyNewsletterSubscriptionsQuery = gql`
   query GetMyNewsletterSubscriptionsQuery {
     newsletters: getMyNewsletterSubscriptions {
       listId
@@ -551,9 +469,13 @@ export const GetMyNewsletterSubscriptons = gql`
   }
 `;
 
-export const SubscribeToNewsletter = gql`
-  mutation SubscribeToNewsletterMutation($listId: String!, $email: String!) {
-    Klaviyo_addMembers(list_id: $listId, input: { profiles: [{ email: $email }] }) {
+export interface SubscribeMyEmailToNewsletterResponse {
+  result: Klaviyo_AddMembersResponse;
+}
+
+export const SubscribeMyEmailToNewsletterMutation = gql`
+  mutation SubscribeMyEmailToNewsletterMutation($list_id: String!) {
+    result: subscribeMyEmailToNewsletter(list_id: $list_id) {
       items {
         id
       }
@@ -561,9 +483,13 @@ export const SubscribeToNewsletter = gql`
   }
 `;
 
-export const UnsubscribeFromNewsletter = gql`
-  mutation UnsubscribeFromNewsletterMutation($listId: String!, $email: String!) {
-    Klaviyo_removeMembers(list_id: $listId, input: { emails: [$email] }) {
+export interface UnsubscribeMyEmailFromNewsletterResponse {
+  result: Klaviyo_200Ok;
+}
+
+export const UnsubscribeMyEmailFromNewsletterMutation = gql`
+  mutation UnsubscribeMyEmailFromNewsletterMutation($list_id: String!) {
+    result: unsubscribeMyEmailFromNewsletter(list_id: $list_id) {
       result
     }
   }
@@ -606,12 +532,12 @@ export const CreateCustomerAccessTokenMutation = gql`
   }
 `;
 
-export type GetCustomerResponse = {
+export type GetCustomerTokenDataResponse = {
   customer: ShopifyStorefront_Customer;
 };
 
-export const GetCustomerQuery = gql`
-  query GetCustomer($customerAccessToken: String!) {
+export const GetCustomerTokenDataQuery = gql`
+  query GetCustomerTokenDataQuery($customerAccessToken: String!) {
     customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
       firstName
       lastName
@@ -623,12 +549,43 @@ export const GetCustomerQuery = gql`
   }
 `;
 
+export type GetCustomerResponse = {
+  customer: ShopifyStorefront_Customer;
+};
+
+export const GetCustomerQuery = gql`
+  query GetCustomerQuery {
+    customer: getMyCustomer {
+      firstName
+      lastName
+      id
+      phone
+      email
+      displayName
+      acceptsMarketing
+      defaultAddress {
+        id
+        firstName
+        lastName
+        address1
+        address2
+        city
+        country
+        countryCodeV2
+        province
+        provinceCode
+        zip
+      }
+    }
+  }
+`;
+
 export type CreateCustomerResponse = {
   customerCreate: ShopifyStorefront_CustomerCreatePayload;
 };
 
 export const CreateCustomerMutation = gql`
-  mutation CreateCustomer($input: ShopifyStorefront_CustomerCreateInput!) {
+  mutation CreateCustomerMutation($input: ShopifyStorefront_CustomerCreateInput!) {
     customerCreate: ShopifyStorefront_customerCreate(input: $input) {
       customer {
         id
@@ -647,8 +604,46 @@ export type RecoverCustomerPasswordResponse = {
 };
 
 export const RecoverCustomerPasswordMutation = gql`
-  mutation RecoverCustomerPassword($email: String!) {
+  mutation RecoverCustomerPasswordMutation($email: String!) {
     customerRecover: ShopifyStorefront_customerRecover(email: $email) {
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type UpdateCustomerResponse = {
+  customerUpdate: ShopifyStorefront_CustomerUpdatePayload;
+};
+
+export const UpdateCustomerMutation = gql`
+  mutation UpdateCustomerMutation($customer: ShopifyStorefront_CustomerUpdateInput!) {
+    customerUpdate: updateMyCustomer(customer: $customer) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export type UpdateCustomerAddressResponse = {
+  customerAddressUpdate: ShopifyStorefront_CustomerAddressUpdatePayload;
+};
+
+export const UpdateCustomerAddressMutation = gql`
+  mutation UpdateCustomerAddressMutation($address: ShopifyStorefront_MailingAddressInput!, $id: ID!) {
+    customerAddressUpdate: updateMyCustomerAddress(address: $address, id: $id) {
+      customerAddress {
+        id
+      }
       customerUserErrors {
         code
         field
