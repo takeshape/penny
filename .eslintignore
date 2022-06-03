@@ -1,4 +1,4 @@
-src/types/takeshape.d.ts
+src/types/takeshape.ts
 tsconfig.json
 !.takeshape
 !.storybook

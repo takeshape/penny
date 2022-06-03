@@ -21,7 +21,7 @@
     "test:cov": "jest --coverage",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit --pretty ",
-    "typegen": "takeshape schema && takeshape types --to src/types/takeshape.d.ts"
+    "typegen": "takeshape schema && takeshape types --to src/types/takeshape.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.6.2",

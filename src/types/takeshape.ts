@@ -27153,9 +27153,9 @@ export type Mutation = {
   deleteTsStaticSite?: Maybe<DeleteTsStaticSiteResult>;
   /** Create a shipment with ShipEngine. */
   createShipment?: Maybe<ShipEngine_Label>;
-  /** A privileged user or webhook can upsert a user's profile, updating ShapeDB and Stripe. */
+  /** A privileged user or webhook can upsert a user's profile in ShapeDB. */
   upsertProfile?: Maybe<Profile>;
-  /** Upsert the signed-in user's profile, updating ShapeDB and Stripe */
+  /** Upsert the signed-in user's profile in ShapeDB. */
   upsertMyProfile?: Maybe<Profile>;
   /** Upsert the signed-in user's Stripe customer */
   upsertMyCustomer?: Maybe<Stripe_Customer>;
@@ -27192,6 +27192,7 @@ export type Mutation = {
   createMyCart?: Maybe<ShopifyStorefront_CartCreatePayload>;
   ShopifyStorefront_customerAccessTokenCreate?: Maybe<ShopifyStorefront_CustomerAccessTokenCreatePayload>;
   ShopifyStorefront_customerCreate?: Maybe<ShopifyStorefront_CustomerCreatePayload>;
+  createCustomer?: Maybe<CreateCustomerPayload>;
   ShopifyStorefront_customerRecover?: Maybe<ShopifyStorefront_CustomerRecoverPayload>;
   ShopifyStorefront_customerUpdate?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   ShopifyStorefront_customerAddressUpdate?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
@@ -27444,6 +27445,11 @@ export type MutationShopifyStorefront_CustomerAccessTokenCreateArgs = {
 
 export type MutationShopifyStorefront_CustomerCreateArgs = {
   input: ShopifyStorefront_CustomerCreateInput;
+};
+
+
+export type MutationCreateCustomerArgs = {
+  input: CreateCustomerPropertiesPropertyInput;
 };
 
 
@@ -37527,6 +37533,30 @@ export type ShopifyStorefront_CustomerCreateInput = {
   /** The login password used by the customer. */
   password: Scalars['String'];
   /** Indicates whether the customer has consented to be sent marketing material via email. */
+  acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CreateCustomerPayload = {
+  __typename?: 'CreateCustomerPayload';
+  customer: CreateCustomerPayloadCustomerProperty;
+};
+
+export type CreateCustomerPayloadCustomerProperty = {
+  __typename?: 'CreateCustomerPayloadCustomerProperty';
+  id?: Maybe<Scalars['Float']>;
+  email?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['String']>;
+  updated_at?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  verified_email?: Maybe<Scalars['Boolean']>;
+};
+
+export type CreateCustomerPropertiesPropertyInput = {
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
+  phone?: InputMaybe<Scalars['String']>;
+  password: Scalars['String'];
   acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
 };
 

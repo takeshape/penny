@@ -32783,12 +32783,10 @@ type Mutation {
   """Create a shipment with ShipEngine."""
   createShipment(shipment_id: String, carrier_id: String, service_code: String, external_order_id: String, external_shipment_id: String, ship_date: String, created_at: String, modified_at: String, shipment_status: String, origin_type: String, insurance_provider: String, order_source_code: String, packages: [ShipEngine_PackageInput], ship_to: ShipEngine_AddressInput, ship_from: ShipEngine_AddressInput): ShipEngine_Label
 
-  """
-  A privileged user or webhook can upsert a user's profile, updating ShapeDB and Stripe.
-  """
+  """A privileged user or webhook can upsert a user's profile in ShapeDB."""
   upsertProfile(id: String!, email: String!): Profile
 
-  """Upsert the signed-in user's profile, updating ShapeDB and Stripe"""
+  """Upsert the signed-in user's profile in ShapeDB."""
   upsertMyProfile(name: String, bio: String, avatarId: String): Profile
 
   """Upsert the signed-in user's Stripe customer"""
@@ -32854,6 +32852,7 @@ type Mutation {
     """The fields used to create a new customer."""
     input: ShopifyStorefront_CustomerCreateInput!
   ): ShopifyStorefront_CustomerCreatePayload
+  createCustomer(input: CreateCustomerPropertiesPropertyInput!): CreateCustomerPayload
   ShopifyStorefront_customerRecover(
     """The email address of the customer to recover."""
     email: String!
@@ -46544,6 +46543,28 @@ input ShopifyStorefront_CustomerCreateInput {
   """
   Indicates whether the customer has consented to be sent marketing material via email.
   """
+  acceptsMarketing: Boolean
+}
+
+type CreateCustomerPayload {
+  customer: CreateCustomerPayloadCustomerProperty!
+}
+
+type CreateCustomerPayloadCustomerProperty {
+  id: Float
+  email: String
+  created_at: String
+  updated_at: String
+  state: String
+  verified_email: Boolean
+}
+
+input CreateCustomerPropertiesPropertyInput {
+  firstName: String
+  lastName: String
+  email: String!
+  phone: String
+  password: String!
   acceptsMarketing: Boolean
 }
 
