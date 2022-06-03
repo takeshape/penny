@@ -13,7 +13,7 @@ export const cartItemAtomsAtom = splitAtom(cartItemsAtom);
 
 const withItemDefaults = (item: CartItemInput): CartItem => ({
   ...item,
-  interval: item.interval ?? 'none',
+  interval: item.interval ?? 'DAY',
   intervalCount: item.intervalCount ?? 0,
   imageSrc: item.imageSrc ?? defaultProductImage.url,
   imageAlt: item.imageAlt ?? 'Default product image',

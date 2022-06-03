@@ -14,8 +14,87 @@ import type {
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
-  Shopify_ProductVariant
+  Shopify_ProductVariant,
+  Shopify_SellingPlanPricingPolicy,
+  Shopify_SellingPlanPricingPolicyPercentageValue,
+  Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
+import { Shopify_SellingPlanInterval, Shopify_SellingPlanPricingPolicyAdjustmentType } from 'types/takeshape';
+
+function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
+  switch (adjustmentType) {
+    case Shopify_SellingPlanPricingPolicyAdjustmentType.Price: {
+      const newAmount = Number((adjustmentValue as Shopify_MoneyV2).amount) * 100;
+
+      return {
+        type: 'PRICE' as const,
+        amountAfterDiscount: newAmount,
+        amount: newAmount
+      };
+    }
+
+    case Shopify_SellingPlanPricingPolicyAdjustmentType.FixedAmount: {
+      const discountAmount = Number((adjustmentValue as Shopify_MoneyV2).amount) * 100;
+
+      return {
+        type: 'FIXED_AMOUNT' as const,
+        amountAfterDiscount: amount - discountAmount,
+        amount: discountAmount
+      };
+    }
+
+    case Shopify_SellingPlanPricingPolicyAdjustmentType.Percentage:
+    default: {
+      const discountAmount = (adjustmentValue as Shopify_SellingPlanPricingPolicyPercentageValue).percentage ?? 0;
+      const discountAmountOff = Math.round(amount * (discountAmount / 100));
+
+      return {
+        type: 'PERCENTAGE' as const,
+        amountAfterDiscount: amount - discountAmountOff,
+        amount: discountAmount
+      };
+    }
+  }
+}
+
+function getSubscriptionInterval({
+  interval,
+  intervalCount,
+  maxCycles,
+  minCycles,
+  anchors
+}: Shopify_SellingPlanRecurringBillingPolicy) {
+  const subscriptionInterval = {
+    anchor: anchors[0],
+    intervalCount,
+    maxCycles,
+    minCycles
+  };
+
+  switch (interval) {
+    case Shopify_SellingPlanInterval.Week:
+      return {
+        ...subscriptionInterval,
+        interval: 'WEEK' as const
+      };
+    case Shopify_SellingPlanInterval.Month:
+      return {
+        ...subscriptionInterval,
+        interval: 'MONTH' as const
+      };
+    case Shopify_SellingPlanInterval.Year:
+      return {
+        ...subscriptionInterval,
+        interval: 'YEAR' as const
+      };
+    case Shopify_SellingPlanInterval.Day:
+    default:
+      return {
+        ...subscriptionInterval,
+        interval: 'DAY' as const
+      };
+  }
+}
 
 function getImage(shopifyImage?: Shopify_Image): ProductImage {
   const { height, width, url } = shopifyImage ?? defaultProductImage;
@@ -30,9 +109,7 @@ function getPriceOptions(
   shopifyProduct: Shopify_Product,
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
-  const { sellingPlanGroups } = shopifyProduct;
-
-  // variant.contextualPricing would be considered for a true multi-currency site
+  // variant.contextualPricing would be better for a true multi-currency site
   const { id, price } = shopifyVariant;
   const amount = Number(price) * 100;
 
@@ -44,44 +121,40 @@ function getPriceOptions(
     prices.push({
       merchandiseId: id,
       discountAmount: 0,
-      discountType: 'none',
-      interval: 'day',
+      discountType: 'PERCENTAGE',
+      interval: 'DAY',
       intervalCount: 0,
+      amountBeforeDiscount: amount,
       amount,
       currencyCode: defaultCurrency
     });
   }
 
-  if (hasSubscription && sellingPlanGroups) {
-    const {
-      discount_amount,
-      discount_type,
-      subscription_defaults: { order_interval_frequency_options, order_interval_unit }
-    } = shopifyProduct.recharge;
-
-    const discountAmount = Number(discount_amount);
-    const discountOffInCents = amount * (discountAmount / 100);
+  if (hasSubscription && shopifyProduct.sellingPlanGroups) {
+    const sellingPlans = shopifyProduct.sellingPlanGroups.edges.flatMap(({ node }) =>
+      node.sellingPlans.edges.map(({ node }) => node)
+    );
 
     prices = prices
       .concat(
-        order_interval_frequency_options.map((intervalCount) => {
-          const sellingPlanNodes = sellingPlanGroups.edges[0].node.sellingPlans.edges.map(({ node }) => node);
-          const sellingPlan = sellingPlanNodes.find(({ options }) => {
-            // Replace this dumb join once this lands: https://app.shortcut.com/takeshape/story/9034/graphql-fragment-namespaces-are-sent-to-delegated-apis
-            const option = options[0].split(' ');
-            return option[0] === intervalCount;
-          });
+        sellingPlans.map((plan) => {
+          const subscriptionInterval = getSubscriptionInterval(plan.billingPolicy);
+          const discount = getDiscount(amount, plan.pricingPolicies[0]);
 
           return {
             merchandiseId: id,
-            subscriptionId: sellingPlan.id,
+            subscriptionId: plan.id,
             // This will only ever be 'percentage'
-            discountType: discount_type as ProductPriceOption['discountType'],
-            discountAmount,
+            discountType: discount.type,
+            discountAmount: discount.amount,
             // Recharge forces each product to have the same interval for all sub options
-            interval: getSubscriptionInterval(order_interval_unit),
-            intervalCount: Number(intervalCount),
-            amount: amount - discountOffInCents,
+            interval: subscriptionInterval.interval,
+            intervalCount: subscriptionInterval.intervalCount,
+            intervalMaxCycles: subscriptionInterval.maxCycles ?? null,
+            intervalMinCycles: subscriptionInterval.minCycles ?? null,
+            intervalAnchor: subscriptionInterval.anchor ?? null,
+            amountBeforeDiscount: amount,
+            amount: discount.amountAfterDiscount,
             currencyCode: defaultCurrency
           };
         })
@@ -108,20 +181,6 @@ function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_Pro
 
 function getVariants(shopifyProduct: Shopify_Product): ProductVariant[] {
   return shopifyProduct.variants.edges.map(({ node }) => getVariant(shopifyProduct, node));
-}
-
-function getSubscriptionInterval(interval: string): ProductPriceOption['interval'] {
-  switch (interval) {
-    case 'week':
-      return 'week';
-    case 'month':
-      return 'month';
-    case 'year':
-      return 'year';
-    case 'day':
-    default:
-      return 'day';
-  }
 }
 
 function getPrice(price: Shopify_MoneyV2): ProductPrice {

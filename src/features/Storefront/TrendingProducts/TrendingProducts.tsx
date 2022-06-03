@@ -1,4 +1,5 @@
 import NextImage from 'components/NextImage';
+import NextLink from 'components/NextLink';
 
 interface AvailableColor {
   name: string;
@@ -29,9 +30,9 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
           <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
             Trending products
           </h2>
-          <a href="#" className="hidden sm:block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+          <NextLink href="#" className="hidden sm:block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
             See everything<span aria-hidden="true"> &rarr;</span>
-          </a>
+          </NextLink>
         </div>
 
         <div className="mt-8 relative">
@@ -54,10 +55,10 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
                     <div className="mt-6">
                       <p className="text-sm text-gray-500">{product.color}</p>
                       <h3 className="mt-1 font-semibold text-gray-900">
-                        <a href={product.href}>
+                        <NextLink href={product.href}>
                           <span className="absolute inset-0" />
                           {product.name}
-                        </a>
+                        </NextLink>
                       </h3>
                       <p className="mt-1 text-gray-900">{product.price}</p>
                     </div>
@@ -82,9 +83,9 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
         </div>
 
         <div className="mt-12 px-4 sm:hidden">
-          <a href="#" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+          <NextLink href="#" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
             See everything<span aria-hidden="true"> &rarr;</span>
-          </a>
+          </NextLink>
         </div>
       </div>
     </section>

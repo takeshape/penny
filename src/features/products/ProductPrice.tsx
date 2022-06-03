@@ -12,7 +12,7 @@ export const ProductPrice = ({ price, quantity }: ProductPriceProps) => {
 
   const recurringText = price.intervalCount > 0 && (
     <Text as="p" variant="styles.membershipTerm" sx={{ lineHeight: 0 }}>
-      per {pluralizeText(price.intervalCount, price.interval, `${price.interval}s`)}
+      per {pluralizeText(price.intervalCount, price.interval.toLowerCase(), `${price.interval.toLowerCase()}s`)}
     </Text>
   );
 

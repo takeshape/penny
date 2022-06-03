@@ -3,6 +3,7 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormTextarea from 'components/Form/Textarea/Textarea';
+import NextLink from 'components/NextLink';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -186,13 +187,13 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 <div className="ml-3">
                   <p className="text-base text-gray-500">
                     By selecting this, you agree to the{' '}
-                    <a href="#" className="font-medium text-gray-700 underline">
+                    <NextLink href="#" className="font-medium text-gray-700 underline">
                       Privacy Policy
-                    </a>{' '}
+                    </NextLink>{' '}
                     and{' '}
-                    <a href="#" className="font-medium text-gray-700 underline">
+                    <NextLink href="#" className="font-medium text-gray-700 underline">
                       Cookie Policy
-                    </a>
+                    </NextLink>
                     .
                   </p>
                 </div>
