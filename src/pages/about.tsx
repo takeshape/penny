@@ -42,7 +42,7 @@ const AboutPage: NextPage = () => {
         <Section>
           <Paragraph>
             This project demonstrates using <Link href="https://auth0.com">Auth0</Link> to manage a user‘s account and
-            make purchases through <Link href="https://stripe.com">Shopify</Link>.
+            make purchases through <Link href="https://shopify.com">Shopify</Link>.
           </Paragraph>
 
           <Paragraph>
