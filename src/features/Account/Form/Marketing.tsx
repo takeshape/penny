@@ -22,7 +22,7 @@ import type {
   MutationUpdateMyCustomerArgs
 } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
+import FormCardPanel from '../../../components/Form/CardPanel/CardPanel';
 
 interface AccountFormMarketingForm {
   newsletters: Record<string, boolean>;
@@ -119,7 +119,7 @@ export const AccountFormMarketing = () => {
     formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
-    <FormTwoColumnCard
+    <FormCardPanel
       primaryText="Marketing &amp; Newsletters"
       secondaryText="What should you send you?"
       onSubmit={handleSubmit(onSubmit)}
@@ -166,7 +166,7 @@ export const AccountFormMarketing = () => {
           </div>
         </fieldset>
       </div>
-    </FormTwoColumnCard>
+    </FormCardPanel>
   );
 };
 

@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
+import FormCardPanel from '../../../components/Form/CardPanel/CardPanel';
 
 interface AccountFormProfileForm {
   firstName: string;
@@ -76,7 +76,7 @@ export const AccountFormProfile = () => {
     formatError(customerResponse.customerUpdate.customerUserErrors);
 
   return (
-    <FormTwoColumnCard
+    <FormCardPanel
       primaryText="Profile"
       secondaryText="Tell us about yourself."
       onSubmit={handleSubmit(onSubmit)}
@@ -149,7 +149,7 @@ export const AccountFormProfile = () => {
           className="col-span-6 sm:col-span-4"
         />
       </div>
-    </FormTwoColumnCard>
+    </FormCardPanel>
   );
 };
 

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
-import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
+import FormCardPanel from '../../../components/Form/CardPanel/CardPanel';
 
 interface AccountFormAddressForm {
   firstName: string;
@@ -89,7 +89,7 @@ export const AccountFormAddress = () => {
     formatError(customerAddressResponse.customerAddressUpdate.customerUserErrors);
 
   return (
-    <FormTwoColumnCard
+    <FormCardPanel
       primaryText="Shipping Address"
       secondaryText="Use a permanent address where you can receive mail."
       onSubmit={handleSubmit(onSubmit)}
@@ -222,7 +222,7 @@ export const AccountFormAddress = () => {
           className="col-span-6"
         />
       </div>
-    </FormTwoColumnCard>
+    </FormCardPanel>
   );
 };
 

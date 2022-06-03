@@ -1,18 +1,18 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import FormInput from 'components/Form/Input/Input';
 import { useForm } from 'react-hook-form';
-import { FormTwoColumnCard } from './TwoColumnCard';
+import { FormCardPanel } from './CardPanel';
 
-const Meta: ComponentMeta<typeof FormTwoColumnCard> = {
+const Meta: ComponentMeta<typeof FormCardPanel> = {
   title: 'Components / Form / Two Column Card',
-  component: FormTwoColumnCard
+  component: FormCardPanel
 };
 
-const Template: ComponentStory<typeof FormTwoColumnCard> = (args) => {
+const Template: ComponentStory<typeof FormCardPanel> = (args) => {
   const { control } = useForm();
 
   return (
-    <FormTwoColumnCard {...args}>
+    <FormCardPanel {...args}>
       <FormInput
         control={control}
         name="firstName"
@@ -40,7 +40,7 @@ const Template: ComponentStory<typeof FormTwoColumnCard> = (args) => {
         }}
         className="col-span-6 sm:col-span-3"
       />
-    </FormTwoColumnCard>
+    </FormCardPanel>
   );
 };
 

@@ -1,7 +1,7 @@
 import Button from 'components/Button/Button';
 import { PropsWithChildren } from 'react';
 
-export interface FormTwoColumnCardActionsProps {
+export interface FormCardPanelActionsProps {
   error?: string;
   isReady?: boolean;
   isSubmitting: boolean;
@@ -9,13 +9,13 @@ export interface FormTwoColumnCardActionsProps {
   isValid?: boolean;
 }
 
-export const FormTwoColumnCardActions = ({
+export const FormCardPanelActions = ({
   error,
   isReady,
   isSubmitting,
   isSubmitSuccessful,
   isValid
-}: PropsWithChildren<FormTwoColumnCardActionsProps>) => {
+}: PropsWithChildren<FormCardPanelActionsProps>) => {
   isReady = isReady ?? true;
   isValid = isValid ?? true;
   return (
@@ -38,4 +38,4 @@ export const FormTwoColumnCardActions = ({
   );
 };
 
-export default FormTwoColumnCardActions;
+export default FormCardPanelActions;

@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import type { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import FormTwoColumnCard from '../../../components/Form/TwoColumnCard/TwoColumnCard';
+import FormCardPanel from '../../../components/Form/CardPanel/CardPanel';
 
 export interface AccountFormPasswordForm {
   password: string;
@@ -55,7 +55,7 @@ export const AccountFormPassword = () => {
   const isReady = true;
 
   return (
-    <FormTwoColumnCard
+    <FormCardPanel
       primaryText="New Password"
       secondaryText="Setting a new password will sign you out."
       onSubmit={handleSubmit(onSubmit)}
@@ -99,7 +99,7 @@ export const AccountFormPassword = () => {
           }}
         />
       </div>
-    </FormTwoColumnCard>
+    </FormCardPanel>
   );
 };
 
