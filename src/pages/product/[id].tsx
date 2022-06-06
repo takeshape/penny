@@ -1,25 +1,29 @@
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
+import ProductWithImageGrid from 'features/ProductPage/ProductWithImageGrid/ProductWithImageGrid';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
 import { GetProductIdsQuery, GetProductQuery } from 'queries';
-import type { Product } from 'types/product';
-import type { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
+import type { Product as ProductType } from 'types/product';
+import type { ReviewHighlights, ReviewList } from 'types/review';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { reviewsIoProductReviewsToReviewList, reviewsIoProductReviewsToReviewStats } from 'utils/transforms/reviewsIo';
+import {
+  reviewsIoProductReviewsToReviewHighlight,
+  reviewsIoProductReviewsToReviewList
+} from 'utils/transforms/reviewsIo';
 import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms/shopify';
 import { getSingle } from 'utils/types';
 
 interface ProductPageProps {
-  product: Product;
-  reviews: ReviewsIo_ProductReview[] | null;
-  stats: ReviewsIo_ListProductReviewsResponseStatsProperty | null;
+  product: ProductType;
+  reviews: ReviewList;
+  reviewHighlights: ReviewHighlights;
 }
 
-const ProductPage: NextPage<ProductPageProps> = (props) => {
+const ProductPage: NextPage<ProductPageProps> = ({ product, reviewHighlights }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
@@ -32,11 +36,13 @@ const ProductPage: NextPage<ProductPageProps> = (props) => {
     );
   }
 
-  const { product, reviews, stats } = props;
-
   return (
     <Layout title={product.name}>
-      <Wrapper>{/* <ProductPageComponent /> */}</Wrapper>
+      <div className="bg-white">
+        <Wrapper>
+          <ProductWithImageGrid product={product} reviews={reviewHighlights} />
+        </Wrapper>
+      </div>
     </Layout>
   );
 };
@@ -53,13 +59,13 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 
   const product = shopifyProductToProduct(data.product);
   const reviews = reviewsIoProductReviewsToReviewList(data.product.reviews);
-  const reviewStats = reviewsIoProductReviewsToReviewStats(data.product.reviews);
+  const reviewHighlights = reviewsIoProductReviewsToReviewHighlight(data.product.reviews);
 
   return addApolloQueryCache(apolloClient, {
     props: {
       product,
-      reviews: reviews ?? {},
-      reviewStats
+      reviews,
+      reviewHighlights
     }
   });
 };

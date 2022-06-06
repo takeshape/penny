@@ -1,10 +1,15 @@
-import type { Review, ReviewList, ReviewStats } from 'types/review';
-import type { ReviewsIo_ListProductReviewsResponse, ReviewsIo_ProductReview } from 'types/takeshape';
+import type { Review, ReviewHighlights, ReviewList, ReviewStats } from 'types/review';
+import type {
+  ReviewsIo_ListProductReviewsResponse,
+  ReviewsIo_ListProductReviewsResponseStatsProperty,
+  ReviewsIo_ProductReview
+} from 'types/takeshape';
 
 function getReview(review: ReviewsIo_ProductReview): Review {
-  const { rating, title, review: body, date_created, timeago, reviewer } = review;
+  const { product_review_id, rating, title, review: body, date_created, timeago, reviewer } = review;
 
   return {
+    id: product_review_id,
     rating,
     title,
     body,
@@ -21,20 +26,30 @@ function getReview(review: ReviewsIo_ProductReview): Review {
   };
 }
 
+function getStats(stats?: ReviewsIo_ListProductReviewsResponseStatsProperty): ReviewStats {
+  return {
+    average: stats?.average ?? null,
+    count: stats?.count ?? 0
+  };
+}
+
 export function reviewsIoProductReviewsToReviewList(reviews?: ReviewsIo_ListProductReviewsResponse): ReviewList {
   const { total, per_page, current_page, data } = reviews?.reviews ?? {};
 
   return {
+    stats: getStats(reviews?.stats),
     currentPage: current_page ?? null,
     totalPages: total ?? null,
     perPage: per_page ?? null,
-    data: data?.map(getReview) ?? null
+    data: data?.map(getReview) ?? []
   };
 }
 
-export function reviewsIoProductReviewsToReviewStats(reviews?: ReviewsIo_ListProductReviewsResponse): ReviewStats {
+export function reviewsIoProductReviewsToReviewHighlight(
+  reviews?: ReviewsIo_ListProductReviewsResponse
+): ReviewHighlights {
   return {
-    average: reviews?.stats?.average ?? null,
-    count: reviews?.stats?.count ?? 0
+    stats: getStats(reviews?.stats),
+    featured: reviews?.reviews?.data?.slice(0, 5).map(getReview) ?? []
   };
 }

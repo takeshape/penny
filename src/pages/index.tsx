@@ -11,6 +11,7 @@ import { GetProductsQuery } from 'queries';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+import { reviewsIoProductReviewsToReviewHighlight } from 'utils/transforms/reviewsIo';
 import { shopifyProductToProductListItem } from 'utils/transforms/shopify';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -51,7 +52,12 @@ export async function getStaticProps() {
       query: GetProductsQuery
     });
 
-    products = data.products.edges.map((e) => shopifyProductToProductListItem(e.node));
+    products = data.products.edges.map(({ node }) => {
+      return {
+        product: shopifyProductToProductListItem(node),
+        reviews: reviewsIoProductReviewsToReviewHighlight(node.reviews)
+      };
+    });
   } catch (err) {
     logger.error(err);
     error = formatError(err);

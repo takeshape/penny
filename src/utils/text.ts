@@ -1,4 +1,5 @@
 import { locale } from 'config';
+import { ProductPriceOption } from 'types/product';
 
 const pluralRules = new Intl.PluralRules(locale);
 
@@ -16,4 +17,22 @@ export function pluralizeText(count: number, singular: string, plural: string) {
 
 export function formatPrice(currency: string, amountInCents: number) {
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amountInCents / 100);
+}
+
+export function formatDiscount(price: ProductPriceOption) {
+  if (!price.hasDiscount) {
+    return '';
+  }
+
+  switch (price.discountType) {
+    case 'PRICE':
+    case 'FIXED_AMOUNT': {
+      const amountOff = price.amountBeforeDiscount - price.amount;
+      return formatPrice(price.currencyCode, amountOff);
+    }
+    case 'PERCENTAGE':
+    default: {
+      return `${price.discountAmount}%`;
+    }
+  }
 }

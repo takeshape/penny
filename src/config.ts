@@ -100,7 +100,28 @@ export const cartLocalStorageKey = process.env.NEXT_PUBLIC_CART_LOCAL_STORAGE_KE
 export const defaultProductImage = {
   height: 480,
   url: '/images/default-product-image.webp',
-  width: 480
+  width: 480,
+  altText: 'Default product image'
+};
+
+/* Product Options - LUTs to decorate options */
+export const productOptions = {
+  color: {
+    white: { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
+    gray: { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
+    black: { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
+    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300' }
+  },
+  size: {
+    xxs: { name: 'XXS' },
+    xs: { name: 'XS' },
+    s: { name: 'S' },
+    m: { name: 'M' },
+    l: { name: 'L' },
+    xl: { name: 'XL' },
+    '2xl': { name: '2XL' },
+    '3xl': { name: '3XL' }
+  }
 };
 
 /* Misc */

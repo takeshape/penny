@@ -2,10 +2,11 @@ import { StarIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import type { Product } from 'types/product';
+import { ReviewHighlights } from 'types/review';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
 export interface ProductGridProps {
-  products?: Product[];
+  products?: { product: Product; reviews: ReviewHighlights }[];
 }
 
 const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) => {
@@ -17,7 +18,7 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
       </h2>
 
       <div className="-mx-px border-l border-gray-200 grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product) => (
+        {products.map(({ product, reviews }) => (
           <div key={product.id} className="group relative p-4 border-r border-b border-gray-200 sm:p-6">
             <div className="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75">
               <NextImage
@@ -36,22 +37,22 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
                   {product.name}
                 </NextLink>
               </h3>
-              {product.reviewsAverage ? (
+              {reviews.stats.average ? (
                 <div className="mt-3 flex flex-col items-center">
-                  <p className="sr-only">{product.reviewsAverage} out of 5 stars</p>
+                  <p className="sr-only">{reviews.stats.average} out of 5 stars</p>
                   <div className="flex items-center">
                     {[0, 1, 2, 3, 4].map((rating) => (
                       <StarIcon
                         key={rating}
                         className={classNames(
-                          product.reviewsAverage > rating ? 'text-yellow-400' : 'text-gray-200',
+                          reviews.stats.average > rating ? 'text-yellow-400' : 'text-gray-200',
                           'flex-shrink-0 h-5 w-5'
                         )}
                         aria-hidden="true"
                       />
                     ))}
                   </div>
-                  <p className="mt-1 text-sm text-gray-500">{product.reviewsCount} reviews</p>
+                  <p className="mt-1 text-sm text-gray-500">{reviews.stats.count} reviews</p>
                 </div>
               ) : null}
 

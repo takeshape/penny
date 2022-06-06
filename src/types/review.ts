@@ -7,6 +7,7 @@ export type ReviewReviewer = {
 };
 
 export type Review = {
+  id: number;
   rating: number;
   title: string;
   body: string;
@@ -15,14 +16,20 @@ export type Review = {
   reviewer: ReviewReviewer;
 };
 
+export type ReviewStats = {
+  average: number;
+  count: number;
+};
+
 export type ReviewList = {
+  stats: ReviewStats;
   perPage: number;
   currentPage: number;
   totalPages: number;
   data: Review[];
 };
 
-export type ReviewStats = {
-  average: number;
-  count: number;
+export type ReviewHighlights = {
+  stats: ReviewStats;
+  featured: Review[];
 };
