@@ -10,7 +10,7 @@ export type CartItem = {
   quantity: number;
   imageSrc: string;
   imageAlt: string;
-  interval: 'none' | 'day' | 'week' | 'month' | 'year';
+  interval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
   intervalCount: number;
   // Freeform data, for display or later API calls
   data: Record<string, unknown>;

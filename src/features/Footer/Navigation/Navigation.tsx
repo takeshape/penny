@@ -1,3 +1,4 @@
+import NextLink from 'components/NextLink';
 import { useMemo } from 'react';
 
 interface NavigationItemProps {
@@ -6,9 +7,9 @@ interface NavigationItemProps {
 }
 
 const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => (
-  <a href={props.href} className="text-base text-gray-500 hover:text-gray-900">
+  <NextLink href={props.href} className="text-base text-gray-500 hover:text-gray-900">
     {props.name}
-  </a>
+  </NextLink>
 );
 
 interface NavigationSectionProps {

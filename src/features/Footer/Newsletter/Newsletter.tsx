@@ -62,7 +62,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
           placeholder="Enter your email"
         />
         <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
-          <Button type="submit" loading={loading} color="primary" className="w-full h-full">
+          <Button type="submit" loading={loading ? true : undefined} color="primary" className="w-full h-full">
             {loading ? 'Subscribing…' : text?.button ?? 'Subscribe'}
           </Button>
         </div>

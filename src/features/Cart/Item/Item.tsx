@@ -38,7 +38,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
               <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
               {intervalCount > 0 ? (
                 <p className="ml-4 text-right text-xs text-gray-500">
-                  per {pluralizeText(intervalCount, interval, `${interval}s`)}
+                  per {pluralizeText(intervalCount, interval.toLowerCase(), `${interval.toLowerCase()}s`)}
                 </p>
               ) : null}
             </div>
