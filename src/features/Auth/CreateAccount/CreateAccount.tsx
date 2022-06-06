@@ -8,7 +8,7 @@ import type { CreateCustomerResponse } from 'queries';
 import { CreateCustomerMutation } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationShopifyStorefront_CustomerCreateArgs } from 'types/takeshape';
+import type { MutationCreateCustomerArgs } from 'types/takeshape';
 
 export interface AuthCreateAccountForm {
   email: string;
@@ -23,9 +23,9 @@ export interface AuthCreateAccountProps {
 export const AuthCreateAccount = ({ callbackUrl }) => {
   const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
 
-  const [setCustomerPayload, { data: customerResponse }] = useMutation<
+  const [setCustomerPayload, { data: customerResponse, error }] = useMutation<
     CreateCustomerResponse,
-    MutationShopifyStorefront_CustomerCreateArgs
+    MutationCreateCustomerArgs
   >(CreateCustomerMutation);
 
   const watched = useRef({ email: '', password: '' });
@@ -47,8 +47,6 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     [setCustomerPayload]
   );
 
-  const hasErrors = customerResponse?.customerCreate?.customerUserErrors?.length > 0;
-
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -60,11 +58,11 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            {hasErrors && (
+            {error && (
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={customerResponse.customerCreate.customerUserErrors.map((e) => e.message)}
+                secondaryText={error.message}
               />
             )}
 
@@ -122,7 +120,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
 
             <div>
               <Button
-                disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !hasErrors)}
+                disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !error)}
                 color="primary"
                 type="submit"
                 size="medium"

@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 import type {
+  CreateCustomerPayload,
   Klaviyo_200Ok,
   Klaviyo_AddMembersResponse,
   Mutation,
@@ -9,7 +10,6 @@ import type {
   ShopifyStorefront_Customer,
   ShopifyStorefront_CustomerAccessTokenCreatePayload,
   ShopifyStorefront_CustomerAddressUpdatePayload,
-  ShopifyStorefront_CustomerCreatePayload,
   ShopifyStorefront_CustomerRecoverPayload,
   ShopifyStorefront_CustomerUpdatePayload,
   Shopify_Customer,
@@ -581,19 +581,14 @@ export const GetCustomerQuery = gql`
 `;
 
 export type CreateCustomerResponse = {
-  customerCreate: ShopifyStorefront_CustomerCreatePayload;
+  customerCreate: CreateCustomerPayload;
 };
 
 export const CreateCustomerMutation = gql`
-  mutation CreateCustomerMutation($input: ShopifyStorefront_CustomerCreateInput!) {
-    customerCreate: ShopifyStorefront_customerCreate(input: $input) {
+  mutation CreateCustomerMutation($input: CreateCustomerPropertiesPropertyInput!) {
+    customerCreate: createCustomer(input: $input) {
       customer {
         id
-      }
-      customerUserErrors {
-        code
-        field
-        message
       }
     }
   }
