@@ -209,25 +209,27 @@ function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
 }
 
 function getOptions(shopifyProduct: Shopify_Product, variants?: ProductVariant[]) {
-  return shopifyProduct.options.map((opt) => {
-    return {
-      ...opt,
-      values: opt.values.map((value) => {
-        const hasStock =
-          variants?.some((variant) => {
-            if (variant.options.find((o) => o.value === value)) {
-              return variant.available;
-            }
-          }) ?? null;
+  return (
+    shopifyProduct.options?.map((opt) => {
+      return {
+        ...opt,
+        values: opt.values.map((value) => {
+          const hasStock =
+            variants?.some((variant) => {
+              if (variant.options.find((o) => o.value === value)) {
+                return variant.available;
+              }
+            }) ?? null;
 
-        return {
-          value,
-          hasStock,
-          ...productOptions?.[opt.name.toLowerCase()]?.[value.toLowerCase()]
-        };
-      })
-    };
-  });
+          return {
+            value,
+            hasStock,
+            ...productOptions?.[opt.name.toLowerCase()]?.[value.toLowerCase()]
+          };
+        })
+      };
+    }) ?? []
+  );
 }
 
 export function shopifyGidToId(gid: string): string {

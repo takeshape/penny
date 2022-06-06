@@ -27,11 +27,11 @@ const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildren<Prod
   const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
 
-  const initialColor = colors.values.find((v) => v.hasStock) ?? colors.values[0];
-  const initialSize = sizes.values.find((v) => v.hasStock) ?? sizes.values[0];
+  const initialColor = colors?.values.find((v) => v.hasStock) ?? colors?.values[0];
+  const [selectedColor, setSelectedColor] = useState(initialColor?.value ?? '');
 
-  const [selectedColor, setSelectedColor] = useState(initialColor.value);
-  const [selectedSize, setSelectedSize] = useState(initialSize.value);
+  const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0];
+  const [selectedSize, setSelectedSize] = useState(initialSize?.value ?? '');
 
   const initialVariant = getVariant(product.variants, [
     { name: 'Color', value: selectedColor },
@@ -39,7 +39,7 @@ const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildren<Prod
   ]);
 
   const [selectedVariant, setSelectedVariant] = useState(initialVariant);
-  const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
+  const [selectedPrice, setSelectedPrice] = useState(initialVariant?.prices[0]);
 
   useEffect(() => {
     const variant = getVariant(product.variants, [
