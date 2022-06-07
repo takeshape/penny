@@ -1,3 +1,4 @@
+import React from 'react';
 import { render } from 'test/test-utils';
 import Example from './Example';
 import rickAndMortyJson from './fixtures.json';
