@@ -19,7 +19,7 @@ const Meta: ComponentMeta<typeof Modal> = {
   }
 };
 
-const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args} />;
+const Template: ComponentStory<typeof Modal> = () => <Modal />;
 
 export const _Empty = Template.bind({});
 _Empty.parameters = {

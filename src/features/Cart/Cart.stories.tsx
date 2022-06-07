@@ -9,7 +9,7 @@ const Meta: ComponentMeta<typeof Cart> = {
   component: Cart
 };
 
-const Template: ComponentStory<typeof Cart> = (args) => <Cart {...args} />;
+const Template: ComponentStory<typeof Cart> = () => <Cart />;
 
 export const WithItems = Template.bind({});
 WithItems.parameters = {
