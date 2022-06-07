@@ -62,6 +62,15 @@
         },
         {
           "Resource": [
+            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.createCustomer"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
             "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
           ],
           "Effect": "Allow",
