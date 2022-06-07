@@ -56,7 +56,7 @@
     "react-icons": "^4.4.0",
     "react-phone-number-input": "^3.2.2",
     "react-star-ratings": "^2.3.0",
-    "sharp": "^0.30.4",
+    "sharp": "^0.30.6",
     "theme-ui": "^0.14.5"
   },
   "devDependencies": {
