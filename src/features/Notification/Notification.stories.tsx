@@ -7,7 +7,7 @@ const Meta: ComponentMeta<typeof Notification> = {
   component: Notification
 };
 
-const Template: ComponentStory<typeof Notification> = (args) => <Notification {...args} />;
+const Template: ComponentStory<typeof Notification> = () => <Notification />;
 
 export const Info = Template.bind({});
 Info.parameters = {
