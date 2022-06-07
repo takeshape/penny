@@ -8,7 +8,7 @@ const Meta: ComponentMeta<typeof Footer> = {
   component: Footer
 };
 
-const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
+const Template: ComponentStory<typeof Footer> = () => <Footer />;
 
 export const _Footer = Template.bind({});
 _Footer.parameters = {
