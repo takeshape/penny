@@ -53,6 +53,7 @@ export const GetProductsQuery = gql`
           title
           description
           descriptionHtml
+          requiresSellingPlan
           featuredImage {
             width
             height
@@ -83,13 +84,15 @@ export const GetProductsQuery = gql`
               count
             }
           }
-          totalVariants
-          sellingPlanGroupCount
-          recharge {
-            subscription_defaults {
-              storefront_purchase_options
-            }
+          options {
+            name
+            position
+            id
+            values
           }
+          totalVariants
+          totalInventory
+          sellingPlanGroupCount
         }
       }
     }
@@ -109,6 +112,7 @@ export const GetProductQuery = gql`
       title
       description
       descriptionHtml
+      requiresSellingPlan
       featuredImage {
         width
         height
@@ -139,7 +143,8 @@ export const GetProductQuery = gql`
       }
       publishedAt
       totalVariants
-      variants(first: 10) {
+      totalInventory
+      variants(first: 50) {
         edges {
           node {
             id
@@ -151,6 +156,7 @@ export const GetProductQuery = gql`
               url
             }
             price
+            inventoryPolicy
             sellableOnlineQuantity
             sku
             title
@@ -168,6 +174,7 @@ export const GetProductQuery = gql`
         }
         reviews {
           data {
+            product_review_id
             rating
             title
             review
@@ -186,6 +193,12 @@ export const GetProductQuery = gql`
           current_page
           total
         }
+      }
+      options {
+        name
+        position
+        id
+        values
       }
       sellingPlanGroupCount
       sellingPlanGroups(first: 1) {
@@ -239,11 +252,6 @@ export const GetProductQuery = gql`
               }
             }
           }
-        }
-      }
-      recharge {
-        subscription_defaults {
-          storefront_purchase_options
         }
       }
     }

@@ -97,7 +97,7 @@ const staticClientCache = {};
  * The static client is used during static generation. Existing clients will be
  * reused to ensure the cache is complete.
  */
-export function createStaticClient({ accessToken, uri }: InitializeApolloProps) {
+export function createStaticClient({ accessToken, uri }: InitializeApolloProps): ApolloClient<NormalizedCacheObject> {
   const cacheKey = `${uri}:${accessToken}`;
 
   if (staticClientCache[cacheKey]) {

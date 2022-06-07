@@ -4,6 +4,7 @@ export type ProductImage = {
   height: number;
   url: string;
   width: number;
+  altText: string;
 };
 
 export type ProductPriceRecurringAnchor = {
@@ -16,6 +17,8 @@ export type ProductPriceRecurringAnchor = {
  * All amounts in cents
  */
 export type ProductPriceOption = {
+  id: string;
+  name: string;
   merchandiseId: string;
   subscriptionId?: string;
   interval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
@@ -23,6 +26,7 @@ export type ProductPriceOption = {
   intervalMaxCycles?: number | null;
   intervalMinCycles?: number | null;
   intervalAnchor?: ProductPriceRecurringAnchor | null;
+  hasDiscount: boolean;
   discountType: 'PERCENTAGE' | 'FIXED_AMOUNT' | 'PRICE';
   discountAmount: number;
   amountBeforeDiscount: number;
@@ -46,41 +50,31 @@ export type ProductVariantOption = {
 export type ProductVariant = {
   id: string;
   name: string;
+  description: string;
   image: ProductImage;
   prices: ProductPriceOption[];
   available: boolean;
   inventory: number;
+  inventoryPolicy: 'CONTINUE' | 'DENY';
   sku: string;
   options: ProductVariantOption[];
-};
-
-export type ProductReviewReviewer = {
-  firstName: string;
-  lastName: string;
-  verifiedBuyer: string;
-  address: string;
-  imageUrl: string;
-};
-
-export type ProductReview = {
-  rating: number;
-  title: string;
-  body: string;
-  createdAt: string;
-  timeAgo: string;
-  reviewer: ProductReviewReviewer;
-};
-
-export type ProductReviews = {
-  perPage: number;
-  currentPage: number;
-  totalPages: number;
-  data: ProductReview[];
 };
 
 export type ProductSeo = {
   title: string;
   description: string;
+};
+
+export type ProductOptionValue = Record<string, string> & {
+  value: string;
+  hasStock?: boolean;
+};
+
+export type ProductOption = {
+  id: string;
+  name: string;
+  position: number;
+  values: ProductOptionValue[];
 };
 
 export type ProductBase = {
@@ -93,15 +87,14 @@ export type ProductBase = {
   images: ProductImage[];
   priceMin: ProductPrice;
   priceMax: ProductPrice;
+  options: ProductOption[];
   variantsCount: number;
   variants?: ProductVariant[];
   hasOneTimePurchaseOption: boolean;
   hasSubscriptionPurchaseOption: boolean;
+  hasStock: boolean;
   // Freeform data, for display or later API calls
   data: Record<string, unknown>;
-  reviewsCount: number;
-  reviewsAverage: number;
-  reviews?: ProductReviews;
   seo?: ProductSeo;
 };
 

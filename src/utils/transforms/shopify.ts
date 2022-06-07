@@ -1,4 +1,4 @@
-import { defaultCurrency, defaultProductImage } from 'config';
+import { defaultCurrency, defaultProductImage, productOptions } from 'config';
 import type {
   Product,
   ProductImage,
@@ -6,15 +6,10 @@ import type {
   ProductPrice,
   ProductPriceCurrencyCode,
   ProductPriceOption,
-  ProductReview,
-  ProductReviews,
   ProductSeo,
   ProductVariant
 } from 'types/product';
 import type {
-  Recharge_Product,
-  ReviewsIo_ListProductReviewsResponseReviewsProperty,
-  ReviewsIo_ProductReview,
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
@@ -33,17 +28,20 @@ function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopif
       return {
         type: 'PRICE' as const,
         amountAfterDiscount: newAmount,
-        amount: newAmount
+        amount: newAmount,
+        hasDiscount: amount !== newAmount
       };
     }
 
     case Shopify_SellingPlanPricingPolicyAdjustmentType.FixedAmount: {
       const discountAmount = Number((adjustmentValue as Shopify_MoneyV2).amount) * 100;
+      const amountAfterDiscount = amount - discountAmount;
 
       return {
         type: 'FIXED_AMOUNT' as const,
-        amountAfterDiscount: amount - discountAmount,
-        amount: discountAmount
+        amountAfterDiscount,
+        amount: discountAmount,
+        hasDiscount: amount !== amountAfterDiscount
       };
     }
 
@@ -51,11 +49,13 @@ function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopif
     default: {
       const discountAmount = (adjustmentValue as Shopify_SellingPlanPricingPolicyPercentageValue).percentage ?? 0;
       const discountAmountOff = Math.round(amount * (discountAmount / 100));
+      const amountAfterDiscount = amount - discountAmountOff;
 
       return {
         type: 'PERCENTAGE' as const,
-        amountAfterDiscount: amount - discountAmountOff,
-        amount: discountAmount
+        amountAfterDiscount,
+        amount: discountAmount,
+        hasDiscount: amount !== amountAfterDiscount
       };
     }
   }
@@ -100,12 +100,13 @@ function getSubscriptionInterval({
   }
 }
 
-function getImage(shopifyImage?: Shopify_Image): ProductImage {
-  const { height, width, url } = shopifyImage ?? defaultProductImage;
+function getImage(shopifyProduct: Shopify_Product, shopifyImage?: Shopify_Image): ProductImage {
+  const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
   return {
     height,
     url,
-    width
+    width,
+    altText: altText ?? `Image of ${shopifyProduct.title}`
   };
 }
 
@@ -117,13 +118,16 @@ function getPriceOptions(
   const { id, price } = shopifyVariant;
   const amount = Number(price) * 100;
 
-  const { hasOneTime, hasSubscription } = getPurchaseOptions(shopifyProduct.recharge);
+  const { requiresSellingPlan, sellingPlanGroups, sellingPlanGroupCount } = shopifyProduct;
 
   let prices: ProductPriceOption[] = [];
 
-  if (hasOneTime) {
+  if (!requiresSellingPlan) {
     prices.push({
+      id: `${id}_DAY_0`,
+      name: 'One-time purchase',
       merchandiseId: id,
+      hasDiscount: false,
       discountAmount: 0,
       discountType: 'PERCENTAGE',
       interval: 'DAY',
@@ -134,11 +138,8 @@ function getPriceOptions(
     });
   }
 
-  if (hasSubscription && shopifyProduct.sellingPlanGroups) {
-    const sellingPlans = shopifyProduct.sellingPlanGroups.edges.flatMap(({ node }) =>
-      node.sellingPlans.edges.map(({ node }) => node)
-    );
-
+  if (sellingPlanGroupCount > 0) {
+    const sellingPlans = sellingPlanGroups.edges.flatMap(({ node }) => node.sellingPlans.edges.map(({ node }) => node));
     prices = prices
       .concat(
         sellingPlans.map((plan) => {
@@ -146,9 +147,12 @@ function getPriceOptions(
           const discount = getDiscount(amount, plan.pricingPolicies[0]);
 
           return {
+            id: `${id}_${subscriptionInterval.interval}_${subscriptionInterval.intervalCount}`,
+            name: discount.hasDiscount ? 'Subscribe & Save' : 'Subscribe',
             merchandiseId: id,
             subscriptionId: plan.id,
             // This will only ever be 'percentage'
+            hasDiscount: discount.hasDiscount,
             discountType: discount.type,
             discountAmount: discount.amount,
             // Recharge forces each product to have the same interval for all sub options
@@ -170,14 +174,17 @@ function getPriceOptions(
 }
 
 function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_ProductVariant): ProductVariant {
-  const { id, title, price, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku } = shopifyVariant;
+  const { id, title, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
+    shopifyVariant;
   return {
     id,
     name: title,
+    description: title, // use a metafield
     prices: getPriceOptions(shopifyProduct, shopifyVariant),
-    available: availableForSale,
-    image: getImage(image),
+    available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
+    image: getImage(shopifyProduct, image),
     inventory: sellableOnlineQuantity,
+    inventoryPolicy,
     sku,
     options: selectedOptions
   };
@@ -194,37 +201,6 @@ function getPrice(price: Shopify_MoneyV2): ProductPrice {
   };
 }
 
-function getReview(review: ReviewsIo_ProductReview): ProductReview {
-  const { rating, title, review: body, date_created, timeago, reviewer } = review;
-
-  return {
-    rating,
-    title,
-    body,
-    // Reviews.io is ISO 9075, convert to ISO 8601
-    createdAt: new Date(`${date_created}.000Z`).toISOString(),
-    timeAgo: timeago,
-    reviewer: {
-      firstName: reviewer.first_name,
-      lastName: reviewer.last_name,
-      verifiedBuyer: reviewer.verified_buyer,
-      address: reviewer.address,
-      imageUrl: reviewer.profile_picture ?? reviewer.gravatar
-    }
-  };
-}
-
-function getReviews(reviews?: ReviewsIo_ListProductReviewsResponseReviewsProperty): ProductReviews {
-  const { total, per_page, current_page, data } = reviews;
-
-  return {
-    currentPage: current_page,
-    totalPages: total,
-    perPage: per_page,
-    data: data.map(getReview)
-  };
-}
-
 function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
   return {
     title: shopifyProduct.seo.title ?? shopifyProduct.title,
@@ -232,19 +208,28 @@ function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
   };
 }
 
-function getPurchaseOptions(recharge?: Recharge_Product) {
-  let hasOneTime = true;
-  let hasSubscription = false;
+function getOptions(shopifyProduct: Shopify_Product, variants?: ProductVariant[]) {
+  return (
+    shopifyProduct.options?.map((opt) => {
+      return {
+        ...opt,
+        values: opt.values.map((value) => {
+          const hasStock =
+            variants?.some((variant) => {
+              if (variant.options.find((o) => o.value === value)) {
+                return variant.available;
+              }
+            }) ?? null;
 
-  if (recharge?.subscription_defaults?.storefront_purchase_options) {
-    hasOneTime = Boolean(recharge.subscription_defaults.storefront_purchase_options === 'subscription_and_onetime');
-    hasSubscription = true;
-  }
-
-  return {
-    hasOneTime,
-    hasSubscription
-  };
+          return {
+            value,
+            hasStock,
+            ...productOptions?.[opt.name.toLowerCase()]?.[value.toLowerCase()]
+          };
+        })
+      };
+    }) ?? []
+  );
 }
 
 export function shopifyGidToId(gid: string): string {
@@ -256,29 +241,29 @@ export function shopifyIdToGid(id: string): string {
 }
 
 export function shopifyProductToProductListItem(shopifyProduct: Shopify_Product): ProductListItem {
-  const purchaseOptions = getPurchaseOptions(shopifyProduct.recharge);
-
   return {
     id: shopifyProduct.id,
     url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct.featuredImage),
-    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(node)) ?? [getImage()],
+    featuredImage: getImage(shopifyProduct, shopifyProduct.featuredImage),
+    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(shopifyProduct, node)) ?? [
+      getImage(shopifyProduct)
+    ],
     priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
     priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
     variantsCount: shopifyProduct.totalVariants,
-    reviewsAverage: shopifyProduct.reviews?.stats?.average ?? null,
-    reviewsCount: shopifyProduct.reviews?.stats?.count ?? 0,
-    hasOneTimePurchaseOption: purchaseOptions.hasOneTime,
-    hasSubscriptionPurchaseOption: purchaseOptions.hasSubscription,
+    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
+    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
+    hasStock: shopifyProduct.totalInventory > 0,
+    options: getOptions(shopifyProduct),
     data: {}
   };
 }
 
 export function shopifyProductToProduct(shopifyProduct: Shopify_Product): Product {
-  const purchaseOptions = getPurchaseOptions(shopifyProduct.recharge);
+  const variants = getVariants(shopifyProduct);
 
   return {
     id: shopifyProduct.id,
@@ -286,18 +271,19 @@ export function shopifyProductToProduct(shopifyProduct: Shopify_Product): Produc
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct.featuredImage),
-    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(node)) ?? [getImage()],
+    featuredImage: getImage(shopifyProduct, shopifyProduct.featuredImage),
+    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(shopifyProduct, node)) ?? [
+      getImage(shopifyProduct)
+    ],
     priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
     priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
     variantsCount: shopifyProduct.totalVariants,
-    variants: getVariants(shopifyProduct),
-    reviews: shopifyProduct.reviews?.reviews ? getReviews(shopifyProduct.reviews.reviews) : null,
-    reviewsAverage: shopifyProduct.reviews?.stats?.average ?? null,
-    reviewsCount: shopifyProduct.reviews?.stats?.count ?? 0,
+    variants,
     seo: getSeo(shopifyProduct),
-    hasOneTimePurchaseOption: purchaseOptions.hasOneTime,
-    hasSubscriptionPurchaseOption: purchaseOptions.hasSubscription,
+    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
+    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
+    hasStock: shopifyProduct.totalInventory > 0,
+    options: getOptions(shopifyProduct, variants),
     data: {}
   };
 }

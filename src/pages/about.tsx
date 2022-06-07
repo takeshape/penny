@@ -1,4 +1,3 @@
-import Section from 'components/Section';
 import Wrapper from 'components/Wrapper/Content';
 import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
@@ -39,7 +38,7 @@ const AboutPage: NextPage = () => {
         <Heading as="h1">About</Heading>
         <Divider />
 
-        <Section>
+        <section className="mb-4">
           <Paragraph>
             This project demonstrates using <Link href="https://auth0.com">Auth0</Link> to manage a user‘s account and
             make purchases through <Link href="https://shopify.com">Shopify</Link>.
@@ -56,9 +55,9 @@ const AboutPage: NextPage = () => {
             Auth0 Next.js library only makes access tokens available in API routes — we‘ve avoided those entirely so
             that you can run `npm run export` and host your bundle on any static file service.
           </Paragraph>
-        </Section>
+        </section>
 
-        <Section>
+        <section className="mb-4">
           <Heading variant="h3">Key Dependencies</Heading>
           <Divider />
           <Box
@@ -104,7 +103,7 @@ const AboutPage: NextPage = () => {
               </Box>
             ))}
           </Box>
-        </Section>
+        </section>
       </Wrapper>
     </Layout>
   );
