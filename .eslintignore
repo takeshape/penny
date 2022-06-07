@@ -1,5 +1,6 @@
 src/types/takeshape.ts
 tsconfig.json
+package-lock.json
 !.takeshape
 !.storybook
 !.lighthouse
