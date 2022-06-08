@@ -12,12 +12,16 @@ export interface AccountPurchasesProps {
   orders?: Shopify_Order[];
 }
 
+const Empty = () => (
+  <div className="flex flex-col items-center gap-2 text-neutral-500">
+    <p>No purchases found.</p>
+    <p>Go get yourself something nice.</p>
+  </div>
+)
+
 export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) => {
-  if (loading) {
-    return <div className="flex justify-center"><Loader /></div>
-  }
   if (!orders || !orders.length) {
-    return <div>No orders to display!</div>;
+    return <div className="min-h-full flex justify-center items-center">{loading ? <Loader colorClass="text-neutral-700" /> : <Empty />}</div>;
   }
 
   return (
