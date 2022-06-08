@@ -4,34 +4,6 @@ import ContentHeaderSimple from 'features/Content/Header/Simple';
 import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
 
-const dependencies = [
-  {
-    title: 'Next.js',
-    link: 'https://nextjs.org',
-    description: 'A framework for building fast sites and simple API proxies'
-  },
-  {
-    title: '@auth0/auth0-react',
-    link: 'https://github.com/auth0/auth0-react',
-    description: 'Auth0 bindings for React.'
-  },
-  {
-    title: '@apollo/client',
-    link: 'https://github.com/apollographql/apollo-client',
-    description: 'A fully-featured, production ready caching GraphQL client for every UI framework and GraphQL server.'
-  },
-  {
-    title: 'Theme UI',
-    link: 'https://theme-ui.com',
-    description: 'Easily theme-able primitive React components.'
-  },
-  {
-    title: 'react-hook-form',
-    link: 'https://react-hook-form.com',
-    description: 'The easiest most composable way to work with forms in React that I‘ve used.'
-  }
-];
-
 const AboutPage: NextPage = () => {
   return (
     <Layout title="About">
