@@ -1,6 +1,7 @@
-import CardPanel from 'components/Card/Panel/Panel';
+import Button from 'components/Button/Button';
 import Loader from 'components/Loader/Loader';
 import Image from 'components/NextImage';
+import NextLink from 'components/NextLink';
 import { format } from 'date-fns';
 import { shopifyGidToId } from 'transforms/shopify';
 import { Shopify_Order } from 'types/takeshape';
@@ -25,23 +26,23 @@ export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) 
   }
 
   return (
-    <CardPanel
-      primaryText="Order history"
-      secondaryText="Check the status of recent orders, manage returns, and download invoices."
-    >
-      <section aria-labelledby="recent-heading" className="mt-16">
+    <div className="space-y-4">
+      <header>
+        <h3 className="text-lg leading-6 font-medium text-gray-900">Order history</h3>
+        <p className="mt-1 text-sm text-gray-500">Check the status of recent orders, manage returns, and download invoices.</p>
+      </header>
+      <section aria-labelledby="recent-heading">
         <h2 id="recent-heading" className="sr-only">
           Recent orders
         </h2>
-
-        <div className="space-y-20">
+        <div className="space-y-4">
           {orders.map((order) => (
-            <div key={order.id}>
+            <div className="shadow sm:rounded-md sm:overflow-hidden bg-white p-2 sm:p-4" key={order.id}>
               <h3 className="sr-only">
                 Order placed on <time dateTime={order.createdAt}>{order.createdAt}</time>
               </h3>
 
-              <div className="bg-gray-50 rounded-lg py-6 px-4 sm:px-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8">
+              <header className="bg-gray-50 rounded-lg p-4 sm:p-6 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8">
                 <dl className="divide-y divide-gray-200 space-y-6 text-sm text-gray-600 flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-x-6 lg:w-1/2 lg:flex-none lg:gap-x-8">
                   <div className="flex justify-between sm:block">
                     <dt className="font-medium text-gray-900">Date placed</dt>
@@ -70,96 +71,100 @@ export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) 
                   View Invoice
                   <span className="sr-only">for order {order.number}</span>
                 </a> */}
-              </div>
+              </header>
 
-              <table className="mt-4 w-full text-gray-500 sm:mt-6">
-                <caption className="sr-only">Products</caption>
-                <thead className="sr-only text-sm text-gray-500 text-left sm:not-sr-only">
-                  <tr>
-                    <th scope="col" className="sm:w-2/5 lg:w-1/3 pr-8 py-3 font-normal">
-                      Product
-                    </th>
-                    <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
-                      Price
-                    </th>
-                    <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
-                      Status
-                    </th>
-                    <th scope="col" className="w-0 py-3 font-normal text-right">
-                      Info
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-                  {order.fulfillments.map(
-                    ({
-                      id,
-                      displayStatus,
-                      updatedAt,
-                      deliveredAt,
-                      estimatedDeliveryAt,
-                      trackingInfo,
-                      fulfillmentLineItems
-                    }) =>
-                      fulfillmentLineItems.edges.map(({ node }) => (
-                        <tr key={node.lineItem.id}>
-                          <td className="py-6 pr-8">
-                            <div className="flex items-center">
-                              <div className="flex items-center w-16 h-16 mr-6">
-                                <Image
-                                  src={node.lineItem.image.url}
-                                  height={node.lineItem.image.height}
-                                  width={node.lineItem.image.width}
-                                  alt={node.lineItem.name}
-                                  className="rounded"
-                                />
-                              </div>
-                              <div>
-                                <div className="font-medium text-gray-900">{node.lineItem.name}</div>
-                                <div className="mt-1 sm:hidden">
-                                  {formatPrice(
-                                    node.lineItem.originalTotalSet.shopMoney.currencyCode,
-                                    node.lineItem.originalTotalSet.shopMoney.amount * 100
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="hidden py-6 pr-8 sm:table-cell">
-                            {formatPrice(
-                              node.lineItem.originalTotalSet.shopMoney.currencyCode,
-                              node.lineItem.originalTotalSet.shopMoney.amount * 100
-                            )}
-                          </td>
-                          <td className="hidden py-6 pr-8 sm:table-cell">
-                            <PurchseOrderStatus
-                              status={displayStatus}
-                              updatedAt={updatedAt}
-                              deliveredAt={deliveredAt}
-                              estimatedDeliveryAt={estimatedDeliveryAt}
-                              trackingCompany={trackingInfo[0].company}
-                              trackingNumber={trackingInfo[0].number}
-                            />
-                          </td>
-                          <td className="py-6 font-medium text-right whitespace-nowrap">
-                            <a
-                              href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}
-                              className="text-indigo-600"
-                            >
-                              View<span className="hidden lg:inline"> Product</span>
-                              <span className="sr-only">, {node.lineItem.name}</span>
-                            </a>
-                          </td>
-                        </tr>
-                      ))
-                  )}
-                </tbody>
-              </table>
+              <main className="px-2 sm:px-4">
+                {Boolean(order.fulfillments?.length) && (<table className="w-full text-gray-500 sm:mt-6">
+                  <caption className="sr-only">Products</caption>
+                  <thead className="sr-only text-sm text-gray-500 text-left sm:not-sr-only">
+                    <tr>
+                      <th scope="col" className="sm:w-2/5 lg:w-1/3 pr-8 py-3 font-normal">
+                        Product
+                      </th>
+                      <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
+                        Price
+                      </th>
+                      <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
+                        Status
+                      </th>
+                      <th scope="col" className="w-0 py-3 font-normal text-right"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
+                    {order.fulfillments.map(
+                      ({
+                        id,
+                        displayStatus,
+                        updatedAt,
+                        deliveredAt,
+                        estimatedDeliveryAt,
+                        trackingInfo,
+                        fulfillmentLineItems
+                      }) =>
+                        fulfillmentLineItems.edges.map(({ node }) => (
+                          <tr key={node.lineItem.id}>
+                            <td className="py-6 pr-8">
+                              <NextLink href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}>
+                                <a className="flex items-center">
+                                  <div className="flex items-center w-16 h-16 mr-6">
+                                    <Image
+                                      src={node.lineItem.image.url}
+                                      height={node.lineItem.image.height}
+                                      width={node.lineItem.image.width}
+                                      alt={node.lineItem.name}
+                                      className="rounded"
+                                    />
+                                  </div>
+                                  <div>
+                                    <div className="font-medium text-gray-900">{node.lineItem.name}</div>
+                                    <div className="mt-1 sm:hidden">
+                                      {formatPrice(
+                                        node.lineItem.originalTotalSet.shopMoney.currencyCode,
+                                        node.lineItem.originalTotalSet.shopMoney.amount * 100
+                                      )}
+                                    </div>
+                                  </div>
+                                </a>
+                              </NextLink>
+                            </td>
+                            <td className="hidden py-6 pr-8 sm:table-cell">
+                              {formatPrice(
+                                node.lineItem.originalTotalSet.shopMoney.currencyCode,
+                                node.lineItem.originalTotalSet.shopMoney.amount * 100
+                              )}
+                            </td>
+                            <td className="hidden py-6 pr-8 sm:table-cell">
+                              <PurchseOrderStatus
+                                status={displayStatus}
+                                updatedAt={updatedAt}
+                                deliveredAt={deliveredAt}
+                                estimatedDeliveryAt={estimatedDeliveryAt}
+                                trackingCompany={trackingInfo[0].company}
+                                trackingNumber={trackingInfo[0].number}
+                              />
+                            </td>
+                            <td className="py-6 font-medium text-right whitespace-nowrap">
+                              <NextLink href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}>
+                                <Button as="a">
+                                  <span>
+                                    View<span className="hidden lg:inline"> Product</span>
+                                    <span className="sr-only">, {node.lineItem.name}</span>
+                                  </span>
+                                </Button>
+                              </NextLink>
+                            </td>
+                          </tr>
+                        ))
+                    )}
+                  </tbody>
+                </table>
+                )}
+              </main>
             </div>
           ))}
         </div>
       </section>
-    </CardPanel>
+    </div>
   );
 };
 
