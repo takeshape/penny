@@ -5,17 +5,13 @@ import { NextPage } from 'next';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
 
 const AccountPurchasesPage: NextPage = () => {
-  const { data } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
-
-  if (!data) {
-    return null;
-  }
+  const { data, loading } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
 
   const orders = data?.customer.orders.edges.map(({ node }) => node);
 
   return (
     <Layout title="Purchases">
-      <AccountPastPurchases orders={orders} />
+      <AccountPastPurchases loading={loading} orders={orders} />
     </Layout>
   );
 };

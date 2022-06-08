@@ -1,4 +1,5 @@
 import CardPanel from 'components/Card/Panel/Panel';
+import Loader from 'components/Loader/Loader';
 import Image from 'components/NextImage';
 import { format } from 'date-fns';
 import { shopifyGidToId } from 'transforms/shopify';
@@ -7,10 +8,14 @@ import { formatPrice } from 'utils/text';
 import PurchseOrderStatus from './PurchaseOrderStatus';
 
 export interface AccountPurchasesProps {
-  orders: Shopify_Order[];
+  loading?: boolean;
+  orders?: Shopify_Order[];
 }
 
-export const AccountPurchaseList = ({ orders }: AccountPurchasesProps) => {
+export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) => {
+  if (loading) {
+    return <div className="flex justify-center"><Loader /></div>
+  }
   if (!orders || !orders.length) {
     return <div>No orders to display!</div>;
   }
