@@ -20,7 +20,7 @@ const breadcrumbs = [
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildren<ProductProps>) => {
+export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildren<ProductProps>) => {
   const addToCart = useSetAtom(addToCartAtom);
 
   const { name, descriptionHtml, images, options, hasStock } = product;
