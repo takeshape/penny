@@ -1,5 +1,4 @@
-import { BsCheckCircle, BsHourglassSplit } from 'react-icons/bs';
-import { Flex, Link, Text } from 'theme-ui';
+import { CheckCircleIcon, ClockIcon } from '@heroicons/react/outline';
 
 export interface ReferralListItemProps {
   email: string;
@@ -8,16 +7,20 @@ export interface ReferralListItemProps {
 }
 
 export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps) => (
-  <Flex sx={{ gap: '1rem', alignItems: 'center' }}>
+  <div className="flex gap-1 justify-start align-middle">
     {earned ? (
-      <BsCheckCircle size={24} color="green" title="Earned Referral" />
+      <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
     ) : (
-      <BsHourglassSplit size={24} color="text" title="Referral Not Yet Earned" />
+      <ClockIcon className="h-6 w-6 text-gray-800" aria-hidden="true" />
     )}
-    <Text>
-      Referred <Link href={`mailto:${email}`}>{email}</Link> on {sent.toLocaleDateString()}
-    </Text>
-  </Flex>
+    <p>
+      Referred{' '}
+      <a href={`mailto:${email}`} className="text-red-600">
+        {email}
+      </a>{' '}
+      on {sent.toLocaleDateString()}
+    </p>
+  </div>
 );
 
 export default ReferralListItem;
