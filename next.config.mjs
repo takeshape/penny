@@ -8,14 +8,14 @@ const withBundleAnalyzer = createBundleAnalyzer({
 // https://securityheaders.com
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com;
-  child-src https://*.stripe.com https://*.stripe.network;
-  style-src 'self' 'unsafe-inline' https://*.stripe.com https://fonts.googleapis.com;
-  img-src * blob: data: https://*.stripe.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline';
+  child-src 'none';
+  style-src 'self' 'unsafe-inline';
+  img-src *;
   media-src 'none';
   connect-src *;
-  font-src 'self' https://fonts.gstatic.com;
-  frame-src https://js.stripe.com https://*.auth0.com;
+  font-src 'self';
+  frame-src 'none';
 `;
 
 const securityHeaders = [
