@@ -37538,12 +37538,12 @@ export type ShopifyStorefront_CustomerCreateInput = {
 
 export type CreateCustomerPayload = {
   __typename?: 'CreateCustomerPayload';
-  customer: CreateCustomerPayloadCustomerProperty;
+  customer?: Maybe<CreateCustomerPayloadCustomerProperty>;
 };
 
 export type CreateCustomerPayloadCustomerProperty = {
   __typename?: 'CreateCustomerPayloadCustomerProperty';
-  id?: Maybe<Scalars['Float']>;
+  id?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['String']>;

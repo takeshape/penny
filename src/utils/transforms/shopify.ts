@@ -210,10 +210,12 @@ function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
 
 function getOptions(shopifyProduct: Shopify_Product, variants?: ProductVariant[]) {
   return (
-    shopifyProduct.options?.map((opt) => {
+    shopifyProduct.options?.map(({ name, position, id, values }) => {
       return {
-        ...opt,
-        values: opt.values.map((value) => {
+        name,
+        position,
+        id,
+        values: values.map((value) => {
           const hasStock =
             variants?.some((variant) => {
               if (variant.options.find((o) => o.value === value)) {
@@ -224,7 +226,7 @@ function getOptions(shopifyProduct: Shopify_Product, variants?: ProductVariant[]
           return {
             value,
             hasStock,
-            ...productOptions?.[opt.name.toLowerCase()]?.[value.toLowerCase()]
+            ...productOptions?.[name.toLowerCase()]?.[value.toLowerCase()]
           };
         })
       };
