@@ -1,5 +1,4 @@
-import { BsGiftFill } from 'react-icons/bs';
-import { Alert, Box, Text } from 'theme-ui';
+import { GiftIcon } from '@heroicons/react/solid';
 import type { ReferralListItemProps } from './ReferralListItem';
 import ReferralListItem from './ReferralListItem';
 
@@ -19,20 +18,26 @@ export interface ReferralListProps {
 
 export const ReferralList = ({ referrals }) => {
   return (
-    <Box as="ul" sx={{ listStyleType: 'none', padding: 0 }}>
+    <ul className="list-none">
       {referrals.map((referral) => (
-        <Box as="li" key={referral.email} sx={{ margin: '1rem 0' }}>
+        <li key={referral.email} className="my-1">
           <ReferralListItem {...referral} />
           {referral.earned && (
-            <Alert backgroundColor="highlight" color="text" sx={{ gap: '1rem' }} m={2} ml={4}>
-              <BsGiftFill />
-              <Text>{reward.name}</Text>
-              <Text sx={{ fontWeight: 'normal' }}>Use code {reward.code} at checkout</Text>
-            </Alert>
+            <div className="rounded-md p-4 bg-red-100 mt-3">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <GiftIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
+                </div>
+                <div className="ml-3 flex-1 md:flex md:justify-between">
+                  <p className="text-sm text-red-700 font-bold">{reward.name}</p>
+                  <p className="mt-3 text-sm md:mt-0 md:ml-6 font-semibold">Use code {reward.code} at checkout</p>
+                </div>
+              </div>
+            </div>
           )}
-        </Box>
+        </li>
       ))}
-    </Box>
+    </ul>
   );
 };
 
