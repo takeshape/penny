@@ -34,4 +34,3 @@ const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...
 
 export * from '@testing-library/react';
 export { customRender as render };
-
