@@ -58,9 +58,6 @@ const securityHeaders = [
 ];
 
 const config = {
-  compiler: {
-    styledComponents: true
-  },
   async headers() {
     return [
       {
