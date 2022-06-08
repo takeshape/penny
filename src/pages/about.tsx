@@ -1,109 +1,48 @@
 import Wrapper from 'components/Wrapper/Content';
+import ContentBodySimple from 'features/Content/Body/Simple';
+import ContentHeaderSimple from 'features/Content/Header/Simple';
 import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
-import { Box, Divider, Heading, Link, Paragraph } from 'theme-ui';
-
-const dependencies = [
-  {
-    title: 'Next.js',
-    link: 'https://nextjs.org',
-    description: 'A framework for building fast sites and simple API proxies'
-  },
-  {
-    title: '@auth0/auth0-react',
-    link: 'https://github.com/auth0/auth0-react',
-    description: 'Auth0 bindings for React.'
-  },
-  {
-    title: '@apollo/client',
-    link: 'https://github.com/apollographql/apollo-client',
-    description: 'A fully-featured, production ready caching GraphQL client for every UI framework and GraphQL server.'
-  },
-  {
-    title: 'Theme UI',
-    link: 'https://theme-ui.com',
-    description: 'Easily theme-able primitive React components.'
-  },
-  {
-    title: 'react-hook-form',
-    link: 'https://react-hook-form.com',
-    description: 'The easiest most composable way to work with forms in React that I‘ve used.'
-  }
-];
 
 const AboutPage: NextPage = () => {
   return (
     <Layout title="About">
       <Wrapper>
-        <Heading as="h1">About</Heading>
-        <Divider />
+        <div className="relative px-4 sm:px-6 lg:px-8">
+          <ContentHeaderSimple
+            heading="The Deluxe ™️ Story"
+            subheading="How a brand defied the odds and overcame everything."
+            label="About"
+          />
+          <ContentBodySimple>
+            <p>
+              At Spindrift Beverage Co. we celebrate the amazing taste of real, simple ingredients every day. Because we
+              think real food deserves a real drink to go with it.
+            </p>
 
-        <section className="mb-4">
-          <Paragraph>
-            This project demonstrates using <Link href="https://auth0.com">Auth0</Link> to manage a user‘s account and
-            make purchases through <Link href="https://shopify.com">Shopify</Link>.
-          </Paragraph>
+            <p>
+              It all started in 2010, in our founder Bill’s kitchen. Bill wanted to create a beverage he could feel good
+              about serving to his whole family. First, he made real fruit sodas and then, after lots of trial and
+              error, the very first sparkling water in America made with real squeezed fruit.
+            </p>
 
-          <Paragraph>
-            This user account provides users with the ability to review their past purchases, and manage any
-            subscriptions they have.
-          </Paragraph>
+            <p>
+              Spindrift debuted in artisan Boston-area shops and eateries where it caught the eye of local foodies and
+              craft beverage fans. Then, it grew from a cult-like following to wide, diverse fan base. Today it’s
+              available throughout the US in national retailers, grocery stores, and restaurants alike. The recipe,
+              however, has remained the same: sparkling water + real squeezed fruit.
+            </p>
 
-          <Paragraph>
-            We opted to use the Single Page App approach to Auth0 to make the project as simple as possible to deploy,
-            and to highlight that working with our GraphQL API removes the need for a dedicated backend. The official
-            Auth0 Next.js library only makes access tokens available in API routes — we‘ve avoided those entirely so
-            that you can run `npm run export` and host your bundle on any static file service.
-          </Paragraph>
-        </section>
+            <p>
+              Headquartered just outside of Boston, the Spindrift team is obsessively involved with the entire process
+              in the creation of our sparkling waters. From visiting the family farms where we source the best-tasting
+              fruit, to being on-site for every single production run, to tasting each and every batch. We love the
+              challenge that comes from working with real ingredients and making a product that stands out in a crowd.
+            </p>
 
-        <section className="mb-4">
-          <Heading variant="h3">Key Dependencies</Heading>
-          <Divider />
-          <Box
-            as="ul"
-            sx={{
-              listStyle: 'none',
-              m: 0,
-              px: 0,
-              py: 4
-            }}
-          >
-            {dependencies.map((dependency) => (
-              <Box
-                as="li"
-                key={dependency.link}
-                sx={{
-                  mb: 4
-                }}
-              >
-                <Heading
-                  variant="smallHeading"
-                  as="h3"
-                  sx={{
-                    m: 0
-                  }}
-                >
-                  <Link
-                    href={dependency.link}
-                    sx={{
-                      color: 'inherit',
-                      textDecoration: 'none',
-                      ':hover,:focus': {
-                        color: 'primary',
-                        textDecoration: 'underline',
-                        cursor: 'pointer'
-                      }
-                    }}
-                  >
-                    {dependency.title}
-                  </Link>
-                </Heading>
-                <Paragraph>{dependency.description}</Paragraph>
-              </Box>
-            ))}
-          </Box>
-        </section>
+            <p>We drink it, we share it, we love it.</p>
+          </ContentBodySimple>
+        </div>
       </Wrapper>
     </Layout>
   );

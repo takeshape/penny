@@ -1,5 +1,5 @@
 import CardPanel from 'components/Card/Panel/Panel';
-import { Box, Image, Text } from 'theme-ui';
+import Image from 'components/NextImage';
 import type { SetRequired } from 'type-fest';
 import type { Voucherify_LoyaltyCard } from 'types/takeshape';
 
@@ -8,26 +8,17 @@ export type AccountLoyaltyCardProps = SetRequired<Voucherify_LoyaltyCard, 'code'
 export const AccountLoyaltyCard = ({ code, loyalty_card, assets }: AccountLoyaltyCardProps) => {
   return (
     <CardPanel primaryText="Deluxe ™️ Membership">
-      <Box>
-        <Box>
+      <div>
+        <div>
           <Image src={assets.qr.url} alt="QR Code" height={84} width={84} />
-        </Box>
-        <Text as="div" sx={{ textTransform: 'uppercase', fontWeight: 'bold', textAlign: 'center' }}></Text>
-      </Box>
-      <Box as="dl">
-        <Text as="dt" variant="styles.membershipTerm">
-          Member Code
-        </Text>
-        <Text as="dd" variant="styles.membershipItem">
-          {code}
-        </Text>
-        <Text as="dt" variant="styles.membershipTerm">
-          Balance
-        </Text>
-        <Text as="dd" variant="styles.membershipItem">
-          {loyalty_card.balance} points
-        </Text>
-      </Box>
+        </div>
+      </div>
+      <dl>
+        <dt className="font-bold text-sm uppercase">Member Code</dt>
+        <dd className="font-mono mb-1 tracking-widest">{code}</dd>
+        <dt className="font-bold text-sm uppercase">Balance</dt>
+        <dd className="font-mono mb-1 tracking-widest">{loyalty_card.balance} points</dd>
+      </dl>
     </CardPanel>
   );
 };

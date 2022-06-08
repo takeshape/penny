@@ -1,4 +1,3 @@
-import GlobalStyles from 'components/GlobalStyles';
 import { seo } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
@@ -7,8 +6,6 @@ import type { AppContext, AppInitialProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import 'styles/globals.css';
-import theme from 'theme';
-import { ThemeProvider } from 'theme-ui';
 import PageLoader from '../components/PageLoader';
 
 export default function App({ Component, pageProps }: AppContext & AppInitialProps) {
@@ -38,11 +35,8 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
   return (
     <SessionProvider session={pageProps.session} refetchInterval={30 * 60} refetchOnWindowFocus={true}>
       <ApolloProvider pageProps={pageProps}>
-        <ThemeProvider theme={theme}>
-          <DefaultSeo {...seo} />
-          <GlobalStyles />
-          {loadingRouteChange ? <PageLoader /> : <Component {...pageProps} />}
-        </ThemeProvider>
+        <DefaultSeo {...seo} />
+        {loadingRouteChange ? <PageLoader /> : <Component {...pageProps} />}
       </ApolloProvider>
     </SessionProvider>
   );

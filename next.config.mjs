@@ -97,7 +97,7 @@ const config = {
     ];
   },
   images: {
-    domains: ['files.stripe.com', 'tailwindui.com', 'cdn.shopify.com']
+    domains: ['files.stripe.com', 'tailwindui.com', 'cdn.shopify.com', 'us1.dl.voucherify.io']
   },
   poweredByHeader: false,
   reactStrictMode: true,
