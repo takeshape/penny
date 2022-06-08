@@ -67,6 +67,7 @@ export type ProductSeo = {
 
 export type ProductOptionValue = {
   value: string;
+  name: string;
   hasStock: boolean | null;
 } & Record<string, unknown>;
 

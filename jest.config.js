@@ -3,7 +3,6 @@ module.exports = {
   moduleDirectories: ['node_modules', '.jest', 'src'],
   // add jest-dom and emotion's extra matchers
   setupFilesAfterEnv: ['<rootDir>/.jest/jest.setup.js'],
-  snapshotSerializers: ['@emotion/jest/serializer'],
   // coverage
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
   // ignore cypress folder

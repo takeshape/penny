@@ -8,14 +8,14 @@ const withBundleAnalyzer = createBundleAnalyzer({
 // https://securityheaders.com
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com;
-  child-src https://*.stripe.com https://*.stripe.network;
-  style-src 'self' 'unsafe-inline' https://*.stripe.com https://fonts.googleapis.com;
-  img-src * blob: data: https://*.stripe.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline';
+  child-src 'none';
+  style-src 'self' 'unsafe-inline';
   media-src 'none';
+  img-src * blob: data:;
   connect-src *;
-  font-src 'self' https://fonts.gstatic.com;
-  frame-src https://js.stripe.com https://*.auth0.com;
+  font-src 'self';
+  frame-src 'none';
 `;
 
 const securityHeaders = [
@@ -58,9 +58,6 @@ const securityHeaders = [
 ];
 
 const config = {
-  compiler: {
-    styledComponents: true
-  },
   async headers() {
     return [
       {
@@ -101,21 +98,8 @@ const config = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
-  webpack: (config, { dev, isServer }) => {
-    // Replace React with Preact only in client production build
-    // if (!dev && !isServer) {
-    //   Object.assign(config.resolve.alias, {
-    //     'react/jsx-runtime.js': 'preact/compat/jsx-runtime',
-    //     react: 'preact/compat',
-    //     'react-dom/test-utils': 'preact/test-utils',
-    //     'react-dom': 'preact/compat'
-    //   });
-    // }
-
-    return config;
-  },
   eslint: {
-    dirs: ['.']
+    dirs: ['src']
   }
 };
 
