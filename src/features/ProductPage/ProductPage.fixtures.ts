@@ -1204,7 +1204,7 @@ export const reviewHighlights: ReviewHighlights = {
 };
 
 export const reviews: ReviewList = {
-  stats: { average: 5, count: 1 },
+  stats: { average: 4.5, count: 3 },
   currentPage: 1,
   totalPages: 1,
   perPage: 15,
