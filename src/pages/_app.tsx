@@ -1,4 +1,3 @@
-import GlobalStyles from 'components/GlobalStyles';
 import { seo } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
@@ -37,7 +36,6 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
     <SessionProvider session={pageProps.session} refetchInterval={30 * 60} refetchOnWindowFocus={true}>
       <ApolloProvider pageProps={pageProps}>
         <DefaultSeo {...seo} />
-        <GlobalStyles />
         {loadingRouteChange ? <PageLoader /> : <Component {...pageProps} />}
       </ApolloProvider>
     </SessionProvider>
