@@ -11,8 +11,8 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline';
   child-src 'none';
   style-src 'self' 'unsafe-inline';
-  img-src *;
   media-src 'none';
+  img-src * blob: data:;
   connect-src *;
   font-src 'self';
   frame-src 'none';
@@ -98,21 +98,8 @@ const config = {
   },
   poweredByHeader: false,
   reactStrictMode: true,
-  webpack: (config, { dev, isServer }) => {
-    // Replace React with Preact only in client production build
-    if (!dev && !isServer) {
-      Object.assign(config.resolve.alias, {
-        'react/jsx-runtime.js': 'preact/compat/jsx-runtime',
-        react: 'preact/compat',
-        'react-dom/test-utils': 'preact/test-utils',
-        'react-dom': 'preact/compat'
-      });
-    }
-
-    return config;
-  },
   eslint: {
-    dirs: ['.']
+    dirs: ['src']
   }
 };
 
