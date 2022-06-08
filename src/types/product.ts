@@ -65,10 +65,10 @@ export type ProductSeo = {
   description: string;
 };
 
-export type ProductOptionValue = Record<string, string> & {
+export type ProductOptionValue = {
   value: string;
-  hasStock?: boolean;
-};
+  hasStock: boolean | null;
+} & Record<string, unknown>;
 
 export type ProductOption = {
   id: string;

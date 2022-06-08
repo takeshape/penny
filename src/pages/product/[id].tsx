@@ -23,7 +23,7 @@ interface ProductPageProps {
   reviewHighlights: ReviewHighlights;
 }
 
-const ProductPage: NextPage<ProductPageProps> = ({ product, reviewHighlights }) => {
+const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighlights }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
