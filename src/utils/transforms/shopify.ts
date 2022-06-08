@@ -225,6 +225,7 @@ function getOptions(shopifyProduct: Shopify_Product, variants?: ProductVariant[]
 
           return {
             value,
+            name: value,
             hasStock,
             ...productOptions?.[name.toLowerCase()]?.[value.toLowerCase()]
           };
