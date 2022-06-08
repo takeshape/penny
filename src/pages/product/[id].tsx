@@ -26,6 +26,7 @@ interface ProductPageProps {
 const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighlights }) => {
   const router = useRouter();
 
+  console.log(JSON.stringify(reviews));
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {

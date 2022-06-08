@@ -405,11 +405,13 @@ const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildren<Prod
 
                   <div className="order-1 flex items-center sm:flex-col sm:items-start">
                     <div className="h-12 w-12">
-                      <Image
-                        src={review.reviewer.imageUrl}
-                        alt={`${review.reviewer.firstName} ${review.reviewer.lastName.slice(0, 1)}.`}
-                        className="rounded-full"
-                      />
+                      {review.reviewer.imageUrl && (
+                        <Image
+                          src={review.reviewer.imageUrl}
+                          alt={`${review.reviewer.firstName} ${review.reviewer.lastName.slice(0, 1)}.`}
+                          className="rounded-full"
+                        />
+                      )}
                     </div>
 
                     <div className="ml-4 sm:ml-0 sm:mt-4">
