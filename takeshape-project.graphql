@@ -46547,11 +46547,11 @@ input ShopifyStorefront_CustomerCreateInput {
 }
 
 type CreateCustomerPayload {
-  customer: CreateCustomerPayloadCustomerProperty!
+  customer: CreateCustomerPayloadCustomerProperty
 }
 
 type CreateCustomerPayloadCustomerProperty {
-  id: Float
+  id: String
   email: String
   created_at: String
   updated_at: String
