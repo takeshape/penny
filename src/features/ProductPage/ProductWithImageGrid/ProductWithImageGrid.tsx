@@ -1,5 +1,6 @@
 import { RadioGroup } from '@headlessui/react';
 import { StarIcon } from '@heroicons/react/solid';
+import { DefaultReviewer } from 'components/Icons/Icons';
 import Image from 'components/NextImage';
 import { addToCartAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
@@ -13,7 +14,7 @@ import ProductWithImageGridImageGallery from './ProductWithImageGridImageGallery
 
 export interface ProductProps {
   product: ProductType;
-  reviews: ReviewHighlights;
+  reviewHighlights: ReviewHighlights;
 }
 
 const breadcrumbs = [
@@ -21,7 +22,7 @@ const breadcrumbs = [
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildren<ProductProps>) => {
+export const ProductWithImageGrid = ({ product, reviewHighlights }: React.PropsWithChildren<ProductProps>) => {
   const addToCart = useSetAtom(addToCartAtom);
 
   const { name, descriptionHtml, images, options, hasStock } = product;
@@ -136,16 +137,16 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
                   <StarIcon
                     key={rating}
                     className={classNames(
-                      reviews.stats.average > rating ? 'text-gray-900' : 'text-gray-200',
+                      reviewHighlights.stats.average > rating ? 'text-gray-900' : 'text-gray-200',
                       'h-5 w-5 flex-shrink-0'
                     )}
                     aria-hidden="true"
                   />
                 ))}
               </div>
-              <p className="sr-only">{reviews.stats.average} out of 5 stars</p>
+              <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
               <a href="#reviews" className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                {reviews.stats.count} reviews
+                {reviewHighlights.stats.count} reviews
               </a>
             </div>
           </div>
@@ -339,7 +340,7 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
             </h2>
 
             <div className="space-y-10">
-              {reviews.featured.map((review) => (
+              {reviewHighlights.featured.map((review) => (
                 <div key={review.id} className="flex flex-col sm:flex-row">
                   <div className="mt-6 order-2 sm:mt-0 sm:ml-16">
                     <h3 className="text-sm font-medium text-gray-900">{review.title}</h3>
@@ -353,12 +354,16 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
 
                   <div className="order-1 flex items-center sm:flex-col sm:items-start">
                     <div className="h-12 w-12">
-                      {review.reviewer.imageUrl && (
+                      {review.reviewer.imageUrl ? (
                         <Image
                           src={review.reviewer.imageUrl}
                           alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
+                          layout="fill"
+                          objectFit="cover"
                           className="rounded-full"
                         />
+                      ) : (
+                        <DefaultReviewer />
                       )}
                     </div>
 

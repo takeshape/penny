@@ -371,6 +371,39 @@ type Query {
   ): ShopifyStorefront_Customer
   getMyCustomer: ShopifyStorefront_Customer
   getMyAdminCustomer: Shopify_Customer
+
+  """Get a Storefront by ID"""
+  getStorefront(locale: String, enableLocaleFallback: Boolean = true): Storefront
+
+  """Get a Product by ID"""
+  getProduct(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Product
+
+  """Returns a list Product in natural order."""
+  getProductList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductPaginatedList
   searchAssetIndex(
     terms: String
 
@@ -437,6 +470,28 @@ type Query {
     """
     where: TSWhereProfileInput
   ): ProfileSearchResults
+  searchProductIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductSearchResults
   search(
     terms: String
 
@@ -1388,6 +1443,8 @@ input TSWhereInput {
   links: TSWhereNavigationDataLinksInput
   navigation: TSWhereFooterNavigationInput
   newsletter: TSWhereFooterNewsletterInput
+  components: TSWhereStorefrontComponentsInput
+  shopifyProductId: TSWhereStringInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
@@ -4780,11 +4837,11 @@ input TSWhereAssetRelationshipInput {
 }
 
 input TSWhereNavigationDataLinksInput {
-  categories: TSWhereNavigationDataLinksCategoriesInput
-  pages: TSWhereNavigationDataLinksPagesInput
+  categories: TSWhereNavigationDataCategoriesInput
+  pages: TSWhereNavigationDataPagesInput
 }
 
-input TSWhereNavigationDataLinksCategoriesInput {
+input TSWhereNavigationDataCategoriesInput {
   name: TSWhereStringInput
   featured: TSWhereNavigationDataLinksCategoriesFeaturedInput
   collection: TSWhereNavigationDataLinksCategoriesCollectionInput
@@ -4812,21 +4869,21 @@ input TSWhereNavigationDataLinksCategoriesBrandsInput {
   href: TSWhereStringInput
 }
 
-input TSWhereNavigationDataLinksPagesInput {
+input TSWhereNavigationDataPagesInput {
   name: TSWhereStringInput
   href: TSWhereStringInput
 }
 
 input TSWhereFooterNavigationInput {
-  sections: TSWhereFooterNavigationSectionsInput
+  sections: TSWhereFooterSectionsInput
 }
 
-input TSWhereFooterNavigationSectionsInput {
+input TSWhereFooterSectionsInput {
   name: TSWhereStringInput
-  items: TSWhereFooterItemsInput
+  items: TSWhereFooterNavigationSectionsItemsInput
 }
 
-input TSWhereFooterItemsInput {
+input TSWhereFooterNavigationSectionsItemsInput {
   name: TSWhereStringInput
   href: TSWhereStringInput
 }
@@ -4839,6 +4896,29 @@ input TSWhereTextInput {
   primary: TSWhereStringInput
   secondary: TSWhereStringInput
   button: TSWhereStringInput
+}
+
+input TSWhereStorefrontComponentsInput {
+  offers: TSWhereOffersComponentOffersInput
+  primaryText: TSWhereStringInput
+  secondaryText: TSWhereStringInput
+  buttonText: TSWhereStringInput
+  image: TSWhereStringInput
+  collections: TSWhereCollectionsComponentCollectionsInput
+}
+
+input TSWhereOffersComponentOffersInput {
+  href: TSWhereStringInput
+  name: TSWhereStringInput
+  description: TSWhereStringInput
+}
+
+input TSWhereCollectionsComponentCollectionsInput {
+  name: TSWhereStringInput
+  description: TSWhereStringInput
+  imageSrc: TSWhereStringInput
+  imageAlt: TSWhereStringInput
+  href: TSWhereStringInput
 }
 
 type Profile implements TSSearchable {
@@ -32258,6 +32338,115 @@ enum ShopifyStorefront_OrderSortKeys {
   RELEVANCE
 }
 
+type Storefront implements TSSearchable {
+  components: [StorefrontComponentsProperty!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+union StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent
+
+type OffersComponent {
+  offers: [Offer!]!
+}
+
+type Offer {
+  href: String!
+  name: String!
+  description: String!
+}
+
+type HeroComponent {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+  image: String!
+}
+
+type CollectionsComponent {
+  collections: [Collection!]!
+}
+
+type Collection {
+  name: String
+  description: String
+  imageSrc: String
+  imageAlt: String
+  href: String
+}
+
+type BackgroundImageComponent {
+  image: String!
+}
+
+type SaleComponent {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+}
+
+type TestimonialsComponent {
+  testimonials: [JSONObject!]!
+}
+
+type Product implements TSSearchable {
+  """Initialized with title from shopify"""
+  name: String
+  shopifyProduct: Shopify_Product
+  shopifyProductId: String
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type ProductPaginatedList {
+  items: [Product!]!
+  total: Int!
+}
+
+input TSWhereProductInput {
+  name: TSWhereStringInput
+  shopifyProductId: TSWhereStringInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWhereProductInput]
+  OR: [TSWhereProductInput]
+  NOT: TSWhereProductInput
+}
+
 """Asset search results"""
 type AssetSearchResults {
   results: [Asset!]!
@@ -32273,6 +32462,12 @@ type TsStaticSiteSearchResults {
 """Profile search results"""
 type ProfileSearchResults {
   results: [Profile!]!
+  total: Int!
+}
+
+"""Product search results"""
+type ProductSearchResults {
+  results: [Product!]!
   total: Int!
 }
 
@@ -32655,6 +32850,39 @@ type WithContext {
   ): ShopifyStorefront_Customer
   getMyCustomer: ShopifyStorefront_Customer
   getMyAdminCustomer: Shopify_Customer
+
+  """Get a Storefront by ID"""
+  getStorefront(locale: String, enableLocaleFallback: Boolean = true): Storefront
+
+  """Get a Product by ID"""
+  getProduct(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Product
+
+  """Returns a list Product in natural order."""
+  getProductList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductPaginatedList
   searchAssetIndex(
     terms: String
 
@@ -32721,6 +32949,28 @@ type WithContext {
     """
     where: TSWhereProfileInput
   ): ProfileSearchResults
+  searchProductIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductSearchResults
   search(
     terms: String
 
@@ -32892,6 +33142,26 @@ type Mutation {
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
   Gorgias_createTicket(message: String, email: String!): Gorgias_CreateTicketResponse
+
+  """Update Storefront"""
+  updateStorefront(input: UpdateStorefrontInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateStorefrontResult
+
+  """
+  Update Product. If the input has Shopify values and a Shopify ID, the Shopify product with that ID is updated.
+  If the input has Shopify values and no Shopify ID, a Shopify product is created.
+  """
+  updateProduct(input: UpdateProductInterfaceInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProductResult
+
+  """
+  Create Product. If Shopify values are provided, a Shopify product is also created and the new product ID is saved.
+  """
+  createProduct(input: CreateProductInterfaceInput!, clientMutationId: String): CreateProductResult
+
+  """Duplicate Product"""
+  duplicateProduct(input: DuplicateProductInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicateProductResult
+
+  """Delete Product"""
+  deleteProduct(input: DeleteProductInput!, clientMutationId: String): DeleteProductResult
 }
 
 """A project file stored on s3"""
@@ -46200,10 +46470,14 @@ input UpdateNavigationDataInput {
 
 input NavigationDataLinksInput {
   """"""
-  categories: [NavigationDataLinksCategoriesInput]
+  categories: [NavigationDataLinksCategoriesInputUnion]
 
   """"""
-  pages: [NavigationDataLinksPagesInput]
+  pages: [NavigationDataLinksPagesInputUnion]
+}
+
+input NavigationDataLinksCategoriesInputUnion {
+  navigationDataLinksCategories: NavigationDataLinksCategoriesInput
 }
 
 input NavigationDataLinksCategoriesInput {
@@ -46211,16 +46485,20 @@ input NavigationDataLinksCategoriesInput {
   name: String
 
   """"""
-  featured: [NavigationDataLinksCategoriesFeaturedInput]
+  featured: [NavigationDataLinksCategoriesFeaturedInputUnion]
 
   """"""
-  collection: [NavigationDataLinksCategoriesCollectionInput]
+  collection: [NavigationDataLinksCategoriesCollectionInputUnion]
 
   """"""
-  categories: [NavigationDataLinksCategoriesCategoriesInput]
+  categories: [NavigationDataLinksCategoriesCategoriesInputUnion]
 
   """"""
-  brands: [NavigationDataLinksCategoriesBrandsInput]
+  brands: [NavigationDataLinksCategoriesBrandsInputUnion]
+}
+
+input NavigationDataLinksCategoriesFeaturedInputUnion {
+  navigationDataLinksCategoriesFeatured: NavigationDataLinksCategoriesFeaturedInput
 }
 
 input NavigationDataLinksCategoriesFeaturedInput {
@@ -46231,12 +46509,20 @@ input NavigationDataLinksCategoriesFeaturedInput {
   href: String
 }
 
+input NavigationDataLinksCategoriesCollectionInputUnion {
+  navigationDataLinksCategoriesCollection: NavigationDataLinksCategoriesCollectionInput
+}
+
 input NavigationDataLinksCategoriesCollectionInput {
   """"""
   name: String
 
   """"""
   href: String
+}
+
+input NavigationDataLinksCategoriesCategoriesInputUnion {
+  navigationDataLinksCategoriesCategories: NavigationDataLinksCategoriesCategoriesInput
 }
 
 input NavigationDataLinksCategoriesCategoriesInput {
@@ -46247,12 +46533,20 @@ input NavigationDataLinksCategoriesCategoriesInput {
   href: String
 }
 
+input NavigationDataLinksCategoriesBrandsInputUnion {
+  navigationDataLinksCategoriesBrands: NavigationDataLinksCategoriesBrandsInput
+}
+
 input NavigationDataLinksCategoriesBrandsInput {
   """"""
   name: String
 
   """"""
   href: String
+}
+
+input NavigationDataLinksPagesInputUnion {
+  navigationDataLinksPages: NavigationDataLinksPagesInput
 }
 
 input NavigationDataLinksPagesInput {
@@ -46293,7 +46587,11 @@ input UpdateFooterInput {
 
 input FooterNavigationInput {
   """"""
-  sections: [FooterNavigationSectionsInput]
+  sections: [FooterNavigationSectionsInputUnion]
+}
+
+input FooterNavigationSectionsInputUnion {
+  footerNavigationSections: FooterNavigationSectionsInput
 }
 
 input FooterNavigationSectionsInput {
@@ -46677,4 +46975,481 @@ input ShopifyStorefront_MailingAddressInput {
 
 type Gorgias_CreateTicketResponse {
   id: Int!
+}
+
+type UpdateStorefrontResult {
+  clientMutationId: String
+  result: Storefront
+}
+
+"""update Storefront input"""
+input UpdateStorefrontInput {
+  components: [BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion]
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion {
+  offersComponent: OffersComponentInput
+  heroComponent: HeroComponentInput
+  collectionsComponent: CollectionsComponentInput
+  backgroundImageComponent: BackgroundImageComponentInput
+  saleComponent: SaleComponentInput
+  testimonialsComponent: TestimonialsComponentInput
+}
+
+input OffersComponentInput {
+  offers: [OfferInputUnion!]!
+}
+
+input OfferInputUnion {
+  offer: OfferInput
+}
+
+input OfferInput {
+  href: String!
+  name: String!
+  description: String!
+}
+
+input HeroComponentInput {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+  image: String!
+}
+
+input CollectionsComponentInput {
+  collections: [CollectionInputUnion!]!
+}
+
+input CollectionInputUnion {
+  collection: CollectionInput
+}
+
+input CollectionInput {
+  name: String
+  description: String
+  imageSrc: String
+  imageAlt: String
+  href: String
+}
+
+input BackgroundImageComponentInput {
+  image: String!
+}
+
+input SaleComponentInput {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+}
+
+input TestimonialsComponentInput {
+  testimonials: [JSONObject!]!
+}
+
+type UpdateProductResult {
+  clientMutationId: String
+  result: Product
+}
+
+"""update ProductInterface input"""
+input UpdateProductInterfaceInput {
+  _id: ID!
+  _version: Float
+  _status: DefaultWorkflow
+
+  """Initialized with title from shopify"""
+  name: String
+  shopifyProductId: String
+  shopifyProduct: Shopify_ProductInput
+}
+
+"""Specifies the input fields required to create a product."""
+input Shopify_ProductInput {
+  """The description of the product, complete with HTML formatting."""
+  descriptionHtml: String
+
+  """
+  A unique human-friendly string for the product. Automatically generated from the product's title.
+  """
+  handle: String
+
+  """
+  Whether a redirect is required after a new handle has been provided.
+  If true, then the old handle is redirected to the new one automatically.
+  """
+  redirectNewHandle: Boolean = false
+
+  """The SEO information associated with the product."""
+  seo: Shopify_SEOInput
+
+  """The product type specified by the merchant."""
+  productType: String
+
+  """The standardized product type in the Shopify product taxonomy."""
+  standardizedProductType: Shopify_StandardizedProductTypeInput
+
+  """The custom product type specified by the merchant."""
+  customProductType: String
+
+  """A comma separated list tags that have been added to the product."""
+  tags: [String]
+
+  """The theme template used when viewing the product in a store."""
+  templateSuffix: String
+
+  """Whether the product is a gift card."""
+  giftCard: Boolean
+
+  """The theme template used when viewing the gift card in a store."""
+  giftCardTemplateSuffix: String
+
+  """The title of the product."""
+  title: String
+
+  """The name of the product's vendor."""
+  vendor: String
+
+  """
+  A description of the product. Supports HTML formatting. This argument is deprecated: Use `descriptionHtml` instead.
+  """
+  bodyHtml: String
+
+  """The IDs of the collections that this product will be added to."""
+  collectionsToJoin: [ID]
+
+  """The IDs of collections that will no longer include the product."""
+  collectionsToLeave: [ID]
+
+  """
+  Specifies the product to update in productUpdate or creates a new product if absent in productCreate.
+  """
+  id: ID
+
+  """The images to associate with the product."""
+  images: [Shopify_ImageInput]
+
+  """The metafields to associate with this product."""
+  metafields: [Shopify_MetafieldInput]
+
+  """The private metafields to associate with this product."""
+  privateMetafields: [Shopify_PrivateMetafieldInput]
+
+  """List of custom product options (maximum of 3 per product)."""
+  options: [String]
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  publishDate: DateTime
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  publishOn: DateTime
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  published: Boolean
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  publishedAt: DateTime
+
+  """A list of variants associated with the product."""
+  variants: [Shopify_ProductVariantInput]
+
+  """The status of the product."""
+  status: Shopify_ProductStatus
+
+  """
+  Whether the product can only be purchased with a selling plan (subscription). Products that are sold exclusively on subscription can only be created on online stores. If set to `true` on an already existing product, then the product will be marked unavailable on channels that don't support subscriptions.
+  """
+  requiresSellingPlan: Boolean
+}
+
+"""SEO information."""
+input Shopify_SEOInput {
+  """SEO title of the product."""
+  title: String
+
+  """SEO description of the product."""
+  description: String
+}
+
+"""
+Provides the fields and values to use when adding a standard product type to a product. The [Shopify product taxonomy](https://help.shopify.com/txt/product_taxonomy/en.txt) contains the full list of available values.
+"""
+input Shopify_StandardizedProductTypeInput {
+  """
+  The id of the node in the Shopify taxonomy that represents the product type.
+  """
+  productTaxonomyNodeId: ID!
+}
+
+"""Specifies the input fields for an image."""
+input Shopify_ImageInput {
+  """A globally-unique identifier."""
+  id: ID
+
+  """A word or phrase to share the nature or contents of an image."""
+  altText: String
+
+  """The URL of the image. May be a signed upload URL."""
+  src: String
+}
+
+"""
+The input fields to use to create or update a metafield through a mutation on the owning resource.
+An alternative way to create or update a metafield is by using the
+[metafieldsSet](https://shopify.dev/api/admin-graphql/latest/mutations/metafieldsSet) mutation.
+"""
+input Shopify_MetafieldInput {
+  """The description of the metafield."""
+  description: String
+
+  """
+  The unique ID of the metafield. You don't include an ID when you create a metafield because the metafield ID
+  is created automatically. The ID is required when you update a metafield.
+  """
+  id: ID
+
+  """
+  The namespace for a metafield. The namespace is required when you create a metafield and is optional when you
+  update a metafield.
+  """
+  namespace: String
+
+  """
+  The key name of the metafield. Required when creating but optional when updating.
+  """
+  key: String
+
+  """The value of a metafield."""
+  value: String
+
+  """
+  The metafield's [type](https://shopify.dev/apps/metafields/types). The metafield type is required
+  when you create a metafield and is optional when you update a metafield.
+  """
+  type: String
+}
+
+"""The input fields for a private metafield."""
+input Shopify_PrivateMetafieldInput {
+  """
+  The resource that owns the metafield. If the field is blank, then the `Shop` resource owns the metafield.
+  """
+  owner: ID
+
+  """The namespace of the private metafield."""
+  namespace: String!
+
+  """The key of the private metafield."""
+  key: String!
+
+  """
+  The `value` and `valueType` of the private metafield, wrapped in a `ValueInput` object.
+  """
+  valueInput: Shopify_PrivateMetafieldValueInput!
+}
+
+"""
+The value input contains the value and value type of the private metafield.
+"""
+input Shopify_PrivateMetafieldValueInput {
+  """The value of a private metafield."""
+  value: String!
+
+  """Represents the private metafield value type."""
+  valueType: Shopify_PrivateMetafieldValueType!
+}
+
+"""Specifies a product variant to create or update."""
+input Shopify_ProductVariantInput {
+  """The value of the barcode associated with the product."""
+  barcode: String
+
+  """The compare-at price of the variant."""
+  compareAtPrice: Money
+
+  """The ID of the fulfillment service associated with the variant."""
+  fulfillmentServiceId: ID
+
+  """The Harmonized System Code (or HS Tariff Code) for the variant."""
+  harmonizedSystemCode: String
+
+  """
+  Specifies the product variant to update or create a new variant if absent.
+  """
+  id: ID
+
+  """The ID of the image that's associated with the variant."""
+  imageId: ID
+
+  """
+  The URL of an image to associate with the variant.  This field can only be used through mutations that create product images and must match one of the URLs being created on the product.
+  """
+  imageSrc: String
+
+  """
+  The URL of the media to associate with the variant. This field can only be used in mutations that create media images and must match one of the URLs being created on the product. This field only accepts one value.
+  """
+  mediaSrc: [String]
+
+  """
+  The fulfillment service that tracks the number of items in stock for the product variant. If you track the inventory yourself using the admin, then set the value to `shopify`. Valid values: `shopify` or the handle of a fulfillment service that has inventory management enabled.
+   This argument is deprecated: Use tracked attribute on `inventoryItem` instead.
+  """
+  inventoryManagement: Shopify_ProductVariantInventoryManagement
+
+  """
+  Whether customers are allowed to place an order for the product variant when it's out of stock.
+  """
+  inventoryPolicy: Shopify_ProductVariantInventoryPolicy
+
+  """
+  Create only field. The inventory quantities at each location where the variant is stocked.
+  """
+  inventoryQuantities: [Shopify_InventoryLevelInput]
+
+  """Inventory Item associated with the variant, used for unit cost."""
+  inventoryItem: Shopify_InventoryItemInput
+
+  """Additional customizable information about the product variant."""
+  metafields: [Shopify_MetafieldInput]
+
+  """The private metafields to associated with this product."""
+  privateMetafields: [Shopify_PrivateMetafieldInput]
+
+  """
+  The custom properties that a shop owner uses to define product variants.
+  """
+  options: [String]
+
+  """
+  The order of the product variant in the list of product variants. The first position in the list is 1.
+  """
+  position: Int
+
+  """The price of the variant."""
+  price: Money
+
+  """
+  Create only required field. Specifies the product on which to create the variant.
+  """
+  productId: ID
+
+  """Whether the variant requires shipping."""
+  requiresShipping: Boolean
+
+  """The SKU for the variant."""
+  sku: String
+
+  """Whether the variant is taxable."""
+  taxable: Boolean
+
+  """
+  This argument is deprecated: Variant title is not a writable field; it is generated from the selected variant options.
+  """
+  title: String
+
+  """The tax code associated with the variant."""
+  taxCode: String
+
+  """The weight of the variant."""
+  weight: Float
+
+  """The unit of weight that's used to measure the variant."""
+  weightUnit: Shopify_WeightUnit
+}
+
+"""Specifies the input fields for an inventory level."""
+input Shopify_InventoryLevelInput {
+  """The available quantity of an inventory item at a location."""
+  availableQuantity: Int!
+
+  """The ID of a location."""
+  locationId: ID!
+}
+
+"""Specifies the input fields for an inventory item."""
+input Shopify_InventoryItemInput {
+  """
+  Unit cost associated with the inventory item, the currency is the shop's default currency.
+  """
+  cost: Decimal
+
+  """Whether the inventory item is tracked."""
+  tracked: Boolean
+}
+
+type CreateProductResult {
+  clientMutationId: String
+  result: Product
+}
+
+"""create ProductInterface input"""
+input CreateProductInterfaceInput {
+  _id: ID
+  _version: Float
+  _status: DefaultWorkflow
+
+  """Initialized with title from shopify"""
+  name: String
+  shopifyProductId: String
+  shopifyProduct: Shopify_ProductInput
+}
+
+type DuplicateProductResult {
+  clientMutationId: String
+  result: Product
+}
+
+"""duplicate Product input"""
+input DuplicateProductInput {
+  _id: ID!
+
+  """Initialized with title from shopify"""
+  name: String
+  shopifyProductId: String
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeleteProductResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete Product input"""
+input DeleteProductInput {
+  _id: ID!
 }

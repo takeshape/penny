@@ -37,7 +37,7 @@ const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighl
     <Layout title={product.name}>
       <div className="bg-white">
         <Wrapper>
-          <ProductWithImageGrid product={product} reviews={reviewHighlights} />
+          <ProductWithImageGrid product={product} reviewHighlights={reviewHighlights} />
         </Wrapper>
       </div>
     </Layout>

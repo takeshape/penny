@@ -97,7 +97,8 @@
     "webpack": "^5.73.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=14",
+    "npm": ">=7"
   },
   "msw": {
     "workerDirectory": "mocks"
