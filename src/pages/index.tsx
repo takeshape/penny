@@ -5,15 +5,12 @@ import Storefront from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
-import type { GetProductsResponse } from 'queries';
-import { GetProductsQuery } from 'queries';
+import { GetStorefrontQuery, GetStorefrontResponse } from 'queries';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { reviewsIoProductReviewsToReviewHighlight } from 'utils/transforms/reviewsIo';
-import { shopifyProductToProductListItem } from 'utils/transforms/shopify';
 
-const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndexPage: NextPage = ({ storefront, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
       <Layout>
@@ -28,7 +25,7 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
 
   return (
     <Layout>
-      {products ? (
+      {storefront ? (
         <Wrapper>
           <Storefront />
         </Wrapper>
@@ -42,26 +39,20 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export async function getStaticProps() {
-  let products = [];
+  let storefront = null;
   let error = null;
 
   try {
-    const { data } = await apolloClient.query<GetProductsResponse>({
-      query: GetProductsQuery
+    const { data } = await apolloClient.query<GetStorefrontResponse>({
+      query: GetStorefrontQuery
     });
-
-    products = data.products.edges.map(({ node }) => {
-      return {
-        product: shopifyProductToProductListItem(node),
-        reviews: reviewsIoProductReviewsToReviewHighlight(node.reviews)
-      };
-    });
+    storefront = data.storefront;
   } catch (err) {
     logger.error(err);
     error = formatError(err);
   }
 
-  return addApolloQueryCache(apolloClient, { props: { products, error } });
+  return addApolloQueryCache(apolloClient, { props: { storefront, error } });
 }
 
 export default IndexPage;
