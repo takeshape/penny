@@ -1,7 +1,7 @@
 import { cartLocalStorageKey, defaultProductImage } from 'config';
 import { atom } from 'jotai';
 import { atomWithStorage, splitAtom } from 'jotai/utils';
-import type { CartItem, CartItemInput } from './types';
+import type { AddToCartInput, CartItem, CartItemInput } from './types';
 
 /* Cart UI */
 export const isCartOpenAtom = atom(false);
@@ -11,7 +11,7 @@ export const isCartCheckingOutAtom = atom(false);
 export const cartItemsAtom = atomWithStorage<CartItem[]>(cartLocalStorageKey, []);
 export const cartItemAtomsAtom = splitAtom(cartItemsAtom);
 
-const withItemDefaults = (item: CartItemInput): CartItem => ({
+const withCartItemDefaults = (item: CartItemInput): CartItem => ({
   ...item,
   interval: item.interval ?? 'DAY',
   intervalCount: item.intervalCount ?? 0,
@@ -20,8 +20,30 @@ const withItemDefaults = (item: CartItemInput): CartItem => ({
   data: item.data ?? {}
 });
 
-export const addToCartAtom = atom<null, CartItemInput>(null, (get, set, itemInput) => {
-  const itemToAdd = withItemDefaults(itemInput);
+const addToCartInputToCartItem = ({ product, variant, price }: AddToCartInput) => {
+  return {
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    href: product.url,
+    unitAmount: price.amount,
+    currency: price.currencyCode,
+    quantity: 1,
+    imageSrc: product.featuredImage.url,
+    imageAlt: product.featuredImage.altText,
+    interval: price.interval,
+    intervalCount: price.intervalCount,
+    data: {
+      product,
+      productVariant: variant,
+      price
+    }
+  };
+};
+
+export const addToCartAtom = atom<null, AddToCartInput>(null, (get, set, input) => {
+  const cartItem = addToCartInputToCartItem(input);
+  const itemToAdd = withCartItemDefaults(cartItem);
 
   const items = get(cartItemAtomsAtom);
 

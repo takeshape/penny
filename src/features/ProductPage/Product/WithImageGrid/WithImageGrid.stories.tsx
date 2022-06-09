@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { product, reviews } from '../ProductPage.fixtures';
-import { ProductWithImageGrid } from './ProductWithImageGrid';
+import { product, reviews } from '../../ProductPage.fixtures';
+import { ProductWithImageGrid } from './WithImageGrid';
 
 const Meta: ComponentMeta<typeof ProductWithImageGrid> = {
   title: 'Features / Product Page / Components / Product',

@@ -1,3 +1,4 @@
+import { DefaultReviewer } from 'components/Icons/Icons';
 import NextImage from 'components/NextImage';
 import Stars from 'components/Stars/Stars';
 import { ReviewList } from 'types/review';
@@ -90,6 +91,19 @@ const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
                         className="rounded-full"
                       />
                     )}
+
+                    {review.reviewer.imageUrl ? (
+                      <NextImage
+                        src={review.reviewer.imageUrl}
+                        alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
+                        height={48}
+                        width={48}
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <DefaultReviewer />
+                    )}
+
                     <div className="ml-4">
                       <h4 className="text-sm font-bold text-gray-900">
                         {review.reviewer.firstName} {review.reviewer.lastName}

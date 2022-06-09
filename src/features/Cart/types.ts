@@ -1,4 +1,5 @@
 import type { SetOptional } from 'type-fest';
+import type { Product, ProductPriceOption, ProductVariant } from 'types/product';
 
 export type CartItem = {
   id: string;
@@ -17,3 +18,9 @@ export type CartItem = {
 };
 
 export type CartItemInput = SetOptional<CartItem, 'interval' | 'intervalCount' | 'imageSrc' | 'imageAlt' | 'data'>;
+
+export type AddToCartInput = {
+  product: Product;
+  variant: ProductVariant;
+  price: ProductPriceOption;
+};

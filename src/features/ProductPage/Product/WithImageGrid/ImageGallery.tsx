@@ -1,11 +1,11 @@
 import Image from 'components/NextImage';
 import { ProductImage } from 'types/product';
 
-export interface ProductWithImageGridImageGalleryProps {
+export interface ImageGalleryProps {
   images: ProductImage[];
 }
 
-export const ProductWithImageGridImageGallery = ({ images }: ProductWithImageGridImageGalleryProps) => {
+export const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
     <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
       <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
@@ -40,4 +40,4 @@ export const ProductWithImageGridImageGallery = ({ images }: ProductWithImageGri
   );
 };
 
-export default ProductWithImageGridImageGallery;
+export default ImageGallery;

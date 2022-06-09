@@ -1,6 +1,7 @@
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
-import ProductWithImageGrid from 'features/ProductPage/ProductWithImageGrid/ProductWithImageGrid';
+import Product from 'features/ProductPage/Product/Product';
+import Reviews from 'features/ProductPage/Reviews/Reviews';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -20,6 +21,11 @@ interface ProductPageProps {
   reviewHighlights: ReviewHighlights;
 }
 
+const breadcrumbs = [
+  { id: 1, name: 'Men', href: '#' },
+  { id: 2, name: 'Clothing', href: '#' }
+];
+
 const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighlights }) => {
   const router = useRouter();
 
@@ -37,7 +43,8 @@ const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighl
     <Layout title={product.name}>
       <div className="bg-white">
         <Wrapper>
-          <ProductWithImageGrid product={product} reviewHighlights={reviewHighlights} />
+          <Product component="withImageGrid" product={product} reviews={reviewHighlights} breadcrumbs={breadcrumbs} />
+          <Reviews reviews={reviews} />
         </Wrapper>
       </div>
     </Layout>

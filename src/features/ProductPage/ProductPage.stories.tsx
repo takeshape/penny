@@ -2,7 +2,7 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { _Blog } from './Blog/Blog.stories';
 import { _Details } from './Details/Details.stories';
 import { _Policies } from './Policies/Policies.stories';
-import { _Product } from './Product/Product.stories';
+import { _Product } from './Product/WithExpandableDetails/WithExpandableDetails.stories';
 import ProductPage from './ProductPage';
 import { _RelatedProducts } from './RelatedProducts/RelatedProducts.stories';
 import { _Reviews } from './Reviews/Reviews.stories';
