@@ -1,14 +1,17 @@
 ## Development Notes
 
-- `react@18` cannot be used because of an issue with lazy queries in `@apollo/client`.
-- A number of other deps are at less-than-current versions because of above.
+- `storybook-addon-jotai` necessitates the graphql overrides
+- `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
   component. This prevents rendering mismatches and stale / incorrect info.
 - Navigation data is loaded into an Apollo cache variable via `addApolloQueryCache`. Files in the `src/data` folder
   should define queries to get data that need to be fetched and cached during `getStaticProps` in order to prevent a
   flash of unloaded data in common high visibility components, like the navigation, footer, etc... Add to the file
   `src/services/apollo/addApolloQueryCache.ts` following the pattern there to get other common data.
-- The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for the order status page and uses the `redirect_origin` attribute set at cart creation:
+- The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
+  [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
+  the order status page and uses the `redirect_origin` attribute set at cart creation:
+
 ```erb
 {% if checkout.attributes.redirect_origin %}
 <script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
