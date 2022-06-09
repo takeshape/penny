@@ -83,6 +83,8 @@ export type Query = {
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
   getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
   getMyAdminCustomer?: Maybe<Shopify_Customer>;
+  /** Get a Storefront by ID */
+  getStorefront?: Maybe<Storefront>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -380,6 +382,13 @@ export type QueryShopify_CustomerPaymentMethodArgs = {
 /** Root of the Schema */
 export type QueryShopifyStorefront_CustomerArgs = {
   customerAccessToken: Scalars['String'];
+};
+
+
+/** Root of the Schema */
+export type QueryGetStorefrontArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -1246,6 +1255,7 @@ export type TsWhereInput = {
   links?: InputMaybe<TsWhereNavigationDataLinksInput>;
   navigation?: InputMaybe<TsWhereFooterNavigationInput>;
   newsletter?: InputMaybe<TsWhereFooterNewsletterInput>;
+  components?: InputMaybe<TsWhereStorefrontComponentsInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
@@ -4558,11 +4568,11 @@ export type TsWhereAssetRelationshipInput = {
 };
 
 export type TsWhereNavigationDataLinksInput = {
-  categories?: InputMaybe<TsWhereNavigationDataLinksCategoriesInput>;
-  pages?: InputMaybe<TsWhereNavigationDataLinksPagesInput>;
+  categories?: InputMaybe<TsWhereNavigationDataCategoriesInput>;
+  pages?: InputMaybe<TsWhereNavigationDataPagesInput>;
 };
 
-export type TsWhereNavigationDataLinksCategoriesInput = {
+export type TsWhereNavigationDataCategoriesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   featured?: InputMaybe<TsWhereNavigationDataLinksCategoriesFeaturedInput>;
   collection?: InputMaybe<TsWhereNavigationDataLinksCategoriesCollectionInput>;
@@ -4590,21 +4600,21 @@ export type TsWhereNavigationDataLinksCategoriesBrandsInput = {
   href?: InputMaybe<TsWhereStringInput>;
 };
 
-export type TsWhereNavigationDataLinksPagesInput = {
+export type TsWhereNavigationDataPagesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
 
 export type TsWhereFooterNavigationInput = {
-  sections?: InputMaybe<TsWhereFooterNavigationSectionsInput>;
+  sections?: InputMaybe<TsWhereFooterSectionsInput>;
 };
 
-export type TsWhereFooterNavigationSectionsInput = {
+export type TsWhereFooterSectionsInput = {
   name?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereFooterItemsInput>;
+  items?: InputMaybe<TsWhereFooterNavigationSectionsItemsInput>;
 };
 
-export type TsWhereFooterItemsInput = {
+export type TsWhereFooterNavigationSectionsItemsInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
@@ -4617,6 +4627,29 @@ export type TsWhereTextInput = {
   primary?: InputMaybe<TsWhereStringInput>;
   secondary?: InputMaybe<TsWhereStringInput>;
   button?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereStorefrontComponentsInput = {
+  offers?: InputMaybe<TsWhereOffersComponentOffersInput>;
+  primaryText?: InputMaybe<TsWhereStringInput>;
+  secondaryText?: InputMaybe<TsWhereStringInput>;
+  buttonText?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereStringInput>;
+  collections?: InputMaybe<TsWhereCollectionsComponentCollectionsInput>;
+};
+
+export type TsWhereOffersComponentOffersInput = {
+  href?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereCollectionsComponentCollectionsInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  imageSrc?: InputMaybe<TsWhereStringInput>;
+  imageAlt?: InputMaybe<TsWhereStringInput>;
+  href?: InputMaybe<TsWhereStringInput>;
 };
 
 export type Profile = TsSearchable & {
@@ -26689,6 +26722,81 @@ export enum ShopifyStorefront_OrderSortKeys {
   Relevance = 'RELEVANCE'
 }
 
+export type Storefront = TsSearchable & {
+  __typename?: 'Storefront';
+  components: Array<StorefrontComponentsProperty>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent;
+
+export type OffersComponent = {
+  __typename?: 'OffersComponent';
+  offers: Array<Offer>;
+};
+
+export type Offer = {
+  __typename?: 'Offer';
+  href: Scalars['String'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type HeroComponent = {
+  __typename?: 'HeroComponent';
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+  image: Scalars['String'];
+};
+
+export type CollectionsComponent = {
+  __typename?: 'CollectionsComponent';
+  collections: Array<Collection>;
+};
+
+export type Collection = {
+  __typename?: 'Collection';
+  name?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  imageSrc?: Maybe<Scalars['String']>;
+  imageAlt?: Maybe<Scalars['String']>;
+  href?: Maybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponent = {
+  __typename?: 'BackgroundImageComponent';
+  image: Scalars['String'];
+};
+
+export type SaleComponent = {
+  __typename?: 'SaleComponent';
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+};
+
+export type TestimonialsComponent = {
+  __typename?: 'TestimonialsComponent';
+  testimonials: Array<Scalars['JSONObject']>;
+};
+
 /** Asset search results */
 export type AssetSearchResults = {
   __typename?: 'AssetSearchResults';
@@ -26775,6 +26883,8 @@ export type WithContext = {
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
   getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
   getMyAdminCustomer?: Maybe<Shopify_Customer>;
+  /** Get a Storefront by ID */
+  getStorefront?: Maybe<Storefront>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
@@ -27075,6 +27185,13 @@ export type WithContextShopifyStorefront_CustomerArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetStorefrontArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -27199,6 +27316,8 @@ export type Mutation = {
   updateMyCustomer?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   updateMyCustomerAddress?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
   Gorgias_createTicket?: Maybe<Gorgias_CreateTicketResponse>;
+  /** Update Storefront */
+  updateStorefront?: Maybe<UpdateStorefrontResult>;
 };
 
 
@@ -27487,6 +27606,15 @@ export type MutationUpdateMyCustomerAddressArgs = {
 export type MutationGorgias_CreateTicketArgs = {
   message?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
+};
+
+
+export type MutationUpdateStorefrontArgs = {
+  input: UpdateStorefrontInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** A project file stored on s3 */
@@ -37259,16 +37387,24 @@ export type UpdateNavigationDataInput = {
 };
 
 export type NavigationDataLinksInput = {
-  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesInput>>>;
-  pages?: InputMaybe<Array<InputMaybe<NavigationDataLinksPagesInput>>>;
+  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesInputUnion>>>;
+  pages?: InputMaybe<Array<InputMaybe<NavigationDataLinksPagesInputUnion>>>;
+};
+
+export type NavigationDataLinksCategoriesInputUnion = {
+  navigationDataLinksCategories?: InputMaybe<NavigationDataLinksCategoriesInput>;
 };
 
 export type NavigationDataLinksCategoriesInput = {
   name?: InputMaybe<Scalars['String']>;
-  featured?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesFeaturedInput>>>;
-  collection?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCollectionInput>>>;
-  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCategoriesInput>>>;
-  brands?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesBrandsInput>>>;
+  featured?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesFeaturedInputUnion>>>;
+  collection?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCollectionInputUnion>>>;
+  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCategoriesInputUnion>>>;
+  brands?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesBrandsInputUnion>>>;
+};
+
+export type NavigationDataLinksCategoriesFeaturedInputUnion = {
+  navigationDataLinksCategoriesFeatured?: InputMaybe<NavigationDataLinksCategoriesFeaturedInput>;
 };
 
 export type NavigationDataLinksCategoriesFeaturedInput = {
@@ -37276,9 +37412,17 @@ export type NavigationDataLinksCategoriesFeaturedInput = {
   href?: InputMaybe<Scalars['String']>;
 };
 
+export type NavigationDataLinksCategoriesCollectionInputUnion = {
+  navigationDataLinksCategoriesCollection?: InputMaybe<NavigationDataLinksCategoriesCollectionInput>;
+};
+
 export type NavigationDataLinksCategoriesCollectionInput = {
   name?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
+};
+
+export type NavigationDataLinksCategoriesCategoriesInputUnion = {
+  navigationDataLinksCategoriesCategories?: InputMaybe<NavigationDataLinksCategoriesCategoriesInput>;
 };
 
 export type NavigationDataLinksCategoriesCategoriesInput = {
@@ -37286,9 +37430,17 @@ export type NavigationDataLinksCategoriesCategoriesInput = {
   href?: InputMaybe<Scalars['String']>;
 };
 
+export type NavigationDataLinksCategoriesBrandsInputUnion = {
+  navigationDataLinksCategoriesBrands?: InputMaybe<NavigationDataLinksCategoriesBrandsInput>;
+};
+
 export type NavigationDataLinksCategoriesBrandsInput = {
   name?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
+};
+
+export type NavigationDataLinksPagesInputUnion = {
+  navigationDataLinksPages?: InputMaybe<NavigationDataLinksPagesInput>;
 };
 
 export type NavigationDataLinksPagesInput = {
@@ -37323,7 +37475,11 @@ export type UpdateFooterInput = {
 };
 
 export type FooterNavigationInput = {
-  sections?: InputMaybe<Array<InputMaybe<FooterNavigationSectionsInput>>>;
+  sections?: InputMaybe<Array<InputMaybe<FooterNavigationSectionsInputUnion>>>;
+};
+
+export type FooterNavigationSectionsInputUnion = {
+  footerNavigationSections?: InputMaybe<FooterNavigationSectionsInput>;
 };
 
 export type FooterNavigationSectionsInput = {
@@ -37656,4 +37812,89 @@ export type ShopifyStorefront_MailingAddressInput = {
 export type Gorgias_CreateTicketResponse = {
   __typename?: 'Gorgias_CreateTicketResponse';
   id: Scalars['Int'];
+};
+
+export type UpdateStorefrontResult = {
+  __typename?: 'UpdateStorefrontResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Storefront>;
+};
+
+/** update Storefront input */
+export type UpdateStorefrontInput = {
+  components?: InputMaybe<Array<InputMaybe<BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion = {
+  offersComponent?: InputMaybe<OffersComponentInput>;
+  heroComponent?: InputMaybe<HeroComponentInput>;
+  collectionsComponent?: InputMaybe<CollectionsComponentInput>;
+  backgroundImageComponent?: InputMaybe<BackgroundImageComponentInput>;
+  saleComponent?: InputMaybe<SaleComponentInput>;
+  testimonialsComponent?: InputMaybe<TestimonialsComponentInput>;
+};
+
+export type OffersComponentInput = {
+  offers: Array<OfferInputUnion>;
+};
+
+export type OfferInputUnion = {
+  offer?: InputMaybe<OfferInput>;
+};
+
+export type OfferInput = {
+  href: Scalars['String'];
+  name: Scalars['String'];
+  description: Scalars['String'];
+};
+
+export type HeroComponentInput = {
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+  image: Scalars['String'];
+};
+
+export type CollectionsComponentInput = {
+  collections: Array<CollectionInputUnion>;
+};
+
+export type CollectionInputUnion = {
+  collection?: InputMaybe<CollectionInput>;
+};
+
+export type CollectionInput = {
+  name?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  imageSrc?: InputMaybe<Scalars['String']>;
+  imageAlt?: InputMaybe<Scalars['String']>;
+  href?: InputMaybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponentInput = {
+  image: Scalars['String'];
+};
+
+export type SaleComponentInput = {
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+};
+
+export type TestimonialsComponentInput = {
+  testimonials: Array<Scalars['JSONObject']>;
 };

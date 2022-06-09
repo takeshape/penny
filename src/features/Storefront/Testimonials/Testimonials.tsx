@@ -1,14 +1,6 @@
-interface Testimonial {
-  id: string;
-  quote: string;
-  attribution: string;
-}
+import { TestimonialsComponent } from 'types/takeshape';
 
-export interface TestimonialsProps {
-  testimonials?: Testimonial[];
-}
-
-const Testimonials = ({ testimonials }: React.PropsWithChildren<TestimonialsProps>) => {
+const Testimonials = ({ testimonials }: TestimonialsComponent) => {
   if (!testimonials || !testimonials.length) return null;
   return (
     <section

@@ -1,13 +1,6 @@
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-
-interface Collection {
-  name: string;
-  description: string;
-  imageSrc: string;
-  imageAlt: string;
-  href: string;
-}
+import { Collection } from 'types/takeshape';
 
 export interface CollectionsProps {
   collections?: Collection[];

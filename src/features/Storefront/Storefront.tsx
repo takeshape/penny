@@ -1,29 +1,34 @@
-import BackgroundImage from 'features/Storefront/BackgroundImage/BackgroundImage';
-import Hero, { HeroProps } from 'features/Storefront/Hero/Hero';
-import Offers, { OffersProps } from 'features/Storefront/Offers/Offers';
-import Sale, { SaleProps } from 'features/Storefront/Sale/Sale';
-import Testimonials, { TestimonialsProps } from 'features/Storefront/Testimonials/Testimonials';
-import Collections, { CollectionsProps } from './Collections/Collections';
-import TrendingProducts, { TrendingProductsProps } from './TrendingProducts/TrendingProducts';
+import { useQuery } from '@apollo/client';
+import Hero from 'features/Storefront/Hero/Hero';
+import Offers from 'features/Storefront/Offers/Offers';
+import Sale from 'features/Storefront/Sale/Sale';
+import Testimonials from 'features/Storefront/Testimonials/Testimonials';
+import { GetStorefrontQuery, GetStorefrontResponse } from '../../queries';
+import Collections from './Collections/Collections';
 
-export interface StorefrontProps extends OffersProps, TestimonialsProps, CollectionsProps, TrendingProductsProps {
-  hero: HeroProps;
-  sale: SaleProps;
-  saleImage: string;
-}
+const Storefront = () => {
+  const { data } = useQuery<GetStorefrontResponse>(GetStorefrontQuery);
 
-const Storefront = (props: React.PropsWithChildren<StorefrontProps>) => {
-  const { hero, offers, testimonials, collections, trendingProducts, sale, saleImage } = props;
   return (
     <main className="bg-white">
-      <Offers offers={offers} />
-      <Hero {...hero} />
-      <TrendingProducts trendingProducts={trendingProducts} />
-      <Collections collections={collections} />
-      <BackgroundImage image={saleImage}>
-        <Sale {...sale} />
-        <Testimonials testimonials={testimonials} />
-      </BackgroundImage>
+      {data.storefront.components.map((component) => {
+        switch (component.__typename) {
+          case 'BackgroundImageComponent':
+            return null;
+          case 'CollectionsComponent':
+            return <Collections {...component} />;
+          case 'HeroComponent':
+            return <Hero {...component} />;
+          case 'OffersComponent':
+            return <Offers offers={component.offers} />;
+          case 'SaleComponent':
+            return <Sale {...component} />;
+          case 'TestimonialsComponent':
+            return <Testimonials {...component} />;
+          default:
+            return null;
+        }
+      })}
     </main>
   );
 };

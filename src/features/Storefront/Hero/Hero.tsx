@@ -1,29 +1,20 @@
 import Button from 'components/Button/Button';
 import NextImage from 'components/NextImage';
+import { HeroComponent } from 'types/takeshape';
 
-export interface HeroProps {
-  text: {
-    primary: string;
-    secondary: string;
-    button: string;
-  };
-  image: string;
-}
-
-export const Hero = (props: React.PropsWithChildren<HeroProps>) => {
-  const { text, image } = props;
+export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroComponent) => {
   return (
     <div className="relative bg-gray-100 pb-4 lg:pb-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:grid lg:grid-cols-2">
         <div className="max-w-2xl mx-auto py-24 lg:py-64 lg:max-w-none">
           <div className="lg:pr-16">
             <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl xl:text-6xl">
-              {text.primary}
+              {primaryText}
             </h1>
-            <p className="mt-4 text-xl text-gray-600">{text.secondary}</p>
+            <p className="mt-4 text-xl text-gray-600">{secondaryText}</p>
             <div className="mt-6">
               <Button as="a" href="#" color="primary" size="large">
-                {text.button}
+                {buttonText}
               </Button>
             </div>
           </div>

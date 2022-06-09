@@ -15,6 +15,7 @@ import type {
   Shopify_Customer,
   Shopify_Product,
   Shopify_ProductConnection,
+  Storefront,
   Voucherify_LoyaltyCard
 } from 'types/takeshape';
 
@@ -651,6 +652,26 @@ export const UpdateCustomerAddressMutation = gql`
         code
         field
         message
+      }
+    }
+  }
+`;
+
+export interface GetStorefrontResponse {
+  storefront: Storefront;
+}
+
+export const GetStorefrontQuery = gql`
+  query GetStorefrontQuery {
+    storefront: getStorefront {
+      components {
+        ... on OffersComponent {
+          offers {
+            href
+            name
+            description
+          }
+        }
       }
     }
   }
