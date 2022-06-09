@@ -30,17 +30,9 @@
   font-named-instance: 'Italic';
 }
 
+/* Example of setting custom prose styles, for e.g., _dangerouslySetHtml */
 @layer base {
-  div#product-description > p {
+  div#example-prose > p {
     @apply text-base text-gray-900 mt-4;
-  }
-  div#product-description > h3 {
-    @apply text-sm font-medium text-gray-900 mt-10;
-  }
-  div#product-description > ul {
-    @apply pl-4 list-disc text-sm space-y-2 mt-4;
-  }
-  div#product-description > li {
-    @apply text-gray-600;
   }
 }

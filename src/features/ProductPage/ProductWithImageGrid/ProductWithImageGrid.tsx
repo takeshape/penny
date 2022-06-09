@@ -9,6 +9,7 @@ import { ReviewHighlights } from 'types/review';
 import classNames from 'utils/classNames';
 import { getVariant } from 'utils/products';
 import { formatDiscount, formatPrice, pluralizeText } from 'utils/text';
+import ProductWithImageGridImageGallery from './ProductWithImageGridImageGallery';
 
 export interface ProductProps {
   product: ProductType;
@@ -113,62 +114,7 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
       </nav>
 
       {/* Image gallery */}
-      <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-        <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
-          {images[0] && (
-            <div className="w-full h-full">
-              <Image
-                src={images[0].url}
-                alt={images[0].altText}
-                height={images[0].height}
-                width={images[0].width}
-                layout="fill"
-              />
-            </div>
-          )}
-        </div>
-        <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-          <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-            {images[1] && (
-              <div className="w-full h-full">
-                <Image
-                  src={images[1].url}
-                  alt={images[1].altText}
-                  height={images[1].height}
-                  width={images[1].width}
-                  layout="fill"
-                />
-              </div>
-            )}
-          </div>
-          <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-            {images[2] && (
-              <div className="w-full h-full">
-                <Image
-                  src={images[2].url}
-                  alt={images[2].altText}
-                  height={images[2].height}
-                  width={images[2].width}
-                  layout="fill"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-        <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
-          <div className="w-full h-full">
-            {images[3] && (
-              <Image
-                src={images[3].url}
-                alt={images[3].altText}
-                height={images[3].height}
-                width={images[3].width}
-                layout="fill"
-              />
-            )}
-          </div>
-        </div>
-      </div>
+      <ProductWithImageGridImageGallery images={images} />
 
       {/* Product info */}
       <div className="max-w-2xl mx-auto pt-10 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
@@ -324,16 +270,18 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
                         {({ active, checked }) => (
                           <>
                             <span className="flex items-center text-sm">
-                              <span
-                                className={classNames(
-                                  checked ? 'bg-indigo-600 border-transparent' : 'bg-white border-gray-300',
-                                  active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
-                                  'h-4 w-4 rounded-full border flex items-center justify-center'
-                                )}
-                                aria-hidden="true"
-                              >
-                                <span className="rounded-full bg-white w-1.5 h-1.5" />
-                              </span>
+                              <div>
+                                <span
+                                  className={classNames(
+                                    checked ? 'bg-indigo-600 border-transparent' : 'bg-white border-gray-300',
+                                    active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
+                                    'h-4 w-4 rounded-full border flex items-center justify-center'
+                                  )}
+                                  aria-hidden="true"
+                                >
+                                  <span className="rounded-full bg-white w-1.5 h-1.5" />
+                                </span>
+                              </div>
                               <RadioGroup.Label
                                 as="span"
                                 className={classNames(
@@ -348,11 +296,11 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
                               as="span"
                               className={classNames(
                                 checked ? 'text-indigo-700' : 'text-gray-500',
-                                'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right'
+                                'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right flex items-center place-content-end'
                               )}
                             >
                               {formatPrice(price.currencyCode, price.amount)}
-                              {price.intervalCount &&
+                              {price.intervalCount > 0 &&
                                 ` / ${pluralizeText(
                                   price.intervalCount,
                                   price.interval.toLowerCase(),
@@ -380,7 +328,7 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
 
         <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
           {/* Description and details */}
-          <div id="product-description" dangerouslySetInnerHTML={{ __html: descriptionHtml }}></div>
+          <div className="prose prose-indigo prose-sm" dangerouslySetInnerHTML={{ __html: descriptionHtml }}></div>
         </div>
 
         <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
@@ -408,7 +356,7 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
                       {review.reviewer.imageUrl && (
                         <Image
                           src={review.reviewer.imageUrl}
-                          alt={`${review.reviewer.firstName} ${review.reviewer.lastName.slice(0, 1)}.`}
+                          alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
                           className="rounded-full"
                         />
                       )}
@@ -416,7 +364,7 @@ export const ProductWithImageGrid = ({ product, reviews }: React.PropsWithChildr
 
                     <div className="ml-4 sm:ml-0 sm:mt-4">
                       <p className="text-sm font-medium text-gray-900">
-                        {review.reviewer.firstName} {review.reviewer.lastName.slice(0, 1)}
+                        {review.reviewer.firstName} {review.reviewer.lastName}
                       </p>
                       <div className="mt-2 flex items-center">
                         {[0, 1, 2, 3, 4].map((rating) => (

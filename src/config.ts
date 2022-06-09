@@ -17,8 +17,8 @@ export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 
 /* Site Config and SEO */
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
-export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'TakeShape Store';
-export const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION ?? 'We sell books.';
+export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Deluxe ™️ Store';
+export const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION ?? 'We sell stuff.';
 export const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO_URL ?? '/images/logo.svg';
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
 export const seo: DefaultSeoProps = {
@@ -53,8 +53,8 @@ export const seo: DefaultSeoProps = {
     {
       rel: 'icon',
       type: 'image/png',
-      href: '/favicon-256x256.png',
-      sizes: '256x256'
+      href: '/favicon-512x512.png',
+      sizes: '512x512'
     },
     {
       rel: 'apple-touch-icon',

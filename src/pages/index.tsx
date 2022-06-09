@@ -8,11 +8,11 @@ import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
 import type { GetProductsResponse } from 'queries';
 import { GetProductsQuery } from 'queries';
+import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
+import { shopifyProductToProductListItem } from 'transforms/shopify';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { reviewsIoProductReviewsToReviewHighlight } from 'utils/transforms/reviewsIo';
-import { shopifyProductToProductListItem } from 'utils/transforms/shopify';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {

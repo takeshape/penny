@@ -13,10 +13,10 @@ export type ProductPageProps = ProductProps &
   RelatedProductsProps;
 
 const ProductPage = (props: React.PropsWithChildren<ProductPageProps>) => {
-  const { product, reviews, policies, details, blog, relatedProducts, addToCart } = props;
+  const { product, reviews, policies, details, blog, relatedProducts } = props;
   return (
     <>
-      <Product product={product} reviews={reviews} addToCart={addToCart} />
+      <Product product={product} reviews={reviews} />
       <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
         <Details details={details} />
         <Policies policies={policies} />

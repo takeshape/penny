@@ -6,15 +6,12 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
 import { GetProductIdsQuery, GetProductQuery } from 'queries';
+import { reviewsIoProductReviewsToReviewHighlight, reviewsIoProductReviewsToReviewList } from 'transforms/reviewsIo';
+import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'transforms/shopify';
 import type { Product as ProductType } from 'types/product';
 import type { ReviewHighlights, ReviewList } from 'types/review';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import {
-  reviewsIoProductReviewsToReviewHighlight,
-  reviewsIoProductReviewsToReviewList
-} from 'utils/transforms/reviewsIo';
-import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms/shopify';
 import { getSingle } from 'utils/types';
 
 interface ProductPageProps {
