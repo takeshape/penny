@@ -1,8 +1,7 @@
 import Alert from 'components/Alert/Alert';
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
-import ProductHeader from 'features/ProductCategory/Header/Header';
-import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
+import Storefront from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import type { InferGetStaticPropsType, NextPage } from 'next';
@@ -31,8 +30,7 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
     <Layout>
       {products ? (
         <Wrapper>
-          <ProductHeader header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }} />
-          <ProductGrid products={products} />
+          <Storefront />
         </Wrapper>
       ) : (
         <PageLoader />
