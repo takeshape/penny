@@ -275,8 +275,8 @@ export type RecoverCustomerPasswordResponse = {
 };
 
 export const RecoverCustomerPasswordMutation = gql`
-  mutation RecoverCustomerPasswordMutation($email: String!) {
-    customerRecover: ShopifyStorefront_customerRecover(email: $email) {
+  mutation RecoverCustomerPasswordMutation($email: String!, $recaptchaToken: String!) {
+    customerRecover: ShopifyStorefront_customerRecover(email: $email, recaptchaToken: $recaptchaToken) {
       customerUserErrors {
         code
         field

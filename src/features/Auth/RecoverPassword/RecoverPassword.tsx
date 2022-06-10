@@ -4,7 +4,8 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from 'queries';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 import { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
 
@@ -19,15 +20,23 @@ export interface AuthRecoverPasswordProps {
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
   const { handleSubmit, formState, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
+  const recaptchaRef = useRef<ReCAPTCHA>();
+  const submissionValue = useRef<AuthRecoverPasswordForm>();
+
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordResponse,
     MutationShopifyStorefront_CustomerRecoverArgs
   >(RecoverCustomerPasswordMutation);
 
-  const onSubmit = useCallback(
-    async ({ email }: AuthRecoverPasswordForm) => {
-      // @ts-expect-error TODO Remove this after captcha PR merges
-      await setRecoverPasswordPayload({ variables: { email } });
+  const onSubmit = useCallback(async (formValues: AuthRecoverPasswordForm) => {
+    submissionValue.current = formValues;
+    recaptchaRef.current.execute();
+  }, []);
+
+  const onRecaptchaChange = useCallback(
+    async (recaptchaToken) => {
+      const { email } = submissionValue.current;
+      await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
     },
     [setRecoverPasswordPayload]
   );
@@ -77,6 +86,13 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
                       message: 'Please enter a valid email'
                     }
                   }}
+                />
+
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="invisible"
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onChange={onRecaptchaChange}
                 />
 
                 <div>

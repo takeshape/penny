@@ -6,6 +6,7 @@ import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import { CreateCustomerMutation, CreateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 import { MutationCreateCustomerArgs } from 'types/takeshape';
 
@@ -27,6 +28,8 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     MutationCreateCustomerArgs
   >(CreateCustomerMutation);
 
+  const recaptchaRef = useRef<ReCAPTCHA>();
+  const submissionValue = useRef<AuthCreateAccountForm>();
   const watched = useRef({ email: '', password: '' });
 
   watched.current.email = watch('email', '');
@@ -40,8 +43,17 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
   }, [customerResponse, callbackUrl]);
 
   const onSubmit = useCallback(
-    async ({ email, password }: AuthCreateAccountForm) => {
-      await setCustomerPayload({ variables: { input: { email, password } } });
+    async (formValues: AuthCreateAccountForm) => {
+      submissionValue.current = formValues;
+      recaptchaRef.current.execute();
+    },
+    [recaptchaRef]
+  );
+
+  const onRecaptchaChange = useCallback(
+    async (recaptchaToken) => {
+      const { email, password } = submissionValue.current;
+      await setCustomerPayload({ variables: { input: { email, password, recaptchaToken } } });
     },
     [setCustomerPayload]
   );
@@ -115,6 +127,13 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
                 required: 'This field is required',
                 validate: (value) => value === watched.current.password || 'The passwords do not match'
               }}
+            />
+
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              size="invisible"
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={onRecaptchaChange}
             />
 
             <div>
