@@ -110,7 +110,8 @@ export const productOptions = {
     white: { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
     gray: { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
     black: { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300' }
+    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300' },
+    'heather gray': { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400' }
   },
   size: {
     xxs: { name: 'XXS' },

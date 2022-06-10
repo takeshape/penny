@@ -117,6 +117,7 @@ export const GetProductQuery = gql`
         width
         height
         url
+        altText
       }
       images(first: 10) {
         edges {
@@ -124,6 +125,7 @@ export const GetProductQuery = gql`
             width
             height
             url
+            altText
           }
         }
       }

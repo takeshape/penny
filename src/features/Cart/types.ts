@@ -1,5 +1,7 @@
+import type { ProductPageProduct } from 'features/ProductPage/types';
 import type { SetOptional } from 'type-fest';
-import type { Product, ProductPriceOption, ProductVariant } from 'types/product';
+import type { ProductPriceOption, ProductVariant } from 'types/product';
+import type { CartQuickAddProduct } from './QuickAdd/types';
 
 export type CartItem = {
   id: string;
@@ -20,7 +22,11 @@ export type CartItem = {
 export type CartItemInput = SetOptional<CartItem, 'interval' | 'intervalCount' | 'imageSrc' | 'imageAlt' | 'data'>;
 
 export type AddToCartInput = {
-  product: Product;
+  product: CartQuickAddProduct | ProductPageProduct;
   variant: ProductVariant;
   price: ProductPriceOption;
+};
+
+export type CartQuickAdd = {
+  productId: string;
 };

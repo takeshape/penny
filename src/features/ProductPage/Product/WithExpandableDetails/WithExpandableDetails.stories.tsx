@@ -7,11 +7,6 @@ const Meta: ComponentMeta<typeof ProductWithExpandableDetails> = {
   component: ProductWithExpandableDetails,
   parameters: {
     layout: 'centered'
-  },
-  argTypes: {
-    addToCart: {
-      action: 'Add to Cart'
-    }
   }
 };
 

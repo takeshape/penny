@@ -1,5 +1,6 @@
 import Cart from 'features/Cart/Cart';
 import CartProvider from 'features/Cart/CartProvider';
+import CartQuickAddFromShopify from 'features/Cart/QuickAdd/QuickAddFromShopify';
 import Footer from 'features/Footer/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notification from 'features/Notification/Notification';
@@ -22,6 +23,7 @@ export const Layout = ({ children, ...seo }: PropsWithChildren<NextSeoProps>) =>
         </main>
 
         <Cart />
+        <CartQuickAddFromShopify />
         <Notification />
 
         <Footer />

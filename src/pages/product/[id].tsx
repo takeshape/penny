@@ -2,6 +2,7 @@ import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
 import Product from 'features/ProductPage/Product/Product';
 import Reviews from 'features/ProductPage/Reviews/Reviews';
+import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -45,6 +46,7 @@ const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighl
         <Wrapper>
           <Product component="withImageGrid" product={product} reviews={reviewHighlights} breadcrumbs={breadcrumbs} />
           <Reviews reviews={reviews} />
+          <RelatedProductsFromShopify collection="related-products" />
         </Wrapper>
       </div>
     </Layout>

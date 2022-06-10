@@ -1184,8 +1184,7 @@ export const product: Product = {
         { value: 'White', hasStock: true, name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' }
       ]
     }
-  ],
-  data: {}
+  ]
 };
 
 export const reviewHighlights: ReviewHighlights = {

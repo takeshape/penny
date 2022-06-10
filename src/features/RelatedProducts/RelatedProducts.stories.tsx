@@ -7,11 +7,6 @@ const Meta: ComponentMeta<typeof RelatedProducts> = {
   component: RelatedProducts,
   parameters: {
     layout: 'centered'
-  },
-  argTypes: {
-    addToCart: {
-      action: 'Add to Cart'
-    }
   }
 };
 
