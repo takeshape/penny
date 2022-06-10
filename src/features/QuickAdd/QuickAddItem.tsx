@@ -1,10 +1,10 @@
 import { RadioGroup } from '@headlessui/react';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
+import ColorSelect from 'components/Product/ColorSelect';
+import PriceSelect from 'components/Product/PriceSelect';
+import SizeSelect from 'components/Product/SizeSelect';
 import { addToCartAtom } from 'features/Cart/store';
-import ColorSelect from 'features/ProductPage/Product/WithImageGrid/ColorSelect';
-import PriceSelect from 'features/ProductPage/Product/WithImageGrid/PriceSelect';
-import SizeSelect from 'features/ProductPage/Product/WithImageGrid/SizeSelect';
 import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { getVariant } from 'utils/products';
