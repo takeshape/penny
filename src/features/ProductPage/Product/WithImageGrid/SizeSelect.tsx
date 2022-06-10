@@ -7,13 +7,21 @@ export interface SizeSelectProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
   options: ProductOptionValue[];
+  size?: 'large' | 'small';
 }
 
-export const SizeSelect = ({ value, onChange, options }: SizeSelectProps) => {
+export const SizeSelect = ({ value, onChange, options, size }: SizeSelectProps) => {
+  size = size ?? 'large';
+  const wrapperStyles = classNames(size === 'large' && 'sm:grid-cols-8 lg:grid-cols-4', 'grid grid-cols-4 gap-4');
+  const buttonStyles = classNames(
+    size === 'large' && 'sm:py-6',
+    'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1'
+  );
+
   return (
     <RadioGroup value={value} onChange={onChange} className="mt-4">
       <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
-      <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+      <div className={wrapperStyles}>
         {options.map((size) => (
           <RadioGroup.Option
             key={size.value}
@@ -25,7 +33,7 @@ export const SizeSelect = ({ value, onChange, options }: SizeSelectProps) => {
                   ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
                   : 'bg-gray-50 text-gray-200 cursor-not-allowed',
                 active ? 'ring-2 ring-indigo-500' : '',
-                'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
+                buttonStyles
               )
             }
           >

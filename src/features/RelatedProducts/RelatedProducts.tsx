@@ -1,5 +1,5 @@
 import NextImage from 'components/NextImage';
-import { cartQuickAddAtom } from 'features/Cart/store';
+import { quickAddAtom } from 'features/QuickAdd/store';
 import { useSetAtom } from 'jotai';
 import { useCallback } from 'react';
 import { formatPrice } from 'utils/text';
@@ -10,7 +10,7 @@ export interface RelatedProductsProps {
 }
 
 const RelatedProducts = ({ products }: RelatedProductsProps) => {
-  const quickAdd = useSetAtom(cartQuickAddAtom);
+  const quickAdd = useSetAtom(quickAddAtom);
 
   const handleAddToCart = useCallback(
     (productId) => {

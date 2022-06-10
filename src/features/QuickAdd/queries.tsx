@@ -1,18 +1,16 @@
 import { gql } from '@apollo/client';
-import type { CartQuickAddReviewsIoReviews, CartQuickAddShopifyProduct } from './types';
+import type { QuickAddShopifyProduct } from './types';
 
-export type CartQuickAddArgs = {
+export type QuickAddArgs = {
   productId: string;
-  reviewsId: string;
 };
 
-export type CartQuickAddResponse = {
-  product: CartQuickAddShopifyProduct;
-  reviews: CartQuickAddReviewsIoReviews;
+export type QuickAddResponse = {
+  product: QuickAddShopifyProduct;
 };
 
-export const CartQuickAddQuery = gql`
-  query CartQuickAddQuery($productId: ID!, $reviewsId: String!) {
+export const QuickAddQuery = gql`
+  query QuickAddQuery($productId: ID!) {
     product: Shopify_product(id: $productId) {
       id
       title
@@ -115,12 +113,6 @@ export const CartQuickAddQuery = gql`
             }
           }
         }
-      }
-    }
-    reviews: ReviewsIo_listProductReviews(sku: $reviewsId) {
-      stats {
-        average
-        count
       }
     }
   }

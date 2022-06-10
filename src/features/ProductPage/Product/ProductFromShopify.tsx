@@ -12,12 +12,13 @@ export type ProductFromShopifyProps = {
 } & Omit<ProductProps, 'product' | 'reviews'>;
 
 export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyProps) => {
-  const [loadProduct, { data, called }] = useLazyQuery<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>(
-    ProductPageShopifyProductQuery
-  );
+  const [loadProduct, { data, loading }] = useLazyQuery<
+    ProductPageShopifyProductReponse,
+    ProductPageShopifyProductArgs
+  >(ProductPageShopifyProductQuery, { returnPartialData: true });
 
   useEffect(() => {
-    if (productId && !called) {
+    if (productId && !loading) {
       loadProduct({
         variables: {
           productId,
@@ -25,9 +26,9 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
         }
       });
     }
-  }, [called, loadProduct, productId]);
+  }, [loading, loadProduct, productId]);
 
-  if (!data?.product) {
+  if (!data) {
     return null;
   }
 

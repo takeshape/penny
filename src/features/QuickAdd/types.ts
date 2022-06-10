@@ -6,7 +6,7 @@ import type {
   Shopify_ProductVariantConnection
 } from 'types/takeshape';
 
-export type CartQuickAddShopifyProduct = Pick<
+export type QuickAddShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
   | 'title'
@@ -25,5 +25,9 @@ export type CartQuickAddShopifyProduct = Pick<
   variants: Shopify_ProductVariantConnection;
 };
 
-export type CartQuickAddProduct = SetRequired<ProductBase, 'variants'>;
-export type CartQuickAddReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
+export type QuickAddProduct = SetRequired<ProductBase, 'variants'>;
+export type QuickAddReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
+
+export type QuickAdd = {
+  productId: string;
+};

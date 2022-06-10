@@ -1,6 +1,6 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
-import type { CartQuickAddProduct, CartQuickAddShopifyProduct } from 'features/Cart/QuickAdd/types';
 import type { ProductPageProduct, ProductPageShopifyProduct } from 'features/ProductPage/types';
+import type { QuickAddProduct, QuickAddShopifyProduct } from 'features/QuickAdd/types';
 import { RelatedProductsProduct, RelatedProductsShopifyProduct } from 'features/RelatedProducts/types';
 import type {
   ProductImage,
@@ -305,7 +305,7 @@ export function shopifyProductToProduct(shopifyProduct: ProductPageShopifyProduc
   };
 }
 
-export function shopifyProductToQuickAddProduct(shopifyProduct: CartQuickAddShopifyProduct): CartQuickAddProduct {
+export function shopifyProductToQuickAddProduct(shopifyProduct: QuickAddShopifyProduct): QuickAddProduct {
   const variants = getVariants(shopifyProduct);
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
