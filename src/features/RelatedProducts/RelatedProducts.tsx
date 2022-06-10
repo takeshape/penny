@@ -60,7 +60,7 @@ const RelatedProducts = ({ products }: RelatedProductsProps) => {
                   handleAddToCart(product.id);
                 }}
               >
-                Add to bag<span className="sr-only">, {product.name}</span>
+                Add to cart<span className="sr-only">, {product.name}</span>
               </a>
             </div>
           </div>
