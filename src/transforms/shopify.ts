@@ -1,6 +1,6 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
 import type { CartQuickAddProduct, CartQuickAddShopifyProduct } from 'features/Cart/QuickAdd/types';
-import type { ProductPageProduct } from 'features/ProductPage/types';
+import type { ProductPageProduct, ProductPageShopifyProduct } from 'features/ProductPage/types';
 import { RelatedProductsProduct, RelatedProductsShopifyProduct } from 'features/RelatedProducts/types';
 import type {
   ProductImage,
@@ -219,7 +219,7 @@ function getPrice(price: Shopify_MoneyV2): ProductPrice {
   };
 }
 
-function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
+function getSeo(shopifyProduct: Pick<Shopify_Product, 'seo' | 'title' | 'description'>): ProductSeo {
   return {
     title: shopifyProduct.seo?.title ?? shopifyProduct.title,
     description: shopifyProduct.seo?.description ?? shopifyProduct.description
@@ -281,7 +281,7 @@ export function shopifyProductToProductListItem(shopifyProduct: Shopify_Product)
   };
 }
 
-export function shopifyProductToProduct(shopifyProduct: Shopify_Product): ProductPageProduct {
+export function shopifyProductToProduct(shopifyProduct: ProductPageShopifyProduct): ProductPageProduct {
   const variants = getVariants(shopifyProduct);
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 

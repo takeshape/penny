@@ -1,33 +1,30 @@
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
-import Product from 'features/ProductPage/Product/Product';
-import Reviews from 'features/ProductPage/Reviews/Reviews';
+import ProductFromShopify from 'features/ProductPage/Product/ProductFromShopify';
+import type {
+  ProductPageShopifyProductArgs,
+  ProductPageShopifyProductIdListResponse,
+  ProductPageShopifyProductReponse
+} from 'features/ProductPage/queries';
+import { ProductPageShopifyProductIdListQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
-import { GetProductIdsQuery, GetProductQuery } from 'queries';
-import { reviewsIoProductReviewsToReviewHighlight, reviewsIoProductReviewsToReviewList } from 'transforms/reviewsIo';
 import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'transforms/shopify';
-import type { Product as ProductType } from 'types/product';
-import type { ReviewHighlights, ReviewList } from 'types/review';
+import type { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
-interface ProductPageProps {
-  product: ProductType;
-  reviews: ReviewList;
-  reviewHighlights: ReviewHighlights;
-}
+type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'>;
 
 const breadcrumbs = [
   { id: 1, name: 'Men', href: '#' },
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighlights }) => {
+const ProductPage: NextPage<ProductPageProps> = ({ id, name, description }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
@@ -41,11 +38,11 @@ const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighl
   }
 
   return (
-    <Layout title={product.name}>
+    <Layout title={name} description={description}>
       <div className="bg-white">
         <Wrapper>
-          <Product component="withImageGrid" product={product} reviews={reviewHighlights} breadcrumbs={breadcrumbs} />
-          <Reviews reviews={reviews} />
+          <ProductFromShopify component="withImageGrid" productId={id} breadcrumbs={breadcrumbs} />
+          {/* <Reviews reviews={reviews} /> */}
           <RelatedProductsFromShopify collection="related-products" />
         </Wrapper>
       </div>
@@ -56,29 +53,30 @@ const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighl
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
-  const id = shopifyIdToGid(getSingle(params.id));
+  const id = getSingle(params.id);
 
-  const { data } = await apolloClient.query<GetProductResponse, GetProductArgs>({
-    query: GetProductQuery,
-    variables: { id }
+  const { data } = await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
+    query: ProductPageShopifyProductQuery,
+    variables: {
+      productId: shopifyIdToGid(id),
+      reviewsId: id
+    }
   });
 
   const product = shopifyProductToProduct(data.product);
-  const reviews = reviewsIoProductReviewsToReviewList(data.product.reviews);
-  const reviewHighlights = reviewsIoProductReviewsToReviewHighlight(data.product.reviews);
 
   return addApolloQueryCache(apolloClient, {
     props: {
-      product,
-      reviews,
-      reviewHighlights
+      id: product.id,
+      name: product.name,
+      description: product.description
     }
   });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await apolloClient.query<GetProductIdsResponse>({
-    query: GetProductIdsQuery
+  const { data } = await apolloClient.query<ProductPageShopifyProductIdListResponse>({
+    query: ProductPageShopifyProductIdListQuery
   });
 
   const paths = data.products.edges.map(({ node }) => ({
