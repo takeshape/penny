@@ -5,6 +5,7 @@ import type { Product } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
+
 export interface ProductGridProps {
   products?: { product: Product; reviews: ReviewHighlights }[];
 }
@@ -24,8 +25,6 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
               <NextImage
                 layout="fill"
                 src={product.featuredImage.url}
-                height={product.featuredImage.height}
-                width={product.featuredImage.width}
                 alt={`Picture of ${product.name}`}
                 className="w-full h-full object-center object-cover"
               />

@@ -1,6 +1,8 @@
 import type { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
 import ColorSelect from 'components/Product/ColorSelect';
+import PriceSelect from 'components/Product/PriceSelect';
+import SizeSelect from 'components/Product/SizeSelect';
 import { addToCartAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import type { PropsWithChildren } from 'react';
@@ -9,8 +11,6 @@ import type { Product as ProductType } from 'types/product';
 import type { ReviewHighlights } from 'types/review';
 import { getVariant } from 'utils/products';
 import { formatPrice } from 'utils/text';
-import PriceSelect from '../../../../components/Product/PriceSelect';
-import SizeSelect from '../../../../components/Product/SizeSelect';
 import FeaturedReviews from './FeaturedReviews';
 import ImageGallery from './ImageGallery';
 import ReviewsCallout from './ReviewsCallout';
