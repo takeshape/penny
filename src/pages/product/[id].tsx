@@ -60,10 +60,7 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
   const id = getSingle(params.id);
 
-  const { data: productData } = await apolloClient.query<
-    ProductPageShopifyProductReponse,
-    ProductPageShopifyProductArgs
-  >({
+  const { data } = await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
     query: ProductPageShopifyProductQuery,
     variables: {
       productId: shopifyIdToGid(id),
@@ -79,7 +76,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     }
   });
 
-  const product = shopifyProductToProduct(productData.product);
+  const product = shopifyProductToProduct(data.product);
 
   return addApolloQueryCache(apolloClient, {
     props: {
