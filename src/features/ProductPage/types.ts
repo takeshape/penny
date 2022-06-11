@@ -1,7 +1,7 @@
-import type { SetRequired } from 'type-fest';
-import type { ProductBase } from 'types/product';
-import type { ReviewHighlights, ReviewList } from 'types/review';
-import type { ReviewsIo_ListProductReviewsResponse, Shopify_Product } from 'types/takeshape';
+import { SetRequired } from 'type-fest';
+import { ProductBase } from 'types/product';
+import { ReviewHighlights, ReviewList } from 'types/review';
+import { ReviewsIo_ListProductReviewsResponse, Shopify_Product } from 'types/takeshape';
 
 export type ProductPageShopifyProduct = Pick<
   Shopify_Product,

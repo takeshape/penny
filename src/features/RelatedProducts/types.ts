@@ -1,5 +1,5 @@
-import type { ProductBase } from 'types/product';
-import type { Shopify_Product } from 'types/takeshape';
+import { ProductBase } from 'types/product';
+import { Shopify_Product } from 'types/takeshape';
 
 export type RelatedProductsShopifyProduct = Pick<
   Shopify_Product,

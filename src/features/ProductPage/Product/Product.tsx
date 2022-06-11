@@ -1,7 +1,7 @@
-import type { ProductWithExpandableDetailsProps } from './WithExpandableDetails/WithExpandableDetails';
-import ProductWithExpandableDetails from './WithExpandableDetails/WithExpandableDetails';
-import type { ProductWithImageGridProps } from './WithImageGrid/WithImageGrid';
-import ProductWithImageGrid from './WithImageGrid/WithImageGrid';
+import ProductWithExpandableDetails, {
+  ProductWithExpandableDetailsProps
+} from './WithExpandableDetails/WithExpandableDetails';
+import ProductWithImageGrid, { ProductWithImageGridProps } from './WithImageGrid/WithImageGrid';
 
 export type ProductProps = {
   component: 'withExpandableDetails' | 'withImageGrid';

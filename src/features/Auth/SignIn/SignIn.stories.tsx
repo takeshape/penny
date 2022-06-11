@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { AuthSignIn } from './SignIn';
 
 const Meta: ComponentMeta<typeof AuthSignIn> = {

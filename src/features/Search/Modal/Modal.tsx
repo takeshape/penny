@@ -9,8 +9,7 @@ import { Fragment, useCallback, useEffect } from 'react';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
-import type { SearchStripeProductsResults } from '../Search.queries';
-import { SearchStripeProducts } from '../Search.queries';
+import { SearchStripeProducts, SearchStripeProductsResults } from '../Search.queries';
 
 const resultsFn = (data: SearchStripeProductsResults) =>
   data.search.results.filter((result) => result.__typename === 'Stripe_Product');

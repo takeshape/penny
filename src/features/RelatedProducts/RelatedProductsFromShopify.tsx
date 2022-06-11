@@ -1,7 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { shopifyProductToRelatdProduct } from 'transforms/shopify';
-import type { RelatedProductsShopifyCollectionArgs, RelatedProductsShopifyCollectionResponse } from './queries';
-import { RelatedProductsShopifyCollectionQuery } from './queries';
+import {
+  RelatedProductsShopifyCollectionArgs,
+  RelatedProductsShopifyCollectionQuery,
+  RelatedProductsShopifyCollectionResponse
+} from './queries';
 import RelatedProducts from './RelatedProducts';
 
 export interface RelatedProductsFromShopifyProps {

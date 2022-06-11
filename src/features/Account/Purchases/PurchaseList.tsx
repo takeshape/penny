@@ -2,7 +2,7 @@ import CardPanel from 'components/Card/Panel/Panel';
 import Image from 'components/NextImage';
 import { format } from 'date-fns';
 import { shopifyGidToId } from 'transforms/shopify';
-import type { Shopify_Order } from 'types/takeshape';
+import { Shopify_Order } from 'types/takeshape';
 import { formatPrice } from 'utils/text';
 import PurchseOrderStatus from './PurchaseOrderStatus';
 

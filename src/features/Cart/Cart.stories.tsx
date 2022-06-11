@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { cartItemsAtom, isCartOpenAtom } from 'features/Cart/store';
 import { currencyAtom } from 'store';
 import { Cart } from './Cart';

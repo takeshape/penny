@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import type { ProductPageReviewsIoReviews, ProductPageShopifyProduct } from './types';
+import { ProductPageReviewsIoReviews, ProductPageShopifyProduct } from './types';
 
 export type ProductPageShopifyProductIdListResponse = {
   products: {

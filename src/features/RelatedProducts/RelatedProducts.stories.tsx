@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import RelatedProducts from './RelatedProducts';
 import { relatedProducts } from './RelatedProducts.fixtures';
 

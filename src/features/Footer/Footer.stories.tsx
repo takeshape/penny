@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import Footer from './Footer';
 import { GetFooterQueryData } from './Footer.fixtures';

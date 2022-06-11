@@ -1,14 +1,13 @@
 import { RadioGroup } from '@headlessui/react';
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/solid';
-import type { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
-import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
+import Breadcrumbs, { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import NextImage from 'components/NextImage';
 import Stars from 'components/Stars/Stars';
 import { addToCartAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { Product as ProductType } from 'types/product';
-import type { ReviewHighlights } from 'types/review';
+import { ReviewHighlights } from 'types/review';
 import classNames from 'utils/classNames';
 import { getVariant } from 'utils/products';
 import { formatPrice } from 'utils/text';

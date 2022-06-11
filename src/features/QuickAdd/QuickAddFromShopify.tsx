@@ -3,8 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useEffect } from 'react';
 import { shopifyProductToQuickAddProduct } from 'transforms/shopify';
-import type { QuickAddArgs, QuickAddResponse } from './queries';
-import { QuickAddQuery } from './queries';
+import { QuickAddArgs, QuickAddQuery, QuickAddResponse } from './queries';
 import QuickAdd from './QuickAdd';
 import { quickAddAtom } from './store';
 

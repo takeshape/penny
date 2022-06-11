@@ -2,7 +2,7 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
-import type { SignInErrorTypes } from 'next-auth/core/pages/signin';
+import { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useCallback } from 'react';

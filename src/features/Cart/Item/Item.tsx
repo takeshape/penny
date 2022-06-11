@@ -1,11 +1,10 @@
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import Image from 'components/NextImage';
-import type { PrimitiveAtom } from 'jotai';
-import { useAtom } from 'jotai';
+import { PrimitiveAtom, useAtom } from 'jotai';
 import Link from 'next/link';
 import { Fragment } from 'react';
 import { formatPrice, pluralizeText } from 'utils/text';
-import type { CartItem as ICartItem } from '../types';
+import { CartItem as ICartItem } from '../types';
 
 export interface CartItemProps {
   atom: PrimitiveAtom<ICartItem>;

@@ -1,10 +1,10 @@
-import type { RelatedProductsFromShopifyProps } from 'features/RelatedProducts/RelatedProductsFromShopify';
-import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
+import RelatedProductsFromShopify, {
+  RelatedProductsFromShopifyProps
+} from 'features/RelatedProducts/RelatedProductsFromShopify';
 import { BlogProps } from './Blog/Blog';
 import { DetailsProps } from './Details/Details';
 import { PoliciesProps } from './Policies/Policies';
-import type { ProductFromShopifyProps } from './Product/ProductFromShopify';
-import ProductFromShopify from './Product/ProductFromShopify';
+import ProductFromShopify, { ProductFromShopifyProps } from './Product/ProductFromShopify';
 import Reviews, { ReviewsProps } from './Reviews/Reviews';
 
 export type ProductPageProps = ProductFromShopifyProps &

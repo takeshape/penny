@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { product, reviews } from '../../ProductPage.fixtures';
 import { ProductWithImageGrid } from './WithImageGrid';
 

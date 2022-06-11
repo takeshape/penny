@@ -1,6 +1,6 @@
-import type { SetRequired } from 'type-fest';
-import type { ProductBase } from 'types/product';
-import type {
+import { SetRequired } from 'type-fest';
+import { ProductBase } from 'types/product';
+import {
   ReviewsIo_ListProductReviewsResponse,
   Shopify_Product,
   Shopify_ProductVariantConnection

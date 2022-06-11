@@ -1,7 +1,7 @@
-import type { ProductPageProduct } from 'features/ProductPage/types';
-import type { QuickAddProduct } from 'features/QuickAdd/types';
-import type { SetOptional } from 'type-fest';
-import type { ProductPriceOption, ProductVariant } from 'types/product';
+import { ProductPageProduct } from 'features/ProductPage/types';
+import { QuickAddProduct } from 'features/QuickAdd/types';
+import { SetOptional } from 'type-fest';
+import { ProductPriceOption, ProductVariant } from 'types/product';
 
 export type CartItem = {
   id: string;

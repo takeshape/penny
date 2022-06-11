@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import type { QuickAddShopifyProduct } from './types';
+import { QuickAddShopifyProduct } from './types';
 
 export type QuickAddArgs = {
   productId: string;

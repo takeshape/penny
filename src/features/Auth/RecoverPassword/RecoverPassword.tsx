@@ -3,11 +3,10 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
-import type { RecoverCustomerPasswordResponse } from 'queries';
-import { RecoverCustomerPasswordMutation } from 'queries';
+import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from 'queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
+import { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
 
 export interface AuthRecoverPasswordForm {
   email: string;

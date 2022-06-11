@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import type { RelatedProductsShopifyProduct } from './types';
+import { RelatedProductsShopifyProduct } from './types';
 
 export type RelatedProductsShopifyCollectionArgs = {
   handle: string;

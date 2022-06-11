@@ -6,8 +6,7 @@ import {
   ProductPageReviewsIoReviewsQuery,
   ProductPageReviewsIoReviewsReponse
 } from '../queries';
-import type { ReviewsProps } from './Reviews';
-import Reviews from './Reviews';
+import Reviews, { ReviewsProps } from './Reviews';
 
 export type ReviewsFromReviewsIoProps = {
   sku: string;

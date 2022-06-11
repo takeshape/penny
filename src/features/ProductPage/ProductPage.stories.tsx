@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { _RelatedProducts } from '../RelatedProducts/RelatedProducts.stories';
 import { _Blog } from './Blog/Blog.stories';
 import { _Details } from './Details/Details.stories';

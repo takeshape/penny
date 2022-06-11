@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { AuthSignOut } from './SignOut';
 
 const Meta: ComponentMeta<typeof AuthSignOut> = {

@@ -1,8 +1,7 @@
 import { cartItemsAtom } from 'features/Cart/store';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import type { PropsWithChildren } from 'react';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
 import { currencyAtom, notificationAtom } from 'store';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {

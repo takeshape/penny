@@ -1,7 +1,7 @@
 import { cartLocalStorageKey, defaultProductImage } from 'config';
 import { atom } from 'jotai';
 import { atomWithStorage, splitAtom } from 'jotai/utils';
-import type { AddToCartInput, CartItem, CartItemInput } from './types';
+import { AddToCartInput, CartItem, CartItemInput } from './types';
 
 /* Cart UI */
 export const isCartOpenAtom = atom(false);

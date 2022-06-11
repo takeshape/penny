@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Details from './Details';
 
 const Meta: ComponentMeta<typeof Details> = {
