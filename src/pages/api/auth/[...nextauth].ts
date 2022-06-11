@@ -1,14 +1,20 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
 import logger from 'logger';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
-import type { CreateCustomerAccessTokenResponse, GetCustomerTokenDataResponse, UpsertProfileResponse } from 'queries';
-import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery, UpsertProfile } from 'queries';
-import type {
+import {
+  CreateCustomerAccessTokenMutation,
+  CreateCustomerAccessTokenResponse,
+  GetCustomerTokenDataQuery,
+  GetCustomerTokenDataResponse,
+  UpsertProfile,
+  UpsertProfileResponse
+} from 'queries';
+import {
   MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
   MutationUpsertProfileArgs,
   QueryShopifyStorefront_CustomerArgs

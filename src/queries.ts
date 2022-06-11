@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import type {
+import {
   CreateCustomerPayload,
   Klaviyo_200Ok,
   Klaviyo_AddMembersResponse,

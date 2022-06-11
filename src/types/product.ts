@@ -1,5 +1,5 @@
 import { currencyList } from 'config';
-import type { SetRequired } from 'type-fest';
+import { SetRequired } from 'type-fest';
 
 export type ProductImage = {
   height: number;

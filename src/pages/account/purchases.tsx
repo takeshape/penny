@@ -1,9 +1,8 @@
 import { useQuery } from '@apollo/client';
 import AccountPastPurchases from 'features/Account/Purchases/PurchaseList';
 import Layout from 'layouts/Account';
-import type { NextPage } from 'next';
-import type { GetMyAdminCustomerOrdersResponse } from 'queries';
-import { GetMyAdminCustomerOrdersQuery } from 'queries';
+import { NextPage } from 'next';
+import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
 
 const AccountPurchasesPage: NextPage = () => {
   const { data } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);

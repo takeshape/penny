@@ -1,5 +1,5 @@
-import type { Review, ReviewHighlights, ReviewList, ReviewStats } from 'types/review';
-import type {
+import { Review, ReviewHighlights, ReviewList, ReviewStats } from 'types/review';
+import {
   ReviewsIo_ListProductReviewsResponse,
   ReviewsIo_ListProductReviewsResponseStatsProperty,
   ReviewsIo_ProductReview

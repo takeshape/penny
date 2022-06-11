@@ -2,7 +2,7 @@ import { seo } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import type { AppContext, AppInitialProps } from 'next/app';
+import { AppContext, AppInitialProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import 'styles/globals.css';

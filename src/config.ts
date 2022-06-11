@@ -1,4 +1,4 @@
-import type { DefaultSeoProps } from 'next-seo';
+import { DefaultSeoProps } from 'next-seo';
 
 /* API */
 export const takeshapeApiUrl = process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;

@@ -1,6 +1,6 @@
 import AccountSubscriptions from 'features/Account/Subscriptions/Subscriptions';
 import Layout from 'layouts/Account';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 
 const AccountPurchasesPage: NextPage = () => {
   return (

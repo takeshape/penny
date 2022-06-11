@@ -17,7 +17,7 @@ import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'transforms/shopify';
-import type { Product } from 'types/product';
+import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';

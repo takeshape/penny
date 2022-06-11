@@ -1,8 +1,8 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
-import type { ProductPageProduct, ProductPageShopifyProduct } from 'features/ProductPage/types';
-import type { QuickAddProduct, QuickAddShopifyProduct } from 'features/QuickAdd/types';
+import { ProductPageProduct, ProductPageShopifyProduct } from 'features/ProductPage/types';
+import { QuickAddProduct, QuickAddShopifyProduct } from 'features/QuickAdd/types';
 import { RelatedProductsProduct, RelatedProductsShopifyProduct } from 'features/RelatedProducts/types';
-import type {
+import {
   ProductImage,
   ProductListItem,
   ProductPrice,
@@ -11,17 +11,18 @@ import type {
   ProductSeo,
   ProductVariant
 } from 'types/product';
-import type {
+import {
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
   Shopify_ProductOption,
   Shopify_ProductVariant,
+  Shopify_SellingPlanInterval,
   Shopify_SellingPlanPricingPolicy,
+  Shopify_SellingPlanPricingPolicyAdjustmentType,
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
-import { Shopify_SellingPlanInterval, Shopify_SellingPlanPricingPolicyAdjustmentType } from 'types/takeshape';
 
 function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
   switch (adjustmentType) {

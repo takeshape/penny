@@ -4,7 +4,7 @@
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
-import type { ServerError } from '@apollo/client/link/utils';
+import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from 'config';
 import logger from 'logger';
 
