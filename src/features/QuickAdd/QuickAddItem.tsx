@@ -1,14 +1,14 @@
 import { RadioGroup } from '@headlessui/react';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import ColorSelect from 'components/Product/ColorSelect';
-import PriceSelect from 'components/Product/PriceSelect';
-import SizeSelect from 'components/Product/SizeSelect';
+import ProductColorSelect from 'components/Product/ProductColorSelect';
+import ProductPrice from 'components/Product/ProductPrice';
+import ProductPriceSelect from 'components/Product/ProductPriceSelect';
+import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { getVariant } from 'utils/products';
-import { formatPrice } from 'utils/text';
 import { QuickAddProduct } from './types';
 
 export interface QuickAddItemProps {
@@ -17,7 +17,9 @@ export interface QuickAddItemProps {
 }
 
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
-  const { options } = product;
+  let { options, hasStock } = product;
+
+  hasStock = false;
 
   const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
@@ -77,9 +79,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             Product information
           </h3>
 
-          <p className="text-2xl text-gray-900">
-            {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}
-          </p>
+          <ProductPrice price={selectedPrice} hasStock={hasStock} size="small" />
         </section>
 
         <section aria-labelledby="options-heading" className="mt-10">
@@ -94,7 +94,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
 
               <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
                 <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
-                <ColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
+                <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
               </RadioGroup>
             </div>
 
@@ -107,19 +107,24 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
                 </a>
               </div>
 
-              <SizeSelect size="small" value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
+              <ProductSizeSelect size="small" value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
             </div>
 
-            {selectedVariant.prices.length > 1 && (
+            {hasStock && selectedVariant.prices.length > 1 && (
               <div className="mt-10">
-                <PriceSelect value={selectedPrice} onChange={setSelectedPrice} options={selectedVariant.prices} />
+                <ProductPriceSelect
+                  value={selectedPrice}
+                  onChange={setSelectedPrice}
+                  options={selectedVariant.prices}
+                />
               </div>
             )}
 
             <button
               onClick={handleAddToCart}
+              disabled={!hasStock}
               type="submit"
-              className="mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               Add to cart
             </button>

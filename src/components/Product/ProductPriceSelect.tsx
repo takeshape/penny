@@ -4,13 +4,13 @@ import type { ProductPriceOption } from 'types/product';
 import classNames from 'utils/classNames';
 import { formatDiscount, formatPrice, pluralizeText } from 'utils/text';
 
-export interface PriceSelectProps {
+export interface ProductPriceSelectProps {
   value: ProductPriceOption;
   onChange: Dispatch<SetStateAction<ProductPriceOption>>;
   options: ProductPriceOption[];
 }
 
-export const PriceSelect = ({ value, onChange, options }: PriceSelectProps) => {
+export const ProductPriceSelect = ({ value, onChange, options }: ProductPriceSelectProps) => {
   return (
     <RadioGroup value={value} onChange={onChange}>
       <RadioGroup.Label className="sr-only">Pricing plans</RadioGroup.Label>
@@ -74,4 +74,4 @@ export const PriceSelect = ({ value, onChange, options }: PriceSelectProps) => {
   );
 };
 
-export default PriceSelect;
+export default ProductPriceSelect;

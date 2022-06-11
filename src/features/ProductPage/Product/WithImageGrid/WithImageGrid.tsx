@@ -1,8 +1,9 @@
 import type { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import Breadcrumbs from 'components/Breadcrumbs/Breadcrumbs';
-import ColorSelect from 'components/Product/ColorSelect';
-import PriceSelect from 'components/Product/PriceSelect';
-import SizeSelect from 'components/Product/SizeSelect';
+import ProductColorSelect from 'components/Product/ProductColorSelect';
+import ProductPrice from 'components/Product/ProductPrice';
+import ProductPriceSelect from 'components/Product/ProductPriceSelect';
+import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import type { PropsWithChildren } from 'react';
@@ -10,14 +11,13 @@ import { useCallback, useEffect, useState } from 'react';
 import type { Product as ProductType } from 'types/product';
 import type { ReviewHighlights } from 'types/review';
 import { getVariant } from 'utils/products';
-import { formatPrice } from 'utils/text';
 import FeaturedReviews from './FeaturedReviews';
 import ImageGallery from './ImageGallery';
 import ReviewsCallout from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
   product: ProductType;
-  reviews: ReviewHighlights;
+  reviews?: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
   showFeaturedReviews?: boolean;
 }
@@ -84,16 +84,19 @@ export const ProductWithImageGrid = ({
         {/* Options */}
         <div className="mt-4 lg:mt-0 lg:row-span-3">
           <h2 className="sr-only">Product information</h2>
-          <p className="text-3xl text-gray-900">{formatPrice(selectedPrice.currencyCode, selectedPrice.amount)}</p>
 
-          <div className="mt-6">
-            <ReviewsCallout stats={reviews.stats} />
-          </div>
+          <ProductPrice price={selectedPrice} hasStock={hasStock} size="large" />
+
+          {reviews && (
+            <div className="mt-6">
+              <ReviewsCallout stats={reviews.stats} />
+            </div>
+          )}
 
           <form className="mt-10">
             <div>
               <h3 className="text-sm text-gray-900 font-medium">Color</h3>
-              <ColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
+              <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
             </div>
 
             <div className="mt-10">
@@ -104,12 +107,16 @@ export const ProductWithImageGrid = ({
                 </a>
               </div>
 
-              <SizeSelect value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
+              <ProductSizeSelect value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
             </div>
 
-            {selectedVariant.prices.length > 1 && (
+            {hasStock && selectedVariant.prices.length > 1 && (
               <div className="mt-10">
-                <PriceSelect value={selectedPrice} onChange={setSelectedPrice} options={selectedVariant.prices} />
+                <ProductPriceSelect
+                  value={selectedPrice}
+                  onChange={setSelectedPrice}
+                  options={selectedVariant.prices}
+                />
               </div>
             )}
 
@@ -128,7 +135,7 @@ export const ProductWithImageGrid = ({
           <div className="prose prose-indigo prose-sm" dangerouslySetInnerHTML={{ __html: descriptionHtml }}></div>
         </div>
 
-        {showFeaturedReviews && (
+        {showFeaturedReviews && reviews && (
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             {/* Reviews */}
             <section aria-labelledby="reviews-heading" className="border-t border-gray-200 pt-10 lg:pt-16">

@@ -3,13 +3,13 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { ProductOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
-export interface ColorSelectProps {
+export interface ProductColorSelectProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
   options: ProductOptionValue[];
 }
 
-export const ColorSelect = ({ value, onChange, options }: ColorSelectProps) => {
+export const ProductColorSelect = ({ value, onChange, options }: ProductColorSelectProps) => {
   return (
     <RadioGroup value={value} onChange={onChange} className="mt-4">
       <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
@@ -41,4 +41,4 @@ export const ColorSelect = ({ value, onChange, options }: ColorSelectProps) => {
   );
 };
 
-export default ColorSelect;
+export default ProductColorSelect;

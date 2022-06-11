@@ -2,23 +2,33 @@ import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
 import { shopifyGidToId, shopifyProductToProduct } from 'transforms/shopify';
-import type { ProductPageShopifyProductArgs, ProductPageShopifyProductReponse } from '../queries';
-import { ProductPageShopifyProductQuery } from '../queries';
-import type { ProductProps } from './Product';
-import Product from './Product';
+import {
+  ProductPageReviewsIoReviewsArgs,
+  ProductPageReviewsIoReviewsQuery,
+  ProductPageReviewsIoReviewsReponse,
+  ProductPageShopifyProductArgs,
+  ProductPageShopifyProductQuery,
+  ProductPageShopifyProductReponse
+} from '../queries';
+import Product, { ProductProps } from './Product';
 
 export type ProductFromShopifyProps = {
   productId: string;
 } & Omit<ProductProps, 'product' | 'reviews'>;
 
 export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyProps) => {
-  const [loadProduct, { data, loading }] = useLazyQuery<
+  const [loadProduct, { data: productData, loading: productLoading }] = useLazyQuery<
     ProductPageShopifyProductReponse,
     ProductPageShopifyProductArgs
   >(ProductPageShopifyProductQuery, { returnPartialData: true });
 
+  const [loadReviews, { data: reviewsData, loading: reviewsLoading }] = useLazyQuery<
+    ProductPageReviewsIoReviewsReponse,
+    ProductPageReviewsIoReviewsArgs
+  >(ProductPageReviewsIoReviewsQuery, { returnPartialData: true });
+
   useEffect(() => {
-    if (productId && !loading) {
+    if (productId && !productLoading) {
       loadProduct({
         variables: {
           productId,
@@ -26,16 +36,24 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
         }
       });
     }
-  }, [loading, loadProduct, productId]);
 
-  if (!data) {
+    if (productId && !reviewsLoading) {
+      loadReviews({
+        variables: {
+          sku: shopifyGidToId(productId)
+        }
+      });
+    }
+  }, [productLoading, loadProduct, productId, reviewsLoading, loadReviews]);
+
+  if (!productData) {
     return null;
   }
 
   return (
     <Product
-      product={shopifyProductToProduct(data.product)}
-      reviews={reviewsIoProductReviewsToReviewHighlight(data.reviews)}
+      product={shopifyProductToProduct(productData.product)}
+      reviews={reviewsData && reviewsIoProductReviewsToReviewHighlight(reviewsData.reviews)}
       {...props}
     />
   );

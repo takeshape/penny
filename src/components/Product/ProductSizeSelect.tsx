@@ -3,14 +3,14 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { ProductOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
-export interface SizeSelectProps {
+export interface ProductSizeSelectProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
   options: ProductOptionValue[];
   size?: 'large' | 'small';
 }
 
-export const SizeSelect = ({ value, onChange, options, size }: SizeSelectProps) => {
+export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSizeSelectProps) => {
   size = size ?? 'large';
   const wrapperStyles = classNames(size === 'large' && 'sm:grid-cols-8 lg:grid-cols-4', 'grid grid-cols-4 gap-4');
   const buttonStyles = classNames(
@@ -73,4 +73,4 @@ export const SizeSelect = ({ value, onChange, options, size }: SizeSelectProps) 
   );
 };
 
-export default SizeSelect;
+export default ProductSizeSelect;

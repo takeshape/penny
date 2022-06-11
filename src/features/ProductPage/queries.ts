@@ -188,3 +188,43 @@ export const ProductPageShopifyProductQuery = gql`
     }
   }
 `;
+
+export type ProductPageReviewsIoReviewsArgs = {
+  sku: string;
+};
+
+export type ProductPageReviewsIoReviewsReponse = {
+  reviews: ProductPageReviewsIoReviews;
+};
+
+export const ProductPageReviewsIoReviewsQuery = gql`
+  query ProductPageReviewsIoReviewsQuery($sku: String!) {
+    reviews: ReviewsIo_listProductReviews(sku: $sku) {
+      stats {
+        average
+        count
+      }
+      reviews {
+        data {
+          product_review_id
+          rating
+          title
+          review
+          date_created
+          timeago
+          reviewer {
+            first_name
+            last_name
+            verified_buyer
+            address
+            profile_picture
+            gravatar
+          }
+        }
+        per_page
+        current_page
+        total
+      }
+    }
+  }
+`;

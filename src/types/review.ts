@@ -21,8 +21,14 @@ export type ReviewStats = {
   count: number;
 };
 
+export type ReviewRollup = {
+  rating: number;
+  count: number;
+};
+
 export type ReviewList = {
   stats: ReviewStats;
+  rollup?: ReviewRollup[];
   perPage: number;
   currentPage: number;
   totalPages: number;

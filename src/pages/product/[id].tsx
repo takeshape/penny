@@ -1,12 +1,17 @@
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
 import ProductFromShopify from 'features/ProductPage/Product/ProductFromShopify';
-import type {
+import {
+  ProductPageReviewsIoReviewsArgs,
+  ProductPageReviewsIoReviewsQuery,
+  ProductPageReviewsIoReviewsReponse,
   ProductPageShopifyProductArgs,
+  ProductPageShopifyProductIdListQuery,
   ProductPageShopifyProductIdListResponse,
+  ProductPageShopifyProductQuery,
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
-import { ProductPageShopifyProductIdListQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
+import ReviewsFromReviewsIo from 'features/ProductPage/Reviews/ReviewsFromReviewsIo';
 import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
@@ -42,7 +47,7 @@ const ProductPage: NextPage<ProductPageProps> = ({ id, name, description }) => {
       <div className="bg-white">
         <Wrapper>
           <ProductFromShopify component="withImageGrid" productId={id} breadcrumbs={breadcrumbs} />
-          {/* <Reviews reviews={reviews} /> */}
+          <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />
           <RelatedProductsFromShopify collection="related-products" />
         </Wrapper>
       </div>
@@ -63,6 +68,14 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     variables: {
       productId: shopifyIdToGid(id),
       reviewsId: id
+    }
+  });
+
+  // Just priming the cache
+  await apolloClient.query<ProductPageReviewsIoReviewsReponse, ProductPageReviewsIoReviewsArgs>({
+    query: ProductPageReviewsIoReviewsQuery,
+    variables: {
+      sku: id
     }
   });
 

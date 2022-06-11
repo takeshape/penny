@@ -1,14 +1,15 @@
 import { DefaultReviewer } from 'components/Icons/Icons';
 import NextImage from 'components/NextImage';
-import Stars from 'components/Stars/Stars';
+import { Star, Stars } from 'components/Stars/Stars';
 import { ReviewList } from 'types/review';
 
 export interface ReviewsProps {
   reviews: ReviewList;
+  showRollup?: boolean;
 }
 
-const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
-  const { stats, data } = reviews;
+const Reviews = ({ reviews, showRollup }: React.PropsWithChildren<ReviewsProps>) => {
+  const { stats, rollup, data } = reviews;
 
   return (
     <section aria-labelledby="reviews-heading" className="bg-white">
@@ -26,38 +27,39 @@ const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
             <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>
           </div>
 
-          {/* Reviews.IO does not provide sufficient data for this view */}
-          {/* <div className="mt-6">
-            <h3 className="sr-only">Review data</h3>
+          {showRollup && rollup && (
+            <div className="mt-6">
+              <h3 className="sr-only">Review data</h3>
 
-            <dl className="space-y-3">
-              {data.map((review) => (
-                <div key={review.rating} className="flex items-center text-sm">
-                  <dt className="flex-1 flex items-center">
-                    <p className="w-3 font-medium text-gray-900">
-                      {review.rating}
-                      <span className="sr-only"> star reviews</span>
-                    </p>
-                    <div aria-hidden="true" className="ml-1 flex-1 flex items-center">
-                      <Star lit={review.count > 0} />
-                      <div className="ml-3 relative flex-1">
-                        <div className="h-3 bg-gray-100 border border-gray-200 rounded-full" />
-                        {review.count > 0 ? (
-                          <div
-                            className="absolute inset-y-0 bg-yellow-400 border border-yellow-400 rounded-full"
-                            style={{ width: `calc(${count.count} / ${reviews.totalCount} * 100%)` }}
-                          />
-                        ) : null}
+              <dl className="space-y-3">
+                {rollup.map((score) => (
+                  <div key={score.rating} className="flex items-center text-sm">
+                    <dt className="flex-1 flex items-center">
+                      <p className="w-3 font-medium text-gray-900">
+                        {score.rating}
+                        <span className="sr-only"> star reviews</span>
+                      </p>
+                      <div aria-hidden="true" className="ml-1 flex-1 flex items-center">
+                        <Star lit={score.count > 0} />
+                        <div className="ml-3 relative flex-1">
+                          <div className="h-3 bg-gray-100 border border-gray-200 rounded-full" />
+                          {score.count > 0 ? (
+                            <div
+                              className="absolute inset-y-0 bg-yellow-400 border border-yellow-400 rounded-full"
+                              style={{ width: `calc(${score.count} / ${stats.count} * 100%)` }}
+                            />
+                          ) : null}
+                        </div>
                       </div>
-                    </div>
-                  </dt>
-                  <dd className="ml-3 w-10 text-right tabular-nums text-sm text-gray-900">
-                    {Math.round((count.count / reviews.totalCount) * 100)}%
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div> */}
+                    </dt>
+                    <dd className="ml-3 w-10 text-right tabular-nums text-sm text-gray-900">
+                      {Math.round((score.count / stats.count) * 100)}%
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
 
           <div className="mt-10">
             <h3 className="text-lg font-medium text-gray-900">Share your thoughts</h3>
