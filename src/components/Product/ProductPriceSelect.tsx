@@ -1,6 +1,6 @@
 import { RadioGroup } from '@headlessui/react';
-import type { Dispatch, SetStateAction } from 'react';
-import type { ProductPriceOption } from 'types/product';
+import { Dispatch, SetStateAction } from 'react';
+import { ProductPriceOption } from 'types/product';
 import classNames from 'utils/classNames';
 import { formatDiscount, formatPrice, pluralizeText } from 'utils/text';
 

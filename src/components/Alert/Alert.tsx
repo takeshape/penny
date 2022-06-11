@@ -1,6 +1,5 @@
-import type { StatusIconProps } from 'components/StatusIcon/StatusIcon';
-import StatusIcon from 'components/StatusIcon/StatusIcon';
-import type { ReactEventHandler } from 'react';
+import StatusIcon, { StatusIconProps } from 'components/StatusIcon/StatusIcon';
+import { ReactEventHandler } from 'react';
 import classNames from 'utils/classNames';
 
 export interface AlertActionProps {

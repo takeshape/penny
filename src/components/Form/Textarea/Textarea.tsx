@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
-import type { TextareaHTMLAttributes } from 'react';
+import { TextareaHTMLAttributes } from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 

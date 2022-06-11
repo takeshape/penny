@@ -1,6 +1,6 @@
 import { RadioGroup } from '@headlessui/react';
-import type { Dispatch, SetStateAction } from 'react';
-import type { ProductOptionValue } from 'types/product';
+import { Dispatch, SetStateAction } from 'react';
+import { ProductOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
 export interface ProductSizeSelectProps {

@@ -1,4 +1,4 @@
-import type { ProductPriceOption } from 'types/product';
+import { ProductPriceOption } from 'types/product';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
 
