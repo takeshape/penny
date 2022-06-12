@@ -5,11 +5,11 @@ import { BlogProps } from './Blog/Blog';
 import { DetailsProps } from './Details/Details';
 import { PoliciesProps } from './Policies/Policies';
 import ProductFromShopify, { ProductFromShopifyProps } from './Product/ProductFromShopify';
-import Reviews, { ReviewsProps } from './Reviews/Reviews';
+import ProductPageReviews, { ProductPageReviewsProps } from './Reviews/Reviews';
 
 export type ProductPageProps = ProductFromShopifyProps &
   PoliciesProps &
-  ReviewsProps &
+  ProductPageReviewsProps &
   DetailsProps &
   BlogProps &
   RelatedProductsFromShopifyProps;
@@ -29,7 +29,7 @@ const ProductPage = (props: React.PropsWithChildren<ProductPageProps>) => {
         {/* <Details details={details} /> */}
         {/* <Policies policies={policies} /> */}
       </div>
-      <Reviews reviews={reviews} />
+      <ProductPageReviews reviews={reviews} />
       <RelatedProductsFromShopify collection={collection} />
       {/* <Blog blog={blog} /> */}
     </>

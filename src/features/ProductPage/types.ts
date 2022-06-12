@@ -1,6 +1,6 @@
 import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
-import { ReviewHighlights, ReviewList } from 'types/review';
+import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
 import { ReviewsIo_ListProductReviewsResponse, Shopify_Product } from 'types/takeshape';
 
 export type ProductPageShopifyProduct = Pick<
@@ -25,5 +25,8 @@ export type ProductPageShopifyProduct = Pick<
 
 export type ProductPageProduct = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;
 export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
-export type ProductPageReviews = ReviewList;
+export type ProductPageReviewsReviewList = ReviewList;
+export type ProductPageReviewsReview = Review;
 export type ProductPageReviewHighlights = ReviewHighlights;
+export type ProductPageReviewsRollup = ReviewRollup;
+export type ProductPageReviewsStats = ReviewStats;

@@ -6,6 +6,7 @@ import {
   RelatedProductsShopifyCollectionResponse
 } from './queries';
 import RelatedProducts from './RelatedProducts';
+import { RelatedProductsProduct } from './types';
 
 export interface RelatedProductsFromShopifyProps {
   collection?: string;
@@ -18,11 +19,9 @@ export const RelatedProductsFromShopify = ({ collection }: RelatedProductsFromSh
     { variables: { handle } }
   );
 
-  if (!data) {
-    return null;
-  }
-
-  const products = data.collection.products.edges.map(({ node }) => shopifyProductToRelatdProduct(node));
+  const products =
+    data?.collection.products.edges.map(({ node }) => shopifyProductToRelatdProduct(node)) ??
+    (Array(4).fill(undefined) as RelatedProductsProduct[]);
 
   return <RelatedProducts products={products} />;
 };

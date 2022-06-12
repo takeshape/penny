@@ -1,16 +1,16 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { reviews } from '../ProductPage.fixtures';
-import Reviews from './Reviews';
+import ProductPageReviews from './Reviews';
 
-const Meta: ComponentMeta<typeof Reviews> = {
+const Meta: ComponentMeta<typeof ProductPageReviews> = {
   title: 'Features / Product Page / Components / Reviews',
-  component: Reviews,
+  component: ProductPageReviews,
   parameters: {
     layout: 'centered'
   }
 };
 
-const Template: ComponentStory<typeof Reviews> = (args) => <Reviews {...args} />;
+const Template: ComponentStory<typeof ProductPageReviews> = (args) => <ProductPageReviews {...args} />;
 
 export const _Reviews = Template.bind({});
 _Reviews.args = {

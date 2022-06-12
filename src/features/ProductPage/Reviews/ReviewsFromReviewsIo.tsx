@@ -6,11 +6,12 @@ import {
   ProductPageReviewsIoReviewsQuery,
   ProductPageReviewsIoReviewsReponse
 } from '../queries';
-import Reviews, { ReviewsProps } from './Reviews';
+import { ProductPageReviewsReview } from '../types';
+import ProductPageReviews, { ProductPageReviewsProps } from './Reviews';
 
 export type ReviewsFromReviewsIoProps = {
   sku: string;
-} & Omit<ReviewsProps, 'reviews'>;
+} & Omit<ProductPageReviewsProps, 'reviews'>;
 
 export const ReviewsFromReviewsIo = ({ sku, ...props }: ReviewsFromReviewsIoProps) => {
   const [loadReviews, { data, loading }] = useLazyQuery<
@@ -28,13 +29,12 @@ export const ReviewsFromReviewsIo = ({ sku, ...props }: ReviewsFromReviewsIoProp
     }
   }, [loading, loadReviews, sku]);
 
-  if (!data) {
-    return null;
-  }
+  const reviews = reviewsIoProductReviewsToReviewList(data?.reviews);
+  reviews.data = reviews.data.length ? reviews.data : (Array(1).fill(undefined) as ProductPageReviewsReview[]);
 
   // Reviews.io does not support the rollup data.
   // TODO We can use an indexed query and ElasticSearch facets once we expose
-  return <Reviews reviews={reviewsIoProductReviewsToReviewList(data.reviews)} showRollup={false} {...props} />;
+  return <ProductPageReviews reviews={reviews} showRollup={false} {...props} />;
 };
 
 export default ReviewsFromReviewsIo;
