@@ -19,8 +19,6 @@ export interface QuickAddItemProps {
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
   let { options, hasStock } = product;
 
-  hasStock = false;
-
   const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
 
