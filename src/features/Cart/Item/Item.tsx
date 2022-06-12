@@ -13,7 +13,7 @@ export interface CartItemProps {
 
 export const CartItem = ({ atom, onRemove }: CartItemProps) => {
   const [item, setItem] = useAtom(atom);
-  const { imageSrc, imageAlt, name, href, currency, unitAmount, quantity, interval, intervalCount } = item;
+  const { imageSrc, imageAlt, name, href, currency, unitAmount, quantity, interval, intervalCount, variantName } = item;
 
   return (
     <Fragment>
@@ -30,9 +30,12 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
       <div className="ml-4 flex flex-1 flex-col">
         <div>
           <div className="flex justify-between text-base font-medium text-gray-900">
-            <h3>
-              <Link href={href}>{name}</Link>
-            </h3>
+            <div>
+              <h3>
+                <Link href={href}>{name}</Link>
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">{variantName}</p>
+            </div>
             <div>
               <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
               {intervalCount > 0 ? (
@@ -42,8 +45,6 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
               ) : null}
             </div>
           </div>
-          {/* Preserving example of details style */}
-          {/* <p className="mt-1 text-sm text-gray-500">{color}</p> */}
         </div>
         <div className="flex flex-1 items-end justify-between text-sm">
           <div className="flex-1 flex items-center justify-start">

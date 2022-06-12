@@ -15,6 +15,8 @@ export type CartItem = {
   imageAlt: string;
   interval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
   intervalCount: number;
+  variantId: string;
+  variantName: string;
   // Freeform data, for display or later API calls
   data: Record<string, unknown>;
 };
