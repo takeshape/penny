@@ -21,6 +21,11 @@ const Meta: ComponentMeta<typeof OrderStatus> = {
 
 const Template: ComponentStory<typeof OrderStatus> = (args) => <OrderStatus {...args} />;
 
+export const Processing = Template.bind({});
+Processing.args = {
+  unfulfilled: true
+};
+
 export const Fulfilled = Template.bind({});
 Fulfilled.args = {
   ...OrderStatusFixtures.FULFILLED
