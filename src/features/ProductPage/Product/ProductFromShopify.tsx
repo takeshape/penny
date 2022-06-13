@@ -3,14 +3,15 @@ import { useEffect } from 'react';
 import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
 import { shopifyGidToId, shopifyProductToProduct } from 'transforms/shopify';
 import {
-    ProductPageReviewsIoReviewsArgs,
-    ProductPageReviewsIoReviewsQuery,
-    ProductPageReviewsIoReviewsResponse,
-    ProductPageShopifyProductArgs,
-    ProductPageShopifyProductQuery,
-    ProductPageShopifyProductReponse
+  ProductPageReviewsIoReviewsArgs,
+  ProductPageReviewsIoReviewsQuery,
+  ProductPageReviewsIoReviewsResponse,
+  ProductPageShopifyProductArgs,
+  ProductPageShopifyProductQuery,
+  ProductPageShopifyProductReponse
 } from '../queries';
 import Product, { ProductProps } from './Product';
+import ProductLoading from './ProductLoading';
 
 export type ProductFromShopifyProps = {
   productId: string;
@@ -46,7 +47,7 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
   }, [productLoading, loadProduct, productId, reviewsLoading, loadReviews]);
 
   if (!productData) {
-    return null;
+    return <ProductLoading />;
   }
 
   return (
