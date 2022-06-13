@@ -2,9 +2,9 @@ import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { reviewsIoProductReviewsToReviewList } from 'transforms/reviewsIo';
 import {
-    ProductPageReviewsIoReviewsArgs,
-    ProductPageReviewsIoReviewsQuery,
-    ProductPageReviewsIoReviewsResponse
+  ProductPageReviewsIoReviewsArgs,
+  ProductPageReviewsIoReviewsQuery,
+  ProductPageReviewsIoReviewsResponse
 } from '../queries';
 import { ProductPageReviewsReview } from '../types';
 import ProductPageReviews, { ProductPageReviewsProps } from './Reviews';

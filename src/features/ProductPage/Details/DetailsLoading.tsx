@@ -1,4 +1,4 @@
-export const ProductPageDetailsLoading = () => (
+export const DetailsLoading = () => (
   <section aria-labelledby="details-heading" className="animate-pulse">
     <div className="flex flex-col items-center text-center">
       <div>
@@ -30,4 +30,4 @@ export const ProductPageDetailsLoading = () => (
   </section>
 );
 
-export default ProductPageDetailsLoading;
+export default DetailsLoading;

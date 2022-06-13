@@ -63,9 +63,9 @@ export type ProductPagePolicies = {
 export type ProductPageProductComponent = 'withImageGrid' | 'withImage';
 
 export type ProductPageOptions = {
-  productComponent: ProductPageProductComponent;
-  hideReviews: boolean;
-  hideRelatedProducts: boolean;
+  component: ProductPageProductComponent;
+  showReviews: boolean;
+  showRelatedProducts: boolean;
   showDetails: boolean;
   showPolicies: boolean;
 };

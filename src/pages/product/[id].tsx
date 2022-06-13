@@ -1,8 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import Wrapper from 'components/Wrapper/Content';
-import DetailsFromTakeshape from 'features/ProductPage/Details/DetailsFromTakeshape';
-import PoliciesFromTakeshape from 'features/ProductPage/Policies/PoliciesFromTakeshape';
-import ProductFromShopify from 'features/ProductPage/Product/ProductFromShopify';
+import ProductPageComponent from 'features/ProductPage/ProductPage';
 import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,
@@ -13,9 +10,7 @@ import {
   ProductPageShopifyProductQuery,
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
-import ReviewsFromReviewsIo from 'features/ProductPage/Reviews/ReviewsFromReviewsIo';
 import { ProductPageOptions } from 'features/ProductPage/types';
-import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -27,6 +22,7 @@ import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
 type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
+  sku: string;
   options: ProductPageOptions;
 };
 
@@ -35,42 +31,28 @@ const breadcrumbs = [
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage: NextPage<ProductPageProps> = ({ id, name, description, options }) => {
+const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, options }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Layout title="Product loading...">
+      <Layout title="Product is loading...">
         <PageLoader />
       </Layout>
     );
   }
 
-  const { productComponent, hideReviews, hideRelatedProducts, showPolicies, showDetails } = options;
-
   return (
     <Layout title={name} description={description}>
-      <div className="bg-gray-50">
-        <div className="bg-white">
-          <Wrapper>
-            <ProductFromShopify component={productComponent} productId={id} breadcrumbs={breadcrumbs} />
-          </Wrapper>
-        </div>
-
-        <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 bg-gray-50">
-          {showDetails && <DetailsFromTakeshape productId={id} />}
-          {showPolicies && <PoliciesFromTakeshape productId={id} />}
-        </div>
-
-        <div className="bg-white">
-          <Wrapper>
-            {!hideReviews && <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />}
-            {!hideRelatedProducts && <RelatedProductsFromShopify collection="related-products" />}
-          </Wrapper>
-        </div>
-      </div>
+      <ProductPageComponent
+        productId={id}
+        sku={sku}
+        component={options.component}
+        options={options}
+        breadcrumbs={breadcrumbs}
+      />
     </Layout>
   );
 };
@@ -101,6 +83,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   return addApolloQueryCache(apolloClient, {
     props: {
       id: product.id,
+      sku: id,
       name: product.name,
       description: product.description,
       options: takeshapeItemToProductPageOptions(item)

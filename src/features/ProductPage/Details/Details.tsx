@@ -1,11 +1,11 @@
 import NextImage from 'components/NextImage';
 import { ProductPageDetails as ProductPageDetailsType } from '../types';
 
-export interface ProductPageDetailsProps {
+export interface DetailsProps {
   details: ProductPageDetailsType;
 }
 
-export const ProductPageDetails = ({ details: { text, details } }: ProductPageDetailsProps) => (
+export const Details = ({ details: { text, details } }: DetailsProps) => (
   <section aria-labelledby="details-heading">
     <div className="flex flex-col items-center text-center">
       <h2
@@ -29,4 +29,4 @@ export const ProductPageDetails = ({ details: { text, details } }: ProductPageDe
   </section>
 );
 
-export default ProductPageDetails;
+export default Details;

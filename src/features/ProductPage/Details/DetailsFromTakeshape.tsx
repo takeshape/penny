@@ -6,14 +6,14 @@ import {
   ProductPageTakeshapeDetailsQuery,
   ProductPageTakeshapeDetailsResponse
 } from '../queries';
-import Details, { ProductPageDetailsProps } from './Details';
+import Details, { DetailsProps } from './Details';
 import DetailsLoading from './DetailsLoading';
 
-export type ProductPageDetailsFromTakeshapeProps = {
+export type DetailsFromTakeshapeProps = {
   productId: string;
-} & Omit<ProductPageDetailsProps, 'details'>;
+} & Omit<DetailsProps, 'details'>;
 
-export const ProductPageDetailsFromTakeshape = ({ productId, ...props }: ProductPageDetailsFromTakeshapeProps) => {
+export const DetailsFromTakeshape = ({ productId, ...props }: DetailsFromTakeshapeProps) => {
   const [loadDetails, { data, loading }] = useLazyQuery<
     ProductPageTakeshapeDetailsResponse,
     ProductPageTakeshapeDetailsArgs
@@ -39,4 +39,4 @@ export const ProductPageDetailsFromTakeshape = ({ productId, ...props }: Product
   );
 };
 
-export default ProductPageDetailsFromTakeshape;
+export default DetailsFromTakeshape;

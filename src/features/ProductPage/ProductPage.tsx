@@ -1,38 +1,50 @@
+import Wrapper from 'components/Wrapper/Content';
+import DetailsFromTakeshape, { DetailsFromTakeshapeProps } from 'features/ProductPage/Details/DetailsFromTakeshape';
+import PoliciesFromTakeshape from 'features/ProductPage/Policies/PoliciesFromTakeshape';
+import ReviewsFromReviewsIo, { ReviewsFromReviewsIoProps } from 'features/ProductPage/Reviews/ReviewsFromReviewsIo';
 import RelatedProductsFromShopify, {
-    RelatedProductsFromShopifyProps
+  RelatedProductsFromShopifyProps
 } from 'features/RelatedProducts/RelatedProductsFromShopify';
-import { BlogProps } from './Blog/Blog';
-import { DetailsProps } from './Details/Details';
-import { ProductPagePoliciesProps } from './Policies/Policies';
+import { ProductPagePoliciesFromTakeshapeProps } from './Policies/PoliciesFromTakeshape';
 import ProductFromShopify, { ProductFromShopifyProps } from './Product/ProductFromShopify';
-import ProductPageReviews, { ProductPageReviewsProps } from './Reviews/Reviews';
+import { ProductPageOptions } from './types';
 
 export type ProductPageProps = ProductFromShopifyProps &
-  ProductPagePoliciesProps &
-  ProductPageReviewsProps &
-  DetailsProps &
-  BlogProps &
-  RelatedProductsFromShopifyProps;
+  ProductPagePoliciesFromTakeshapeProps &
+  ReviewsFromReviewsIoProps &
+  DetailsFromTakeshapeProps &
+  RelatedProductsFromShopifyProps & {
+    options: ProductPageOptions;
+  };
 
 const breadcrumbs = [
   { id: 1, name: 'Men', href: '#' },
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage = (props: React.PropsWithChildren<ProductPageProps>) => {
-  const { productId, reviews, collection, policies, details, blog } = props;
+const ProductPage = ({ productId, sku, component, options }: ProductPageProps) => {
+  const { showDetails, showPolicies, showReviews, showRelatedProducts } = options;
 
   return (
-    <>
-      <ProductFromShopify component="withExpandableDetails" productId={productId} breadcrumbs={breadcrumbs} />
-      <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
-        {/* <Details details={details} /> */}
-        {/* <Policies policies={policies} /> */}
+    <div className="bg-gray-50">
+      <div className="bg-white">
+        <Wrapper>
+          <ProductFromShopify component={component} productId={productId} breadcrumbs={breadcrumbs} />
+        </Wrapper>
       </div>
-      <ProductPageReviews reviews={reviews} />
-      <RelatedProductsFromShopify collection={collection} />
-      {/* <Blog blog={blog} /> */}
-    </>
+
+      <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 bg-gray-50">
+        {showDetails && <DetailsFromTakeshape productId={productId} />}
+        {showPolicies && <PoliciesFromTakeshape productId={productId} />}
+      </div>
+
+      <div className="bg-white">
+        <Wrapper>
+          {showReviews && <ReviewsFromReviewsIo sku={sku} />}
+          {showRelatedProducts && <RelatedProductsFromShopify collection="related-products" />}
+        </Wrapper>
+      </div>
+    </div>
   );
 };
 

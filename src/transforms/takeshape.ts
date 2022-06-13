@@ -66,8 +66,8 @@ export function takeshapeItemToProductPageOptions(item: ProductPageTakeshapeItem
   return {
     showDetails: item.showDetails ?? false,
     showPolicies: item.showPolicies ?? false,
-    hideReviews: item.hideReviews ?? false,
-    hideRelatedProducts: item.hideRelatedProducts ?? false,
-    productComponent: getProductComponent(item.productComponent)
+    showReviews: item.hideReviews === true ? false : true,
+    showRelatedProducts: item.hideRelatedProducts === true ? false : true,
+    component: getProductComponent(item.productComponent)
   };
 }
