@@ -63,8 +63,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   const { data } = await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
     query: ProductPageShopifyProductQuery,
     variables: {
-      productId: shopifyIdToGid(id),
-      reviewsId: id
+      id: shopifyIdToGid(id)
     }
   });
 
@@ -76,7 +75,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     }
   });
 
-  const product = shopifyProductToProduct(data.product);
+  const product = shopifyProductToProduct(data.productList.items[0].shopifyProduct);
 
   return addApolloQueryCache(apolloClient, {
     props: {
@@ -92,8 +91,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query: ProductPageShopifyProductIdListQuery
   });
 
-  const paths = data.products.edges.map(({ node }) => ({
-    params: { id: shopifyGidToId(node.id) }
+  const paths = data.products.items.map(({ shopifyProductId }) => ({
+    params: { id: shopifyGidToId(shopifyProductId) }
   }));
 
   return {

@@ -11,15 +11,13 @@ export const QuickAddFromShopify = () => {
   const quickAdd = useAtomValue(quickAddAtom);
   const resetQuickAdd = useResetAtom(quickAddAtom);
 
-  const [loadProduct, { data, loading }] = useLazyQuery<QuickAddResponse, QuickAddArgs>(QuickAddQuery, {
-    returnPartialData: true
-  });
+  const [loadProduct, { data, loading }] = useLazyQuery<QuickAddResponse, QuickAddArgs>(QuickAddQuery);
 
   useEffect(() => {
     if (quickAdd?.productId && !loading) {
       loadProduct({
         variables: {
-          productId: quickAdd.productId
+          id: quickAdd.productId
         }
       });
     }

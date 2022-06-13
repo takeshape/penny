@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { QuickAddShopifyProduct } from './types';
 
 export type QuickAddArgs = {
-  productId: string;
+  id: string;
 };
 
 export type QuickAddResponse = {
@@ -10,8 +10,8 @@ export type QuickAddResponse = {
 };
 
 export const QuickAddQuery = gql`
-  query QuickAddQuery($productId: ID!) {
-    product: Shopify_product(id: $productId) {
+  query QuickAddQuery($id: ID!) {
+    product: Shopify_product(id: $id) {
       id
       title
       description

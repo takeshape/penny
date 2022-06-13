@@ -20,19 +20,18 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
   const [loadProduct, { data: productData, loading: productLoading }] = useLazyQuery<
     ProductPageShopifyProductReponse,
     ProductPageShopifyProductArgs
-  >(ProductPageShopifyProductQuery, { returnPartialData: true });
+  >(ProductPageShopifyProductQuery);
 
   const [loadReviews, { data: reviewsData, loading: reviewsLoading }] = useLazyQuery<
     ProductPageReviewsIoReviewsReponse,
     ProductPageReviewsIoReviewsArgs
-  >(ProductPageReviewsIoReviewsQuery, { returnPartialData: true });
+  >(ProductPageReviewsIoReviewsQuery);
 
   useEffect(() => {
     if (productId && !productLoading) {
       loadProduct({
         variables: {
-          productId,
-          reviewsId: shopifyGidToId(productId)
+          id: productId
         }
       });
     }
@@ -52,7 +51,7 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
 
   return (
     <Product
-      product={shopifyProductToProduct(productData.product)}
+      product={shopifyProductToProduct(productData.productList.items[0].shopifyProduct)}
       reviews={reviewsData && reviewsIoProductReviewsToReviewHighlight(reviewsData.reviews)}
       {...props}
     />
