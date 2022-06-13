@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
 import { shopifyGidToId, shopifyProductToProduct } from 'transforms/shopify';
 import {
-  ProductPageReviewsIoReviewsArgs,
-  ProductPageReviewsIoReviewsQuery,
-  ProductPageReviewsIoReviewsReponse,
-  ProductPageShopifyProductArgs,
-  ProductPageShopifyProductQuery,
-  ProductPageShopifyProductReponse
+    ProductPageReviewsIoReviewsArgs,
+    ProductPageReviewsIoReviewsQuery,
+    ProductPageReviewsIoReviewsResponse,
+    ProductPageShopifyProductArgs,
+    ProductPageShopifyProductQuery,
+    ProductPageShopifyProductReponse
 } from '../queries';
 import Product, { ProductProps } from './Product';
 
@@ -23,7 +23,7 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
   >(ProductPageShopifyProductQuery);
 
   const [loadReviews, { data: reviewsData, loading: reviewsLoading }] = useLazyQuery<
-    ProductPageReviewsIoReviewsReponse,
+    ProductPageReviewsIoReviewsResponse,
     ProductPageReviewsIoReviewsArgs
   >(ProductPageReviewsIoReviewsQuery);
 

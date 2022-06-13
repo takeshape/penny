@@ -3,7 +3,7 @@ import { _RelatedProducts } from '../RelatedProducts/RelatedProducts.stories';
 import { _Blog } from './Blog/Blog.stories';
 import { _Details } from './Details/Details.stories';
 import { _Policies } from './Policies/Policies.stories';
-import { _Product } from './Product/WithExpandableDetails/WithExpandableDetails.stories';
+import { _Product } from './Product/WithImage/WithImage.stories';
 import ProductPage from './ProductPage';
 import { _Reviews } from './Reviews/Reviews.stories';
 

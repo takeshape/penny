@@ -18,6 +18,7 @@ export const QuickAddQuery = gql`
       descriptionHtml
       requiresSellingPlan
       featuredImage {
+        id
         width
         height
         url

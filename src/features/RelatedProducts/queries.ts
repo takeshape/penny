@@ -27,9 +27,11 @@ export const RelatedProductsShopifyCollectionQuery = gql`
             descriptionHtml
             requiresSellingPlan
             featuredImage {
+              id
               width
               height
               url
+              altText
             }
             priceRangeV2 {
               maxVariantPrice {

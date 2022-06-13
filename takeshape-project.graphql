@@ -387,6 +387,66 @@ type Query {
     """
     savedSearchId: ID
   ): Shopify_CollectionConnection
+
+  """Get a ProductPageDetails by ID"""
+  getProductPageDetails(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPageDetails
+
+  """Returns a list ProductPageDetails in natural order."""
+  getProductPageDetailsList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsPaginatedList
+
+  """Get a ProductPagePolicies by ID"""
+  getProductPagePolicies(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPagePolicies
+
+  """Returns a list ProductPagePolicies in natural order."""
+  getProductPagePoliciesList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesPaginatedList
   searchAssetIndex(
     terms: String
 
@@ -475,6 +535,50 @@ type Query {
     """
     where: TSWhereProductInput
   ): ProductSearchResults
+  searchProductPageDetailsIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsSearchResults
+  searchProductPagePoliciesIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesSearchResults
   search(
     terms: String
 
@@ -1396,7 +1500,14 @@ input TSWhereInput {
   productComponent: TSWhereStringInput
   hideReviews: TSWhereBooleanInput
   hideRelatedProducts: TSWhereBooleanInput
+  showDetails: TSWhereBooleanInput
+  Product_details: TSWhereProductPageDetailsRelationshipInput
+  showPolicies: TSWhereBooleanInput
+  Product_policies: TSWhereProductPagePoliciesRelationshipInput
   shopifyProductId: TSWhereStringInput
+  text: TSWhereProductPageDetailsTextInput
+  ProductPageDetails_details: TSWhereProductPageDetailsDetailsInput
+  ProductPagePolicies_policies: TSWhereProductPagePoliciesPoliciesInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
@@ -1709,6 +1820,67 @@ input TSWhereTestimonialsComponentTestimonialsInput {
 
 input TSWhereTrendingProductsComponentTrendingProductsInput {
   shopifyProductId: TSWhereStringInput
+}
+
+input TSWhereProductPageDetailsRelationshipInput {
+  name: TSWhereStringInput
+  text: TSShallowWhereProductPageDetailsTextInput
+  details: TSShallowWhereProductPageDetailsDetailsInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+}
+
+input TSShallowWhereProductPageDetailsTextInput {
+  primary: TSWhereDraftjsInput
+  secondary: TSWhereDraftjsInput
+}
+
+input TSShallowWhereProductPageDetailsDetailsInput {
+  description: TSWhereDraftjsInput
+}
+
+input TSWhereProductPagePoliciesRelationshipInput {
+  name: TSWhereStringInput
+  policies: TSShallowWhereProductPagePoliciesPoliciesInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+}
+
+input TSShallowWhereProductPagePoliciesPoliciesInput {
+  name: TSWhereDraftjsInput
+  description: TSWhereDraftjsInput
+}
+
+input TSWhereProductPageDetailsTextInput {
+  primary: TSWhereDraftjsInput
+  secondary: TSWhereDraftjsInput
+}
+
+input TSWhereProductPageDetailsDetailsInput {
+  image: TSWhereAssetRelationshipInput
+  description: TSWhereDraftjsInput
+}
+
+input TSWhereProductPagePoliciesPoliciesInput {
+  name: TSWhereDraftjsInput
+  description: TSWhereDraftjsInput
+  image: TSWhereAssetRelationshipInput
 }
 
 type Profile implements TSSearchable {
@@ -29182,13 +29354,25 @@ type Product implements TSSearchable {
   name: String
 
   """"""
-  productComponent: String!
+  productComponent: String
 
   """"""
   hideReviews: Boolean
 
   """"""
   hideRelatedProducts: Boolean
+
+  """"""
+  showDetails: Boolean
+
+  """"""
+  details(enableLocaleFallback: Boolean = true, locale: String): ProductPageDetails
+
+  """"""
+  showPolicies: Boolean
+
+  """"""
+  policies(enableLocaleFallback: Boolean = true, locale: String): ProductPagePolicies
   shopifyProductId: String
   shopifyProduct: Shopify_Product
   _shapeId: String
@@ -29208,6 +29392,134 @@ type Product implements TSSearchable {
   searchSummary: String
 }
 
+type ProductPageDetails implements TSSearchable {
+  """"""
+  name: String!
+
+  """"""
+  text: ProductPageDetailsText!
+
+  """"""
+  details: [ProductPageDetailsDetails!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type ProductPageDetailsText {
+  primary: JSON!
+  primaryHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+  secondary: JSON!
+  secondaryHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+}
+
+type ProductPageDetailsDetails {
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+  description: JSON!
+  descriptionHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+}
+
+type ProductPagePolicies implements TSSearchable {
+  """"""
+  name: String!
+
+  """"""
+  policies: [ProductPagePoliciesPolicies!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type ProductPagePoliciesPolicies {
+  name: JSON!
+  nameHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+  description: JSON!
+  descriptionHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+}
+
 type ProductPaginatedList {
   items: [Product!]!
   total: Int!
@@ -29218,6 +29530,10 @@ input TSWhereProductInput {
   productComponent: TSWhereStringInput
   hideReviews: TSWhereBooleanInput
   hideRelatedProducts: TSWhereBooleanInput
+  showDetails: TSWhereBooleanInput
+  details: TSWhereProductPageDetailsRelationshipInput
+  showPolicies: TSWhereBooleanInput
+  policies: TSWhereProductPagePoliciesRelationshipInput
   shopifyProductId: TSWhereStringInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
@@ -29232,6 +29548,53 @@ input TSWhereProductInput {
   AND: [TSWhereProductInput]
   OR: [TSWhereProductInput]
   NOT: TSWhereProductInput
+}
+
+type ProductPageDetailsPaginatedList {
+  items: [ProductPageDetails!]!
+  total: Int!
+}
+
+input TSWhereProductPageDetailsInput {
+  name: TSWhereStringInput
+  text: TSWhereProductPageDetailsTextInput
+  details: TSWhereProductPageDetailsDetailsInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWhereProductPageDetailsInput]
+  OR: [TSWhereProductPageDetailsInput]
+  NOT: TSWhereProductPageDetailsInput
+}
+
+type ProductPagePoliciesPaginatedList {
+  items: [ProductPagePolicies!]!
+  total: Int!
+}
+
+input TSWhereProductPagePoliciesInput {
+  name: TSWhereStringInput
+  policies: TSWhereProductPagePoliciesPoliciesInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWhereProductPagePoliciesInput]
+  OR: [TSWhereProductPagePoliciesInput]
+  NOT: TSWhereProductPagePoliciesInput
 }
 
 """Asset search results"""
@@ -29255,6 +29618,18 @@ type ProfileSearchResults {
 """Product search results"""
 type ProductSearchResults {
   results: [Product!]!
+  total: Int!
+}
+
+"""ProductPageDetails search results"""
+type ProductPageDetailsSearchResults {
+  results: [ProductPageDetails!]!
+  total: Int!
+}
+
+"""ProductPagePolicies search results"""
+type ProductPagePoliciesSearchResults {
+  results: [ProductPagePolicies!]!
   total: Int!
 }
 
@@ -29653,6 +30028,66 @@ type WithContext {
     """
     savedSearchId: ID
   ): Shopify_CollectionConnection
+
+  """Get a ProductPageDetails by ID"""
+  getProductPageDetails(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPageDetails
+
+  """Returns a list ProductPageDetails in natural order."""
+  getProductPageDetailsList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsPaginatedList
+
+  """Get a ProductPagePolicies by ID"""
+  getProductPagePolicies(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPagePolicies
+
+  """Returns a list ProductPagePolicies in natural order."""
+  getProductPagePoliciesList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesPaginatedList
   searchAssetIndex(
     terms: String
 
@@ -29741,6 +30176,50 @@ type WithContext {
     """
     where: TSWhereProductInput
   ): ProductSearchResults
+  searchProductPageDetailsIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsSearchResults
+  searchProductPagePoliciesIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesSearchResults
   search(
     terms: String
 
@@ -29820,7 +30299,7 @@ type Mutation {
 
   """Create a Shopify storefront cart."""
   createMyCheckout(email: String, lines: [CreateMyCheckoutPropertiesLinesItemsPropertyInput!]!): ShopifyStorefront_Cart
-  subscribeMyEmailToNewsletter(list_id: String!): Klaviyo_AddMembersResponse
+  subscribeMyEmailToNewsletter(list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
   unsubscribeMyEmailFromNewsletter(list_id: String!): Klaviyo_200Ok
 
   """Create a Stripe checkout session for the signed-in user"""
@@ -29877,6 +30356,7 @@ type Mutation {
   ShopifyStorefront_customerRecover(
     """The email address of the customer to recover."""
     email: String!
+    recaptchaToken: String!
   ): ShopifyStorefront_CustomerRecoverPayload
   ShopifyStorefront_customerUpdate(
     """The access token used to identify the customer."""
@@ -29912,7 +30392,7 @@ type Mutation {
     """The customer’s mailing address."""
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
-  Gorgias_createTicket(message: String, email: String!): Gorgias_CreateTicketResponse
+  Gorgias_createTicket: Gorgias_CreateTicketResponse
 
   """Update Storefront"""
   updateStorefront(input: UpdateStorefrontInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateStorefrontResult
@@ -29933,6 +30413,30 @@ type Mutation {
 
   """Delete Product"""
   deleteProduct(input: DeleteProductInput!, clientMutationId: String): DeleteProductResult
+
+  """Update ProductPageDetails"""
+  updateProductPageDetails(input: UpdateProductPageDetailsInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProductPageDetailsResult
+
+  """Create ProductPageDetails"""
+  createProductPageDetails(input: CreateProductPageDetailsInput!, clientMutationId: String): CreateProductPageDetailsResult
+
+  """Duplicate ProductPageDetails"""
+  duplicateProductPageDetails(input: DuplicateProductPageDetailsInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicateProductPageDetailsResult
+
+  """Delete ProductPageDetails"""
+  deleteProductPageDetails(input: DeleteProductPageDetailsInput!, clientMutationId: String): DeleteProductPageDetailsResult
+
+  """Update ProductPagePolicies"""
+  updateProductPagePolicies(input: UpdateProductPagePoliciesInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProductPagePoliciesResult
+
+  """Create ProductPagePolicies"""
+  createProductPagePolicies(input: CreateProductPagePoliciesInput!, clientMutationId: String): CreateProductPagePoliciesResult
+
+  """Duplicate ProductPagePolicies"""
+  duplicateProductPagePolicies(input: DuplicateProductPagePoliciesInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicateProductPagePoliciesResult
+
+  """Delete ProductPagePolicies"""
+  deleteProductPagePolicies(input: DeleteProductPagePoliciesInput!, clientMutationId: String): DeleteProductPagePoliciesResult
 }
 
 """A project file stored on s3"""
@@ -43891,6 +44395,10 @@ input UpdateProductInterfaceInput {
   productComponent: String
   hideReviews: Boolean
   hideRelatedProducts: Boolean
+  showDetails: Boolean
+  details: TSRelationshipInput
+  showPolicies: Boolean
+  policies: TSRelationshipInput
   shopifyProductId: String
   shopifyProduct: Shopify_ProductInput
 }
@@ -44230,9 +44738,13 @@ input CreateProductInterfaceInput {
 
   """Initialized with title from shopify"""
   name: String
-  productComponent: String!
+  productComponent: String
   hideReviews: Boolean = false
   hideRelatedProducts: Boolean = false
+  showDetails: Boolean = false
+  details: TSRelationshipInput
+  showPolicies: Boolean = false
+  policies: TSRelationshipInput
   shopifyProductId: String
   shopifyProduct: Shopify_ProductInput
 }
@@ -44257,6 +44769,14 @@ input DuplicateProductInput {
 
   """"""
   hideRelatedProducts: Boolean
+
+  """"""
+  showDetails: Boolean
+  details: TSRelationshipInput
+
+  """"""
+  showPolicies: Boolean
+  policies: TSRelationshipInput
   shopifyProductId: String
   _shapeId: String
   _version: Int
@@ -44280,5 +44800,230 @@ type DeleteProductResult {
 
 """delete Product input"""
 input DeleteProductInput {
+  _id: ID!
+}
+
+type UpdateProductPageDetailsResult {
+  clientMutationId: String
+  result: ProductPageDetails
+}
+
+"""update ProductPageDetails input"""
+input UpdateProductPageDetailsInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  text: ProductPageDetailsTextInput
+
+  """"""
+  details: [ProductPageDetailsDetailsInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input ProductPageDetailsTextInput {
+  """"""
+  primary: JSON!
+
+  """"""
+  secondary: JSON!
+}
+
+input ProductPageDetailsDetailsInput {
+  image: TSRelationshipInput
+
+  """"""
+  description: JSON!
+}
+
+type CreateProductPageDetailsResult {
+  clientMutationId: String
+  result: ProductPageDetails
+}
+
+"""create ProductPageDetails input"""
+input CreateProductPageDetailsInput {
+  """"""
+  name: String!
+
+  """"""
+  text: ProductPageDetailsTextInput!
+
+  """"""
+  details: [ProductPageDetailsDetailsInput!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DuplicateProductPageDetailsResult {
+  clientMutationId: String
+  result: ProductPageDetails
+}
+
+"""duplicate ProductPageDetails input"""
+input DuplicateProductPageDetailsInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  text: ProductPageDetailsTextInput
+
+  """"""
+  details: [ProductPageDetailsDetailsInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeleteProductPageDetailsResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete ProductPageDetails input"""
+input DeleteProductPageDetailsInput {
+  _id: ID!
+}
+
+type UpdateProductPagePoliciesResult {
+  clientMutationId: String
+  result: ProductPagePolicies
+}
+
+"""update ProductPagePolicies input"""
+input UpdateProductPagePoliciesInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  policies: [ProductPagePoliciesPoliciesInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input ProductPagePoliciesPoliciesInput {
+  """"""
+  name: JSON!
+
+  """"""
+  description: JSON!
+  image: TSRelationshipInput!
+}
+
+type CreateProductPagePoliciesResult {
+  clientMutationId: String
+  result: ProductPagePolicies
+}
+
+"""create ProductPagePolicies input"""
+input CreateProductPagePoliciesInput {
+  """"""
+  name: String!
+
+  """"""
+  policies: [ProductPagePoliciesPoliciesInput!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DuplicateProductPagePoliciesResult {
+  clientMutationId: String
+  result: ProductPagePolicies
+}
+
+"""duplicate ProductPagePolicies input"""
+input DuplicateProductPagePoliciesInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  policies: [ProductPagePoliciesPoliciesInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeleteProductPagePoliciesResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete ProductPagePolicies input"""
+input DeleteProductPagePoliciesInput {
   _id: ID!
 }

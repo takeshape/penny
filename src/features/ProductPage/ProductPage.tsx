@@ -1,14 +1,14 @@
 import RelatedProductsFromShopify, {
-  RelatedProductsFromShopifyProps
+    RelatedProductsFromShopifyProps
 } from 'features/RelatedProducts/RelatedProductsFromShopify';
 import { BlogProps } from './Blog/Blog';
 import { DetailsProps } from './Details/Details';
-import { PoliciesProps } from './Policies/Policies';
+import { ProductPagePoliciesProps } from './Policies/Policies';
 import ProductFromShopify, { ProductFromShopifyProps } from './Product/ProductFromShopify';
 import ProductPageReviews, { ProductPageReviewsProps } from './Reviews/Reviews';
 
 export type ProductPageProps = ProductFromShopifyProps &
-  PoliciesProps &
+  ProductPagePoliciesProps &
   ProductPageReviewsProps &
   DetailsProps &
   BlogProps &

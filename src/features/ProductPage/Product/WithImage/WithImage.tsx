@@ -12,17 +12,13 @@ import classNames from 'utils/classNames';
 import { getVariant } from 'utils/products';
 import { formatPrice } from 'utils/text';
 
-export interface ProductWithExpandableDetailsProps {
+export interface ProductWithImageProps {
   product: ProductType;
   reviews: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
 }
 
-export const ProductWithExpandableDetails = ({
-  product,
-  reviews,
-  breadcrumbs
-}: React.PropsWithChildren<ProductWithExpandableDetailsProps>) => {
+export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithImageProps) => {
   const { priceMin, name, descriptionHtml, featuredImage, options } = product;
 
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
@@ -189,4 +185,4 @@ export const ProductWithExpandableDetails = ({
   );
 };
 
-export default ProductWithExpandableDetails;
+export default ProductWithImage;

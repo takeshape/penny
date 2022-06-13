@@ -1,20 +1,18 @@
 import { ProductPageProductComponent } from '../types';
-import ProductWithExpandableDetails, {
-  ProductWithExpandableDetailsProps
-} from './WithExpandableDetails/WithExpandableDetails';
+import ProductWithImage, { ProductWithImageProps } from './WithImage/WithImage';
 import ProductWithImageGrid, { ProductWithImageGridProps } from './WithImageGrid/WithImageGrid';
 
 export type ProductProps = {
   component: ProductPageProductComponent;
 } & ProductWithImageGridProps &
-  ProductWithExpandableDetailsProps;
+  ProductWithImageProps;
 
 export const Product = ({ component, ...props }: ProductProps) => {
   let Component;
 
   switch (component) {
-    case 'withExpandableDetails':
-      Component = ProductWithExpandableDetails;
+    case 'withImage':
+      Component = ProductWithImage;
       break;
     case 'withImageGrid':
       Component = ProductWithImageGrid;

@@ -1,10 +1,12 @@
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
+import DetailsFromTakeshape from 'features/ProductPage/Details/DetailsFromTakeshape';
+import PoliciesFromTakeshape from 'features/ProductPage/Policies/PoliciesFromTakeshape';
 import ProductFromShopify from 'features/ProductPage/Product/ProductFromShopify';
 import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,
-  ProductPageReviewsIoReviewsReponse,
+  ProductPageReviewsIoReviewsResponse,
   ProductPageShopifyProductArgs,
   ProductPageShopifyProductIdListQuery,
   ProductPageShopifyProductIdListResponse,
@@ -12,21 +14,20 @@ import {
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
 import ReviewsFromReviewsIo from 'features/ProductPage/Reviews/ReviewsFromReviewsIo';
-import { ProductPageProductComponent } from 'features/ProductPage/types';
+import { ProductPageOptions } from 'features/ProductPage/types';
 import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'transforms/shopify';
+import { takeshapeItemToProductPageOptions } from 'transforms/takeshape';
 import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
 type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
-  hideReviews: boolean;
-  hideRelatedProducts: boolean;
-  productComponent: ProductPageProductComponent;
+  options: ProductPageOptions;
 };
 
 const breadcrumbs = [
@@ -34,14 +35,7 @@ const breadcrumbs = [
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage: NextPage<ProductPageProps> = ({
-  id,
-  name,
-  description,
-  hideReviews,
-  hideRelatedProducts,
-  productComponent
-}) => {
+const ProductPage: NextPage<ProductPageProps> = ({ id, name, description, options }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
@@ -54,11 +48,17 @@ const ProductPage: NextPage<ProductPageProps> = ({
     );
   }
 
+  const { productComponent, hideReviews, hideRelatedProducts, showPolicies, showDetails } = options;
+
   return (
     <Layout title={name} description={description}>
       <div className="bg-white">
         <Wrapper>
           <ProductFromShopify component={productComponent} productId={id} breadcrumbs={breadcrumbs} />
+          <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
+            {showDetails && <DetailsFromTakeshape productId={id} />}
+            {showPolicies && <PoliciesFromTakeshape productId={id} />}
+          </div>
           {!hideReviews && <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />}
           {!hideRelatedProducts && <RelatedProductsFromShopify collection="related-products" />}
         </Wrapper>
@@ -80,12 +80,19 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   });
 
   // Just priming the cache
-  await apolloClient.query<ProductPageReviewsIoReviewsReponse, ProductPageReviewsIoReviewsArgs>({
+  await apolloClient.query<ProductPageReviewsIoReviewsResponse, ProductPageReviewsIoReviewsArgs>({
     query: ProductPageReviewsIoReviewsQuery,
     variables: {
       sku: id
     }
   });
+
+  // await apolloClient.query<ProductPageTakeshapePoliciesResponse, ProductPageTakeshapePoliciesArgs>({
+  //   query: ProductPageTakeshapePoliciesQuery,
+  //   variables: {
+  //     productId: shopifyIdToGid(id)
+  //   }
+  // });
 
   const item = data.productList.items[0];
   const product = shopifyProductToProduct(item.shopifyProduct);
@@ -95,9 +102,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       id: product.id,
       name: product.name,
       description: product.description,
-      hideReviews: item.hideReviews ?? false,
-      hideRelatedProducts: item.hideRelatedProducts ?? false,
-      productComponent: item.productComponent ?? 'withImageGrid'
+      options: takeshapeItemToProductPageOptions(item)
     }
   });
 };

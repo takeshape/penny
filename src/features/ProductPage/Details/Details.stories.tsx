@@ -1,12 +1,12 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Details from './Details';
+import { ProductPageDetails } from './Details';
 
-const Meta: ComponentMeta<typeof Details> = {
+const Meta: ComponentMeta<typeof ProductPageDetails> = {
   title: 'Features / Product Page / Components / Details',
-  component: Details
+  component: ProductPageDetails
 };
 
-const Template: ComponentStory<typeof Details> = (args) => <Details {...args} />;
+const Template: ComponentStory<typeof ProductPageDetails> = (args) => <ProductPageDetails {...args} />;
 
 export const _Details = Template.bind({});
 _Details.args = {

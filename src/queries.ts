@@ -55,16 +55,20 @@ export const GetProductsQuery = gql`
           descriptionHtml
           requiresSellingPlan
           featuredImage {
+            id
             width
             height
             url
+            altText
           }
           images(first: 10) {
             edges {
               node {
+                id
                 width
                 height
                 url
+                altText
               }
             }
           }
@@ -114,6 +118,7 @@ export const GetProductQuery = gql`
       descriptionHtml
       requiresSellingPlan
       featuredImage {
+        id
         width
         height
         url
@@ -122,6 +127,7 @@ export const GetProductQuery = gql`
       images(first: 10) {
         edges {
           node {
+            id
             width
             height
             url

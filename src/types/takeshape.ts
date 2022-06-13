@@ -83,10 +83,20 @@ export type Query = {
   getProductList?: Maybe<ProductPaginatedList>;
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
+  /** Get a ProductPageDetails by ID */
+  getProductPageDetails?: Maybe<ProductPageDetails>;
+  /** Returns a list ProductPageDetails in natural order. */
+  getProductPageDetailsList?: Maybe<ProductPageDetailsPaginatedList>;
+  /** Get a ProductPagePolicies by ID */
+  getProductPagePolicies?: Maybe<ProductPagePolicies>;
+  /** Returns a list ProductPagePolicies in natural order. */
+  getProductPagePoliciesList?: Maybe<ProductPagePoliciesPaginatedList>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
   searchProductIndex?: Maybe<ProductSearchResults>;
+  searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
+  searchProductPagePoliciesIndex?: Maybe<ProductPagePoliciesSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
   withContext?: Maybe<WithContext>;
 };
@@ -385,6 +395,50 @@ export type QueryShopify_CollectionsArgs = {
 
 
 /** Root of the Schema */
+export type QueryGetProductPageDetailsArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPageDetailsListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPagePoliciesArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPagePoliciesListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
+};
+
+
+/** Root of the Schema */
 export type QuerySearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -433,6 +487,32 @@ export type QuerySearchProductIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchProductPageDetailsIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchProductPagePoliciesIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
 };
 
 
@@ -1230,7 +1310,14 @@ export type TsWhereInput = {
   productComponent?: InputMaybe<TsWhereStringInput>;
   hideReviews?: InputMaybe<TsWhereBooleanInput>;
   hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
+  showDetails?: InputMaybe<TsWhereBooleanInput>;
+  Product_details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
+  showPolicies?: InputMaybe<TsWhereBooleanInput>;
+  Product_policies?: InputMaybe<TsWhereProductPagePoliciesRelationshipInput>;
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsWhereProductPageDetailsTextInput>;
+  ProductPageDetails_details?: InputMaybe<TsWhereProductPageDetailsDetailsInput>;
+  ProductPagePolicies_policies?: InputMaybe<TsWhereProductPagePoliciesPoliciesInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
@@ -1538,6 +1625,67 @@ export type TsWhereTestimonialsComponentTestimonialsInput = {
 
 export type TsWhereTrendingProductsComponentTrendingProductsInput = {
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereProductPageDetailsRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsShallowWhereProductPageDetailsTextInput>;
+  details?: InputMaybe<TsShallowWhereProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsShallowWhereProductPageDetailsTextInput = {
+  primary?: InputMaybe<TsWhereDraftjsInput>;
+  secondary?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsShallowWhereProductPageDetailsDetailsInput = {
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPagePoliciesRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  policies?: InputMaybe<TsShallowWhereProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsShallowWhereProductPagePoliciesPoliciesInput = {
+  name?: InputMaybe<TsWhereDraftjsInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPageDetailsTextInput = {
+  primary?: InputMaybe<TsWhereDraftjsInput>;
+  secondary?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPageDetailsDetailsInput = {
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPagePoliciesPoliciesInput = {
+  name?: InputMaybe<TsWhereDraftjsInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
 };
 
 export type Profile = TsSearchable & {
@@ -23669,9 +23817,13 @@ export type Product = TsSearchable & {
   __typename?: 'Product';
   /** Initialized with title from shopify */
   name?: Maybe<Scalars['String']>;
-  productComponent: Scalars['String'];
+  productComponent?: Maybe<Scalars['String']>;
   hideReviews?: Maybe<Scalars['Boolean']>;
   hideRelatedProducts?: Maybe<Scalars['Boolean']>;
+  showDetails?: Maybe<Scalars['Boolean']>;
+  details?: Maybe<ProductPageDetails>;
+  showPolicies?: Maybe<Scalars['Boolean']>;
+  policies?: Maybe<ProductPagePolicies>;
   shopifyProductId?: Maybe<Scalars['String']>;
   shopifyProduct?: Maybe<Shopify_Product>;
   _shapeId?: Maybe<Scalars['String']>;
@@ -23693,6 +23845,141 @@ export type Product = TsSearchable & {
   searchSummary?: Maybe<Scalars['String']>;
 };
 
+
+export type ProductDetailsArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPoliciesArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetails = TsSearchable & {
+  __typename?: 'ProductPageDetails';
+  name: Scalars['String'];
+  text: ProductPageDetailsText;
+  details: Array<ProductPageDetailsDetails>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsText = {
+  __typename?: 'ProductPageDetailsText';
+  primary: Scalars['JSON'];
+  primaryHtml?: Maybe<Scalars['String']>;
+  secondary: Scalars['JSON'];
+  secondaryHtml?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsTextPrimaryHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsTextSecondaryHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsDetails = {
+  __typename?: 'ProductPageDetailsDetails';
+  image?: Maybe<Asset>;
+  description: Scalars['JSON'];
+  descriptionHtml?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsDetailsImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsDetailsDescriptionHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPagePolicies = TsSearchable & {
+  __typename?: 'ProductPagePolicies';
+  name: Scalars['String'];
+  policies: Array<ProductPagePoliciesPolicies>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type ProductPagePoliciesPolicies = {
+  __typename?: 'ProductPagePoliciesPolicies';
+  name: Scalars['JSON'];
+  nameHtml?: Maybe<Scalars['String']>;
+  description: Scalars['JSON'];
+  descriptionHtml?: Maybe<Scalars['String']>;
+  image?: Maybe<Asset>;
+};
+
+
+export type ProductPagePoliciesPoliciesNameHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPagePoliciesPoliciesDescriptionHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPagePoliciesPoliciesImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
 export type ProductPaginatedList = {
   __typename?: 'ProductPaginatedList';
   items: Array<Product>;
@@ -23704,6 +23991,10 @@ export type TsWhereProductInput = {
   productComponent?: InputMaybe<TsWhereStringInput>;
   hideReviews?: InputMaybe<TsWhereBooleanInput>;
   hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
+  showDetails?: InputMaybe<TsWhereBooleanInput>;
+  details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
+  showPolicies?: InputMaybe<TsWhereBooleanInput>;
+  policies?: InputMaybe<TsWhereProductPagePoliciesRelationshipInput>;
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
   _shapeId?: InputMaybe<TsWhereIdInput>;
   _id?: InputMaybe<TsWhereIdInput>;
@@ -23718,6 +24009,55 @@ export type TsWhereProductInput = {
   AND?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
   NOT?: InputMaybe<TsWhereProductInput>;
+};
+
+export type ProductPageDetailsPaginatedList = {
+  __typename?: 'ProductPageDetailsPaginatedList';
+  items: Array<ProductPageDetails>;
+  total: Scalars['Int'];
+};
+
+export type TsWhereProductPageDetailsInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsWhereProductPageDetailsTextInput>;
+  details?: InputMaybe<TsWhereProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductPageDetailsInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductPageDetailsInput>>>;
+  NOT?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+export type ProductPagePoliciesPaginatedList = {
+  __typename?: 'ProductPagePoliciesPaginatedList';
+  items: Array<ProductPagePolicies>;
+  total: Scalars['Int'];
+};
+
+export type TsWhereProductPagePoliciesInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  policies?: InputMaybe<TsWhereProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductPagePoliciesInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductPagePoliciesInput>>>;
+  NOT?: InputMaybe<TsWhereProductPagePoliciesInput>;
 };
 
 /** Asset search results */
@@ -23745,6 +24085,20 @@ export type ProfileSearchResults = {
 export type ProductSearchResults = {
   __typename?: 'ProductSearchResults';
   results: Array<Product>;
+  total: Scalars['Int'];
+};
+
+/** ProductPageDetails search results */
+export type ProductPageDetailsSearchResults = {
+  __typename?: 'ProductPageDetailsSearchResults';
+  results: Array<ProductPageDetails>;
+  total: Scalars['Int'];
+};
+
+/** ProductPagePolicies search results */
+export type ProductPagePoliciesSearchResults = {
+  __typename?: 'ProductPagePoliciesSearchResults';
+  results: Array<ProductPagePolicies>;
   total: Scalars['Int'];
 };
 
@@ -23813,10 +24167,20 @@ export type WithContext = {
   getProductList?: Maybe<ProductPaginatedList>;
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
+  /** Get a ProductPageDetails by ID */
+  getProductPageDetails?: Maybe<ProductPageDetails>;
+  /** Returns a list ProductPageDetails in natural order. */
+  getProductPageDetailsList?: Maybe<ProductPageDetailsPaginatedList>;
+  /** Get a ProductPagePolicies by ID */
+  getProductPagePolicies?: Maybe<ProductPagePolicies>;
+  /** Returns a list ProductPagePolicies in natural order. */
+  getProductPagePoliciesList?: Maybe<ProductPagePoliciesPaginatedList>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
   searchProductIndex?: Maybe<ProductSearchResults>;
+  searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
+  searchProductPagePoliciesIndex?: Maybe<ProductPagePoliciesSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
 };
 
@@ -24114,6 +24478,50 @@ export type WithContextShopify_CollectionsArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetProductPageDetailsArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPageDetailsListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPagePoliciesArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPagePoliciesListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -24162,6 +24570,32 @@ export type WithContextSearchProductIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchProductPageDetailsIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchProductPagePoliciesIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
 };
 
 
@@ -24265,6 +24699,22 @@ export type Mutation = {
   duplicateProduct?: Maybe<DuplicateProductResult>;
   /** Delete Product */
   deleteProduct?: Maybe<DeleteProductResult>;
+  /** Update ProductPageDetails */
+  updateProductPageDetails?: Maybe<UpdateProductPageDetailsResult>;
+  /** Create ProductPageDetails */
+  createProductPageDetails?: Maybe<CreateProductPageDetailsResult>;
+  /** Duplicate ProductPageDetails */
+  duplicateProductPageDetails?: Maybe<DuplicateProductPageDetailsResult>;
+  /** Delete ProductPageDetails */
+  deleteProductPageDetails?: Maybe<DeleteProductPageDetailsResult>;
+  /** Update ProductPagePolicies */
+  updateProductPagePolicies?: Maybe<UpdateProductPagePoliciesResult>;
+  /** Create ProductPagePolicies */
+  createProductPagePolicies?: Maybe<CreateProductPagePoliciesResult>;
+  /** Duplicate ProductPagePolicies */
+  duplicateProductPagePolicies?: Maybe<DuplicateProductPagePoliciesResult>;
+  /** Delete ProductPagePolicies */
+  deleteProductPagePolicies?: Maybe<DeleteProductPagePoliciesResult>;
 };
 
 
@@ -24397,6 +24847,7 @@ export type MutationCreateMyCheckoutArgs = {
 
 export type MutationSubscribeMyEmailToNewsletterArgs = {
   list_id: Scalars['String'];
+  recaptchaToken: Scalars['String'];
 };
 
 
@@ -24526,6 +24977,7 @@ export type MutationCreateCustomerWipArgs = {
 
 export type MutationShopifyStorefront_CustomerRecoverArgs = {
   email: Scalars['String'];
+  recaptchaToken: Scalars['String'];
 };
 
 
@@ -24552,12 +25004,6 @@ export type MutationUpdateMyCustomerAddressArgs = {
   customerAccessToken?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   address: ShopifyStorefront_MailingAddressInput;
-};
-
-
-export type MutationGorgias_CreateTicketArgs = {
-  message?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
 };
 
 
@@ -24595,6 +25041,64 @@ export type MutationDuplicateProductArgs = {
 
 export type MutationDeleteProductArgs = {
   input: DeleteProductInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateProductPageDetailsArgs = {
+  input: UpdateProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateProductPageDetailsArgs = {
+  input: CreateProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicateProductPageDetailsArgs = {
+  input: DuplicateProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProductPageDetailsArgs = {
+  input: DeleteProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateProductPagePoliciesArgs = {
+  input: UpdateProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateProductPagePoliciesArgs = {
+  input: CreateProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicateProductPagePoliciesArgs = {
+  input: DuplicateProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProductPagePoliciesArgs = {
+  input: DeleteProductPagePoliciesInput;
   clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
@@ -34919,6 +35423,10 @@ export type UpdateProductInterfaceInput = {
   productComponent?: InputMaybe<Scalars['String']>;
   hideReviews?: InputMaybe<Scalars['Boolean']>;
   hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
+  showDetails?: InputMaybe<Scalars['Boolean']>;
+  details?: InputMaybe<TsRelationshipInput>;
+  showPolicies?: InputMaybe<Scalars['Boolean']>;
+  policies?: InputMaybe<TsRelationshipInput>;
   shopifyProductId?: InputMaybe<Scalars['String']>;
   shopifyProduct?: InputMaybe<Shopify_ProductInput>;
 };
@@ -35145,9 +35653,13 @@ export type CreateProductInterfaceInput = {
   _status?: InputMaybe<DefaultWorkflow>;
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  productComponent: Scalars['String'];
+  productComponent?: InputMaybe<Scalars['String']>;
   hideReviews?: InputMaybe<Scalars['Boolean']>;
   hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
+  showDetails?: InputMaybe<Scalars['Boolean']>;
+  details?: InputMaybe<TsRelationshipInput>;
+  showPolicies?: InputMaybe<Scalars['Boolean']>;
+  policies?: InputMaybe<TsRelationshipInput>;
   shopifyProductId?: InputMaybe<Scalars['String']>;
   shopifyProduct?: InputMaybe<Shopify_ProductInput>;
 };
@@ -35166,6 +35678,10 @@ export type DuplicateProductInput = {
   productComponent?: InputMaybe<Scalars['String']>;
   hideReviews?: InputMaybe<Scalars['Boolean']>;
   hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
+  showDetails?: InputMaybe<Scalars['Boolean']>;
+  details?: InputMaybe<TsRelationshipInput>;
+  showPolicies?: InputMaybe<Scalars['Boolean']>;
+  policies?: InputMaybe<TsRelationshipInput>;
   shopifyProductId?: InputMaybe<Scalars['String']>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
@@ -35190,5 +35706,202 @@ export type DeleteProductResult = {
 
 /** delete Product input */
 export type DeleteProductInput = {
+  _id: Scalars['ID'];
+};
+
+export type UpdateProductPageDetailsResult = {
+  __typename?: 'UpdateProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPageDetails>;
+};
+
+/** update ProductPageDetails input */
+export type UpdateProductPageDetailsInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<ProductPageDetailsTextInput>;
+  details?: InputMaybe<Array<InputMaybe<ProductPageDetailsDetailsInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsTextInput = {
+  primary: Scalars['JSON'];
+  secondary: Scalars['JSON'];
+};
+
+export type ProductPageDetailsDetailsInput = {
+  image?: InputMaybe<TsRelationshipInput>;
+  description: Scalars['JSON'];
+};
+
+export type CreateProductPageDetailsResult = {
+  __typename?: 'CreateProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPageDetails>;
+};
+
+/** create ProductPageDetails input */
+export type CreateProductPageDetailsInput = {
+  name: Scalars['String'];
+  text: ProductPageDetailsTextInput;
+  details: Array<ProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DuplicateProductPageDetailsResult = {
+  __typename?: 'DuplicateProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPageDetails>;
+};
+
+/** duplicate ProductPageDetails input */
+export type DuplicateProductPageDetailsInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<ProductPageDetailsTextInput>;
+  details?: InputMaybe<Array<InputMaybe<ProductPageDetailsDetailsInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeleteProductPageDetailsResult = {
+  __typename?: 'DeleteProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete ProductPageDetails input */
+export type DeleteProductPageDetailsInput = {
+  _id: Scalars['ID'];
+};
+
+export type UpdateProductPagePoliciesResult = {
+  __typename?: 'UpdateProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPagePolicies>;
+};
+
+/** update ProductPagePolicies input */
+export type UpdateProductPagePoliciesInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  policies?: InputMaybe<Array<InputMaybe<ProductPagePoliciesPoliciesInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPagePoliciesPoliciesInput = {
+  name: Scalars['JSON'];
+  description: Scalars['JSON'];
+  image: TsRelationshipInput;
+};
+
+export type CreateProductPagePoliciesResult = {
+  __typename?: 'CreateProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPagePolicies>;
+};
+
+/** create ProductPagePolicies input */
+export type CreateProductPagePoliciesInput = {
+  name: Scalars['String'];
+  policies: Array<ProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DuplicateProductPagePoliciesResult = {
+  __typename?: 'DuplicateProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPagePolicies>;
+};
+
+/** duplicate ProductPagePolicies input */
+export type DuplicateProductPagePoliciesInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  policies?: InputMaybe<Array<InputMaybe<ProductPagePoliciesPoliciesInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeleteProductPagePoliciesResult = {
+  __typename?: 'DeleteProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete ProductPagePolicies input */
+export type DeleteProductPagePoliciesInput = {
   _id: Scalars['ID'];
 };
