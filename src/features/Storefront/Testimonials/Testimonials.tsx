@@ -13,8 +13,8 @@ const Testimonials = ({ testimonials }: TestimonialsComponent) => {
         </h2>
 
         <div className="mt-16 space-y-16 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
-          {testimonials.map((testimonial) => (
-            <blockquote key={testimonial.id} className="sm:flex lg:block">
+          {testimonials.map((testimonial, index) => (
+            <blockquote key={index} className="sm:flex lg:block">
               <svg
                 width={24}
                 height={18}

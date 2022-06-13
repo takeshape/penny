@@ -404,6 +404,49 @@ type Query {
     """
     where: TSWhereProductInput
   ): ProductPaginatedList
+  Shopify_collectionByHandle(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection
+  Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
   searchAssetIndex(
     terms: String
 
@@ -1444,6 +1487,7 @@ input TSWhereInput {
   navigation: TSWhereFooterNavigationInput
   newsletter: TSWhereFooterNewsletterInput
   components: TSWhereStorefrontComponentsInput
+  test: TSWhereStringInput
   shopifyProductId: TSWhereStringInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
@@ -4903,22 +4947,45 @@ input TSWhereStorefrontComponentsInput {
   primaryText: TSWhereStringInput
   secondaryText: TSWhereStringInput
   buttonText: TSWhereStringInput
-  image: TSWhereStringInput
+  image: TSWhereAssetRelationshipInput
   collections: TSWhereCollectionsComponentCollectionsInput
+  components: TSWhereBackgroundImageComponentComponentsInput
+  testimonials: TSWhereTestimonialsComponentTestimonialsInput
+  trendingProducts: TSWhereTrendingProductsComponentTrendingProductsInput
 }
 
 input TSWhereOffersComponentOffersInput {
-  href: TSWhereStringInput
   name: TSWhereStringInput
   description: TSWhereStringInput
+  href: TSWhereStringInput
 }
 
 input TSWhereCollectionsComponentCollectionsInput {
   name: TSWhereStringInput
   description: TSWhereStringInput
-  imageSrc: TSWhereStringInput
-  imageAlt: TSWhereStringInput
   href: TSWhereStringInput
+  image: TSWhereAssetRelationshipInput
+}
+
+input TSWhereBackgroundImageComponentComponentsInput {
+  collections: TSWhereCollectionsComponentCollectionsInput
+  primaryText: TSWhereStringInput
+  secondaryText: TSWhereStringInput
+  buttonText: TSWhereStringInput
+  testimonials: TSWhereTestimonialsComponentTestimonialsInput
+  offers: TSWhereOffersComponentOffersInput
+  image: TSWhereAssetRelationshipInput
+  components: TSWhereBackgroundImageComponentComponentsInput
+  trendingProducts: TSWhereTrendingProductsComponentTrendingProductsInput
+}
+
+input TSWhereTestimonialsComponentTestimonialsInput {
+  quote: TSWhereStringInput
+  attribution: TSWhereStringInput
+}
+
+input TSWhereTrendingProductsComponentTrendingProductsInput {
+  shopifyProductId: TSWhereStringInput
 }
 
 type Profile implements TSSearchable {
@@ -32357,40 +32424,61 @@ type Storefront implements TSSearchable {
   searchSummary: String
 }
 
-union StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent
+union StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent | TrendingProductsComponent
 
 type OffersComponent {
-  offers: [Offer!]!
+  """"""
+  offers: [OffersComponentOffers!]!
 }
 
-type Offer {
-  href: String!
+type OffersComponentOffers {
+  """"""
   name: String!
+
+  """"""
   description: String!
+
+  """"""
+  href: String!
 }
 
 type HeroComponent {
   primaryText: String!
   secondaryText: String!
   buttonText: String!
-  image: String!
+
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
 }
 
 type CollectionsComponent {
-  collections: [Collection!]!
+  """"""
+  collections: [CollectionsComponentCollections!]!
 }
 
-type Collection {
-  name: String
-  description: String
-  imageSrc: String
-  imageAlt: String
-  href: String
+type CollectionsComponentCollections {
+  """"""
+  name: String!
+
+  """"""
+  description: String!
+
+  """"""
+  href: String!
+
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
 }
 
 type BackgroundImageComponent {
-  image: String!
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+
+  """"""
+  components: [BackgroundImageComponentComponentsProperty!]!
 }
+
+union BackgroundImageComponentComponentsProperty = CollectionsComponent | SaleComponent | TestimonialsComponent | OffersComponent | HeroComponent | BackgroundImageComponent | TrendingProductsComponent
 
 type SaleComponent {
   primaryText: String!
@@ -32399,14 +32487,37 @@ type SaleComponent {
 }
 
 type TestimonialsComponent {
-  testimonials: [JSONObject!]!
+  """"""
+  testimonials: [TestimonialsComponentTestimonials!]!
+}
+
+type TestimonialsComponentTestimonials {
+  """"""
+  quote: String!
+
+  """"""
+  attribution: String!
+}
+
+type TrendingProductsComponent {
+  """"""
+  trendingProducts: [TrendingProductsComponentTrendingProducts!]!
+}
+
+type TrendingProductsComponentTrendingProducts {
+  """"""
+  shopifyProductId: String!
+  shopifyProduct: Shopify_Product
 }
 
 type Product implements TSSearchable {
   """Initialized with title from shopify"""
   name: String
-  shopifyProduct: Shopify_Product
+
+  """"""
+  test: String
   shopifyProductId: String
+  shopifyProduct: Shopify_Product
   _shapeId: String
   _id: ID
   _version: Int
@@ -32431,6 +32542,7 @@ type ProductPaginatedList {
 
 input TSWhereProductInput {
   name: TSWhereStringInput
+  test: TSWhereStringInput
   shopifyProductId: TSWhereStringInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
@@ -32883,6 +32995,49 @@ type WithContext {
     """
     where: TSWhereProductInput
   ): ProductPaginatedList
+  Shopify_collectionByHandle(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection
+  Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
   searchAssetIndex(
     terms: String
 
@@ -46984,7 +47139,7 @@ type UpdateStorefrontResult {
 
 """update Storefront input"""
 input UpdateStorefrontInput {
-  components: [BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion]
+  components: [BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion]
   _shapeId: String
   _id: ID
   _version: Int
@@ -47001,54 +47156,61 @@ input UpdateStorefrontInput {
   _contentTypeName: String
 }
 
-input BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion {
+input BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion {
   offersComponent: OffersComponentInput
   heroComponent: HeroComponentInput
   collectionsComponent: CollectionsComponentInput
   backgroundImageComponent: BackgroundImageComponentInput
   saleComponent: SaleComponentInput
   testimonialsComponent: TestimonialsComponentInput
+  trendingProductsComponent: TrendingProductsComponentInput
 }
 
 input OffersComponentInput {
-  offers: [OfferInputUnion!]!
+  """"""
+  offers: [OffersComponentOffersInput!]!
 }
 
-input OfferInputUnion {
-  offer: OfferInput
-}
-
-input OfferInput {
-  href: String!
+input OffersComponentOffersInput {
+  """"""
   name: String!
+
+  """"""
   description: String!
+
+  """"""
+  href: String!
 }
 
 input HeroComponentInput {
   primaryText: String!
   secondaryText: String!
   buttonText: String!
-  image: String!
+  image: TSRelationshipInput!
 }
 
 input CollectionsComponentInput {
-  collections: [CollectionInputUnion!]!
+  """"""
+  collections: [CollectionsComponentCollectionsInput!]!
 }
 
-input CollectionInputUnion {
-  collection: CollectionInput
-}
+input CollectionsComponentCollectionsInput {
+  """"""
+  name: String!
 
-input CollectionInput {
-  name: String
-  description: String
-  imageSrc: String
-  imageAlt: String
-  href: String
+  """"""
+  description: String!
+
+  """"""
+  href: String!
+  image: TSRelationshipInput!
 }
 
 input BackgroundImageComponentInput {
-  image: String!
+  image: TSRelationshipInput!
+
+  """"""
+  components: [BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion!]!
 }
 
 input SaleComponentInput {
@@ -47058,7 +47220,26 @@ input SaleComponentInput {
 }
 
 input TestimonialsComponentInput {
-  testimonials: [JSONObject!]!
+  """"""
+  testimonials: [TestimonialsComponentTestimonialsInput!]!
+}
+
+input TestimonialsComponentTestimonialsInput {
+  """"""
+  quote: String!
+
+  """"""
+  attribution: String!
+}
+
+input TrendingProductsComponentInput {
+  """"""
+  trendingProducts: [TrendingProductsComponentTrendingProductsInput!]!
+}
+
+input TrendingProductsComponentTrendingProductsInput {
+  """"""
+  shopifyProductId: String!
 }
 
 type UpdateProductResult {
@@ -47074,6 +47255,7 @@ input UpdateProductInterfaceInput {
 
   """Initialized with title from shopify"""
   name: String
+  test: String
   shopifyProductId: String
   shopifyProduct: Shopify_ProductInput
 }
@@ -47413,6 +47595,7 @@ input CreateProductInterfaceInput {
 
   """Initialized with title from shopify"""
   name: String
+  test: String
   shopifyProductId: String
   shopifyProduct: Shopify_ProductInput
 }
@@ -47428,6 +47611,9 @@ input DuplicateProductInput {
 
   """Initialized with title from shopify"""
   name: String
+
+  """"""
+  test: String
   shopifyProductId: String
   _shapeId: String
   _version: Int

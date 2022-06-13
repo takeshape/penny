@@ -1,27 +1,20 @@
+import { useQuery } from '@apollo/client';
+import Loader from 'components/Loader/Loader';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
+import { uniq } from 'lodash-es';
+import { GetTrendingProductsQuery } from 'queries';
+import { formatPrice } from 'utils/text';
+import { shopifyProductToProduct } from 'utils/transforms/shopify';
 
-interface AvailableColor {
-  name: string;
-  colorBg: string;
-}
+const TrendingProducts = () => {
+  const { data, loading } = useQuery(GetTrendingProductsQuery);
 
-interface TrendingProduct {
-  id: string;
-  href: string;
-  name: string;
-  color: string;
-  price: string;
-  imageSrc: string;
-  imageAlt: string;
-  availableColors: AvailableColor[];
-}
+  if (loading) {
+    return <Loader />;
+  }
 
-export interface TrendingProductsProps {
-  trendingProducts?: TrendingProduct[];
-}
-
-const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<TrendingProductsProps>) => {
+  const trendingProducts = data.trendingProducts.items;
   if (!(trendingProducts ?? trendingProducts.length)) return null;
   return (
     <section aria-labelledby="trending-heading" className="bg-white">
@@ -41,43 +34,51 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
               role="list"
               className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:space-x-0 lg:grid lg:grid-cols-4 lg:gap-x-8"
             >
-              {trendingProducts.map((product) => (
-                <li key={product.id} className="w-64 inline-flex flex-col text-center lg:w-auto">
-                  <div className="group relative">
-                    <div className="w-full bg-gray-200 rounded-md overflow-hidden aspect-w-1 aspect-h-1">
-                      <NextImage
-                        layout="fill"
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        className="w-full h-full object-center object-cover group-hover:opacity-75"
-                      />
-                    </div>
-                    <div className="mt-6">
-                      <p className="text-sm text-gray-500">{product.color}</p>
-                      <h3 className="mt-1 font-semibold text-gray-900">
-                        <NextLink href={product.href}>
-                          <span className="absolute inset-0" />
-                          {product.name}
-                        </NextLink>
-                      </h3>
-                      <p className="mt-1 text-gray-900">{product.price}</p>
-                    </div>
-                  </div>
+              {trendingProducts.map(({ shopifyProduct }) => {
+                const { id, featuredImage, url, name, variants } = shopifyProductToProduct(shopifyProduct);
 
-                  <h4 className="sr-only">Available colors</h4>
-                  <ul role="list" className="mt-auto pt-6 flex items-center justify-center space-x-3">
-                    {product.availableColors.map((color) => (
-                      <li
-                        key={color.name}
-                        className="w-4 h-4 rounded-full border border-black border-opacity-10"
-                        style={{ backgroundColor: color.colorBg }}
-                      >
-                        <span className="sr-only">{color.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
+                return (
+                  <li key={id} className="w-64 inline-flex flex-col text-center lg:w-auto">
+                    <div className="group relative">
+                      <div className="w-full bg-gray-200 rounded-md overflow-hidden aspect-w-1 aspect-h-1">
+                        <NextImage
+                          layout="fill"
+                          src={featuredImage.url}
+                          alt={featuredImage.altText}
+                          className="w-full h-full object-center object-cover group-hover:opacity-75"
+                        />
+                      </div>
+                      <div className="mt-6">
+                        <p className="text-sm text-gray-500">{variants[0].name}</p>
+                        <h3 className="mt-1 font-semibold text-gray-900">
+                          <NextLink href={url}>
+                            <span className="absolute inset-0" />
+                            {name}
+                          </NextLink>
+                        </h3>
+                        <p className="mt-1 text-gray-900">
+                          {formatPrice(variants[0].prices[0].currencyCode, variants[0].prices[0].amount)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <h4 className="sr-only">Available colors</h4>
+                    <ul role="list" className="mt-auto pt-6 flex items-center justify-center space-x-3">
+                      {uniq(
+                        variants.map((variant) => variant.options.find((option) => option.name === 'Color').value)
+                      ).map((color) => (
+                        <li
+                          key={color}
+                          className="w-4 h-4 rounded-full border border-black border-opacity-10"
+                          style={{ backgroundColor: color }}
+                        >
+                          <span className="sr-only">{color}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

@@ -27,7 +27,7 @@ const IndexPage: NextPage = ({ storefront, error }: InferGetStaticPropsType<type
     <Layout>
       {storefront ? (
         <Wrapper>
-          <Storefront />
+          <Storefront storefront={storefront} />
         </Wrapper>
       ) : (
         <PageLoader />

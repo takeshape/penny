@@ -26,6 +26,7 @@
     "@heroicons/react": "^1.0.6",
     "@next/bundle-analyzer": "^12.1.6",
     "@takeshape/next-auth-all-access": "^0.3.0",
+    "@takeshape/routing": "^8.174.0",
     "@types/lodash-es": "^4.17.6",
     "abortcontroller-polyfill": "^1.7.3",
     "date-fns": "^2.28.0",

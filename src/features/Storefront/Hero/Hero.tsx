@@ -1,3 +1,4 @@
+import { getImageUrl } from '@takeshape/routing';
 import Button from 'components/Button/Button';
 import NextImage from 'components/NextImage';
 import { HeroComponent } from 'types/takeshape';
@@ -20,7 +21,13 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroComp
           </div>
         </div>
         <div className="relative w-full h-48 sm:h-64 lg:h-full">
-          <NextImage layout="fill" src={image} alt="" className="w-full h-full object-center object-cover" />
+          <NextImage
+            layout="fill"
+            src={getImageUrl(image)}
+            alt=""
+            className="w-full h-full object-center object-cover"
+            priority
+          />
         </div>
       </div>
     </div>

@@ -85,9 +85,16 @@ export type Query = {
   getMyAdminCustomer?: Maybe<Shopify_Customer>;
   /** Get a Storefront by ID */
   getStorefront?: Maybe<Storefront>;
+  /** Get a Product by ID */
+  getProduct?: Maybe<Product>;
+  /** Returns a list Product in natural order. */
+  getProductList?: Maybe<ProductPaginatedList>;
+  Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  Shopify_collections?: Maybe<Shopify_CollectionConnection>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
+  searchProductIndex?: Maybe<ProductSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
   withContext?: Maybe<WithContext>;
 };
@@ -393,6 +400,47 @@ export type QueryGetStorefrontArgs = {
 
 
 /** Root of the Schema */
+export type QueryGetProductArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_CollectionByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_CollectionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_CollectionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Root of the Schema */
 export type QuerySearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -428,6 +476,19 @@ export type QuerySearchProfileIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProfileInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchProductIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
 };
 
 
@@ -1256,6 +1317,8 @@ export type TsWhereInput = {
   navigation?: InputMaybe<TsWhereFooterNavigationInput>;
   newsletter?: InputMaybe<TsWhereFooterNewsletterInput>;
   components?: InputMaybe<TsWhereStorefrontComponentsInput>;
+  test?: InputMaybe<TsWhereStringInput>;
+  shopifyProductId?: InputMaybe<TsWhereStringInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
@@ -4634,22 +4697,45 @@ export type TsWhereStorefrontComponentsInput = {
   primaryText?: InputMaybe<TsWhereStringInput>;
   secondaryText?: InputMaybe<TsWhereStringInput>;
   buttonText?: InputMaybe<TsWhereStringInput>;
-  image?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
   collections?: InputMaybe<TsWhereCollectionsComponentCollectionsInput>;
+  components?: InputMaybe<TsWhereBackgroundImageComponentComponentsInput>;
+  testimonials?: InputMaybe<TsWhereTestimonialsComponentTestimonialsInput>;
+  trendingProducts?: InputMaybe<TsWhereTrendingProductsComponentTrendingProductsInput>;
 };
 
 export type TsWhereOffersComponentOffersInput = {
-  href?: InputMaybe<TsWhereStringInput>;
   name?: InputMaybe<TsWhereStringInput>;
   description?: InputMaybe<TsWhereStringInput>;
+  href?: InputMaybe<TsWhereStringInput>;
 };
 
 export type TsWhereCollectionsComponentCollectionsInput = {
   name?: InputMaybe<TsWhereStringInput>;
   description?: InputMaybe<TsWhereStringInput>;
-  imageSrc?: InputMaybe<TsWhereStringInput>;
-  imageAlt?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+};
+
+export type TsWhereBackgroundImageComponentComponentsInput = {
+  collections?: InputMaybe<TsWhereCollectionsComponentCollectionsInput>;
+  primaryText?: InputMaybe<TsWhereStringInput>;
+  secondaryText?: InputMaybe<TsWhereStringInput>;
+  buttonText?: InputMaybe<TsWhereStringInput>;
+  testimonials?: InputMaybe<TsWhereTestimonialsComponentTestimonialsInput>;
+  offers?: InputMaybe<TsWhereOffersComponentOffersInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+  components?: InputMaybe<TsWhereBackgroundImageComponentComponentsInput>;
+  trendingProducts?: InputMaybe<TsWhereTrendingProductsComponentTrendingProductsInput>;
+};
+
+export type TsWhereTestimonialsComponentTestimonialsInput = {
+  quote?: InputMaybe<TsWhereStringInput>;
+  attribution?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereTrendingProductsComponentTrendingProductsInput = {
+  shopifyProductId?: InputMaybe<TsWhereStringInput>;
 };
 
 export type Profile = TsSearchable & {
@@ -26744,18 +26830,18 @@ export type Storefront = TsSearchable & {
   searchSummary?: Maybe<Scalars['String']>;
 };
 
-export type StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent;
+export type StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent | TrendingProductsComponent;
 
 export type OffersComponent = {
   __typename?: 'OffersComponent';
-  offers: Array<Offer>;
+  offers: Array<OffersComponentOffers>;
 };
 
-export type Offer = {
-  __typename?: 'Offer';
-  href: Scalars['String'];
+export type OffersComponentOffers = {
+  __typename?: 'OffersComponentOffers';
   name: Scalars['String'];
   description: Scalars['String'];
+  href: Scalars['String'];
 };
 
 export type HeroComponent = {
@@ -26763,27 +26849,47 @@ export type HeroComponent = {
   primaryText: Scalars['String'];
   secondaryText: Scalars['String'];
   buttonText: Scalars['String'];
-  image: Scalars['String'];
+  image?: Maybe<Asset>;
+};
+
+
+export type HeroComponentImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
 };
 
 export type CollectionsComponent = {
   __typename?: 'CollectionsComponent';
-  collections: Array<Collection>;
+  collections: Array<CollectionsComponentCollections>;
 };
 
-export type Collection = {
-  __typename?: 'Collection';
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  imageSrc?: Maybe<Scalars['String']>;
-  imageAlt?: Maybe<Scalars['String']>;
-  href?: Maybe<Scalars['String']>;
+export type CollectionsComponentCollections = {
+  __typename?: 'CollectionsComponentCollections';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  href: Scalars['String'];
+  image?: Maybe<Asset>;
+};
+
+
+export type CollectionsComponentCollectionsImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
 };
 
 export type BackgroundImageComponent = {
   __typename?: 'BackgroundImageComponent';
-  image: Scalars['String'];
+  image?: Maybe<Asset>;
+  components: Array<BackgroundImageComponentComponentsProperty>;
 };
+
+
+export type BackgroundImageComponentImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponentComponentsProperty = CollectionsComponent | SaleComponent | TestimonialsComponent | OffersComponent | HeroComponent | BackgroundImageComponent | TrendingProductsComponent;
 
 export type SaleComponent = {
   __typename?: 'SaleComponent';
@@ -26794,7 +26900,75 @@ export type SaleComponent = {
 
 export type TestimonialsComponent = {
   __typename?: 'TestimonialsComponent';
-  testimonials: Array<Scalars['JSONObject']>;
+  testimonials: Array<TestimonialsComponentTestimonials>;
+};
+
+export type TestimonialsComponentTestimonials = {
+  __typename?: 'TestimonialsComponentTestimonials';
+  quote: Scalars['String'];
+  attribution: Scalars['String'];
+};
+
+export type TrendingProductsComponent = {
+  __typename?: 'TrendingProductsComponent';
+  trendingProducts: Array<TrendingProductsComponentTrendingProducts>;
+};
+
+export type TrendingProductsComponentTrendingProducts = {
+  __typename?: 'TrendingProductsComponentTrendingProducts';
+  shopifyProductId: Scalars['String'];
+  shopifyProduct?: Maybe<Shopify_Product>;
+};
+
+export type Product = TsSearchable & {
+  __typename?: 'Product';
+  /** Initialized with title from shopify */
+  name?: Maybe<Scalars['String']>;
+  test?: Maybe<Scalars['String']>;
+  shopifyProductId?: Maybe<Scalars['String']>;
+  shopifyProduct?: Maybe<Shopify_Product>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type ProductPaginatedList = {
+  __typename?: 'ProductPaginatedList';
+  items: Array<Product>;
+  total: Scalars['Int'];
+};
+
+export type TsWhereProductInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  test?: InputMaybe<TsWhereStringInput>;
+  shopifyProductId?: InputMaybe<TsWhereStringInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
+  NOT?: InputMaybe<TsWhereProductInput>;
 };
 
 /** Asset search results */
@@ -26815,6 +26989,13 @@ export type TsStaticSiteSearchResults = {
 export type ProfileSearchResults = {
   __typename?: 'ProfileSearchResults';
   results: Array<Profile>;
+  total: Scalars['Int'];
+};
+
+/** Product search results */
+export type ProductSearchResults = {
+  __typename?: 'ProductSearchResults';
+  results: Array<Product>;
   total: Scalars['Int'];
 };
 
@@ -26885,9 +27066,16 @@ export type WithContext = {
   getMyAdminCustomer?: Maybe<Shopify_Customer>;
   /** Get a Storefront by ID */
   getStorefront?: Maybe<Storefront>;
+  /** Get a Product by ID */
+  getProduct?: Maybe<Product>;
+  /** Returns a list Product in natural order. */
+  getProductList?: Maybe<ProductPaginatedList>;
+  Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  Shopify_collections?: Maybe<Shopify_CollectionConnection>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
+  searchProductIndex?: Maybe<ProductSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
 };
 
@@ -27192,6 +27380,47 @@ export type WithContextGetStorefrontArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetProductArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextShopify_CollectionByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextShopify_CollectionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_CollectionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -27227,6 +27456,19 @@ export type WithContextSearchProfileIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProfileInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchProductIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
 };
 
 
@@ -27318,6 +27560,17 @@ export type Mutation = {
   Gorgias_createTicket?: Maybe<Gorgias_CreateTicketResponse>;
   /** Update Storefront */
   updateStorefront?: Maybe<UpdateStorefrontResult>;
+  /**
+   * Update Product. If the input has Shopify values and a Shopify ID, the Shopify product with that ID is updated.
+   * If the input has Shopify values and no Shopify ID, a Shopify product is created.
+   */
+  updateProduct?: Maybe<UpdateProductResult>;
+  /** Create Product. If Shopify values are provided, a Shopify product is also created and the new product ID is saved. */
+  createProduct?: Maybe<CreateProductResult>;
+  /** Duplicate Product */
+  duplicateProduct?: Maybe<DuplicateProductResult>;
+  /** Delete Product */
+  deleteProduct?: Maybe<DeleteProductResult>;
 };
 
 
@@ -27615,6 +27868,35 @@ export type MutationUpdateStorefrontArgs = {
   structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationUpdateProductArgs = {
+  input: UpdateProductInterfaceInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateProductArgs = {
+  input: CreateProductInterfaceInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicateProductArgs = {
+  input: DuplicateProductInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProductArgs = {
+  input: DeleteProductInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** A project file stored on s3 */
@@ -37822,7 +38104,7 @@ export type UpdateStorefrontResult = {
 
 /** update Storefront input */
 export type UpdateStorefrontInput = {
-  components?: InputMaybe<Array<InputMaybe<BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion>>>;
+  components?: InputMaybe<Array<InputMaybe<BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _id?: InputMaybe<Scalars['ID']>;
   _version?: InputMaybe<Scalars['Int']>;
@@ -37839,54 +38121,47 @@ export type UpdateStorefrontInput = {
   _contentTypeName?: InputMaybe<Scalars['String']>;
 };
 
-export type BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion = {
+export type BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion = {
   offersComponent?: InputMaybe<OffersComponentInput>;
   heroComponent?: InputMaybe<HeroComponentInput>;
   collectionsComponent?: InputMaybe<CollectionsComponentInput>;
   backgroundImageComponent?: InputMaybe<BackgroundImageComponentInput>;
   saleComponent?: InputMaybe<SaleComponentInput>;
   testimonialsComponent?: InputMaybe<TestimonialsComponentInput>;
+  trendingProductsComponent?: InputMaybe<TrendingProductsComponentInput>;
 };
 
 export type OffersComponentInput = {
-  offers: Array<OfferInputUnion>;
+  offers: Array<OffersComponentOffersInput>;
 };
 
-export type OfferInputUnion = {
-  offer?: InputMaybe<OfferInput>;
-};
-
-export type OfferInput = {
-  href: Scalars['String'];
+export type OffersComponentOffersInput = {
   name: Scalars['String'];
   description: Scalars['String'];
+  href: Scalars['String'];
 };
 
 export type HeroComponentInput = {
   primaryText: Scalars['String'];
   secondaryText: Scalars['String'];
   buttonText: Scalars['String'];
-  image: Scalars['String'];
+  image: TsRelationshipInput;
 };
 
 export type CollectionsComponentInput = {
-  collections: Array<CollectionInputUnion>;
+  collections: Array<CollectionsComponentCollectionsInput>;
 };
 
-export type CollectionInputUnion = {
-  collection?: InputMaybe<CollectionInput>;
-};
-
-export type CollectionInput = {
-  name?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<Scalars['String']>;
-  imageSrc?: InputMaybe<Scalars['String']>;
-  imageAlt?: InputMaybe<Scalars['String']>;
-  href?: InputMaybe<Scalars['String']>;
+export type CollectionsComponentCollectionsInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  href: Scalars['String'];
+  image: TsRelationshipInput;
 };
 
 export type BackgroundImageComponentInput = {
-  image: Scalars['String'];
+  image: TsRelationshipInput;
+  components: Array<BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion>;
 };
 
 export type SaleComponentInput = {
@@ -37896,5 +38171,302 @@ export type SaleComponentInput = {
 };
 
 export type TestimonialsComponentInput = {
-  testimonials: Array<Scalars['JSONObject']>;
+  testimonials: Array<TestimonialsComponentTestimonialsInput>;
+};
+
+export type TestimonialsComponentTestimonialsInput = {
+  quote: Scalars['String'];
+  attribution: Scalars['String'];
+};
+
+export type TrendingProductsComponentInput = {
+  trendingProducts: Array<TrendingProductsComponentTrendingProductsInput>;
+};
+
+export type TrendingProductsComponentTrendingProductsInput = {
+  shopifyProductId: Scalars['String'];
+};
+
+export type UpdateProductResult = {
+  __typename?: 'UpdateProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Product>;
+};
+
+/** update ProductInterface input */
+export type UpdateProductInterfaceInput = {
+  _id: Scalars['ID'];
+  _version?: InputMaybe<Scalars['Float']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  /** Initialized with title from shopify */
+  name?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['String']>;
+  shopifyProductId?: InputMaybe<Scalars['String']>;
+  shopifyProduct?: InputMaybe<Shopify_ProductInput>;
+};
+
+/** Specifies the input fields required to create a product. */
+export type Shopify_ProductInput = {
+  /** The description of the product, complete with HTML formatting. */
+  descriptionHtml?: InputMaybe<Scalars['String']>;
+  /** A unique human-friendly string for the product. Automatically generated from the product's title. */
+  handle?: InputMaybe<Scalars['String']>;
+  /**
+   * Whether a redirect is required after a new handle has been provided.
+   * If true, then the old handle is redirected to the new one automatically.
+   */
+  redirectNewHandle?: InputMaybe<Scalars['Boolean']>;
+  /** The SEO information associated with the product. */
+  seo?: InputMaybe<Shopify_SeoInput>;
+  /** The product type specified by the merchant. */
+  productType?: InputMaybe<Scalars['String']>;
+  /** The standardized product type in the Shopify product taxonomy. */
+  standardizedProductType?: InputMaybe<Shopify_StandardizedProductTypeInput>;
+  /** The custom product type specified by the merchant. */
+  customProductType?: InputMaybe<Scalars['String']>;
+  /** A comma separated list tags that have been added to the product. */
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The theme template used when viewing the product in a store. */
+  templateSuffix?: InputMaybe<Scalars['String']>;
+  /** Whether the product is a gift card. */
+  giftCard?: InputMaybe<Scalars['Boolean']>;
+  /** The theme template used when viewing the gift card in a store. */
+  giftCardTemplateSuffix?: InputMaybe<Scalars['String']>;
+  /** The title of the product. */
+  title?: InputMaybe<Scalars['String']>;
+  /** The name of the product's vendor. */
+  vendor?: InputMaybe<Scalars['String']>;
+  /** A description of the product. Supports HTML formatting. This argument is deprecated: Use `descriptionHtml` instead. */
+  bodyHtml?: InputMaybe<Scalars['String']>;
+  /** The IDs of the collections that this product will be added to. */
+  collectionsToJoin?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** The IDs of collections that will no longer include the product. */
+  collectionsToLeave?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Specifies the product to update in productUpdate or creates a new product if absent in productCreate. */
+  id?: InputMaybe<Scalars['ID']>;
+  /** The images to associate with the product. */
+  images?: InputMaybe<Array<InputMaybe<Shopify_ImageInput>>>;
+  /** The metafields to associate with this product. */
+  metafields?: InputMaybe<Array<InputMaybe<Shopify_MetafieldInput>>>;
+  /** The private metafields to associate with this product. */
+  privateMetafields?: InputMaybe<Array<InputMaybe<Shopify_PrivateMetafieldInput>>>;
+  /** List of custom product options (maximum of 3 per product). */
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  publishDate?: InputMaybe<Scalars['DateTime']>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  publishOn?: InputMaybe<Scalars['DateTime']>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  published?: InputMaybe<Scalars['Boolean']>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** A list of variants associated with the product. */
+  variants?: InputMaybe<Array<InputMaybe<Shopify_ProductVariantInput>>>;
+  /** The status of the product. */
+  status?: InputMaybe<Shopify_ProductStatus>;
+  /** Whether the product can only be purchased with a selling plan (subscription). Products that are sold exclusively on subscription can only be created on online stores. If set to `true` on an already existing product, then the product will be marked unavailable on channels that don't support subscriptions. */
+  requiresSellingPlan?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** SEO information. */
+export type Shopify_SeoInput = {
+  /** SEO title of the product. */
+  title?: InputMaybe<Scalars['String']>;
+  /** SEO description of the product. */
+  description?: InputMaybe<Scalars['String']>;
+};
+
+/** Provides the fields and values to use when adding a standard product type to a product. The [Shopify product taxonomy](https://help.shopify.com/txt/product_taxonomy/en.txt) contains the full list of available values. */
+export type Shopify_StandardizedProductTypeInput = {
+  /** The id of the node in the Shopify taxonomy that represents the product type. */
+  productTaxonomyNodeId: Scalars['ID'];
+};
+
+/** Specifies the input fields for an image. */
+export type Shopify_ImageInput = {
+  /** A globally-unique identifier. */
+  id?: InputMaybe<Scalars['ID']>;
+  /** A word or phrase to share the nature or contents of an image. */
+  altText?: InputMaybe<Scalars['String']>;
+  /** The URL of the image. May be a signed upload URL. */
+  src?: InputMaybe<Scalars['String']>;
+};
+
+/**
+ * The input fields to use to create or update a metafield through a mutation on the owning resource.
+ * An alternative way to create or update a metafield is by using the
+ * [metafieldsSet](https://shopify.dev/api/admin-graphql/latest/mutations/metafieldsSet) mutation.
+ */
+export type Shopify_MetafieldInput = {
+  /** The description of the metafield. */
+  description?: InputMaybe<Scalars['String']>;
+  /**
+   * The unique ID of the metafield. You don't include an ID when you create a metafield because the metafield ID
+   * is created automatically. The ID is required when you update a metafield.
+   */
+  id?: InputMaybe<Scalars['ID']>;
+  /**
+   * The namespace for a metafield. The namespace is required when you create a metafield and is optional when you
+   * update a metafield.
+   */
+  namespace?: InputMaybe<Scalars['String']>;
+  /** The key name of the metafield. Required when creating but optional when updating. */
+  key?: InputMaybe<Scalars['String']>;
+  /** The value of a metafield. */
+  value?: InputMaybe<Scalars['String']>;
+  /**
+   * The metafield's [type](https://shopify.dev/apps/metafields/types). The metafield type is required
+   * when you create a metafield and is optional when you update a metafield.
+   */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+/** The input fields for a private metafield. */
+export type Shopify_PrivateMetafieldInput = {
+  /** The resource that owns the metafield. If the field is blank, then the `Shop` resource owns the metafield. */
+  owner?: InputMaybe<Scalars['ID']>;
+  /** The namespace of the private metafield. */
+  namespace: Scalars['String'];
+  /** The key of the private metafield. */
+  key: Scalars['String'];
+  /** The `value` and `valueType` of the private metafield, wrapped in a `ValueInput` object. */
+  valueInput: Shopify_PrivateMetafieldValueInput;
+};
+
+/** The value input contains the value and value type of the private metafield. */
+export type Shopify_PrivateMetafieldValueInput = {
+  /** The value of a private metafield. */
+  value: Scalars['String'];
+  /** Represents the private metafield value type. */
+  valueType: Shopify_PrivateMetafieldValueType;
+};
+
+/** Specifies a product variant to create or update. */
+export type Shopify_ProductVariantInput = {
+  /** The value of the barcode associated with the product. */
+  barcode?: InputMaybe<Scalars['String']>;
+  /** The compare-at price of the variant. */
+  compareAtPrice?: InputMaybe<Scalars['Money']>;
+  /** The ID of the fulfillment service associated with the variant. */
+  fulfillmentServiceId?: InputMaybe<Scalars['ID']>;
+  /** The Harmonized System Code (or HS Tariff Code) for the variant. */
+  harmonizedSystemCode?: InputMaybe<Scalars['String']>;
+  /** Specifies the product variant to update or create a new variant if absent. */
+  id?: InputMaybe<Scalars['ID']>;
+  /** The ID of the image that's associated with the variant. */
+  imageId?: InputMaybe<Scalars['ID']>;
+  /** The URL of an image to associate with the variant.  This field can only be used through mutations that create product images and must match one of the URLs being created on the product. */
+  imageSrc?: InputMaybe<Scalars['String']>;
+  /** The URL of the media to associate with the variant. This field can only be used in mutations that create media images and must match one of the URLs being created on the product. This field only accepts one value. */
+  mediaSrc?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /**
+   * The fulfillment service that tracks the number of items in stock for the product variant. If you track the inventory yourself using the admin, then set the value to `shopify`. Valid values: `shopify` or the handle of a fulfillment service that has inventory management enabled.
+   *  This argument is deprecated: Use tracked attribute on `inventoryItem` instead.
+   */
+  inventoryManagement?: InputMaybe<Shopify_ProductVariantInventoryManagement>;
+  /** Whether customers are allowed to place an order for the product variant when it's out of stock. */
+  inventoryPolicy?: InputMaybe<Shopify_ProductVariantInventoryPolicy>;
+  /** Create only field. The inventory quantities at each location where the variant is stocked. */
+  inventoryQuantities?: InputMaybe<Array<InputMaybe<Shopify_InventoryLevelInput>>>;
+  /** Inventory Item associated with the variant, used for unit cost. */
+  inventoryItem?: InputMaybe<Shopify_InventoryItemInput>;
+  /** Additional customizable information about the product variant. */
+  metafields?: InputMaybe<Array<InputMaybe<Shopify_MetafieldInput>>>;
+  /** The private metafields to associated with this product. */
+  privateMetafields?: InputMaybe<Array<InputMaybe<Shopify_PrivateMetafieldInput>>>;
+  /** The custom properties that a shop owner uses to define product variants. */
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The order of the product variant in the list of product variants. The first position in the list is 1. */
+  position?: InputMaybe<Scalars['Int']>;
+  /** The price of the variant. */
+  price?: InputMaybe<Scalars['Money']>;
+  /** Create only required field. Specifies the product on which to create the variant. */
+  productId?: InputMaybe<Scalars['ID']>;
+  /** Whether the variant requires shipping. */
+  requiresShipping?: InputMaybe<Scalars['Boolean']>;
+  /** The SKU for the variant. */
+  sku?: InputMaybe<Scalars['String']>;
+  /** Whether the variant is taxable. */
+  taxable?: InputMaybe<Scalars['Boolean']>;
+  /** This argument is deprecated: Variant title is not a writable field; it is generated from the selected variant options. */
+  title?: InputMaybe<Scalars['String']>;
+  /** The tax code associated with the variant. */
+  taxCode?: InputMaybe<Scalars['String']>;
+  /** The weight of the variant. */
+  weight?: InputMaybe<Scalars['Float']>;
+  /** The unit of weight that's used to measure the variant. */
+  weightUnit?: InputMaybe<Shopify_WeightUnit>;
+};
+
+/** Specifies the input fields for an inventory level. */
+export type Shopify_InventoryLevelInput = {
+  /** The available quantity of an inventory item at a location. */
+  availableQuantity: Scalars['Int'];
+  /** The ID of a location. */
+  locationId: Scalars['ID'];
+};
+
+/** Specifies the input fields for an inventory item. */
+export type Shopify_InventoryItemInput = {
+  /** Unit cost associated with the inventory item, the currency is the shop's default currency. */
+  cost?: InputMaybe<Scalars['Decimal']>;
+  /** Whether the inventory item is tracked. */
+  tracked?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CreateProductResult = {
+  __typename?: 'CreateProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Product>;
+};
+
+/** create ProductInterface input */
+export type CreateProductInterfaceInput = {
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Float']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  /** Initialized with title from shopify */
+  name?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['String']>;
+  shopifyProductId?: InputMaybe<Scalars['String']>;
+  shopifyProduct?: InputMaybe<Shopify_ProductInput>;
+};
+
+export type DuplicateProductResult = {
+  __typename?: 'DuplicateProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Product>;
+};
+
+/** duplicate Product input */
+export type DuplicateProductInput = {
+  _id: Scalars['ID'];
+  /** Initialized with title from shopify */
+  name?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['String']>;
+  shopifyProductId?: InputMaybe<Scalars['String']>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeleteProductResult = {
+  __typename?: 'DeleteProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete Product input */
+export type DeleteProductInput = {
+  _id: Scalars['ID'];
 };

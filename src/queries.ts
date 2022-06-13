@@ -100,154 +100,146 @@ export const GetProductsQuery = gql`
   }
 `;
 
-export type GetProductArgs = QueryShopify_ProductArgs;
-
-export type GetProductResponse = {
-  product: Shopify_Product;
-};
-
-export const GetProductQuery = gql`
-  query GetProduct($id: ID!) {
-    product: Shopify_product(id: $id) {
-      id
+const productFragment = gql`
+  fragment Product on Shopify_Product {
+    id
+    title
+    description
+    descriptionHtml
+    requiresSellingPlan
+    featuredImage {
+      width
+      height
+      url
+    }
+    images(first: 10) {
+      edges {
+        node {
+          width
+          height
+          url
+        }
+      }
+    }
+    priceRangeV2 {
+      maxVariantPrice {
+        currencyCode
+        amount
+      }
+      minVariantPrice {
+        currencyCode
+        amount
+      }
+    }
+    seo {
       title
       description
-      descriptionHtml
-      requiresSellingPlan
-      featuredImage {
-        width
-        height
-        url
-      }
-      images(first: 10) {
-        edges {
-          node {
+    }
+    publishedAt
+    totalVariants
+    totalInventory
+    variants(first: 50) {
+      edges {
+        node {
+          id
+          availableForSale
+          compareAtPrice
+          image {
             width
             height
             url
           }
-        }
-      }
-      priceRangeV2 {
-        maxVariantPrice {
-          currencyCode
-          amount
-        }
-        minVariantPrice {
-          currencyCode
-          amount
-        }
-      }
-      seo {
-        title
-        description
-      }
-      publishedAt
-      totalVariants
-      totalInventory
-      variants(first: 50) {
-        edges {
-          node {
-            id
-            availableForSale
-            compareAtPrice
-            image {
-              width
-              height
-              url
-            }
-            price
-            inventoryPolicy
-            sellableOnlineQuantity
-            sku
-            title
-            selectedOptions {
-              name
-              value
-            }
+          price
+          inventoryPolicy
+          sellableOnlineQuantity
+          sku
+          title
+          selectedOptions {
+            name
+            value
           }
         }
+      }
+    }
+    reviews {
+      stats {
+        average
+        count
       }
       reviews {
-        stats {
-          average
-          count
-        }
-        reviews {
-          data {
-            product_review_id
-            rating
-            title
-            review
-            date_created
-            timeago
-            reviewer {
-              first_name
-              last_name
-              verified_buyer
-              address
-              profile_picture
-              gravatar
-            }
+        data {
+          product_review_id
+          rating
+          title
+          review
+          date_created
+          timeago
+          reviewer {
+            first_name
+            last_name
+            verified_buyer
+            address
+            profile_picture
+            gravatar
           }
-          per_page
-          current_page
-          total
         }
+        per_page
+        current_page
+        total
       }
-      options {
-        name
-        position
-        id
-        values
-      }
-      sellingPlanGroupCount
-      sellingPlanGroups(first: 1) {
-        edges {
-          node {
-            sellingPlans(first: 10) {
-              edges {
-                node {
-                  id
-                  options
-                  pricingPolicies {
-                    ... on Shopify_SellingPlanFixedPricingPolicy {
-                      adjustmentType
-                      adjustmentValue {
-                        ... on Shopify_MoneyV2 {
-                          currencyCode
-                          amount
-                        }
-                        ... on Shopify_SellingPlanPricingPolicyPercentageValue {
-                          percentage
-                        }
+    }
+    options {
+      name
+      position
+      id
+      values
+    }
+    sellingPlanGroupCount
+    sellingPlanGroups(first: 1) {
+      edges {
+        node {
+          sellingPlans(first: 10) {
+            edges {
+              node {
+                id
+                options
+                pricingPolicies {
+                  ... on Shopify_SellingPlanFixedPricingPolicy {
+                    adjustmentType
+                    adjustmentValue {
+                      ... on Shopify_MoneyV2 {
+                        currencyCode
+                        amount
                       }
-                    }
-                    ... on Shopify_SellingPlanRecurringPricingPolicy {
-                      adjustmentType
-                      adjustmentValue {
-                        ... on Shopify_MoneyV2 {
-                          currencyCode
-                          amount
-                        }
-                        ... on Shopify_SellingPlanPricingPolicyPercentageValue {
-                          percentage
-                        }
+                      ... on Shopify_SellingPlanPricingPolicyPercentageValue {
+                        percentage
                       }
                     }
                   }
-                  billingPolicy {
-                    ... on Shopify_SellingPlanRecurringBillingPolicy {
-                      anchors {
-                        day
-                        month
-                        type
+                  ... on Shopify_SellingPlanRecurringPricingPolicy {
+                    adjustmentType
+                    adjustmentValue {
+                      ... on Shopify_MoneyV2 {
+                        currencyCode
+                        amount
                       }
-                      maxCycles
-                      minCycles
-                      intervalCount
-                      interval
+                      ... on Shopify_SellingPlanPricingPolicyPercentageValue {
+                        percentage
+                      }
                     }
+                  }
+                }
+                billingPolicy {
+                  ... on Shopify_SellingPlanRecurringBillingPolicy {
+                    anchors {
+                      day
+                      month
+                      type
+                    }
+                    maxCycles
+                    minCycles
+                    intervalCount
+                    interval
                   }
                 }
               }
@@ -257,6 +249,21 @@ export const GetProductQuery = gql`
       }
     }
   }
+`;
+
+export type GetProductArgs = QueryShopify_ProductArgs;
+
+export type GetProductResponse = {
+  product: Shopify_Product;
+};
+
+export const GetProductQuery = gql`
+  query GetProduct($id: ID!) {
+    product: Shopify_product(id: $id) {
+      ...Product
+    }
+  }
+  ${productFragment}
 `;
 
 export const GetMyProfile = gql`
@@ -665,6 +672,7 @@ export const GetStorefrontQuery = gql`
   query GetStorefrontQuery {
     storefront: getStorefront {
       components {
+        __typename
         ... on OffersComponent {
           offers {
             href
@@ -672,7 +680,58 @@ export const GetStorefrontQuery = gql`
             description
           }
         }
+        ... on HeroComponent {
+          primaryText
+          secondaryText
+          buttonText
+          image {
+            path
+          }
+        }
+        ... on CollectionsComponent {
+          collections {
+            name
+            description
+            href
+            image {
+              path
+              description
+            }
+          }
+        }
+        ... on BackgroundImageComponent {
+          image {
+            path
+          }
+          components {
+            __typename
+            ... on SaleComponent {
+              primaryText
+              secondaryText
+              buttonText
+            }
+            ... on TestimonialsComponent {
+              testimonials {
+                quote
+                attribution
+              }
+            }
+          }
+        }
       }
     }
   }
+`;
+
+export const GetTrendingProductsQuery = gql`
+  query GetTrendingProductsQuery {
+    trendingProducts: getProductList(size: 3) {
+      items {
+        shopifyProduct {
+          ...Product
+        }
+      }
+    }
+  }
+  ${productFragment}
 `;
