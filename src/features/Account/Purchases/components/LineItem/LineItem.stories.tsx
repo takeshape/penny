@@ -14,7 +14,7 @@ const Template: ComponentStory<typeof LineItem> = (args) => <LineItem {...args} 
 
 export const _LineItem = Template.bind({});
 _LineItem.args = {
-  ...fixture
+  lineItem: fixture
 };
 
 export default Meta;
