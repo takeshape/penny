@@ -1,10 +1,11 @@
+import { ProductPageProductComponent } from '../types';
 import ProductWithExpandableDetails, {
   ProductWithExpandableDetailsProps
 } from './WithExpandableDetails/WithExpandableDetails';
 import ProductWithImageGrid, { ProductWithImageGridProps } from './WithImageGrid/WithImageGrid';
 
 export type ProductProps = {
-  component: 'withExpandableDetails' | 'withImageGrid';
+  component: ProductPageProductComponent;
 } & ProductWithImageGridProps &
   ProductWithExpandableDetailsProps;
 

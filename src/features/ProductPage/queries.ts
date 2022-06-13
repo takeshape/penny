@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { ProductPageReviewsIoReviews, ProductPageShopifyProduct } from './types';
+import { ProductPageProps, ProductPageReviewsIoReviews, ProductPageShopifyProduct } from './types';
 
 export type ProductPageShopifyProductIdListResponse = {
   products: {
@@ -25,9 +25,11 @@ export type ProductPageShopifyProductArgs = {
 
 export type ProductPageShopifyProductReponse = {
   productList: {
-    items: {
-      shopifyProduct: ProductPageShopifyProduct;
-    }[];
+    items: Array<
+      ProductPageProps & {
+        shopifyProduct: ProductPageShopifyProduct;
+      }
+    >;
   };
 };
 
@@ -35,6 +37,9 @@ export const ProductPageShopifyProductQuery = gql`
   query ProductPageShopifyProductQuery($id: String!) {
     productList: getProductList(where: { shopifyProductId: { eq: $id } }, size: 1) {
       items {
+        productComponent
+        hideReviews
+        hideRelatedProducts
         shopifyProduct {
           id
           title

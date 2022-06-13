@@ -12,6 +12,7 @@ import {
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
 import ReviewsFromReviewsIo from 'features/ProductPage/Reviews/ReviewsFromReviewsIo';
+import { ProductPageProductComponent } from 'features/ProductPage/types';
 import RelatedProductsFromShopify from 'features/RelatedProducts/RelatedProductsFromShopify';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
@@ -22,14 +23,25 @@ import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
-type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'>;
+type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
+  hideReviews: boolean;
+  hideRelatedProducts: boolean;
+  productComponent: ProductPageProductComponent;
+};
 
 const breadcrumbs = [
   { id: 1, name: 'Men', href: '#' },
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage: NextPage<ProductPageProps> = ({ id, name, description }) => {
+const ProductPage: NextPage<ProductPageProps> = ({
+  id,
+  name,
+  description,
+  hideReviews,
+  hideRelatedProducts,
+  productComponent
+}) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
@@ -46,9 +58,9 @@ const ProductPage: NextPage<ProductPageProps> = ({ id, name, description }) => {
     <Layout title={name} description={description}>
       <div className="bg-white">
         <Wrapper>
-          <ProductFromShopify component="withImageGrid" productId={id} breadcrumbs={breadcrumbs} />
-          <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />
-          <RelatedProductsFromShopify collection="related-products" />
+          <ProductFromShopify component={productComponent} productId={id} breadcrumbs={breadcrumbs} />
+          {!hideReviews && <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />}
+          {!hideRelatedProducts && <RelatedProductsFromShopify collection="related-products" />}
         </Wrapper>
       </div>
     </Layout>
@@ -75,13 +87,17 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     }
   });
 
-  const product = shopifyProductToProduct(data.productList.items[0].shopifyProduct);
+  const item = data.productList.items[0];
+  const product = shopifyProductToProduct(item.shopifyProduct);
 
   return addApolloQueryCache(apolloClient, {
     props: {
       id: product.id,
       name: product.name,
-      description: product.description
+      description: product.description,
+      hideReviews: item.hideReviews ?? false,
+      hideRelatedProducts: item.hideRelatedProducts ?? false,
+      productComponent: item.productComponent ?? 'withImageGrid'
     }
   });
 };

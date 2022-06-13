@@ -23,6 +23,14 @@ export type ProductPageShopifyProduct = Pick<
   | 'variants'
 >;
 
+export type ProductPageProductComponent = 'withImageGrid' | 'withExpandableDetails';
+
+export type ProductPageProps = {
+  productComponent?: ProductPageProductComponent;
+  hideReviews?: boolean;
+  hideRelatedProducts?: boolean;
+};
+
 export type ProductPageProduct = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;
 export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
 export type ProductPageReviewsReviewList = ReviewList;
