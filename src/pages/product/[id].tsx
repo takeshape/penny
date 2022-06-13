@@ -52,16 +52,24 @@ const ProductPage: NextPage<ProductPageProps> = ({ id, name, description, option
 
   return (
     <Layout title={name} description={description}>
-      <div className="bg-white">
-        <Wrapper>
-          <ProductFromShopify component={productComponent} productId={id} breadcrumbs={breadcrumbs} />
-          <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
-            {showDetails && <DetailsFromTakeshape productId={id} />}
-            {showPolicies && <PoliciesFromTakeshape productId={id} />}
-          </div>
-          {!hideReviews && <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />}
-          {!hideRelatedProducts && <RelatedProductsFromShopify collection="related-products" />}
-        </Wrapper>
+      <div className="bg-gray-50">
+        <div className="bg-white">
+          <Wrapper>
+            <ProductFromShopify component={productComponent} productId={id} breadcrumbs={breadcrumbs} />
+          </Wrapper>
+        </div>
+
+        <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 bg-gray-50">
+          {showDetails && <DetailsFromTakeshape productId={id} />}
+          {showPolicies && <PoliciesFromTakeshape productId={id} />}
+        </div>
+
+        <div className="bg-white">
+          <Wrapper>
+            {!hideReviews && <ReviewsFromReviewsIo sku={shopifyGidToId(id)} />}
+            {!hideRelatedProducts && <RelatedProductsFromShopify collection="related-products" />}
+          </Wrapper>
+        </div>
       </div>
     </Layout>
   );
@@ -86,13 +94,6 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       sku: id
     }
   });
-
-  // await apolloClient.query<ProductPageTakeshapePoliciesResponse, ProductPageTakeshapePoliciesArgs>({
-  //   query: ProductPageTakeshapePoliciesQuery,
-  //   variables: {
-  //     productId: shopifyIdToGid(id)
-  //   }
-  // });
 
   const item = data.productList.items[0];
   const product = shopifyProductToProduct(item.shopifyProduct);
