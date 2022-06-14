@@ -114,14 +114,14 @@ export const productOptions = {
     'heather gray': { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400' }
   },
   size: {
-    xxs: { name: 'XXS' },
-    xs: { name: 'XS' },
-    s: { name: 'S' },
-    m: { name: 'M' },
-    l: { name: 'L' },
-    xl: { name: 'XL' },
-    '2xl': { name: '2XL' },
-    '3xl': { name: '3XL' }
+    xxs: { name: 'XXS', description: 'The very smallest size' },
+    xs: { name: 'XS', description: 'A fairly small size' },
+    s: { name: 'S', description: 'A small size' },
+    m: { name: 'M', description: 'Just about right for everybody' },
+    l: { name: 'L', description: 'Getting bigger' },
+    xl: { name: 'XL', description: 'And bigger...' },
+    '2xl': { name: '2XL', description: 'Whoa, so big' },
+    '3xl': { name: '3XL', description: 'No way!' }
   }
 };
 

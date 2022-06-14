@@ -1,4 +1,3 @@
-import { RadioGroup } from '@headlessui/react';
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/solid';
 import Breadcrumbs, { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import NextImage from 'components/NextImage';
@@ -8,9 +7,9 @@ import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
-import classNames from 'utils/classNames';
 import { getVariant } from 'utils/products';
 import { formatPrice } from 'utils/text';
+import ProductSizeSelectWithDescription from '../../../../components/Product/ProductSizeSelectWithDescription';
 
 export interface ProductWithImageProps {
   product: ProductType;
@@ -115,44 +114,12 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
           <form>
             <div className="sm:flex sm:justify-between">
               {/* Size selector */}
-              <RadioGroup value={selectedSize} onChange={setSelectedSize}>
-                <RadioGroup.Label className="block text-sm font-medium text-gray-700">Size</RadioGroup.Label>
-                <div className="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {sizes.values.map((size) => (
-                    <RadioGroup.Option
-                      as="div"
-                      key={size.value}
-                      value={size.value}
-                      disabled={!size.hasStock}
-                      className={({ active }) =>
-                        classNames(
-                          active ? 'ring-2 ring-indigo-500' : '',
-                          'relative block border border-gray-300 rounded-lg p-4 cursor-pointer focus:outline-none'
-                        )
-                      }
-                    >
-                      {({ active, checked }) => (
-                        <>
-                          <RadioGroup.Label as="p" className="text-base font-medium text-gray-900">
-                            {size.name}
-                          </RadioGroup.Label>
-                          <RadioGroup.Description as="p" className="mt-1 text-sm text-gray-500">
-                            {(size.description as string) ?? ''}
-                          </RadioGroup.Description>
-                          <div
-                            className={classNames(
-                              active ? 'border' : 'border-2',
-                              checked ? 'border-indigo-500' : 'border-transparent',
-                              'absolute -inset-px rounded-lg pointer-events-none'
-                            )}
-                            aria-hidden="true"
-                          />
-                        </>
-                      )}
-                    </RadioGroup.Option>
-                  ))}
-                </div>
-              </RadioGroup>
+              <ProductSizeSelectWithDescription
+                label="Size"
+                value={selectedSize}
+                onChange={setSelectedSize}
+                options={sizes.values}
+              />
             </div>
             <div className="mt-4">
               <a href="#" className="group inline-flex text-sm text-gray-500 hover:text-gray-700">
