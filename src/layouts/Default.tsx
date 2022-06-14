@@ -3,7 +3,7 @@ import CartProvider from 'features/Cart/CartProvider';
 import Footer from 'features/Footer/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notification from 'features/Notification/Notification';
-import QuickAddFromShopify from 'features/QuickAdd/QuickAddFromShopify';
+import QuickAddWithData from 'features/QuickAdd/QuickAddWithData';
 import SearchModal from 'features/Search/Modal/Modal';
 import Seo from 'features/Seo';
 import { NextSeoProps } from 'next-seo';
@@ -23,7 +23,7 @@ export const Layout = ({ children, ...seo }: PropsWithChildren<NextSeoProps>) =>
         </main>
 
         <Cart />
-        <QuickAddFromShopify />
+        <QuickAddWithData />
         <Notification />
 
         <Footer />

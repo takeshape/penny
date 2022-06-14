@@ -7,7 +7,7 @@ import { QuickAddArgs, QuickAddQuery, QuickAddResponse } from './queries';
 import QuickAdd from './QuickAdd';
 import { quickAddAtom } from './store';
 
-export const QuickAddFromShopify = () => {
+export const QuickAddWithData = () => {
   const quickAdd = useAtomValue(quickAddAtom);
   const resetQuickAdd = useResetAtom(quickAddAtom);
 
@@ -32,4 +32,4 @@ export const QuickAddFromShopify = () => {
   );
 };
 
-export default QuickAddFromShopify;
+export default QuickAddWithData;

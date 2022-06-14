@@ -8,11 +8,11 @@ import {
 import RelatedProducts from './RelatedProducts';
 import { RelatedProductsProduct } from './types';
 
-export interface RelatedProductsFromShopifyProps {
+export interface RelatedProductsWithDataProps {
   collection?: string;
 }
 
-export const RelatedProductsFromShopify = ({ collection }: RelatedProductsFromShopifyProps) => {
+export const RelatedProductsWithData = ({ collection }: RelatedProductsWithDataProps) => {
   const handle = collection ?? 'related-products';
   const { data } = useQuery<RelatedProductsShopifyCollectionResponse, RelatedProductsShopifyCollectionArgs>(
     RelatedProductsShopifyCollectionQuery,
@@ -26,4 +26,4 @@ export const RelatedProductsFromShopify = ({ collection }: RelatedProductsFromSh
   return <RelatedProducts products={products} />;
 };
 
-export default RelatedProductsFromShopify;
+export default RelatedProductsWithData;

@@ -9,11 +9,11 @@ import {
 import { ProductPageReviewsReview } from '../types';
 import ProductPageReviews, { ProductPageReviewsProps } from './Reviews';
 
-export type ReviewsFromReviewsIoProps = {
+export type ReviewsWithDataProps = {
   sku: string;
 } & Omit<ProductPageReviewsProps, 'reviews'>;
 
-export const ReviewsFromReviewsIo = ({ sku, ...props }: ReviewsFromReviewsIoProps) => {
+export const ReviewsWithData = ({ sku, ...props }: ReviewsWithDataProps) => {
   const [loadReviews, { data, loading, error }] = useLazyQuery<
     ProductPageReviewsIoReviewsResponse,
     ProductPageReviewsIoReviewsArgs
@@ -37,4 +37,4 @@ export const ReviewsFromReviewsIo = ({ sku, ...props }: ReviewsFromReviewsIoProp
   return <ProductPageReviews reviews={reviews} showRollup={false} {...props} />;
 };
 
-export default ReviewsFromReviewsIo;
+export default ReviewsWithData;

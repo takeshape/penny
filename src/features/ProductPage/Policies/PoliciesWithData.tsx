@@ -6,14 +6,14 @@ import {
   ProductPageTakeshapePoliciesQuery,
   ProductPageTakeshapePoliciesResponse
 } from '../queries';
-import Policies, { ProductPagePoliciesProps } from './Policies';
+import Policies, { PoliciesProps } from './Policies';
 import PoliciesLoading from './PoliciesLoading';
 
-export type ProductPagePoliciesFromTakeshapeProps = {
+export type PoliciesWithDataProps = {
   productId: string;
-} & Omit<ProductPagePoliciesProps, 'policies'>;
+} & Omit<PoliciesProps, 'policies'>;
 
-export const ProductPagePoliciesFromTakeshape = ({ productId, ...props }: ProductPagePoliciesFromTakeshapeProps) => {
+export const PoliciesWithData = ({ productId, ...props }: PoliciesWithDataProps) => {
   const [loadPolicies, { data, loading, error }] = useLazyQuery<
     ProductPageTakeshapePoliciesResponse,
     ProductPageTakeshapePoliciesArgs
@@ -38,4 +38,4 @@ export const ProductPagePoliciesFromTakeshape = ({ productId, ...props }: Produc
   return <Policies policies={policies} {...props} />;
 };
 
-export default ProductPagePoliciesFromTakeshape;
+export default PoliciesWithData;

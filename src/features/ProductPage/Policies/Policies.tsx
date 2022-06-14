@@ -1,10 +1,10 @@
 import { ProductPagePolicies as ProductPagePoliciesType } from '../types';
 
-export interface ProductPagePoliciesProps {
+export interface PoliciesProps {
   policies: ProductPagePoliciesType;
 }
 
-export const ProductPagePolicies = ({ policies }: ProductPagePoliciesProps) => {
+export const Policies = ({ policies }: PoliciesProps) => {
   return (
     <section aria-labelledby="policy-heading" className="mt-16 lg:mt-24">
       <h2 id="policy-heading" className="sr-only">
@@ -24,4 +24,4 @@ export const ProductPagePolicies = ({ policies }: ProductPagePoliciesProps) => {
   );
 };
 
-export default ProductPagePolicies;
+export default Policies;

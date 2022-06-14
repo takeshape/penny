@@ -13,11 +13,11 @@ import {
 import Product, { ProductProps } from './Product';
 import ProductLoading from './ProductLoading';
 
-export type ProductFromShopifyProps = {
+export type ProductWithDataProps = {
   productId: string;
 } & Omit<ProductProps, 'product' | 'reviews'>;
 
-export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyProps) => {
+export const ProductWithData = ({ productId, ...props }: ProductWithDataProps) => {
   const [loadProduct, { data: productData, loading: productLoading, error: productError }] = useLazyQuery<
     ProductPageShopifyProductReponse,
     ProductPageShopifyProductArgs
@@ -61,4 +61,4 @@ export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyPr
   );
 };
 
-export default ProductFromShopify;
+export default ProductWithData;

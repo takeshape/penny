@@ -9,11 +9,11 @@ import {
 import Details, { DetailsProps } from './Details';
 import DetailsLoading from './DetailsLoading';
 
-export type DetailsFromTakeshapeProps = {
+export type DetailsWithDataProps = {
   productId: string;
 } & Omit<DetailsProps, 'details'>;
 
-export const DetailsFromTakeshape = ({ productId, ...props }: DetailsFromTakeshapeProps) => {
+export const DetailsWithData = ({ productId, ...props }: DetailsWithDataProps) => {
   const [loadDetails, { data, loading, error }] = useLazyQuery<
     ProductPageTakeshapeDetailsResponse,
     ProductPageTakeshapeDetailsArgs
@@ -38,4 +38,4 @@ export const DetailsFromTakeshape = ({ productId, ...props }: DetailsFromTakesha
   return <Details details={details} {...props} />;
 };
 
-export default DetailsFromTakeshape;
+export default DetailsWithData;
