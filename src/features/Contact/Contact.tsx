@@ -1,12 +1,14 @@
 import { Switch } from '@headlessui/react';
 import Button from 'components/Button/Button';
+import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormTextarea from 'components/Form/Textarea/Textarea';
 import NextLink from 'components/NextLink';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
+import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 
 const BackgroundDots = () => (
   <>
@@ -58,11 +60,11 @@ const BackgroundDots = () => (
 );
 
 export interface ContactForm {
-  'first-name': string;
-  'last-name': string;
+  firstName: string;
+  lastName: string;
   company: string;
   email: string;
-  'phone-number': string;
+  phoneNumber: string;
   message: string;
 }
 
@@ -72,13 +74,28 @@ export interface ContactProps {
     secondary: string;
     button: string;
   };
-  onSubmit: (data: ContactForm) => void;
+  onSubmit: (data: ContactForm, recaptchaToken: string) => void;
 }
 
 const Contact = (props: React.PropsWithChildren<ContactProps>) => {
   const { text, onSubmit } = props;
   const [agreed, setAgreed] = useState(false);
-  const { handleSubmit, formState, control } = useForm<ContactForm>({ mode: 'onBlur' });
+  const { handleSubmit, control } = useForm<ContactForm>({ mode: 'onBlur' });
+
+  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
+
+  const handleFormSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      executeRecaptcha((recaptchaToken) => {
+        handleSubmit(async (contactForm: ContactForm) => {
+          await onSubmit(contactForm, recaptchaToken);
+        })();
+      });
+    },
+    [executeRecaptcha, handleSubmit, onSubmit]
+  );
+
   return (
     <div className="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
       <div className="relative max-w-xl mx-auto">
@@ -92,12 +109,12 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             action="#"
             method="POST"
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleFormSubmit}
           >
             <FormInput
               control={control}
-              name="first-name"
-              id="first-name"
+              name="firstName"
+              id="firstName"
               label="First name"
               autoComplete="given-name"
               type="text"
@@ -105,8 +122,8 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             />
             <FormInput
               control={control}
-              name="last-name"
-              id="last-name"
+              name="lastName"
+              id="lastName"
               label="Last name"
               autoComplete="family-name"
               type="text"
@@ -142,8 +159,8 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             <FormPhoneInput
               className="sm:col-span-2"
               control={control}
-              name="phone-number"
-              id="phone-number"
+              name="phoneNumber"
+              id="phoneNumber"
               label="Phone Number"
               autoComplete="tel"
               placeholder="+1 (555) 987-6543"
@@ -199,6 +216,7 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 </div>
               </div>
             </div>
+            <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
             <div className="sm:col-span-2">
               <Button type="submit" disabled={!agreed} className="w-full" color="primary" size="large">
                 {text.button}
