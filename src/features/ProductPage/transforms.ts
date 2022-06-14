@@ -53,9 +53,9 @@ export function getReviewList(response: ProductPageReviewsIoReviewsResponse): Pr
 
   return {
     stats: getStats(stats),
-    currentPage: reviews.current_page ?? null,
-    totalPages: reviews.total ?? null,
-    perPage: reviews.per_page ?? null,
+    currentPage: reviews?.current_page ?? null,
+    totalPages: reviews?.total ?? null,
+    perPage: reviews?.per_page ?? null,
     data: reviews?.data?.map(getReview) ?? []
   };
 }

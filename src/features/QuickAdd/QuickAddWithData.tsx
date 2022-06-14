@@ -21,7 +21,7 @@ export const QuickAddWithData = () => {
         }
       });
     }
-  }, [loading, loadProduct, quickAdd.productId, error]);
+  }, [loading, loadProduct, quickAdd?.productId, error]);
 
   const product = data && getProduct(data);
 

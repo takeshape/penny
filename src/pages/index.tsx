@@ -60,7 +60,7 @@ export async function getStaticProps() {
       }
     });
 
-    products = getProductList(data);
+    products = getProductList(data).map((product => ({product})));
   } catch (err) {
     logger.error(err);
     error = formatError(err);

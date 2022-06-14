@@ -29,8 +29,8 @@ export const ReviewsWithData = ({ sku, ...props }: ReviewsWithDataProps) => {
     }
   }, [sku, loadReviews, loading, data, error]);
 
-  const reviews = data && getReviewList(data);
-  reviews.data = reviews.data.length ? reviews.data : (Array(1).fill(undefined) as ProductPageReviewsReview[]);
+  let reviews = getReviewList(data);
+  reviews.data = data ? reviews.data : (Array(1).fill(undefined) as ProductPageReviewsReview[]);
 
   // Reviews.io does not support the rollup data.
   // TODO We can use an indexed query and ElasticSearch facets once we expose
