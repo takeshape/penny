@@ -1,6 +1,6 @@
 import { RelatedProductsShopifyCollectionResponse } from './queries';
 
-export const relatedProductsShopifyCollectionResponse: RelatedProductsShopifyCollectionResponse = {
+export const relatedProductsResponse: RelatedProductsShopifyCollectionResponse = {
   collection: {
     products: {
       edges: [

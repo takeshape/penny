@@ -14,20 +14,20 @@ export type ProductPagePoliciesFromTakeshapeProps = {
 } & Omit<ProductPagePoliciesProps, 'policies'>;
 
 export const ProductPagePoliciesFromTakeshape = ({ productId, ...props }: ProductPagePoliciesFromTakeshapeProps) => {
-  const [loadPolicies, { data, loading }] = useLazyQuery<
+  const [loadPolicies, { data, loading, error }] = useLazyQuery<
     ProductPageTakeshapePoliciesResponse,
     ProductPageTakeshapePoliciesArgs
   >(ProductPageTakeshapePoliciesQuery);
 
   useEffect(() => {
-    if (productId && !loading) {
+    if (productId && !data && !loading && !error) {
       loadPolicies({
         variables: {
           productId
         }
       });
     }
-  }, [loading, loadPolicies, productId]);
+  }, [data, loading, error, loadPolicies, productId]);
 
   const policies = data?.productList.items[0] ? takeshapeItemToProductPagePolicies(data?.productList.items[0]) : null;
 

@@ -18,33 +18,35 @@ export type ProductFromShopifyProps = {
 } & Omit<ProductProps, 'product' | 'reviews'>;
 
 export const ProductFromShopify = ({ productId, ...props }: ProductFromShopifyProps) => {
-  const [loadProduct, { data: productData, loading: productLoading }] = useLazyQuery<
+  const [loadProduct, { data: productData, loading: productLoading, error: productError }] = useLazyQuery<
     ProductPageShopifyProductReponse,
     ProductPageShopifyProductArgs
   >(ProductPageShopifyProductQuery);
 
-  const [loadReviews, { data: reviewsData, loading: reviewsLoading }] = useLazyQuery<
+  const [loadReviews, { data: reviewsData, loading: reviewsLoading, error: reviewsError }] = useLazyQuery<
     ProductPageReviewsIoReviewsResponse,
     ProductPageReviewsIoReviewsArgs
   >(ProductPageReviewsIoReviewsQuery);
 
   useEffect(() => {
-    if (productId && !productLoading) {
+    if (productId && !productData && !productLoading && !productError) {
       loadProduct({
         variables: {
           id: productId
         }
       });
     }
+  }, [productId, loadProduct, productLoading, productData, productError]);
 
-    if (productId && !reviewsLoading) {
+  useEffect(() => {
+    if (productId && !reviewsData && !reviewsLoading && !reviewsError) {
       loadReviews({
         variables: {
           sku: shopifyGidToId(productId)
         }
       });
     }
-  }, [productLoading, loadProduct, productId, reviewsLoading, loadReviews]);
+  }, [productId, loadReviews, reviewsLoading, reviewsError, reviewsData]);
 
   if (!productData) {
     return <ProductLoading />;

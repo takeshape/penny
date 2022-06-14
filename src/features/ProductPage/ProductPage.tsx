@@ -22,7 +22,7 @@ const breadcrumbs = [
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage = ({ productId, sku, component, options }: ProductPageProps) => {
+export const ProductPage = ({ productId, sku, component, options }: ProductPageProps) => {
   const { showDetails, showPolicies, showReviews, showRelatedProducts } = options;
 
   return (

@@ -14,20 +14,20 @@ export type ReviewsFromReviewsIoProps = {
 } & Omit<ProductPageReviewsProps, 'reviews'>;
 
 export const ReviewsFromReviewsIo = ({ sku, ...props }: ReviewsFromReviewsIoProps) => {
-  const [loadReviews, { data, loading }] = useLazyQuery<
+  const [loadReviews, { data, loading, error }] = useLazyQuery<
     ProductPageReviewsIoReviewsResponse,
     ProductPageReviewsIoReviewsArgs
   >(ProductPageReviewsIoReviewsQuery);
 
   useEffect(() => {
-    if (sku && !loading) {
+    if (sku && !data && !loading && !error) {
       loadReviews({
         variables: {
           sku
         }
       });
     }
-  }, [loading, loadReviews, sku]);
+  }, [sku, loadReviews, loading, data, error]);
 
   const reviews = reviewsIoProductReviewsToReviewList(data?.reviews);
   reviews.data = reviews.data.length ? reviews.data : (Array(1).fill(undefined) as ProductPageReviewsReview[]);
