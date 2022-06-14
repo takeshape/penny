@@ -1,9 +1,5 @@
-import { Review, ReviewHighlights, ReviewList, ReviewStats } from 'types/review';
-import {
-  ReviewsIo_ListProductReviewsResponse,
-  ReviewsIo_ListProductReviewsResponseStatsProperty,
-  ReviewsIo_ProductReview
-} from 'types/takeshape';
+import { Review, ReviewStats } from 'types/review';
+import { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
 
 export function getReview(review: ReviewsIo_ProductReview): Review {
   const { product_review_id, rating, title, review: body, date_created, timeago, reviewer } = review;
@@ -30,26 +26,5 @@ export function getStats(stats?: ReviewsIo_ListProductReviewsResponseStatsProper
   return {
     average: stats?.average ?? null,
     count: stats?.count ?? 0
-  };
-}
-
-export function reviewsIoProductReviewsToReviewList(reviews?: ReviewsIo_ListProductReviewsResponse): ReviewList {
-  const { total, per_page, current_page, data } = reviews?.reviews ?? {};
-
-  return {
-    stats: getStats(reviews?.stats),
-    currentPage: current_page ?? null,
-    totalPages: total ?? null,
-    perPage: per_page ?? null,
-    data: data?.map(getReview) ?? []
-  };
-}
-
-export function reviewsIoProductReviewsToReviewHighlight(
-  reviews?: ReviewsIo_ListProductReviewsResponse
-): ReviewHighlights {
-  return {
-    stats: getStats(reviews?.stats),
-    featured: reviews?.reviews?.data?.slice(0, 5).map(getReview) ?? []
   };
 }
