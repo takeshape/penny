@@ -3,7 +3,8 @@ import {
   ProductPageReviewsIoReviews,
   ProductPageShopifyProduct,
   ProductPageTakeshapeItem,
-  ProductPageTakeshapeItemDetails
+  ProductPageTakeshapeItemDetails,
+  ProductPageTakeshapeItemPolicies
 } from './types';
 
 export type ProductPageShopifyProductIdListResponse = {
@@ -241,7 +242,7 @@ export type ProductPageTakeshapePoliciesArgs = {
 
 export type ProductPageTakeshapePoliciesResponse = {
   productList: {
-    items: Array<ProductPageTakeshapeItemDetails>;
+    items: Array<ProductPageTakeshapeItemPolicies>;
   };
 };
 

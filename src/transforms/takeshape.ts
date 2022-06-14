@@ -8,11 +8,11 @@ import {
   ProductPageTakeshapeItem
 } from 'features/ProductPage/types';
 
-function buildImageUrl(assetPath: string) {
+export function buildImageUrl(assetPath: string) {
   return `https://images.takeshape.io/${assetPath}`;
 }
 
-function getProductComponent(productComponent?: string): ProductPageProductComponent {
+export function getProductComponent(productComponent?: string): ProductPageProductComponent {
   switch (productComponent) {
     case 'withImage':
       return 'withImage';

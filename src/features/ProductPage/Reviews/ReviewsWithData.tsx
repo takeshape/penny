@@ -1,11 +1,11 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { reviewsIoProductReviewsToReviewList } from 'transforms/reviewsIo';
 import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,
   ProductPageReviewsIoReviewsResponse
 } from '../queries';
+import { getReviewList } from '../transforms';
 import { ProductPageReviewsReview } from '../types';
 import ProductPageReviews, { ProductPageReviewsProps } from './Reviews';
 
@@ -29,7 +29,7 @@ export const ReviewsWithData = ({ sku, ...props }: ReviewsWithDataProps) => {
     }
   }, [sku, loadReviews, loading, data, error]);
 
-  const reviews = reviewsIoProductReviewsToReviewList(data?.reviews);
+  const reviews = data && getReviewList(data);
   reviews.data = reviews.data.length ? reviews.data : (Array(1).fill(undefined) as ProductPageReviewsReview[]);
 
   // Reviews.io does not support the rollup data.

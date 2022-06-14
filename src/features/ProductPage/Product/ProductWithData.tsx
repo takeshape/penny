@@ -1,7 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
-import { shopifyGidToId, shopifyProductToProduct } from 'transforms/shopify';
+import { shopifyGidToId } from 'transforms/shopify';
 import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,
@@ -10,6 +9,7 @@ import {
   ProductPageShopifyProductQuery,
   ProductPageShopifyProductReponse
 } from '../queries';
+import { getProduct, getReviewHighlights } from '../transforms';
 import Product, { ProductProps } from './Product';
 import ProductLoading from './ProductLoading';
 
@@ -48,17 +48,15 @@ export const ProductWithData = ({ productId, ...props }: ProductWithDataProps) =
     }
   }, [productId, loadReviews, reviewsLoading, reviewsError, reviewsData]);
 
-  if (!productData) {
+  const product = productData && getProduct(productData);
+  const reviews = reviewsData && getReviewHighlights(reviewsData);
+
+  // Reviews are optional in the product
+  if (!product) {
     return <ProductLoading />;
   }
 
-  return (
-    <Product
-      product={shopifyProductToProduct(productData.productList.items[0].shopifyProduct)}
-      reviews={reviewsData && reviewsIoProductReviewsToReviewHighlight(reviewsData.reviews)}
-      {...props}
-    />
-  );
+  return <Product product={product} reviews={reviews} {...props} />;
 };
 
 export default ProductWithData;

@@ -5,7 +5,7 @@ import {
   RelatedProductsShopifyCollectionQuery,
   RelatedProductsShopifyCollectionResponse
 } from './queries';
-import RelatedProducts from './RelatedProducts';
+import { RelatedProducts } from './RelatedProducts';
 import { RelatedProductsProduct } from './types';
 
 export interface RelatedProductsWithDataProps {
@@ -25,5 +25,3 @@ export const RelatedProductsWithData = ({ collection }: RelatedProductsWithDataP
 
   return <RelatedProducts products={products} />;
 };
-
-export default RelatedProductsWithData;

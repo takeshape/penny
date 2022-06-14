@@ -5,7 +5,7 @@ import {
   ReviewsIo_ProductReview
 } from 'types/takeshape';
 
-function getReview(review: ReviewsIo_ProductReview): Review {
+export function getReview(review: ReviewsIo_ProductReview): Review {
   const { product_review_id, rating, title, review: body, date_created, timeago, reviewer } = review;
 
   return {
@@ -26,7 +26,7 @@ function getReview(review: ReviewsIo_ProductReview): Review {
   };
 }
 
-function getStats(stats?: ReviewsIo_ListProductReviewsResponseStatsProperty): ReviewStats {
+export function getStats(stats?: ReviewsIo_ListProductReviewsResponseStatsProperty): ReviewStats {
   return {
     average: stats?.average ?? null,
     count: stats?.count ?? 0

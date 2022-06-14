@@ -1,4 +1,4 @@
-const RelatedProductsListItemLoading = () => {
+export const RelatedProductsListItemLoading = () => {
   return (
     <div className="animate-pulse">
       <div>
@@ -15,5 +15,3 @@ const RelatedProductsListItemLoading = () => {
     </div>
   );
 };
-
-export default RelatedProductsListItemLoading;

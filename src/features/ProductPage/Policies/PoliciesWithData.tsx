@@ -1,11 +1,11 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { takeshapeItemToProductPagePolicies } from 'transforms/takeshape';
 import {
   ProductPageTakeshapePoliciesArgs,
   ProductPageTakeshapePoliciesQuery,
   ProductPageTakeshapePoliciesResponse
 } from '../queries';
+import { getPolicies } from '../transforms';
 import Policies, { PoliciesProps } from './Policies';
 import PoliciesLoading from './PoliciesLoading';
 
@@ -29,7 +29,7 @@ export const PoliciesWithData = ({ productId, ...props }: PoliciesWithDataProps)
     }
   }, [data, loading, error, loadPolicies, productId]);
 
-  const policies = data?.productList.items[0] ? takeshapeItemToProductPagePolicies(data?.productList.items[0]) : null;
+  const policies = data && getPolicies(data);
 
   if (!policies) {
     return <PoliciesLoading />;

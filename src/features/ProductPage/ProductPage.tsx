@@ -2,7 +2,8 @@ import Wrapper from 'components/Wrapper/Content';
 import DetailsWithData, { DetailsWithDataProps } from 'features/ProductPage/Details/DetailsWithData';
 import PoliciesFromTakeshape from 'features/ProductPage/Policies/PoliciesWithData';
 import ReviewsWithData, { ReviewsWithDataProps } from 'features/ProductPage/Reviews/ReviewsWithData';
-import RelatedProductsWithData, {
+import {
+  RelatedProductsWithData,
   RelatedProductsWithDataProps
 } from 'features/RelatedProducts/RelatedProductsWithData';
 import { PoliciesWithDataProps } from './Policies/PoliciesWithData';

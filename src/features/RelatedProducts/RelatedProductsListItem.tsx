@@ -10,7 +10,7 @@ export interface RelatedProductsListItemProps {
   product: RelatedProductsProduct;
 }
 
-const RelatedProductsListItem = ({ product }: RelatedProductsListItemProps) => {
+export const RelatedProductsListItem = ({ product }: RelatedProductsListItemProps) => {
   const quickAdd = useSetAtom(quickAddAtom);
 
   const handleAddToCart = useCallback(
@@ -59,5 +59,3 @@ const RelatedProductsListItem = ({ product }: RelatedProductsListItemProps) => {
     </>
   );
 };
-
-export default RelatedProductsListItem;

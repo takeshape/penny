@@ -104,7 +104,7 @@ function getSubscriptionInterval({
   }
 }
 
-function createImageGetter(defaultAltText: string) {
+export function createImageGetter(defaultAltText: string) {
   return (shopifyImage?: Shopify_Image): ProductImage => {
     const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
     return {
@@ -116,7 +116,7 @@ function createImageGetter(defaultAltText: string) {
   };
 }
 
-function getPriceOptions(
+export function getPriceOptions(
   shopifyProduct: Pick<Shopify_Product, 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'>,
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
@@ -179,7 +179,7 @@ function getPriceOptions(
   return prices;
 }
 
-function getVariant(
+export function getVariant(
   shopifyProduct: Pick<
     Shopify_Product,
     'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
@@ -204,7 +204,7 @@ function getVariant(
   };
 }
 
-function getVariants(
+export function getVariants(
   shopifyProduct: Pick<
     Shopify_Product,
     'variants' | 'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
@@ -213,21 +213,21 @@ function getVariants(
   return shopifyProduct.variants.edges.map(({ node }) => getVariant(shopifyProduct, node));
 }
 
-function getPrice(price: Shopify_MoneyV2): ProductPrice {
+export function getPrice(price: Shopify_MoneyV2): ProductPrice {
   return {
     amount: Number(price.amount) * 100,
     currencyCode: price.currencyCode.toLowerCase() as ProductPriceCurrencyCode
   };
 }
 
-function getSeo(shopifyProduct: Pick<Shopify_Product, 'seo' | 'title' | 'description'>): ProductSeo {
+export function getSeo(shopifyProduct: Pick<Shopify_Product, 'seo' | 'title' | 'description'>): ProductSeo {
   return {
     title: shopifyProduct.seo?.title ?? shopifyProduct.title,
     description: shopifyProduct.seo?.description ?? shopifyProduct.description
   };
 }
 
-function getOptions(options: Shopify_ProductOption[], variants?: ProductVariant[]) {
+export function getOptions(options: Shopify_ProductOption[], variants?: ProductVariant[]) {
   return (
     options?.map(({ name, position, id, values }) => {
       return {

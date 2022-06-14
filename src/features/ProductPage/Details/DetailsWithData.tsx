@@ -1,11 +1,11 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { takeshapeItemToProductPageDetails } from 'transforms/takeshape';
 import {
   ProductPageTakeshapeDetailsArgs,
   ProductPageTakeshapeDetailsQuery,
   ProductPageTakeshapeDetailsResponse
 } from '../queries';
+import { getDetails } from '../transforms';
 import Details, { DetailsProps } from './Details';
 import DetailsLoading from './DetailsLoading';
 
@@ -29,7 +29,7 @@ export const DetailsWithData = ({ productId, ...props }: DetailsWithDataProps) =
     }
   }, [loading, loadDetails, productId, data, error]);
 
-  const details = data?.productList?.items?.[0] ? takeshapeItemToProductPageDetails(data?.productList.items[0]) : null;
+  const details = data && getDetails(data);
 
   if (!details) {
     return <DetailsLoading />;

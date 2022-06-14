@@ -1,5 +1,5 @@
-import RelatedProductsListItem from './RelatedProductsListItem';
-import RelatedProductsListItemLoading from './RelatedProductsListItemLoading';
+import { RelatedProductsListItem } from './RelatedProductsListItem';
+import { RelatedProductsListItemLoading } from './RelatedProductsListItemLoading';
 import { RelatedProductsProduct } from './types';
 
 export interface RelatedProductsProps {
@@ -24,5 +24,3 @@ export const RelatedProducts = ({ products }: RelatedProductsProps) => {
     </section>
   );
 };
-
-export default RelatedProducts;
