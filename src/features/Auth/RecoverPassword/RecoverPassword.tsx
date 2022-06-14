@@ -26,6 +26,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
   const onSubmit = useCallback(
     async ({ email }: AuthRecoverPasswordForm) => {
+      // @ts-expect-error TODO Remove this after captcha PR merges
       await setRecoverPasswordPayload({ variables: { email } });
     },
     [setRecoverPasswordPayload]
