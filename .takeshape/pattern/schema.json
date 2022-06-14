@@ -1086,7 +1086,15 @@
               ]
             }
           }
-        ]
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "items",
+              "mapping": "$finalResolver"
+            }
+          ]
+        }
       },
       "summary": "Add Members to a List",
       "args": {
@@ -1105,14 +1113,6 @@
         "required": [
           "list_id",
           "recaptchaToken"
-        ]
-      },
-      "results": {
-        "ops": [
-          {
-            "path": "items",
-            "mapping": "$finalResolver"
-          }
         ]
       }
     },
@@ -1552,19 +1552,19 @@
               ]
             }
           }
-        ]
-      },
-      "results": {
-        "ops": [
-          {
-            "path": "$",
-            "mapping": "$finalResolver"
-          },
-          {
-            "path": "customer.id",
-            "mapping": "$finalResolver.customer.admin_graphql_api_id"
-          }
-        ]
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver"
+            },
+            {
+              "path": "customer.id",
+              "mapping": "$finalResolver.customer.admin_graphql_api_id"
+            }
+          ]
+        }
       },
       "args": {
         "type": "object",
