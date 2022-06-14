@@ -83,5 +83,3 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
     </div>
   );
 };
-
-export default ImageGallery;

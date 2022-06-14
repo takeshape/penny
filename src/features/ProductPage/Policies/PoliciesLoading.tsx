@@ -8,5 +8,3 @@ export const PoliciesLoading = () => (
     </div>
   </section>
 );
-
-export default PoliciesLoading;

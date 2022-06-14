@@ -1,13 +1,13 @@
 import Wrapper from 'components/Wrapper/Content';
-import DetailsWithData, { DetailsWithDataProps } from 'features/ProductPage/Details/DetailsWithData';
-import PoliciesFromTakeshape from 'features/ProductPage/Policies/PoliciesWithData';
-import ReviewsWithData, { ReviewsWithDataProps } from 'features/ProductPage/Reviews/ReviewsWithData';
+import { DetailsWithData, DetailsWithDataProps } from 'features/ProductPage/Details/DetailsWithData';
+import { PoliciesWithData } from 'features/ProductPage/Policies/PoliciesWithData';
 import {
   RelatedProductsWithData,
   RelatedProductsWithDataProps
 } from 'features/RelatedProducts/RelatedProductsWithData';
 import { PoliciesWithDataProps } from './Policies/PoliciesWithData';
-import ProductWithData, { ProductWithDataProps } from './Product/ProductWithData';
+import { ProductWithData, ProductWithDataProps } from './Product/ProductWithData';
+import { ReviewsWithData, ReviewsWithDataProps } from './Reviews/ReviewsWithData';
 import { ProductPageOptions } from './types';
 
 export type ProductPageProps = ProductWithDataProps &
@@ -36,7 +36,7 @@ export const ProductPage = ({ productId, sku, component, options }: ProductPageP
 
       <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 bg-gray-50">
         {showDetails && <DetailsWithData productId={productId} />}
-        {showPolicies && <PoliciesFromTakeshape productId={productId} />}
+        {showPolicies && <PoliciesWithData productId={productId} />}
       </div>
 
       <div className="bg-white">
@@ -48,5 +48,3 @@ export const ProductPage = ({ productId, sku, component, options }: ProductPageP
     </div>
   );
 };
-
-export default ProductPage;

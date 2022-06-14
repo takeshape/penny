@@ -58,5 +58,3 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
     </>
   );
 };
-
-export default FeaturedReviews;

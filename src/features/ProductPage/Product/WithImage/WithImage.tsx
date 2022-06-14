@@ -154,5 +154,3 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
     </div>
   );
 };
-
-export default ProductWithImage;

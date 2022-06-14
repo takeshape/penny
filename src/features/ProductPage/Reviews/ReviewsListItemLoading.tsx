@@ -15,5 +15,3 @@ export const ReviewsListItemLoading = () => {
     </div>
   );
 };
-
-export default ReviewsListItemLoading;

@@ -6,8 +6,8 @@ import {
   ProductPageTakeshapeDetailsResponse
 } from '../queries';
 import { getDetails } from '../transforms';
-import Details, { DetailsProps } from './Details';
-import DetailsLoading from './DetailsLoading';
+import { Details, DetailsProps } from './Details';
+import { DetailsLoading } from './DetailsLoading';
 
 export type DetailsWithDataProps = {
   productId: string;
@@ -37,5 +37,3 @@ export const DetailsWithData = ({ productId, ...props }: DetailsWithDataProps) =
 
   return <Details details={details} {...props} />;
 };
-
-export default DetailsWithData;

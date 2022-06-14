@@ -5,5 +5,3 @@ export const ProductLoading = () => {
     </div>
   );
 };
-
-export default ProductLoading;

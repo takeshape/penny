@@ -29,5 +29,3 @@ export const DetailsLoading = () => (
     </div>
   </section>
 );
-
-export default DetailsLoading;

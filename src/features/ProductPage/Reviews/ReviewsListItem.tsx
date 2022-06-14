@@ -39,5 +39,3 @@ export const ReviewsListItem = ({ review }: ReviewsListItemProps) => {
     </>
   );
 };
-
-export default ReviewsListItem;

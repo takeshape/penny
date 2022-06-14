@@ -23,5 +23,3 @@ export const Policies = ({ policies }: PoliciesProps) => {
     </section>
   );
 };
-
-export default Policies;

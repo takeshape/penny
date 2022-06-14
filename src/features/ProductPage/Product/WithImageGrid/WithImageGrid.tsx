@@ -9,9 +9,9 @@ import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { getVariant } from 'utils/products';
-import FeaturedReviews from './FeaturedReviews';
-import ImageGallery from './ImageGallery';
-import ReviewsCallout from './ReviewsCallout';
+import { FeaturedReviews } from './FeaturedReviews';
+import { ImageGallery } from './ImageGallery';
+import { ReviewsCallout } from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
   product: ProductType;
@@ -151,5 +151,3 @@ export const ProductWithImageGrid = ({
     </>
   );
 };
-
-export default ProductWithImageGrid;

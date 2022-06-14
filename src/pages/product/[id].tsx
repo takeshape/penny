@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import ProductPageComponent from 'features/ProductPage/ProductPage';
+import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,

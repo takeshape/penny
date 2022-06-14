@@ -10,8 +10,8 @@ import {
   ProductPageShopifyProductReponse
 } from '../queries';
 import { getProduct, getReviewHighlights } from '../transforms';
-import Product, { ProductProps } from './Product';
-import ProductLoading from './ProductLoading';
+import { Product, ProductProps } from './Product';
+import { ProductLoading } from './ProductLoading';
 
 export type ProductWithDataProps = {
   productId: string;
@@ -58,5 +58,3 @@ export const ProductWithData = ({ productId, ...props }: ProductWithDataProps) =
 
   return <Product product={product} reviews={reviews} {...props} />;
 };
-
-export default ProductWithData;

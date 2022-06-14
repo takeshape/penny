@@ -1,15 +1,15 @@
 import { Stars } from 'components/Stars/Stars';
 import { ProductPageReviewsReviewList } from '../types';
-import ReviewsListItem from './ReviewsListItem';
-import ReviewsListItemLoading from './ReviewsListItemLoading';
-import ReviewsRollup from './ReviewsRollup';
+import { ReviewsListItem } from './ReviewsListItem';
+import { ReviewsListItemLoading } from './ReviewsListItemLoading';
+import { ReviewsRollup } from './ReviewsRollup';
 
-export interface ProductPageReviewsProps {
+export interface ReviewsProps {
   reviews: ProductPageReviewsReviewList;
   showRollup?: boolean;
 }
 
-export const ProductPageReviews = ({ reviews, showRollup }: ProductPageReviewsProps) => {
+export const Reviews = ({ reviews, showRollup }: ReviewsProps) => {
   const { stats, rollup, data } = reviews;
 
   return (
@@ -69,5 +69,3 @@ export const ProductPageReviews = ({ reviews, showRollup }: ProductPageReviewsPr
     </section>
   );
 };
-
-export default ProductPageReviews;

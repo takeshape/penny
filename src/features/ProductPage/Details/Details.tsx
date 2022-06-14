@@ -28,5 +28,3 @@ export const Details = ({ details: { text, details } }: DetailsProps) => (
     </div>
   </section>
 );
-
-export default Details;

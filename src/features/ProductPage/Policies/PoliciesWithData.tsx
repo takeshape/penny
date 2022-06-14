@@ -6,8 +6,8 @@ import {
   ProductPageTakeshapePoliciesResponse
 } from '../queries';
 import { getPolicies } from '../transforms';
-import Policies, { PoliciesProps } from './Policies';
-import PoliciesLoading from './PoliciesLoading';
+import { Policies, PoliciesProps } from './Policies';
+import { PoliciesLoading } from './PoliciesLoading';
 
 export type PoliciesWithDataProps = {
   productId: string;
@@ -37,5 +37,3 @@ export const PoliciesWithData = ({ productId, ...props }: PoliciesWithDataProps)
 
   return <Policies policies={policies} {...props} />;
 };
-
-export default PoliciesWithData;

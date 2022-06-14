@@ -31,5 +31,3 @@ export const ReviewsCallout = ({ stats }: ReviewsCalloutProps) => {
     </>
   );
 };
-
-export default ReviewsCallout;
