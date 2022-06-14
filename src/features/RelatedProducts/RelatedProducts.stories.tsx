@@ -1,20 +1,20 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import RelatedProducts from './RelatedProducts';
-import { relatedProducts } from './RelatedProducts.fixtures';
+import { shopifyProductToRelatdProduct } from 'transforms/shopify';
+import { relatedProductsShopifyCollectionResponse } from './queries.fixtures';
+import { RelatedProducts } from './RelatedProducts';
 
 const Meta: ComponentMeta<typeof RelatedProducts> = {
-  title: 'Features / Product Page / Components / Related Products',
-  component: RelatedProducts,
-  parameters: {
-    layout: 'centered'
-  }
+  title: 'Features / Related Products',
+  component: RelatedProducts
 };
 
 const Template: ComponentStory<typeof RelatedProducts> = (args) => <RelatedProducts {...args} />;
 
 export const _RelatedProducts = Template.bind({});
 _RelatedProducts.args = {
-  relatedProducts
+  products: relatedProductsShopifyCollectionResponse.collection.products.edges.map(({ node }) =>
+    shopifyProductToRelatdProduct(node)
+  )
 };
 
 export default Meta;

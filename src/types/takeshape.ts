@@ -1591,7 +1591,7 @@ export type TsWhereStorefrontComponentsInput = {
   collections?: InputMaybe<TsWhereCollectionsComponentCollectionsInput>;
   components?: InputMaybe<TsWhereBackgroundImageComponentComponentsInput>;
   testimonials?: InputMaybe<TsWhereTestimonialsComponentTestimonialsInput>;
-  trendingProducts?: InputMaybe<TsWhereTrendingProductsComponentTrendingProductsInput>;
+  temp?: InputMaybe<TsWhereStringInput>;
 };
 
 export type TsWhereOffersComponentOffersInput = {
@@ -1621,10 +1621,6 @@ export type TsWhereBackgroundImageComponentComponentsInput = {
 export type TsWhereTestimonialsComponentTestimonialsInput = {
   quote?: InputMaybe<TsWhereStringInput>;
   attribution?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereTrendingProductsComponentTrendingProductsInput = {
-  shopifyProductId?: InputMaybe<TsWhereStringInput>;
 };
 
 export type TsWhereProductPageDetailsRelationshipInput = {
@@ -23804,13 +23800,7 @@ export type TestimonialsComponentTestimonials = {
 
 export type TrendingProductsComponent = {
   __typename?: 'TrendingProductsComponent';
-  trendingProducts: Array<TrendingProductsComponentTrendingProducts>;
-};
-
-export type TrendingProductsComponentTrendingProducts = {
-  __typename?: 'TrendingProductsComponentTrendingProducts';
-  shopifyProductId: Scalars['String'];
-  shopifyProduct?: Maybe<Shopify_Product>;
+  temp?: Maybe<Scalars['String']>;
 };
 
 export type Product = TsSearchable & {
@@ -24679,7 +24669,6 @@ export type Mutation = {
   ShopifyStorefront_customerAccessTokenCreate?: Maybe<ShopifyStorefront_CustomerAccessTokenCreatePayload>;
   ShopifyStorefront_customerCreate?: Maybe<ShopifyStorefront_CustomerCreatePayload>;
   createCustomer?: Maybe<CreateCustomerPayload>;
-  createCustomerWip?: Maybe<CreateCustomerPayload>;
   ShopifyStorefront_customerRecover?: Maybe<ShopifyStorefront_CustomerRecoverPayload>;
   ShopifyStorefront_customerUpdate?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   ShopifyStorefront_customerAddressUpdate?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
@@ -24847,7 +24836,6 @@ export type MutationCreateMyCheckoutArgs = {
 
 export type MutationSubscribeMyEmailToNewsletterArgs = {
   list_id: Scalars['String'];
-  recaptchaToken: Scalars['String'];
 };
 
 
@@ -24903,6 +24891,7 @@ export type MutationVoucherify_CreateOrderArgs = {
 export type MutationKlaviyo_AddMembersArgs = {
   input?: InputMaybe<AddListMembersInput>;
   list_id: Scalars['String'];
+  recaptchaToken: Scalars['String'];
 };
 
 
@@ -24967,11 +24956,6 @@ export type MutationShopifyStorefront_CustomerCreateArgs = {
 
 export type MutationCreateCustomerArgs = {
   input: CreateCustomerPropertiesPropertyInput;
-};
-
-
-export type MutationCreateCustomerWipArgs = {
-  input: CreateCustomerWipPropertiesPropertyInput;
 };
 
 
@@ -35197,15 +35181,6 @@ export type CreateCustomerPropertiesPropertyInput = {
   phone?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
   acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type CreateCustomerWipPropertiesPropertyInput = {
-  firstName?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
-  phone?: InputMaybe<Scalars['String']>;
-  password: Scalars['String'];
-  acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
   recaptchaToken?: InputMaybe<Scalars['String']>;
 };
 
@@ -35400,11 +35375,7 @@ export type TestimonialsComponentTestimonialsInput = {
 };
 
 export type TrendingProductsComponentInput = {
-  trendingProducts: Array<TrendingProductsComponentTrendingProductsInput>;
-};
-
-export type TrendingProductsComponentTrendingProductsInput = {
-  shopifyProductId: Scalars['String'];
+  temp?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateProductResult = {

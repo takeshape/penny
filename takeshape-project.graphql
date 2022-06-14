@@ -1786,7 +1786,7 @@ input TSWhereStorefrontComponentsInput {
   collections: TSWhereCollectionsComponentCollectionsInput
   components: TSWhereBackgroundImageComponentComponentsInput
   testimonials: TSWhereTestimonialsComponentTestimonialsInput
-  trendingProducts: TSWhereTrendingProductsComponentTrendingProductsInput
+  temp: TSWhereStringInput
 }
 
 input TSWhereOffersComponentOffersInput {
@@ -1816,10 +1816,6 @@ input TSWhereBackgroundImageComponentComponentsInput {
 input TSWhereTestimonialsComponentTestimonialsInput {
   quote: TSWhereStringInput
   attribution: TSWhereStringInput
-}
-
-input TSWhereTrendingProductsComponentTrendingProductsInput {
-  shopifyProductId: TSWhereStringInput
 }
 
 input TSWhereProductPageDetailsRelationshipInput {
@@ -29339,14 +29335,7 @@ type TestimonialsComponentTestimonials {
 }
 
 type TrendingProductsComponent {
-  """"""
-  trendingProducts: [TrendingProductsComponentTrendingProducts!]!
-}
-
-type TrendingProductsComponentTrendingProducts {
-  """"""
-  shopifyProductId: String!
-  shopifyProduct: Shopify_Product
+  temp: String
 }
 
 type Product implements TSSearchable {
@@ -30299,7 +30288,7 @@ type Mutation {
 
   """Create a Shopify storefront cart."""
   createMyCheckout(email: String, lines: [CreateMyCheckoutPropertiesLinesItemsPropertyInput!]!): ShopifyStorefront_Cart
-  subscribeMyEmailToNewsletter(list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
+  subscribeMyEmailToNewsletter(list_id: String!): Klaviyo_AddMembersResponse
   unsubscribeMyEmailFromNewsletter(list_id: String!): Klaviyo_200Ok
 
   """Create a Stripe checkout session for the signed-in user"""
@@ -30319,7 +30308,7 @@ type Mutation {
 
   """Create an order in Voucherify"""
   Voucherify_createOrder(email: String, amount: Float, status: String, items: [Voucherify_OrderItemInput]): Voucherify_Order
-  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!): Klaviyo_AddMembersResponse
+  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
   Klaviyo_removeMembers(
     "\nThe profiles that you would like to remove from the list. \n\nExample:\n\n{\n  \"emails\":[\"george.washington@klaviyo.com\",\"abraham.lincoln@klaviyo.com\"],\n  \"phone_numbers\":[\"+13239169023\"],\n  \"push_tokens\":[\"03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2r\"]\n}\n"
     input: Klaviyo_RemoveMembersPropertiesPropertyInput
@@ -30352,7 +30341,6 @@ type Mutation {
     input: ShopifyStorefront_CustomerCreateInput!
   ): ShopifyStorefront_CustomerCreatePayload
   createCustomer(input: CreateCustomerPropertiesPropertyInput!): CreateCustomerPayload
-  createCustomerWip(input: CreateCustomerWipPropertiesPropertyInput!): CreateCustomerPayload
   ShopifyStorefront_customerRecover(
     """The email address of the customer to recover."""
     email: String!
@@ -44137,15 +44125,6 @@ input CreateCustomerPropertiesPropertyInput {
   phone: String
   password: String!
   acceptsMarketing: Boolean
-}
-
-input CreateCustomerWipPropertiesPropertyInput {
-  firstName: String
-  lastName: String
-  email: String!
-  phone: String
-  password: String!
-  acceptsMarketing: Boolean
   recaptchaToken: String
 }
 
@@ -44370,13 +44349,7 @@ input TestimonialsComponentTestimonialsInput {
 }
 
 input TrendingProductsComponentInput {
-  """"""
-  trendingProducts: [TrendingProductsComponentTrendingProductsInput!]!
-}
-
-input TrendingProductsComponentTrendingProductsInput {
-  """"""
-  shopifyProductId: String!
+  temp: String
 }
 
 type UpdateProductResult {

@@ -82,7 +82,10 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
           </div>
 
           <div className="mt-4 space-y-6">
-            <p className="text-base text-gray-500" dangerouslySetInnerHTML={{ __html: descriptionHtml }}></p>
+            <p
+              className="text-base text-gray-500 prose prose-sm"
+              dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+            ></p>
           </div>
 
           <div className="mt-6 flex items-center">

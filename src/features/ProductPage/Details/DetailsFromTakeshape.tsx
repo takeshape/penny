@@ -31,12 +31,11 @@ export const DetailsFromTakeshape = ({ productId, ...props }: DetailsFromTakesha
 
   const details = data?.productList?.items?.[0] ? takeshapeItemToProductPageDetails(data?.productList.items[0]) : null;
 
-  return (
-    <>
-      {!details && <DetailsLoading />}
-      {details && <Details details={details} {...props} />}
-    </>
-  );
+  if (!details) {
+    return <DetailsLoading />;
+  }
+
+  return <Details details={details} {...props} />;
 };
 
 export default DetailsFromTakeshape;

@@ -31,12 +31,11 @@ export const ProductPagePoliciesFromTakeshape = ({ productId, ...props }: Produc
 
   const policies = data?.productList.items[0] ? takeshapeItemToProductPagePolicies(data?.productList.items[0]) : null;
 
-  return (
-    <>
-      {!policies && <PoliciesLoading />}
-      {policies && <Policies policies={policies} {...props} />}
-    </>
-  );
+  if (!policies) {
+    return <PoliciesLoading />;
+  }
+
+  return <Policies policies={policies} {...props} />;
 };
 
 export default ProductPagePoliciesFromTakeshape;

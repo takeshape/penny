@@ -41,8 +41,8 @@ export const product: Product = {
       altText: 'Image of Basic Tee 6-Pack'
     }
   ],
-  priceMin: { amount: 19200, currencyCode: 'usd' },
-  priceMax: { amount: 20000, currencyCode: 'usd' },
+  priceMin: { amount: 19200, currencyCode: 'USD' },
+  priceMax: { amount: 20000, currencyCode: 'USD' },
   variantsCount: 24,
   variants: [
     {
@@ -61,7 +61,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670162020_DAY_30',
@@ -78,7 +78,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: false,
@@ -107,7 +107,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670194788_DAY_30',
@@ -124,7 +124,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: false,
@@ -153,7 +153,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670227556_DAY_30',
@@ -170,7 +170,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: false,
@@ -199,7 +199,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670260324_DAY_30',
@@ -216,7 +216,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -245,7 +245,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670293092_DAY_30',
@@ -262,7 +262,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -291,7 +291,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670325860_DAY_30',
@@ -308,7 +308,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -337,7 +337,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670358628_DAY_30',
@@ -354,7 +354,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -383,7 +383,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670391396_DAY_30',
@@ -400,7 +400,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -429,7 +429,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670424164_DAY_30',
@@ -446,7 +446,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -475,7 +475,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670456932_DAY_30',
@@ -492,7 +492,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -521,7 +521,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670489700_DAY_30',
@@ -538,7 +538,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -567,7 +567,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670555236_DAY_30',
@@ -584,7 +584,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -613,7 +613,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670588004_DAY_30',
@@ -630,7 +630,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -659,7 +659,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670620772_DAY_30',
@@ -676,7 +676,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -705,7 +705,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670653540_DAY_30',
@@ -722,7 +722,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -751,7 +751,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670686308_DAY_30',
@@ -768,7 +768,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -797,7 +797,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670719076_DAY_30',
@@ -814,7 +814,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -843,7 +843,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670751844_DAY_30',
@@ -860,7 +860,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -889,7 +889,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670784612_DAY_30',
@@ -906,7 +906,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -935,7 +935,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670817380_DAY_30',
@@ -952,7 +952,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -981,7 +981,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 19200,
           amount: 19200,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670850148_DAY_30',
@@ -998,7 +998,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 19200,
           amount: 17280,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -1027,7 +1027,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 20000,
           amount: 20000,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670882916_DAY_30',
@@ -1044,7 +1044,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 20000,
           amount: 18000,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -1073,7 +1073,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 20000,
           amount: 20000,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670915684_DAY_30',
@@ -1090,7 +1090,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 20000,
           amount: 18000,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,
@@ -1119,7 +1119,7 @@ export const product: Product = {
           intervalCount: 0,
           amountBeforeDiscount: 20000,
           amount: 20000,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670981220_DAY_30',
@@ -1136,7 +1136,7 @@ export const product: Product = {
           intervalAnchor: null,
           amountBeforeDiscount: 20000,
           amount: 18000,
-          currencyCode: 'usd'
+          currencyCode: 'USD'
         }
       ],
       available: true,

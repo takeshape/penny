@@ -90,8 +90,8 @@ export const seo: DefaultSeoProps = {
 
 /* Commerce */
 // Lowercase matches Stripe format
-export const currencyList = ['cad', 'usd', 'aud', 'eur', 'gbp'] as const;
-export const defaultCurrency = 'usd';
+export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
+export const defaultCurrency = 'USD';
 
 /* Cart */
 export const cartLocalStorageKey = process.env.NEXT_PUBLIC_CART_LOCAL_STORAGE_KEY ?? 'cart';
