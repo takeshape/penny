@@ -10,12 +10,12 @@ import {
   ProductPageShopifyProductQuery,
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
+import { getPageOptions, getProduct } from 'features/ProductPage/transforms';
 import { ProductPageOptions } from 'features/ProductPage/types';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'transforms/shopify';
-import { takeshapeItemToProductPageOptions } from 'transforms/takeshape';
+import { shopifyGidToId, shopifyIdToGid } from 'transforms/shopify';
 import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -77,8 +77,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     }
   });
 
-  const item = data.productList.items[0];
-  const product = shopifyProductToProduct(item.shopifyProduct);
+  const product = getProduct(data);
 
   return addApolloQueryCache(apolloClient, {
     props: {
@@ -86,7 +85,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       sku: id,
       name: product.name,
       description: product.description,
-      options: takeshapeItemToProductPageOptions(item)
+      options: getPageOptions(data)
     }
   });
 };

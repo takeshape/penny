@@ -1,10 +1,6 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
-import { ProductPageProduct, ProductPageShopifyProduct } from 'features/ProductPage/types';
-import { QuickAddProduct, QuickAddShopifyProduct } from 'features/QuickAdd/types';
-import { RelatedProductsProduct, RelatedProductsShopifyProduct } from 'features/RelatedProducts/types';
 import {
   ProductImage,
-  ProductListItem,
   ProductPrice,
   ProductPriceCurrencyCode,
   ProductPriceOption,
@@ -179,7 +175,7 @@ export function getPriceOptions(
   return prices;
 }
 
-export function getVariant(
+function getVariant(
   shopifyProduct: Pick<
     Shopify_Product,
     'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
@@ -260,90 +256,4 @@ export function shopifyGidToId(gid: string): string {
 
 export function shopifyIdToGid(id: string): string {
   return `gid://shopify/Product/${id}`;
-}
-
-export function shopifyProductToProductListItem(shopifyProduct: Shopify_Product): ProductListItem {
-  const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-
-  return {
-    id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
-    name: shopifyProduct.title,
-    description: shopifyProduct.description,
-    descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct.featuredImage),
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options)
-  };
-}
-
-export function shopifyProductToProduct(shopifyProduct: ProductPageShopifyProduct): ProductPageProduct {
-  const variants = getVariants(shopifyProduct);
-  const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-
-  return {
-    id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
-    name: shopifyProduct.title,
-    description: shopifyProduct.description,
-    descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct.featuredImage),
-    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(node)) ?? [getImage()],
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    variants,
-    seo: getSeo(shopifyProduct),
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options, variants)
-  };
-}
-
-export function shopifyProductToQuickAddProduct(shopifyProduct: QuickAddShopifyProduct): QuickAddProduct {
-  const variants = getVariants(shopifyProduct);
-  const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-
-  return {
-    id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
-    name: shopifyProduct.title,
-    description: shopifyProduct.description,
-    descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct.featuredImage),
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    variants,
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options, variants)
-  };
-}
-
-export function shopifyProductToRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
-  const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-
-  return {
-    id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
-    name: shopifyProduct.title,
-    description: shopifyProduct.description,
-    descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct.featuredImage),
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options)
-  };
 }

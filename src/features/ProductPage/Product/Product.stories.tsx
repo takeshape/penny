@@ -1,7 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
-import { shopifyProductToProduct } from 'transforms/shopify';
 import { productResponse, reviewsResponse } from '../queries.fixtures';
+import { getProduct, getReviewHighlights } from '../transforms';
 import { Product } from './Product';
 
 const breadcrumbs = [
@@ -23,8 +22,8 @@ export const WithImageGrid = Template.bind({});
 WithImageGrid.args = {
   component: 'withImageGrid',
   breadcrumbs,
-  product: shopifyProductToProduct(productResponse.productList.items[0].shopifyProduct),
-  reviews: reviewsIoProductReviewsToReviewHighlight(reviewsResponse),
+  product: getProduct(productResponse),
+  reviews: getReviewHighlights(reviewsResponse),
   showFeaturedReviews: true
 };
 
@@ -32,8 +31,8 @@ export const WithImage = Template.bind({});
 WithImage.args = {
   component: 'withImage',
   breadcrumbs,
-  product: shopifyProductToProduct(productResponse.productList.items[0].shopifyProduct),
-  reviews: reviewsIoProductReviewsToReviewHighlight(reviewsResponse),
+  product: getProduct(productResponse),
+  reviews: getReviewHighlights(reviewsResponse),
   showFeaturedReviews: true
 };
 

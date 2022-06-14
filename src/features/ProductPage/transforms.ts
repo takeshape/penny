@@ -9,9 +9,11 @@ import {
 } from './queries';
 import {
   ProductPageDetails,
+  ProductPageOptions,
   ProductPagePolicies,
   ProductPagePolicy,
   ProductPageProduct,
+  ProductPageProductComponent,
   ProductPageReviewHighlights,
   ProductPageReviewsReviewList
 } from './types';
@@ -106,5 +108,31 @@ export function getDetails(response: ProductPageTakeshapeDetailsResponse): Produ
       },
       description: detail.descriptionHtml.replace(/<\/?p>/g, '')
     }))
+  };
+}
+
+function getProductComponent(productComponent?: string): ProductPageProductComponent {
+  switch (productComponent) {
+    case 'withImage':
+      return 'withImage';
+    case 'withImageGrid':
+    default:
+      return 'withImageGrid';
+  }
+}
+
+export function getPageOptions(response: ProductPageShopifyProductReponse): ProductPageOptions {
+  const takeshapeItem = response?.productList?.items?.[0];
+
+  if (!takeshapeItem) {
+    return null;
+  }
+
+  return {
+    showDetails: takeshapeItem.showDetails ?? false,
+    showPolicies: takeshapeItem.showPolicies ?? false,
+    showReviews: takeshapeItem.hideReviews === true ? false : true,
+    showRelatedProducts: takeshapeItem.hideRelatedProducts === true ? false : true,
+    component: getProductComponent(takeshapeItem.productComponent)
   };
 }

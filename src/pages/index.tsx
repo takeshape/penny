@@ -8,10 +8,10 @@ import {
   RelatedProductsShopifyCollectionQuery,
   RelatedProductsShopifyCollectionResponse
 } from 'features/RelatedProducts/queries';
+import { getProductList } from 'features/RelatedProducts/transforms';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { shopifyProductToRelatedProduct } from 'transforms/shopify';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -60,11 +60,7 @@ export async function getStaticProps() {
       }
     });
 
-    products = data.collection.products.edges.map(({ node }) => {
-      return {
-        product: shopifyProductToRelatedProduct(node)
-      };
-    });
+    products = getProductList(data);
   } catch (err) {
     logger.error(err);
     error = formatError(err);
