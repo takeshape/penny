@@ -9,7 +9,8 @@ import path from 'path';
 import type { CreateCustomerAccessTokenResponse, GetCustomerTokenDataResponse } from 'queries';
 import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery } from 'queries';
 import type {
-  MutationShopifyStorefront_CustomerAccessTokenCreateArgs, QueryShopifyStorefront_CustomerArgs
+  MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
+  QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
 import { createStaticClient } from 'utils/apollo/client';
 
