@@ -1,8 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { Fragment, MouseEvent, useCallback } from 'react';
-import QuickAddItem from './QuickAddItem';
-import QuickAddItemLoader from './QuickAddItemLoader';
+import { QuickAddItem } from './QuickAddItem';
+import { QuickAddItemLoading } from './QuickAddItemLoading';
 import { QuickAddProduct } from './types';
 
 export interface QuickAddProps {
@@ -57,7 +57,7 @@ export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
-                  {!product && <QuickAddItemLoader />}
+                  {!product && <QuickAddItemLoading />}
                   {product && <QuickAddItem product={product} onClose={onClose} />}
                 </div>
               </Dialog.Panel>
@@ -68,5 +68,3 @@ export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {
     </Transition.Root>
   );
 };
-
-export default QuickAdd;

@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useEffect } from 'react';
 import { QuickAddArgs, QuickAddQuery, QuickAddResponse } from './queries';
-import QuickAdd from './QuickAdd';
+import { QuickAdd } from './QuickAdd';
 import { quickAddAtom } from './store';
 import { getProduct } from './transforms';
 

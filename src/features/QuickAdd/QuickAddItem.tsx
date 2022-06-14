@@ -142,5 +142,3 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
     </div>
   );
 };
-
-export default QuickAddItem;
