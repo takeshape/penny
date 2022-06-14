@@ -2,13 +2,14 @@ import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
-import { siteLogo } from 'config';
+import { recaptchaSiteKey, siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import { CreateCustomerMutation, CreateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 import { MutationCreateCustomerArgs } from 'types/takeshape';
+import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 
 export interface AuthCreateAccountForm {
   email: string;
@@ -28,8 +29,6 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     MutationCreateCustomerArgs
   >(CreateCustomerMutation);
 
-  const recaptchaRef = useRef<ReCAPTCHA>();
-  const submissionValue = useRef<AuthCreateAccountForm>();
   const watched = useRef({ email: '', password: '' });
 
   watched.current.email = watch('email', '');
@@ -42,21 +41,14 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     }
   }, [customerResponse, callbackUrl]);
 
-  const onSubmit = useCallback(
-    async (formValues: AuthCreateAccountForm) => {
-      submissionValue.current = formValues;
-      recaptchaRef.current.execute();
-    },
-    [recaptchaRef]
-  );
-
-  const onRecaptchaChange = useCallback(
-    async (recaptchaToken) => {
-      const { email, password } = submissionValue.current;
+  const handleRecaptchaSubmit = useCallback(
+    async ({ email, password }: AuthCreateAccountForm, recaptchaToken: string) => {
       await setCustomerPayload({ variables: { input: { email, password, recaptchaToken } } });
     },
     [setCustomerPayload]
   );
+
+  const { recaptchaRef, submitCallback, handleRecaptchaChange } = useRecaptcha({ handleRecaptchaSubmit });
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -68,7 +60,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={handleSubmit(submitCallback)}>
             {error && (
               <Alert
                 status="error"
@@ -132,8 +124,8 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
             <ReCAPTCHA
               ref={recaptchaRef}
               size="invisible"
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-              onChange={onRecaptchaChange}
+              sitekey={recaptchaSiteKey}
+              onChange={handleRecaptchaChange}
             />
 
             <div>

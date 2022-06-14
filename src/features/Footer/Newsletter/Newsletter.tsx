@@ -1,10 +1,11 @@
 import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
-import { defaultKlaviyoListId } from 'config';
-import { useCallback, useRef, useState } from 'react';
+import { defaultKlaviyoListId, recaptchaSiteKey } from 'config';
+import { FormEvent, useCallback, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Klaviyo_AddMembersResponse } from 'types/takeshape';
+import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 import { EmailSubmissionMutation, EmailSubmissionMutationArgs } from './Newsletter.queries';
 
 export interface NewsletterProps {
@@ -17,8 +18,6 @@ export interface NewsletterProps {
 
 const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
   const { text } = props;
-  const recaptchaRef = useRef<ReCAPTCHA>();
-  const submissionValue = useRef<string>();
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' }>();
   const onCompleted = useCallback(() => {
@@ -35,15 +34,9 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     onError
   });
 
-  const subscribeToNewsletter = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    submissionValue.current = e.currentTarget.elements['email-address'].value;
-    recaptchaRef.current.execute();
-  }, []);
-
-  const onRecaptchaChange = useCallback(
-    async (recaptchaToken) => {
-      const email = submissionValue.current;
+  const handleRecaptchaSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>, recaptchaToken: string) => {
+      const email = event.currentTarget.elements['email-address'].value;
       if (email) {
         setLoading(true);
         mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
@@ -52,13 +45,15 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     [mutateFn]
   );
 
+  const { recaptchaRef, submitCallback, handleRecaptchaChange } = useRecaptcha({ handleRecaptchaSubmit });
+
   return (
     <>
       {text?.primary && (
         <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{text.primary}</h3>
       )}
       {text?.secondary && <p className="mt-4 text-base text-gray-500">{text.secondary}</p>}
-      <form className="mt-4 sm:flex" onSubmit={subscribeToNewsletter}>
+      <form className="mt-4 sm:flex" onSubmit={submitCallback}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>
@@ -71,12 +66,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
           className="appearance-none min-w-0 w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400"
           placeholder="Enter your email"
         />
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          size="invisible"
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-          onChange={onRecaptchaChange}
-        />
+        <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={recaptchaSiteKey} onChange={handleRecaptchaChange} />
         <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
           <Button type="submit" loading={loading ? true : undefined} color="primary" className="w-full h-full">
             {loading ? 'Subscribing…' : text?.button ?? 'Subscribe'}
