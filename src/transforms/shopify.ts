@@ -328,7 +328,7 @@ export function shopifyProductToQuickAddProduct(shopifyProduct: QuickAddShopifyP
   };
 }
 
-export function shopifyProductToRelatdProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
+export function shopifyProductToRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
   return {

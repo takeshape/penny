@@ -3,12 +3,15 @@ import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
 import ProductHeader from 'features/ProductCategory/Header/Header';
 import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
+import {
+  RelatedProductsShopifyCollectionArgs,
+  RelatedProductsShopifyCollectionQuery,
+  RelatedProductsShopifyCollectionResponse
+} from 'features/RelatedProducts/queries';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { GetProductsQuery, GetProductsResponse } from 'queries';
-import { reviewsIoProductReviewsToReviewHighlight } from 'transforms/reviewsIo';
-import { shopifyProductToProductListItem } from 'transforms/shopify';
+import { shopifyProductToRelatedProduct } from 'transforms/shopify';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -47,14 +50,19 @@ export async function getStaticProps() {
   let error = null;
 
   try {
-    const { data } = await apolloClient.query<GetProductsResponse>({
-      query: GetProductsQuery
+    const { data } = await apolloClient.query<
+      RelatedProductsShopifyCollectionResponse,
+      RelatedProductsShopifyCollectionArgs
+    >({
+      query: RelatedProductsShopifyCollectionQuery,
+      variables: {
+        handle: 'frontpage'
+      }
     });
 
-    products = data.products.edges.map(({ node }) => {
+    products = data.collection.products.edges.map(({ node }) => {
       return {
-        product: shopifyProductToProductListItem(node),
-        reviews: reviewsIoProductReviewsToReviewHighlight(node.reviews)
+        product: shopifyProductToRelatedProduct(node)
       };
     });
   } catch (err) {

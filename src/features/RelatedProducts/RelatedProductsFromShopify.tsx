@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { shopifyProductToRelatdProduct } from 'transforms/shopify';
+import { shopifyProductToRelatedProduct } from 'transforms/shopify';
 import {
   RelatedProductsShopifyCollectionArgs,
   RelatedProductsShopifyCollectionQuery,
@@ -20,7 +20,7 @@ export const RelatedProductsFromShopify = ({ collection }: RelatedProductsFromSh
   );
 
   const products =
-    data?.collection.products.edges.map(({ node }) => shopifyProductToRelatdProduct(node)) ??
+    data?.collection.products.edges.map(({ node }) => shopifyProductToRelatedProduct(node)) ??
     (Array(4).fill(undefined) as RelatedProductsProduct[]);
 
   return <RelatedProducts products={products} />;

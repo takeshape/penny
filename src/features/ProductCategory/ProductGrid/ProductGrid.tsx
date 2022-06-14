@@ -36,7 +36,7 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
                   {product.name}
                 </NextLink>
               </h3>
-              {reviews.stats.average ? (
+              {reviews?.stats.average ? (
                 <div className="mt-3 flex flex-col items-center">
                   <p className="sr-only">{reviews.stats.average} out of 5 stars</p>
                   <div className="flex items-center">
