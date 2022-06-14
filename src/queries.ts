@@ -3,7 +3,6 @@ import type {
   CreateCustomerPayload,
   Klaviyo_200Ok,
   Klaviyo_AddMembersResponse,
-  Mutation,
   ProfileNewsletterStatus,
   QueryShopify_ProductArgs,
   ShopifyStorefront_CartCreatePayload,
@@ -253,85 +252,6 @@ export const GetProductQuery = gql`
             }
           }
         }
-      }
-    }
-  }
-`;
-
-export const GetMyProfile = gql`
-  query GetMyProfile {
-    profile: getMyProfile {
-      id
-      email
-      name
-      bio
-      avatar {
-        path
-      }
-    }
-  }
-`;
-
-export type UpsertMyProfileResponse = {
-  profile: Mutation['upsertMyProfile'];
-};
-
-export const UpsertMyProfile = gql`
-  mutation UpsertMyProfile($name: String, $bio: String, $avatarId: String) {
-    profile: upsertMyProfile(name: $name, bio: $bio, avatarId: $avatarId) {
-      id
-      email
-      name
-      bio
-      avatar {
-        path
-      }
-    }
-  }
-`;
-
-export interface UpsertProfileResponse {
-  profile: Mutation['upsertProfile'];
-}
-
-export const UpsertProfile = gql`
-  mutation UpsertProfile($id: String!, $email: String!) {
-    profile: upsertProfile(id: $id, email: $email) {
-      _id
-    }
-  }
-`;
-
-export const UploadAssets = gql`
-  mutation UploadAssets($files: [TSFile]!) {
-    uploadAssets(files: $files) {
-      uploadUrl
-      asset {
-        _id
-        _version
-        filename
-      }
-    }
-  }
-`;
-
-export const UpsertMyCustomer = gql`
-  mutation UpsertMyCustomer(
-    $name: String
-    $description: String
-    $address: UpsertMyCustomerPropertiesAddressPropertyInput
-  ) {
-    customer: upsertMyCustomer(name: $name, description: $description, address: $address) {
-      id
-      name
-      description
-      address {
-        line1
-        line2
-        city
-        state
-        postal_code
-        country
       }
     }
   }

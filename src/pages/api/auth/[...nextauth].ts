@@ -6,12 +6,10 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
-import type { CreateCustomerAccessTokenResponse, GetCustomerTokenDataResponse, UpsertProfileResponse } from 'queries';
-import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery, UpsertProfile } from 'queries';
+import type { CreateCustomerAccessTokenResponse, GetCustomerTokenDataResponse } from 'queries';
+import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery } from 'queries';
 import type {
-  MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
-  MutationUpsertProfileArgs,
-  QueryShopifyStorefront_CustomerArgs
+  MutationShopifyStorefront_CustomerAccessTokenCreateArgs, QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
 import { createStaticClient } from 'utils/apollo/client';
 
@@ -134,18 +132,6 @@ const nextAuthConfig = {
         },
         shopifyCustomerAccessToken
       };
-    }
-  },
-  events: {
-    async signIn({ user }) {
-      // Await to ensure the profile is created or updated in TakeShape
-      await apolloClient.mutate<UpsertProfileResponse, MutationUpsertProfileArgs>({
-        mutation: UpsertProfile,
-        variables: {
-          id: user.id,
-          email: user.email
-        }
-      });
     }
   }
 };
