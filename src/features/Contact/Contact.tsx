@@ -1,4 +1,5 @@
 import { Switch } from '@headlessui/react';
+import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
@@ -75,12 +76,14 @@ export interface ContactProps {
     button: string;
   };
   onSubmit: (data: ContactForm, recaptchaToken: string) => void;
+  success?: string;
+  error?: string;
 }
 
 const Contact = (props: React.PropsWithChildren<ContactProps>) => {
-  const { text, onSubmit } = props;
+  const { text, onSubmit, success, error } = props;
   const [agreed, setAgreed] = useState(false);
-  const { handleSubmit, control } = useForm<ContactForm>({ mode: 'onBlur' });
+  const { handleSubmit, control, formState } = useForm<ContactForm>({ mode: 'onBlur' });
 
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
@@ -218,9 +221,21 @@ const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             </div>
             <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
             <div className="sm:col-span-2">
-              <Button type="submit" disabled={!agreed} className="w-full" color="primary" size="large">
-                {text.button}
-              </Button>
+              {!success && !error && (
+                <Button
+                  loading={formState.isSubmitting}
+                  type="submit"
+                  disabled={!agreed}
+                  className="w-full"
+                  color="primary"
+                  size="large"
+                >
+                  {formState.isSubmitting ? 'Submitting...' : text.button}
+                </Button>
+              )}
+
+              {success && <Alert status="success" primaryText={success} />}
+              {error && <Alert status="error" primaryText={error} />}
             </div>
           </form>
         </div>

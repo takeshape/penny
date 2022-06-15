@@ -1,11 +1,10 @@
 import { useMutation } from '@apollo/client';
-import Alert from 'components/Alert/Alert';
 import Contact, { ContactForm } from 'features/Contact/Contact';
 import Layout from 'layouts/Default';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import { GorgiasCreateTicketMutation, GorgiasCreateTicketResponse } from 'queries';
 import { useCallback, useState } from 'react';
-import type { MutationGorgias_CreateTicketArgs } from 'types/takeshape';
+import { MutationGorgias_CreateTicketArgs } from 'types/takeshape';
 
 const ContactPage: NextPage = () => {
   const [success, setSuccess] = useState<string>();
@@ -24,7 +23,7 @@ const ContactPage: NextPage = () => {
           message: `From: ${firstName} ${lastName}
 Company: ${company}
 Phone Number: ${phoneNumber}
-Message: ${message}`,
+${message}`,
           recaptchaToken
         }
       });
@@ -38,7 +37,6 @@ Message: ${message}`,
 
   return (
     <Layout title="Contact">
-      {success && <Alert status="success" primaryText={success} />}
       <Contact
         text={{
           primary: 'Get in touch',
@@ -46,6 +44,8 @@ Message: ${message}`,
           button: 'Send'
         }}
         onSubmit={onSubmit}
+        success={success}
+        error={error?.message}
       />
     </Layout>
   );
