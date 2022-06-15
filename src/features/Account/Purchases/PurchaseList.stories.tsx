@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Shopify_Customer } from 'types/takeshape';
-import { getCustomerOrders } from 'utils/transforms/shopify';
+import { graphql } from 'msw';
 import PurchaseList from './PurchaseList';
 import purchaseListJson from './PurchaseList.fixtures.json';
 
@@ -12,21 +11,45 @@ const Meta: ComponentMeta<typeof PurchaseList> = {
   }
 };
 
-const Template: ComponentStory<typeof PurchaseList> = (args) => <PurchaseList {...args} />;
+const Template: ComponentStory<typeof PurchaseList> = () => <PurchaseList />;
 
 export const Empty = Template.bind({});
-Empty.args = {
-  orders: []
+Empty.parameters = {
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
+          return res(ctx.data({ customer: { orders: undefined } }));
+        })
+      ]
+    }
+  }
 };
 
 export const Loading = Template.bind({});
-Loading.args = {
-  loading: true
+Loading.parameters = {
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
+          return res(ctx.delay('infinite'), ctx.data({ customer: { orders: [] } }));
+        })
+      ]
+    }
+  }
 };
 
 export const WithOrders = Template.bind({});
-WithOrders.args = {
-  orders: getCustomerOrders(purchaseListJson.data.customer as Shopify_Customer)
+WithOrders.parameters = {
+  msw: {
+    handlers: {
+      newsletter: [
+        graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
+          return res(ctx.data(purchaseListJson.data));
+        })
+      ]
+    }
+  }
 };
 
 export default Meta;

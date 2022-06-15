@@ -1,38 +1,41 @@
+import { NetworkStatus, useQuery } from '@apollo/client';
 import Button from 'components/Button/Button';
 import Loader from 'components/Loader/Loader';
 import Image from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import { format } from 'date-fns';
-import { shopifyGidToId } from 'transforms/shopify';
-import { Shopify_Order } from 'types/takeshape';
+import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
+import { getCustomerOrders, shopifyGidToId } from 'transforms/shopify';
 import { formatPrice } from 'utils/text';
 import PurchseOrderStatus from './PurchaseOrderStatus';
-
-export interface AccountPurchasesProps {
-  loading?: boolean;
-  orders?: Shopify_Order[];
-}
 
 const Empty = () => (
   <div className="flex flex-col items-center gap-2 text-neutral-500">
     <p>No purchases found.</p>
-    <p>Go get yourself something nice.</p>
+    <p>Why not get yourself something nice!</p>
   </div>
-)
+);
 
 const Header = () => (
   <header>
     <h3 className="text-lg leading-6 font-medium text-gray-900">Order history</h3>
-    <p className="mt-1 text-sm text-gray-500">Check the status of recent orders, manage returns, and download invoices.</p>
+    <p className="mt-1 text-sm text-gray-500">
+      Check the status of recent orders, manage returns, and download invoices.
+    </p>
   </header>
-)
+);
 
-export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) => {
-  if (loading || !orders || !orders.length) {
+export const AccountPurchaseList = () => {
+  const { data, loading, networkStatus } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
+  const orders = getCustomerOrders(data?.customer);
+
+  if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
     return (
       <div className="flex flex-col min-h-full space-y-4">
         <Header />
-        <div className="min-h-40 p-4 sm:p-6 flex-1 min-h-full flex justify-center items-center">{loading ? <Loader colorClass="text-neutral-700" /> : <Empty />}</div>
+        <div className="min-h-40 p-4 sm:p-6 flex-1 min-h-full flex justify-center items-center">
+          {loading ? <Loader colorClass="text-neutral-700" /> : <Empty />}
+        </div>
       </div>
     );
   }
@@ -83,90 +86,91 @@ export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) 
               </header>
 
               <main className="px-2 sm:px-4">
-                {Boolean(order.fulfillments?.length) && (<table className="w-full text-gray-500 sm:mt-6">
-                  <caption className="sr-only">Products</caption>
-                  <thead className="sr-only text-sm text-gray-500 text-left sm:not-sr-only">
-                    <tr>
-                      <th scope="col" className="sm:w-2/5 lg:w-1/3 pr-8 py-3 font-normal">
-                        Product
-                      </th>
-                      <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
-                        Price
-                      </th>
-                      <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
-                        Status
-                      </th>
-                      <th scope="col" className="w-0 py-3 font-normal text-right"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-                    {order.fulfillments.map(
-                      ({
-                        id,
-                        displayStatus,
-                        updatedAt,
-                        deliveredAt,
-                        estimatedDeliveryAt,
-                        trackingInfo,
-                        fulfillmentLineItems
-                      }) =>
-                        fulfillmentLineItems.edges.map(({ node }) => (
-                          <tr key={node.lineItem.id}>
-                            <td className="py-6 pr-8">
-                              <NextLink href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}>
-                                <a className="flex items-center">
-                                  <div className="flex items-center w-16 h-16 mr-6">
-                                    <Image
-                                      src={node.lineItem.image.url}
-                                      height={node.lineItem.image.height}
-                                      width={node.lineItem.image.width}
-                                      alt={node.lineItem.name}
-                                      className="rounded"
-                                    />
-                                  </div>
-                                  <div>
-                                    <div className="font-medium text-gray-900">{node.lineItem.name}</div>
-                                    <div className="mt-1 sm:hidden">
-                                      {formatPrice(
-                                        node.lineItem.originalTotalSet.shopMoney.currencyCode,
-                                        node.lineItem.originalTotalSet.shopMoney.amount * 100
-                                      )}
+                {Boolean(order.fulfillments?.length) && (
+                  <table className="w-full text-gray-500 sm:mt-6">
+                    <caption className="sr-only">Products</caption>
+                    <thead className="sr-only text-sm text-gray-500 text-left sm:not-sr-only">
+                      <tr>
+                        <th scope="col" className="sm:w-2/5 lg:w-1/3 pr-8 py-3 font-normal">
+                          Product
+                        </th>
+                        <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
+                          Price
+                        </th>
+                        <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
+                          Status
+                        </th>
+                        <th scope="col" className="w-0 py-3 font-normal text-right"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
+                      {order.fulfillments.map(
+                        ({
+                          id,
+                          displayStatus,
+                          updatedAt,
+                          deliveredAt,
+                          estimatedDeliveryAt,
+                          trackingInfo,
+                          fulfillmentLineItems
+                        }) =>
+                          fulfillmentLineItems.edges.map(({ node }) => (
+                            <tr key={node.lineItem.id}>
+                              <td className="py-6 pr-8">
+                                <NextLink href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}>
+                                  <a className="flex items-center">
+                                    <div className="flex items-center w-16 h-16 mr-6">
+                                      <Image
+                                        src={node.lineItem.image.url}
+                                        height={node.lineItem.image.height}
+                                        width={node.lineItem.image.width}
+                                        alt={node.lineItem.name}
+                                        className="rounded"
+                                      />
                                     </div>
-                                  </div>
-                                </a>
-                              </NextLink>
-                            </td>
-                            <td className="hidden py-6 pr-8 sm:table-cell">
-                              {formatPrice(
-                                node.lineItem.originalTotalSet.shopMoney.currencyCode,
-                                node.lineItem.originalTotalSet.shopMoney.amount * 100
-                              )}
-                            </td>
-                            <td className="hidden py-6 pr-8 sm:table-cell">
-                              <PurchseOrderStatus
-                                status={displayStatus}
-                                updatedAt={updatedAt}
-                                deliveredAt={deliveredAt}
-                                estimatedDeliveryAt={estimatedDeliveryAt}
-                                trackingCompany={trackingInfo[0].company}
-                                trackingNumber={trackingInfo[0].number}
-                              />
-                            </td>
-                            <td className="py-6 font-medium text-right whitespace-nowrap">
-                              <NextLink href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}>
-                                <Button as="a">
-                                  <span>
-                                    View<span className="hidden lg:inline"> Product</span>
-                                    <span className="sr-only">, {node.lineItem.name}</span>
-                                  </span>
-                                </Button>
-                              </NextLink>
-                            </td>
-                          </tr>
-                        ))
-                    )}
-                  </tbody>
-                </table>
+                                    <div>
+                                      <div className="font-medium text-gray-900">{node.lineItem.name}</div>
+                                      <div className="mt-1 sm:hidden">
+                                        {formatPrice(
+                                          node.lineItem.originalTotalSet.shopMoney.currencyCode,
+                                          node.lineItem.originalTotalSet.shopMoney.amount * 100
+                                        )}
+                                      </div>
+                                    </div>
+                                  </a>
+                                </NextLink>
+                              </td>
+                              <td className="hidden py-6 pr-8 sm:table-cell">
+                                {formatPrice(
+                                  node.lineItem.originalTotalSet.shopMoney.currencyCode,
+                                  node.lineItem.originalTotalSet.shopMoney.amount * 100
+                                )}
+                              </td>
+                              <td className="hidden py-6 pr-8 sm:table-cell">
+                                <PurchseOrderStatus
+                                  status={displayStatus}
+                                  updatedAt={updatedAt}
+                                  deliveredAt={deliveredAt}
+                                  estimatedDeliveryAt={estimatedDeliveryAt}
+                                  trackingCompany={trackingInfo[0].company}
+                                  trackingNumber={trackingInfo[0].number}
+                                />
+                              </td>
+                              <td className="py-6 font-medium text-right whitespace-nowrap">
+                                <NextLink href={`/product/${shopifyGidToId(node.lineItem.product.id)}`}>
+                                  <Button as="a">
+                                    <span>
+                                      View<span className="hidden lg:inline"> Product</span>
+                                      <span className="sr-only">, {node.lineItem.name}</span>
+                                    </span>
+                                  </Button>
+                                </NextLink>
+                              </td>
+                            </tr>
+                          ))
+                      )}
+                    </tbody>
+                  </table>
                 )}
               </main>
             </div>
