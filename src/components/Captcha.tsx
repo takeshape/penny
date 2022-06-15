@@ -9,7 +9,7 @@ export interface CaptchaProps {
 
 const Captcha = ({ recaptchaRef, handleRecaptchaChange }: CaptchaProps) => {
   return (
-    recaptchaSiteKey !== undefined && (
+    recaptchaSiteKey !== '' && (
       <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={recaptchaSiteKey} onChange={handleRecaptchaChange} />
     )
   );
