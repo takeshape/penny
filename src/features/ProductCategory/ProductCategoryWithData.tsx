@@ -1,4 +1,5 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
+import { useCallback, useEffect } from 'react';
 import { ProductCategory } from './ProductCategory';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -12,10 +13,21 @@ export interface ProductCategoryWithDataProps {
 }
 
 export const ProductCategoryWithData = ({ id }: ProductCategoryWithDataProps) => {
-  const { data, error } = useQuery<ProductCategoryShopifyCollectionResponse, ProductCategoryShopifyCollectionArgs>(
-    ProductCategoryShopifyCollectionQuery,
-    { variables: { id } }
-  );
+  const [loadCollection, { data, error, loading }] = useLazyQuery<
+    ProductCategoryShopifyCollectionResponse,
+    ProductCategoryShopifyCollectionArgs
+  >(ProductCategoryShopifyCollectionQuery, { variables: { id } });
+
+  const handleSetCurrentPage = useCallback((page) => {
+    // eslint-disable-next-line no-console
+    console.log('setting page', page);
+  }, []);
+
+  useEffect(() => {
+    if (id && !data && !loading && !error) {
+      loadCollection({ variables: { id } });
+    }
+  }, [loadCollection, id, data, error, loading]);
 
   if (error) {
     return null;
@@ -29,8 +41,13 @@ export const ProductCategoryWithData = ({ id }: ProductCategoryWithDataProps) =>
 
   return (
     <ProductCategory
-      header={{ text: { primary: collection.name, secondary: collection.description } }}
+      header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
       products={collection.products}
+      pagination={{
+        pageCount: 2,
+        currentPage: 1,
+        setCurrentPage: handleSetCurrentPage
+      }}
     />
   );
 };

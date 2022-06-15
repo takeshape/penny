@@ -1,6 +1,6 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
-import { Fragment, useCallback, useMemo } from 'react';
+import { Fragment, PropsWithChildren, useCallback, useMemo } from 'react';
 import classNames from 'utils/classNames';
 
 interface SortOption {
@@ -41,7 +41,7 @@ export interface FiltersProps {
   setSortOption: (option: SortOption) => void;
 }
 
-const FilterOption = (props: React.PropsWithChildren<FilterOptionProps>) => {
+const FilterOption = (props: PropsWithChildren<FilterOptionProps>) => {
   return (
     <div className="flex items-center text-base sm:text-sm">
       <input
@@ -60,7 +60,7 @@ const FilterOption = (props: React.PropsWithChildren<FilterOptionProps>) => {
   );
 };
 
-const Filter = (props: React.PropsWithChildren<FilterProps>) => {
+const Filter = (props: PropsWithChildren<FilterProps>) => {
   return (
     <fieldset>
       <legend className="block font-medium">{props.legend}</legend>
@@ -79,7 +79,7 @@ const Filter = (props: React.PropsWithChildren<FilterProps>) => {
   );
 };
 
-export const Filters = (props: React.PropsWithChildren<FiltersProps>) => {
+export const Filters = (props: PropsWithChildren<FiltersProps>) => {
   const { filters, setFilters, clearAllFilters, sortOptions, setSortOption } = props;
   const setFilter = useCallback(
     (filter: string, value: string, checked: boolean): void => {

@@ -1,8 +1,8 @@
 import Alert from 'components/Alert/Alert';
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
-import ProductHeader from 'features/ProductCategory/Header/Header';
-import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
+import { Header } from 'features/ProductCategory/Header/Header';
+import { ProductGrid } from 'features/ProductCategory/ProductGrid/ProductGrid';
 import {
   RelatedProductsShopifyCollectionArgs,
   RelatedProductsShopifyCollectionQuery,
@@ -33,7 +33,7 @@ const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof
     <Layout>
       {products ? (
         <Wrapper>
-          <ProductHeader header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }} />
+          <Header header={{ text: { primary: 'Clothes!', secondary: 'Fun for everyone.' } }} />
           <ProductGrid products={products} />
         </Wrapper>
       ) : (

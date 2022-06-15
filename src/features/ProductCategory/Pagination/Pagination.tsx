@@ -1,5 +1,5 @@
-import React from 'react';
-import usePagination from './usePagination';
+import { PropsWithChildren, useCallback, useMemo } from 'react';
+import { usePagination } from './usePagination';
 
 interface PaginationLinkProps {
   onClick?: () => void;
@@ -38,12 +38,11 @@ export interface PaginationProps {
   };
 }
 
-const Pagination = (props: React.PropsWithChildren<PaginationProps>) => {
-  const {
-    pagination: { pageCount, currentPage, setCurrentPage }
-  } = props;
+export const Pagination = ({
+  pagination: { pageCount, currentPage, setCurrentPage }
+}: PropsWithChildren<PaginationProps>) => {
   const paginationRange = usePagination({ currentPage, pageCount, siblingCount: 1 });
-  const pageList = React.useMemo(() => {
+  const pageList = useMemo(() => {
     if (currentPage === 0 || paginationRange.length < 2) {
       return null;
     }
@@ -66,8 +65,8 @@ const Pagination = (props: React.PropsWithChildren<PaginationProps>) => {
       </div>
     );
   }, [currentPage, setCurrentPage, paginationRange]);
-  const onPrevious = React.useCallback(() => setCurrentPage(currentPage - 1), [currentPage, setCurrentPage]);
-  const onNext = React.useCallback(() => setCurrentPage(currentPage + 1), [currentPage, setCurrentPage]);
+  const onPrevious = useCallback(() => setCurrentPage(currentPage - 1), [currentPage, setCurrentPage]);
+  const onNext = useCallback(() => setCurrentPage(currentPage + 1), [currentPage, setCurrentPage]);
   return (
     <nav
       aria-label="Pagination"

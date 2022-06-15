@@ -42,7 +42,7 @@ export const ProductCategoryShopifyCollectionQuery = gql`
       description
       descriptionHtml
       productsCount
-      products(first: 10) {
+      products(first: 5) {
         edges {
           node {
             id

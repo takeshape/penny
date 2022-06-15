@@ -1,21 +1,11 @@
 import { PropsWithChildren } from 'react';
-import { FiltersProps } from './Filters/Filters';
 import { Header, HeaderProps } from './Header/Header';
-import { PaginationProps } from './Pagination/Pagination';
+import { Pagination, PaginationProps } from './Pagination/Pagination';
 import { ProductGrid, ProductGridProps } from './ProductGrid/ProductGrid';
 
-export type ProductCategoryProps = HeaderProps & FiltersProps & ProductGridProps & PaginationProps;
+export type ProductCategoryProps = HeaderProps & ProductGridProps & PaginationProps;
 
-export const ProductCategory = ({
-  header,
-  filters,
-  sortOptions,
-  setFilters,
-  clearAllFilters,
-  setSortOption,
-  products,
-  pagination
-}: PropsWithChildren<ProductCategoryProps>) => {
+export const ProductCategory = ({ header, products, pagination }: PropsWithChildren<ProductCategoryProps>) => {
   return (
     <main className="pb-24">
       <Header header={header} />
@@ -27,7 +17,7 @@ export const ProductCategory = ({
         setSortOption={setSortOption}
       /> */}
       <ProductGrid products={products} />
-      {/* <Pagination pagination={pagination} /> */}
+      <Pagination pagination={pagination} />
     </main>
   );
 };
