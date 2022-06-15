@@ -23,11 +23,13 @@ jobs:
       - name: Install modules
         run: npm ci
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v2
+      - name: Run eslint
+        run: npm run lint:fix-changed
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          eslint: true
-          auto_fix: true
+          commit_message: Lint fix changes
+          skip_dirty_check: false
 
   npm-test:
     if: github.event.action != 'closed'
