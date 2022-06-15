@@ -1,31 +1,5 @@
 import { format } from 'date-fns';
-
-enum Shopify_FulfillmentDisplayStatus {
-  AttemptedDelivery = 'ATTEMPTED_DELIVERY',
-  Canceled = 'CANCELED',
-  Confirmed = 'CONFIRMED',
-  Delivered = 'DELIVERED',
-  Failure = 'FAILURE',
-  Fulfilled = 'FULFILLED',
-  InTransit = 'IN_TRANSIT',
-  LabelPrinted = 'LABEL_PRINTED',
-  LabelPurchased = 'LABEL_PURCHASED',
-  LabelVoided = 'LABEL_VOIDED',
-  MarkedAsFulfilled = 'MARKED_AS_FULFILLED',
-  NotDelivered = 'NOT_DELIVERED',
-  OutForDelivery = 'OUT_FOR_DELIVERY',
-  ReadyForPickup = 'READY_FOR_PICKUP',
-  PickedUp = 'PICKED_UP',
-  Submitted = 'SUBMITTED'
-}
-export interface PurchaseItemOrderStatusProps {
-  status: Shopify_FulfillmentDisplayStatus;
-  deliveredAt: string;
-  estimatedDeliveryAt: string;
-  updatedAt: string;
-  trackingNumber?: string;
-  trackingCompany?: string;
-}
+import { Shopify_Fulfillment, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
 
 function getStatusTextAndColor(
   status: Shopify_FulfillmentDisplayStatus,
@@ -40,6 +14,7 @@ function getStatusTextAndColor(
     case Shopify_FulfillmentDisplayStatus.LabelVoided:
     case Shopify_FulfillmentDisplayStatus.Submitted:
       return {
+        label: 'Processing',
         text: 'Processing on',
         color: 'gray',
         date: updatedAt
@@ -51,6 +26,7 @@ function getStatusTextAndColor(
     case Shopify_FulfillmentDisplayStatus.OutForDelivery:
     case Shopify_FulfillmentDisplayStatus.ReadyForPickup:
       return {
+        label: 'Shipped',
         text: 'Estimated delivery on',
         color: 'green',
         date: estimatedDeliveryAt ?? updatedAt
@@ -58,6 +34,7 @@ function getStatusTextAndColor(
     case Shopify_FulfillmentDisplayStatus.Delivered:
     case Shopify_FulfillmentDisplayStatus.PickedUp:
       return {
+        label: 'Delivered',
         text: 'Delivered at',
         color: 'purple',
         date: deliveredAt ?? updatedAt
@@ -66,6 +43,7 @@ function getStatusTextAndColor(
     case Shopify_FulfillmentDisplayStatus.Failure:
     case Shopify_FulfillmentDisplayStatus.NotDelivered:
       return {
+        label: 'Failed Delivery',
         text: 'Errored at',
         color: 'red',
         date: updatedAt
@@ -73,26 +51,20 @@ function getStatusTextAndColor(
   }
 }
 
-export const PurchaseItemOrderStatus = ({
-  status,
-  deliveredAt,
-  estimatedDeliveryAt,
-  updatedAt,
-  trackingNumber,
-  trackingCompany
-}: PurchaseItemOrderStatusProps) => {
-  const { color, text, date } = getStatusTextAndColor(status, deliveredAt, estimatedDeliveryAt, updatedAt);
-
+export const PurchaseItemOrderStatus = (props: Shopify_Fulfillment) => {
+  const { displayStatus: status, deliveredAt, estimatedDeliveryAt, updatedAt, trackingInfo } = props;
+  const { label, color, text, date } = getStatusTextAndColor(status, deliveredAt, estimatedDeliveryAt, updatedAt);
   return (
     <>
-      <div>
-        {text} {format(new Date(date), 'PP')}
-      </div>
-      {trackingNumber && (
-        <div>
-          {trackingCompany} #{trackingNumber}
+      <p className={`inline-block rounded-md py-1 px-3 font-semibold text-white bg-${color ?? 'gray'}-500`}>
+        {label ?? 'Unknown'}
+      </p>
+      <div>on {format(new Date(date), 'PP')}</div>
+      {trackingInfo.map((tracking) => (
+        <div key={tracking.number}>
+          {tracking.company} #{tracking.number}
         </div>
-      )}
+      ))}
     </>
   );
 };

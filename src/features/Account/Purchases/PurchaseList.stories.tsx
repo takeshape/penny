@@ -19,7 +19,7 @@ Empty.parameters = {
     handlers: {
       newsletter: [
         graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
-          return res(ctx.data({ customer: { orders: undefined } }));
+          return res(ctx.data({ customer: { orders: { edges: [] } } }));
         })
       ]
     }
