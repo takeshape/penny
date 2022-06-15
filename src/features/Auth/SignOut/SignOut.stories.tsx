@@ -3,14 +3,15 @@ import { AuthSignOut } from './SignOut';
 
 const Meta: ComponentMeta<typeof AuthSignOut> = {
   title: 'Features / Auth / Components / Sign Out',
-  component: AuthSignOut
+  component: AuthSignOut,
+  argTypes: {
+    signOut: {
+      action: 'Sign Out'
+    }
+  }
 };
 
 const Template = (args) => <AuthSignOut {...args} />;
-
-/**
- * TODO: When we can mock mutations we might want to show more states.
- */
 
 export const SignOut = Template.bind({});
 
