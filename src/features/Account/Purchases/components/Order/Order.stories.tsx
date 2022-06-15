@@ -1,6 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import Order from './Order';
 import fixtures from './Order.fixtures.json';
+import OrderSkeleton from './OrderSkeleton';
 
 const Meta: ComponentMeta<typeof Order> = {
   title: 'Features / Account / Purchases / Components / Order',
@@ -21,5 +22,7 @@ export const Unfulfilled = Template.bind({});
 Unfulfilled.args = {
   order: fixtures.unfulfilled
 };
+
+export const Skeleton = () => <OrderSkeleton />;
 
 export default Meta;
