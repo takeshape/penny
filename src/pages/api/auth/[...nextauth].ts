@@ -10,13 +10,10 @@ import {
   CreateCustomerAccessTokenMutation,
   CreateCustomerAccessTokenResponse,
   GetCustomerTokenDataQuery,
-  GetCustomerTokenDataResponse,
-  UpsertProfile,
-  UpsertProfileResponse
+  GetCustomerTokenDataResponse
 } from 'queries';
 import {
   MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
-  MutationUpsertProfileArgs,
   QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
 import { createStaticClient } from 'utils/apollo/client';
@@ -140,18 +137,6 @@ const nextAuthConfig = {
         },
         shopifyCustomerAccessToken
       };
-    }
-  },
-  events: {
-    async signIn({ user }) {
-      // Await to ensure the profile is created or updated in TakeShape
-      await apolloClient.mutate<UpsertProfileResponse, MutationUpsertProfileArgs>({
-        mutation: UpsertProfile,
-        variables: {
-          id: user.id,
-          email: user.email
-        }
-      });
     }
   }
 };
