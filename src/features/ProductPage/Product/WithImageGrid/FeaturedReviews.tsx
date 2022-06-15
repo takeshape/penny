@@ -1,5 +1,5 @@
+import { Avatar } from 'components/Avatar/Avatar';
 import { DefaultReviewer } from 'components/Icons/Icons';
-import NextImage from 'components/NextImage';
 import Stars from 'components/Stars/Stars';
 import { Review } from 'types/review';
 
@@ -24,17 +24,11 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
 
           <div className="order-1 flex items-center sm:flex-col sm:items-start">
             <div className="h-12 w-12">
-              {review.reviewer.imageUrl ? (
-                <NextImage
-                  src={review.reviewer.imageUrl}
-                  alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
-                  height={48}
-                  width={48}
-                  className="rounded-full"
-                />
-              ) : (
-                <DefaultReviewer />
-              )}
+              <Avatar
+                src={review.reviewer.imageUrl}
+                alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
+                fallback={<DefaultReviewer />}
+              />
             </div>
 
             <div className="ml-4 sm:ml-0 sm:mt-4">
