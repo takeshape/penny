@@ -17,7 +17,10 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
             <h3 className="text-sm font-medium text-gray-900">{review.title}</h3>
             <p className="sr-only">{review.rating} out of 5 stars</p>
 
-            <div className="mt-3 space-y-6 text-sm text-gray-600" dangerouslySetInnerHTML={{ __html: review.body }} />
+            <div
+              className="mt-3 space-y-6 text-sm text-gray-600 prose"
+              dangerouslySetInnerHTML={{ __html: review.body }}
+            />
           </div>
 
           <div className="order-1 flex items-center sm:flex-col sm:items-start">

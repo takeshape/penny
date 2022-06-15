@@ -30,7 +30,7 @@
   font-named-instance: 'Italic';
 }
 
-/* Example of setting custom prose styles, for e.g., _dangerouslySetHtml */
+/* Example of setting custom prose styles, for e.g., dangerouslySetHtml */
 @layer base {
   div#example-prose > p {
     @apply text-base text-gray-900 mt-4;

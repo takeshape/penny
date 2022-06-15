@@ -3,14 +3,14 @@ import { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductRev
 
 export function getReview(review: ReviewsIo_ProductReview): Review {
   const { product_review_id, rating, title, review: body, date_created, timeago, reviewer } = review;
-
+  const dateCreated = `${date_created.replace(' ', 'T')}.000Z`;
   return {
     id: product_review_id,
     rating,
     title,
     body,
     // Reviews.io is ISO 9075, convert to ISO 8601
-    createdAt: new Date(`${date_created}.000Z`).toISOString(),
+    createdAt: new Date(dateCreated).toISOString(),
     timeAgo: timeago,
     reviewer: {
       firstName: reviewer.first_name,

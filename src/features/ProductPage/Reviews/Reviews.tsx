@@ -25,7 +25,7 @@ export const Reviews = ({ reviews, showRollup }: ReviewsProps) => {
               <Stars rating={stats.average ?? 0} />
               <p className="sr-only">{stats.average ?? 0} out of 5 stars</p>
             </div>
-            <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>
+            {stats.average !== null && <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>}
           </div>
 
           {showRollup && rollup && (

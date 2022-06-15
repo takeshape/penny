@@ -33,7 +33,7 @@ export const ReviewsListItem = ({ review }: ReviewsListItemProps) => {
       </div>
 
       <div
-        className="mt-4 space-y-6 text-base italic text-gray-600"
+        className="mt-4 space-y-6 text-base italic text-gray-600 prose"
         dangerouslySetInnerHTML={{ __html: review.body }}
       />
     </>
