@@ -14,9 +14,7 @@ export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
   const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-gray-900');
 
   if (hasStock) {
-    return (
-      <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>
-    )
+    return <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>;
   }
 
   return (
