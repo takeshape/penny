@@ -1,22 +1,12 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
+import { shopifyFulfillmentToFulfillment } from 'transforms/shopify';
+import { Shopify_Fulfillment } from 'types/takeshape';
 import { PurchaseItemOrderStatus } from './OrderStatus';
 import OrderStatusFixtures from './OrderStatus.fixtures.json';
 
 const Meta: ComponentMeta<typeof PurchaseItemOrderStatus> = {
   title: 'Features / Account / Purchases / Components / OrderStatus',
-  component: PurchaseItemOrderStatus,
-  argTypes: {
-    status: {
-      control: {
-        type: 'select',
-        options: Array.from(Object.values(Shopify_FulfillmentDisplayStatus))
-      }
-    },
-    deliveredAt: { control: { type: 'date' } },
-    estimatedDeliveryAt: { control: { type: 'date' } },
-    updatedAt: { control: { type: 'date' } }
-  }
+  component: PurchaseItemOrderStatus
 };
 
 const Template: ComponentStory<typeof PurchaseItemOrderStatus> = (args) => <PurchaseItemOrderStatus {...args} />;
@@ -28,7 +18,7 @@ Processing.args = {
 
 export const Fulfilled = Template.bind({});
 Fulfilled.args = {
-  ...OrderStatusFixtures.FULFILLED
+  ...shopifyFulfillmentToFulfillment(OrderStatusFixtures.FULFILLED as Shopify_Fulfillment)
 };
 
 export default Meta;

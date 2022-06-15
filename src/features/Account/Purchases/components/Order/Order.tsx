@@ -1,13 +1,11 @@
 import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
-import { shopifyGidToId, shopifyOrderToLineItems } from 'transforms/shopify';
-import { Shopify_Order, Shopify_OrderDisplayFulfillmentStatus } from 'types/takeshape';
+import { Order } from 'types/order';
 import { formatPrice } from 'utils/text';
 import LineItem from '../LineItem/LineItem';
 import OrderStatus from '../OrderStatus/OrderStatus';
 
-export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Shopify_Order }>) => {
-  const lineItems = shopifyOrderToLineItems(order);
+export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Order }>) => {
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden bg-white p-2 sm:p-4">
       <h3 className="sr-only">
@@ -23,15 +21,12 @@ export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Shopify_Orde
           </div>
           <div className="flex justify-between pt-6 sm:block sm:pt-0">
             <dt className="font-medium text-gray-900">Order number</dt>
-            <dd className="sm:mt-1">{shopifyGidToId(order.id)}</dd>
+            <dd className="sm:mt-1">{order.id}</dd>
           </div>
           <div className="flex justify-between pt-6 sm:block sm:pt-0">
             <dt className="font-medium text-gray-900">Total amount</dt>
             <dd className="sm:mt-1">
-              {formatPrice(
-                order.totalPriceSet.shopMoney.currencyCode,
-                Number(order.totalPriceSet.shopMoney.amount) * 100
-              )}
+              {formatPrice(order.totalPrice.currencyCode, Number(order.totalPrice.amount) * 100)}
             </dd>
           </div>
         </dl>
@@ -45,13 +40,10 @@ export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Shopify_Orde
         </a> */}
       </header>
       <div className="my-2">
-        <OrderStatus
-          {...order.fulfillments[0]}
-          unfulfilled={order.displayFulfillmentStatus === Shopify_OrderDisplayFulfillmentStatus.Unfulfilled}
-        />
+        <OrderStatus {...order.fulfillments[0]} unfulfilled={order.status === 'UNFULFILLED'} />
       </div>
       <main className="mb-2 px-2">
-        {Boolean(lineItems?.length) && (
+        {Boolean(order.lineItems.length) && (
           <table className="w-full text-gray-500 sm:mt-6">
             <caption className="sr-only">Products</caption>
             <thead className="sr-only text-sm text-gray-500 text-left sm:not-sr-only">
@@ -68,7 +60,7 @@ export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Shopify_Orde
               </tr>
             </thead>
             <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-              {lineItems.map((lineItem) => (
+              {order.lineItems.map((lineItem) => (
                 <LineItem key={lineItem.id} lineItem={lineItem} />
               ))}
             </tbody>

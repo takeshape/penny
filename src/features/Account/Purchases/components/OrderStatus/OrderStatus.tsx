@@ -1,56 +1,6 @@
 import { TruckIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
-import { Shopify_Fulfillment, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
-
-function getStatusTextAndColor(
-  status: Shopify_FulfillmentDisplayStatus,
-  deliveredAt: string,
-  estimatedDeliveryAt: string,
-  updatedAt: string
-) {
-  switch (status) {
-    case Shopify_FulfillmentDisplayStatus.Confirmed:
-    case Shopify_FulfillmentDisplayStatus.LabelPrinted:
-    case Shopify_FulfillmentDisplayStatus.LabelPurchased:
-    case Shopify_FulfillmentDisplayStatus.LabelVoided:
-    case Shopify_FulfillmentDisplayStatus.Submitted:
-      return {
-        label: 'Order Processing',
-        color: 'gray',
-        text: 'Processing on',
-        date: updatedAt
-      };
-    case Shopify_FulfillmentDisplayStatus.AttemptedDelivery:
-    case Shopify_FulfillmentDisplayStatus.Fulfilled:
-    case Shopify_FulfillmentDisplayStatus.InTransit:
-    case Shopify_FulfillmentDisplayStatus.MarkedAsFulfilled:
-    case Shopify_FulfillmentDisplayStatus.OutForDelivery:
-    case Shopify_FulfillmentDisplayStatus.ReadyForPickup:
-      return {
-        label: 'Shipped',
-        color: 'green',
-        text: 'Estimated delivery on',
-        date: estimatedDeliveryAt ?? updatedAt
-      };
-    case Shopify_FulfillmentDisplayStatus.Delivered:
-    case Shopify_FulfillmentDisplayStatus.PickedUp:
-      return {
-        label: 'Delivered',
-        color: 'indigo',
-        text: 'Delivered at',
-        date: deliveredAt ?? updatedAt
-      };
-    case Shopify_FulfillmentDisplayStatus.Canceled:
-    case Shopify_FulfillmentDisplayStatus.Failure:
-    case Shopify_FulfillmentDisplayStatus.NotDelivered:
-      return {
-        label: 'Failed Delivery',
-        color: 'red',
-        text: 'Errored at',
-        date: updatedAt
-      };
-  }
-}
+import { Fulfillment } from 'types/order';
 
 export function getTrackingUrl(carrier, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
   switch (carrier) {
@@ -78,7 +28,7 @@ const OrderStatusChip = ({ color, label }: { color?: string; label?: string }) =
   </p>
 );
 
-export const PurchaseItemOrderStatus = (props: Shopify_Fulfillment & { unfulfilled?: boolean }) => {
+export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boolean }) => {
   if (props.unfulfilled) {
     return (
       <div className="flex flex-wrap gap-2 items-center">
@@ -87,12 +37,7 @@ export const PurchaseItemOrderStatus = (props: Shopify_Fulfillment & { unfulfill
       </div>
     );
   }
-  const { label, color, text, date } = getStatusTextAndColor(
-    props.displayStatus,
-    props.deliveredAt,
-    props.estimatedDeliveryAt,
-    props.updatedAt
-  );
+  const { label, color, text, date } = props.status;
   return (
     <div className="flex flex-wrap gap-x-4 items-center">
       <header className="w-full m-2 pb-2 border-b text-sm text-gray-500">Order Status</header>

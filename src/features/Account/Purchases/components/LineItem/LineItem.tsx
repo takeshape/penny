@@ -1,10 +1,10 @@
 import Image from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import { shopifyGidToId } from 'transforms/shopify';
-import { Shopify_LineItem } from 'types/takeshape';
+import { LineItem as LineItemType } from 'types/order';
 import { formatPrice } from 'utils/text';
 
-const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: Shopify_LineItem }>) => {
+const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType }>) => {
   return (
     <tr>
       <td className="py-6 pr-8">
@@ -21,20 +21,14 @@ const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: Shopify_Line
           <div>
             <div className="font-medium text-gray-900">{lineItem.name}</div>
             <div className="mt-1 sm:hidden">
-              {formatPrice(
-                lineItem.originalTotalSet.shopMoney.currencyCode,
-                lineItem.originalTotalSet.shopMoney.amount * 100
-              )}
+              {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
             </div>
           </div>
         </NextLink>
       </td>
       <td className="py-6 pr-8">{lineItem.quantity}</td>
       <td className="hidden py-6 pr-8 sm:table-cell">
-        {formatPrice(
-          lineItem.originalTotalSet.shopMoney.currencyCode,
-          lineItem.originalTotalSet.shopMoney.amount * 100
-        )}
+        {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
       </td>
     </tr>
   );
