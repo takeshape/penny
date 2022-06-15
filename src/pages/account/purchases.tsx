@@ -3,11 +3,11 @@ import AccountPastPurchases from 'features/Account/Purchases/PurchaseList';
 import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
-
+import { getCustomerOrders } from 'transforms/shopify';
 const AccountPurchasesPage: NextPage = () => {
   const { data, loading } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
 
-  const orders = data?.customer.orders.edges.map(({ node }) => node);
+  const orders = getCustomerOrders(data?.customer);
 
   return (
     <Layout title="Purchases">

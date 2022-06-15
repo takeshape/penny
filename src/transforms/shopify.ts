@@ -8,8 +8,10 @@ import {
   ProductVariant
 } from 'types/product';
 import {
+  Shopify_Customer,
   Shopify_Image,
   Shopify_MoneyV2,
+  Shopify_Order,
   Shopify_Product,
   Shopify_ProductOption,
   Shopify_ProductVariant,
@@ -256,4 +258,8 @@ export function shopifyGidToId(gid: string): string {
 
 export function shopifyIdToGid(id: string): string {
   return `gid://shopify/Product/${id}`;
+}
+
+export function getCustomerOrders(customer?: Shopify_Customer): Shopify_Order[] {
+  return customer?.orders.edges.map(({ node }) => node);
 }
