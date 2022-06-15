@@ -31,15 +31,18 @@ export const ProductWithImageGrid = ({
   const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
 
-  const initialColor = colors.values.find((v) => v.hasStock) ?? colors.values[0];
-  const [selectedColor, setSelectedColor] = useState(initialColor.value);
-  const initialSize = sizes.values.find((v) => v.hasStock) ?? sizes.values[0];
-  const [selectedSize, setSelectedSize] = useState(initialSize.value);
+  const initialColor = colors?.values.find((v) => v.hasStock) ?? colors?.values[0] ?? null;
+  const [selectedColor, setSelectedColor] = useState(initialColor?.value ?? '');
+  const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
+  const [selectedSize, setSelectedSize] = useState(initialSize?.value);
 
-  const initialVariant = getVariant(product.variants, [
-    { name: 'Color', value: selectedColor },
-    { name: 'Size', value: selectedSize }
-  ]);
+  const initialVariant =
+    selectedColor && selectedSize
+      ? getVariant(product.variants, [
+          { name: 'Color', value: selectedColor },
+          { name: 'Size', value: selectedSize }
+        ])
+      : product.variants[0];
 
   const [selectedVariant, setSelectedVariant] = useState(initialVariant);
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
@@ -92,21 +95,25 @@ export const ProductWithImageGrid = ({
           )}
 
           <form className="mt-10">
-            <div>
-              <h3 className="text-sm text-gray-900 font-medium">Color</h3>
-              <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
-            </div>
-
-            <div className="mt-10">
-              <div className="flex items-center justify-between">
-                <h3 className="text-sm text-gray-900 font-medium">Size</h3>
-                <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                  Size guide
-                </a>
+            {colors && (
+              <div>
+                <h3 className="text-sm text-gray-900 font-medium">Color</h3>
+                <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
               </div>
+            )}
 
-              <ProductSizeSelect value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
-            </div>
+            {sizes && (
+              <div className="mt-10">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm text-gray-900 font-medium">Size</h3>
+                  <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                    Size guide
+                  </a>
+                </div>
+
+                <ProductSizeSelect value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
+              </div>
+            )}
 
             {hasStock && selectedVariant.prices.length > 1 && (
               <div className="mt-10">
