@@ -20,22 +20,31 @@ const Empty = () => (
   </div>
 )
 
+const Header = () => (
+  <header>
+    <h3 className="text-lg leading-6 font-medium text-gray-900">Order history</h3>
+    <p className="mt-1 text-sm text-gray-500">Check the status of recent orders, manage returns, and download invoices.</p>
+  </header>
+)
+
 export const AccountPurchaseList = ({ loading, orders }: AccountPurchasesProps) => {
-  if (!orders || !orders.length) {
-    return <div className="min-h-full flex justify-center items-center">{loading ? <Loader colorClass="text-neutral-700" /> : <Empty />}</div>;
+  if (loading || !orders || !orders.length) {
+    return (
+      <div className="flex flex-col min-h-full space-y-4">
+        <Header />
+        <div className="min-h-40 p-4 sm:p-6 flex-1 min-h-full flex justify-center items-center">{loading ? <Loader colorClass="text-neutral-700" /> : <Empty />}</div>
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-4">
-      <header>
-        <h3 className="text-lg leading-6 font-medium text-gray-900">Order history</h3>
-        <p className="mt-1 text-sm text-gray-500">Check the status of recent orders, manage returns, and download invoices.</p>
-      </header>
+    <div className="min-h-full space-y-4">
+      <Header />
       <section aria-labelledby="recent-heading">
         <h2 id="recent-heading" className="sr-only">
           Recent orders
         </h2>
-        <div className="space-y-4">
+        <div className="space-y-4 min-h-40">
           {orders.map((order) => (
             <div className="shadow sm:rounded-md sm:overflow-hidden bg-white p-2 sm:p-4" key={order.id}>
               <h3 className="sr-only">

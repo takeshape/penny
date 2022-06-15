@@ -6,7 +6,10 @@ import purchaseListJson from './PurchaseList.fixtures.json';
 
 const Meta: ComponentMeta<typeof PurchaseList> = {
   title: 'Features / Account / Purchases',
-  component: PurchaseList
+  component: PurchaseList,
+  parameters: {
+    layout: 'centered'
+  }
 };
 
 const Template: ComponentStory<typeof PurchaseList> = (args) => <PurchaseList {...args} />;

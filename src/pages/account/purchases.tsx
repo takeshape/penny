@@ -4,6 +4,7 @@ import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
 import { getCustomerOrders } from 'transforms/shopify';
+
 const AccountPurchasesPage: NextPage = () => {
   const { data, loading } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
 
