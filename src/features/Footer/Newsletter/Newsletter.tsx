@@ -34,18 +34,18 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     onError
   });
 
-  const handleRecaptchaSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>, recaptchaToken: string) => {
+  const { recaptchaRef, recaptchaTokenRef, handleRecaptchaChange } = useRecaptcha();
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
       const email = event.currentTarget.elements['email-address'].value;
       if (email) {
         setLoading(true);
-        mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
+        mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken: recaptchaTokenRef.current } });
       }
     },
-    [mutateFn]
+    [mutateFn, recaptchaTokenRef]
   );
-
-  const { recaptchaRef, submitCallback, handleRecaptchaChange } = useRecaptcha({ handleRecaptchaSubmit });
 
   return (
     <>
@@ -53,7 +53,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
         <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{text.primary}</h3>
       )}
       {text?.secondary && <p className="mt-4 text-base text-gray-500">{text.secondary}</p>}
-      <form className="mt-4 sm:flex" onSubmit={submitCallback}>
+      <form className="mt-4 sm:flex" onSubmit={handleSubmit}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>

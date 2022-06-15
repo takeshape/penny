@@ -26,14 +26,14 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
     MutationShopifyStorefront_CustomerRecoverArgs
   >(RecoverCustomerPasswordMutation);
 
-  const handleRecaptchaSubmit = useCallback(
-    async ({ email }: AuthRecoverPasswordForm, recaptchaToken: string) => {
-      await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
-    },
-    [setRecoverPasswordPayload]
-  );
+  const { recaptchaRef, recaptchaTokenRef, handleRecaptchaChange } = useRecaptcha();
 
-  const { recaptchaRef, submitCallback, handleRecaptchaChange } = useRecaptcha({ handleRecaptchaSubmit });
+  const submitCallback = useCallback(
+    async ({ email }: AuthRecoverPasswordForm) => {
+      await setRecoverPasswordPayload({ variables: { email, recaptchaToken: recaptchaTokenRef.current } });
+    },
+    [recaptchaTokenRef, setRecoverPasswordPayload]
+  );
 
   const hasData = Boolean(recoverPasswordData);
   const hasErrors = recoverPasswordData?.customerRecover?.customerUserErrors?.length > 0;
@@ -81,14 +81,12 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
                     }
                   }}
                 />
-
                 <ReCAPTCHA
                   ref={recaptchaRef}
                   size="invisible"
                   sitekey={recaptchaSiteKey}
                   onChange={handleRecaptchaChange}
                 />
-
                 <div>
                   <Button disabled={formState.isSubmitting} type="submit" color="primary" className="w-full">
                     Reset password

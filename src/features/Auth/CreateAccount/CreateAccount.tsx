@@ -41,14 +41,16 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     }
   }, [customerResponse, callbackUrl]);
 
-  const handleRecaptchaSubmit = useCallback(
-    async ({ email, password }: AuthCreateAccountForm, recaptchaToken: string) => {
-      await setCustomerPayload({ variables: { input: { email, password, recaptchaToken } } });
-    },
-    [setCustomerPayload]
-  );
+  const { recaptchaRef, recaptchaTokenRef, handleRecaptchaChange } = useRecaptcha();
 
-  const { recaptchaRef, submitCallback, handleRecaptchaChange } = useRecaptcha({ handleRecaptchaSubmit });
+  const submitCallback = useCallback(
+    async ({ email, password }: AuthCreateAccountForm) => {
+      await setCustomerPayload({
+        variables: { input: { email, password, recaptchaToken: recaptchaTokenRef.current } }
+      });
+    },
+    [recaptchaTokenRef, setCustomerPayload]
+  );
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">

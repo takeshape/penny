@@ -1,32 +1,21 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-export interface UseRecaptchaArgs<T> {
-  handleRecaptchaSubmit: (formValues: T, recaptchaToken: string) => void;
-}
-
-export const useRecaptcha = <T>({ handleRecaptchaSubmit }: UseRecaptchaArgs<T>) => {
+export const useRecaptcha = <T>() => {
   const recaptchaRef = useRef<ReCAPTCHA>();
-  const valueRef = useRef<T>();
+  const recaptchaTokenRef = useRef<string>();
 
-  const submitCallback = useCallback(
-    async (formValues: T) => {
-      valueRef.current = formValues;
-      recaptchaRef.current.execute();
-    },
-    [recaptchaRef]
-  );
+  useEffect(() => {
+    recaptchaRef.current.execute();
+  }, []);
 
-  const handleRecaptchaChange = useCallback(
-    (recaptchaToken: string) => {
-      handleRecaptchaSubmit(valueRef.current, recaptchaToken);
-    },
-    [handleRecaptchaSubmit]
-  );
+  const handleRecaptchaChange = useCallback((recaptchaToken: string) => {
+    recaptchaTokenRef.current = recaptchaToken;
+  }, []);
 
   return {
     recaptchaRef,
-    submitCallback,
+    recaptchaTokenRef,
     handleRecaptchaChange
   };
 };
