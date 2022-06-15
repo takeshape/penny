@@ -1,11 +1,11 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
-import OrderStatus from './OrderStatus';
+import { PurchaseItemOrderStatus } from './OrderStatus';
 import OrderStatusFixtures from './OrderStatus.fixtures.json';
 
-const Meta: ComponentMeta<typeof OrderStatus> = {
+const Meta: ComponentMeta<typeof PurchaseItemOrderStatus> = {
   title: 'Features / Account / Purchases / Components / OrderStatus',
-  component: OrderStatus,
+  component: PurchaseItemOrderStatus,
   argTypes: {
     status: {
       control: {
@@ -19,7 +19,7 @@ const Meta: ComponentMeta<typeof OrderStatus> = {
   }
 };
 
-const Template: ComponentStory<typeof OrderStatus> = (args) => <OrderStatus {...args} />;
+const Template: ComponentStory<typeof PurchaseItemOrderStatus> = (args) => <PurchaseItemOrderStatus {...args} />;
 
 export const Processing = Template.bind({});
 Processing.args = {

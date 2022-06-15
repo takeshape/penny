@@ -2,16 +2,12 @@ import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
 import { Shopify_Order, Shopify_OrderDisplayFulfillmentStatus } from 'types/takeshape';
 import { formatPrice } from 'utils/text';
-import { shopifyGidToId } from 'utils/transforms/shopify';
+import { shopifyGidToId, shopifyOrderToLineItems } from 'utils/transforms/shopify';
 import LineItem from '../LineItem/LineItem';
 import OrderStatus from '../OrderStatus/OrderStatus';
 
 export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Shopify_Order }>) => {
-  /** Creates a map so we can look up which shipment each line item is contained in. */
-  const lineItemShipmentMap = order.fulfillments.map((fulfillment) =>
-    fulfillment.fulfillmentLineItems.edges.map((edge) => edge.node.id)
-  );
-  const lineItems = order.lineItems?.edges.map((edge) => edge.node);
+  const lineItems = shopifyOrderToLineItems(order);
   return (
     <div className="shadow sm:rounded-md sm:overflow-hidden bg-white p-2 sm:p-4">
       <h3 className="sr-only">

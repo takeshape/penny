@@ -10,6 +10,7 @@ import {
 import {
   Shopify_Customer,
   Shopify_Image,
+  Shopify_LineItem,
   Shopify_MoneyV2,
   Shopify_Order,
   Shopify_Product,
@@ -260,6 +261,10 @@ export function shopifyIdToGid(id: string): string {
   return `gid://shopify/Product/${id}`;
 }
 
-export function getCustomerOrders(customer?: Shopify_Customer): Shopify_Order[] {
+export function shopifyOrderToLineItems(order?: Shopify_Order): Shopify_LineItem[] {
+  return order?.lineItems?.edges.map((edge) => edge.node);
+}
+
+export function shopifyCustomerToShopifyOrderArray(customer?: Shopify_Customer): Shopify_Order[] {
   return customer?.orders.edges.map(({ node }) => node);
 }

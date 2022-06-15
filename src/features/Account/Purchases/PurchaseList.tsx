@@ -1,6 +1,6 @@
 import { NetworkStatus, useQuery } from '@apollo/client';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
-import { getCustomerOrders } from 'transforms/shopify';
+import { shopifyCustomerToShopifyOrderArray } from 'transforms/shopify';
 import Order from './components/Order/Order';
 import OrderSkeleton from './components/Order/OrderSkeleton';
 
@@ -22,7 +22,7 @@ const Header = () => (
 
 export const AccountPurchaseList = () => {
   const { data, loading, networkStatus } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
-  const orders = getCustomerOrders(data?.customer);
+  const orders = shopifyCustomerToShopifyOrderArray(data?.customer);
 
   if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
     return (

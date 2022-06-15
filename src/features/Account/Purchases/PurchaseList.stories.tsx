@@ -1,17 +1,17 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
-import PurchaseList from './PurchaseList';
+import { AccountPurchaseList } from './PurchaseList';
 import purchaseListJson from './PurchaseList.fixtures.json';
 
-const Meta: ComponentMeta<typeof PurchaseList> = {
+const Meta: ComponentMeta<typeof AccountPurchaseList> = {
   title: 'Features / Account / Purchases',
-  component: PurchaseList,
+  component: AccountPurchaseList,
   parameters: {
     layout: 'centered'
   }
 };
 
-const Template: ComponentStory<typeof PurchaseList> = () => <PurchaseList />;
+const Template: ComponentStory<typeof AccountPurchaseList> = () => <AccountPurchaseList />;
 
 export const Empty = Template.bind({});
 Empty.parameters = {
