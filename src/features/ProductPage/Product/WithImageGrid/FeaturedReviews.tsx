@@ -1,8 +1,7 @@
-import { StarIcon } from '@heroicons/react/solid';
 import { DefaultReviewer } from 'components/Icons/Icons';
 import NextImage from 'components/NextImage';
+import Stars from 'components/Stars/Stars';
 import { Review } from 'types/review';
-import classNames from 'utils/classNames';
 
 export interface FeaturedReviewsProps {
   reviews: Review[];
@@ -42,18 +41,7 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
               <p className="text-sm font-medium text-gray-900">
                 {review.reviewer.firstName} {review.reviewer.lastName}
               </p>
-              <div className="mt-2 flex items-center">
-                {[0, 1, 2, 3, 4].map((rating) => (
-                  <StarIcon
-                    key={rating}
-                    className={classNames(
-                      review.rating > rating ? 'text-gray-900' : 'text-gray-200',
-                      'h-5 w-5 flex-shrink-0'
-                    )}
-                    aria-hidden="true"
-                  />
-                ))}
-              </div>
+              <Stars rating={review.rating} />
             </div>
           </div>
         </div>
