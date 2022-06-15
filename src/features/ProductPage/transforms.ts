@@ -1,6 +1,6 @@
+import { getImageUrl } from '@takeshape/routing';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import { createImageGetter, getOptions, getPrice, getSeo, getVariants, shopifyGidToId } from 'transforms/shopify';
-import { buildImageUrl } from 'transforms/takeshape';
 import {
   ProductPageReviewsIoReviewsResponse,
   ProductPageShopifyProductReponse,
@@ -81,7 +81,7 @@ export function getPolicies(response: ProductPageTakeshapePoliciesResponse): Pro
       name: policy.nameHtml.replace(/<\/?p>/g, ''),
       description: policy.descriptionHtml.replace(/<\/?p>/g, ''),
       image: {
-        url: buildImageUrl(policy.image.path),
+        url: getImageUrl(policy.image.path),
         altText: policy.image.description ?? ''
       }
     }))
@@ -103,7 +103,7 @@ export function getDetails(response: ProductPageTakeshapeDetailsResponse): Produ
     },
     details: details.details.map((detail) => ({
       image: {
-        url: buildImageUrl(detail.image.path),
+        url: getImageUrl(detail.image.path),
         altText: detail.image.description ?? ''
       },
       description: detail.descriptionHtml.replace(/<\/?p>/g, '')
