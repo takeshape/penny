@@ -19,6 +19,7 @@ import {
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
+import { capitalize } from 'utils/text';
 
 function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
   switch (adjustmentType) {
@@ -254,6 +255,14 @@ export function shopifyGidToId(gid: string): string {
   return gid.replace(/gid:\/\/shopify\/\w+\//, '');
 }
 
-export function shopifyIdToGid(id: string): string {
-  return `gid://shopify/Product/${id}`;
+export function shopifyIdToGid(type: string, id: string): string {
+  return `gid://shopify/${capitalize(type)}/${id}`;
+}
+
+export function shopifyProductIdToGid(id: string): string {
+  return shopifyIdToGid('Product', id);
+}
+
+export function shopifyCollectionIdToGid(id: string): string {
+  return shopifyIdToGid('Collection', id);
 }

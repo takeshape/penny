@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Pagination from './Pagination';
+import { Pagination } from './Pagination';
 
 const Meta: ComponentMeta<typeof Pagination> = {
   title: 'Features / Product Category / Components / Pagination',

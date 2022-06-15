@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import ProductGrid from './ProductGrid';
+import { ProductGrid } from './ProductGrid';
 import { products } from './ProductGrid.fixture';
 
 const Meta: ComponentMeta<typeof ProductGrid> = {

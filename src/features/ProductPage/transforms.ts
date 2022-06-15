@@ -3,6 +3,7 @@ import { getReview, getStats } from 'transforms/reviewsIo';
 import { createImageGetter, getOptions, getPrice, getSeo, getVariants, shopifyGidToId } from 'transforms/shopify';
 import {
   ProductPageReviewsIoReviewsResponse,
+  ProductPageShopifyProductIdListResponse,
   ProductPageShopifyProductReponse,
   ProductPageTakeshapeDetailsResponse,
   ProductPageTakeshapePoliciesResponse
@@ -135,4 +136,14 @@ export function getPageOptions(response: ProductPageShopifyProductReponse): Prod
     showRelatedProducts: takeshapeItem.hideRelatedProducts === true ? false : true,
     component: getProductComponent(takeshapeItem.productComponent)
   };
+}
+
+export function getProductIds(response: ProductPageShopifyProductIdListResponse) {
+  const items = response?.products?.items;
+
+  if (!items) {
+    return null;
+  }
+
+  return items.map((item) => item.shopifyProductId);
 }

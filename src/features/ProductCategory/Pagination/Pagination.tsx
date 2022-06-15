@@ -83,5 +83,3 @@ const Pagination = (props: React.PropsWithChildren<PaginationProps>) => {
     </nav>
   );
 };
-
-export default Pagination;

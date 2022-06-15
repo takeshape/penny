@@ -10,12 +10,12 @@ import {
   ProductPageShopifyProductQuery,
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
-import { getPageOptions, getProduct } from 'features/ProductPage/transforms';
+import { getPageOptions, getProduct, getProductIds } from 'features/ProductPage/transforms';
 import { ProductPageOptions } from 'features/ProductPage/types';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { shopifyGidToId, shopifyIdToGid } from 'transforms/shopify';
+import { shopifyProductIdToGid } from 'transforms/shopify';
 import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -65,7 +65,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   const { data } = await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
     query: ProductPageShopifyProductQuery,
     variables: {
-      id: shopifyIdToGid(id)
+      id: shopifyProductIdToGid(id)
     }
   });
 
@@ -95,12 +95,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query: ProductPageShopifyProductIdListQuery
   });
 
-  const paths = data.products.items.map(({ shopifyProductId }) => ({
-    params: { id: shopifyGidToId(shopifyProductId) }
-  }));
+  const ids = getProductIds(data);
 
   return {
-    paths,
+    paths: ids.map((id) => ({ params: { id } })),
     fallback: true
   };
 };

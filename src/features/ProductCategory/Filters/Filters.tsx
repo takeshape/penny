@@ -79,7 +79,7 @@ const Filter = (props: React.PropsWithChildren<FilterProps>) => {
   );
 };
 
-const Filters = (props: React.PropsWithChildren<FiltersProps>) => {
+export const Filters = (props: React.PropsWithChildren<FiltersProps>) => {
   const { filters, setFilters, clearAllFilters, sortOptions, setSortOption } = props;
   const setFilter = useCallback(
     (filter: string, value: string, checked: boolean): void => {
@@ -192,5 +192,3 @@ const Filters = (props: React.PropsWithChildren<FiltersProps>) => {
     </Disclosure>
   );
 };
-
-export default Filters;

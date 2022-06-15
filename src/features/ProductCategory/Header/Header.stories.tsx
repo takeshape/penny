@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Header from './Header';
+import { Header } from './Header';
 
 const Meta: ComponentMeta<typeof Header> = {
   title: 'Features / Product Category / Components / Header',
