@@ -26,13 +26,18 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
     MutationShopifyStorefront_CustomerRecoverArgs
   >(RecoverCustomerPasswordMutation);
 
-  const { recaptchaRef, recaptchaTokenRef, handleRecaptchaChange } = useRecaptcha();
+  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
-  const submitCallback = useCallback(
-    async ({ email }: AuthRecoverPasswordForm) => {
-      await setRecoverPasswordPayload({ variables: { email, recaptchaToken: recaptchaTokenRef.current } });
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      executeRecaptcha((recaptchaToken) => {
+        handleSubmit(async ({ email }: AuthRecoverPasswordForm) => {
+          await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
+        })();
+      });
     },
-    [recaptchaTokenRef, setRecoverPasswordPayload]
+    [executeRecaptcha, handleSubmit, setRecoverPasswordPayload]
   );
 
   const hasData = Boolean(recoverPasswordData);
@@ -48,7 +53,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(submitCallback)}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             {hasErrors && (
               <Alert
                 status="error"

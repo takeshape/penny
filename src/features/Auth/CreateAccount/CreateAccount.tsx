@@ -41,15 +41,20 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     }
   }, [customerResponse, callbackUrl]);
 
-  const { recaptchaRef, recaptchaTokenRef, handleRecaptchaChange } = useRecaptcha();
+  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
-  const submitCallback = useCallback(
-    async ({ email, password }: AuthCreateAccountForm) => {
-      await setCustomerPayload({
-        variables: { input: { email, password, recaptchaToken: recaptchaTokenRef.current } }
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      executeRecaptcha((recaptchaToken) => {
+        handleSubmit(async ({ email, password }: AuthCreateAccountForm) => {
+          await setCustomerPayload({
+            variables: { input: { email, password, recaptchaToken } }
+          });
+        })();
       });
     },
-    [recaptchaTokenRef, setCustomerPayload]
+    [executeRecaptcha, handleSubmit, setCustomerPayload]
   );
 
   return (
@@ -62,7 +67,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(submitCallback)}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             {error && (
               <Alert
                 status="error"

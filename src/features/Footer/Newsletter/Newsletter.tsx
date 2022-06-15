@@ -2,7 +2,7 @@ import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import { defaultKlaviyoListId, recaptchaSiteKey } from 'config';
-import { FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Klaviyo_AddMembersResponse } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -34,17 +34,19 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     onError
   });
 
-  const { recaptchaRef, recaptchaTokenRef, handleRecaptchaChange } = useRecaptcha();
+  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
   const handleSubmit = useCallback(
-    async (event: FormEvent<HTMLFormElement>) => {
+    (event) => {
       const email = event.currentTarget.elements['email-address'].value;
-      if (email) {
-        setLoading(true);
-        mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken: recaptchaTokenRef.current } });
-      }
+      executeRecaptcha((recaptchaToken) => {
+        if (email) {
+          setLoading(true);
+          mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
+        }
+      });
     },
-    [mutateFn, recaptchaTokenRef]
+    [executeRecaptcha, mutateFn]
   );
 
   return (
