@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { cartItemsAtom, isCartOpenAtom } from 'features/Cart/store';
 import { currencyAtom } from 'store';
 import { Cart } from './Cart';
@@ -22,7 +22,7 @@ WithItems.parameters = {
     values: {
       isCartOpen: true,
       cartItems: fixtures.cartItems,
-      currency: 'usd'
+      currency: 'USD'
     }
   }
 };
@@ -38,7 +38,7 @@ WithRecurringAndOneTime.parameters = {
     values: {
       isCartOpen: true,
       cartItems: [...fixtures.cartItems, { ...fixtures.cartItems[1], interval: 'none', intervalCount: 0 }],
-      currency: 'usd'
+      currency: 'USD'
     }
   }
 };
@@ -54,7 +54,7 @@ Empty.parameters = {
     values: {
       isCartOpen: true,
       cartItems: [],
-      currency: 'usd'
+      currency: 'USD'
     }
   }
 };
@@ -68,8 +68,8 @@ WithGBP.parameters = {
     },
     values: {
       isCartOpen: true,
-      cartItems: fixtures.cartItems.map((i) => ({ ...i, currency: 'gbp' })),
-      currency: 'gbp'
+      cartItems: fixtures.cartItems.map((i) => ({ ...i, currency: 'GBP' })),
+      currency: 'GBP'
     }
   }
 };

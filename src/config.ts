@@ -1,4 +1,4 @@
-import type { DefaultSeoProps } from 'next-seo';
+import { DefaultSeoProps } from 'next-seo';
 
 /* API */
 export const takeshapeApiUrl = process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;
@@ -17,8 +17,8 @@ export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 
 /* Site Config and SEO */
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
-export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'TakeShape Store';
-export const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION ?? 'We sell books.';
+export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Deluxe ™️ Store';
+export const siteDescription = process.env.NEXT_PUBLIC_SITE_DESCRIPTION ?? 'We sell stuff.';
 export const siteLogo = process.env.NEXT_PUBLIC_SITE_LOGO_URL ?? '/images/logo.svg';
 export const siteUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://localhost:3000';
 export const seo: DefaultSeoProps = {
@@ -53,8 +53,8 @@ export const seo: DefaultSeoProps = {
     {
       rel: 'icon',
       type: 'image/png',
-      href: '/favicon-256x256.png',
-      sizes: '256x256'
+      href: '/favicon-512x512.png',
+      sizes: '512x512'
     },
     {
       rel: 'apple-touch-icon',
@@ -90,13 +90,13 @@ export const seo: DefaultSeoProps = {
 
 /* Commerce */
 // Lowercase matches Stripe format
-export const currencyList = ['cad', 'usd', 'aud', 'eur', 'gbp'] as const;
-export const defaultCurrency = 'usd';
+export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
+export const defaultCurrency = 'USD';
 
 /* Cart */
 export const cartLocalStorageKey = process.env.NEXT_PUBLIC_CART_LOCAL_STORAGE_KEY ?? 'cart';
 
-/* Product */
+/* Products */
 export const defaultProductImage = {
   height: 480,
   url: '/images/default-product-image.webp',
@@ -110,17 +110,18 @@ export const productOptions = {
     white: { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
     gray: { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
     black: { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300' }
+    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300' },
+    'heather gray': { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400' }
   },
   size: {
-    xxs: { name: 'XXS' },
-    xs: { name: 'XS' },
-    s: { name: 'S' },
-    m: { name: 'M' },
-    l: { name: 'L' },
-    xl: { name: 'XL' },
-    '2xl': { name: '2XL' },
-    '3xl': { name: '3XL' }
+    xxs: { name: 'XXS', description: 'The very smallest size' },
+    xs: { name: 'XS', description: 'A fairly small size' },
+    s: { name: 'S', description: 'A small size' },
+    m: { name: 'M', description: 'Just about right for everybody' },
+    l: { name: 'L', description: 'Getting bigger' },
+    xl: { name: 'XL', description: 'And bigger...' },
+    '2xl': { name: '2XL', description: 'Whoa, so big' },
+    '3xl': { name: '3XL', description: 'No way!' }
   }
 };
 

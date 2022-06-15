@@ -26,6 +26,7 @@
     "@heroicons/react": "^1.0.6",
     "@next/bundle-analyzer": "^12.1.6",
     "@takeshape/next-auth-all-access": "^0.3.0",
+    "@takeshape/routing": "^8.177.1",
     "@types/lodash-es": "^4.17.6",
     "abortcontroller-polyfill": "^1.7.3",
     "date-fns": "^2.28.0",
@@ -98,7 +99,8 @@
     "webpack": "^5.73.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=14",
+    "npm": ">=7"
   },
   "msw": {
     "workerDirectory": "mocks"

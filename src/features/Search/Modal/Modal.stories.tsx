@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { isSearchOpenAtom } from 'store';
 import SearchFixtures from '../Search.fixtures.json';

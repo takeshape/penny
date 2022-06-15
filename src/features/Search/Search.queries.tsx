@@ -1,6 +1,6 @@
 // TODO: Update this when we index Shopify products
 import { gql } from '@apollo/client';
-import type { Stripe_Product, TsSearchableSearchResults } from 'types/takeshape';
+import { Stripe_Product, TsSearchableSearchResults } from 'types/takeshape';
 
 export interface SearchStripeProductsResults extends TsSearchableSearchResults {
   search: {

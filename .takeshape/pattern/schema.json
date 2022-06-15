@@ -203,6 +203,134 @@
           "links"
         ]
       }
+    },
+    "Product": {
+      "default": {
+        "properties": {
+          "name": {
+            "widget": "singleLineText"
+          },
+          "productComponent": {
+            "widget": "dropdown"
+          },
+          "hideReviews": {
+            "widget": "toggleSwitch"
+          },
+          "hideRelatedProducts": {
+            "widget": "toggleSwitch"
+          },
+          "showDetails": {
+            "widget": "toggleSwitch"
+          },
+          "details": {
+            "widget": "relationship"
+          },
+          "showPolicies": {
+            "widget": "toggleSwitch"
+          },
+          "policies": {
+            "widget": "relationship"
+          },
+          "shopifyProduct": {
+            "properties": {
+              "descriptionHtml": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "handle": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "redirectNewHandle": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "productType": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "tags": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "templateSuffix": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "giftCard": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "giftCardTemplateSuffix": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "title": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "vendor": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "bodyHtml": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "images": {
+                "widget": "shopifyProductImages",
+                "provider": "shopify"
+              },
+              "publishedAt": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "variants": {
+                "widget": "shopifyRelationshipSummary",
+                "provider": "shopify"
+              }
+            },
+            "widget": "shopify",
+            "wrapper": "shopifyServiceWrapper",
+            "order": [
+              "title",
+              "handle",
+              "descriptionHtml",
+              "bodyHtml",
+              "tags",
+              "vendor",
+              "publishedAt",
+              "variants",
+              "images",
+              "redirectNewHandle",
+              "productType",
+              "templateSuffix",
+              "giftCard",
+              "giftCardTemplateSuffix"
+            ]
+          },
+          "shopifyProductId": {
+            "instructions": "Format: gid://shopify/Product/1111111111111",
+            "label": "product ID",
+            "widget": "serviceObjectId",
+            "provider": "shopify",
+            "serviceObjectType": "product",
+            "service": "shopify"
+          }
+        },
+        "order": [
+          "name",
+          "productComponent",
+          "hideReviews",
+          "hideRelatedProducts",
+          "showDetails",
+          "details",
+          "showPolicies",
+          "policies",
+          "shopifyProductId",
+          "shopifyProduct"
+        ]
+      }
     }
   },
   "services": {
@@ -312,6 +440,26 @@
   },
   "indexedShapes": {},
   "queries": {
+    "getProduct": {
+      "shape": "Product",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Product"
+      },
+      "description": "Get a Product by ID",
+      "args": "TSGetArgs<Product>"
+    },
+    "getProductList": {
+      "shape": "PaginatedList<Product>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Product"
+      },
+      "description": "Returns a list Product in natural order.",
+      "args": "TSListArgs<Product>"
+    },
     "getFooter": {
       "shape": "Footer",
       "resolver": {
@@ -674,6 +822,66 @@
         ]
       },
       "shape": "ShopifyStorefront_Customer"
+    },
+    "getProductPageDetails": {
+      "shape": "ProductPageDetails",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "ProductPageDetails"
+      },
+      "description": "Get a ProductPageDetails by ID",
+      "args": "TSGetArgs<ProductPageDetails>"
+    },
+    "getProductPageDetailsList": {
+      "shape": "PaginatedList<ProductPageDetails>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "ProductPageDetails"
+      },
+      "description": "Returns a list ProductPageDetails in natural order.",
+      "args": "TSListArgs<ProductPageDetails>"
+    },
+    "getProductPagePolicies": {
+      "shape": "ProductPagePolicies",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "ProductPagePolicies"
+      },
+      "description": "Get a ProductPagePolicies by ID",
+      "args": "TSGetArgs<ProductPagePolicies>"
+    },
+    "getProductPagePoliciesList": {
+      "shape": "PaginatedList<ProductPagePolicies>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "ProductPagePolicies"
+      },
+      "description": "Returns a list ProductPagePolicies in natural order.",
+      "args": "TSListArgs<ProductPagePolicies>"
+    },
+    "Shopify_collectionByHandle": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "collectionByHandle"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "handle": {
+            "type": "string",
+            "description": "The handle of the collection."
+          }
+        },
+        "required": [
+          "handle"
+        ]
+      },
+      "shape": "Shopify_Collection"
     }
   },
   "mutations": {
@@ -1354,6 +1562,396 @@
         ]
       },
       "shape": "ShopifyStorefront_CustomerRecoverPayload"
+    },
+    "updateProduct": {
+      "shape": "UpdateResult<Product>",
+      "resolver": {
+        "compose": [
+          {
+            "id": "createNewShopifyObject",
+            "if": "isEmpty(args.input.shopifyProductId) && !isEmpty(args.input.shopifyProduct)",
+            "name": "graphql:mutation",
+            "service": "shopify",
+            "fieldName": "productCreate",
+            "options": {
+              "selectionSet": "{ product { id } }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "input.descriptionHtml",
+                  "mapping": "$args.input.shopifyProduct.descriptionHtml"
+                },
+                {
+                  "path": "input.handle",
+                  "mapping": "$args.input.shopifyProduct.handle"
+                },
+                {
+                  "path": "input.redirectNewHandle",
+                  "mapping": "$args.input.shopifyProduct.redirectNewHandle"
+                },
+                {
+                  "path": "input.productType",
+                  "mapping": "$args.input.shopifyProduct.productType"
+                },
+                {
+                  "path": "input.tags",
+                  "mapping": "$args.input.shopifyProduct.tags"
+                },
+                {
+                  "path": "input.templateSuffix",
+                  "mapping": "$args.input.shopifyProduct.templateSuffix"
+                },
+                {
+                  "path": "input.giftCard",
+                  "mapping": "$args.input.shopifyProduct.giftCard"
+                },
+                {
+                  "path": "input.giftCardTemplateSuffix",
+                  "mapping": "$args.input.shopifyProduct.giftCardTemplateSuffix"
+                },
+                {
+                  "path": "input.title",
+                  "mapping": "$args.input.shopifyProduct.title"
+                },
+                {
+                  "path": "input.vendor",
+                  "mapping": "$args.input.shopifyProduct.vendor"
+                },
+                {
+                  "path": "input.bodyHtml",
+                  "mapping": "$args.input.shopifyProduct.bodyHtml"
+                }
+              ]
+            }
+          },
+          {
+            "id": "editTakeshape",
+            "name": "takeshape:update",
+            "service": "takeshape:local",
+            "shapeName": "Product",
+            "args": {
+              "ops": [
+                {
+                  "path": "input",
+                  "mapping": "$args.input"
+                },
+                {
+                  "path": "input.shopifyProductId",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.createNewShopifyObject.product.id"
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$args.input.shopifyProductId"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "updateExistingShopifyObject",
+            "if": "!isEmpty(args.input.shopifyProductId) && !isEmpty(args.input.shopifyProduct)",
+            "name": "graphql:mutation",
+            "service": "shopify",
+            "fieldName": "productUpdate",
+            "options": {
+              "selectionSet": "{ product { id } }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "input.descriptionHtml",
+                  "mapping": "$args.input.shopifyProduct.descriptionHtml"
+                },
+                {
+                  "path": "input.handle",
+                  "mapping": "$args.input.shopifyProduct.handle"
+                },
+                {
+                  "path": "input.redirectNewHandle",
+                  "mapping": "$args.input.shopifyProduct.redirectNewHandle"
+                },
+                {
+                  "path": "input.productType",
+                  "mapping": "$args.input.shopifyProduct.productType"
+                },
+                {
+                  "path": "input.tags",
+                  "mapping": "$args.input.shopifyProduct.tags"
+                },
+                {
+                  "path": "input.templateSuffix",
+                  "mapping": "$args.input.shopifyProduct.templateSuffix"
+                },
+                {
+                  "path": "input.giftCard",
+                  "mapping": "$args.input.shopifyProduct.giftCard"
+                },
+                {
+                  "path": "input.giftCardTemplateSuffix",
+                  "mapping": "$args.input.shopifyProduct.giftCardTemplateSuffix"
+                },
+                {
+                  "path": "input.title",
+                  "mapping": "$args.input.shopifyProduct.title"
+                },
+                {
+                  "path": "input.vendor",
+                  "mapping": "$args.input.shopifyProduct.vendor"
+                },
+                {
+                  "path": "input.bodyHtml",
+                  "mapping": "$args.input.shopifyProduct.bodyHtml"
+                },
+                {
+                  "path": "input.id",
+                  "mapping": "$args.input.shopifyProductId"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "result",
+              "mapping": "$resolvers.editTakeshape.result"
+            }
+          ]
+        }
+      },
+      "description": "Update Product. If the input has Shopify values and a Shopify ID, the Shopify product with that ID is updated.\nIf the input has Shopify values and no Shopify ID, a Shopify product is created.",
+      "args": "UpdateArgs<ProductInterface>"
+    },
+    "createProduct": {
+      "shape": "CreateResult<Product>",
+      "resolver": {
+        "compose": [
+          {
+            "id": "shopifyCreate",
+            "if": "!isEmpty(args.input.shopifyProduct)",
+            "name": "graphql:mutation",
+            "service": "shopify",
+            "fieldName": "productCreate",
+            "options": {
+              "selectionSet": "{ product { id } }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "input.descriptionHtml",
+                  "mapping": "$args.input.shopifyProduct.descriptionHtml"
+                },
+                {
+                  "path": "input.handle",
+                  "mapping": "$args.input.shopifyProduct.handle"
+                },
+                {
+                  "path": "input.redirectNewHandle",
+                  "mapping": "$args.input.shopifyProduct.redirectNewHandle"
+                },
+                {
+                  "path": "input.productType",
+                  "mapping": "$args.input.shopifyProduct.productType"
+                },
+                {
+                  "path": "input.tags",
+                  "mapping": "$args.input.shopifyProduct.tags"
+                },
+                {
+                  "path": "input.templateSuffix",
+                  "mapping": "$args.input.shopifyProduct.templateSuffix"
+                },
+                {
+                  "path": "input.giftCard",
+                  "mapping": "$args.input.shopifyProduct.giftCard"
+                },
+                {
+                  "path": "input.giftCardTemplateSuffix",
+                  "mapping": "$args.input.shopifyProduct.giftCardTemplateSuffix"
+                },
+                {
+                  "path": "input.title",
+                  "mapping": "$args.input.shopifyProduct.title"
+                },
+                {
+                  "path": "input.vendor",
+                  "mapping": "$args.input.shopifyProduct.vendor"
+                },
+                {
+                  "path": "input.bodyHtml",
+                  "mapping": "$args.input.shopifyProduct.bodyHtml"
+                }
+              ]
+            }
+          },
+          {
+            "id": "creatingShopifyObject",
+            "if": "!isEmpty(args.input.shopifyProduct)",
+            "name": "takeshape:create",
+            "service": "takeshape:local",
+            "shapeName": "Product",
+            "args": {
+              "ops": [
+                {
+                  "path": "input",
+                  "mapping": "$args.input"
+                },
+                {
+                  "path": "input.shopifyProductId",
+                  "mapping": "$resolvers.shopifyCreate.product.id"
+                }
+              ]
+            }
+          },
+          {
+            "id": "notCreatingShopifyObject",
+            "if": "isEmpty(args.input.shopifyProduct)",
+            "name": "takeshape:create",
+            "service": "takeshape:local",
+            "shapeName": "Product",
+            "args": {
+              "ops": [
+                {
+                  "path": "input",
+                  "mapping": "$args.input"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "result",
+              "mapping": [
+                [
+                  "get",
+                  {
+                    "path": "$resolvers.creatingShopifyObject.result"
+                  }
+                ],
+                [
+                  "get",
+                  {
+                    "path": "$resolvers.notCreatingShopifyObject.result"
+                  }
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "description": "Create Product. If Shopify values are provided, a Shopify product is also created and the new product ID is saved.",
+      "args": "CreateArgs<ProductInterface>"
+    },
+    "duplicateProduct": {
+      "shape": "DuplicateResult<Product>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "Product"
+      },
+      "description": "Duplicate Product",
+      "args": "DuplicateArgs<Product>"
+    },
+    "deleteProduct": {
+      "shape": "DeleteResult<Product>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "Product"
+      },
+      "description": "Delete Product",
+      "args": "DeleteArgs<Product>"
+    },
+    "updateProductPageDetails": {
+      "shape": "UpdateResult<ProductPageDetails>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "ProductPageDetails"
+      },
+      "description": "Update ProductPageDetails",
+      "args": "UpdateArgs<ProductPageDetails>"
+    },
+    "createProductPageDetails": {
+      "shape": "CreateResult<ProductPageDetails>",
+      "resolver": {
+        "name": "takeshape:create",
+        "service": "takeshape:local",
+        "shapeName": "ProductPageDetails"
+      },
+      "description": "Create ProductPageDetails",
+      "args": "CreateArgs<ProductPageDetails>"
+    },
+    "duplicateProductPageDetails": {
+      "shape": "DuplicateResult<ProductPageDetails>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "ProductPageDetails"
+      },
+      "description": "Duplicate ProductPageDetails",
+      "args": "DuplicateArgs<ProductPageDetails>"
+    },
+    "deleteProductPageDetails": {
+      "shape": "DeleteResult<ProductPageDetails>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "ProductPageDetails"
+      },
+      "description": "Delete ProductPageDetails",
+      "args": "DeleteArgs<ProductPageDetails>"
+    },
+    "updateProductPagePolicies": {
+      "shape": "UpdateResult<ProductPagePolicies>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "ProductPagePolicies"
+      },
+      "description": "Update ProductPagePolicies",
+      "args": "UpdateArgs<ProductPagePolicies>"
+    },
+    "createProductPagePolicies": {
+      "shape": "CreateResult<ProductPagePolicies>",
+      "resolver": {
+        "name": "takeshape:create",
+        "service": "takeshape:local",
+        "shapeName": "ProductPagePolicies"
+      },
+      "description": "Create ProductPagePolicies",
+      "args": "CreateArgs<ProductPagePolicies>"
+    },
+    "duplicateProductPagePolicies": {
+      "shape": "DuplicateResult<ProductPagePolicies>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "ProductPagePolicies"
+      },
+      "description": "Duplicate ProductPagePolicies",
+      "args": "DuplicateArgs<ProductPagePolicies>"
+    },
+    "deleteProductPagePolicies": {
+      "shape": "DeleteResult<ProductPagePolicies>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "ProductPagePolicies"
+      },
+      "description": "Delete ProductPagePolicies",
+      "args": "DeleteArgs<ProductPagePolicies>"
     }
   },
   "shapes": {
@@ -2228,6 +2826,332 @@
             }
           }
         }
+      }
+    },
+    "Product": {
+      "id": "cpHSCQfwY",
+      "name": "Product",
+      "title": "Product",
+      "workflow": "default",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Initialized with title from shopify",
+            "title": "Name",
+            "@mapping": "takeshape:local:Product.90tPC0GwFe"
+          },
+          "productComponent": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "oneOf": [
+              {
+                "enum": [
+                  "withImageGrid"
+                ],
+                "title": "withImageGrid"
+              },
+              {
+                "enum": [
+                  "withImage"
+                ],
+                "title": "withImage"
+              }
+            ],
+            "title": "Product Component",
+            "@mapping": "takeshape:local:Product.ViTuUtNE_"
+          },
+          "hideReviews": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "description": "",
+            "title": "Hide Reviews",
+            "@mapping": "takeshape:local:Product.tKDD7oaK_"
+          },
+          "hideRelatedProducts": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "description": "",
+            "title": "Hide Related Products",
+            "@mapping": "takeshape:local:Product.rFRswSLmi"
+          },
+          "showDetails": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "description": "",
+            "title": "Show Details",
+            "@mapping": "takeshape:local:Product.G8xJX4-la"
+          },
+          "details": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:ProductPageDetails",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Details",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:Product.9L-sIzyMH"
+          },
+          "showPolicies": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "description": "",
+            "title": "Show Policies",
+            "@mapping": "takeshape:local:Product.P-mSqawNx"
+          },
+          "policies": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:ProductPagePolicies",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Policies",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:Product.5jVzYQxzC"
+          },
+          "shopifyProductId": {
+            "type": "string",
+            "@mapping": "takeshape:local:Product.shopifyProductId",
+            "title": "shopify product",
+            "minLength": 1,
+            "pattern": "(^gid://shopify/Product/\\d+$)"
+          },
+          "shopifyProduct": {
+            "@ref": "shopify:Product",
+            "@resolver": {
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "product",
+              "args": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.shopifyProductId"
+                  }
+                ]
+              }
+            },
+            "@tag": "pattern:service-object:1"
+          }
+        }
+      }
+    },
+    "ProductPageDetailsText": {
+      "id": "9MK2Somel",
+      "name": "ProductPageDetailsText",
+      "title": "Product Page Details Text",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "primary": {
+            "type": "object",
+            "@tag": "draftjs",
+            "description": "",
+            "title": "Primary",
+            "@mapping": "takeshape:local:ProductPageDetailsText.tjfyE4q2v"
+          },
+          "secondary": {
+            "type": "object",
+            "@tag": "draftjs",
+            "description": "",
+            "title": "Secondary",
+            "@mapping": "takeshape:local:ProductPageDetailsText.BbskD20Ls"
+          }
+        },
+        "required": [
+          "primary",
+          "secondary"
+        ]
+      }
+    },
+    "ProductPageDetailsDetails": {
+      "id": "TA8kBx-Sj",
+      "name": "ProductPageDetailsDetails",
+      "title": "Product Page Details Details",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:ProductPageDetailsDetails.FDtSeWFuZ"
+          },
+          "description": {
+            "type": "object",
+            "@tag": "draftjs",
+            "description": "",
+            "title": "Description",
+            "@mapping": "takeshape:local:ProductPageDetailsDetails.JvbkR_gid"
+          }
+        },
+        "required": [
+          "description"
+        ]
+      }
+    },
+    "ProductPageDetails": {
+      "id": "naUzXVxMY",
+      "name": "ProductPageDetails",
+      "title": "Product Page Details",
+      "workflow": "default",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:ProductPageDetails.WtUmvnUzJ"
+          },
+          "text": {
+            "title": "Text",
+            "description": "",
+            "@ref": "local:ProductPageDetailsText",
+            "@mapping": "takeshape:local:ProductPageDetails.9MK2Somel"
+          },
+          "details": {
+            "title": "Details",
+            "description": "",
+            "items": {
+              "@ref": "local:ProductPageDetailsDetails"
+            },
+            "maxItems": 2,
+            "minItems": 2,
+            "type": "array",
+            "@mapping": "takeshape:local:ProductPageDetails.TA8kBx-Sj"
+          }
+        },
+        "required": [
+          "name",
+          "text",
+          "details"
+        ]
+      }
+    },
+    "ProductPagePoliciesPolicies": {
+      "id": "YWzSVEezj",
+      "name": "ProductPagePoliciesPolicies",
+      "title": "Product Page Policies Policies",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "object",
+            "@tag": "draftjs",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:ProductPagePoliciesPolicies.uAw2z0ptc"
+          },
+          "description": {
+            "type": "object",
+            "@tag": "draftjs",
+            "description": "",
+            "title": "Description",
+            "@mapping": "takeshape:local:ProductPagePoliciesPolicies.lifT1D0ra"
+          },
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:ProductPagePoliciesPolicies.ddtRZLlsd"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "image"
+        ]
+      }
+    },
+    "ProductPagePolicies": {
+      "id": "MPyglWNF_",
+      "name": "ProductPagePolicies",
+      "title": "Product Page Policies",
+      "workflow": "default",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:ProductPagePolicies.2ydozONqt"
+          },
+          "policies": {
+            "title": "Policies",
+            "description": "",
+            "items": {
+              "@ref": "local:ProductPagePoliciesPolicies"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:ProductPagePolicies.YWzSVEezj"
+          }
+        },
+        "required": [
+          "name",
+          "policies"
+        ]
       }
     }
   },

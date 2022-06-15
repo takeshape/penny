@@ -1,4 +1,4 @@
-import type { MergeWithCustomizer } from 'lodash';
+import { MergeWithCustomizer } from 'lodash';
 import isEqual from 'lodash-es/isEqual';
 import mergeWith from 'lodash-es/mergeWith';
 

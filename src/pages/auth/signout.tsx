@@ -1,6 +1,6 @@
 import AuthSignOut from 'features/Auth/SignOut/SignOut';
 import Layout from 'layouts/Full';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 
 const SignOutPage: NextPage = () => {
   return (

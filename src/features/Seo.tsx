@@ -1,6 +1,5 @@
 import { siteUrl } from 'config';
-import type { NextSeoProps } from 'next-seo';
-import { NextSeo } from 'next-seo';
+import { NextSeo, NextSeoProps } from 'next-seo';
 import { useRouter } from 'next/router';
 
 export const Seo = ({ ...props }: NextSeoProps) => {

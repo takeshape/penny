@@ -1,6 +1,6 @@
 import AuthSignIn from 'features/Auth/SignIn/SignIn';
 import Layout from 'layouts/Full';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { getSingle } from 'utils/types';
 

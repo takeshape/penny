@@ -2,7 +2,7 @@ import { ApolloProvider as Provider } from '@apollo/client';
 import { getClientToken } from '@takeshape/next-auth-all-access/react';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useSession } from 'next-auth/react';
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { useApollo } from 'utils/apollo/useApollo';
 
 type ApolloProviderProps = PropsWithChildren<{ pageProps: any }>;
