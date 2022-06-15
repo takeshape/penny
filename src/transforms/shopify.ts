@@ -344,7 +344,7 @@ export function shopifyOrderToOrder(order?: Shopify_Order): Order {
     id: shopifyGidToId(order.id),
     status: order.displayFulfillmentStatus,
     createdAt: order.createdAt,
-    totalPrice: order.originalTotalPriceSet.shopMoney,
+    totalPrice: order.totalPriceSet.shopMoney,
     lineItems: order.lineItems.edges.map((edge) => shopifyLineItemToLineItem(edge.node)),
     fulfillments: order.fulfillments.map(shopifyFulfillmentToFulfillment)
   };
