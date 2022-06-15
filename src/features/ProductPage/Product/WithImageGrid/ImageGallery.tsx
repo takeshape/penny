@@ -7,7 +7,6 @@ export interface ImageGalleryProps {
 }
 
 export const ImageGallery = ({ images }: ImageGalleryProps) => {
-  // images = [images[0], images[1], images[3]];
 
   if (images.length === 0) {
     return null;
