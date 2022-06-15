@@ -11,6 +11,7 @@
     "export": "next build && next export",
     "graphql:validate": "graphql-validate",
     "lint": "next lint",
+    "lint:fix-changed": "eslint --fix $(git diff --name-only main | xargs)",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "takeshape:validate": "takeshape validate --path .takeshape/pattern/schema.json",
