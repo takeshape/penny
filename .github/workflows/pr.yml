@@ -26,7 +26,8 @@ jobs:
       - name: Run eslint
         run: npm run lint:fix-changed
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Committing and pushing any changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Lint fix changes
           skip_dirty_check: false
