@@ -58,8 +58,7 @@ export const Reviews = ({ reviews, showRollup }: ReviewsProps) => {
             <div className="-my-12 divide-y divide-gray-200">
               {data.map((review, idx) => (
                 <div key={review?.id ?? idx} className="py-12">
-                  {!review && <ReviewsListItemLoading />}
-                  {review && <ReviewsListItem review={review} />}
+                  {review ? <ReviewsListItem review={review} /> : <ReviewsListItemLoading />}
                 </div>
               ))}
             </div>
