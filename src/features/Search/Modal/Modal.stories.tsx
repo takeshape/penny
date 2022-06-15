@@ -26,7 +26,7 @@ _Empty.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
           return res(ctx.data({ search: { results: [] } }));
         })
       ]
@@ -46,8 +46,8 @@ _Loading.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data(SearchFixtures.SearchStripeProducts.result.data));
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+          return res(ctx.delay('infinite'), ctx.data(SearchFixtures.SearchShopifyProducts.result.data));
         })
       ]
     }
@@ -66,8 +66,8 @@ _WithResults.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
-          return res(ctx.data(SearchFixtures.SearchStripeProducts.result.data));
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+          return res(ctx.data(SearchFixtures.SearchShopifyProducts.result.data));
         })
       ]
     }
@@ -86,7 +86,7 @@ _NoResults.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
           return res(ctx.data({ search: { results: [] } }));
         })
       ]

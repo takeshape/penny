@@ -1,30 +1,30 @@
 // TODO: Update this when we index Shopify products
 import { gql } from '@apollo/client';
-import { Stripe_Product, TsSearchableSearchResults } from 'types/takeshape';
+import type { Shopify_Product, TsSearchableSearchResults } from 'types/takeshape';
 
-export interface SearchStripeProductsResults extends TsSearchableSearchResults {
+export interface SearchShopifyProductsResults extends TsSearchableSearchResults {
   search: {
-    results: Stripe_Product[];
+    results: Shopify_Product[];
   };
 }
 
-export const SearchStripeProducts = gql`
-  query SearchStripeProducts($query: String!) {
-    search(terms: $query, where: { active: { eq: true } }) {
+export const SearchShopifyProducts = gql`
+  query SearchShopifyProducts($query: String!) {
+    search(terms: $query, shapeNames: ["Shopify_Product"]) {
       results {
         __typename
-        ... on Stripe_Product {
+        ... on Shopify_Product {
           id
-          name
+          title
           description
-          images
-          prices {
-            id
-            unit_amount
-            currency
-            recurring {
-              interval
-              interval_count
+          featuredImage {
+            url
+          }
+          images {
+            edges {
+              node {
+                url
+              }
             }
           }
         }
