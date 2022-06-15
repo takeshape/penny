@@ -5,6 +5,30 @@ on:
   workflow_dispatch:
 
 jobs:
+  eslint-run:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Install modules
+        run: npm ci
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          auto_fix: true
+
   npm-test:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
@@ -34,9 +58,6 @@ jobs:
 
       - name: Run takeshape:validate
         run: npm run takeshape:validate
-
-      - name: Run lint
-        run: npm run lint
 
       - name: Run tests
         run: npm test
