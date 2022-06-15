@@ -15,7 +15,7 @@ function getStatusTextAndColor(
     case Shopify_FulfillmentDisplayStatus.LabelVoided:
     case Shopify_FulfillmentDisplayStatus.Submitted:
       return {
-        label: 'Processing',
+        label: 'Order Processing',
         color: 'gray',
         text: 'Processing on',
         date: updatedAt
@@ -81,7 +81,8 @@ const OrderStatusChip = ({ color, label }: { color?: string; label?: string }) =
 export const PurchaseItemOrderStatus = (props: Shopify_Fulfillment & { unfulfilled?: boolean }) => {
   if (props.unfulfilled) {
     return (
-      <div>
+      <div className="mt-2 flex flex-wrap gap-2 items-center">
+        <header className="w-full px-2 pb-1 border">Order Status</header>
         <OrderStatusChip label="Processing" color="gray" />
       </div>
     );
@@ -93,13 +94,12 @@ export const PurchaseItemOrderStatus = (props: Shopify_Fulfillment & { unfulfill
     props.updatedAt
   );
   return (
-    <div className="mt-2">
-      <div className="flex gap-2 items-center">
-        <OrderStatusChip label={label} color={color} />
-        <p className="text-sm text-gray-500">
-          {text} {format(new Date(date), 'PP')}
-        </p>
-      </div>
+    <div className="mt-2 flex flex-wrap gap-2 items-center">
+      <header className="w-full px-2 pb-1 border">Order Status</header>
+      <OrderStatusChip label={label} color={color} />
+      <p className="text-sm text-gray-500">
+        {text} {format(new Date(date), 'PP')}
+      </p>
       {props.trackingInfo.map((tracking, index) => (
         <div key={tracking.number} className="flex gap-2 items-center m-2">
           <a
