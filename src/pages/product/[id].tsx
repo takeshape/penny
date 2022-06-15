@@ -10,7 +10,7 @@ import {
   ProductPageShopifyProductQuery,
   ProductPageShopifyProductReponse
 } from 'features/ProductPage/queries';
-import { getPageOptions, getProduct, getProductIds } from 'features/ProductPage/transforms';
+import { getPageOptions, getProduct, getProductPageParams } from 'features/ProductPage/transforms';
 import { ProductPageOptions } from 'features/ProductPage/types';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
@@ -95,10 +95,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query: ProductPageShopifyProductIdListQuery
   });
 
-  const ids = getProductIds(data);
+  const params = getProductPageParams(data);
 
   return {
-    paths: ids.map((id) => ({ params: { id } })),
+    paths: params,
     fallback: true
   };
 };

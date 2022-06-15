@@ -10,15 +10,21 @@ import { getCollection } from './transforms';
 
 export interface ProductCategoryWithDataProps {
   id: string;
+  page?: number;
+  pageSize?: number;
 }
 
-export const ProductCategoryWithData = ({ id }: ProductCategoryWithDataProps) => {
+export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryWithDataProps) => {
+  page = page ?? 1;
+  pageSize = pageSize ?? 5;
+
   const [loadCollection, { data, error, loading }] = useLazyQuery<
     ProductCategoryShopifyCollectionResponse,
     ProductCategoryShopifyCollectionArgs
   >(ProductCategoryShopifyCollectionQuery, { variables: { id } });
 
   const handleSetCurrentPage = useCallback((page) => {
+    //  loadCollection({ variables: { id } });
     // eslint-disable-next-line no-console
     console.log('setting page', page);
   }, []);
@@ -39,13 +45,15 @@ export const ProductCategoryWithData = ({ id }: ProductCategoryWithDataProps) =>
     return null;
   }
 
+  const pageCount = Math.ceil(collection.productsCount / pageSize);
+
   return (
     <ProductCategory
       header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
       products={collection.products}
       pagination={{
-        pageCount: 2,
-        currentPage: 1,
+        pageCount,
+        currentPage: page,
         setCurrentPage: handleSetCurrentPage
       }}
     />

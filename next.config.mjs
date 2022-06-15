@@ -58,6 +58,15 @@ const securityHeaders = [
 ];
 
 const config = {
+  async redirects() {
+    return [
+      {
+        source: '/collection/:collection',
+        destination: '/collection/:collection/1',
+        permanent: true
+      }
+    ];
+  },
   async headers() {
     return [
       {

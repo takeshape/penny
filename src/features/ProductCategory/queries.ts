@@ -7,6 +7,7 @@ export type ProductCategoryShopifyCollectionIdsResponse = {
       node: {
         id: string;
         handle: string;
+        productsCount: number;
       };
     }[];
   };
@@ -19,6 +20,7 @@ export const ProductCategoryShopifyCollectionIdsQuery = gql`
         node {
           id
           handle
+          productsCount
         }
       }
     }

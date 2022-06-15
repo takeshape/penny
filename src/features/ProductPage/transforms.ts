@@ -138,12 +138,12 @@ export function getPageOptions(response: ProductPageShopifyProductReponse): Prod
   };
 }
 
-export function getProductIds(response: ProductPageShopifyProductIdListResponse) {
+export function getProductPageParams(response: ProductPageShopifyProductIdListResponse) {
   const items = response?.products?.items;
 
   if (!items) {
     return null;
   }
 
-  return items.map((item) => item.shopifyProductId);
+  return items.map((item) => ({ params: { id: item.shopifyProductId } }));
 }

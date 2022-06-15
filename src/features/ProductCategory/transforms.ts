@@ -60,12 +60,21 @@ export function getCollection(response: ProductCategoryShopifyCollectionResponse
   };
 }
 
-export function getCollectionIds(response: ProductCategoryShopifyCollectionIdsResponse) {
+export function getCollectionPageParams(response: ProductCategoryShopifyCollectionIdsResponse, pageSize: number) {
   const collections = response?.collections?.edges;
 
   if (!collections) {
     return null;
   }
 
-  return collections.map(({ node }) => node.id);
+  return collections.flatMap(({ node }) => {
+    const pageCount = Math.ceil(node.productsCount / pageSize);
+    const pagesParams = new Array(pageCount).fill(undefined);
+    return pagesParams.map((_, pageIdx) => ({
+      params: {
+        collection: shopifyGidToId(node.id),
+        page: String(pageIdx + 1)
+      }
+    }));
+  });
 }
