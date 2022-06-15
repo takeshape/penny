@@ -93,7 +93,7 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
           </div>
         </section>
       </div>
-      <div className="mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2 lg:self-center">
+      <div className="mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
           <div className="w-full h-full">
             <NextImage
