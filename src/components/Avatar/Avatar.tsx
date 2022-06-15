@@ -13,7 +13,6 @@ export const Avatar = ({ src, alt, size, fallback }: AvatarProps) => {
 
   if (!src) {
     return fallback;
-    
   }
 
   return <NextImage src={src} alt={alt} height={size} width={size} className="rounded-full" />;
