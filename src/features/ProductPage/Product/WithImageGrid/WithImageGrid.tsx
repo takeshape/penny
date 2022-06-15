@@ -63,10 +63,16 @@ export const ProductWithImageGrid = ({
   );
 
   useEffect(() => {
-    const variant = getVariant(product.variants, [
-      { name: 'Color', value: selectedColor },
-      { name: 'Size', value: selectedSize }
-    ]);
+    const variant =
+      selectedColor && selectedSize
+        ? getVariant(
+            product.variants,
+            [
+              selectedColor && { name: 'Color', value: selectedColor },
+              selectedSize && { name: 'Size', value: selectedSize }
+            ].filter((x) => x)
+          )
+        : product.variants[0];
     setSelectedVariant(variant);
     setSelectedPrice(variant.prices[0]);
   }, [product.variants, selectedColor, selectedSize]);

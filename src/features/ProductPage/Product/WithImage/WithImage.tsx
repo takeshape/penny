@@ -1,6 +1,7 @@
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/solid';
 import Breadcrumbs, { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import NextImage from 'components/NextImage';
+import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSelectWithDescription';
 import Stars from 'components/Stars/Stars';
 import { addToCartAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
@@ -9,7 +10,6 @@ import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { getVariant } from 'utils/products';
 import { formatPrice } from 'utils/text';
-import ProductSizeSelectWithDescription from '../../../../components/Product/ProductSizeSelectWithDescription';
 
 export interface ProductWithImageProps {
   product: ProductType;
@@ -22,10 +22,12 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
 
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
 
-  const initialSize = sizes.values.find((v) => v.hasStock) ?? sizes.values[0];
-  const [selectedSize, setSelectedSize] = useState(initialSize.value);
+  const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
+  const [selectedSize, setSelectedSize] = useState(initialSize?.value);
 
-  const initialVariant = getVariant(product.variants, [{ name: 'Size', value: selectedSize }]);
+  const initialVariant = selectedSize
+    ? getVariant(product.variants, [{ name: 'Size', value: selectedSize }])
+    : product.variants[0];
 
   const [selectedVariant, setSelectedVariant] = useState(initialVariant);
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
@@ -46,7 +48,12 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
   );
 
   useEffect(() => {
-    const variant = getVariant(product.variants, [{ name: 'Size', value: selectedSize }]);
+    const variant = selectedSize
+      ? getVariant(
+          product.variants,
+          [selectedSize && { name: 'Size', value: selectedSize }].filter((x) => x)
+        )
+      : product.variants[0];
     setSelectedVariant(variant);
     setSelectedPrice(variant.prices[0]);
   }, [product.variants, selectedSize]);
@@ -113,13 +120,14 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
 
           <form>
             <div className="sm:flex sm:justify-between">
-              {/* Size selector */}
-              <ProductSizeSelectWithDescription
-                label="Size"
-                value={selectedSize}
-                onChange={setSelectedSize}
-                options={sizes.values}
-              />
+              {sizes && (
+                <ProductSizeSelectWithDescription
+                  label="Size"
+                  value={selectedSize}
+                  onChange={setSelectedSize}
+                  options={sizes.values}
+                />
+              )}
             </div>
             <div className="mt-4">
               <a href="#" className="group inline-flex text-sm text-gray-500 hover:text-gray-700">
