@@ -29,6 +29,10 @@ export const ReviewsWithData = ({ sku, ...props }: ReviewsWithDataProps) => {
     }
   }, [sku, loadReviews, loading, data, error]);
 
+  if (error) {
+    return null;
+  }
+
   let reviews = getReviewList(data);
   reviews.data = data ? reviews.data : (Array(1).fill(undefined) as ProductPageReviewsReview[]);
 

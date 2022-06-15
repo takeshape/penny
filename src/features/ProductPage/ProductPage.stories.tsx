@@ -91,4 +91,45 @@ _ProductPageLoading.parameters = {
   }
 };
 
+export const _ProductPageError = Template.bind({});
+
+_ProductPageError.args = {
+  productId: 'gid://shopify/Product/6857243132004',
+  sku: '6857243132004',
+  component: 'withImageGrid',
+  options: {
+    showDetails: true,
+    showReviews: true,
+    showRelatedProducts: true,
+    showPolicies: true
+  }
+};
+
+_ProductPageError.parameters = {
+  msw: {
+    handlers: {
+      product: [
+        graphql.query('ProductPageShopifyProductQuery', (req, res, ctx) => {
+          return res(ctx.errors([{ message: 'Could not load product' }]));
+          // return res(ctx.delay('infinite'));
+        }),
+        graphql.query('ProductPageReviewsIoReviewsQuery', (req, res, ctx) => {
+          return res(ctx.delay('infinite'));
+        }),
+        graphql.query('ProductPageTakeshapeDetailsQuery', (req, res, ctx) => {
+          return res(ctx.delay('infinite'));
+        }),
+        graphql.query('ProductPageTakeshapePoliciesQuery', (req, res, ctx) => {
+          return res(ctx.delay('infinite'));
+        })
+      ],
+      reviews: [
+        graphql.query('RelatedProductsShopifyCollectionQuery', (req, res, ctx) => {
+          return res(ctx.delay('infinite'));
+        })
+      ]
+    }
+  }
+};
+
 export default Meta;

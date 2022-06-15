@@ -31,6 +31,10 @@ export const DetailsWithData = ({ productId, ...props }: DetailsWithDataProps) =
 
   const details = data && getDetails(data);
 
+  if (error) {
+    return null;
+  }
+
   if (!details) {
     return <DetailsLoading />;
   }

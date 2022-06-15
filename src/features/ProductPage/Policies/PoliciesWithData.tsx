@@ -31,6 +31,10 @@ export const PoliciesWithData = ({ productId, ...props }: PoliciesWithDataProps)
 
   const policies = data && getPolicies(data);
 
+  if (error) {
+    return null;
+  }
+
   if (!policies) {
     return <PoliciesLoading />;
   }

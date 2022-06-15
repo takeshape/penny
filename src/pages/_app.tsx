@@ -1,4 +1,4 @@
-import { ErrorBoundary } from 'components/ErrorBoundary';
+import { ErrorBoundary } from 'components/Error/ErrorBoundary';
 import { seo } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';

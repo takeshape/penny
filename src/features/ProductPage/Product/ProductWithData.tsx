@@ -51,6 +51,10 @@ export const ProductWithData = ({ productId, ...props }: ProductWithDataProps) =
   const product = productData && getProduct(productData);
   const reviews = reviewsData && getReviewHighlights(reviewsData);
 
+  if (productError) {
+    throw productError;
+  }
+
   // Reviews are optional in the product
   if (!product) {
     return <ProductLoading />;

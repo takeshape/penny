@@ -1,3 +1,5 @@
+import { ErrorMessage } from 'components/Error/ErrorMessage';
+import NextLink from 'components/NextLink';
 import Wrapper from 'components/Wrapper/Content';
 import Layout from 'layouts/Default';
 import { NextPage } from 'next';
@@ -6,16 +8,14 @@ const NotFoundPage: NextPage = () => {
   return (
     <Layout title="Server Error">
       <Wrapper>
-        <div className="flex-shrink-0 my-auto py-16 sm:py-32">
-          <p className="text-sm font-semibold text-indigo-600 uppercase tracking-wide">500 error</p>
-          <h1 className="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">Server error</h1>
-          <p className="mt-2 text-base text-gray-500">Sorry, we had an unexpected error.</p>
-          <div className="mt-6">
-            <a href="#" className="text-base font-medium text-indigo-600 hover:text-indigo-500">
-              Go back home<span aria-hidden="true"> &rarr;</span>
-            </a>
-          </div>
-        </div>
+        <ErrorMessage headline="500 error" subhead="Server error" body="Sorry, we had an unexpected error.">
+          <NextLink
+            href="/"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Go back home<span aria-hidden="true"> &rarr;</span>
+          </NextLink>
+        </ErrorMessage>
       </Wrapper>
     </Layout>
   );

@@ -16,10 +16,14 @@ const loadingProducts = Array(4).fill(undefined) as RelatedProductsProduct[];
 
 export const RelatedProductsWithData = ({ collection }: RelatedProductsWithDataProps) => {
   const handle = collection ?? 'related-products';
-  const { data } = useQuery<RelatedProductsShopifyCollectionResponse, RelatedProductsShopifyCollectionArgs>(
+  const { data, error } = useQuery<RelatedProductsShopifyCollectionResponse, RelatedProductsShopifyCollectionArgs>(
     RelatedProductsShopifyCollectionQuery,
     { variables: { handle } }
   );
+
+  if (error) {
+    return null;
+  }
 
   const products = data && getProductList(data);
 
