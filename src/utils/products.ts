@@ -1,4 +1,4 @@
-import type { ProductVariant, ProductVariantOption } from 'types/product';
+import { ProductVariant, ProductVariantOption } from 'types/product';
 
 export function getVariant(variants: ProductVariant[], options: ProductVariantOption[]) {
   return variants.find((variant) => {

@@ -2,9 +2,8 @@ import { useQuery } from '@apollo/client';
 import AccountLoyaltyCard from 'features/Account/LoyaltyCard/LoyaltyCard';
 import AccountReferrals from 'features/Account/Referrals/Referrals';
 import Layout from 'layouts/Account';
-import type { NextPage } from 'next';
-import type { GetMyLoyaltyCardResponse } from 'queries';
-import { GetMyLoyaltyCardQuery } from 'queries';
+import { NextPage } from 'next';
+import { GetMyLoyaltyCardQuery, GetMyLoyaltyCardResponse } from 'queries';
 
 const AccountRewardsPage: NextPage = () => {
   const { data } = useQuery<GetMyLoyaltyCardResponse>(GetMyLoyaltyCardQuery);

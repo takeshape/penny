@@ -48,14 +48,6 @@ export type Query = {
   getMyProfile?: Maybe<Profile>;
   /** Get the signed in user's subscriptions from Stripe */
   getMySubscriptions?: Maybe<Array<Maybe<Stripe_Subscription>>>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPayments_UNINDEXED?: Maybe<Array<Maybe<Stripe_PaymentIntent>>>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPayments_INDEXED?: Maybe<Stripe_PaymentIntentPaginatedList>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPayments?: Maybe<Array<Maybe<Stripe_PaymentIntent>>>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPaymentsIndexed?: Maybe<Stripe_PaymentIntentPaginatedList>;
   /** Get a profile by ID */
   getProfile?: Maybe<Profile>;
   /** Returns a list of profiles in natural order. */
@@ -83,9 +75,28 @@ export type Query = {
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
   getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
   getMyAdminCustomer?: Maybe<Shopify_Customer>;
+  /** Get a Storefront by ID */
+  getStorefront?: Maybe<Storefront>;
+  /** Get a Product by ID */
+  getProduct?: Maybe<Product>;
+  /** Returns a list Product in natural order. */
+  getProductList?: Maybe<ProductPaginatedList>;
+  Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  Shopify_collections?: Maybe<Shopify_CollectionConnection>;
+  /** Get a ProductPageDetails by ID */
+  getProductPageDetails?: Maybe<ProductPageDetails>;
+  /** Returns a list ProductPageDetails in natural order. */
+  getProductPageDetailsList?: Maybe<ProductPageDetailsPaginatedList>;
+  /** Get a ProductPagePolicies by ID */
+  getProductPagePolicies?: Maybe<ProductPagePolicies>;
+  /** Returns a list ProductPagePolicies in natural order. */
+  getProductPagePoliciesList?: Maybe<ProductPagePoliciesPaginatedList>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
+  searchProductIndex?: Maybe<ProductSearchResults>;
+  searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
+  searchProductPagePoliciesIndex?: Maybe<ProductPagePoliciesSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
   withContext?: Maybe<WithContext>;
 };
@@ -203,54 +214,6 @@ export type QueryGetIndexedProductListArgs = {
 /** Root of the Schema */
 export type QueryGetMySubscriptionsArgs = {
   expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-/** Root of the Schema */
-export type QueryGetMyPayments_UnindexedArgs = {
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  limit?: InputMaybe<Scalars['Float']>;
-  created?: InputMaybe<Scalars['JSON']>;
-  startingAfter?: InputMaybe<Scalars['String']>;
-  endingBefore?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root of the Schema */
-export type QueryGetMyPayments_IndexedArgs = {
-  terms?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Scalars['Int']>;
-  filter?: InputMaybe<Scalars['JSONObject']>;
-  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
-  locale?: InputMaybe<Scalars['String']>;
-  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
-  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<TsWhereStripePaymentIntentInput>;
-};
-
-
-/** Root of the Schema */
-export type QueryGetMyPaymentsArgs = {
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  limit?: InputMaybe<Scalars['Float']>;
-  created?: InputMaybe<Scalars['JSON']>;
-  startingAfter?: InputMaybe<Scalars['String']>;
-  endingBefore?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root of the Schema */
-export type QueryGetMyPaymentsIndexedArgs = {
-  terms?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Scalars['Int']>;
-  filter?: InputMaybe<Scalars['JSONObject']>;
-  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
-  locale?: InputMaybe<Scalars['String']>;
-  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
-  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<TsWhereStripePaymentIntentInput>;
 };
 
 
@@ -384,6 +347,98 @@ export type QueryShopifyStorefront_CustomerArgs = {
 
 
 /** Root of the Schema */
+export type QueryGetStorefrontArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_CollectionByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_CollectionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_CollectionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPageDetailsArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPageDetailsListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPagePoliciesArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetProductPagePoliciesListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
+};
+
+
+/** Root of the Schema */
 export type QuerySearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -419,6 +474,45 @@ export type QuerySearchProfileIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProfileInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchProductIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchProductPageDetailsIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchProductPagePoliciesIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
 };
 
 
@@ -1187,50 +1281,16 @@ export type TsWhereInput = {
   environmentVariables?: InputMaybe<TsWhereTsStaticSiteEnvironmentVariablesInput>;
   triggers?: InputMaybe<TsWhereTsStaticSiteTriggersInput>;
   templateHash?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_capturable?: InputMaybe<TsWhereIntegerInput>;
-  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
-  amount_received?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  automatic_payment_methods?: InputMaybe<TsWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput>;
-  canceled_at?: InputMaybe<TsWhereIntegerInput>;
-  cancellation_reason?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  charges?: InputMaybe<TsWhereStripe_PaymentIntentChargesInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  confirmation_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStripe_InvoiceWrappedStringUnionInput>;
-  last_payment_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_action?: InputMaybe<TsWhereStripe_PaymentIntentNextActionInput>;
-  object?: InputMaybe<TsWhereInput>;
-  on_behalf_of?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-  payment_method?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  payment_method_options?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodOptionsInput>;
-  payment_method_types?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodTypesInput>;
-  processing?: InputMaybe<TsWhereStripe_PaymentIntentProcessingInput>;
-  receipt_email?: InputMaybe<TsWhereStringInput>;
-  review?: InputMaybe<TsWhereStripe_ReviewWrappedStringUnionInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_suffix?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_TransferDataInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-  invoiceItems?: InputMaybe<TsWhereStripe_InvoiceitemInput>;
-  sessionItems?: InputMaybe<TsWhereStripe_ItemInput>;
-  shipment?: InputMaybe<TsWhereShipEngine_LabelInput>;
   active?: InputMaybe<TsWhereBooleanInput>;
+  created?: InputMaybe<TsWhereIntegerInput>;
+  id?: InputMaybe<TsWhereStringInput>;
   images?: InputMaybe<TsWhereStripe_ProductImagesInput>;
+  livemode?: InputMaybe<TsWhereBooleanInput>;
   name?: InputMaybe<TsWhereStringInput>;
+  object?: InputMaybe<TsWhereInput>;
   package_dimensions?: InputMaybe<TsWhereStripe_PackageDimensionsInput>;
   shippable?: InputMaybe<TsWhereBooleanInput>;
+  statement_descriptor?: InputMaybe<TsWhereStringInput>;
   tax_code?: InputMaybe<TsWhereStripe_TaxCodeWrappedStringUnionInput>;
   unit_label?: InputMaybe<TsWhereStringInput>;
   updated?: InputMaybe<TsWhereIntegerInput>;
@@ -1246,1472 +1306,36 @@ export type TsWhereInput = {
   links?: InputMaybe<TsWhereNavigationDataLinksInput>;
   navigation?: InputMaybe<TsWhereFooterNavigationInput>;
   newsletter?: InputMaybe<TsWhereFooterNewsletterInput>;
+  components?: InputMaybe<TsWhereStorefrontComponentsInput>;
+  productComponent?: InputMaybe<TsWhereStringInput>;
+  hideReviews?: InputMaybe<TsWhereBooleanInput>;
+  hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
+  showDetails?: InputMaybe<TsWhereBooleanInput>;
+  Product_details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
+  showPolicies?: InputMaybe<TsWhereBooleanInput>;
+  Product_policies?: InputMaybe<TsWhereProductPagePoliciesRelationshipInput>;
+  shopifyProductId?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsWhereProductPageDetailsTextInput>;
+  ProductPageDetails_details?: InputMaybe<TsWhereProductPageDetailsDetailsInput>;
+  ProductPagePolicies_policies?: InputMaybe<TsWhereProductPagePoliciesPoliciesInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
 };
 
-export type TsWhereStripe_PaymentFlowsAmountDetailsInput = {
-  tip?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsResourceTipInput>;
+export type TsWhereStripe_PackageDimensionsInput = {
+  height?: InputMaybe<TsWhereNumberInput>;
+  length?: InputMaybe<TsWhereNumberInput>;
+  weight?: InputMaybe<TsWhereNumberInput>;
+  width?: InputMaybe<TsWhereNumberInput>;
 };
 
-export type TsWhereStripe_PaymentFlowsAmountDetailsResourceTipInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_ApplicationWrappedStringUnionInput = {
+export type TsWhereStripe_TaxCodeWrappedStringUnionInput = {
   value?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput = {
-  enabled?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_PaymentIntentChargesInput = {
-  data?: InputMaybe<TsWhereStripe_ChargeInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_ChargeInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_captured?: InputMaybe<TsWhereIntegerInput>;
-  amount_refunded?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
-  application_fee?: InputMaybe<TsWhereStripe_ApplicationFeeWrappedStringUnionInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  balance_transaction?: InputMaybe<TsWhereStripe_BalanceTransactionWrappedStringUnionInput>;
-  billing_details?: InputMaybe<TsWhereStripe_BillingDetailsInput>;
-  calculated_statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  captured?: InputMaybe<TsWhereBooleanInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  disputed?: InputMaybe<TsWhereBooleanInput>;
-  failure_balance_transaction?: InputMaybe<TsWhereStripe_BalanceTransactionWrappedStringUnionInput>;
-  failure_code?: InputMaybe<TsWhereStringInput>;
-  failure_message?: InputMaybe<TsWhereStringInput>;
-  fraud_details?: InputMaybe<TsWhereStripe_ChargeFraudDetailsInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStripe_InvoiceWrappedStringUnionInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  on_behalf_of?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-  order?: InputMaybe<TsWhereStripe_OrderWrappedStringUnionInput>;
-  outcome?: InputMaybe<TsWhereStripe_ChargeOutcomeInput>;
-  paid?: InputMaybe<TsWhereBooleanInput>;
-  payment_intent?: InputMaybe<TsWhereStripe_PaymentIntentWrappedStringUnionInput>;
-  payment_method?: InputMaybe<TsWhereStringInput>;
-  payment_method_details?: InputMaybe<TsWhereStripe_PaymentMethodDetailsInput>;
-  receipt_email?: InputMaybe<TsWhereStringInput>;
-  receipt_number?: InputMaybe<TsWhereStringInput>;
-  receipt_url?: InputMaybe<TsWhereStringInput>;
-  refunded?: InputMaybe<TsWhereBooleanInput>;
-  refunds?: InputMaybe<TsWhereStripe_PaymentIntentRefundsInput>;
-  review?: InputMaybe<TsWhereStripe_ReviewWrappedStringUnionInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  source_transfer?: InputMaybe<TsWhereStripe_TransferWrappedStringUnionInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_suffix?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer?: InputMaybe<TsWhereStripe_TransferWrappedStringUnionInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_ChargeTransferDataInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_ApplicationFeeWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_refunded?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  refunded?: InputMaybe<TsWhereBooleanInput>;
-  refunds?: InputMaybe<TsWhereStripe_ApplicationFeeRefundsInput>;
-};
-
-export type TsWhereStripe_ApplicationFeeRefundsInput = {
-  data?: InputMaybe<TsWhereStripe_FeeRefundInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_FeeRefundInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_BalanceTransactionWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  available_on?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  exchange_rate?: InputMaybe<TsWhereNumberInput>;
-  fee?: InputMaybe<TsWhereIntegerInput>;
-  fee_details?: InputMaybe<TsWhereStripe_FeeInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  net?: InputMaybe<TsWhereIntegerInput>;
-  object?: InputMaybe<TsWhereInput>;
-  reporting_category?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_FeeInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStringInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_BillingDetailsInput = {
-  address?: InputMaybe<TsWhereStripe_AddressInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  phone?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AddressInput = {
-  city?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  line1?: InputMaybe<TsWhereStringInput>;
-  line2?: InputMaybe<TsWhereStringInput>;
-  postal_code?: InputMaybe<TsWhereStringInput>;
-  state?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_ChargeFraudDetailsInput = {
-  stripe_report?: InputMaybe<TsWhereStringInput>;
-  user_report?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_InvoiceWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  account_country?: InputMaybe<TsWhereStringInput>;
-  account_name?: InputMaybe<TsWhereStringInput>;
-  account_tax_ids?: InputMaybe<TsWhereStripe_InvoiceAccountTaxIdsInput>;
-  amount_due?: InputMaybe<TsWhereIntegerInput>;
-  amount_paid?: InputMaybe<TsWhereIntegerInput>;
-  amount_remaining?: InputMaybe<TsWhereIntegerInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  attempt_count?: InputMaybe<TsWhereIntegerInput>;
-  attempted?: InputMaybe<TsWhereBooleanInput>;
-  auto_advance?: InputMaybe<TsWhereBooleanInput>;
-  automatic_tax?: InputMaybe<TsWhereStripe_AutomaticTaxInput>;
-  billing_reason?: InputMaybe<TsWhereInput>;
-  collection_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  custom_fields?: InputMaybe<TsWhereStripe_InvoiceSettingCustomFieldInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  customer_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  customer_email?: InputMaybe<TsWhereStringInput>;
-  customer_name?: InputMaybe<TsWhereStringInput>;
-  customer_phone?: InputMaybe<TsWhereStringInput>;
-  customer_shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  customer_tax_exempt?: InputMaybe<TsWhereInput>;
-  customer_tax_ids?: InputMaybe<TsWhereStripe_InvoicesResourceInvoiceTaxIdInput>;
-  default_tax_rates?: InputMaybe<TsWhereStripe_TaxRateInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  discount?: InputMaybe<TsWhereStripe_DiscountInput>;
-  discounts?: InputMaybe<TsWhereStripe_InvoiceDiscountsInput>;
-  due_date?: InputMaybe<TsWhereIntegerInput>;
-  ending_balance?: InputMaybe<TsWhereIntegerInput>;
-  footer?: InputMaybe<TsWhereStringInput>;
-  hosted_invoice_url?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice_pdf?: InputMaybe<TsWhereStringInput>;
-  last_finalization_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  lines?: InputMaybe<TsWhereStripe_InvoiceLinesInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_payment_attempt?: InputMaybe<TsWhereIntegerInput>;
-  number?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  paid?: InputMaybe<TsWhereBooleanInput>;
-  paid_out_of_band?: InputMaybe<TsWhereBooleanInput>;
-  payment_settings?: InputMaybe<TsWhereStripe_InvoicesPaymentSettingsInput>;
-  period_end?: InputMaybe<TsWhereIntegerInput>;
-  period_start?: InputMaybe<TsWhereIntegerInput>;
-  post_payment_credit_notes_amount?: InputMaybe<TsWhereIntegerInput>;
-  pre_payment_credit_notes_amount?: InputMaybe<TsWhereIntegerInput>;
-  receipt_number?: InputMaybe<TsWhereStringInput>;
-  starting_balance?: InputMaybe<TsWhereIntegerInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  status_transitions?: InputMaybe<TsWhereStripe_InvoicesStatusTransitionsInput>;
-  subscription_proration_date?: InputMaybe<TsWhereIntegerInput>;
-  subtotal?: InputMaybe<TsWhereIntegerInput>;
-  tax?: InputMaybe<TsWhereIntegerInput>;
-  threshold_reason?: InputMaybe<TsWhereStripe_InvoiceThresholdReasonInput>;
-  total?: InputMaybe<TsWhereIntegerInput>;
-  total_discount_amounts?: InputMaybe<TsWhereStripe_DiscountsResourceDiscountAmountInput>;
-  total_tax_amounts?: InputMaybe<TsWhereStripe_InvoiceTaxAmountInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_InvoiceTransferDataInput>;
-  webhooks_delivered_at?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_InvoiceAccountTaxIdsInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  type?: InputMaybe<TsWhereInput>;
-  verification?: InputMaybe<TsWhereStripe_TaxIdVerificationInput>;
-};
-
-export type TsWhereStripe_TaxIdVerificationInput = {
-  status?: InputMaybe<TsWhereInput>;
-  verified_address?: InputMaybe<TsWhereStringInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AutomaticTaxInput = {
-  enabled?: InputMaybe<TsWhereBooleanInput>;
-  status?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_InvoiceSettingCustomFieldInput = {
-  name?: InputMaybe<TsWhereStringInput>;
-  value?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_ShippingInput = {
-  address?: InputMaybe<TsWhereStripe_AddressInput>;
-  carrier?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  phone?: InputMaybe<TsWhereStringInput>;
-  tracking_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_InvoicesResourceInvoiceTaxIdInput = {
-  type?: InputMaybe<TsWhereInput>;
-  value?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TaxRateInput = {
-  active?: InputMaybe<TsWhereBooleanInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  display_name?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  inclusive?: InputMaybe<TsWhereBooleanInput>;
-  jurisdiction?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  percentage?: InputMaybe<TsWhereNumberInput>;
-  state?: InputMaybe<TsWhereStringInput>;
-  tax_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_DiscountInput = {
-  checkout_session?: InputMaybe<TsWhereStringInput>;
-  coupon?: InputMaybe<TsWhereStripe_CouponInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  end?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStringInput>;
-  invoice_item?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  start?: InputMaybe<TsWhereIntegerInput>;
-  subscription?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_CouponInput = {
-  amount_off?: InputMaybe<TsWhereIntegerInput>;
-  applies_to?: InputMaybe<TsWhereStripe_CouponAppliesToInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  duration?: InputMaybe<TsWhereInput>;
-  duration_in_months?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  max_redemptions?: InputMaybe<TsWhereIntegerInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  percent_off?: InputMaybe<TsWhereNumberInput>;
-  redeem_by?: InputMaybe<TsWhereIntegerInput>;
-  times_redeemed?: InputMaybe<TsWhereIntegerInput>;
-  valid?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_CouponAppliesToInput = {
-  products?: InputMaybe<TsWhereStripe_InvoiceProductsInput>;
-};
-
-export type TsWhereStripe_InvoiceProductsInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_InvoiceDiscountsInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_ApiErrorsInput = {
-  charge?: InputMaybe<TsWhereStringInput>;
-  code?: InputMaybe<TsWhereStringInput>;
-  decline_code?: InputMaybe<TsWhereStringInput>;
-  doc_url?: InputMaybe<TsWhereStringInput>;
-  message?: InputMaybe<TsWhereStringInput>;
-  param?: InputMaybe<TsWhereStringInput>;
-  payment_intent?: InputMaybe<TsWhereStripe_PaymentIntentInput>;
-  payment_method?: InputMaybe<TsWhereStripe_PaymentMethodInput>;
-  payment_method_type?: InputMaybe<TsWhereStringInput>;
-  setup_intent?: InputMaybe<TsWhereStripe_SetupIntentInput>;
-  source?: InputMaybe<TsWhereStripe_BankAccountStripe_CardStripe_SourceUnionInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentIntentInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_capturable?: InputMaybe<TsWhereIntegerInput>;
-  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
-  amount_received?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  automatic_payment_methods?: InputMaybe<TsWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput>;
-  canceled_at?: InputMaybe<TsWhereIntegerInput>;
-  cancellation_reason?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  charges?: InputMaybe<TsWhereStripe_PaymentIntentChargesInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  confirmation_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
   description?: InputMaybe<TsWhereStringInput>;
   id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStripe_InvoiceWrappedStringUnionInput>;
-  last_payment_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_action?: InputMaybe<TsWhereStripe_PaymentIntentNextActionInput>;
-  object?: InputMaybe<TsWhereInput>;
-  on_behalf_of?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-  payment_method?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  payment_method_options?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodOptionsInput>;
-  payment_method_types?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodTypesInput>;
-  processing?: InputMaybe<TsWhereStripe_PaymentIntentProcessingInput>;
-  receipt_email?: InputMaybe<TsWhereStringInput>;
-  review?: InputMaybe<TsWhereStripe_ReviewWrappedStringUnionInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_suffix?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_TransferDataInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-  invoiceItems?: InputMaybe<TsWhereStripe_InvoiceitemInput>;
-  sessionItems?: InputMaybe<TsWhereStripe_ItemInput>;
-  shipment?: InputMaybe<TsWhereShipEngine_LabelInput>;
-  _shapeId?: InputMaybe<TsWhereIdInput>;
-  _id?: InputMaybe<TsWhereIdInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionInput = {
-  alipay_handle_redirect?: InputMaybe<TsWhereStripe_PaymentIntentNextActionAlipayHandleRedirectInput>;
-  boleto_display_details?: InputMaybe<TsWhereStripe_PaymentIntentNextActionBoletoInput>;
-  card_await_notification?: InputMaybe<TsWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput>;
-  display_bank_transfer_instructions?: InputMaybe<TsWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput>;
-  konbini_display_details?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniInput>;
-  oxxo_display_details?: InputMaybe<TsWhereStripe_PaymentIntentNextActionDisplayOxxoDetailsInput>;
-  paynow_display_qr_code?: InputMaybe<TsWhereStripe_PaymentIntentNextActionPaynowDisplayQrCodeInput>;
-  redirect_to_url?: InputMaybe<TsWhereStripe_PaymentIntentNextActionRedirectToUrlInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-  verify_with_microdeposits?: InputMaybe<TsWhereStripe_PaymentIntentNextActionVerifyWithMicrodepositsInput>;
-  wechat_pay_display_qr_code?: InputMaybe<TsWhereStripe_PaymentIntentNextActionWechatPayDisplayQrCodeInput>;
-  wechat_pay_redirect_to_android_app?: InputMaybe<TsWhereStripe_PaymentIntentNextActionWechatPayRedirectToAndroidAppInput>;
-  wechat_pay_redirect_to_ios_app?: InputMaybe<TsWhereStripe_PaymentIntentNextActionWechatPayRedirectToIosAppInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionAlipayHandleRedirectInput = {
-  native_data?: InputMaybe<TsWhereStringInput>;
-  native_url?: InputMaybe<TsWhereStringInput>;
-  return_url?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionBoletoInput = {
-  expires_at?: InputMaybe<TsWhereIntegerInput>;
-  hosted_voucher_url?: InputMaybe<TsWhereStringInput>;
-  number?: InputMaybe<TsWhereStringInput>;
-  pdf?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput = {
-  charge_attempt_at?: InputMaybe<TsWhereIntegerInput>;
-  customer_approval_required?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput = {
-  amount_remaining?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  financial_addresses?: InputMaybe<TsWhereStripe_FundingInstructionsBankTransferFinancialAddressInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_FundingInstructionsBankTransferFinancialAddressInput = {
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionKonbiniInput = {
-  expires_at?: InputMaybe<TsWhereIntegerInput>;
-  hosted_voucher_url?: InputMaybe<TsWhereStringInput>;
-  stores?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniStoresInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionKonbiniStoresInput = {
-  familymart?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniFamilymartInput>;
-  lawson?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniLawsonInput>;
-  ministop?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniMinistopInput>;
-  seicomart?: InputMaybe<TsWhereStripe_PaymentIntentNextActionKonbiniSeicomartInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionKonbiniFamilymartInput = {
-  confirmation_number?: InputMaybe<TsWhereStringInput>;
-  payment_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionKonbiniLawsonInput = {
-  confirmation_number?: InputMaybe<TsWhereStringInput>;
-  payment_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionKonbiniMinistopInput = {
-  confirmation_number?: InputMaybe<TsWhereStringInput>;
-  payment_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionKonbiniSeicomartInput = {
-  confirmation_number?: InputMaybe<TsWhereStringInput>;
-  payment_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionDisplayOxxoDetailsInput = {
-  expires_after?: InputMaybe<TsWhereIntegerInput>;
-  hosted_voucher_url?: InputMaybe<TsWhereStringInput>;
-  number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionPaynowDisplayQrCodeInput = {
-  data?: InputMaybe<TsWhereStringInput>;
-  image_url_png?: InputMaybe<TsWhereStringInput>;
-  image_url_svg?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionRedirectToUrlInput = {
-  return_url?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionVerifyWithMicrodepositsInput = {
-  arrival_date?: InputMaybe<TsWhereIntegerInput>;
-  hosted_verification_url?: InputMaybe<TsWhereStringInput>;
-  microdeposit_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionWechatPayDisplayQrCodeInput = {
-  data?: InputMaybe<TsWhereStringInput>;
-  image_data_url?: InputMaybe<TsWhereStringInput>;
-  image_url_png?: InputMaybe<TsWhereStringInput>;
-  image_url_svg?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionWechatPayRedirectToAndroidAppInput = {
-  app_id?: InputMaybe<TsWhereStringInput>;
-  nonce_str?: InputMaybe<TsWhereStringInput>;
-  package?: InputMaybe<TsWhereStringInput>;
-  partner_id?: InputMaybe<TsWhereStringInput>;
-  prepay_id?: InputMaybe<TsWhereStringInput>;
-  sign?: InputMaybe<TsWhereStringInput>;
-  timestamp?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentNextActionWechatPayRedirectToIosAppInput = {
-  native_url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  business_profile?: InputMaybe<TsWhereStripe_AccountBusinessProfileInput>;
-  business_type?: InputMaybe<TsWhereInput>;
-  capabilities?: InputMaybe<TsWhereStripe_AccountCapabilitiesInput>;
-  charges_enabled?: InputMaybe<TsWhereBooleanInput>;
-  company?: InputMaybe<TsWhereStripe_LegalEntityCompanyInput>;
-  controller?: InputMaybe<TsWhereStripe_AccountUnificationAccountControllerInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  default_currency?: InputMaybe<TsWhereStringInput>;
-  details_submitted?: InputMaybe<TsWhereBooleanInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  external_accounts?: InputMaybe<TsWhereStripe_AccountExternalAccountsInput>;
-  future_requirements?: InputMaybe<TsWhereStripe_AccountFutureRequirementsInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  individual?: InputMaybe<TsWhereStripe_PersonInput>;
-  object?: InputMaybe<TsWhereInput>;
-  payouts_enabled?: InputMaybe<TsWhereBooleanInput>;
-  requirements?: InputMaybe<TsWhereStripe_AccountRequirementsInput>;
-  settings?: InputMaybe<TsWhereStripe_AccountSettingsInput>;
-  tos_acceptance?: InputMaybe<TsWhereStripe_AccountTosAcceptanceInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_AccountBusinessProfileInput = {
-  mcc?: InputMaybe<TsWhereStringInput>;
   name?: InputMaybe<TsWhereStringInput>;
-  product_description?: InputMaybe<TsWhereStringInput>;
-  support_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  support_email?: InputMaybe<TsWhereStringInput>;
-  support_phone?: InputMaybe<TsWhereStringInput>;
-  support_url?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountCapabilitiesInput = {
-  acss_debit_payments?: InputMaybe<TsWhereInput>;
-  afterpay_clearpay_payments?: InputMaybe<TsWhereInput>;
-  au_becs_debit_payments?: InputMaybe<TsWhereInput>;
-  bacs_debit_payments?: InputMaybe<TsWhereInput>;
-  bancontact_payments?: InputMaybe<TsWhereInput>;
-  bank_transfer_payments?: InputMaybe<TsWhereInput>;
-  boleto_payments?: InputMaybe<TsWhereInput>;
-  card_issuing?: InputMaybe<TsWhereInput>;
-  card_payments?: InputMaybe<TsWhereInput>;
-  cartes_bancaires_payments?: InputMaybe<TsWhereInput>;
-  eps_payments?: InputMaybe<TsWhereInput>;
-  fpx_payments?: InputMaybe<TsWhereInput>;
-  giropay_payments?: InputMaybe<TsWhereInput>;
-  grabpay_payments?: InputMaybe<TsWhereInput>;
-  ideal_payments?: InputMaybe<TsWhereInput>;
-  jcb_payments?: InputMaybe<TsWhereInput>;
-  klarna_payments?: InputMaybe<TsWhereInput>;
-  konbini_payments?: InputMaybe<TsWhereInput>;
-  legacy_payments?: InputMaybe<TsWhereInput>;
-  oxxo_payments?: InputMaybe<TsWhereInput>;
-  p24_payments?: InputMaybe<TsWhereInput>;
-  paynow_payments?: InputMaybe<TsWhereInput>;
-  sepa_debit_payments?: InputMaybe<TsWhereInput>;
-  sofort_payments?: InputMaybe<TsWhereInput>;
-  tax_reporting_us_1099_k?: InputMaybe<TsWhereInput>;
-  tax_reporting_us_1099_misc?: InputMaybe<TsWhereInput>;
-  transfers?: InputMaybe<TsWhereInput>;
-  us_bank_account_ach_payments?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_LegalEntityCompanyInput = {
-  address?: InputMaybe<TsWhereStripe_AddressInput>;
-  address_kana?: InputMaybe<TsWhereStripe_LegalEntityJapanAddressInput>;
-  address_kanji?: InputMaybe<TsWhereStripe_LegalEntityJapanAddressInput>;
-  directors_provided?: InputMaybe<TsWhereBooleanInput>;
-  executives_provided?: InputMaybe<TsWhereBooleanInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  name_kana?: InputMaybe<TsWhereStringInput>;
-  name_kanji?: InputMaybe<TsWhereStringInput>;
-  owners_provided?: InputMaybe<TsWhereBooleanInput>;
-  ownership_declaration?: InputMaybe<TsWhereStripe_LegalEntityUboDeclarationInput>;
-  phone?: InputMaybe<TsWhereStringInput>;
-  structure?: InputMaybe<TsWhereInput>;
-  tax_id_provided?: InputMaybe<TsWhereBooleanInput>;
-  tax_id_registrar?: InputMaybe<TsWhereStringInput>;
-  vat_id_provided?: InputMaybe<TsWhereBooleanInput>;
-  verification?: InputMaybe<TsWhereStripe_LegalEntityCompanyVerificationInput>;
-};
-
-export type TsWhereStripe_LegalEntityJapanAddressInput = {
-  city?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  line1?: InputMaybe<TsWhereStringInput>;
-  line2?: InputMaybe<TsWhereStringInput>;
-  postal_code?: InputMaybe<TsWhereStringInput>;
-  state?: InputMaybe<TsWhereStringInput>;
-  town?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_LegalEntityUboDeclarationInput = {
-  date?: InputMaybe<TsWhereIntegerInput>;
-  ip?: InputMaybe<TsWhereStringInput>;
-  user_agent?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_LegalEntityCompanyVerificationInput = {
-  document?: InputMaybe<TsWhereStripe_LegalEntityCompanyVerificationDocumentInput>;
-};
-
-export type TsWhereStripe_LegalEntityCompanyVerificationDocumentInput = {
-  details?: InputMaybe<TsWhereStringInput>;
-  details_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountUnificationAccountControllerInput = {
-  is_controller?: InputMaybe<TsWhereBooleanInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_AccountExternalAccountsInput = {
-  data?: InputMaybe<TsWhereStripe_AccountDataInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
   object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountDataInput = {
-  account_holder_name?: InputMaybe<TsWhereStringInput>;
-  account_holder_type?: InputMaybe<TsWhereStringInput>;
-  account_type?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  default_for_currency?: InputMaybe<TsWhereBooleanInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  address_city?: InputMaybe<TsWhereStringInput>;
-  address_country?: InputMaybe<TsWhereStringInput>;
-  address_line1?: InputMaybe<TsWhereStringInput>;
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_line2?: InputMaybe<TsWhereStringInput>;
-  address_state?: InputMaybe<TsWhereStringInput>;
-  address_zip?: InputMaybe<TsWhereStringInput>;
-  address_zip_check?: InputMaybe<TsWhereStringInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  tokenization_method?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountFutureRequirementsInput = {
-  alternatives?: InputMaybe<TsWhereStripe_AccountRequirementsAlternativeInput>;
-  current_deadline?: InputMaybe<TsWhereIntegerInput>;
-  currently_due?: InputMaybe<TsWhereStripe_AccountCurrentlyDueInput>;
-  disabled_reason?: InputMaybe<TsWhereStringInput>;
-  errors?: InputMaybe<TsWhereStripe_AccountRequirementsErrorInput>;
-  eventually_due?: InputMaybe<TsWhereStripe_AccountEventuallyDueInput>;
-  past_due?: InputMaybe<TsWhereStripe_AccountPastDueInput>;
-  pending_verification?: InputMaybe<TsWhereStripe_AccountPendingVerificationInput>;
-};
-
-export type TsWhereStripe_AccountRequirementsAlternativeInput = {
-  alternative_fields_due?: InputMaybe<TsWhereStripe_AccountAlternativeFieldsDueInput>;
-  original_fields_due?: InputMaybe<TsWhereStripe_AccountOriginalFieldsDueInput>;
-};
-
-export type TsWhereStripe_AccountAlternativeFieldsDueInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_AccountOriginalFieldsDueInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_AccountCurrentlyDueInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_AccountRequirementsErrorInput = {
-  code?: InputMaybe<TsWhereInput>;
-  reason?: InputMaybe<TsWhereStringInput>;
-  requirement?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountEventuallyDueInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_AccountPastDueInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_AccountPendingVerificationInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_PersonInput = {
-  account?: InputMaybe<TsWhereStringInput>;
-  address?: InputMaybe<TsWhereStripe_AddressInput>;
-  address_kana?: InputMaybe<TsWhereStripe_LegalEntityJapanAddressInput>;
-  address_kanji?: InputMaybe<TsWhereStripe_LegalEntityJapanAddressInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  dob?: InputMaybe<TsWhereStripe_LegalEntityDobInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  first_name?: InputMaybe<TsWhereStringInput>;
-  first_name_kana?: InputMaybe<TsWhereStringInput>;
-  first_name_kanji?: InputMaybe<TsWhereStringInput>;
-  full_name_aliases?: InputMaybe<TsWhereStripe_AccountFullNameAliasesInput>;
-  future_requirements?: InputMaybe<TsWhereStripe_PersonFutureRequirementsInput>;
-  gender?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  id_number_provided?: InputMaybe<TsWhereBooleanInput>;
-  last_name?: InputMaybe<TsWhereStringInput>;
-  last_name_kana?: InputMaybe<TsWhereStringInput>;
-  last_name_kanji?: InputMaybe<TsWhereStringInput>;
-  maiden_name?: InputMaybe<TsWhereStringInput>;
-  nationality?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  phone?: InputMaybe<TsWhereStringInput>;
-  political_exposure?: InputMaybe<TsWhereInput>;
-  relationship?: InputMaybe<TsWhereStripe_PersonRelationshipInput>;
-  requirements?: InputMaybe<TsWhereStripe_PersonRequirementsInput>;
-  ssn_last_4_provided?: InputMaybe<TsWhereBooleanInput>;
-  verification?: InputMaybe<TsWhereStripe_LegalEntityPersonVerificationInput>;
-};
-
-export type TsWhereStripe_LegalEntityDobInput = {
-  day?: InputMaybe<TsWhereIntegerInput>;
-  month?: InputMaybe<TsWhereIntegerInput>;
-  year?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_AccountFullNameAliasesInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_PersonFutureRequirementsInput = {
-  alternatives?: InputMaybe<TsWhereStripe_AccountRequirementsAlternativeInput>;
-  currently_due?: InputMaybe<TsWhereStripe_AccountCurrentlyDueInput>;
-  errors?: InputMaybe<TsWhereStripe_AccountRequirementsErrorInput>;
-  eventually_due?: InputMaybe<TsWhereStripe_AccountEventuallyDueInput>;
-  past_due?: InputMaybe<TsWhereStripe_AccountPastDueInput>;
-  pending_verification?: InputMaybe<TsWhereStripe_AccountPendingVerificationInput>;
-};
-
-export type TsWhereStripe_PersonRelationshipInput = {
-  director?: InputMaybe<TsWhereBooleanInput>;
-  executive?: InputMaybe<TsWhereBooleanInput>;
-  owner?: InputMaybe<TsWhereBooleanInput>;
-  percent_ownership?: InputMaybe<TsWhereNumberInput>;
-  representative?: InputMaybe<TsWhereBooleanInput>;
-  title?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PersonRequirementsInput = {
-  alternatives?: InputMaybe<TsWhereStripe_AccountRequirementsAlternativeInput>;
-  currently_due?: InputMaybe<TsWhereStripe_AccountCurrentlyDueInput>;
-  errors?: InputMaybe<TsWhereStripe_AccountRequirementsErrorInput>;
-  eventually_due?: InputMaybe<TsWhereStripe_AccountEventuallyDueInput>;
-  past_due?: InputMaybe<TsWhereStripe_AccountPastDueInput>;
-  pending_verification?: InputMaybe<TsWhereStripe_AccountPendingVerificationInput>;
-};
-
-export type TsWhereStripe_LegalEntityPersonVerificationInput = {
-  additional_document?: InputMaybe<TsWhereStripe_LegalEntityPersonVerificationDocumentInput>;
-  details?: InputMaybe<TsWhereStringInput>;
-  details_code?: InputMaybe<TsWhereStringInput>;
-  document?: InputMaybe<TsWhereStripe_LegalEntityPersonVerificationDocumentInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_LegalEntityPersonVerificationDocumentInput = {
-  details?: InputMaybe<TsWhereStringInput>;
-  details_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountRequirementsInput = {
-  alternatives?: InputMaybe<TsWhereStripe_AccountRequirementsAlternativeInput>;
-  current_deadline?: InputMaybe<TsWhereIntegerInput>;
-  currently_due?: InputMaybe<TsWhereStripe_AccountCurrentlyDueInput>;
-  disabled_reason?: InputMaybe<TsWhereStringInput>;
-  errors?: InputMaybe<TsWhereStripe_AccountRequirementsErrorInput>;
-  eventually_due?: InputMaybe<TsWhereStripe_AccountEventuallyDueInput>;
-  past_due?: InputMaybe<TsWhereStripe_AccountPastDueInput>;
-  pending_verification?: InputMaybe<TsWhereStripe_AccountPendingVerificationInput>;
-};
-
-export type TsWhereStripe_AccountSettingsInput = {
-  bacs_debit_payments?: InputMaybe<TsWhereStripe_AccountBacsDebitPaymentsSettingsInput>;
-  branding?: InputMaybe<TsWhereStripe_AccountBrandingSettingsInput>;
-  card_issuing?: InputMaybe<TsWhereStripe_AccountCardIssuingSettingsInput>;
-  card_payments?: InputMaybe<TsWhereStripe_AccountCardPaymentsSettingsInput>;
-  dashboard?: InputMaybe<TsWhereStripe_AccountDashboardSettingsInput>;
-  payments?: InputMaybe<TsWhereStripe_AccountPaymentsSettingsInput>;
-  payouts?: InputMaybe<TsWhereStripe_AccountPayoutSettingsInput>;
-  sepa_debit_payments?: InputMaybe<TsWhereStripe_AccountSepaDebitPaymentsSettingsInput>;
-};
-
-export type TsWhereStripe_AccountBacsDebitPaymentsSettingsInput = {
-  display_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountBrandingSettingsInput = {
-  primary_color?: InputMaybe<TsWhereStringInput>;
-  secondary_color?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountCardIssuingSettingsInput = {
-  tos_acceptance?: InputMaybe<TsWhereStripe_CardIssuingAccountTermsOfServiceInput>;
-};
-
-export type TsWhereStripe_CardIssuingAccountTermsOfServiceInput = {
-  date?: InputMaybe<TsWhereIntegerInput>;
-  ip?: InputMaybe<TsWhereStringInput>;
-  user_agent?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountCardPaymentsSettingsInput = {
-  decline_on?: InputMaybe<TsWhereStripe_AccountDeclineChargeOnInput>;
-  statement_descriptor_prefix?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountDeclineChargeOnInput = {
-  avs_failure?: InputMaybe<TsWhereBooleanInput>;
-  cvc_failure?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_AccountDashboardSettingsInput = {
-  display_name?: InputMaybe<TsWhereStringInput>;
-  timezone?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountPaymentsSettingsInput = {
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_kana?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_kanji?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountPayoutSettingsInput = {
-  debit_negative_balances?: InputMaybe<TsWhereBooleanInput>;
-  schedule?: InputMaybe<TsWhereStripe_TransferScheduleInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TransferScheduleInput = {
-  delay_days?: InputMaybe<TsWhereIntegerInput>;
-  interval?: InputMaybe<TsWhereStringInput>;
-  monthly_anchor?: InputMaybe<TsWhereIntegerInput>;
-  weekly_anchor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountSepaDebitPaymentsSettingsInput = {
-  creditor_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_AccountTosAcceptanceInput = {
-  date?: InputMaybe<TsWhereIntegerInput>;
-  ip?: InputMaybe<TsWhereStringInput>;
-  service_agreement?: InputMaybe<TsWhereStringInput>;
-  user_agent?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  acss_debit?: InputMaybe<TsWhereStripe_PaymentMethodAcssDebitInput>;
-  au_becs_debit?: InputMaybe<TsWhereStripe_PaymentMethodAuBecsDebitInput>;
-  bacs_debit?: InputMaybe<TsWhereStripe_PaymentMethodBacsDebitInput>;
-  billing_details?: InputMaybe<TsWhereStripe_BillingDetailsInput>;
-  boleto?: InputMaybe<TsWhereStripe_PaymentMethodBoletoInput>;
-  card?: InputMaybe<TsWhereStripe_PaymentMethodCardInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  eps?: InputMaybe<TsWhereStripe_PaymentMethodEpsInput>;
-  fpx?: InputMaybe<TsWhereStripe_PaymentMethodFpxInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  ideal?: InputMaybe<TsWhereStripe_PaymentMethodIdealInput>;
-  klarna?: InputMaybe<TsWhereStripe_PaymentMethodKlarnaInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  p24?: InputMaybe<TsWhereStripe_PaymentMethodP24Input>;
-  sepa_debit?: InputMaybe<TsWhereStripe_PaymentMethodSepaDebitInput>;
-  sofort?: InputMaybe<TsWhereStripe_PaymentMethodSofortInput>;
-  type?: InputMaybe<TsWhereInput>;
-  us_bank_account?: InputMaybe<TsWhereStripe_PaymentMethodUsBankAccountInput>;
-};
-
-export type TsWhereStripe_PaymentMethodAcssDebitInput = {
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  institution_number?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  transit_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodAuBecsDebitInput = {
-  bsb_number?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodBacsDebitInput = {
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  sort_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodBoletoInput = {
-  tax_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodCardInput = {
-  brand?: InputMaybe<TsWhereStringInput>;
-  checks?: InputMaybe<TsWhereStripe_PaymentMethodCardChecksInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  generated_from?: InputMaybe<TsWhereStripe_PaymentMethodCardGeneratedCardInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  networks?: InputMaybe<TsWhereStripe_NetworksInput>;
-  three_d_secure_usage?: InputMaybe<TsWhereStripe_ThreeDSecureUsageInput>;
-  wallet?: InputMaybe<TsWhereStripe_PaymentMethodCardWalletInput>;
-};
-
-export type TsWhereStripe_PaymentMethodCardChecksInput = {
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_postal_code_check?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodCardGeneratedCardInput = {
-  charge?: InputMaybe<TsWhereStringInput>;
-  payment_method_details?: InputMaybe<TsWhereStripe_CardGeneratedFromPaymentMethodDetailsInput>;
-};
-
-export type TsWhereStripe_CardGeneratedFromPaymentMethodDetailsInput = {
-  card_present?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardPresentInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardPresentInput = {
-  amount_authorized?: InputMaybe<TsWhereIntegerInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  capture_before?: InputMaybe<TsWhereIntegerInput>;
-  cardholder_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  emv_auth_data?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  generated_card?: InputMaybe<TsWhereStringInput>;
-  incremental_authorization_supported?: InputMaybe<TsWhereBooleanInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  network?: InputMaybe<TsWhereStringInput>;
-  overcapture_supported?: InputMaybe<TsWhereBooleanInput>;
-  read_method?: InputMaybe<TsWhereInput>;
-  receipt?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardPresentReceiptInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardPresentReceiptInput = {
-  account_type?: InputMaybe<TsWhereInput>;
-  application_cryptogram?: InputMaybe<TsWhereStringInput>;
-  application_preferred_name?: InputMaybe<TsWhereStringInput>;
-  authorization_code?: InputMaybe<TsWhereStringInput>;
-  authorization_response_code?: InputMaybe<TsWhereStringInput>;
-  cardholder_verification_method?: InputMaybe<TsWhereStringInput>;
-  dedicated_file_name?: InputMaybe<TsWhereStringInput>;
-  terminal_verification_results?: InputMaybe<TsWhereStringInput>;
-  transaction_status_information?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_NetworksInput = {
-  available?: InputMaybe<TsWhereStripe_PaymentMethodAvailableInput>;
-  preferred?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodAvailableInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_ThreeDSecureUsageInput = {
-  supported?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_PaymentMethodCardWalletInput = {
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  masterpass?: InputMaybe<TsWhereStripe_PaymentMethodCardWalletMasterpassInput>;
-  type?: InputMaybe<TsWhereInput>;
-  visa_checkout?: InputMaybe<TsWhereStripe_PaymentMethodCardWalletVisaCheckoutInput>;
-};
-
-export type TsWhereStripe_PaymentMethodCardWalletMasterpassInput = {
-  billing_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  shipping_address?: InputMaybe<TsWhereStripe_AddressInput>;
-};
-
-export type TsWhereStripe_PaymentMethodCardWalletVisaCheckoutInput = {
-  billing_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  shipping_address?: InputMaybe<TsWhereStripe_AddressInput>;
-};
-
-export type TsWhereStripe_PaymentMethodEpsInput = {
-  bank?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodFpxInput = {
-  bank?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodIdealInput = {
-  bank?: InputMaybe<TsWhereInput>;
-  bic?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodKlarnaInput = {
-  dob?: InputMaybe<TsWhereStripe_PaymentFlowsPrivatePaymentMethodsKlarnaDobInput>;
-};
-
-export type TsWhereStripe_PaymentFlowsPrivatePaymentMethodsKlarnaDobInput = {
-  day?: InputMaybe<TsWhereIntegerInput>;
-  month?: InputMaybe<TsWhereIntegerInput>;
-  year?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_PaymentMethodP24Input = {
-  bank?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodSepaDebitInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  branch_code?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodSofortInput = {
-  country?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodUsBankAccountInput = {
-  account_holder_type?: InputMaybe<TsWhereInput>;
-  account_type?: InputMaybe<TsWhereInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentPaymentMethodOptionsInput = {
-  acss_debit?: InputMaybe<TsWhere4c5fc35133092d01c0a6f6273b32acefUnionInput>;
-  afterpay_clearpay?: InputMaybe<TsWhere69c699ae4c023cdd5081fd0b275d2314UnionInput>;
-  alipay?: InputMaybe<TsWhere0c15571704f92e4deef74bf2861e3048UnionInput>;
-  au_becs_debit?: InputMaybe<TsWhered0f94d051a53ade5163af84b3fd6b0f7UnionInput>;
-  bacs_debit?: InputMaybe<TsWhere55b3d4514248bce7ac082bbc0da1833aUnionInput>;
-  bancontact?: InputMaybe<TsWhereac15fe59c1b71bd6db2d201a4acee09dUnionInput>;
-  boleto?: InputMaybe<TsWhere076b30d85cca1aae72305dffd8194343UnionInput>;
-  card?: InputMaybe<TsWhere6181441ba9fb7eee556dd3a4a9d229e4UnionInput>;
-  card_present?: InputMaybe<TsWherea245e0776494a0d51fe046b0453d38afUnionInput>;
-  customer_balance?: InputMaybe<TsWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput>;
-  eps?: InputMaybe<TsWheref973d307d812f0dfb771bc8122e5c599UnionInput>;
-  fpx?: InputMaybe<TsWhereabae1b112405e8b3c0dbfa673a54aaadUnionInput>;
-  giropay?: InputMaybe<TsWhere8cc56b75820487c13c502fada2896d16UnionInput>;
-  grabpay?: InputMaybe<TsWhereeaab7727acdc782ba4b7fd55f1d34914UnionInput>;
-  ideal?: InputMaybe<TsWherebc8c021d852b37c55e33cd17b5bc5c8eUnionInput>;
-  interac_present?: InputMaybe<TsWhere0790e0b407fa40ec44faa0c0093547c0UnionInput>;
-  klarna?: InputMaybe<TsWhere431e685e94c88a23966c5e39578fd407UnionInput>;
-  konbini?: InputMaybe<TsWhere00ef7207d1f936d9dfffc7da2b87c7a0UnionInput>;
-  oxxo?: InputMaybe<TsWhere3ec3443ea1c1a903147c0d61800da976UnionInput>;
-  p24?: InputMaybe<TsWherea35be11d8b3a6f85cf29c066bd2baeecUnionInput>;
-  paynow?: InputMaybe<TsWhere3755b88328836d5c8b19acd047bf83f5UnionInput>;
-  sepa_debit?: InputMaybe<TsWhere1ef47aea767cbab0a37f27b4392256afUnionInput>;
-  sofort?: InputMaybe<TsWhere29eab390824f828a021e12d845868bf5UnionInput>;
-  us_bank_account?: InputMaybe<TsWheree8df26123b430c2df83da95f1b7d7d58UnionInput>;
-  wechat_pay?: InputMaybe<TsWheref3a2f1202624d0cdb50285826cb85a9eUnionInput>;
-};
-
-export type TsWhere4c5fc35133092d01c0a6f6273b32acefUnionInput = {
-  mandate_options?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitInput = {
-  custom_mandate_url?: InputMaybe<TsWhereStringInput>;
-  interval_description?: InputMaybe<TsWhereStringInput>;
-  payment_schedule?: InputMaybe<TsWhereInput>;
-  transaction_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere69c699ae4c023cdd5081fd0b275d2314UnionInput = {
-  capture_method?: InputMaybe<TsWhereInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere0c15571704f92e4deef74bf2861e3048UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhered0f94d051a53ade5163af84b3fd6b0f7UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere55b3d4514248bce7ac082bbc0da1833aUnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereac15fe59c1b71bd6db2d201a4acee09dUnionInput = {
-  preferred_language?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere076b30d85cca1aae72305dffd8194343UnionInput = {
-  expires_after_days?: InputMaybe<TsWhereIntegerInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere6181441ba9fb7eee556dd3a4a9d229e4UnionInput = {
-  capture_method?: InputMaybe<TsWhereInput>;
-  installments?: InputMaybe<TsWhereStripe_PaymentMethodOptionsCardInstallmentsInput>;
-  mandate_options?: InputMaybe<TsWhereStripe_PaymentMethodOptionsCardMandateOptionsInput>;
-  network?: InputMaybe<TsWhereInput>;
-  request_three_d_secure?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodOptionsCardInstallmentsInput = {
-  available_plans?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput>;
-  enabled?: InputMaybe<TsWhereBooleanInput>;
-  plan?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput = {
-  count?: InputMaybe<TsWhereIntegerInput>;
-  interval?: InputMaybe<TsWhereInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodOptionsCardMandateOptionsInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_type?: InputMaybe<TsWhereInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  end_date?: InputMaybe<TsWhereIntegerInput>;
-  interval?: InputMaybe<TsWhereInput>;
-  interval_count?: InputMaybe<TsWhereIntegerInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  start_date?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWherea245e0776494a0d51fe046b0453d38afUnionInput = {
-  request_extended_authorization?: InputMaybe<TsWhereBooleanInput>;
-  request_incremental_authorization_support?: InputMaybe<TsWhereBooleanInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput = {
-  bank_transfer?: InputMaybe<TsWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput>;
-  funding_type?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput = {
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWheref973d307d812f0dfb771bc8122e5c599UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereabae1b112405e8b3c0dbfa673a54aaadUnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere8cc56b75820487c13c502fada2896d16UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereeaab7727acdc782ba4b7fd55f1d34914UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWherebc8c021d852b37c55e33cd17b5bc5c8eUnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere0790e0b407fa40ec44faa0c0093547c0UnionInput = {
-  capture_method?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere431e685e94c88a23966c5e39578fd407UnionInput = {
-  capture_method?: InputMaybe<TsWhereInput>;
-  preferred_locale?: InputMaybe<TsWhereStringInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere00ef7207d1f936d9dfffc7da2b87c7a0UnionInput = {
-  confirmation_number?: InputMaybe<TsWhereStringInput>;
-  expires_after_days?: InputMaybe<TsWhereIntegerInput>;
-  expires_at?: InputMaybe<TsWhereIntegerInput>;
-  product_description?: InputMaybe<TsWhereStringInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere3ec3443ea1c1a903147c0d61800da976UnionInput = {
-  expires_after_days?: InputMaybe<TsWhereIntegerInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWherea35be11d8b3a6f85cf29c066bd2baeecUnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere3755b88328836d5c8b19acd047bf83f5UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere1ef47aea767cbab0a37f27b4392256afUnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere29eab390824f828a021e12d845868bf5UnionInput = {
-  preferred_language?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWheree8df26123b430c2df83da95f1b7d7d58UnionInput = {
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWheref3a2f1202624d0cdb50285826cb85a9eUnionInput = {
-  app_id?: InputMaybe<TsWhereStringInput>;
-  client?: InputMaybe<TsWhereInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentIntentPaymentMethodTypesInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_PaymentIntentProcessingInput = {
-  card?: InputMaybe<TsWhereStripe_PaymentIntentCardProcessingInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentIntentCardProcessingInput = {
-  customer_notification?: InputMaybe<TsWhereStripe_PaymentIntentProcessingCustomerNotificationInput>;
-};
-
-export type TsWhereStripe_PaymentIntentProcessingCustomerNotificationInput = {
-  approval_requested?: InputMaybe<TsWhereBooleanInput>;
-  completes_at?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_ReviewWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  billing_zip?: InputMaybe<TsWhereStringInput>;
-  closed_reason?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  ip_address?: InputMaybe<TsWhereStringInput>;
-  ip_address_location?: InputMaybe<TsWhereStripe_RadarReviewResourceLocationInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  open?: InputMaybe<TsWhereBooleanInput>;
-  opened_reason?: InputMaybe<TsWhereInput>;
-  reason?: InputMaybe<TsWhereStringInput>;
-  session?: InputMaybe<TsWhereStripe_RadarReviewResourceSessionInput>;
-};
-
-export type TsWhereStripe_RadarReviewResourceLocationInput = {
-  city?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  latitude?: InputMaybe<TsWhereNumberInput>;
-  longitude?: InputMaybe<TsWhereNumberInput>;
-  region?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_RadarReviewResourceSessionInput = {
-  browser?: InputMaybe<TsWhereStringInput>;
-  device?: InputMaybe<TsWhereStringInput>;
-  platform?: InputMaybe<TsWhereStringInput>;
-  version?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TransferDataInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  destination?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-};
-
-export type TsWhereStripe_InvoiceitemInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  date?: InputMaybe<TsWhereIntegerInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  discountable?: InputMaybe<TsWhereBooleanInput>;
-  discounts?: InputMaybe<TsWhereStripe_PaymentIntentDiscountsInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStripe_InvoiceWrappedStringUnionInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  period?: InputMaybe<TsWhereStripe_InvoiceLineItemPeriodInput>;
-  price?: InputMaybe<TsWhereStripe_PriceInput>;
-  proration?: InputMaybe<TsWhereBooleanInput>;
-  quantity?: InputMaybe<TsWhereIntegerInput>;
-  subscription?: InputMaybe<TsWhereStripe_SubscriptionWrappedStringUnionInput>;
-  subscription_item?: InputMaybe<TsWhereStringInput>;
-  tax_rates?: InputMaybe<TsWhereStripe_TaxRateInput>;
-  test_clock?: InputMaybe<TsWhereStripe_TestHelpersTestClockWrappedStringUnionInput>;
-  unit_amount?: InputMaybe<TsWhereIntegerInput>;
-  unit_amount_decimal?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentDiscountsInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  checkout_session?: InputMaybe<TsWhereStringInput>;
-  coupon?: InputMaybe<TsWhereStripe_CouponInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  end?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStringInput>;
-  invoice_item?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  start?: InputMaybe<TsWhereIntegerInput>;
-  subscription?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_InvoiceLineItemPeriodInput = {
-  end?: InputMaybe<TsWhereIntegerInput>;
-  start?: InputMaybe<TsWhereIntegerInput>;
 };
 
 export type TsWhereStripe_PriceInput = {
@@ -2755,21 +1379,6 @@ export type TsWhereStripe_ProductInput = {
   reviews?: InputMaybe<TsWhereReviewsIo_ListProductReviewsResponseInput>;
   _shapeId?: InputMaybe<TsWhereIdInput>;
   _id?: InputMaybe<TsWhereIdInput>;
-};
-
-export type TsWhereStripe_PackageDimensionsInput = {
-  height?: InputMaybe<TsWhereNumberInput>;
-  length?: InputMaybe<TsWhereNumberInput>;
-  weight?: InputMaybe<TsWhereNumberInput>;
-  width?: InputMaybe<TsWhereNumberInput>;
-};
-
-export type TsWhereStripe_TaxCodeWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
 };
 
 export type TsWhereReviewsIo_ListProductReviewsResponseInput = {
@@ -2888,1652 +1497,6 @@ export type TsWhereStripe_TransformQuantityInput = {
   round?: InputMaybe<TsWhereInput>;
 };
 
-export type TsWhereStripe_SubscriptionWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  application_fee_percent?: InputMaybe<TsWhereNumberInput>;
-  automatic_tax?: InputMaybe<TsWhereStripe_SubscriptionAutomaticTaxInput>;
-  billing_cycle_anchor?: InputMaybe<TsWhereIntegerInput>;
-  billing_thresholds?: InputMaybe<TsWhereStripe_SubscriptionBillingThresholdsInput>;
-  cancel_at?: InputMaybe<TsWhereIntegerInput>;
-  cancel_at_period_end?: InputMaybe<TsWhereBooleanInput>;
-  canceled_at?: InputMaybe<TsWhereIntegerInput>;
-  collection_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  current_period_end?: InputMaybe<TsWhereIntegerInput>;
-  current_period_start?: InputMaybe<TsWhereIntegerInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  days_until_due?: InputMaybe<TsWhereIntegerInput>;
-  default_tax_rates?: InputMaybe<TsWhereStripe_TaxRateInput>;
-  discount?: InputMaybe<TsWhereStripe_DiscountInput>;
-  ended_at?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereStripe_SubscriptionItemsInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_pending_invoice_item_invoice?: InputMaybe<TsWhereIntegerInput>;
-  object?: InputMaybe<TsWhereInput>;
-  pause_collection?: InputMaybe<TsWhereStripe_SubscriptionsResourcePauseCollectionInput>;
-  payment_settings?: InputMaybe<TsWhereStripe_SubscriptionsResourcePaymentSettingsInput>;
-  pending_invoice_item_interval?: InputMaybe<TsWhereStripe_SubscriptionPendingInvoiceItemIntervalInput>;
-  pending_update?: InputMaybe<TsWhereStripe_SubscriptionsResourcePendingUpdateInput>;
-  start_date?: InputMaybe<TsWhereIntegerInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_SubscriptionTransferDataInput>;
-  trial_end?: InputMaybe<TsWhereIntegerInput>;
-  trial_start?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_SubscriptionAutomaticTaxInput = {
-  enabled?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_SubscriptionBillingThresholdsInput = {
-  amount_gte?: InputMaybe<TsWhereIntegerInput>;
-  reset_billing_cycle_anchor?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_SubscriptionItemsInput = {
-  data?: InputMaybe<TsWhereStripe_SubscriptionItemInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SubscriptionItemInput = {
-  billing_thresholds?: InputMaybe<TsWhereStripe_SubscriptionItemBillingThresholdsInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  price?: InputMaybe<TsWhereStripe_PriceInput>;
-  quantity?: InputMaybe<TsWhereIntegerInput>;
-  subscription?: InputMaybe<TsWhereStringInput>;
-  tax_rates?: InputMaybe<TsWhereStripe_TaxRateInput>;
-};
-
-export type TsWhereStripe_SubscriptionItemBillingThresholdsInput = {
-  usage_gte?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_SubscriptionsResourcePauseCollectionInput = {
-  behavior?: InputMaybe<TsWhereInput>;
-  resumes_at?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_SubscriptionsResourcePaymentSettingsInput = {
-  payment_method_options?: InputMaybe<TsWhereStripe_SubscriptionsResourcePaymentMethodOptionsInput>;
-};
-
-export type TsWhereStripe_SubscriptionsResourcePaymentMethodOptionsInput = {
-  acss_debit?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsAcssDebitInput>;
-  bancontact?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsBancontactInput>;
-  card?: InputMaybe<TsWhereStripe_SubscriptionPaymentMethodOptionsCardInput>;
-  customer_balance?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceInput>;
-  us_bank_account?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsUsBankAccountInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsAcssDebitInput = {
-  mandate_options?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsAcssDebitMandateOptionsInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsAcssDebitMandateOptionsInput = {
-  transaction_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsBancontactInput = {
-  preferred_language?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SubscriptionPaymentMethodOptionsCardInput = {
-  mandate_options?: InputMaybe<TsWhereStripe_InvoiceMandateOptionsCardInput>;
-  request_three_d_secure?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_InvoiceMandateOptionsCardInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_type?: InputMaybe<TsWhereInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceInput = {
-  bank_transfer?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput>;
-  funding_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput = {
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsUsBankAccountInput = {
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SubscriptionPendingInvoiceItemIntervalInput = {
-  interval?: InputMaybe<TsWhereInput>;
-  interval_count?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_SubscriptionsResourcePendingUpdateInput = {
-  billing_cycle_anchor?: InputMaybe<TsWhereIntegerInput>;
-  expires_at?: InputMaybe<TsWhereIntegerInput>;
-  subscription_items?: InputMaybe<TsWhereStripe_SubscriptionItemInput>;
-  trial_end?: InputMaybe<TsWhereIntegerInput>;
-  trial_from_plan?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_SubscriptionTransferDataInput = {
-  amount_percent?: InputMaybe<TsWhereNumberInput>;
-};
-
-export type TsWhereStripe_TestHelpersTestClockWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  deletes_after?: InputMaybe<TsWhereIntegerInput>;
-  frozen_time?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  status?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_ItemInput = {
-  amount_subtotal?: InputMaybe<TsWhereIntegerInput>;
-  amount_total?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  discounts?: InputMaybe<TsWhereStripe_LineItemsDiscountAmountInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  price?: InputMaybe<TsWhereStripe_PriceInput>;
-  quantity?: InputMaybe<TsWhereIntegerInput>;
-  taxes?: InputMaybe<TsWhereStripe_LineItemsTaxAmountInput>;
-};
-
-export type TsWhereStripe_LineItemsDiscountAmountInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  discount?: InputMaybe<TsWhereStripe_DiscountInput>;
-};
-
-export type TsWhereStripe_LineItemsTaxAmountInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  rate?: InputMaybe<TsWhereStripe_TaxRateInput>;
-};
-
-export type TsWhereShipEngine_LabelInput = {
-  label_id?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  shipment_id?: InputMaybe<TsWhereStringInput>;
-  ship_date?: InputMaybe<TsWhereStringInput>;
-  created_at?: InputMaybe<TsWhereStringInput>;
-  tracking_number?: InputMaybe<TsWhereStringInput>;
-  batch_id?: InputMaybe<TsWhereStringInput>;
-  carrier_id?: InputMaybe<TsWhereStringInput>;
-  charge_event?: InputMaybe<TsWhereStringInput>;
-  service_code?: InputMaybe<TsWhereStringInput>;
-  package_code?: InputMaybe<TsWhereStringInput>;
-  voided_at?: InputMaybe<TsWhereStringInput>;
-  label_format?: InputMaybe<TsWhereStringInput>;
-  display_scheme?: InputMaybe<TsWhereStringInput>;
-  label_layout?: InputMaybe<TsWhereStringInput>;
-  label_image_id?: InputMaybe<TsWhereStringInput>;
-  carrier_code?: InputMaybe<TsWhereStringInput>;
-  tracking_status?: InputMaybe<TsWhereStringInput>;
-  label_download?: InputMaybe<TsWhereShipEngine_LabelDownloadInput>;
-  trackable?: InputMaybe<TsWhereBooleanInput>;
-  packages?: InputMaybe<TsWhereShipEngine_PackageInput>;
-};
-
-export type TsWhereShipEngine_LabelDownloadInput = {
-  href?: InputMaybe<TsWhereStringInput>;
-  pdf?: InputMaybe<TsWhereStringInput>;
-  png?: InputMaybe<TsWhereStringInput>;
-  zpl?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereShipEngine_PackageInput = {
-  package_id?: InputMaybe<TsWhereIntegerInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  package_code?: InputMaybe<TsWhereStringInput>;
-  tracking_number?: InputMaybe<TsWhereStringInput>;
-  label_download?: InputMaybe<TsWhereShipEngine_LabelDownloadInput>;
-  weight?: InputMaybe<TsWhereShipEngine_WeightInput>;
-  dimensions?: InputMaybe<TsWhereShipEngine_DimensionsInput>;
-};
-
-export type TsWhereShipEngine_WeightInput = {
-  value?: InputMaybe<TsWhereNumberInput>;
-  unit?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereShipEngine_DimensionsInput = {
-  length?: InputMaybe<TsWhereNumberInput>;
-  width?: InputMaybe<TsWhereNumberInput>;
-  height?: InputMaybe<TsWhereNumberInput>;
-  unit?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodInput = {
-  acss_debit?: InputMaybe<TsWhereStripe_PaymentMethodAcssDebitInput>;
-  au_becs_debit?: InputMaybe<TsWhereStripe_PaymentMethodAuBecsDebitInput>;
-  bacs_debit?: InputMaybe<TsWhereStripe_PaymentMethodBacsDebitInput>;
-  billing_details?: InputMaybe<TsWhereStripe_BillingDetailsInput>;
-  boleto?: InputMaybe<TsWhereStripe_PaymentMethodBoletoInput>;
-  card?: InputMaybe<TsWhereStripe_PaymentMethodCardInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  customer?: InputMaybe<TsWhereStripe_CustomerWrappedStringUnionInput>;
-  eps?: InputMaybe<TsWhereStripe_PaymentMethodEpsInput>;
-  fpx?: InputMaybe<TsWhereStripe_PaymentMethodFpxInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  ideal?: InputMaybe<TsWhereStripe_PaymentMethodIdealInput>;
-  klarna?: InputMaybe<TsWhereStripe_PaymentMethodKlarnaInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  p24?: InputMaybe<TsWhereStripe_PaymentMethodP24Input>;
-  sepa_debit?: InputMaybe<TsWhereStripe_PaymentMethodSepaDebitInput>;
-  sofort?: InputMaybe<TsWhereStripe_PaymentMethodSofortInput>;
-  type?: InputMaybe<TsWhereInput>;
-  us_bank_account?: InputMaybe<TsWhereStripe_PaymentMethodUsBankAccountInput>;
-};
-
-export type TsWhereStripe_CustomerWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  address?: InputMaybe<TsWhereStripe_AddressInput>;
-  balance?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  delinquent?: InputMaybe<TsWhereBooleanInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  discount?: InputMaybe<TsWhereStripe_DiscountInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice_prefix?: InputMaybe<TsWhereStringInput>;
-  invoice_settings?: InputMaybe<TsWhereStripe_InvoiceSettingCustomerSettingInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  next_invoice_sequence?: InputMaybe<TsWhereIntegerInput>;
-  object?: InputMaybe<TsWhereInput>;
-  phone?: InputMaybe<TsWhereStringInput>;
-  preferred_locales?: InputMaybe<TsWhereStripe_CustomerPreferredLocalesInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  sources?: InputMaybe<TsWhereStripe_CustomerSourcesInput>;
-  subscriptions?: InputMaybe<TsWhereStripe_CustomerSubscriptionsInput>;
-  tax?: InputMaybe<TsWhereStripe_CustomerTaxInput>;
-  tax_exempt?: InputMaybe<TsWhereInput>;
-  tax_ids?: InputMaybe<TsWhereStripe_CustomerTaxIdsInput>;
-};
-
-export type TsWhereStripe_InvoiceSettingCustomerSettingInput = {
-  custom_fields?: InputMaybe<TsWhereStripe_InvoiceSettingCustomFieldInput>;
-  footer?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_CustomerPreferredLocalesInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_CustomerSourcesInput = {
-  data?: InputMaybe<TsWhereStripe_CustomerDataInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_CustomerDataInput = {
-  created?: InputMaybe<TsWhereIntegerInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  payment_amount?: InputMaybe<TsWhereIntegerInput>;
-  payment_currency?: InputMaybe<TsWhereStringInput>;
-  reusable?: InputMaybe<TsWhereBooleanInput>;
-  used?: InputMaybe<TsWhereBooleanInput>;
-  username?: InputMaybe<TsWhereStringInput>;
-  account_holder_name?: InputMaybe<TsWhereStringInput>;
-  account_holder_type?: InputMaybe<TsWhereStringInput>;
-  account_type?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  default_for_currency?: InputMaybe<TsWhereBooleanInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  active?: InputMaybe<TsWhereBooleanInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_received?: InputMaybe<TsWhereIntegerInput>;
-  bitcoin_amount?: InputMaybe<TsWhereIntegerInput>;
-  bitcoin_amount_received?: InputMaybe<TsWhereIntegerInput>;
-  bitcoin_uri?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  filled?: InputMaybe<TsWhereBooleanInput>;
-  inbound_address?: InputMaybe<TsWhereStringInput>;
-  payment?: InputMaybe<TsWhereStringInput>;
-  refund_address?: InputMaybe<TsWhereStringInput>;
-  transactions?: InputMaybe<TsWhereStripe_BitcoinReceiverTransactionsInput>;
-  uncaptured_funds?: InputMaybe<TsWhereBooleanInput>;
-  used_for_payment?: InputMaybe<TsWhereBooleanInput>;
-  address_city?: InputMaybe<TsWhereStringInput>;
-  address_country?: InputMaybe<TsWhereStringInput>;
-  address_line1?: InputMaybe<TsWhereStringInput>;
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_line2?: InputMaybe<TsWhereStringInput>;
-  address_state?: InputMaybe<TsWhereStringInput>;
-  address_zip?: InputMaybe<TsWhereStringInput>;
-  address_zip_check?: InputMaybe<TsWhereStringInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  tokenization_method?: InputMaybe<TsWhereStringInput>;
-  ach_credit_transfer?: InputMaybe<TsWhereStripe_SourceTypeAchCreditTransferInput>;
-  ach_debit?: InputMaybe<TsWhereStripe_SourceTypeAchDebitInput>;
-  acss_debit?: InputMaybe<TsWhereStripe_SourceTypeAcssDebitInput>;
-  alipay?: InputMaybe<TsWhereStripe_SourceTypeAlipayInput>;
-  au_becs_debit?: InputMaybe<TsWhereStripe_SourceTypeAuBecsDebitInput>;
-  bancontact?: InputMaybe<TsWhereStripe_SourceTypeBancontactInput>;
-  card?: InputMaybe<TsWhereStripe_SourceTypeCardInput>;
-  card_present?: InputMaybe<TsWhereStripe_SourceTypeCardPresentInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  code_verification?: InputMaybe<TsWhereStripe_SourceCodeVerificationFlowInput>;
-  eps?: InputMaybe<TsWhereStripe_SourceTypeEpsInput>;
-  flow?: InputMaybe<TsWhereStringInput>;
-  giropay?: InputMaybe<TsWhereStripe_SourceTypeGiropayInput>;
-  ideal?: InputMaybe<TsWhereStripe_SourceTypeIdealInput>;
-  klarna?: InputMaybe<TsWhereStripe_SourceTypeKlarnaInput>;
-  multibanco?: InputMaybe<TsWhereStripe_SourceTypeMultibancoInput>;
-  owner?: InputMaybe<TsWhereStripe_SourceOwnerInput>;
-  p24?: InputMaybe<TsWhereStripe_SourceTypeP24Input>;
-  receiver?: InputMaybe<TsWhereStripe_SourceReceiverFlowInput>;
-  redirect?: InputMaybe<TsWhereStripe_SourceRedirectFlowInput>;
-  sepa_debit?: InputMaybe<TsWhereStripe_SourceTypeSepaDebitInput>;
-  sofort?: InputMaybe<TsWhereStripe_SourceTypeSofortInput>;
-  source_order?: InputMaybe<TsWhereStripe_SourceOrderInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  three_d_secure?: InputMaybe<TsWhereStripe_SourceTypeThreeDSecureInput>;
-  type?: InputMaybe<TsWhereInput>;
-  usage?: InputMaybe<TsWhereStringInput>;
-  wechat?: InputMaybe<TsWhereStripe_SourceTypeWechatInput>;
-};
-
-export type TsWhereStripe_BitcoinReceiverTransactionsInput = {
-  data?: InputMaybe<TsWhereStripe_BitcoinTransactionInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_BitcoinTransactionInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  bitcoin_amount?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  receiver?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeAchCreditTransferInput = {
-  account_number?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_name?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_type?: InputMaybe<TsWhereStringInput>;
-  refund_routing_number?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-  swift_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeAchDebitInput = {
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeAcssDebitInput = {
-  bank_address_city?: InputMaybe<TsWhereStringInput>;
-  bank_address_line_1?: InputMaybe<TsWhereStringInput>;
-  bank_address_line_2?: InputMaybe<TsWhereStringInput>;
-  bank_address_postal_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  category?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeAlipayInput = {
-  data_string?: InputMaybe<TsWhereStringInput>;
-  native_url?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeAuBecsDebitInput = {
-  bsb_number?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeBancontactInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  preferred_language?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeCardInput = {
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_zip_check?: InputMaybe<TsWhereStringInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  three_d_secure?: InputMaybe<TsWhereStringInput>;
-  tokenization_method?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeCardPresentInput = {
-  application_cryptogram?: InputMaybe<TsWhereStringInput>;
-  application_preferred_name?: InputMaybe<TsWhereStringInput>;
-  authorization_code?: InputMaybe<TsWhereStringInput>;
-  authorization_response_code?: InputMaybe<TsWhereStringInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  cvm_type?: InputMaybe<TsWhereStringInput>;
-  data_type?: InputMaybe<TsWhereStringInput>;
-  dedicated_file_name?: InputMaybe<TsWhereStringInput>;
-  emv_auth_data?: InputMaybe<TsWhereStringInput>;
-  evidence_customer_signature?: InputMaybe<TsWhereStringInput>;
-  evidence_transaction_certificate?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  pos_device_id?: InputMaybe<TsWhereStringInput>;
-  pos_entry_mode?: InputMaybe<TsWhereStringInput>;
-  read_method?: InputMaybe<TsWhereStringInput>;
-  reader?: InputMaybe<TsWhereStringInput>;
-  terminal_verification_results?: InputMaybe<TsWhereStringInput>;
-  transaction_status_information?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceCodeVerificationFlowInput = {
-  attempts_remaining?: InputMaybe<TsWhereIntegerInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeEpsInput = {
-  reference?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeGiropayInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeIdealInput = {
-  bank?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeKlarnaInput = {
-  background_image_url?: InputMaybe<TsWhereStringInput>;
-  client_token?: InputMaybe<TsWhereStringInput>;
-  first_name?: InputMaybe<TsWhereStringInput>;
-  last_name?: InputMaybe<TsWhereStringInput>;
-  locale?: InputMaybe<TsWhereStringInput>;
-  logo_url?: InputMaybe<TsWhereStringInput>;
-  page_title?: InputMaybe<TsWhereStringInput>;
-  pay_later_asset_urls_descriptive?: InputMaybe<TsWhereStringInput>;
-  pay_later_asset_urls_standard?: InputMaybe<TsWhereStringInput>;
-  pay_later_name?: InputMaybe<TsWhereStringInput>;
-  pay_later_redirect_url?: InputMaybe<TsWhereStringInput>;
-  pay_now_asset_urls_descriptive?: InputMaybe<TsWhereStringInput>;
-  pay_now_asset_urls_standard?: InputMaybe<TsWhereStringInput>;
-  pay_now_name?: InputMaybe<TsWhereStringInput>;
-  pay_now_redirect_url?: InputMaybe<TsWhereStringInput>;
-  pay_over_time_asset_urls_descriptive?: InputMaybe<TsWhereStringInput>;
-  pay_over_time_asset_urls_standard?: InputMaybe<TsWhereStringInput>;
-  pay_over_time_name?: InputMaybe<TsWhereStringInput>;
-  pay_over_time_redirect_url?: InputMaybe<TsWhereStringInput>;
-  payment_method_categories?: InputMaybe<TsWhereStringInput>;
-  purchase_country?: InputMaybe<TsWhereStringInput>;
-  purchase_type?: InputMaybe<TsWhereStringInput>;
-  redirect_url?: InputMaybe<TsWhereStringInput>;
-  shipping_delay?: InputMaybe<TsWhereIntegerInput>;
-  shipping_first_name?: InputMaybe<TsWhereStringInput>;
-  shipping_last_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeMultibancoInput = {
-  entity?: InputMaybe<TsWhereStringInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_address_city?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_address_country?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_address_line1?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_address_line2?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_address_postal_code?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_address_state?: InputMaybe<TsWhereStringInput>;
-  refund_account_holder_name?: InputMaybe<TsWhereStringInput>;
-  refund_iban?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceOwnerInput = {
-  address?: InputMaybe<TsWhereStripe_AddressInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  phone?: InputMaybe<TsWhereStringInput>;
-  verified_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  verified_email?: InputMaybe<TsWhereStringInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-  verified_phone?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeP24Input = {
-  reference?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceReceiverFlowInput = {
-  address?: InputMaybe<TsWhereStringInput>;
-  amount_charged?: InputMaybe<TsWhereIntegerInput>;
-  amount_received?: InputMaybe<TsWhereIntegerInput>;
-  amount_returned?: InputMaybe<TsWhereIntegerInput>;
-  refund_attributes_method?: InputMaybe<TsWhereStringInput>;
-  refund_attributes_status?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceRedirectFlowInput = {
-  failure_reason?: InputMaybe<TsWhereStringInput>;
-  return_url?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeSepaDebitInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  branch_code?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  mandate_reference?: InputMaybe<TsWhereStringInput>;
-  mandate_url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeSofortInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  preferred_language?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceOrderInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereStripe_SourceOrderItemInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-};
-
-export type TsWhereStripe_SourceOrderItemInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  parent?: InputMaybe<TsWhereStringInput>;
-  quantity?: InputMaybe<TsWhereIntegerInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeThreeDSecureInput = {
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_zip_check?: InputMaybe<TsWhereStringInput>;
-  authenticated?: InputMaybe<TsWhereBooleanInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  card?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  three_d_secure?: InputMaybe<TsWhereStringInput>;
-  tokenization_method?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SourceTypeWechatInput = {
-  prepay_id?: InputMaybe<TsWhereStringInput>;
-  qr_code_url?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_CustomerSubscriptionsInput = {
-  data?: InputMaybe<TsWhereStripe_SubscriptionInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SubscriptionInput = {
-  application_fee_percent?: InputMaybe<TsWhereNumberInput>;
-  automatic_tax?: InputMaybe<TsWhereStripe_SubscriptionAutomaticTaxInput>;
-  billing_cycle_anchor?: InputMaybe<TsWhereIntegerInput>;
-  billing_thresholds?: InputMaybe<TsWhereStripe_SubscriptionBillingThresholdsInput>;
-  cancel_at?: InputMaybe<TsWhereIntegerInput>;
-  cancel_at_period_end?: InputMaybe<TsWhereBooleanInput>;
-  canceled_at?: InputMaybe<TsWhereIntegerInput>;
-  collection_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  current_period_end?: InputMaybe<TsWhereIntegerInput>;
-  current_period_start?: InputMaybe<TsWhereIntegerInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  days_until_due?: InputMaybe<TsWhereIntegerInput>;
-  default_tax_rates?: InputMaybe<TsWhereStripe_TaxRateInput>;
-  discount?: InputMaybe<TsWhereStripe_DiscountInput>;
-  ended_at?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereStripe_CustomerItemsInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_pending_invoice_item_invoice?: InputMaybe<TsWhereIntegerInput>;
-  object?: InputMaybe<TsWhereInput>;
-  pause_collection?: InputMaybe<TsWhereStripe_SubscriptionsResourcePauseCollectionInput>;
-  payment_settings?: InputMaybe<TsWhereStripe_SubscriptionsResourcePaymentSettingsInput>;
-  pending_invoice_item_interval?: InputMaybe<TsWhereStripe_SubscriptionPendingInvoiceItemIntervalInput>;
-  pending_update?: InputMaybe<TsWhereStripe_SubscriptionsResourcePendingUpdateInput>;
-  start_date?: InputMaybe<TsWhereIntegerInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_SubscriptionTransferDataInput>;
-  trial_end?: InputMaybe<TsWhereIntegerInput>;
-  trial_start?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_CustomerItemsInput = {
-  data?: InputMaybe<TsWhereStripe_SubscriptionItemInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_CustomerTaxInput = {
-  automatic_tax?: InputMaybe<TsWhereInput>;
-  ip_address?: InputMaybe<TsWhereStringInput>;
-  location?: InputMaybe<TsWhereStripe_CustomerTaxLocationInput>;
-};
-
-export type TsWhereStripe_CustomerTaxLocationInput = {
-  country?: InputMaybe<TsWhereStringInput>;
-  source?: InputMaybe<TsWhereInput>;
-  state?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_CustomerTaxIdsInput = {
-  data?: InputMaybe<TsWhereStripe_TaxIdInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TaxIdInput = {
-  country?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  type?: InputMaybe<TsWhereInput>;
-  value?: InputMaybe<TsWhereStringInput>;
-  verification?: InputMaybe<TsWhereStripe_TaxIdVerificationInput>;
-};
-
-export type TsWhereStripe_SetupIntentInput = {
-  application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
-  cancellation_reason?: InputMaybe<TsWhereInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  last_setup_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  latest_attempt?: InputMaybe<TsWhereStripe_SetupAttemptWrappedStringUnionInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  mandate?: InputMaybe<TsWhereStripe_MandateWrappedStringUnionInput>;
-  next_action?: InputMaybe<TsWhereStripe_SetupIntentNextActionInput>;
-  object?: InputMaybe<TsWhereInput>;
-  on_behalf_of?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-  payment_method?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  payment_method_options?: InputMaybe<TsWhereStripe_SetupIntentPaymentMethodOptionsInput>;
-  payment_method_types?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodTypesInput>;
-  single_use_mandate?: InputMaybe<TsWhereStripe_MandateWrappedStringUnionInput>;
-  status?: InputMaybe<TsWhereInput>;
-  usage?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupAttemptWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  payment_method_details?: InputMaybe<TsWhereStripe_SetupAttemptPaymentMethodDetailsInput>;
-  setup_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  usage?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupAttemptPaymentMethodDetailsInput = {
-  bancontact?: InputMaybe<TsWhereStripe_SetupAttemptPaymentMethodDetailsBancontactInput>;
-  card?: InputMaybe<TsWhereStripe_SetupAttemptPaymentMethodDetailsCardInput>;
-  ideal?: InputMaybe<TsWhereStripe_SetupAttemptPaymentMethodDetailsIdealInput>;
-  sofort?: InputMaybe<TsWhereStripe_SetupAttemptPaymentMethodDetailsSofortInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupAttemptPaymentMethodDetailsBancontactInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  preferred_language?: InputMaybe<TsWhereInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupAttemptPaymentMethodDetailsCardInput = {
-  three_d_secure?: InputMaybe<TsWhereStripe_ThreeDSecureDetailsInput>;
-};
-
-export type TsWhereStripe_ThreeDSecureDetailsInput = {
-  authentication_flow?: InputMaybe<TsWhereInput>;
-  result?: InputMaybe<TsWhereInput>;
-  result_reason?: InputMaybe<TsWhereInput>;
-  version?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SetupAttemptPaymentMethodDetailsIdealInput = {
-  bank?: InputMaybe<TsWhereInput>;
-  bic?: InputMaybe<TsWhereInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupAttemptPaymentMethodDetailsSofortInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  preferred_language?: InputMaybe<TsWhereInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_MandateWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  customer_acceptance?: InputMaybe<TsWhereStripe_CustomerAcceptanceInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  payment_method_details?: InputMaybe<TsWhereStripe_MandatePaymentMethodDetailsInput>;
-  single_use?: InputMaybe<TsWhereStripe_MandateSingleUseInput>;
-  status?: InputMaybe<TsWhereInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_CustomerAcceptanceInput = {
-  accepted_at?: InputMaybe<TsWhereIntegerInput>;
-  online?: InputMaybe<TsWhereStripe_OnlineAcceptanceInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_OnlineAcceptanceInput = {
-  ip_address?: InputMaybe<TsWhereStringInput>;
-  user_agent?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_MandatePaymentMethodDetailsInput = {
-  acss_debit?: InputMaybe<TsWhereStripe_MandateAcssDebitInput>;
-  au_becs_debit?: InputMaybe<TsWhereStripe_MandateAuBecsDebitInput>;
-  bacs_debit?: InputMaybe<TsWhereStripe_MandateBacsDebitInput>;
-  sepa_debit?: InputMaybe<TsWhereStripe_MandateSepaDebitInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_MandateAcssDebitInput = {
-  interval_description?: InputMaybe<TsWhereStringInput>;
-  payment_schedule?: InputMaybe<TsWhereInput>;
-  transaction_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_MandateAuBecsDebitInput = {
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_MandateBacsDebitInput = {
-  network_status?: InputMaybe<TsWhereInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_MandateSepaDebitInput = {
-  reference?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_MandateSingleUseInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupIntentNextActionInput = {
-  redirect_to_url?: InputMaybe<TsWhereStripe_SetupIntentNextActionRedirectToUrlInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-  verify_with_microdeposits?: InputMaybe<TsWhereStripe_SetupIntentNextActionVerifyWithMicrodepositsInput>;
-};
-
-export type TsWhereStripe_SetupIntentNextActionRedirectToUrlInput = {
-  return_url?: InputMaybe<TsWhereStringInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_SetupIntentNextActionVerifyWithMicrodepositsInput = {
-  arrival_date?: InputMaybe<TsWhereIntegerInput>;
-  hosted_verification_url?: InputMaybe<TsWhereStringInput>;
-  microdeposit_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SetupIntentPaymentMethodOptionsInput = {
-  acss_debit?: InputMaybe<TsWhere6c955fa05d8df9184cc18d8841c3705dUnionInput>;
-  card?: InputMaybe<TsWhereStripe_SetupIntentPaymentMethodOptionsCardInput>;
-  sepa_debit?: InputMaybe<TsWhere256af04705b008a07ca5c137b490ba88UnionInput>;
-  us_bank_account?: InputMaybe<TsWhere5e84458a02fb07e8c3d5d9b0bb3e5d99UnionInput>;
-};
-
-export type TsWhere6c955fa05d8df9184cc18d8841c3705dUnionInput = {
-  currency?: InputMaybe<TsWhereInput>;
-  mandate_options?: InputMaybe<TsWhereStripe_SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitInput>;
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitInput = {
-  custom_mandate_url?: InputMaybe<TsWhereStringInput>;
-  interval_description?: InputMaybe<TsWhereStringInput>;
-  payment_schedule?: InputMaybe<TsWhereInput>;
-  transaction_type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SetupIntentPaymentMethodOptionsCardInput = {
-  mandate_options?: InputMaybe<TsWhereStripe_SetupIntentPaymentMethodOptionsCardMandateOptionsInput>;
-  request_three_d_secure?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_SetupIntentPaymentMethodOptionsCardMandateOptionsInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_type?: InputMaybe<TsWhereInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  end_date?: InputMaybe<TsWhereIntegerInput>;
-  interval?: InputMaybe<TsWhereInput>;
-  interval_count?: InputMaybe<TsWhereIntegerInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  start_date?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhere256af04705b008a07ca5c137b490ba88UnionInput = {
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhere5e84458a02fb07e8c3d5d9b0bb3e5d99UnionInput = {
-  verification_method?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_BankAccountStripe_CardStripe_SourceUnionInput = {
-  account_holder_name?: InputMaybe<TsWhereStringInput>;
-  account_holder_type?: InputMaybe<TsWhereStringInput>;
-  account_type?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  default_for_currency?: InputMaybe<TsWhereBooleanInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  address_city?: InputMaybe<TsWhereStringInput>;
-  address_country?: InputMaybe<TsWhereStringInput>;
-  address_line1?: InputMaybe<TsWhereStringInput>;
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_line2?: InputMaybe<TsWhereStringInput>;
-  address_state?: InputMaybe<TsWhereStringInput>;
-  address_zip?: InputMaybe<TsWhereStringInput>;
-  address_zip_check?: InputMaybe<TsWhereStringInput>;
-  brand?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  tokenization_method?: InputMaybe<TsWhereStringInput>;
-  ach_credit_transfer?: InputMaybe<TsWhereStripe_SourceTypeAchCreditTransferInput>;
-  ach_debit?: InputMaybe<TsWhereStripe_SourceTypeAchDebitInput>;
-  acss_debit?: InputMaybe<TsWhereStripe_SourceTypeAcssDebitInput>;
-  alipay?: InputMaybe<TsWhereStripe_SourceTypeAlipayInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  au_becs_debit?: InputMaybe<TsWhereStripe_SourceTypeAuBecsDebitInput>;
-  bancontact?: InputMaybe<TsWhereStripe_SourceTypeBancontactInput>;
-  card?: InputMaybe<TsWhereStripe_SourceTypeCardInput>;
-  card_present?: InputMaybe<TsWhereStripe_SourceTypeCardPresentInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  code_verification?: InputMaybe<TsWhereStripe_SourceCodeVerificationFlowInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  eps?: InputMaybe<TsWhereStripe_SourceTypeEpsInput>;
-  flow?: InputMaybe<TsWhereStringInput>;
-  giropay?: InputMaybe<TsWhereStripe_SourceTypeGiropayInput>;
-  ideal?: InputMaybe<TsWhereStripe_SourceTypeIdealInput>;
-  klarna?: InputMaybe<TsWhereStripe_SourceTypeKlarnaInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  multibanco?: InputMaybe<TsWhereStripe_SourceTypeMultibancoInput>;
-  owner?: InputMaybe<TsWhereStripe_SourceOwnerInput>;
-  p24?: InputMaybe<TsWhereStripe_SourceTypeP24Input>;
-  receiver?: InputMaybe<TsWhereStripe_SourceReceiverFlowInput>;
-  redirect?: InputMaybe<TsWhereStripe_SourceRedirectFlowInput>;
-  sepa_debit?: InputMaybe<TsWhereStripe_SourceTypeSepaDebitInput>;
-  sofort?: InputMaybe<TsWhereStripe_SourceTypeSofortInput>;
-  source_order?: InputMaybe<TsWhereStripe_SourceOrderInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  three_d_secure?: InputMaybe<TsWhereStripe_SourceTypeThreeDSecureInput>;
-  type?: InputMaybe<TsWhereInput>;
-  usage?: InputMaybe<TsWhereStringInput>;
-  wechat?: InputMaybe<TsWhereStripe_SourceTypeWechatInput>;
-};
-
-export type TsWhereStripe_InvoiceLinesInput = {
-  data?: InputMaybe<TsWhereStripe_LineItemInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_LineItemInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  discount_amounts?: InputMaybe<TsWhereStripe_DiscountsResourceDiscountAmountInput>;
-  discountable?: InputMaybe<TsWhereBooleanInput>;
-  discounts?: InputMaybe<TsWhereStripe_InvoiceDiscountsInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice_item?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  period?: InputMaybe<TsWhereStripe_InvoiceLineItemPeriodInput>;
-  price?: InputMaybe<TsWhereStripe_PriceInput>;
-  proration?: InputMaybe<TsWhereBooleanInput>;
-  proration_details?: InputMaybe<TsWhereStripe_InvoicesLineItemsProrationDetailsInput>;
-  quantity?: InputMaybe<TsWhereIntegerInput>;
-  subscription?: InputMaybe<TsWhereStringInput>;
-  subscription_item?: InputMaybe<TsWhereStringInput>;
-  tax_amounts?: InputMaybe<TsWhereStripe_InvoiceTaxAmountInput>;
-  tax_rates?: InputMaybe<TsWhereStripe_TaxRateInput>;
-  type?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_DiscountsResourceDiscountAmountInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_InvoicesLineItemsProrationDetailsInput = {
-  credited_items?: InputMaybe<TsWhereStripe_InvoicesLineItemsCreditedItemsInput>;
-};
-
-export type TsWhereStripe_InvoicesLineItemsCreditedItemsInput = {
-  invoice?: InputMaybe<TsWhereStringInput>;
-  invoice_line_items?: InputMaybe<TsWhereStripe_InvoiceInvoiceLineItemsInput>;
-};
-
-export type TsWhereStripe_InvoiceInvoiceLineItemsInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_InvoiceTaxAmountInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  inclusive?: InputMaybe<TsWhereBooleanInput>;
-};
-
-export type TsWhereStripe_InvoicesPaymentSettingsInput = {
-  payment_method_options?: InputMaybe<TsWhereStripe_InvoicesPaymentMethodOptionsInput>;
-};
-
-export type TsWhereStripe_InvoicesPaymentMethodOptionsInput = {
-  acss_debit?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsAcssDebitInput>;
-  bancontact?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsBancontactInput>;
-  card?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsCardInput>;
-  customer_balance?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceInput>;
-  us_bank_account?: InputMaybe<TsWhereStripe_InvoicePaymentMethodOptionsUsBankAccountInput>;
-};
-
-export type TsWhereStripe_InvoicePaymentMethodOptionsCardInput = {
-  request_three_d_secure?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_InvoicesStatusTransitionsInput = {
-  finalized_at?: InputMaybe<TsWhereIntegerInput>;
-  marked_uncollectible_at?: InputMaybe<TsWhereIntegerInput>;
-  paid_at?: InputMaybe<TsWhereIntegerInput>;
-  voided_at?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_InvoiceThresholdReasonInput = {
-  amount_gte?: InputMaybe<TsWhereIntegerInput>;
-  item_reasons?: InputMaybe<TsWhereStripe_InvoiceItemThresholdReasonInput>;
-};
-
-export type TsWhereStripe_InvoiceItemThresholdReasonInput = {
-  line_item_ids?: InputMaybe<TsWhereStripe_InvoiceLineItemIdsInput>;
-  usage_gte?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_InvoiceLineItemIdsInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_InvoiceTransferDataInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_OrderWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_returned?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStringInput>;
-  application_fee?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  external_coupon_code?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereStripe_OrderItemInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  returns?: InputMaybe<TsWhereStripe_OrderReturnsInput>;
-  selected_shipping_method?: InputMaybe<TsWhereStringInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  shipping_methods?: InputMaybe<TsWhereStripe_ShippingMethodInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  status_transitions?: InputMaybe<TsWhereStripe_StatusTransitionsInput>;
-  updated?: InputMaybe<TsWhereIntegerInput>;
-  upstream_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_OrderItemInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-  quantity?: InputMaybe<TsWhereIntegerInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_OrderReturnsInput = {
-  data?: InputMaybe<TsWhereStripe_OrderReturnInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_OrderReturnInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereStripe_OrderItemInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_ShippingMethodInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  delivery_estimate?: InputMaybe<TsWhereStripe_DeliveryEstimateInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_DeliveryEstimateInput = {
-  date?: InputMaybe<TsWhereStringInput>;
-  earliest?: InputMaybe<TsWhereStringInput>;
-  latest?: InputMaybe<TsWhereStringInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_StatusTransitionsInput = {
-  canceled?: InputMaybe<TsWhereIntegerInput>;
-  fulfiled?: InputMaybe<TsWhereIntegerInput>;
-  paid?: InputMaybe<TsWhereIntegerInput>;
-  returned?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_ChargeOutcomeInput = {
-  network_status?: InputMaybe<TsWhereStringInput>;
-  reason?: InputMaybe<TsWhereStringInput>;
-  risk_level?: InputMaybe<TsWhereStringInput>;
-  risk_score?: InputMaybe<TsWhereIntegerInput>;
-  rule?: InputMaybe<TsWhereStripe_RuleWrappedStringUnionInput>;
-  seller_message?: InputMaybe<TsWhereStringInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_RuleWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  action?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  predicate?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_capturable?: InputMaybe<TsWhereIntegerInput>;
-  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
-  amount_received?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  automatic_payment_methods?: InputMaybe<TsWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput>;
-  canceled_at?: InputMaybe<TsWhereIntegerInput>;
-  cancellation_reason?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  charges?: InputMaybe<TsWhereStripe_PaymentIntentChargesInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  confirmation_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStripe_InvoiceWrappedStringUnionInput>;
-  last_payment_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_action?: InputMaybe<TsWhereStripe_PaymentIntentNextActionInput>;
-  object?: InputMaybe<TsWhereInput>;
-  on_behalf_of?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-  payment_method?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  payment_method_options?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodOptionsInput>;
-  payment_method_types?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodTypesInput>;
-  processing?: InputMaybe<TsWhereStripe_PaymentIntentProcessingInput>;
-  receipt_email?: InputMaybe<TsWhereStringInput>;
-  review?: InputMaybe<TsWhereStripe_ReviewWrappedStringUnionInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_suffix?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_TransferDataInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-  invoiceItems?: InputMaybe<TsWhereStripe_InvoiceitemInput>;
-  sessionItems?: InputMaybe<TsWhereStripe_ItemInput>;
-  shipment?: InputMaybe<TsWhereShipEngine_LabelInput>;
-  _shapeId?: InputMaybe<TsWhereIdInput>;
-  _id?: InputMaybe<TsWhereIdInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsInput = {
-  ach_credit_transfer?: InputMaybe<TsWhereStripe_PaymentMethodDetailsAchCreditTransferInput>;
-  ach_debit?: InputMaybe<TsWhereStripe_PaymentMethodDetailsAchDebitInput>;
-  acss_debit?: InputMaybe<TsWhereStripe_PaymentMethodDetailsAcssDebitInput>;
-  afterpay_clearpay?: InputMaybe<TsWhereStripe_PaymentMethodDetailsAfterpayClearpayInput>;
-  alipay?: InputMaybe<TsWhereStripe_PaymentFlowsPrivatePaymentMethodsAlipayDetailsInput>;
-  au_becs_debit?: InputMaybe<TsWhereStripe_PaymentMethodDetailsAuBecsDebitInput>;
-  bacs_debit?: InputMaybe<TsWhereStripe_PaymentMethodDetailsBacsDebitInput>;
-  bancontact?: InputMaybe<TsWhereStripe_PaymentMethodDetailsBancontactInput>;
-  boleto?: InputMaybe<TsWhereStripe_PaymentMethodDetailsBoletoInput>;
-  card?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardInput>;
-  card_present?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardPresentInput>;
-  eps?: InputMaybe<TsWhereStripe_PaymentMethodDetailsEpsInput>;
-  fpx?: InputMaybe<TsWhereStripe_PaymentMethodDetailsFpxInput>;
-  giropay?: InputMaybe<TsWhereStripe_PaymentMethodDetailsGiropayInput>;
-  grabpay?: InputMaybe<TsWhereStripe_PaymentMethodDetailsGrabpayInput>;
-  ideal?: InputMaybe<TsWhereStripe_PaymentMethodDetailsIdealInput>;
-  interac_present?: InputMaybe<TsWhereStripe_PaymentMethodDetailsInteracPresentInput>;
-  klarna?: InputMaybe<TsWhereStripe_PaymentMethodDetailsKlarnaInput>;
-  konbini?: InputMaybe<TsWhereStripe_PaymentMethodDetailsKonbiniInput>;
-  multibanco?: InputMaybe<TsWhereStripe_PaymentMethodDetailsMultibancoInput>;
-  oxxo?: InputMaybe<TsWhereStripe_PaymentMethodDetailsOxxoInput>;
-  p24?: InputMaybe<TsWhereStripe_PaymentMethodDetailsP24Input>;
-  paynow?: InputMaybe<TsWhereStripe_PaymentMethodDetailsPaynowInput>;
-  sepa_debit?: InputMaybe<TsWhereStripe_PaymentMethodDetailsSepaDebitInput>;
-  sofort?: InputMaybe<TsWhereStripe_PaymentMethodDetailsSofortInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-  us_bank_account?: InputMaybe<TsWhereStripe_PaymentMethodDetailsUsBankAccountInput>;
-  wechat_pay?: InputMaybe<TsWhereStripe_PaymentMethodDetailsWechatPayInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsAchCreditTransferInput = {
-  account_number?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-  swift_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsAchDebitInput = {
-  account_holder_type?: InputMaybe<TsWhereInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsAcssDebitInput = {
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  institution_number?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  mandate?: InputMaybe<TsWhereStringInput>;
-  transit_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsAfterpayClearpayInput = {
-  reference?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentFlowsPrivatePaymentMethodsAlipayDetailsInput = {
-  buyer_id?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  transaction_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsAuBecsDebitInput = {
-  bsb_number?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  mandate?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsBacsDebitInput = {
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  mandate?: InputMaybe<TsWhereStringInput>;
-  sort_code?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsBancontactInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  generated_sepa_debit?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  generated_sepa_debit_mandate?: InputMaybe<TsWhereStripe_MandateWrappedStringUnionInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  preferred_language?: InputMaybe<TsWhereInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsBoletoInput = {
-  tax_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardInput = {
-  brand?: InputMaybe<TsWhereStringInput>;
-  checks?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardChecksInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  installments?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardInstallmentsInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  mandate?: InputMaybe<TsWhereStringInput>;
-  network?: InputMaybe<TsWhereStringInput>;
-  three_d_secure?: InputMaybe<TsWhereStripe_ThreeDSecureDetailsInput>;
-  wallet?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardWalletInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardChecksInput = {
-  address_line1_check?: InputMaybe<TsWhereStringInput>;
-  address_postal_code_check?: InputMaybe<TsWhereStringInput>;
-  cvc_check?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardInstallmentsInput = {
-  plan?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardWalletInput = {
-  dynamic_last4?: InputMaybe<TsWhereStringInput>;
-  masterpass?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardWalletMasterpassInput>;
-  type?: InputMaybe<TsWhereInput>;
-  visa_checkout?: InputMaybe<TsWhereStripe_PaymentMethodDetailsCardWalletVisaCheckoutInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardWalletMasterpassInput = {
-  billing_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  shipping_address?: InputMaybe<TsWhereStripe_AddressInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsCardWalletVisaCheckoutInput = {
-  billing_address?: InputMaybe<TsWhereStripe_AddressInput>;
-  email?: InputMaybe<TsWhereStringInput>;
-  name?: InputMaybe<TsWhereStringInput>;
-  shipping_address?: InputMaybe<TsWhereStripe_AddressInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsEpsInput = {
-  bank?: InputMaybe<TsWhereInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsFpxInput = {
-  bank?: InputMaybe<TsWhereInput>;
-  transaction_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsGiropayInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsGrabpayInput = {
-  transaction_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsIdealInput = {
-  bank?: InputMaybe<TsWhereInput>;
-  bic?: InputMaybe<TsWhereInput>;
-  generated_sepa_debit?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  generated_sepa_debit_mandate?: InputMaybe<TsWhereStripe_MandateWrappedStringUnionInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsInteracPresentInput = {
-  brand?: InputMaybe<TsWhereStringInput>;
-  cardholder_name?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  emv_auth_data?: InputMaybe<TsWhereStringInput>;
-  exp_month?: InputMaybe<TsWhereIntegerInput>;
-  exp_year?: InputMaybe<TsWhereIntegerInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  funding?: InputMaybe<TsWhereStringInput>;
-  generated_card?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  network?: InputMaybe<TsWhereStringInput>;
-  preferred_locales?: InputMaybe<TsWhereStripe_PaymentIntentPreferredLocalesInput>;
-  read_method?: InputMaybe<TsWhereInput>;
-  receipt?: InputMaybe<TsWhereStripe_PaymentMethodDetailsInteracPresentReceiptInput>;
-};
-
-export type TsWhereStripe_PaymentIntentPreferredLocalesInput = {
-  /** Exact match */
-  eq?: InputMaybe<Scalars['String']>;
-  /** Array of possible exact match values. */
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  /** Full text searching with fuzzy matching. */
-  match?: InputMaybe<Scalars['String']>;
-  /** Regular expression string matching. Use of * wildcards could degrade performance. */
-  regexp?: InputMaybe<Scalars['String']>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsInteracPresentReceiptInput = {
-  account_type?: InputMaybe<TsWhereInput>;
-  application_cryptogram?: InputMaybe<TsWhereStringInput>;
-  application_preferred_name?: InputMaybe<TsWhereStringInput>;
-  authorization_code?: InputMaybe<TsWhereStringInput>;
-  authorization_response_code?: InputMaybe<TsWhereStringInput>;
-  cardholder_verification_method?: InputMaybe<TsWhereStringInput>;
-  dedicated_file_name?: InputMaybe<TsWhereStringInput>;
-  terminal_verification_results?: InputMaybe<TsWhereStringInput>;
-  transaction_status_information?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsKlarnaInput = {
-  payment_method_category?: InputMaybe<TsWhereStringInput>;
-  preferred_locale?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsKonbiniInput = {
-  store?: InputMaybe<TsWhereStripe_PaymentMethodDetailsKonbiniStoreInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsKonbiniStoreInput = {
-  chain?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsMultibancoInput = {
-  entity?: InputMaybe<TsWhereStringInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsOxxoInput = {
-  number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsP24Input = {
-  bank?: InputMaybe<TsWhereInput>;
-  reference?: InputMaybe<TsWhereStringInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsPaynowInput = {
-  reference?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsSepaDebitInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  branch_code?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  mandate?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsSofortInput = {
-  bank_code?: InputMaybe<TsWhereStringInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  bic?: InputMaybe<TsWhereStringInput>;
-  country?: InputMaybe<TsWhereStringInput>;
-  generated_sepa_debit?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  generated_sepa_debit_mandate?: InputMaybe<TsWhereStripe_MandateWrappedStringUnionInput>;
-  iban_last4?: InputMaybe<TsWhereStringInput>;
-  preferred_language?: InputMaybe<TsWhereInput>;
-  verified_name?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsUsBankAccountInput = {
-  account_holder_type?: InputMaybe<TsWhereInput>;
-  account_type?: InputMaybe<TsWhereInput>;
-  bank_name?: InputMaybe<TsWhereStringInput>;
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  last4?: InputMaybe<TsWhereStringInput>;
-  routing_number?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentMethodDetailsWechatPayInput = {
-  fingerprint?: InputMaybe<TsWhereStringInput>;
-  transaction_id?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_PaymentIntentRefundsInput = {
-  data?: InputMaybe<TsWhereStripe_RefundInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_RefundInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  balance_transaction?: InputMaybe<TsWhereStripe_BalanceTransactionWrappedStringUnionInput>;
-  charge?: InputMaybe<TsWhereStripe_ChargeWrappedStringUnionInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  failure_balance_transaction?: InputMaybe<TsWhereStripe_BalanceTransactionWrappedStringUnionInput>;
-  failure_reason?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  next_action?: InputMaybe<TsWhereStripe_RefundNextActionInput>;
-  object?: InputMaybe<TsWhereInput>;
-  payment_intent?: InputMaybe<TsWhereStripe_PaymentIntentWrappedStringUnionInput>;
-  reason?: InputMaybe<TsWhereInput>;
-  receipt_number?: InputMaybe<TsWhereStringInput>;
-  source_transfer_reversal?: InputMaybe<TsWhereStripe_TransferReversalWrappedStringUnionInput>;
-  status?: InputMaybe<TsWhereStringInput>;
-  transfer_reversal?: InputMaybe<TsWhereStripe_TransferReversalWrappedStringUnionInput>;
-};
-
-export type TsWhereStripe_ChargeWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_captured?: InputMaybe<TsWhereIntegerInput>;
-  amount_refunded?: InputMaybe<TsWhereIntegerInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  billing_details?: InputMaybe<TsWhereStripe_BillingDetailsInput>;
-  calculated_statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  captured?: InputMaybe<TsWhereBooleanInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  disputed?: InputMaybe<TsWhereBooleanInput>;
-  failure_code?: InputMaybe<TsWhereStringInput>;
-  failure_message?: InputMaybe<TsWhereStringInput>;
-  fraud_details?: InputMaybe<TsWhereStripe_ChargeFraudDetailsInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  outcome?: InputMaybe<TsWhereStripe_ChargeOutcomeInput>;
-  paid?: InputMaybe<TsWhereBooleanInput>;
-  payment_method?: InputMaybe<TsWhereStringInput>;
-  payment_method_details?: InputMaybe<TsWhereStripe_PaymentMethodDetailsInput>;
-  receipt_email?: InputMaybe<TsWhereStringInput>;
-  receipt_number?: InputMaybe<TsWhereStringInput>;
-  receipt_url?: InputMaybe<TsWhereStringInput>;
-  refunded?: InputMaybe<TsWhereBooleanInput>;
-  refunds?: InputMaybe<TsWhereStripe_ChargeRefundsInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_suffix?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_ChargeTransferDataInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_ChargeRefundsInput = {
-  data?: InputMaybe<TsWhereStripe_RefundInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_ChargeTransferDataInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  destination?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-};
-
-export type TsWhereStripe_RefundNextActionInput = {
-  display_details?: InputMaybe<TsWhereStripe_RefundNextActionDisplayDetailsInput>;
-  type?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_RefundNextActionDisplayDetailsInput = {
-  email_sent?: InputMaybe<TsWhereStripe_EmailSentInput>;
-  expires_at?: InputMaybe<TsWhereIntegerInput>;
-};
-
-export type TsWhereStripe_EmailSentInput = {
-  email_sent_at?: InputMaybe<TsWhereIntegerInput>;
-  email_sent_to?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TransferReversalWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-};
-
-export type TsWhereStripe_TransferWrappedStringUnionInput = {
-  value?: InputMaybe<TsWhereStringInput>;
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_reversed?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  reversals?: InputMaybe<TsWhereStripe_TransferReversalsInput>;
-  reversed?: InputMaybe<TsWhereBooleanInput>;
-  source_type?: InputMaybe<TsWhereStringInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TransferReversalsInput = {
-  data?: InputMaybe<TsWhereStripe_TransferReversalInput>;
-  has_more?: InputMaybe<TsWhereBooleanInput>;
-  object?: InputMaybe<TsWhereInput>;
-  url?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsWhereStripe_TransferReversalInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  object?: InputMaybe<TsWhereInput>;
-};
-
 export type TsWhereAssetRelationshipInput = {
   title?: InputMaybe<TsWhereStringInput>;
   description?: InputMaybe<TsWhereStringInput>;
@@ -4558,11 +1521,11 @@ export type TsWhereAssetRelationshipInput = {
 };
 
 export type TsWhereNavigationDataLinksInput = {
-  categories?: InputMaybe<TsWhereNavigationDataLinksCategoriesInput>;
-  pages?: InputMaybe<TsWhereNavigationDataLinksPagesInput>;
+  categories?: InputMaybe<TsWhereNavigationDataCategoriesInput>;
+  pages?: InputMaybe<TsWhereNavigationDataPagesInput>;
 };
 
-export type TsWhereNavigationDataLinksCategoriesInput = {
+export type TsWhereNavigationDataCategoriesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   featured?: InputMaybe<TsWhereNavigationDataLinksCategoriesFeaturedInput>;
   collection?: InputMaybe<TsWhereNavigationDataLinksCategoriesCollectionInput>;
@@ -4590,21 +1553,21 @@ export type TsWhereNavigationDataLinksCategoriesBrandsInput = {
   href?: InputMaybe<TsWhereStringInput>;
 };
 
-export type TsWhereNavigationDataLinksPagesInput = {
+export type TsWhereNavigationDataPagesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
 
 export type TsWhereFooterNavigationInput = {
-  sections?: InputMaybe<TsWhereFooterNavigationSectionsInput>;
+  sections?: InputMaybe<TsWhereFooterSectionsInput>;
 };
 
-export type TsWhereFooterNavigationSectionsInput = {
+export type TsWhereFooterSectionsInput = {
   name?: InputMaybe<TsWhereStringInput>;
-  items?: InputMaybe<TsWhereFooterItemsInput>;
+  items?: InputMaybe<TsWhereFooterNavigationSectionsItemsInput>;
 };
 
-export type TsWhereFooterItemsInput = {
+export type TsWhereFooterNavigationSectionsItemsInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
@@ -4617,6 +1580,108 @@ export type TsWhereTextInput = {
   primary?: InputMaybe<TsWhereStringInput>;
   secondary?: InputMaybe<TsWhereStringInput>;
   button?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereStorefrontComponentsInput = {
+  offers?: InputMaybe<TsWhereOffersComponentOffersInput>;
+  primaryText?: InputMaybe<TsWhereStringInput>;
+  secondaryText?: InputMaybe<TsWhereStringInput>;
+  buttonText?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+  collections?: InputMaybe<TsWhereCollectionsComponentCollectionsInput>;
+  components?: InputMaybe<TsWhereBackgroundImageComponentComponentsInput>;
+  testimonials?: InputMaybe<TsWhereTestimonialsComponentTestimonialsInput>;
+  temp?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereOffersComponentOffersInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  href?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereCollectionsComponentCollectionsInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  href?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+};
+
+export type TsWhereBackgroundImageComponentComponentsInput = {
+  collections?: InputMaybe<TsWhereCollectionsComponentCollectionsInput>;
+  primaryText?: InputMaybe<TsWhereStringInput>;
+  secondaryText?: InputMaybe<TsWhereStringInput>;
+  buttonText?: InputMaybe<TsWhereStringInput>;
+  testimonials?: InputMaybe<TsWhereTestimonialsComponentTestimonialsInput>;
+  offers?: InputMaybe<TsWhereOffersComponentOffersInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+  components?: InputMaybe<TsWhereBackgroundImageComponentComponentsInput>;
+};
+
+export type TsWhereTestimonialsComponentTestimonialsInput = {
+  quote?: InputMaybe<TsWhereStringInput>;
+  attribution?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereProductPageDetailsRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsShallowWhereProductPageDetailsTextInput>;
+  details?: InputMaybe<TsShallowWhereProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsShallowWhereProductPageDetailsTextInput = {
+  primary?: InputMaybe<TsWhereDraftjsInput>;
+  secondary?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsShallowWhereProductPageDetailsDetailsInput = {
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPagePoliciesRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  policies?: InputMaybe<TsShallowWhereProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsShallowWhereProductPagePoliciesPoliciesInput = {
+  name?: InputMaybe<TsWhereDraftjsInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPageDetailsTextInput = {
+  primary?: InputMaybe<TsWhereDraftjsInput>;
+  secondary?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPageDetailsDetailsInput = {
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPagePoliciesPoliciesInput = {
+  name?: InputMaybe<TsWhereDraftjsInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+  image?: InputMaybe<TsWhereAssetRelationshipInput>;
 };
 
 export type Profile = TsSearchable & {
@@ -15705,7 +12770,7 @@ export type Stripe_ApiErrors = {
   type?: Maybe<Stripe_ApiErrorsTypeProperty>;
 };
 
-export type Stripe_PaymentIntent = TsSearchable & {
+export type Stripe_PaymentIntent = {
   __typename?: 'Stripe_PaymentIntent';
   /** Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99). */
   amount?: Maybe<Scalars['Int']>;
@@ -15785,9 +12850,6 @@ export type Stripe_PaymentIntent = TsSearchable & {
   sessionItems?: Maybe<Array<Maybe<Stripe_Item>>>;
   /** The ShipEngine label associated with this payment. */
   shipment?: Maybe<ShipEngine_Label>;
-  _shapeId?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['ID']>;
-  searchSummary?: Maybe<Scalars['String']>;
 };
 
 export type Stripe_PaymentFlowsAmountDetails = {
@@ -23692,60 +20754,6 @@ export type Voucherify_LoyaltyCardAsset = {
   url?: Maybe<Scalars['String']>;
 };
 
-export type Stripe_PaymentIntentPaginatedList = {
-  __typename?: 'Stripe_PaymentIntentPaginatedList';
-  items: Array<Stripe_PaymentIntent>;
-  total: Scalars['Int'];
-};
-
-export type TsWhereStripePaymentIntentInput = {
-  amount?: InputMaybe<TsWhereIntegerInput>;
-  amount_capturable?: InputMaybe<TsWhereIntegerInput>;
-  amount_details?: InputMaybe<TsWhereStripe_PaymentFlowsAmountDetailsInput>;
-  amount_received?: InputMaybe<TsWhereIntegerInput>;
-  application?: InputMaybe<TsWhereStripe_ApplicationWrappedStringUnionInput>;
-  application_fee_amount?: InputMaybe<TsWhereIntegerInput>;
-  automatic_payment_methods?: InputMaybe<TsWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput>;
-  canceled_at?: InputMaybe<TsWhereIntegerInput>;
-  cancellation_reason?: InputMaybe<TsWhereInput>;
-  capture_method?: InputMaybe<TsWhereInput>;
-  charges?: InputMaybe<TsWhereStripe_PaymentIntentChargesInput>;
-  client_secret?: InputMaybe<TsWhereStringInput>;
-  confirmation_method?: InputMaybe<TsWhereInput>;
-  created?: InputMaybe<TsWhereIntegerInput>;
-  currency?: InputMaybe<TsWhereStringInput>;
-  customer?: InputMaybe<TsWhereStringInput>;
-  description?: InputMaybe<TsWhereStringInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  invoice?: InputMaybe<TsWhereStripe_InvoiceWrappedStringUnionInput>;
-  last_payment_error?: InputMaybe<TsWhereStripe_ApiErrorsInput>;
-  livemode?: InputMaybe<TsWhereBooleanInput>;
-  next_action?: InputMaybe<TsWhereStripe_PaymentIntentNextActionInput>;
-  object?: InputMaybe<TsWhereInput>;
-  on_behalf_of?: InputMaybe<TsWhereStripe_AccountWrappedStringUnionInput>;
-  payment_method?: InputMaybe<TsWhereStripe_PaymentMethodWrappedStringUnionInput>;
-  payment_method_options?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodOptionsInput>;
-  payment_method_types?: InputMaybe<TsWhereStripe_PaymentIntentPaymentMethodTypesInput>;
-  processing?: InputMaybe<TsWhereStripe_PaymentIntentProcessingInput>;
-  receipt_email?: InputMaybe<TsWhereStringInput>;
-  review?: InputMaybe<TsWhereStripe_ReviewWrappedStringUnionInput>;
-  setup_future_usage?: InputMaybe<TsWhereInput>;
-  shipping?: InputMaybe<TsWhereStripe_ShippingInput>;
-  statement_descriptor?: InputMaybe<TsWhereStringInput>;
-  statement_descriptor_suffix?: InputMaybe<TsWhereStringInput>;
-  status?: InputMaybe<TsWhereInput>;
-  transfer_data?: InputMaybe<TsWhereStripe_TransferDataInput>;
-  transfer_group?: InputMaybe<TsWhereStringInput>;
-  invoiceItems?: InputMaybe<TsWhereStripe_InvoiceitemInput>;
-  sessionItems?: InputMaybe<TsWhereStripe_ItemInput>;
-  shipment?: InputMaybe<TsWhereShipEngine_LabelInput>;
-  _shapeId?: InputMaybe<TsWhereIdInput>;
-  _id?: InputMaybe<TsWhereIdInput>;
-  AND?: InputMaybe<Array<InputMaybe<TsWhereStripePaymentIntentInput>>>;
-  OR?: InputMaybe<Array<InputMaybe<TsWhereStripePaymentIntentInput>>>;
-  NOT?: InputMaybe<TsWhereStripePaymentIntentInput>;
-};
-
 export type ProfilePaginatedList = {
   __typename?: 'ProfilePaginatedList';
   items: Array<Profile>;
@@ -26689,6 +23697,359 @@ export enum ShopifyStorefront_OrderSortKeys {
   Relevance = 'RELEVANCE'
 }
 
+export type Storefront = TsSearchable & {
+  __typename?: 'Storefront';
+  components: Array<StorefrontComponentsProperty>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent | TrendingProductsComponent;
+
+export type OffersComponent = {
+  __typename?: 'OffersComponent';
+  offers: Array<OffersComponentOffers>;
+};
+
+export type OffersComponentOffers = {
+  __typename?: 'OffersComponentOffers';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type HeroComponent = {
+  __typename?: 'HeroComponent';
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+  image?: Maybe<Asset>;
+};
+
+
+export type HeroComponentImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type CollectionsComponent = {
+  __typename?: 'CollectionsComponent';
+  collections: Array<CollectionsComponentCollections>;
+};
+
+export type CollectionsComponentCollections = {
+  __typename?: 'CollectionsComponentCollections';
+  name: Scalars['String'];
+  description: Scalars['String'];
+  href: Scalars['String'];
+  image?: Maybe<Asset>;
+};
+
+
+export type CollectionsComponentCollectionsImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponent = {
+  __typename?: 'BackgroundImageComponent';
+  image?: Maybe<Asset>;
+  components: Array<BackgroundImageComponentComponentsProperty>;
+};
+
+
+export type BackgroundImageComponentImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponentComponentsProperty = CollectionsComponent | SaleComponent | TestimonialsComponent | OffersComponent | HeroComponent | BackgroundImageComponent;
+
+export type SaleComponent = {
+  __typename?: 'SaleComponent';
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+};
+
+export type TestimonialsComponent = {
+  __typename?: 'TestimonialsComponent';
+  testimonials: Array<TestimonialsComponentTestimonials>;
+};
+
+export type TestimonialsComponentTestimonials = {
+  __typename?: 'TestimonialsComponentTestimonials';
+  quote: Scalars['String'];
+  attribution: Scalars['String'];
+};
+
+export type TrendingProductsComponent = {
+  __typename?: 'TrendingProductsComponent';
+  temp?: Maybe<Scalars['String']>;
+};
+
+export type Product = TsSearchable & {
+  __typename?: 'Product';
+  /** Initialized with title from shopify */
+  name?: Maybe<Scalars['String']>;
+  productComponent?: Maybe<Scalars['String']>;
+  hideReviews?: Maybe<Scalars['Boolean']>;
+  hideRelatedProducts?: Maybe<Scalars['Boolean']>;
+  showDetails?: Maybe<Scalars['Boolean']>;
+  details?: Maybe<ProductPageDetails>;
+  showPolicies?: Maybe<Scalars['Boolean']>;
+  policies?: Maybe<ProductPagePolicies>;
+  shopifyProductId?: Maybe<Scalars['String']>;
+  shopifyProduct?: Maybe<Shopify_Product>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductDetailsArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPoliciesArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetails = TsSearchable & {
+  __typename?: 'ProductPageDetails';
+  name: Scalars['String'];
+  text: ProductPageDetailsText;
+  details: Array<ProductPageDetailsDetails>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsText = {
+  __typename?: 'ProductPageDetailsText';
+  primary: Scalars['JSON'];
+  primaryHtml?: Maybe<Scalars['String']>;
+  secondary: Scalars['JSON'];
+  secondaryHtml?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsTextPrimaryHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsTextSecondaryHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsDetails = {
+  __typename?: 'ProductPageDetailsDetails';
+  image?: Maybe<Asset>;
+  description: Scalars['JSON'];
+  descriptionHtml?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsDetailsImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsDetailsDescriptionHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPagePolicies = TsSearchable & {
+  __typename?: 'ProductPagePolicies';
+  name: Scalars['String'];
+  policies: Array<ProductPagePoliciesPolicies>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type ProductPagePoliciesPolicies = {
+  __typename?: 'ProductPagePoliciesPolicies';
+  name: Scalars['JSON'];
+  nameHtml?: Maybe<Scalars['String']>;
+  description: Scalars['JSON'];
+  descriptionHtml?: Maybe<Scalars['String']>;
+  image?: Maybe<Asset>;
+};
+
+
+export type ProductPagePoliciesPoliciesNameHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPagePoliciesPoliciesDescriptionHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPagePoliciesPoliciesImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPaginatedList = {
+  __typename?: 'ProductPaginatedList';
+  items: Array<Product>;
+  total: Scalars['Int'];
+};
+
+export type TsWhereProductInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  productComponent?: InputMaybe<TsWhereStringInput>;
+  hideReviews?: InputMaybe<TsWhereBooleanInput>;
+  hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
+  showDetails?: InputMaybe<TsWhereBooleanInput>;
+  details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
+  showPolicies?: InputMaybe<TsWhereBooleanInput>;
+  policies?: InputMaybe<TsWhereProductPagePoliciesRelationshipInput>;
+  shopifyProductId?: InputMaybe<TsWhereStringInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
+  NOT?: InputMaybe<TsWhereProductInput>;
+};
+
+export type ProductPageDetailsPaginatedList = {
+  __typename?: 'ProductPageDetailsPaginatedList';
+  items: Array<ProductPageDetails>;
+  total: Scalars['Int'];
+};
+
+export type TsWhereProductPageDetailsInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsWhereProductPageDetailsTextInput>;
+  details?: InputMaybe<TsWhereProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductPageDetailsInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductPageDetailsInput>>>;
+  NOT?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+export type ProductPagePoliciesPaginatedList = {
+  __typename?: 'ProductPagePoliciesPaginatedList';
+  items: Array<ProductPagePolicies>;
+  total: Scalars['Int'];
+};
+
+export type TsWhereProductPagePoliciesInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  policies?: InputMaybe<TsWhereProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductPagePoliciesInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductPagePoliciesInput>>>;
+  NOT?: InputMaybe<TsWhereProductPagePoliciesInput>;
+};
+
 /** Asset search results */
 export type AssetSearchResults = {
   __typename?: 'AssetSearchResults';
@@ -26707,6 +24068,27 @@ export type TsStaticSiteSearchResults = {
 export type ProfileSearchResults = {
   __typename?: 'ProfileSearchResults';
   results: Array<Profile>;
+  total: Scalars['Int'];
+};
+
+/** Product search results */
+export type ProductSearchResults = {
+  __typename?: 'ProductSearchResults';
+  results: Array<Product>;
+  total: Scalars['Int'];
+};
+
+/** ProductPageDetails search results */
+export type ProductPageDetailsSearchResults = {
+  __typename?: 'ProductPageDetailsSearchResults';
+  results: Array<ProductPageDetails>;
+  total: Scalars['Int'];
+};
+
+/** ProductPagePolicies search results */
+export type ProductPagePoliciesSearchResults = {
+  __typename?: 'ProductPagePoliciesSearchResults';
+  results: Array<ProductPagePolicies>;
   total: Scalars['Int'];
 };
 
@@ -26740,14 +24122,6 @@ export type WithContext = {
   getMyProfile?: Maybe<Profile>;
   /** Get the signed in user's subscriptions from Stripe */
   getMySubscriptions?: Maybe<Array<Maybe<Stripe_Subscription>>>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPayments_UNINDEXED?: Maybe<Array<Maybe<Stripe_PaymentIntent>>>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPayments_INDEXED?: Maybe<Stripe_PaymentIntentPaginatedList>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPayments?: Maybe<Array<Maybe<Stripe_PaymentIntent>>>;
-  /** Get the signed-in user's payments from Stripe */
-  getMyPaymentsIndexed?: Maybe<Stripe_PaymentIntentPaginatedList>;
   /** Get a profile by ID */
   getProfile?: Maybe<Profile>;
   /** Returns a list of profiles in natural order. */
@@ -26775,9 +24149,28 @@ export type WithContext = {
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
   getMyCustomer?: Maybe<ShopifyStorefront_Customer>;
   getMyAdminCustomer?: Maybe<Shopify_Customer>;
+  /** Get a Storefront by ID */
+  getStorefront?: Maybe<Storefront>;
+  /** Get a Product by ID */
+  getProduct?: Maybe<Product>;
+  /** Returns a list Product in natural order. */
+  getProductList?: Maybe<ProductPaginatedList>;
+  Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  Shopify_collections?: Maybe<Shopify_CollectionConnection>;
+  /** Get a ProductPageDetails by ID */
+  getProductPageDetails?: Maybe<ProductPageDetails>;
+  /** Returns a list ProductPageDetails in natural order. */
+  getProductPageDetailsList?: Maybe<ProductPageDetailsPaginatedList>;
+  /** Get a ProductPagePolicies by ID */
+  getProductPagePolicies?: Maybe<ProductPagePolicies>;
+  /** Returns a list ProductPagePolicies in natural order. */
+  getProductPagePoliciesList?: Maybe<ProductPagePoliciesPaginatedList>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProfileIndex?: Maybe<ProfileSearchResults>;
+  searchProductIndex?: Maybe<ProductSearchResults>;
+  searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
+  searchProductPagePoliciesIndex?: Maybe<ProductPagePoliciesSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
 };
 
@@ -26894,54 +24287,6 @@ export type WithContextGetIndexedProductListArgs = {
 /** This query allow you to pass context to your queries */
 export type WithContextGetMySubscriptionsArgs = {
   expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-/** This query allow you to pass context to your queries */
-export type WithContextGetMyPayments_UnindexedArgs = {
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  limit?: InputMaybe<Scalars['Float']>;
-  created?: InputMaybe<Scalars['JSON']>;
-  startingAfter?: InputMaybe<Scalars['String']>;
-  endingBefore?: InputMaybe<Scalars['String']>;
-};
-
-
-/** This query allow you to pass context to your queries */
-export type WithContextGetMyPayments_IndexedArgs = {
-  terms?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Scalars['Int']>;
-  filter?: InputMaybe<Scalars['JSONObject']>;
-  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
-  locale?: InputMaybe<Scalars['String']>;
-  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
-  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<TsWhereStripePaymentIntentInput>;
-};
-
-
-/** This query allow you to pass context to your queries */
-export type WithContextGetMyPaymentsArgs = {
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  limit?: InputMaybe<Scalars['Float']>;
-  created?: InputMaybe<Scalars['JSON']>;
-  startingAfter?: InputMaybe<Scalars['String']>;
-  endingBefore?: InputMaybe<Scalars['String']>;
-};
-
-
-/** This query allow you to pass context to your queries */
-export type WithContextGetMyPaymentsIndexedArgs = {
-  terms?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Scalars['Int']>;
-  filter?: InputMaybe<Scalars['JSONObject']>;
-  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
-  locale?: InputMaybe<Scalars['String']>;
-  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
-  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<TsWhereStripePaymentIntentInput>;
 };
 
 
@@ -27075,6 +24420,98 @@ export type WithContextShopifyStorefront_CustomerArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetStorefrontArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextShopify_CollectionByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextShopify_CollectionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_CollectionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPageDetailsArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPageDetailsListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPagePoliciesArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetProductPagePoliciesListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -27110,6 +24547,45 @@ export type WithContextSearchProfileIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProfileInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchProductIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchProductPageDetailsIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPageDetailsInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchProductPagePoliciesIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductPagePoliciesInput>;
 };
 
 
@@ -27199,6 +24675,35 @@ export type Mutation = {
   updateMyCustomer?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   updateMyCustomerAddress?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
   Gorgias_createTicket?: Maybe<Gorgias_CreateTicketResponse>;
+  /** Update Storefront */
+  updateStorefront?: Maybe<UpdateStorefrontResult>;
+  /**
+   * Update Product. If the input has Shopify values and a Shopify ID, the Shopify product with that ID is updated.
+   * If the input has Shopify values and no Shopify ID, a Shopify product is created.
+   */
+  updateProduct?: Maybe<UpdateProductResult>;
+  /** Create Product. If Shopify values are provided, a Shopify product is also created and the new product ID is saved. */
+  createProduct?: Maybe<CreateProductResult>;
+  /** Duplicate Product */
+  duplicateProduct?: Maybe<DuplicateProductResult>;
+  /** Delete Product */
+  deleteProduct?: Maybe<DeleteProductResult>;
+  /** Update ProductPageDetails */
+  updateProductPageDetails?: Maybe<UpdateProductPageDetailsResult>;
+  /** Create ProductPageDetails */
+  createProductPageDetails?: Maybe<CreateProductPageDetailsResult>;
+  /** Duplicate ProductPageDetails */
+  duplicateProductPageDetails?: Maybe<DuplicateProductPageDetailsResult>;
+  /** Delete ProductPageDetails */
+  deleteProductPageDetails?: Maybe<DeleteProductPageDetailsResult>;
+  /** Update ProductPagePolicies */
+  updateProductPagePolicies?: Maybe<UpdateProductPagePoliciesResult>;
+  /** Create ProductPagePolicies */
+  createProductPagePolicies?: Maybe<CreateProductPagePoliciesResult>;
+  /** Duplicate ProductPagePolicies */
+  duplicateProductPagePolicies?: Maybe<DuplicateProductPagePoliciesResult>;
+  /** Delete ProductPagePolicies */
+  deleteProductPagePolicies?: Maybe<DeleteProductPagePoliciesResult>;
 };
 
 
@@ -27386,6 +24891,7 @@ export type MutationVoucherify_CreateOrderArgs = {
 export type MutationKlaviyo_AddMembersArgs = {
   input?: InputMaybe<AddListMembersInput>;
   list_id: Scalars['String'];
+  recaptchaToken: Scalars['String'];
 };
 
 
@@ -27455,6 +24961,7 @@ export type MutationCreateCustomerArgs = {
 
 export type MutationShopifyStorefront_CustomerRecoverArgs = {
   email: Scalars['String'];
+  recaptchaToken: Scalars['String'];
 };
 
 
@@ -27484,9 +24991,99 @@ export type MutationUpdateMyCustomerAddressArgs = {
 };
 
 
-export type MutationGorgias_CreateTicketArgs = {
-  message?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
+export type MutationUpdateStorefrontArgs = {
+  input: UpdateStorefrontInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationUpdateProductArgs = {
+  input: UpdateProductInterfaceInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateProductArgs = {
+  input: CreateProductInterfaceInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicateProductArgs = {
+  input: DuplicateProductInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProductArgs = {
+  input: DeleteProductInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateProductPageDetailsArgs = {
+  input: UpdateProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateProductPageDetailsArgs = {
+  input: CreateProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicateProductPageDetailsArgs = {
+  input: DuplicateProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProductPageDetailsArgs = {
+  input: DeleteProductPageDetailsInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateProductPagePoliciesArgs = {
+  input: UpdateProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreateProductPagePoliciesArgs = {
+  input: CreateProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicateProductPagePoliciesArgs = {
+  input: DuplicateProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeleteProductPagePoliciesArgs = {
+  input: DeleteProductPagePoliciesInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
 /** A project file stored on s3 */
@@ -31711,8 +29308,6 @@ export type Stripe_PaymentIntentInput = {
   invoiceItems?: InputMaybe<Array<InputMaybe<Stripe_InvoiceitemInput>>>;
   /** The Stripe checkout session associated with this payment. */
   sessionItems?: InputMaybe<Array<InputMaybe<Stripe_ItemInput>>>;
-  _shapeId?: InputMaybe<Scalars['String']>;
-  _id?: InputMaybe<Scalars['ID']>;
 };
 
 export type Stripe_PaymentFlowsAmountDetailsInput = {
@@ -37259,16 +34854,24 @@ export type UpdateNavigationDataInput = {
 };
 
 export type NavigationDataLinksInput = {
-  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesInput>>>;
-  pages?: InputMaybe<Array<InputMaybe<NavigationDataLinksPagesInput>>>;
+  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesInputUnion>>>;
+  pages?: InputMaybe<Array<InputMaybe<NavigationDataLinksPagesInputUnion>>>;
+};
+
+export type NavigationDataLinksCategoriesInputUnion = {
+  navigationDataLinksCategories?: InputMaybe<NavigationDataLinksCategoriesInput>;
 };
 
 export type NavigationDataLinksCategoriesInput = {
   name?: InputMaybe<Scalars['String']>;
-  featured?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesFeaturedInput>>>;
-  collection?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCollectionInput>>>;
-  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCategoriesInput>>>;
-  brands?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesBrandsInput>>>;
+  featured?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesFeaturedInputUnion>>>;
+  collection?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCollectionInputUnion>>>;
+  categories?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesCategoriesInputUnion>>>;
+  brands?: InputMaybe<Array<InputMaybe<NavigationDataLinksCategoriesBrandsInputUnion>>>;
+};
+
+export type NavigationDataLinksCategoriesFeaturedInputUnion = {
+  navigationDataLinksCategoriesFeatured?: InputMaybe<NavigationDataLinksCategoriesFeaturedInput>;
 };
 
 export type NavigationDataLinksCategoriesFeaturedInput = {
@@ -37276,9 +34879,17 @@ export type NavigationDataLinksCategoriesFeaturedInput = {
   href?: InputMaybe<Scalars['String']>;
 };
 
+export type NavigationDataLinksCategoriesCollectionInputUnion = {
+  navigationDataLinksCategoriesCollection?: InputMaybe<NavigationDataLinksCategoriesCollectionInput>;
+};
+
 export type NavigationDataLinksCategoriesCollectionInput = {
   name?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
+};
+
+export type NavigationDataLinksCategoriesCategoriesInputUnion = {
+  navigationDataLinksCategoriesCategories?: InputMaybe<NavigationDataLinksCategoriesCategoriesInput>;
 };
 
 export type NavigationDataLinksCategoriesCategoriesInput = {
@@ -37286,9 +34897,17 @@ export type NavigationDataLinksCategoriesCategoriesInput = {
   href?: InputMaybe<Scalars['String']>;
 };
 
+export type NavigationDataLinksCategoriesBrandsInputUnion = {
+  navigationDataLinksCategoriesBrands?: InputMaybe<NavigationDataLinksCategoriesBrandsInput>;
+};
+
 export type NavigationDataLinksCategoriesBrandsInput = {
   name?: InputMaybe<Scalars['String']>;
   href?: InputMaybe<Scalars['String']>;
+};
+
+export type NavigationDataLinksPagesInputUnion = {
+  navigationDataLinksPages?: InputMaybe<NavigationDataLinksPagesInput>;
 };
 
 export type NavigationDataLinksPagesInput = {
@@ -37323,7 +34942,11 @@ export type UpdateFooterInput = {
 };
 
 export type FooterNavigationInput = {
-  sections?: InputMaybe<Array<InputMaybe<FooterNavigationSectionsInput>>>;
+  sections?: InputMaybe<Array<InputMaybe<FooterNavigationSectionsInputUnion>>>;
+};
+
+export type FooterNavigationSectionsInputUnion = {
+  footerNavigationSections?: InputMaybe<FooterNavigationSectionsInput>;
 };
 
 export type FooterNavigationSectionsInput = {
@@ -37558,6 +35181,7 @@ export type CreateCustomerPropertiesPropertyInput = {
   phone?: InputMaybe<Scalars['String']>;
   password: Scalars['String'];
   acceptsMarketing?: InputMaybe<Scalars['Boolean']>;
+  recaptchaToken?: InputMaybe<Scalars['String']>;
 };
 
 /** Return type for `customerRecover` mutation. */
@@ -37656,4 +35280,599 @@ export type ShopifyStorefront_MailingAddressInput = {
 export type Gorgias_CreateTicketResponse = {
   __typename?: 'Gorgias_CreateTicketResponse';
   id: Scalars['Int'];
+};
+
+export type UpdateStorefrontResult = {
+  __typename?: 'UpdateStorefrontResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Storefront>;
+};
+
+/** update Storefront input */
+export type UpdateStorefrontInput = {
+  components?: InputMaybe<Array<InputMaybe<BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion = {
+  offersComponent?: InputMaybe<OffersComponentInput>;
+  heroComponent?: InputMaybe<HeroComponentInput>;
+  collectionsComponent?: InputMaybe<CollectionsComponentInput>;
+  backgroundImageComponent?: InputMaybe<BackgroundImageComponentInput>;
+  saleComponent?: InputMaybe<SaleComponentInput>;
+  testimonialsComponent?: InputMaybe<TestimonialsComponentInput>;
+  trendingProductsComponent?: InputMaybe<TrendingProductsComponentInput>;
+};
+
+export type OffersComponentInput = {
+  offers: Array<OffersComponentOffersInput>;
+};
+
+export type OffersComponentOffersInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type HeroComponentInput = {
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+  image: TsRelationshipInput;
+};
+
+export type CollectionsComponentInput = {
+  collections: Array<CollectionsComponentCollectionsInput>;
+};
+
+export type CollectionsComponentCollectionsInput = {
+  name: Scalars['String'];
+  description: Scalars['String'];
+  href: Scalars['String'];
+  image: TsRelationshipInput;
+};
+
+export type BackgroundImageComponentInput = {
+  image: TsRelationshipInput;
+  components: Array<BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion>;
+};
+
+export type BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion = {
+  collectionsComponent?: InputMaybe<CollectionsComponentInput>;
+  saleComponent?: InputMaybe<SaleComponentInput>;
+  testimonialsComponent?: InputMaybe<TestimonialsComponentInput>;
+  offersComponent?: InputMaybe<OffersComponentInput>;
+  heroComponent?: InputMaybe<HeroComponentInput>;
+  backgroundImageComponent?: InputMaybe<BackgroundImageComponentInput>;
+};
+
+export type SaleComponentInput = {
+  primaryText: Scalars['String'];
+  secondaryText: Scalars['String'];
+  buttonText: Scalars['String'];
+};
+
+export type TestimonialsComponentInput = {
+  testimonials: Array<TestimonialsComponentTestimonialsInput>;
+};
+
+export type TestimonialsComponentTestimonialsInput = {
+  quote: Scalars['String'];
+  attribution: Scalars['String'];
+};
+
+export type TrendingProductsComponentInput = {
+  temp?: InputMaybe<Scalars['String']>;
+};
+
+export type UpdateProductResult = {
+  __typename?: 'UpdateProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Product>;
+};
+
+/** update ProductInterface input */
+export type UpdateProductInterfaceInput = {
+  _id: Scalars['ID'];
+  _version?: InputMaybe<Scalars['Float']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  /** Initialized with title from shopify */
+  name?: InputMaybe<Scalars['String']>;
+  productComponent?: InputMaybe<Scalars['String']>;
+  hideReviews?: InputMaybe<Scalars['Boolean']>;
+  hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
+  showDetails?: InputMaybe<Scalars['Boolean']>;
+  details?: InputMaybe<TsRelationshipInput>;
+  showPolicies?: InputMaybe<Scalars['Boolean']>;
+  policies?: InputMaybe<TsRelationshipInput>;
+  shopifyProductId?: InputMaybe<Scalars['String']>;
+  shopifyProduct?: InputMaybe<Shopify_ProductInput>;
+};
+
+/** Specifies the input fields required to create a product. */
+export type Shopify_ProductInput = {
+  /** The description of the product, complete with HTML formatting. */
+  descriptionHtml?: InputMaybe<Scalars['String']>;
+  /** A unique human-friendly string for the product. Automatically generated from the product's title. */
+  handle?: InputMaybe<Scalars['String']>;
+  /**
+   * Whether a redirect is required after a new handle has been provided.
+   * If true, then the old handle is redirected to the new one automatically.
+   */
+  redirectNewHandle?: InputMaybe<Scalars['Boolean']>;
+  /** The SEO information associated with the product. */
+  seo?: InputMaybe<Shopify_SeoInput>;
+  /** The product type specified by the merchant. */
+  productType?: InputMaybe<Scalars['String']>;
+  /** The standardized product type in the Shopify product taxonomy. */
+  standardizedProductType?: InputMaybe<Shopify_StandardizedProductTypeInput>;
+  /** The custom product type specified by the merchant. */
+  customProductType?: InputMaybe<Scalars['String']>;
+  /** A comma separated list tags that have been added to the product. */
+  tags?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The theme template used when viewing the product in a store. */
+  templateSuffix?: InputMaybe<Scalars['String']>;
+  /** Whether the product is a gift card. */
+  giftCard?: InputMaybe<Scalars['Boolean']>;
+  /** The theme template used when viewing the gift card in a store. */
+  giftCardTemplateSuffix?: InputMaybe<Scalars['String']>;
+  /** The title of the product. */
+  title?: InputMaybe<Scalars['String']>;
+  /** The name of the product's vendor. */
+  vendor?: InputMaybe<Scalars['String']>;
+  /** A description of the product. Supports HTML formatting. This argument is deprecated: Use `descriptionHtml` instead. */
+  bodyHtml?: InputMaybe<Scalars['String']>;
+  /** The IDs of the collections that this product will be added to. */
+  collectionsToJoin?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** The IDs of collections that will no longer include the product. */
+  collectionsToLeave?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  /** Specifies the product to update in productUpdate or creates a new product if absent in productCreate. */
+  id?: InputMaybe<Scalars['ID']>;
+  /** The images to associate with the product. */
+  images?: InputMaybe<Array<InputMaybe<Shopify_ImageInput>>>;
+  /** The metafields to associate with this product. */
+  metafields?: InputMaybe<Array<InputMaybe<Shopify_MetafieldInput>>>;
+  /** The private metafields to associate with this product. */
+  privateMetafields?: InputMaybe<Array<InputMaybe<Shopify_PrivateMetafieldInput>>>;
+  /** List of custom product options (maximum of 3 per product). */
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  publishDate?: InputMaybe<Scalars['DateTime']>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  publishOn?: InputMaybe<Scalars['DateTime']>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  published?: InputMaybe<Scalars['Boolean']>;
+  /** Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead. */
+  publishedAt?: InputMaybe<Scalars['DateTime']>;
+  /** A list of variants associated with the product. */
+  variants?: InputMaybe<Array<InputMaybe<Shopify_ProductVariantInput>>>;
+  /** The status of the product. */
+  status?: InputMaybe<Shopify_ProductStatus>;
+  /** Whether the product can only be purchased with a selling plan (subscription). Products that are sold exclusively on subscription can only be created on online stores. If set to `true` on an already existing product, then the product will be marked unavailable on channels that don't support subscriptions. */
+  requiresSellingPlan?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** SEO information. */
+export type Shopify_SeoInput = {
+  /** SEO title of the product. */
+  title?: InputMaybe<Scalars['String']>;
+  /** SEO description of the product. */
+  description?: InputMaybe<Scalars['String']>;
+};
+
+/** Provides the fields and values to use when adding a standard product type to a product. The [Shopify product taxonomy](https://help.shopify.com/txt/product_taxonomy/en.txt) contains the full list of available values. */
+export type Shopify_StandardizedProductTypeInput = {
+  /** The id of the node in the Shopify taxonomy that represents the product type. */
+  productTaxonomyNodeId: Scalars['ID'];
+};
+
+/** Specifies the input fields for an image. */
+export type Shopify_ImageInput = {
+  /** A globally-unique identifier. */
+  id?: InputMaybe<Scalars['ID']>;
+  /** A word or phrase to share the nature or contents of an image. */
+  altText?: InputMaybe<Scalars['String']>;
+  /** The URL of the image. May be a signed upload URL. */
+  src?: InputMaybe<Scalars['String']>;
+};
+
+/**
+ * The input fields to use to create or update a metafield through a mutation on the owning resource.
+ * An alternative way to create or update a metafield is by using the
+ * [metafieldsSet](https://shopify.dev/api/admin-graphql/latest/mutations/metafieldsSet) mutation.
+ */
+export type Shopify_MetafieldInput = {
+  /** The description of the metafield. */
+  description?: InputMaybe<Scalars['String']>;
+  /**
+   * The unique ID of the metafield. You don't include an ID when you create a metafield because the metafield ID
+   * is created automatically. The ID is required when you update a metafield.
+   */
+  id?: InputMaybe<Scalars['ID']>;
+  /**
+   * The namespace for a metafield. The namespace is required when you create a metafield and is optional when you
+   * update a metafield.
+   */
+  namespace?: InputMaybe<Scalars['String']>;
+  /** The key name of the metafield. Required when creating but optional when updating. */
+  key?: InputMaybe<Scalars['String']>;
+  /** The value of a metafield. */
+  value?: InputMaybe<Scalars['String']>;
+  /**
+   * The metafield's [type](https://shopify.dev/apps/metafields/types). The metafield type is required
+   * when you create a metafield and is optional when you update a metafield.
+   */
+  type?: InputMaybe<Scalars['String']>;
+};
+
+/** The input fields for a private metafield. */
+export type Shopify_PrivateMetafieldInput = {
+  /** The resource that owns the metafield. If the field is blank, then the `Shop` resource owns the metafield. */
+  owner?: InputMaybe<Scalars['ID']>;
+  /** The namespace of the private metafield. */
+  namespace: Scalars['String'];
+  /** The key of the private metafield. */
+  key: Scalars['String'];
+  /** The `value` and `valueType` of the private metafield, wrapped in a `ValueInput` object. */
+  valueInput: Shopify_PrivateMetafieldValueInput;
+};
+
+/** The value input contains the value and value type of the private metafield. */
+export type Shopify_PrivateMetafieldValueInput = {
+  /** The value of a private metafield. */
+  value: Scalars['String'];
+  /** Represents the private metafield value type. */
+  valueType: Shopify_PrivateMetafieldValueType;
+};
+
+/** Specifies a product variant to create or update. */
+export type Shopify_ProductVariantInput = {
+  /** The value of the barcode associated with the product. */
+  barcode?: InputMaybe<Scalars['String']>;
+  /** The compare-at price of the variant. */
+  compareAtPrice?: InputMaybe<Scalars['Money']>;
+  /** The ID of the fulfillment service associated with the variant. */
+  fulfillmentServiceId?: InputMaybe<Scalars['ID']>;
+  /** The Harmonized System Code (or HS Tariff Code) for the variant. */
+  harmonizedSystemCode?: InputMaybe<Scalars['String']>;
+  /** Specifies the product variant to update or create a new variant if absent. */
+  id?: InputMaybe<Scalars['ID']>;
+  /** The ID of the image that's associated with the variant. */
+  imageId?: InputMaybe<Scalars['ID']>;
+  /** The URL of an image to associate with the variant.  This field can only be used through mutations that create product images and must match one of the URLs being created on the product. */
+  imageSrc?: InputMaybe<Scalars['String']>;
+  /** The URL of the media to associate with the variant. This field can only be used in mutations that create media images and must match one of the URLs being created on the product. This field only accepts one value. */
+  mediaSrc?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /**
+   * The fulfillment service that tracks the number of items in stock for the product variant. If you track the inventory yourself using the admin, then set the value to `shopify`. Valid values: `shopify` or the handle of a fulfillment service that has inventory management enabled.
+   *  This argument is deprecated: Use tracked attribute on `inventoryItem` instead.
+   */
+  inventoryManagement?: InputMaybe<Shopify_ProductVariantInventoryManagement>;
+  /** Whether customers are allowed to place an order for the product variant when it's out of stock. */
+  inventoryPolicy?: InputMaybe<Shopify_ProductVariantInventoryPolicy>;
+  /** Create only field. The inventory quantities at each location where the variant is stocked. */
+  inventoryQuantities?: InputMaybe<Array<InputMaybe<Shopify_InventoryLevelInput>>>;
+  /** Inventory Item associated with the variant, used for unit cost. */
+  inventoryItem?: InputMaybe<Shopify_InventoryItemInput>;
+  /** Additional customizable information about the product variant. */
+  metafields?: InputMaybe<Array<InputMaybe<Shopify_MetafieldInput>>>;
+  /** The private metafields to associated with this product. */
+  privateMetafields?: InputMaybe<Array<InputMaybe<Shopify_PrivateMetafieldInput>>>;
+  /** The custom properties that a shop owner uses to define product variants. */
+  options?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** The order of the product variant in the list of product variants. The first position in the list is 1. */
+  position?: InputMaybe<Scalars['Int']>;
+  /** The price of the variant. */
+  price?: InputMaybe<Scalars['Money']>;
+  /** Create only required field. Specifies the product on which to create the variant. */
+  productId?: InputMaybe<Scalars['ID']>;
+  /** Whether the variant requires shipping. */
+  requiresShipping?: InputMaybe<Scalars['Boolean']>;
+  /** The SKU for the variant. */
+  sku?: InputMaybe<Scalars['String']>;
+  /** Whether the variant is taxable. */
+  taxable?: InputMaybe<Scalars['Boolean']>;
+  /** This argument is deprecated: Variant title is not a writable field; it is generated from the selected variant options. */
+  title?: InputMaybe<Scalars['String']>;
+  /** The tax code associated with the variant. */
+  taxCode?: InputMaybe<Scalars['String']>;
+  /** The weight of the variant. */
+  weight?: InputMaybe<Scalars['Float']>;
+  /** The unit of weight that's used to measure the variant. */
+  weightUnit?: InputMaybe<Shopify_WeightUnit>;
+};
+
+/** Specifies the input fields for an inventory level. */
+export type Shopify_InventoryLevelInput = {
+  /** The available quantity of an inventory item at a location. */
+  availableQuantity: Scalars['Int'];
+  /** The ID of a location. */
+  locationId: Scalars['ID'];
+};
+
+/** Specifies the input fields for an inventory item. */
+export type Shopify_InventoryItemInput = {
+  /** Unit cost associated with the inventory item, the currency is the shop's default currency. */
+  cost?: InputMaybe<Scalars['Decimal']>;
+  /** Whether the inventory item is tracked. */
+  tracked?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CreateProductResult = {
+  __typename?: 'CreateProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Product>;
+};
+
+/** create ProductInterface input */
+export type CreateProductInterfaceInput = {
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Float']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  /** Initialized with title from shopify */
+  name?: InputMaybe<Scalars['String']>;
+  productComponent?: InputMaybe<Scalars['String']>;
+  hideReviews?: InputMaybe<Scalars['Boolean']>;
+  hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
+  showDetails?: InputMaybe<Scalars['Boolean']>;
+  details?: InputMaybe<TsRelationshipInput>;
+  showPolicies?: InputMaybe<Scalars['Boolean']>;
+  policies?: InputMaybe<TsRelationshipInput>;
+  shopifyProductId?: InputMaybe<Scalars['String']>;
+  shopifyProduct?: InputMaybe<Shopify_ProductInput>;
+};
+
+export type DuplicateProductResult = {
+  __typename?: 'DuplicateProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Product>;
+};
+
+/** duplicate Product input */
+export type DuplicateProductInput = {
+  _id: Scalars['ID'];
+  /** Initialized with title from shopify */
+  name?: InputMaybe<Scalars['String']>;
+  productComponent?: InputMaybe<Scalars['String']>;
+  hideReviews?: InputMaybe<Scalars['Boolean']>;
+  hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
+  showDetails?: InputMaybe<Scalars['Boolean']>;
+  details?: InputMaybe<TsRelationshipInput>;
+  showPolicies?: InputMaybe<Scalars['Boolean']>;
+  policies?: InputMaybe<TsRelationshipInput>;
+  shopifyProductId?: InputMaybe<Scalars['String']>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeleteProductResult = {
+  __typename?: 'DeleteProductResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete Product input */
+export type DeleteProductInput = {
+  _id: Scalars['ID'];
+};
+
+export type UpdateProductPageDetailsResult = {
+  __typename?: 'UpdateProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPageDetails>;
+};
+
+/** update ProductPageDetails input */
+export type UpdateProductPageDetailsInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<ProductPageDetailsTextInput>;
+  details?: InputMaybe<Array<InputMaybe<ProductPageDetailsDetailsInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsTextInput = {
+  primary: Scalars['JSON'];
+  secondary: Scalars['JSON'];
+};
+
+export type ProductPageDetailsDetailsInput = {
+  image?: InputMaybe<TsRelationshipInput>;
+  description: Scalars['JSON'];
+};
+
+export type CreateProductPageDetailsResult = {
+  __typename?: 'CreateProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPageDetails>;
+};
+
+/** create ProductPageDetails input */
+export type CreateProductPageDetailsInput = {
+  name: Scalars['String'];
+  text: ProductPageDetailsTextInput;
+  details: Array<ProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DuplicateProductPageDetailsResult = {
+  __typename?: 'DuplicateProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPageDetails>;
+};
+
+/** duplicate ProductPageDetails input */
+export type DuplicateProductPageDetailsInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<ProductPageDetailsTextInput>;
+  details?: InputMaybe<Array<InputMaybe<ProductPageDetailsDetailsInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeleteProductPageDetailsResult = {
+  __typename?: 'DeleteProductPageDetailsResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete ProductPageDetails input */
+export type DeleteProductPageDetailsInput = {
+  _id: Scalars['ID'];
+};
+
+export type UpdateProductPagePoliciesResult = {
+  __typename?: 'UpdateProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPagePolicies>;
+};
+
+/** update ProductPagePolicies input */
+export type UpdateProductPagePoliciesInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  policies?: InputMaybe<Array<InputMaybe<ProductPagePoliciesPoliciesInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPagePoliciesPoliciesInput = {
+  name: Scalars['JSON'];
+  description: Scalars['JSON'];
+  image: TsRelationshipInput;
+};
+
+export type CreateProductPagePoliciesResult = {
+  __typename?: 'CreateProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPagePolicies>;
+};
+
+/** create ProductPagePolicies input */
+export type CreateProductPagePoliciesInput = {
+  name: Scalars['String'];
+  policies: Array<ProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DuplicateProductPagePoliciesResult = {
+  __typename?: 'DuplicateProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<ProductPagePolicies>;
+};
+
+/** duplicate ProductPagePolicies input */
+export type DuplicateProductPagePoliciesInput = {
+  _id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  policies?: InputMaybe<Array<InputMaybe<ProductPagePoliciesPoliciesInput>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeleteProductPagePoliciesResult = {
+  __typename?: 'DeleteProductPagePoliciesResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete ProductPagePolicies input */
+export type DeleteProductPagePoliciesInput = {
+  _id: Scalars['ID'];
 };

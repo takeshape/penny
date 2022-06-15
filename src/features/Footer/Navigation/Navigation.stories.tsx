@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Navigation from './Navigation';
 
 const Meta: ComponentMeta<typeof Navigation> = {

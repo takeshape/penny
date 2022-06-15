@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { graphql } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import NavigationFixtures from '../Navigation.fixtures.json';

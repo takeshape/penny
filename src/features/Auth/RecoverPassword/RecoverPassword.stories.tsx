@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { AuthRecoverPassword } from './RecoverPassword';
 
 const Meta: ComponentMeta<typeof AuthRecoverPassword> = {

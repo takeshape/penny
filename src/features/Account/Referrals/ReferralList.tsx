@@ -1,6 +1,5 @@
 import { GiftIcon } from '@heroicons/react/solid';
-import type { ReferralListItemProps } from './ReferralListItem';
-import ReferralListItem from './ReferralListItem';
+import ReferralListItem, { ReferralListItemProps } from './ReferralListItem';
 
 export interface Reward {
   name: string;

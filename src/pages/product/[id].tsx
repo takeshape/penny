@@ -1,48 +1,58 @@
 import PageLoader from 'components/PageLoader';
-import Wrapper from 'components/Wrapper/Content';
-import ProductWithImageGrid from 'features/ProductPage/ProductWithImageGrid/ProductWithImageGrid';
+import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
+import {
+  ProductPageReviewsIoReviewsArgs,
+  ProductPageReviewsIoReviewsQuery,
+  ProductPageReviewsIoReviewsResponse,
+  ProductPageShopifyProductArgs,
+  ProductPageShopifyProductIdListQuery,
+  ProductPageShopifyProductIdListResponse,
+  ProductPageShopifyProductQuery,
+  ProductPageShopifyProductReponse
+} from 'features/ProductPage/queries';
+import { getPageOptions, getProduct } from 'features/ProductPage/transforms';
+import { ProductPageOptions } from 'features/ProductPage/types';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import type { GetProductArgs, GetProductIdsResponse, GetProductResponse } from 'queries';
-import { GetProductIdsQuery, GetProductQuery } from 'queries';
-import type { Product as ProductType } from 'types/product';
-import type { ReviewHighlights, ReviewList } from 'types/review';
+import { shopifyGidToId, shopifyIdToGid } from 'transforms/shopify';
+import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import {
-  reviewsIoProductReviewsToReviewHighlight,
-  reviewsIoProductReviewsToReviewList
-} from 'utils/transforms/reviewsIo';
-import { shopifyGidToId, shopifyIdToGid, shopifyProductToProduct } from 'utils/transforms/shopify';
 import { getSingle } from 'utils/types';
 
-interface ProductPageProps {
-  product: ProductType;
-  reviews: ReviewList;
-  reviewHighlights: ReviewHighlights;
-}
+type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
+  sku: string;
+  options: ProductPageOptions;
+};
 
-const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighlights }) => {
+const breadcrumbs = [
+  { id: 1, name: 'Men', href: '#' },
+  { id: 2, name: 'Clothing', href: '#' }
+];
+
+const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, options }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Layout title="Product loading...">
+      <Layout title="Product is loading...">
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout title={product.name}>
-      <div className="bg-white">
-        <Wrapper>
-          <ProductWithImageGrid product={product} reviews={reviewHighlights} />
-        </Wrapper>
-      </div>
+    <Layout title={name} description={description}>
+      <ProductPageComponent
+        productId={id}
+        sku={sku}
+        component={options.component}
+        options={options}
+        breadcrumbs={breadcrumbs}
+      />
     </Layout>
   );
 };
@@ -50,33 +60,43 @@ const ProductPage: NextPage<ProductPageProps> = ({ product, reviews, reviewHighl
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
-  const id = shopifyIdToGid(getSingle(params.id));
+  const id = getSingle(params.id);
 
-  const { data } = await apolloClient.query<GetProductResponse, GetProductArgs>({
-    query: GetProductQuery,
-    variables: { id }
+  const { data } = await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
+    query: ProductPageShopifyProductQuery,
+    variables: {
+      id: shopifyIdToGid(id)
+    }
   });
 
-  const product = shopifyProductToProduct(data.product);
-  const reviews = reviewsIoProductReviewsToReviewList(data.product.reviews);
-  const reviewHighlights = reviewsIoProductReviewsToReviewHighlight(data.product.reviews);
+  // Just priming the cache
+  await apolloClient.query<ProductPageReviewsIoReviewsResponse, ProductPageReviewsIoReviewsArgs>({
+    query: ProductPageReviewsIoReviewsQuery,
+    variables: {
+      sku: id
+    }
+  });
+
+  const product = getProduct(data);
 
   return addApolloQueryCache(apolloClient, {
     props: {
-      product,
-      reviews,
-      reviewHighlights
+      id: product.id,
+      sku: id,
+      name: product.name,
+      description: product.description,
+      options: getPageOptions(data)
     }
   });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await apolloClient.query<GetProductIdsResponse>({
-    query: GetProductIdsQuery
+  const { data } = await apolloClient.query<ProductPageShopifyProductIdListResponse>({
+    query: ProductPageShopifyProductIdListQuery
   });
 
-  const paths = data.products.edges.map(({ node }) => ({
-    params: { id: shopifyGidToId(node.id) }
+  const paths = data.products.items.map(({ shopifyProductId }) => ({
+    params: { id: shopifyGidToId(shopifyProductId) }
   }));
 
   return {

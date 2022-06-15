@@ -1,9 +1,9 @@
 import CardPanel from 'components/Card/Panel/Panel';
 import Image from 'components/NextImage';
 import { format } from 'date-fns';
-import type { Shopify_Order } from 'types/takeshape';
+import { shopifyGidToId } from 'transforms/shopify';
+import { Shopify_Order } from 'types/takeshape';
 import { formatPrice } from 'utils/text';
-import { shopifyGidToId } from 'utils/transforms/shopify';
 import PurchseOrderStatus from './PurchaseOrderStatus';
 
 export interface AccountPurchasesProps {

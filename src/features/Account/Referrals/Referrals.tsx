@@ -2,7 +2,7 @@ import CardPanel from 'components/Card/Panel/Panel';
 import { useState } from 'react';
 import ReferralsCreateReferral from './CreateReferral';
 import ReferralsList from './ReferralList';
-import type { ReferralListItemProps } from './ReferralListItem';
+import { ReferralListItemProps } from './ReferralListItem';
 
 const referralsFixtureData: ReferralListItemProps[] = [
   {

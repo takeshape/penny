@@ -3,16 +3,18 @@ import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
 import ProductHeader from 'features/ProductCategory/Header/Header';
 import ProductGrid from 'features/ProductCategory/ProductGrid/ProductGrid';
+import {
+  RelatedProductsShopifyCollectionArgs,
+  RelatedProductsShopifyCollectionQuery,
+  RelatedProductsShopifyCollectionResponse
+} from 'features/RelatedProducts/queries';
+import { getProductList } from 'features/RelatedProducts/transforms';
 import Layout from 'layouts/Default';
 import logger from 'logger';
-import type { InferGetStaticPropsType, NextPage } from 'next';
-import type { GetProductsResponse } from 'queries';
-import { GetProductsQuery } from 'queries';
+import { InferGetStaticPropsType, NextPage } from 'next';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { reviewsIoProductReviewsToReviewHighlight } from 'utils/transforms/reviewsIo';
-import { shopifyProductToProductListItem } from 'utils/transforms/shopify';
 
 const IndexPage: NextPage = ({ products, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
@@ -48,16 +50,17 @@ export async function getStaticProps() {
   let error = null;
 
   try {
-    const { data } = await apolloClient.query<GetProductsResponse>({
-      query: GetProductsQuery
+    const { data } = await apolloClient.query<
+      RelatedProductsShopifyCollectionResponse,
+      RelatedProductsShopifyCollectionArgs
+    >({
+      query: RelatedProductsShopifyCollectionQuery,
+      variables: {
+        handle: 'frontpage'
+      }
     });
 
-    products = data.products.edges.map(({ node }) => {
-      return {
-        product: shopifyProductToProductListItem(node),
-        reviews: reviewsIoProductReviewsToReviewHighlight(node.reviews)
-      };
-    });
+    products = getProductList(data).map((product) => ({ product }));
   } catch (err) {
     logger.error(err);
     error = formatError(err);

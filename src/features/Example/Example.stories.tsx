@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 // Must use named export for argTypes inference to work
 import { RickAndMortyList } from './Example';
 import rickAndMortyJson from './fixtures.json';

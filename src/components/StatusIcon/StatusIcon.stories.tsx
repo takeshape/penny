@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { StatusIcon } from './StatusIcon';
 
 const Meta: ComponentMeta<typeof StatusIcon> = {

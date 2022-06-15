@@ -1,6 +1,5 @@
-import type { SelectHTMLAttributes } from 'react';
-import type { UseControllerProps } from 'react-hook-form';
-import { useController } from 'react-hook-form';
+import { SelectHTMLAttributes } from 'react';
+import { useController, UseControllerProps } from 'react-hook-form';
 
 export interface SelectOption {
   key: string;

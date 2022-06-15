@@ -1,5 +1,5 @@
 import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { AccountNavigation } from './Navigation';
 
 const navigation = [
