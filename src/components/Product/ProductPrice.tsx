@@ -13,16 +13,17 @@ export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
 
   const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-gray-900');
 
+  if (hasStock) {
+    return (
+      <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>
+    )
+  }
+
   return (
-    <>
-      {hasStock && <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>}
-      {!hasStock && (
-        <p className={`${wrapperClass} flex items-center`}>
-          <span className="text-gray-300 line-through">{formatPrice(currencyCode, amount)}</span>
-          <span className="text-gray-500 text-sm uppercase font-bold ml-4">Out of stock</span>
-        </p>
-      )}
-    </>
+    <p className={`${wrapperClass} flex items-center`}>
+      <span className="text-gray-300 line-through">{formatPrice(currencyCode, amount)}</span>
+      <span className="text-gray-500 text-sm uppercase font-bold ml-4">Out of stock</span>
+    </p>
   );
 };
 
