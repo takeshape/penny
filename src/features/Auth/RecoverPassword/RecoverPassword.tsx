@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
+import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
-import { recaptchaSiteKey, siteLogo } from 'config';
+import { siteLogo } from 'config';
 import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from 'queries';
 import { useCallback } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 import { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -86,12 +86,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
                     }
                   }}
                 />
-                <ReCAPTCHA
-                  ref={recaptchaRef}
-                  size="invisible"
-                  sitekey={recaptchaSiteKey}
-                  onChange={handleRecaptchaChange}
-                />
+                <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
                 <div>
                   <Button disabled={formState.isSubmitting} type="submit" color="primary" className="w-full">
                     Reset password

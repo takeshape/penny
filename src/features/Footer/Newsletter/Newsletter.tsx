@@ -1,9 +1,9 @@
 import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
-import { defaultKlaviyoListId, recaptchaSiteKey } from 'config';
+import Captcha from 'components/Captcha';
+import { defaultKlaviyoListId } from 'config';
 import { useCallback, useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { Klaviyo_AddMembersResponse } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 import { EmailSubmissionMutation, EmailSubmissionMutationArgs } from './Newsletter.queries';
@@ -38,6 +38,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
 
   const handleSubmit = useCallback(
     (event) => {
+      event.preventDefault();
       const email = event.currentTarget.elements['email-address'].value;
       executeRecaptcha((recaptchaToken) => {
         if (email) {
@@ -68,7 +69,7 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
           className="appearance-none min-w-0 w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400"
           placeholder="Enter your email"
         />
-        <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={recaptchaSiteKey} onChange={handleRecaptchaChange} />
+        <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
         <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">
           <Button type="submit" loading={loading ? true : undefined} color="primary" className="w-full h-full">
             {loading ? 'Subscribing…' : text?.button ?? 'Subscribe'}

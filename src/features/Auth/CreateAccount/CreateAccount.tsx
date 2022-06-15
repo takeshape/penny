@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
+import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
-import { recaptchaSiteKey, siteLogo } from 'config';
+import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import { CreateCustomerMutation, CreateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 import { MutationCreateCustomerArgs } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -128,12 +128,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
               }}
             />
 
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              size="invisible"
-              sitekey={recaptchaSiteKey}
-              onChange={handleRecaptchaChange}
-            />
+            <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
 
             <div>
               <Button
