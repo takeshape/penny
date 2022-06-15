@@ -1,22 +1,20 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
-import type {
-  GetCustomerResponse,
-  GetMyNewsletterSubscriptionsResponse,
-  SubscribeMyEmailToNewsletterResponse,
-  UnsubscribeMyEmailFromNewsletterResponse,
-  UpdateCustomerResponse
-} from 'queries';
 import {
   GetCustomerQuery,
+  GetCustomerResponse,
   GetMyNewsletterSubscriptionsQuery,
+  GetMyNewsletterSubscriptionsResponse,
   SubscribeMyEmailToNewsletterMutation,
+  SubscribeMyEmailToNewsletterResponse,
   UnsubscribeMyEmailFromNewsletterMutation,
-  UpdateCustomerMutation
+  UnsubscribeMyEmailFromNewsletterResponse,
+  UpdateCustomerMutation,
+  UpdateCustomerResponse
 } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import type {
+import {
   MutationSubscribeMyEmailToNewsletterArgs,
   MutationUnsubscribeMyEmailFromNewsletterArgs,
   MutationUpdateMyCustomerArgs

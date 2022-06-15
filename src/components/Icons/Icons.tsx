@@ -1,3 +1,5 @@
+import { ChatAlt2Icon } from '@heroicons/react/solid';
+
 export const Facebook = (props) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
     <path
@@ -42,4 +44,10 @@ export const Dribbble = (props) => (
       clipRule="evenodd"
     />
   </svg>
+);
+
+export const DefaultReviewer = (props) => (
+  <div className="bg-gray-300 rounded-full p-2 h-12 w-12" {...props}>
+    <ChatAlt2Icon className="text-gray-100 h-full w-full" />
+  </div>
 );

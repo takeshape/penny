@@ -4,7 +4,7 @@
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
-import type { ServerError } from '@apollo/client/link/utils';
+import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from 'config';
 import logger from 'logger';
 
@@ -72,17 +72,19 @@ function createApolloClient({
     return forward(operation);
   });
 
-  const cleanTypeName = new ApolloLink((operation, forward) => {
-    if (operation.variables) {
-      const omitTypename = (key, value) => (key === '__typename' ? undefined : value);
-      operation.variables = JSON.parse(JSON.stringify(operation.variables), omitTypename);
-    }
-    return forward(operation).map((data) => {
-      return data;
-    });
-  });
+  // TODO This doesn't seem to be needed now, review...
+  //
+  // const cleanTypeName = new ApolloLink((operation, forward) => {
+  //   if (operation.variables) {
+  //     const omitTypename = (key, value) => (key === '__typename' ? undefined : value);
+  //     operation.variables = JSON.parse(JSON.stringify(operation.variables), omitTypename);
+  //   }
+  //   return forward(operation).map((data) => {
+  //     return data;
+  //   });
+  // });
 
-  const httpLinkWithoutTypeName = ApolloLink.from([cleanTypeName, httpLink]);
+  const httpLinkWithoutTypeName = ApolloLink.from([httpLink]);
 
   return new ApolloClient<NormalizedCacheObject>({
     link: ApolloLink.from([withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),

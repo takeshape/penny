@@ -1,5 +1,4 @@
-import type { LoaderProps } from './Loader/Loader';
-import Loader from './Loader/Loader';
+import Loader, { LoaderProps } from './Loader/Loader';
 
 export const PageLoader = (props: LoaderProps) => {
   return (

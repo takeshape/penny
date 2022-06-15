@@ -22,11 +22,11 @@ export const products = [
       ],
       priceMin: {
         amount: 3000,
-        currencyCode: 'usd'
+        currencyCode: 'USD'
       },
       priceMax: {
         amount: 3000,
-        currencyCode: 'usd'
+        currencyCode: 'USD'
       },
       variantsCount: 1,
       hasOneTimePurchaseOption: true,
@@ -63,11 +63,11 @@ export const products = [
       ],
       priceMin: {
         amount: 2900,
-        currencyCode: 'usd'
+        currencyCode: 'USD'
       },
       priceMax: {
         amount: 3100,
-        currencyCode: 'usd'
+        currencyCode: 'USD'
       },
       variantsCount: 9,
       hasOneTimePurchaseOption: true,
@@ -103,11 +103,11 @@ export const products = [
       ],
       priceMin: {
         amount: 3000,
-        currencyCode: 'usd'
+        currencyCode: 'USD'
       },
       priceMax: {
         amount: 3000,
-        currencyCode: 'usd'
+        currencyCode: 'USD'
       },
       variantsCount: 1,
       hasOneTimePurchaseOption: true,

@@ -1,4 +1,4 @@
-import type { NormalizedCacheObject } from '@apollo/client';
+import { NormalizedCacheObject } from '@apollo/client';
 import { GetFooterQuery } from 'features/Footer/Footer.queries';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 

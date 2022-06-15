@@ -4,11 +4,10 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
-import type { CreateCustomerResponse } from 'queries';
-import { CreateCustomerMutation } from 'queries';
+import { CreateCustomerMutation, CreateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationCreateCustomerArgs } from 'types/takeshape';
+import { MutationCreateCustomerArgs } from 'types/takeshape';
 
 export interface AuthCreateAccountForm {
   email: string;

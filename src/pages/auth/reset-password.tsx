@@ -1,6 +1,6 @@
 import AuthRecoverPassword from 'features/Auth/RecoverPassword/RecoverPassword';
 import Layout from 'layouts/Full';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { getSingle } from 'utils/types';
 

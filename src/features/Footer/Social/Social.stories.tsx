@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import * as Icons from 'components/Icons/Icons';
 import Social from './Social';
 

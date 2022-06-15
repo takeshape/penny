@@ -18,7 +18,7 @@ interface StarsProps {
   rating: number;
 }
 
-const Stars = (props: StarsProps) => {
+export const Stars = (props: StarsProps) => {
   const { scale = 5, rating } = props;
   const ratings = useMemo(() => [...Array(scale).keys()], [scale]);
   return (

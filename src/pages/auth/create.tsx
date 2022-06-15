@@ -1,6 +1,6 @@
 import AuthCreateAccount from 'features/Auth/CreateAccount/CreateAccount';
 import Layout from 'layouts/Full';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { getSingle } from 'utils/types';
 

@@ -122,66 +122,6 @@ type Query {
   """Get the signed in user's subscriptions from Stripe"""
   getMySubscriptions(expand: [String]): [Stripe_Subscription]
 
-  """Get the signed-in user's payments from Stripe"""
-  getMyPayments_UNINDEXED(expand: [String], limit: Float, created: JSON, startingAfter: String, endingBefore: String): [Stripe_PaymentIntent]
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPayments_INDEXED(
-    terms: String
-
-    """The offset from the first result you want to fetch."""
-    from: Int
-
-    """The maximum number of items to return."""
-    size: Int
-
-    """An elasticsearch style filter. Overrides onlyEnabled."""
-    filter: JSONObject
-
-    """An list of fields to sort by."""
-    sort: [TSSearchSortInput]
-    locale: String
-    enableLocaleFallback: Boolean = true
-
-    """Filter out content that is not enabled. Defaults to true."""
-    onlyEnabled: Boolean = true
-
-    """
-    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
-    """
-    where: TSWhereStripePaymentIntentInput
-  ): Stripe_PaymentIntentPaginatedList
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPayments(expand: [String], limit: Float, created: JSON, startingAfter: String, endingBefore: String): [Stripe_PaymentIntent]
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPaymentsIndexed(
-    terms: String
-
-    """The offset from the first result you want to fetch."""
-    from: Int
-
-    """The maximum number of items to return."""
-    size: Int
-
-    """An elasticsearch style filter. Overrides onlyEnabled."""
-    filter: JSONObject
-
-    """An list of fields to sort by."""
-    sort: [TSSearchSortInput]
-    locale: String
-    enableLocaleFallback: Boolean = true
-
-    """Filter out content that is not enabled. Defaults to true."""
-    onlyEnabled: Boolean = true
-
-    """
-    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
-    """
-    where: TSWhereStripePaymentIntentInput
-  ): Stripe_PaymentIntentPaginatedList
-
   """Get a profile by ID"""
   getProfile(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Profile
 
@@ -371,6 +311,142 @@ type Query {
   ): ShopifyStorefront_Customer
   getMyCustomer: ShopifyStorefront_Customer
   getMyAdminCustomer: Shopify_Customer
+
+  """Get a Storefront by ID"""
+  getStorefront(locale: String, enableLocaleFallback: Boolean = true): Storefront
+
+  """Get a Product by ID"""
+  getProduct(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Product
+
+  """Returns a list Product in natural order."""
+  getProductList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductPaginatedList
+  Shopify_collectionByHandle(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection
+  Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
+
+  """Get a ProductPageDetails by ID"""
+  getProductPageDetails(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPageDetails
+
+  """Returns a list ProductPageDetails in natural order."""
+  getProductPageDetailsList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsPaginatedList
+
+  """Get a ProductPagePolicies by ID"""
+  getProductPagePolicies(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPagePolicies
+
+  """Returns a list ProductPagePolicies in natural order."""
+  getProductPagePoliciesList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesPaginatedList
   searchAssetIndex(
     terms: String
 
@@ -437,6 +513,72 @@ type Query {
     """
     where: TSWhereProfileInput
   ): ProfileSearchResults
+  searchProductIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductSearchResults
+  searchProductPageDetailsIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsSearchResults
+  searchProductPagePoliciesIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesSearchResults
   search(
     terms: String
 
@@ -1329,50 +1471,16 @@ input TSWhereInput {
   environmentVariables: TSWhereTsStaticSiteEnvironmentVariablesInput
   triggers: TSWhereTsStaticSiteTriggersInput
   templateHash: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  amount_capturable: TSWhereIntegerInput
-  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
-  amount_received: TSWhereIntegerInput
-  application: TSWhereStripe_ApplicationWrappedStringUnionInput
-  application_fee_amount: TSWhereIntegerInput
-  automatic_payment_methods: TSWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput
-  canceled_at: TSWhereIntegerInput
-  cancellation_reason: TSWhereInput
-  capture_method: TSWhereInput
-  charges: TSWhereStripe_PaymentIntentChargesInput
-  client_secret: TSWhereStringInput
-  confirmation_method: TSWhereInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  id: TSWhereStringInput
-  invoice: TSWhereStripe_InvoiceWrappedStringUnionInput
-  last_payment_error: TSWhereStripe_ApiErrorsInput
-  livemode: TSWhereBooleanInput
-  next_action: TSWhereStripe_PaymentIntentNextActionInput
-  object: TSWhereInput
-  on_behalf_of: TSWhereStripe_AccountWrappedStringUnionInput
-  payment_method: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  payment_method_options: TSWhereStripe_PaymentIntentPaymentMethodOptionsInput
-  payment_method_types: TSWhereStripe_PaymentIntentPaymentMethodTypesInput
-  processing: TSWhereStripe_PaymentIntentProcessingInput
-  receipt_email: TSWhereStringInput
-  review: TSWhereStripe_ReviewWrappedStringUnionInput
-  setup_future_usage: TSWhereInput
-  shipping: TSWhereStripe_ShippingInput
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_suffix: TSWhereStringInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_TransferDataInput
-  transfer_group: TSWhereStringInput
-  invoiceItems: TSWhereStripe_InvoiceitemInput
-  sessionItems: TSWhereStripe_ItemInput
-  shipment: TSWhereShipEngine_LabelInput
   active: TSWhereBooleanInput
+  created: TSWhereIntegerInput
+  id: TSWhereStringInput
   images: TSWhereStripe_ProductImagesInput
+  livemode: TSWhereBooleanInput
   name: TSWhereStringInput
+  object: TSWhereInput
   package_dimensions: TSWhereStripe_PackageDimensionsInput
   shippable: TSWhereBooleanInput
+  statement_descriptor: TSWhereStringInput
   tax_code: TSWhereStripe_TaxCodeWrappedStringUnionInput
   unit_label: TSWhereStringInput
   updated: TSWhereIntegerInput
@@ -1388,1527 +1496,36 @@ input TSWhereInput {
   links: TSWhereNavigationDataLinksInput
   navigation: TSWhereFooterNavigationInput
   newsletter: TSWhereFooterNewsletterInput
+  components: TSWhereStorefrontComponentsInput
+  productComponent: TSWhereStringInput
+  hideReviews: TSWhereBooleanInput
+  hideRelatedProducts: TSWhereBooleanInput
+  showDetails: TSWhereBooleanInput
+  Product_details: TSWhereProductPageDetailsRelationshipInput
+  showPolicies: TSWhereBooleanInput
+  Product_policies: TSWhereProductPagePoliciesRelationshipInput
+  shopifyProductId: TSWhereStringInput
+  text: TSWhereProductPageDetailsTextInput
+  ProductPageDetails_details: TSWhereProductPageDetailsDetailsInput
+  ProductPagePolicies_policies: TSWhereProductPagePoliciesPoliciesInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
 }
 
-input TSWhereStripe_PaymentFlowsAmountDetailsInput {
-  tip: TSWhereStripe_PaymentFlowsAmountDetailsResourceTipInput
+input TSWhereStripe_PackageDimensionsInput {
+  height: TSWhereNumberInput
+  length: TSWhereNumberInput
+  weight: TSWhereNumberInput
+  width: TSWhereNumberInput
 }
 
-input TSWhereStripe_PaymentFlowsAmountDetailsResourceTipInput {
-  amount: TSWhereIntegerInput
-}
-
-input TSWhereStripe_ApplicationWrappedStringUnionInput {
+input TSWhereStripe_TaxCodeWrappedStringUnionInput {
   value: TSWhereStringInput
-  id: TSWhereStringInput
-  name: TSWhereStringInput
-  object: TSWhereInput
-}
-
-input TSWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput {
-  enabled: TSWhereBooleanInput
-}
-
-input TSWhereStripe_PaymentIntentChargesInput {
-  data: TSWhereStripe_ChargeInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_ChargeInput {
-  amount: TSWhereIntegerInput
-  amount_captured: TSWhereIntegerInput
-  amount_refunded: TSWhereIntegerInput
-  application: TSWhereStripe_ApplicationWrappedStringUnionInput
-  application_fee: TSWhereStripe_ApplicationFeeWrappedStringUnionInput
-  application_fee_amount: TSWhereIntegerInput
-  balance_transaction: TSWhereStripe_BalanceTransactionWrappedStringUnionInput
-  billing_details: TSWhereStripe_BillingDetailsInput
-  calculated_statement_descriptor: TSWhereStringInput
-  captured: TSWhereBooleanInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  description: TSWhereStringInput
-  disputed: TSWhereBooleanInput
-  failure_balance_transaction: TSWhereStripe_BalanceTransactionWrappedStringUnionInput
-  failure_code: TSWhereStringInput
-  failure_message: TSWhereStringInput
-  fraud_details: TSWhereStripe_ChargeFraudDetailsInput
-  id: TSWhereStringInput
-  invoice: TSWhereStripe_InvoiceWrappedStringUnionInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  on_behalf_of: TSWhereStripe_AccountWrappedStringUnionInput
-  order: TSWhereStripe_OrderWrappedStringUnionInput
-  outcome: TSWhereStripe_ChargeOutcomeInput
-  paid: TSWhereBooleanInput
-  payment_intent: TSWhereStripe_PaymentIntentWrappedStringUnionInput
-  payment_method: TSWhereStringInput
-  payment_method_details: TSWhereStripe_PaymentMethodDetailsInput
-  receipt_email: TSWhereStringInput
-  receipt_number: TSWhereStringInput
-  receipt_url: TSWhereStringInput
-  refunded: TSWhereBooleanInput
-  refunds: TSWhereStripe_PaymentIntentRefundsInput
-  review: TSWhereStripe_ReviewWrappedStringUnionInput
-  shipping: TSWhereStripe_ShippingInput
-  source_transfer: TSWhereStripe_TransferWrappedStringUnionInput
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_suffix: TSWhereStringInput
-  status: TSWhereInput
-  transfer: TSWhereStripe_TransferWrappedStringUnionInput
-  transfer_data: TSWhereStripe_ChargeTransferDataInput
-  transfer_group: TSWhereStringInput
-}
-
-input TSWhereStripe_ApplicationFeeWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  amount_refunded: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  refunded: TSWhereBooleanInput
-  refunds: TSWhereStripe_ApplicationFeeRefundsInput
-}
-
-input TSWhereStripe_ApplicationFeeRefundsInput {
-  data: TSWhereStripe_FeeRefundInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_FeeRefundInput {
-  amount: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  id: TSWhereStringInput
-  object: TSWhereInput
-}
-
-input TSWhereStripe_BalanceTransactionWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  available_on: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  exchange_rate: TSWhereNumberInput
-  fee: TSWhereIntegerInput
-  fee_details: TSWhereStripe_FeeInput
-  id: TSWhereStringInput
-  net: TSWhereIntegerInput
-  object: TSWhereInput
-  reporting_category: TSWhereStringInput
-  status: TSWhereStringInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_FeeInput {
-  amount: TSWhereIntegerInput
-  application: TSWhereStringInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_BillingDetailsInput {
-  address: TSWhereStripe_AddressInput
-  email: TSWhereStringInput
-  name: TSWhereStringInput
-  phone: TSWhereStringInput
-}
-
-input TSWhereStripe_AddressInput {
-  city: TSWhereStringInput
-  country: TSWhereStringInput
-  line1: TSWhereStringInput
-  line2: TSWhereStringInput
-  postal_code: TSWhereStringInput
-  state: TSWhereStringInput
-}
-
-input TSWhereStripe_ChargeFraudDetailsInput {
-  stripe_report: TSWhereStringInput
-  user_report: TSWhereStringInput
-}
-
-input TSWhereStripe_InvoiceWrappedStringUnionInput {
-  value: TSWhereStringInput
-  account_country: TSWhereStringInput
-  account_name: TSWhereStringInput
-  account_tax_ids: TSWhereStripe_InvoiceAccountTaxIdsInput
-  amount_due: TSWhereIntegerInput
-  amount_paid: TSWhereIntegerInput
-  amount_remaining: TSWhereIntegerInput
-  application_fee_amount: TSWhereIntegerInput
-  attempt_count: TSWhereIntegerInput
-  attempted: TSWhereBooleanInput
-  auto_advance: TSWhereBooleanInput
-  automatic_tax: TSWhereStripe_AutomaticTaxInput
-  billing_reason: TSWhereInput
-  collection_method: TSWhereInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  custom_fields: TSWhereStripe_InvoiceSettingCustomFieldInput
-  customer: TSWhereStringInput
-  customer_address: TSWhereStripe_AddressInput
-  customer_email: TSWhereStringInput
-  customer_name: TSWhereStringInput
-  customer_phone: TSWhereStringInput
-  customer_shipping: TSWhereStripe_ShippingInput
-  customer_tax_exempt: TSWhereInput
-  customer_tax_ids: TSWhereStripe_InvoicesResourceInvoiceTaxIdInput
-  default_tax_rates: TSWhereStripe_TaxRateInput
-  description: TSWhereStringInput
-  discount: TSWhereStripe_DiscountInput
-  discounts: TSWhereStripe_InvoiceDiscountsInput
-  due_date: TSWhereIntegerInput
-  ending_balance: TSWhereIntegerInput
-  footer: TSWhereStringInput
-  hosted_invoice_url: TSWhereStringInput
-  id: TSWhereStringInput
-  invoice_pdf: TSWhereStringInput
-  last_finalization_error: TSWhereStripe_ApiErrorsInput
-  lines: TSWhereStripe_InvoiceLinesInput
-  livemode: TSWhereBooleanInput
-  next_payment_attempt: TSWhereIntegerInput
-  number: TSWhereStringInput
-  object: TSWhereInput
-  paid: TSWhereBooleanInput
-  paid_out_of_band: TSWhereBooleanInput
-  payment_settings: TSWhereStripe_InvoicesPaymentSettingsInput
-  period_end: TSWhereIntegerInput
-  period_start: TSWhereIntegerInput
-  post_payment_credit_notes_amount: TSWhereIntegerInput
-  pre_payment_credit_notes_amount: TSWhereIntegerInput
-  receipt_number: TSWhereStringInput
-  starting_balance: TSWhereIntegerInput
-  statement_descriptor: TSWhereStringInput
-  status: TSWhereInput
-  status_transitions: TSWhereStripe_InvoicesStatusTransitionsInput
-  subscription_proration_date: TSWhereIntegerInput
-  subtotal: TSWhereIntegerInput
-  tax: TSWhereIntegerInput
-  threshold_reason: TSWhereStripe_InvoiceThresholdReasonInput
-  total: TSWhereIntegerInput
-  total_discount_amounts: TSWhereStripe_DiscountsResourceDiscountAmountInput
-  total_tax_amounts: TSWhereStripe_InvoiceTaxAmountInput
-  transfer_data: TSWhereStripe_InvoiceTransferDataInput
-  webhooks_delivered_at: TSWhereIntegerInput
-}
-
-input TSWhereStripe_InvoiceAccountTaxIdsInput {
-  value: TSWhereStringInput
-  country: TSWhereStringInput
-  created: TSWhereIntegerInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  type: TSWhereInput
-  verification: TSWhereStripe_TaxIdVerificationInput
-}
-
-input TSWhereStripe_TaxIdVerificationInput {
-  status: TSWhereInput
-  verified_address: TSWhereStringInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_AutomaticTaxInput {
-  enabled: TSWhereBooleanInput
-  status: TSWhereInput
-}
-
-input TSWhereStripe_InvoiceSettingCustomFieldInput {
-  name: TSWhereStringInput
-  value: TSWhereStringInput
-}
-
-input TSWhereStripe_ShippingInput {
-  address: TSWhereStripe_AddressInput
-  carrier: TSWhereStringInput
-  name: TSWhereStringInput
-  phone: TSWhereStringInput
-  tracking_number: TSWhereStringInput
-}
-
-input TSWhereStripe_InvoicesResourceInvoiceTaxIdInput {
-  type: TSWhereInput
-  value: TSWhereStringInput
-}
-
-input TSWhereStripe_TaxRateInput {
-  active: TSWhereBooleanInput
-  country: TSWhereStringInput
-  created: TSWhereIntegerInput
-  description: TSWhereStringInput
-  display_name: TSWhereStringInput
-  id: TSWhereStringInput
-  inclusive: TSWhereBooleanInput
-  jurisdiction: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  percentage: TSWhereNumberInput
-  state: TSWhereStringInput
-  tax_type: TSWhereInput
-}
-
-input TSWhereStripe_DiscountInput {
-  checkout_session: TSWhereStringInput
-  coupon: TSWhereStripe_CouponInput
-  customer: TSWhereStringInput
-  end: TSWhereIntegerInput
-  id: TSWhereStringInput
-  invoice: TSWhereStringInput
-  invoice_item: TSWhereStringInput
-  object: TSWhereInput
-  start: TSWhereIntegerInput
-  subscription: TSWhereStringInput
-}
-
-input TSWhereStripe_CouponInput {
-  amount_off: TSWhereIntegerInput
-  applies_to: TSWhereStripe_CouponAppliesToInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  duration: TSWhereInput
-  duration_in_months: TSWhereIntegerInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  max_redemptions: TSWhereIntegerInput
-  name: TSWhereStringInput
-  object: TSWhereInput
-  percent_off: TSWhereNumberInput
-  redeem_by: TSWhereIntegerInput
-  times_redeemed: TSWhereIntegerInput
-  valid: TSWhereBooleanInput
-}
-
-input TSWhereStripe_CouponAppliesToInput {
-  products: TSWhereStripe_InvoiceProductsInput
-}
-
-input TSWhereStripe_InvoiceProductsInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_InvoiceDiscountsInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_ApiErrorsInput {
-  charge: TSWhereStringInput
-  code: TSWhereStringInput
-  decline_code: TSWhereStringInput
-  doc_url: TSWhereStringInput
-  message: TSWhereStringInput
-  param: TSWhereStringInput
-  payment_intent: TSWhereStripe_PaymentIntentInput
-  payment_method: TSWhereStripe_PaymentMethodInput
-  payment_method_type: TSWhereStringInput
-  setup_intent: TSWhereStripe_SetupIntentInput
-  source: TSWhereStripe_BankAccountStripe_CardStripe_SourceUnionInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_PaymentIntentInput {
-  amount: TSWhereIntegerInput
-  amount_capturable: TSWhereIntegerInput
-  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
-  amount_received: TSWhereIntegerInput
-  application: TSWhereStripe_ApplicationWrappedStringUnionInput
-  application_fee_amount: TSWhereIntegerInput
-  automatic_payment_methods: TSWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput
-  canceled_at: TSWhereIntegerInput
-  cancellation_reason: TSWhereInput
-  capture_method: TSWhereInput
-  charges: TSWhereStripe_PaymentIntentChargesInput
-  client_secret: TSWhereStringInput
-  confirmation_method: TSWhereInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
   description: TSWhereStringInput
   id: TSWhereStringInput
-  invoice: TSWhereStripe_InvoiceWrappedStringUnionInput
-  last_payment_error: TSWhereStripe_ApiErrorsInput
-  livemode: TSWhereBooleanInput
-  next_action: TSWhereStripe_PaymentIntentNextActionInput
-  object: TSWhereInput
-  on_behalf_of: TSWhereStripe_AccountWrappedStringUnionInput
-  payment_method: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  payment_method_options: TSWhereStripe_PaymentIntentPaymentMethodOptionsInput
-  payment_method_types: TSWhereStripe_PaymentIntentPaymentMethodTypesInput
-  processing: TSWhereStripe_PaymentIntentProcessingInput
-  receipt_email: TSWhereStringInput
-  review: TSWhereStripe_ReviewWrappedStringUnionInput
-  setup_future_usage: TSWhereInput
-  shipping: TSWhereStripe_ShippingInput
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_suffix: TSWhereStringInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_TransferDataInput
-  transfer_group: TSWhereStringInput
-  invoiceItems: TSWhereStripe_InvoiceitemInput
-  sessionItems: TSWhereStripe_ItemInput
-  shipment: TSWhereShipEngine_LabelInput
-  _shapeId: TSWhereIDInput
-  _id: TSWhereIDInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionInput {
-  alipay_handle_redirect: TSWhereStripe_PaymentIntentNextActionAlipayHandleRedirectInput
-  boleto_display_details: TSWhereStripe_PaymentIntentNextActionBoletoInput
-  card_await_notification: TSWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput
-  display_bank_transfer_instructions: TSWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput
-  konbini_display_details: TSWhereStripe_PaymentIntentNextActionKonbiniInput
-  oxxo_display_details: TSWhereStripe_PaymentIntentNextActionDisplayOxxoDetailsInput
-  paynow_display_qr_code: TSWhereStripe_PaymentIntentNextActionPaynowDisplayQrCodeInput
-  redirect_to_url: TSWhereStripe_PaymentIntentNextActionRedirectToUrlInput
-  type: TSWhereStringInput
-  verify_with_microdeposits: TSWhereStripe_PaymentIntentNextActionVerifyWithMicrodepositsInput
-  wechat_pay_display_qr_code: TSWhereStripe_PaymentIntentNextActionWechatPayDisplayQrCodeInput
-  wechat_pay_redirect_to_android_app: TSWhereStripe_PaymentIntentNextActionWechatPayRedirectToAndroidAppInput
-  wechat_pay_redirect_to_ios_app: TSWhereStripe_PaymentIntentNextActionWechatPayRedirectToIosAppInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionAlipayHandleRedirectInput {
-  native_data: TSWhereStringInput
-  native_url: TSWhereStringInput
-  return_url: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionBoletoInput {
-  expires_at: TSWhereIntegerInput
-  hosted_voucher_url: TSWhereStringInput
-  number: TSWhereStringInput
-  pdf: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionCardAwaitNotificationInput {
-  charge_attempt_at: TSWhereIntegerInput
-  customer_approval_required: TSWhereBooleanInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionDisplayBankTransferInstructionsInput {
-  amount_remaining: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  financial_addresses: TSWhereStripe_FundingInstructionsBankTransferFinancialAddressInput
-  reference: TSWhereStringInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_FundingInstructionsBankTransferFinancialAddressInput {
-  type: TSWhereInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionKonbiniInput {
-  expires_at: TSWhereIntegerInput
-  hosted_voucher_url: TSWhereStringInput
-  stores: TSWhereStripe_PaymentIntentNextActionKonbiniStoresInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionKonbiniStoresInput {
-  familymart: TSWhereStripe_PaymentIntentNextActionKonbiniFamilymartInput
-  lawson: TSWhereStripe_PaymentIntentNextActionKonbiniLawsonInput
-  ministop: TSWhereStripe_PaymentIntentNextActionKonbiniMinistopInput
-  seicomart: TSWhereStripe_PaymentIntentNextActionKonbiniSeicomartInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionKonbiniFamilymartInput {
-  confirmation_number: TSWhereStringInput
-  payment_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionKonbiniLawsonInput {
-  confirmation_number: TSWhereStringInput
-  payment_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionKonbiniMinistopInput {
-  confirmation_number: TSWhereStringInput
-  payment_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionKonbiniSeicomartInput {
-  confirmation_number: TSWhereStringInput
-  payment_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionDisplayOxxoDetailsInput {
-  expires_after: TSWhereIntegerInput
-  hosted_voucher_url: TSWhereStringInput
-  number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionPaynowDisplayQrCodeInput {
-  data: TSWhereStringInput
-  image_url_png: TSWhereStringInput
-  image_url_svg: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionRedirectToUrlInput {
-  return_url: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionVerifyWithMicrodepositsInput {
-  arrival_date: TSWhereIntegerInput
-  hosted_verification_url: TSWhereStringInput
-  microdeposit_type: TSWhereInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionWechatPayDisplayQrCodeInput {
-  data: TSWhereStringInput
-  image_data_url: TSWhereStringInput
-  image_url_png: TSWhereStringInput
-  image_url_svg: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionWechatPayRedirectToAndroidAppInput {
-  app_id: TSWhereStringInput
-  nonce_str: TSWhereStringInput
-  package: TSWhereStringInput
-  partner_id: TSWhereStringInput
-  prepay_id: TSWhereStringInput
-  sign: TSWhereStringInput
-  timestamp: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentNextActionWechatPayRedirectToIosAppInput {
-  native_url: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountWrappedStringUnionInput {
-  value: TSWhereStringInput
-  business_profile: TSWhereStripe_AccountBusinessProfileInput
-  business_type: TSWhereInput
-  capabilities: TSWhereStripe_AccountCapabilitiesInput
-  charges_enabled: TSWhereBooleanInput
-  company: TSWhereStripe_LegalEntityCompanyInput
-  controller: TSWhereStripe_AccountUnificationAccountControllerInput
-  country: TSWhereStringInput
-  created: TSWhereIntegerInput
-  default_currency: TSWhereStringInput
-  details_submitted: TSWhereBooleanInput
-  email: TSWhereStringInput
-  external_accounts: TSWhereStripe_AccountExternalAccountsInput
-  future_requirements: TSWhereStripe_AccountFutureRequirementsInput
-  id: TSWhereStringInput
-  individual: TSWhereStripe_PersonInput
-  object: TSWhereInput
-  payouts_enabled: TSWhereBooleanInput
-  requirements: TSWhereStripe_AccountRequirementsInput
-  settings: TSWhereStripe_AccountSettingsInput
-  tos_acceptance: TSWhereStripe_AccountTosAcceptanceInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_AccountBusinessProfileInput {
-  mcc: TSWhereStringInput
   name: TSWhereStringInput
-  product_description: TSWhereStringInput
-  support_address: TSWhereStripe_AddressInput
-  support_email: TSWhereStringInput
-  support_phone: TSWhereStringInput
-  support_url: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountCapabilitiesInput {
-  acss_debit_payments: TSWhereInput
-  afterpay_clearpay_payments: TSWhereInput
-  au_becs_debit_payments: TSWhereInput
-  bacs_debit_payments: TSWhereInput
-  bancontact_payments: TSWhereInput
-  bank_transfer_payments: TSWhereInput
-  boleto_payments: TSWhereInput
-  card_issuing: TSWhereInput
-  card_payments: TSWhereInput
-  cartes_bancaires_payments: TSWhereInput
-  eps_payments: TSWhereInput
-  fpx_payments: TSWhereInput
-  giropay_payments: TSWhereInput
-  grabpay_payments: TSWhereInput
-  ideal_payments: TSWhereInput
-  jcb_payments: TSWhereInput
-  klarna_payments: TSWhereInput
-  konbini_payments: TSWhereInput
-  legacy_payments: TSWhereInput
-  oxxo_payments: TSWhereInput
-  p24_payments: TSWhereInput
-  paynow_payments: TSWhereInput
-  sepa_debit_payments: TSWhereInput
-  sofort_payments: TSWhereInput
-  tax_reporting_us_1099_k: TSWhereInput
-  tax_reporting_us_1099_misc: TSWhereInput
-  transfers: TSWhereInput
-  us_bank_account_ach_payments: TSWhereInput
-}
-
-input TSWhereStripe_LegalEntityCompanyInput {
-  address: TSWhereStripe_AddressInput
-  address_kana: TSWhereStripe_LegalEntityJapanAddressInput
-  address_kanji: TSWhereStripe_LegalEntityJapanAddressInput
-  directors_provided: TSWhereBooleanInput
-  executives_provided: TSWhereBooleanInput
-  name: TSWhereStringInput
-  name_kana: TSWhereStringInput
-  name_kanji: TSWhereStringInput
-  owners_provided: TSWhereBooleanInput
-  ownership_declaration: TSWhereStripe_LegalEntityUboDeclarationInput
-  phone: TSWhereStringInput
-  structure: TSWhereInput
-  tax_id_provided: TSWhereBooleanInput
-  tax_id_registrar: TSWhereStringInput
-  vat_id_provided: TSWhereBooleanInput
-  verification: TSWhereStripe_LegalEntityCompanyVerificationInput
-}
-
-input TSWhereStripe_LegalEntityJapanAddressInput {
-  city: TSWhereStringInput
-  country: TSWhereStringInput
-  line1: TSWhereStringInput
-  line2: TSWhereStringInput
-  postal_code: TSWhereStringInput
-  state: TSWhereStringInput
-  town: TSWhereStringInput
-}
-
-input TSWhereStripe_LegalEntityUboDeclarationInput {
-  date: TSWhereIntegerInput
-  ip: TSWhereStringInput
-  user_agent: TSWhereStringInput
-}
-
-input TSWhereStripe_LegalEntityCompanyVerificationInput {
-  document: TSWhereStripe_LegalEntityCompanyVerificationDocumentInput
-}
-
-input TSWhereStripe_LegalEntityCompanyVerificationDocumentInput {
-  details: TSWhereStringInput
-  details_code: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountUnificationAccountControllerInput {
-  is_controller: TSWhereBooleanInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_AccountExternalAccountsInput {
-  data: TSWhereStripe_AccountDataInput
-  has_more: TSWhereBooleanInput
   object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountDataInput {
-  account_holder_name: TSWhereStringInput
-  account_holder_type: TSWhereStringInput
-  account_type: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  country: TSWhereStringInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  default_for_currency: TSWhereBooleanInput
-  fingerprint: TSWhereStringInput
-  id: TSWhereStringInput
-  last4: TSWhereStringInput
-  object: TSWhereInput
-  routing_number: TSWhereStringInput
-  status: TSWhereStringInput
-  address_city: TSWhereStringInput
-  address_country: TSWhereStringInput
-  address_line1: TSWhereStringInput
-  address_line1_check: TSWhereStringInput
-  address_line2: TSWhereStringInput
-  address_state: TSWhereStringInput
-  address_zip: TSWhereStringInput
-  address_zip_check: TSWhereStringInput
-  brand: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-  dynamic_last4: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  funding: TSWhereStringInput
-  name: TSWhereStringInput
-  tokenization_method: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountFutureRequirementsInput {
-  alternatives: TSWhereStripe_AccountRequirementsAlternativeInput
-  current_deadline: TSWhereIntegerInput
-  currently_due: TSWhereStripe_AccountCurrentlyDueInput
-  disabled_reason: TSWhereStringInput
-  errors: TSWhereStripe_AccountRequirementsErrorInput
-  eventually_due: TSWhereStripe_AccountEventuallyDueInput
-  past_due: TSWhereStripe_AccountPastDueInput
-  pending_verification: TSWhereStripe_AccountPendingVerificationInput
-}
-
-input TSWhereStripe_AccountRequirementsAlternativeInput {
-  alternative_fields_due: TSWhereStripe_AccountAlternativeFieldsDueInput
-  original_fields_due: TSWhereStripe_AccountOriginalFieldsDueInput
-}
-
-input TSWhereStripe_AccountAlternativeFieldsDueInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_AccountOriginalFieldsDueInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_AccountCurrentlyDueInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_AccountRequirementsErrorInput {
-  code: TSWhereInput
-  reason: TSWhereStringInput
-  requirement: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountEventuallyDueInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_AccountPastDueInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_AccountPendingVerificationInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_PersonInput {
-  account: TSWhereStringInput
-  address: TSWhereStripe_AddressInput
-  address_kana: TSWhereStripe_LegalEntityJapanAddressInput
-  address_kanji: TSWhereStripe_LegalEntityJapanAddressInput
-  created: TSWhereIntegerInput
-  dob: TSWhereStripe_LegalEntityDobInput
-  email: TSWhereStringInput
-  first_name: TSWhereStringInput
-  first_name_kana: TSWhereStringInput
-  first_name_kanji: TSWhereStringInput
-  full_name_aliases: TSWhereStripe_AccountFullNameAliasesInput
-  future_requirements: TSWhereStripe_PersonFutureRequirementsInput
-  gender: TSWhereStringInput
-  id: TSWhereStringInput
-  id_number_provided: TSWhereBooleanInput
-  last_name: TSWhereStringInput
-  last_name_kana: TSWhereStringInput
-  last_name_kanji: TSWhereStringInput
-  maiden_name: TSWhereStringInput
-  nationality: TSWhereStringInput
-  object: TSWhereInput
-  phone: TSWhereStringInput
-  political_exposure: TSWhereInput
-  relationship: TSWhereStripe_PersonRelationshipInput
-  requirements: TSWhereStripe_PersonRequirementsInput
-  ssn_last_4_provided: TSWhereBooleanInput
-  verification: TSWhereStripe_LegalEntityPersonVerificationInput
-}
-
-input TSWhereStripe_LegalEntityDobInput {
-  day: TSWhereIntegerInput
-  month: TSWhereIntegerInput
-  year: TSWhereIntegerInput
-}
-
-input TSWhereStripe_AccountFullNameAliasesInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_PersonFutureRequirementsInput {
-  alternatives: TSWhereStripe_AccountRequirementsAlternativeInput
-  currently_due: TSWhereStripe_AccountCurrentlyDueInput
-  errors: TSWhereStripe_AccountRequirementsErrorInput
-  eventually_due: TSWhereStripe_AccountEventuallyDueInput
-  past_due: TSWhereStripe_AccountPastDueInput
-  pending_verification: TSWhereStripe_AccountPendingVerificationInput
-}
-
-input TSWhereStripe_PersonRelationshipInput {
-  director: TSWhereBooleanInput
-  executive: TSWhereBooleanInput
-  owner: TSWhereBooleanInput
-  percent_ownership: TSWhereNumberInput
-  representative: TSWhereBooleanInput
-  title: TSWhereStringInput
-}
-
-input TSWhereStripe_PersonRequirementsInput {
-  alternatives: TSWhereStripe_AccountRequirementsAlternativeInput
-  currently_due: TSWhereStripe_AccountCurrentlyDueInput
-  errors: TSWhereStripe_AccountRequirementsErrorInput
-  eventually_due: TSWhereStripe_AccountEventuallyDueInput
-  past_due: TSWhereStripe_AccountPastDueInput
-  pending_verification: TSWhereStripe_AccountPendingVerificationInput
-}
-
-input TSWhereStripe_LegalEntityPersonVerificationInput {
-  additional_document: TSWhereStripe_LegalEntityPersonVerificationDocumentInput
-  details: TSWhereStringInput
-  details_code: TSWhereStringInput
-  document: TSWhereStripe_LegalEntityPersonVerificationDocumentInput
-  status: TSWhereStringInput
-}
-
-input TSWhereStripe_LegalEntityPersonVerificationDocumentInput {
-  details: TSWhereStringInput
-  details_code: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountRequirementsInput {
-  alternatives: TSWhereStripe_AccountRequirementsAlternativeInput
-  current_deadline: TSWhereIntegerInput
-  currently_due: TSWhereStripe_AccountCurrentlyDueInput
-  disabled_reason: TSWhereStringInput
-  errors: TSWhereStripe_AccountRequirementsErrorInput
-  eventually_due: TSWhereStripe_AccountEventuallyDueInput
-  past_due: TSWhereStripe_AccountPastDueInput
-  pending_verification: TSWhereStripe_AccountPendingVerificationInput
-}
-
-input TSWhereStripe_AccountSettingsInput {
-  bacs_debit_payments: TSWhereStripe_AccountBacsDebitPaymentsSettingsInput
-  branding: TSWhereStripe_AccountBrandingSettingsInput
-  card_issuing: TSWhereStripe_AccountCardIssuingSettingsInput
-  card_payments: TSWhereStripe_AccountCardPaymentsSettingsInput
-  dashboard: TSWhereStripe_AccountDashboardSettingsInput
-  payments: TSWhereStripe_AccountPaymentsSettingsInput
-  payouts: TSWhereStripe_AccountPayoutSettingsInput
-  sepa_debit_payments: TSWhereStripe_AccountSepaDebitPaymentsSettingsInput
-}
-
-input TSWhereStripe_AccountBacsDebitPaymentsSettingsInput {
-  display_name: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountBrandingSettingsInput {
-  primary_color: TSWhereStringInput
-  secondary_color: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountCardIssuingSettingsInput {
-  tos_acceptance: TSWhereStripe_CardIssuingAccountTermsOfServiceInput
-}
-
-input TSWhereStripe_CardIssuingAccountTermsOfServiceInput {
-  date: TSWhereIntegerInput
-  ip: TSWhereStringInput
-  user_agent: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountCardPaymentsSettingsInput {
-  decline_on: TSWhereStripe_AccountDeclineChargeOnInput
-  statement_descriptor_prefix: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountDeclineChargeOnInput {
-  avs_failure: TSWhereBooleanInput
-  cvc_failure: TSWhereBooleanInput
-}
-
-input TSWhereStripe_AccountDashboardSettingsInput {
-  display_name: TSWhereStringInput
-  timezone: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountPaymentsSettingsInput {
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_kana: TSWhereStringInput
-  statement_descriptor_kanji: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountPayoutSettingsInput {
-  debit_negative_balances: TSWhereBooleanInput
-  schedule: TSWhereStripe_TransferScheduleInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_TransferScheduleInput {
-  delay_days: TSWhereIntegerInput
-  interval: TSWhereStringInput
-  monthly_anchor: TSWhereIntegerInput
-  weekly_anchor: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountSepaDebitPaymentsSettingsInput {
-  creditor_id: TSWhereStringInput
-}
-
-input TSWhereStripe_AccountTosAcceptanceInput {
-  date: TSWhereIntegerInput
-  ip: TSWhereStringInput
-  service_agreement: TSWhereStringInput
-  user_agent: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodWrappedStringUnionInput {
-  value: TSWhereStringInput
-  acss_debit: TSWhereStripe_PaymentMethodAcssDebitInput
-  au_becs_debit: TSWhereStripe_PaymentMethodAuBecsDebitInput
-  bacs_debit: TSWhereStripe_PaymentMethodBacsDebitInput
-  billing_details: TSWhereStripe_BillingDetailsInput
-  boleto: TSWhereStripe_PaymentMethodBoletoInput
-  card: TSWhereStripe_PaymentMethodCardInput
-  created: TSWhereIntegerInput
-  eps: TSWhereStripe_PaymentMethodEpsInput
-  fpx: TSWhereStripe_PaymentMethodFpxInput
-  id: TSWhereStringInput
-  ideal: TSWhereStripe_PaymentMethodIdealInput
-  klarna: TSWhereStripe_PaymentMethodKlarnaInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  p24: TSWhereStripe_PaymentMethodP24Input
-  sepa_debit: TSWhereStripe_PaymentMethodSepaDebitInput
-  sofort: TSWhereStripe_PaymentMethodSofortInput
-  type: TSWhereInput
-  us_bank_account: TSWhereStripe_PaymentMethodUsBankAccountInput
-}
-
-input TSWhereStripe_PaymentMethodAcssDebitInput {
-  bank_name: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  institution_number: TSWhereStringInput
-  last4: TSWhereStringInput
-  transit_number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodAuBecsDebitInput {
-  bsb_number: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodBacsDebitInput {
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  sort_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodBoletoInput {
-  tax_id: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodCardInput {
-  brand: TSWhereStringInput
-  checks: TSWhereStripe_PaymentMethodCardChecksInput
-  country: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  generated_from: TSWhereStripe_PaymentMethodCardGeneratedCardInput
-  last4: TSWhereStringInput
-  networks: TSWhereStripe_NetworksInput
-  three_d_secure_usage: TSWhereStripe_ThreeDSecureUsageInput
-  wallet: TSWhereStripe_PaymentMethodCardWalletInput
-}
-
-input TSWhereStripe_PaymentMethodCardChecksInput {
-  address_line1_check: TSWhereStringInput
-  address_postal_code_check: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodCardGeneratedCardInput {
-  charge: TSWhereStringInput
-  payment_method_details: TSWhereStripe_CardGeneratedFromPaymentMethodDetailsInput
-}
-
-input TSWhereStripe_CardGeneratedFromPaymentMethodDetailsInput {
-  card_present: TSWhereStripe_PaymentMethodDetailsCardPresentInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardPresentInput {
-  amount_authorized: TSWhereIntegerInput
-  brand: TSWhereStringInput
-  capture_before: TSWhereIntegerInput
-  cardholder_name: TSWhereStringInput
-  country: TSWhereStringInput
-  emv_auth_data: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  generated_card: TSWhereStringInput
-  incremental_authorization_supported: TSWhereBooleanInput
-  last4: TSWhereStringInput
-  network: TSWhereStringInput
-  overcapture_supported: TSWhereBooleanInput
-  read_method: TSWhereInput
-  receipt: TSWhereStripe_PaymentMethodDetailsCardPresentReceiptInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardPresentReceiptInput {
-  account_type: TSWhereInput
-  application_cryptogram: TSWhereStringInput
-  application_preferred_name: TSWhereStringInput
-  authorization_code: TSWhereStringInput
-  authorization_response_code: TSWhereStringInput
-  cardholder_verification_method: TSWhereStringInput
-  dedicated_file_name: TSWhereStringInput
-  terminal_verification_results: TSWhereStringInput
-  transaction_status_information: TSWhereStringInput
-}
-
-input TSWhereStripe_NetworksInput {
-  available: TSWhereStripe_PaymentMethodAvailableInput
-  preferred: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodAvailableInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_ThreeDSecureUsageInput {
-  supported: TSWhereBooleanInput
-}
-
-input TSWhereStripe_PaymentMethodCardWalletInput {
-  dynamic_last4: TSWhereStringInput
-  masterpass: TSWhereStripe_PaymentMethodCardWalletMasterpassInput
-  type: TSWhereInput
-  visa_checkout: TSWhereStripe_PaymentMethodCardWalletVisaCheckoutInput
-}
-
-input TSWhereStripe_PaymentMethodCardWalletMasterpassInput {
-  billing_address: TSWhereStripe_AddressInput
-  email: TSWhereStringInput
-  name: TSWhereStringInput
-  shipping_address: TSWhereStripe_AddressInput
-}
-
-input TSWhereStripe_PaymentMethodCardWalletVisaCheckoutInput {
-  billing_address: TSWhereStripe_AddressInput
-  email: TSWhereStringInput
-  name: TSWhereStringInput
-  shipping_address: TSWhereStripe_AddressInput
-}
-
-input TSWhereStripe_PaymentMethodEpsInput {
-  bank: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodFpxInput {
-  bank: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodIdealInput {
-  bank: TSWhereInput
-  bic: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodKlarnaInput {
-  dob: TSWhereStripe_PaymentFlowsPrivatePaymentMethodsKlarnaDobInput
-}
-
-input TSWhereStripe_PaymentFlowsPrivatePaymentMethodsKlarnaDobInput {
-  day: TSWhereIntegerInput
-  month: TSWhereIntegerInput
-  year: TSWhereIntegerInput
-}
-
-input TSWhereStripe_PaymentMethodP24Input {
-  bank: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodSepaDebitInput {
-  bank_code: TSWhereStringInput
-  branch_code: TSWhereStringInput
-  country: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodSofortInput {
-  country: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodUsBankAccountInput {
-  account_holder_type: TSWhereInput
-  account_type: TSWhereInput
-  bank_name: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  routing_number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentPaymentMethodOptionsInput {
-  acss_debit: TSWhere4c5fc35133092d01c0a6f6273b32acefUnionInput
-  afterpay_clearpay: TSWhere69c699ae4c023cdd5081fd0b275d2314UnionInput
-  alipay: TSWhere0c15571704f92e4deef74bf2861e3048UnionInput
-  au_becs_debit: TSWhered0f94d051a53ade5163af84b3fd6b0f7UnionInput
-  bacs_debit: TSWhere55b3d4514248bce7ac082bbc0da1833aUnionInput
-  bancontact: TSWhereac15fe59c1b71bd6db2d201a4acee09dUnionInput
-  boleto: TSWhere076b30d85cca1aae72305dffd8194343UnionInput
-  card: TSWhere6181441ba9fb7eee556dd3a4a9d229e4UnionInput
-  card_present: TSWherea245e0776494a0d51fe046b0453d38afUnionInput
-  customer_balance: TSWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput
-  eps: TSWheref973d307d812f0dfb771bc8122e5c599UnionInput
-  fpx: TSWhereabae1b112405e8b3c0dbfa673a54aaadUnionInput
-  giropay: TSWhere8cc56b75820487c13c502fada2896d16UnionInput
-  grabpay: TSWhereeaab7727acdc782ba4b7fd55f1d34914UnionInput
-  ideal: TSWherebc8c021d852b37c55e33cd17b5bc5c8eUnionInput
-  interac_present: TSWhere0790e0b407fa40ec44faa0c0093547c0UnionInput
-  klarna: TSWhere431e685e94c88a23966c5e39578fd407UnionInput
-  konbini: TSWhere00ef7207d1f936d9dfffc7da2b87c7a0UnionInput
-  oxxo: TSWhere3ec3443ea1c1a903147c0d61800da976UnionInput
-  p24: TSWherea35be11d8b3a6f85cf29c066bd2baeecUnionInput
-  paynow: TSWhere3755b88328836d5c8b19acd047bf83f5UnionInput
-  sepa_debit: TSWhere1ef47aea767cbab0a37f27b4392256afUnionInput
-  sofort: TSWhere29eab390824f828a021e12d845868bf5UnionInput
-  us_bank_account: TSWheree8df26123b430c2df83da95f1b7d7d58UnionInput
-  wechat_pay: TSWheref3a2f1202624d0cdb50285826cb85a9eUnionInput
-}
-
-input TSWhere4c5fc35133092d01c0a6f6273b32acefUnionInput {
-  mandate_options: TSWhereStripe_PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitInput
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-  capture_method: TSWhereInput
-}
-
-input TSWhereStripe_PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitInput {
-  custom_mandate_url: TSWhereStringInput
-  interval_description: TSWhereStringInput
-  payment_schedule: TSWhereInput
-  transaction_type: TSWhereInput
-}
-
-input TSWhere69c699ae4c023cdd5081fd0b275d2314UnionInput {
-  capture_method: TSWhereInput
-  reference: TSWhereStringInput
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere0c15571704f92e4deef74bf2861e3048UnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhered0f94d051a53ade5163af84b3fd6b0f7UnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere55b3d4514248bce7ac082bbc0da1833aUnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereac15fe59c1b71bd6db2d201a4acee09dUnionInput {
-  preferred_language: TSWhereInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere076b30d85cca1aae72305dffd8194343UnionInput {
-  expires_after_days: TSWhereIntegerInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere6181441ba9fb7eee556dd3a4a9d229e4UnionInput {
-  capture_method: TSWhereInput
-  installments: TSWhereStripe_PaymentMethodOptionsCardInstallmentsInput
-  mandate_options: TSWhereStripe_PaymentMethodOptionsCardMandateOptionsInput
-  network: TSWhereInput
-  request_three_d_secure: TSWhereInput
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodOptionsCardInstallmentsInput {
-  available_plans: TSWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput
-  enabled: TSWhereBooleanInput
-  plan: TSWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput {
-  count: TSWhereIntegerInput
-  interval: TSWhereInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodOptionsCardMandateOptionsInput {
-  amount: TSWhereIntegerInput
-  amount_type: TSWhereInput
-  description: TSWhereStringInput
-  end_date: TSWhereIntegerInput
-  interval: TSWhereInput
-  interval_count: TSWhereIntegerInput
-  reference: TSWhereStringInput
-  start_date: TSWhereIntegerInput
-}
-
-input TSWherea245e0776494a0d51fe046b0453d38afUnionInput {
-  request_extended_authorization: TSWhereBooleanInput
-  request_incremental_authorization_support: TSWhereBooleanInput
-  capture_method: TSWhereInput
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere8b9cb37bcfc0b30034cf6ebd1e41fe69UnionInput {
-  bank_transfer: TSWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput
-  funding_type: TSWhereInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodOptionsCustomerBalanceBankTransferInput {
-  type: TSWhereInput
-}
-
-input TSWheref973d307d812f0dfb771bc8122e5c599UnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereabae1b112405e8b3c0dbfa673a54aaadUnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere8cc56b75820487c13c502fada2896d16UnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereeaab7727acdc782ba4b7fd55f1d34914UnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWherebc8c021d852b37c55e33cd17b5bc5c8eUnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere0790e0b407fa40ec44faa0c0093547c0UnionInput {
-  capture_method: TSWhereInput
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere431e685e94c88a23966c5e39578fd407UnionInput {
-  capture_method: TSWhereInput
-  preferred_locale: TSWhereStringInput
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere00ef7207d1f936d9dfffc7da2b87c7a0UnionInput {
-  confirmation_number: TSWhereStringInput
-  expires_after_days: TSWhereIntegerInput
-  expires_at: TSWhereIntegerInput
-  product_description: TSWhereStringInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere3ec3443ea1c1a903147c0d61800da976UnionInput {
-  expires_after_days: TSWhereIntegerInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWherea35be11d8b3a6f85cf29c066bd2baeecUnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere3755b88328836d5c8b19acd047bf83f5UnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere1ef47aea767cbab0a37f27b4392256afUnionInput {
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhere29eab390824f828a021e12d845868bf5UnionInput {
-  preferred_language: TSWhereInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWheree8df26123b430c2df83da95f1b7d7d58UnionInput {
-  setup_future_usage: TSWhereInput
-  verification_method: TSWhereInput
-  capture_method: TSWhereInput
-}
-
-input TSWheref3a2f1202624d0cdb50285826cb85a9eUnionInput {
-  app_id: TSWhereStringInput
-  client: TSWhereInput
-  setup_future_usage: TSWhereInput
-  capture_method: TSWhereInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_PaymentIntentPaymentMethodTypesInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_PaymentIntentProcessingInput {
-  card: TSWhereStripe_PaymentIntentCardProcessingInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_PaymentIntentCardProcessingInput {
-  customer_notification: TSWhereStripe_PaymentIntentProcessingCustomerNotificationInput
-}
-
-input TSWhereStripe_PaymentIntentProcessingCustomerNotificationInput {
-  approval_requested: TSWhereBooleanInput
-  completes_at: TSWhereIntegerInput
-}
-
-input TSWhereStripe_ReviewWrappedStringUnionInput {
-  value: TSWhereStringInput
-  billing_zip: TSWhereStringInput
-  closed_reason: TSWhereInput
-  created: TSWhereIntegerInput
-  id: TSWhereStringInput
-  ip_address: TSWhereStringInput
-  ip_address_location: TSWhereStripe_RadarReviewResourceLocationInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  open: TSWhereBooleanInput
-  opened_reason: TSWhereInput
-  reason: TSWhereStringInput
-  session: TSWhereStripe_RadarReviewResourceSessionInput
-}
-
-input TSWhereStripe_RadarReviewResourceLocationInput {
-  city: TSWhereStringInput
-  country: TSWhereStringInput
-  latitude: TSWhereNumberInput
-  longitude: TSWhereNumberInput
-  region: TSWhereStringInput
-}
-
-input TSWhereStripe_RadarReviewResourceSessionInput {
-  browser: TSWhereStringInput
-  device: TSWhereStringInput
-  platform: TSWhereStringInput
-  version: TSWhereStringInput
-}
-
-input TSWhereStripe_TransferDataInput {
-  amount: TSWhereIntegerInput
-  destination: TSWhereStripe_AccountWrappedStringUnionInput
-}
-
-input TSWhereStripe_InvoiceitemInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  date: TSWhereIntegerInput
-  description: TSWhereStringInput
-  discountable: TSWhereBooleanInput
-  discounts: TSWhereStripe_PaymentIntentDiscountsInput
-  id: TSWhereStringInput
-  invoice: TSWhereStripe_InvoiceWrappedStringUnionInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  period: TSWhereStripe_InvoiceLineItemPeriodInput
-  price: TSWhereStripe_PriceInput
-  proration: TSWhereBooleanInput
-  quantity: TSWhereIntegerInput
-  subscription: TSWhereStripe_SubscriptionWrappedStringUnionInput
-  subscription_item: TSWhereStringInput
-  tax_rates: TSWhereStripe_TaxRateInput
-  test_clock: TSWhereStripe_TestHelpersTestClockWrappedStringUnionInput
-  unit_amount: TSWhereIntegerInput
-  unit_amount_decimal: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentDiscountsInput {
-  value: TSWhereStringInput
-  checkout_session: TSWhereStringInput
-  coupon: TSWhereStripe_CouponInput
-  customer: TSWhereStringInput
-  end: TSWhereIntegerInput
-  id: TSWhereStringInput
-  invoice: TSWhereStringInput
-  invoice_item: TSWhereStringInput
-  object: TSWhereInput
-  start: TSWhereIntegerInput
-  subscription: TSWhereStringInput
-}
-
-input TSWhereStripe_InvoiceLineItemPeriodInput {
-  end: TSWhereIntegerInput
-  start: TSWhereIntegerInput
 }
 
 input TSWhereStripe_PriceInput {
@@ -2952,21 +1569,6 @@ input TSWhereStripe_ProductInput {
   reviews: TSWhereReviewsIo_ListProductReviewsResponseInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
-}
-
-input TSWhereStripe_PackageDimensionsInput {
-  height: TSWhereNumberInput
-  length: TSWhereNumberInput
-  weight: TSWhereNumberInput
-  width: TSWhereNumberInput
-}
-
-input TSWhereStripe_TaxCodeWrappedStringUnionInput {
-  value: TSWhereStringInput
-  description: TSWhereStringInput
-  id: TSWhereStringInput
-  name: TSWhereStringInput
-  object: TSWhereInput
 }
 
 input TSWhereReviewsIo_ListProductReviewsResponseInput {
@@ -3090,1672 +1692,6 @@ input TSWhereStripe_TransformQuantityInput {
   round: TSWhereInput
 }
 
-input TSWhereStripe_SubscriptionWrappedStringUnionInput {
-  value: TSWhereStringInput
-  application_fee_percent: TSWhereNumberInput
-  automatic_tax: TSWhereStripe_SubscriptionAutomaticTaxInput
-  billing_cycle_anchor: TSWhereIntegerInput
-  billing_thresholds: TSWhereStripe_SubscriptionBillingThresholdsInput
-  cancel_at: TSWhereIntegerInput
-  cancel_at_period_end: TSWhereBooleanInput
-  canceled_at: TSWhereIntegerInput
-  collection_method: TSWhereInput
-  created: TSWhereIntegerInput
-  current_period_end: TSWhereIntegerInput
-  current_period_start: TSWhereIntegerInput
-  customer: TSWhereStringInput
-  days_until_due: TSWhereIntegerInput
-  default_tax_rates: TSWhereStripe_TaxRateInput
-  discount: TSWhereStripe_DiscountInput
-  ended_at: TSWhereIntegerInput
-  id: TSWhereStringInput
-  items: TSWhereStripe_SubscriptionItemsInput
-  livemode: TSWhereBooleanInput
-  next_pending_invoice_item_invoice: TSWhereIntegerInput
-  object: TSWhereInput
-  pause_collection: TSWhereStripe_SubscriptionsResourcePauseCollectionInput
-  payment_settings: TSWhereStripe_SubscriptionsResourcePaymentSettingsInput
-  pending_invoice_item_interval: TSWhereStripe_SubscriptionPendingInvoiceItemIntervalInput
-  pending_update: TSWhereStripe_SubscriptionsResourcePendingUpdateInput
-  start_date: TSWhereIntegerInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_SubscriptionTransferDataInput
-  trial_end: TSWhereIntegerInput
-  trial_start: TSWhereIntegerInput
-}
-
-input TSWhereStripe_SubscriptionAutomaticTaxInput {
-  enabled: TSWhereBooleanInput
-}
-
-input TSWhereStripe_SubscriptionBillingThresholdsInput {
-  amount_gte: TSWhereIntegerInput
-  reset_billing_cycle_anchor: TSWhereBooleanInput
-}
-
-input TSWhereStripe_SubscriptionItemsInput {
-  data: TSWhereStripe_SubscriptionItemInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_SubscriptionItemInput {
-  billing_thresholds: TSWhereStripe_SubscriptionItemBillingThresholdsInput
-  created: TSWhereIntegerInput
-  id: TSWhereStringInput
-  object: TSWhereInput
-  price: TSWhereStripe_PriceInput
-  quantity: TSWhereIntegerInput
-  subscription: TSWhereStringInput
-  tax_rates: TSWhereStripe_TaxRateInput
-}
-
-input TSWhereStripe_SubscriptionItemBillingThresholdsInput {
-  usage_gte: TSWhereIntegerInput
-}
-
-input TSWhereStripe_SubscriptionsResourcePauseCollectionInput {
-  behavior: TSWhereInput
-  resumes_at: TSWhereIntegerInput
-}
-
-input TSWhereStripe_SubscriptionsResourcePaymentSettingsInput {
-  payment_method_options: TSWhereStripe_SubscriptionsResourcePaymentMethodOptionsInput
-}
-
-input TSWhereStripe_SubscriptionsResourcePaymentMethodOptionsInput {
-  acss_debit: TSWhereStripe_InvoicePaymentMethodOptionsAcssDebitInput
-  bancontact: TSWhereStripe_InvoicePaymentMethodOptionsBancontactInput
-  card: TSWhereStripe_SubscriptionPaymentMethodOptionsCardInput
-  customer_balance: TSWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceInput
-  us_bank_account: TSWhereStripe_InvoicePaymentMethodOptionsUsBankAccountInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsAcssDebitInput {
-  mandate_options: TSWhereStripe_InvoicePaymentMethodOptionsAcssDebitMandateOptionsInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsAcssDebitMandateOptionsInput {
-  transaction_type: TSWhereInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsBancontactInput {
-  preferred_language: TSWhereInput
-}
-
-input TSWhereStripe_SubscriptionPaymentMethodOptionsCardInput {
-  mandate_options: TSWhereStripe_InvoiceMandateOptionsCardInput
-  request_three_d_secure: TSWhereInput
-}
-
-input TSWhereStripe_InvoiceMandateOptionsCardInput {
-  amount: TSWhereIntegerInput
-  amount_type: TSWhereInput
-  description: TSWhereStringInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceInput {
-  bank_transfer: TSWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput
-  funding_type: TSWhereInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceBankTransferInput {
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsUsBankAccountInput {
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_SubscriptionPendingInvoiceItemIntervalInput {
-  interval: TSWhereInput
-  interval_count: TSWhereIntegerInput
-}
-
-input TSWhereStripe_SubscriptionsResourcePendingUpdateInput {
-  billing_cycle_anchor: TSWhereIntegerInput
-  expires_at: TSWhereIntegerInput
-  subscription_items: TSWhereStripe_SubscriptionItemInput
-  trial_end: TSWhereIntegerInput
-  trial_from_plan: TSWhereBooleanInput
-}
-
-input TSWhereStripe_SubscriptionTransferDataInput {
-  amount_percent: TSWhereNumberInput
-}
-
-input TSWhereStripe_TestHelpersTestClockWrappedStringUnionInput {
-  value: TSWhereStringInput
-  created: TSWhereIntegerInput
-  deletes_after: TSWhereIntegerInput
-  frozen_time: TSWhereIntegerInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  name: TSWhereStringInput
-  object: TSWhereInput
-  status: TSWhereInput
-}
-
-input TSWhereStripe_ItemInput {
-  amount_subtotal: TSWhereIntegerInput
-  amount_total: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  discounts: TSWhereStripe_LineItemsDiscountAmountInput
-  id: TSWhereStringInput
-  object: TSWhereInput
-  price: TSWhereStripe_PriceInput
-  quantity: TSWhereIntegerInput
-  taxes: TSWhereStripe_LineItemsTaxAmountInput
-}
-
-input TSWhereStripe_LineItemsDiscountAmountInput {
-  amount: TSWhereIntegerInput
-  discount: TSWhereStripe_DiscountInput
-}
-
-input TSWhereStripe_LineItemsTaxAmountInput {
-  amount: TSWhereIntegerInput
-  rate: TSWhereStripe_TaxRateInput
-}
-
-input TSWhereShipEngine_LabelInput {
-  label_id: TSWhereStringInput
-  status: TSWhereStringInput
-  shipment_id: TSWhereStringInput
-  ship_date: TSWhereStringInput
-  created_at: TSWhereStringInput
-  tracking_number: TSWhereStringInput
-  batch_id: TSWhereStringInput
-  carrier_id: TSWhereStringInput
-  charge_event: TSWhereStringInput
-  service_code: TSWhereStringInput
-  package_code: TSWhereStringInput
-  voided_at: TSWhereStringInput
-  label_format: TSWhereStringInput
-  display_scheme: TSWhereStringInput
-  label_layout: TSWhereStringInput
-  label_image_id: TSWhereStringInput
-  carrier_code: TSWhereStringInput
-  tracking_status: TSWhereStringInput
-  label_download: TSWhereShipEngine_LabelDownloadInput
-  trackable: TSWhereBooleanInput
-  packages: TSWhereShipEngine_PackageInput
-}
-
-input TSWhereShipEngine_LabelDownloadInput {
-  href: TSWhereStringInput
-  pdf: TSWhereStringInput
-  png: TSWhereStringInput
-  zpl: TSWhereStringInput
-}
-
-input TSWhereShipEngine_PackageInput {
-  package_id: TSWhereIntegerInput
-  description: TSWhereStringInput
-  package_code: TSWhereStringInput
-  tracking_number: TSWhereStringInput
-  label_download: TSWhereShipEngine_LabelDownloadInput
-  weight: TSWhereShipEngine_WeightInput
-  dimensions: TSWhereShipEngine_DimensionsInput
-}
-
-input TSWhereShipEngine_WeightInput {
-  value: TSWhereNumberInput
-  unit: TSWhereStringInput
-}
-
-input TSWhereShipEngine_DimensionsInput {
-  length: TSWhereNumberInput
-  width: TSWhereNumberInput
-  height: TSWhereNumberInput
-  unit: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodInput {
-  acss_debit: TSWhereStripe_PaymentMethodAcssDebitInput
-  au_becs_debit: TSWhereStripe_PaymentMethodAuBecsDebitInput
-  bacs_debit: TSWhereStripe_PaymentMethodBacsDebitInput
-  billing_details: TSWhereStripe_BillingDetailsInput
-  boleto: TSWhereStripe_PaymentMethodBoletoInput
-  card: TSWhereStripe_PaymentMethodCardInput
-  created: TSWhereIntegerInput
-  customer: TSWhereStripe_CustomerWrappedStringUnionInput
-  eps: TSWhereStripe_PaymentMethodEpsInput
-  fpx: TSWhereStripe_PaymentMethodFpxInput
-  id: TSWhereStringInput
-  ideal: TSWhereStripe_PaymentMethodIdealInput
-  klarna: TSWhereStripe_PaymentMethodKlarnaInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  p24: TSWhereStripe_PaymentMethodP24Input
-  sepa_debit: TSWhereStripe_PaymentMethodSepaDebitInput
-  sofort: TSWhereStripe_PaymentMethodSofortInput
-  type: TSWhereInput
-  us_bank_account: TSWhereStripe_PaymentMethodUsBankAccountInput
-}
-
-input TSWhereStripe_CustomerWrappedStringUnionInput {
-  value: TSWhereStringInput
-  address: TSWhereStripe_AddressInput
-  balance: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  delinquent: TSWhereBooleanInput
-  description: TSWhereStringInput
-  discount: TSWhereStripe_DiscountInput
-  email: TSWhereStringInput
-  id: TSWhereStringInput
-  invoice_prefix: TSWhereStringInput
-  invoice_settings: TSWhereStripe_InvoiceSettingCustomerSettingInput
-  livemode: TSWhereBooleanInput
-  name: TSWhereStringInput
-  next_invoice_sequence: TSWhereIntegerInput
-  object: TSWhereInput
-  phone: TSWhereStringInput
-  preferred_locales: TSWhereStripe_CustomerPreferredLocalesInput
-  shipping: TSWhereStripe_ShippingInput
-  sources: TSWhereStripe_CustomerSourcesInput
-  subscriptions: TSWhereStripe_CustomerSubscriptionsInput
-  tax: TSWhereStripe_CustomerTaxInput
-  tax_exempt: TSWhereInput
-  tax_ids: TSWhereStripe_CustomerTaxIdsInput
-}
-
-input TSWhereStripe_InvoiceSettingCustomerSettingInput {
-  custom_fields: TSWhereStripe_InvoiceSettingCustomFieldInput
-  footer: TSWhereStringInput
-}
-
-input TSWhereStripe_CustomerPreferredLocalesInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_CustomerSourcesInput {
-  data: TSWhereStripe_CustomerDataInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_CustomerDataInput {
-  created: TSWhereIntegerInput
-  customer: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  payment_amount: TSWhereIntegerInput
-  payment_currency: TSWhereStringInput
-  reusable: TSWhereBooleanInput
-  used: TSWhereBooleanInput
-  username: TSWhereStringInput
-  account_holder_name: TSWhereStringInput
-  account_holder_type: TSWhereStringInput
-  account_type: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  country: TSWhereStringInput
-  currency: TSWhereStringInput
-  default_for_currency: TSWhereBooleanInput
-  last4: TSWhereStringInput
-  routing_number: TSWhereStringInput
-  status: TSWhereStringInput
-  active: TSWhereBooleanInput
-  amount: TSWhereIntegerInput
-  amount_received: TSWhereIntegerInput
-  bitcoin_amount: TSWhereIntegerInput
-  bitcoin_amount_received: TSWhereIntegerInput
-  bitcoin_uri: TSWhereStringInput
-  description: TSWhereStringInput
-  email: TSWhereStringInput
-  filled: TSWhereBooleanInput
-  inbound_address: TSWhereStringInput
-  payment: TSWhereStringInput
-  refund_address: TSWhereStringInput
-  transactions: TSWhereStripe_BitcoinReceiverTransactionsInput
-  uncaptured_funds: TSWhereBooleanInput
-  used_for_payment: TSWhereBooleanInput
-  address_city: TSWhereStringInput
-  address_country: TSWhereStringInput
-  address_line1: TSWhereStringInput
-  address_line1_check: TSWhereStringInput
-  address_line2: TSWhereStringInput
-  address_state: TSWhereStringInput
-  address_zip: TSWhereStringInput
-  address_zip_check: TSWhereStringInput
-  brand: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-  dynamic_last4: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  funding: TSWhereStringInput
-  name: TSWhereStringInput
-  tokenization_method: TSWhereStringInput
-  ach_credit_transfer: TSWhereStripe_SourceTypeAchCreditTransferInput
-  ach_debit: TSWhereStripe_SourceTypeAchDebitInput
-  acss_debit: TSWhereStripe_SourceTypeAcssDebitInput
-  alipay: TSWhereStripe_SourceTypeAlipayInput
-  au_becs_debit: TSWhereStripe_SourceTypeAuBecsDebitInput
-  bancontact: TSWhereStripe_SourceTypeBancontactInput
-  card: TSWhereStripe_SourceTypeCardInput
-  card_present: TSWhereStripe_SourceTypeCardPresentInput
-  client_secret: TSWhereStringInput
-  code_verification: TSWhereStripe_SourceCodeVerificationFlowInput
-  eps: TSWhereStripe_SourceTypeEpsInput
-  flow: TSWhereStringInput
-  giropay: TSWhereStripe_SourceTypeGiropayInput
-  ideal: TSWhereStripe_SourceTypeIdealInput
-  klarna: TSWhereStripe_SourceTypeKlarnaInput
-  multibanco: TSWhereStripe_SourceTypeMultibancoInput
-  owner: TSWhereStripe_SourceOwnerInput
-  p24: TSWhereStripe_SourceTypeP24Input
-  receiver: TSWhereStripe_SourceReceiverFlowInput
-  redirect: TSWhereStripe_SourceRedirectFlowInput
-  sepa_debit: TSWhereStripe_SourceTypeSepaDebitInput
-  sofort: TSWhereStripe_SourceTypeSofortInput
-  source_order: TSWhereStripe_SourceOrderInput
-  statement_descriptor: TSWhereStringInput
-  three_d_secure: TSWhereStripe_SourceTypeThreeDSecureInput
-  type: TSWhereInput
-  usage: TSWhereStringInput
-  wechat: TSWhereStripe_SourceTypeWechatInput
-}
-
-input TSWhereStripe_BitcoinReceiverTransactionsInput {
-  data: TSWhereStripe_BitcoinTransactionInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_BitcoinTransactionInput {
-  amount: TSWhereIntegerInput
-  bitcoin_amount: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  id: TSWhereStringInput
-  object: TSWhereInput
-  receiver: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeAchCreditTransferInput {
-  account_number: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  refund_account_holder_name: TSWhereStringInput
-  refund_account_holder_type: TSWhereStringInput
-  refund_routing_number: TSWhereStringInput
-  routing_number: TSWhereStringInput
-  swift_code: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeAchDebitInput {
-  bank_name: TSWhereStringInput
-  country: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  routing_number: TSWhereStringInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeAcssDebitInput {
-  bank_address_city: TSWhereStringInput
-  bank_address_line_1: TSWhereStringInput
-  bank_address_line_2: TSWhereStringInput
-  bank_address_postal_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  category: TSWhereStringInput
-  country: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  routing_number: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeAlipayInput {
-  data_string: TSWhereStringInput
-  native_url: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeAuBecsDebitInput {
-  bsb_number: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeBancontactInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  iban_last4: TSWhereStringInput
-  preferred_language: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeCardInput {
-  address_line1_check: TSWhereStringInput
-  address_zip_check: TSWhereStringInput
-  brand: TSWhereStringInput
-  country: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-  dynamic_last4: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  last4: TSWhereStringInput
-  name: TSWhereStringInput
-  three_d_secure: TSWhereStringInput
-  tokenization_method: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeCardPresentInput {
-  application_cryptogram: TSWhereStringInput
-  application_preferred_name: TSWhereStringInput
-  authorization_code: TSWhereStringInput
-  authorization_response_code: TSWhereStringInput
-  brand: TSWhereStringInput
-  country: TSWhereStringInput
-  cvm_type: TSWhereStringInput
-  data_type: TSWhereStringInput
-  dedicated_file_name: TSWhereStringInput
-  emv_auth_data: TSWhereStringInput
-  evidence_customer_signature: TSWhereStringInput
-  evidence_transaction_certificate: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  last4: TSWhereStringInput
-  pos_device_id: TSWhereStringInput
-  pos_entry_mode: TSWhereStringInput
-  read_method: TSWhereStringInput
-  reader: TSWhereStringInput
-  terminal_verification_results: TSWhereStringInput
-  transaction_status_information: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceCodeVerificationFlowInput {
-  attempts_remaining: TSWhereIntegerInput
-  status: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeEpsInput {
-  reference: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeGiropayInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeIdealInput {
-  bank: TSWhereStringInput
-  bic: TSWhereStringInput
-  iban_last4: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeKlarnaInput {
-  background_image_url: TSWhereStringInput
-  client_token: TSWhereStringInput
-  first_name: TSWhereStringInput
-  last_name: TSWhereStringInput
-  locale: TSWhereStringInput
-  logo_url: TSWhereStringInput
-  page_title: TSWhereStringInput
-  pay_later_asset_urls_descriptive: TSWhereStringInput
-  pay_later_asset_urls_standard: TSWhereStringInput
-  pay_later_name: TSWhereStringInput
-  pay_later_redirect_url: TSWhereStringInput
-  pay_now_asset_urls_descriptive: TSWhereStringInput
-  pay_now_asset_urls_standard: TSWhereStringInput
-  pay_now_name: TSWhereStringInput
-  pay_now_redirect_url: TSWhereStringInput
-  pay_over_time_asset_urls_descriptive: TSWhereStringInput
-  pay_over_time_asset_urls_standard: TSWhereStringInput
-  pay_over_time_name: TSWhereStringInput
-  pay_over_time_redirect_url: TSWhereStringInput
-  payment_method_categories: TSWhereStringInput
-  purchase_country: TSWhereStringInput
-  purchase_type: TSWhereStringInput
-  redirect_url: TSWhereStringInput
-  shipping_delay: TSWhereIntegerInput
-  shipping_first_name: TSWhereStringInput
-  shipping_last_name: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeMultibancoInput {
-  entity: TSWhereStringInput
-  reference: TSWhereStringInput
-  refund_account_holder_address_city: TSWhereStringInput
-  refund_account_holder_address_country: TSWhereStringInput
-  refund_account_holder_address_line1: TSWhereStringInput
-  refund_account_holder_address_line2: TSWhereStringInput
-  refund_account_holder_address_postal_code: TSWhereStringInput
-  refund_account_holder_address_state: TSWhereStringInput
-  refund_account_holder_name: TSWhereStringInput
-  refund_iban: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceOwnerInput {
-  address: TSWhereStripe_AddressInput
-  email: TSWhereStringInput
-  name: TSWhereStringInput
-  phone: TSWhereStringInput
-  verified_address: TSWhereStripe_AddressInput
-  verified_email: TSWhereStringInput
-  verified_name: TSWhereStringInput
-  verified_phone: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeP24Input {
-  reference: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceReceiverFlowInput {
-  address: TSWhereStringInput
-  amount_charged: TSWhereIntegerInput
-  amount_received: TSWhereIntegerInput
-  amount_returned: TSWhereIntegerInput
-  refund_attributes_method: TSWhereStringInput
-  refund_attributes_status: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceRedirectFlowInput {
-  failure_reason: TSWhereStringInput
-  return_url: TSWhereStringInput
-  status: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeSepaDebitInput {
-  bank_code: TSWhereStringInput
-  branch_code: TSWhereStringInput
-  country: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  mandate_reference: TSWhereStringInput
-  mandate_url: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeSofortInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  country: TSWhereStringInput
-  iban_last4: TSWhereStringInput
-  preferred_language: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceOrderInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  email: TSWhereStringInput
-  items: TSWhereStripe_SourceOrderItemInput
-  shipping: TSWhereStripe_ShippingInput
-}
-
-input TSWhereStripe_SourceOrderItemInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  parent: TSWhereStringInput
-  quantity: TSWhereIntegerInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeThreeDSecureInput {
-  address_line1_check: TSWhereStringInput
-  address_zip_check: TSWhereStringInput
-  authenticated: TSWhereBooleanInput
-  brand: TSWhereStringInput
-  card: TSWhereStringInput
-  country: TSWhereStringInput
-  customer: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-  dynamic_last4: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  last4: TSWhereStringInput
-  name: TSWhereStringInput
-  three_d_secure: TSWhereStringInput
-  tokenization_method: TSWhereStringInput
-}
-
-input TSWhereStripe_SourceTypeWechatInput {
-  prepay_id: TSWhereStringInput
-  qr_code_url: TSWhereStringInput
-  statement_descriptor: TSWhereStringInput
-}
-
-input TSWhereStripe_CustomerSubscriptionsInput {
-  data: TSWhereStripe_SubscriptionInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_SubscriptionInput {
-  application_fee_percent: TSWhereNumberInput
-  automatic_tax: TSWhereStripe_SubscriptionAutomaticTaxInput
-  billing_cycle_anchor: TSWhereIntegerInput
-  billing_thresholds: TSWhereStripe_SubscriptionBillingThresholdsInput
-  cancel_at: TSWhereIntegerInput
-  cancel_at_period_end: TSWhereBooleanInput
-  canceled_at: TSWhereIntegerInput
-  collection_method: TSWhereInput
-  created: TSWhereIntegerInput
-  current_period_end: TSWhereIntegerInput
-  current_period_start: TSWhereIntegerInput
-  customer: TSWhereStringInput
-  days_until_due: TSWhereIntegerInput
-  default_tax_rates: TSWhereStripe_TaxRateInput
-  discount: TSWhereStripe_DiscountInput
-  ended_at: TSWhereIntegerInput
-  id: TSWhereStringInput
-  items: TSWhereStripe_CustomerItemsInput
-  livemode: TSWhereBooleanInput
-  next_pending_invoice_item_invoice: TSWhereIntegerInput
-  object: TSWhereInput
-  pause_collection: TSWhereStripe_SubscriptionsResourcePauseCollectionInput
-  payment_settings: TSWhereStripe_SubscriptionsResourcePaymentSettingsInput
-  pending_invoice_item_interval: TSWhereStripe_SubscriptionPendingInvoiceItemIntervalInput
-  pending_update: TSWhereStripe_SubscriptionsResourcePendingUpdateInput
-  start_date: TSWhereIntegerInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_SubscriptionTransferDataInput
-  trial_end: TSWhereIntegerInput
-  trial_start: TSWhereIntegerInput
-}
-
-input TSWhereStripe_CustomerItemsInput {
-  data: TSWhereStripe_SubscriptionItemInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_CustomerTaxInput {
-  automatic_tax: TSWhereInput
-  ip_address: TSWhereStringInput
-  location: TSWhereStripe_CustomerTaxLocationInput
-}
-
-input TSWhereStripe_CustomerTaxLocationInput {
-  country: TSWhereStringInput
-  source: TSWhereInput
-  state: TSWhereStringInput
-}
-
-input TSWhereStripe_CustomerTaxIdsInput {
-  data: TSWhereStripe_TaxIdInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_TaxIdInput {
-  country: TSWhereStringInput
-  created: TSWhereIntegerInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  type: TSWhereInput
-  value: TSWhereStringInput
-  verification: TSWhereStripe_TaxIdVerificationInput
-}
-
-input TSWhereStripe_SetupIntentInput {
-  application: TSWhereStripe_ApplicationWrappedStringUnionInput
-  cancellation_reason: TSWhereInput
-  client_secret: TSWhereStringInput
-  created: TSWhereIntegerInput
-  customer: TSWhereStringInput
-  description: TSWhereStringInput
-  id: TSWhereStringInput
-  last_setup_error: TSWhereStripe_ApiErrorsInput
-  latest_attempt: TSWhereStripe_SetupAttemptWrappedStringUnionInput
-  livemode: TSWhereBooleanInput
-  mandate: TSWhereStripe_MandateWrappedStringUnionInput
-  next_action: TSWhereStripe_SetupIntentNextActionInput
-  object: TSWhereInput
-  on_behalf_of: TSWhereStripe_AccountWrappedStringUnionInput
-  payment_method: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  payment_method_options: TSWhereStripe_SetupIntentPaymentMethodOptionsInput
-  payment_method_types: TSWhereStripe_PaymentIntentPaymentMethodTypesInput
-  single_use_mandate: TSWhereStripe_MandateWrappedStringUnionInput
-  status: TSWhereInput
-  usage: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupAttemptWrappedStringUnionInput {
-  value: TSWhereStringInput
-  created: TSWhereIntegerInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  payment_method_details: TSWhereStripe_SetupAttemptPaymentMethodDetailsInput
-  setup_error: TSWhereStripe_ApiErrorsInput
-  status: TSWhereStringInput
-  usage: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupAttemptPaymentMethodDetailsInput {
-  bancontact: TSWhereStripe_SetupAttemptPaymentMethodDetailsBancontactInput
-  card: TSWhereStripe_SetupAttemptPaymentMethodDetailsCardInput
-  ideal: TSWhereStripe_SetupAttemptPaymentMethodDetailsIdealInput
-  sofort: TSWhereStripe_SetupAttemptPaymentMethodDetailsSofortInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupAttemptPaymentMethodDetailsBancontactInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  iban_last4: TSWhereStringInput
-  preferred_language: TSWhereInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupAttemptPaymentMethodDetailsCardInput {
-  three_d_secure: TSWhereStripe_ThreeDSecureDetailsInput
-}
-
-input TSWhereStripe_ThreeDSecureDetailsInput {
-  authentication_flow: TSWhereInput
-  result: TSWhereInput
-  result_reason: TSWhereInput
-  version: TSWhereInput
-}
-
-input TSWhereStripe_SetupAttemptPaymentMethodDetailsIdealInput {
-  bank: TSWhereInput
-  bic: TSWhereInput
-  iban_last4: TSWhereStringInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupAttemptPaymentMethodDetailsSofortInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  iban_last4: TSWhereStringInput
-  preferred_language: TSWhereInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_MandateWrappedStringUnionInput {
-  value: TSWhereStringInput
-  customer_acceptance: TSWhereStripe_CustomerAcceptanceInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  payment_method_details: TSWhereStripe_MandatePaymentMethodDetailsInput
-  single_use: TSWhereStripe_MandateSingleUseInput
-  status: TSWhereInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_CustomerAcceptanceInput {
-  accepted_at: TSWhereIntegerInput
-  online: TSWhereStripe_OnlineAcceptanceInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_OnlineAcceptanceInput {
-  ip_address: TSWhereStringInput
-  user_agent: TSWhereStringInput
-}
-
-input TSWhereStripe_MandatePaymentMethodDetailsInput {
-  acss_debit: TSWhereStripe_MandateAcssDebitInput
-  au_becs_debit: TSWhereStripe_MandateAuBecsDebitInput
-  bacs_debit: TSWhereStripe_MandateBacsDebitInput
-  sepa_debit: TSWhereStripe_MandateSepaDebitInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_MandateAcssDebitInput {
-  interval_description: TSWhereStringInput
-  payment_schedule: TSWhereInput
-  transaction_type: TSWhereInput
-}
-
-input TSWhereStripe_MandateAuBecsDebitInput {
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_MandateBacsDebitInput {
-  network_status: TSWhereInput
-  reference: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_MandateSepaDebitInput {
-  reference: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_MandateSingleUseInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupIntentNextActionInput {
-  redirect_to_url: TSWhereStripe_SetupIntentNextActionRedirectToUrlInput
-  type: TSWhereStringInput
-  verify_with_microdeposits: TSWhereStripe_SetupIntentNextActionVerifyWithMicrodepositsInput
-}
-
-input TSWhereStripe_SetupIntentNextActionRedirectToUrlInput {
-  return_url: TSWhereStringInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_SetupIntentNextActionVerifyWithMicrodepositsInput {
-  arrival_date: TSWhereIntegerInput
-  hosted_verification_url: TSWhereStringInput
-  microdeposit_type: TSWhereInput
-}
-
-input TSWhereStripe_SetupIntentPaymentMethodOptionsInput {
-  acss_debit: TSWhere6c955fa05d8df9184cc18d8841c3705dUnionInput
-  card: TSWhereStripe_SetupIntentPaymentMethodOptionsCardInput
-  sepa_debit: TSWhere256af04705b008a07ca5c137b490ba88UnionInput
-  us_bank_account: TSWhere5e84458a02fb07e8c3d5d9b0bb3e5d99UnionInput
-}
-
-input TSWhere6c955fa05d8df9184cc18d8841c3705dUnionInput {
-  currency: TSWhereInput
-  mandate_options: TSWhereStripe_SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitInput
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitInput {
-  custom_mandate_url: TSWhereStringInput
-  interval_description: TSWhereStringInput
-  payment_schedule: TSWhereInput
-  transaction_type: TSWhereInput
-}
-
-input TSWhereStripe_SetupIntentPaymentMethodOptionsCardInput {
-  mandate_options: TSWhereStripe_SetupIntentPaymentMethodOptionsCardMandateOptionsInput
-  request_three_d_secure: TSWhereInput
-}
-
-input TSWhereStripe_SetupIntentPaymentMethodOptionsCardMandateOptionsInput {
-  amount: TSWhereIntegerInput
-  amount_type: TSWhereInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  end_date: TSWhereIntegerInput
-  interval: TSWhereInput
-  interval_count: TSWhereIntegerInput
-  reference: TSWhereStringInput
-  start_date: TSWhereIntegerInput
-}
-
-input TSWhere256af04705b008a07ca5c137b490ba88UnionInput {
-  verification_method: TSWhereInput
-}
-
-input TSWhere5e84458a02fb07e8c3d5d9b0bb3e5d99UnionInput {
-  verification_method: TSWhereInput
-}
-
-input TSWhereStripe_BankAccountStripe_CardStripe_SourceUnionInput {
-  account_holder_name: TSWhereStringInput
-  account_holder_type: TSWhereStringInput
-  account_type: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  country: TSWhereStringInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  default_for_currency: TSWhereBooleanInput
-  fingerprint: TSWhereStringInput
-  id: TSWhereStringInput
-  last4: TSWhereStringInput
-  object: TSWhereInput
-  routing_number: TSWhereStringInput
-  status: TSWhereStringInput
-  address_city: TSWhereStringInput
-  address_country: TSWhereStringInput
-  address_line1: TSWhereStringInput
-  address_line1_check: TSWhereStringInput
-  address_line2: TSWhereStringInput
-  address_state: TSWhereStringInput
-  address_zip: TSWhereStringInput
-  address_zip_check: TSWhereStringInput
-  brand: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-  dynamic_last4: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  funding: TSWhereStringInput
-  name: TSWhereStringInput
-  tokenization_method: TSWhereStringInput
-  ach_credit_transfer: TSWhereStripe_SourceTypeAchCreditTransferInput
-  ach_debit: TSWhereStripe_SourceTypeAchDebitInput
-  acss_debit: TSWhereStripe_SourceTypeAcssDebitInput
-  alipay: TSWhereStripe_SourceTypeAlipayInput
-  amount: TSWhereIntegerInput
-  au_becs_debit: TSWhereStripe_SourceTypeAuBecsDebitInput
-  bancontact: TSWhereStripe_SourceTypeBancontactInput
-  card: TSWhereStripe_SourceTypeCardInput
-  card_present: TSWhereStripe_SourceTypeCardPresentInput
-  client_secret: TSWhereStringInput
-  code_verification: TSWhereStripe_SourceCodeVerificationFlowInput
-  created: TSWhereIntegerInput
-  eps: TSWhereStripe_SourceTypeEpsInput
-  flow: TSWhereStringInput
-  giropay: TSWhereStripe_SourceTypeGiropayInput
-  ideal: TSWhereStripe_SourceTypeIdealInput
-  klarna: TSWhereStripe_SourceTypeKlarnaInput
-  livemode: TSWhereBooleanInput
-  multibanco: TSWhereStripe_SourceTypeMultibancoInput
-  owner: TSWhereStripe_SourceOwnerInput
-  p24: TSWhereStripe_SourceTypeP24Input
-  receiver: TSWhereStripe_SourceReceiverFlowInput
-  redirect: TSWhereStripe_SourceRedirectFlowInput
-  sepa_debit: TSWhereStripe_SourceTypeSepaDebitInput
-  sofort: TSWhereStripe_SourceTypeSofortInput
-  source_order: TSWhereStripe_SourceOrderInput
-  statement_descriptor: TSWhereStringInput
-  three_d_secure: TSWhereStripe_SourceTypeThreeDSecureInput
-  type: TSWhereInput
-  usage: TSWhereStringInput
-  wechat: TSWhereStripe_SourceTypeWechatInput
-}
-
-input TSWhereStripe_InvoiceLinesInput {
-  data: TSWhereStripe_LineItemInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_LineItemInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  discount_amounts: TSWhereStripe_DiscountsResourceDiscountAmountInput
-  discountable: TSWhereBooleanInput
-  discounts: TSWhereStripe_InvoiceDiscountsInput
-  id: TSWhereStringInput
-  invoice_item: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  period: TSWhereStripe_InvoiceLineItemPeriodInput
-  price: TSWhereStripe_PriceInput
-  proration: TSWhereBooleanInput
-  proration_details: TSWhereStripe_InvoicesLineItemsProrationDetailsInput
-  quantity: TSWhereIntegerInput
-  subscription: TSWhereStringInput
-  subscription_item: TSWhereStringInput
-  tax_amounts: TSWhereStripe_InvoiceTaxAmountInput
-  tax_rates: TSWhereStripe_TaxRateInput
-  type: TSWhereInput
-}
-
-input TSWhereStripe_DiscountsResourceDiscountAmountInput {
-  amount: TSWhereIntegerInput
-}
-
-input TSWhereStripe_InvoicesLineItemsProrationDetailsInput {
-  credited_items: TSWhereStripe_InvoicesLineItemsCreditedItemsInput
-}
-
-input TSWhereStripe_InvoicesLineItemsCreditedItemsInput {
-  invoice: TSWhereStringInput
-  invoice_line_items: TSWhereStripe_InvoiceInvoiceLineItemsInput
-}
-
-input TSWhereStripe_InvoiceInvoiceLineItemsInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_InvoiceTaxAmountInput {
-  amount: TSWhereIntegerInput
-  inclusive: TSWhereBooleanInput
-}
-
-input TSWhereStripe_InvoicesPaymentSettingsInput {
-  payment_method_options: TSWhereStripe_InvoicesPaymentMethodOptionsInput
-}
-
-input TSWhereStripe_InvoicesPaymentMethodOptionsInput {
-  acss_debit: TSWhereStripe_InvoicePaymentMethodOptionsAcssDebitInput
-  bancontact: TSWhereStripe_InvoicePaymentMethodOptionsBancontactInput
-  card: TSWhereStripe_InvoicePaymentMethodOptionsCardInput
-  customer_balance: TSWhereStripe_InvoicePaymentMethodOptionsCustomerBalanceInput
-  us_bank_account: TSWhereStripe_InvoicePaymentMethodOptionsUsBankAccountInput
-}
-
-input TSWhereStripe_InvoicePaymentMethodOptionsCardInput {
-  request_three_d_secure: TSWhereInput
-}
-
-input TSWhereStripe_InvoicesStatusTransitionsInput {
-  finalized_at: TSWhereIntegerInput
-  marked_uncollectible_at: TSWhereIntegerInput
-  paid_at: TSWhereIntegerInput
-  voided_at: TSWhereIntegerInput
-}
-
-input TSWhereStripe_InvoiceThresholdReasonInput {
-  amount_gte: TSWhereIntegerInput
-  item_reasons: TSWhereStripe_InvoiceItemThresholdReasonInput
-}
-
-input TSWhereStripe_InvoiceItemThresholdReasonInput {
-  line_item_ids: TSWhereStripe_InvoiceLineItemIdsInput
-  usage_gte: TSWhereIntegerInput
-}
-
-input TSWhereStripe_InvoiceLineItemIdsInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_InvoiceTransferDataInput {
-  amount: TSWhereIntegerInput
-}
-
-input TSWhereStripe_OrderWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  amount_returned: TSWhereIntegerInput
-  application: TSWhereStringInput
-  application_fee: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  email: TSWhereStringInput
-  external_coupon_code: TSWhereStringInput
-  id: TSWhereStringInput
-  items: TSWhereStripe_OrderItemInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  returns: TSWhereStripe_OrderReturnsInput
-  selected_shipping_method: TSWhereStringInput
-  shipping: TSWhereStripe_ShippingInput
-  shipping_methods: TSWhereStripe_ShippingMethodInput
-  status: TSWhereStringInput
-  status_transitions: TSWhereStripe_StatusTransitionsInput
-  updated: TSWhereIntegerInput
-  upstream_id: TSWhereStringInput
-}
-
-input TSWhereStripe_OrderItemInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  object: TSWhereInput
-  quantity: TSWhereIntegerInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_OrderReturnsInput {
-  data: TSWhereStripe_OrderReturnInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_OrderReturnInput {
-  amount: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  id: TSWhereStringInput
-  items: TSWhereStripe_OrderItemInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-}
-
-input TSWhereStripe_ShippingMethodInput {
-  amount: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  delivery_estimate: TSWhereStripe_DeliveryEstimateInput
-  description: TSWhereStringInput
-  id: TSWhereStringInput
-}
-
-input TSWhereStripe_DeliveryEstimateInput {
-  date: TSWhereStringInput
-  earliest: TSWhereStringInput
-  latest: TSWhereStringInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_StatusTransitionsInput {
-  canceled: TSWhereIntegerInput
-  fulfiled: TSWhereIntegerInput
-  paid: TSWhereIntegerInput
-  returned: TSWhereIntegerInput
-}
-
-input TSWhereStripe_ChargeOutcomeInput {
-  network_status: TSWhereStringInput
-  reason: TSWhereStringInput
-  risk_level: TSWhereStringInput
-  risk_score: TSWhereIntegerInput
-  rule: TSWhereStripe_RuleWrappedStringUnionInput
-  seller_message: TSWhereStringInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_RuleWrappedStringUnionInput {
-  value: TSWhereStringInput
-  action: TSWhereStringInput
-  id: TSWhereStringInput
-  predicate: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  amount_capturable: TSWhereIntegerInput
-  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
-  amount_received: TSWhereIntegerInput
-  application: TSWhereStripe_ApplicationWrappedStringUnionInput
-  application_fee_amount: TSWhereIntegerInput
-  automatic_payment_methods: TSWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput
-  canceled_at: TSWhereIntegerInput
-  cancellation_reason: TSWhereInput
-  capture_method: TSWhereInput
-  charges: TSWhereStripe_PaymentIntentChargesInput
-  client_secret: TSWhereStringInput
-  confirmation_method: TSWhereInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  description: TSWhereStringInput
-  id: TSWhereStringInput
-  invoice: TSWhereStripe_InvoiceWrappedStringUnionInput
-  last_payment_error: TSWhereStripe_ApiErrorsInput
-  livemode: TSWhereBooleanInput
-  next_action: TSWhereStripe_PaymentIntentNextActionInput
-  object: TSWhereInput
-  on_behalf_of: TSWhereStripe_AccountWrappedStringUnionInput
-  payment_method: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  payment_method_options: TSWhereStripe_PaymentIntentPaymentMethodOptionsInput
-  payment_method_types: TSWhereStripe_PaymentIntentPaymentMethodTypesInput
-  processing: TSWhereStripe_PaymentIntentProcessingInput
-  receipt_email: TSWhereStringInput
-  review: TSWhereStripe_ReviewWrappedStringUnionInput
-  setup_future_usage: TSWhereInput
-  shipping: TSWhereStripe_ShippingInput
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_suffix: TSWhereStringInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_TransferDataInput
-  transfer_group: TSWhereStringInput
-  invoiceItems: TSWhereStripe_InvoiceitemInput
-  sessionItems: TSWhereStripe_ItemInput
-  shipment: TSWhereShipEngine_LabelInput
-  _shapeId: TSWhereIDInput
-  _id: TSWhereIDInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsInput {
-  ach_credit_transfer: TSWhereStripe_PaymentMethodDetailsAchCreditTransferInput
-  ach_debit: TSWhereStripe_PaymentMethodDetailsAchDebitInput
-  acss_debit: TSWhereStripe_PaymentMethodDetailsAcssDebitInput
-  afterpay_clearpay: TSWhereStripe_PaymentMethodDetailsAfterpayClearpayInput
-  alipay: TSWhereStripe_PaymentFlowsPrivatePaymentMethodsAlipayDetailsInput
-  au_becs_debit: TSWhereStripe_PaymentMethodDetailsAuBecsDebitInput
-  bacs_debit: TSWhereStripe_PaymentMethodDetailsBacsDebitInput
-  bancontact: TSWhereStripe_PaymentMethodDetailsBancontactInput
-  boleto: TSWhereStripe_PaymentMethodDetailsBoletoInput
-  card: TSWhereStripe_PaymentMethodDetailsCardInput
-  card_present: TSWhereStripe_PaymentMethodDetailsCardPresentInput
-  eps: TSWhereStripe_PaymentMethodDetailsEpsInput
-  fpx: TSWhereStripe_PaymentMethodDetailsFpxInput
-  giropay: TSWhereStripe_PaymentMethodDetailsGiropayInput
-  grabpay: TSWhereStripe_PaymentMethodDetailsGrabpayInput
-  ideal: TSWhereStripe_PaymentMethodDetailsIdealInput
-  interac_present: TSWhereStripe_PaymentMethodDetailsInteracPresentInput
-  klarna: TSWhereStripe_PaymentMethodDetailsKlarnaInput
-  konbini: TSWhereStripe_PaymentMethodDetailsKonbiniInput
-  multibanco: TSWhereStripe_PaymentMethodDetailsMultibancoInput
-  oxxo: TSWhereStripe_PaymentMethodDetailsOxxoInput
-  p24: TSWhereStripe_PaymentMethodDetailsP24Input
-  paynow: TSWhereStripe_PaymentMethodDetailsPaynowInput
-  sepa_debit: TSWhereStripe_PaymentMethodDetailsSepaDebitInput
-  sofort: TSWhereStripe_PaymentMethodDetailsSofortInput
-  type: TSWhereStringInput
-  us_bank_account: TSWhereStripe_PaymentMethodDetailsUsBankAccountInput
-  wechat_pay: TSWhereStripe_PaymentMethodDetailsWechatPayInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsAchCreditTransferInput {
-  account_number: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  routing_number: TSWhereStringInput
-  swift_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsAchDebitInput {
-  account_holder_type: TSWhereInput
-  bank_name: TSWhereStringInput
-  country: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  routing_number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsAcssDebitInput {
-  bank_name: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  institution_number: TSWhereStringInput
-  last4: TSWhereStringInput
-  mandate: TSWhereStringInput
-  transit_number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsAfterpayClearpayInput {
-  reference: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentFlowsPrivatePaymentMethodsAlipayDetailsInput {
-  buyer_id: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  transaction_id: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsAuBecsDebitInput {
-  bsb_number: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  mandate: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsBacsDebitInput {
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  mandate: TSWhereStringInput
-  sort_code: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsBancontactInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  generated_sepa_debit: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  generated_sepa_debit_mandate: TSWhereStripe_MandateWrappedStringUnionInput
-  iban_last4: TSWhereStringInput
-  preferred_language: TSWhereInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsBoletoInput {
-  tax_id: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardInput {
-  brand: TSWhereStringInput
-  checks: TSWhereStripe_PaymentMethodDetailsCardChecksInput
-  country: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  installments: TSWhereStripe_PaymentMethodDetailsCardInstallmentsInput
-  last4: TSWhereStringInput
-  mandate: TSWhereStringInput
-  network: TSWhereStringInput
-  three_d_secure: TSWhereStripe_ThreeDSecureDetailsInput
-  wallet: TSWhereStripe_PaymentMethodDetailsCardWalletInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardChecksInput {
-  address_line1_check: TSWhereStringInput
-  address_postal_code_check: TSWhereStringInput
-  cvc_check: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardInstallmentsInput {
-  plan: TSWhereStripe_PaymentMethodDetailsCardInstallmentsPlanInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardWalletInput {
-  dynamic_last4: TSWhereStringInput
-  masterpass: TSWhereStripe_PaymentMethodDetailsCardWalletMasterpassInput
-  type: TSWhereInput
-  visa_checkout: TSWhereStripe_PaymentMethodDetailsCardWalletVisaCheckoutInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardWalletMasterpassInput {
-  billing_address: TSWhereStripe_AddressInput
-  email: TSWhereStringInput
-  name: TSWhereStringInput
-  shipping_address: TSWhereStripe_AddressInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsCardWalletVisaCheckoutInput {
-  billing_address: TSWhereStripe_AddressInput
-  email: TSWhereStringInput
-  name: TSWhereStringInput
-  shipping_address: TSWhereStripe_AddressInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsEpsInput {
-  bank: TSWhereInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsFpxInput {
-  bank: TSWhereInput
-  transaction_id: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsGiropayInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsGrabpayInput {
-  transaction_id: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsIdealInput {
-  bank: TSWhereInput
-  bic: TSWhereInput
-  generated_sepa_debit: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  generated_sepa_debit_mandate: TSWhereStripe_MandateWrappedStringUnionInput
-  iban_last4: TSWhereStringInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsInteracPresentInput {
-  brand: TSWhereStringInput
-  cardholder_name: TSWhereStringInput
-  country: TSWhereStringInput
-  emv_auth_data: TSWhereStringInput
-  exp_month: TSWhereIntegerInput
-  exp_year: TSWhereIntegerInput
-  fingerprint: TSWhereStringInput
-  funding: TSWhereStringInput
-  generated_card: TSWhereStringInput
-  last4: TSWhereStringInput
-  network: TSWhereStringInput
-  preferred_locales: TSWhereStripe_PaymentIntentPreferredLocalesInput
-  read_method: TSWhereInput
-  receipt: TSWhereStripe_PaymentMethodDetailsInteracPresentReceiptInput
-}
-
-input TSWhereStripe_PaymentIntentPreferredLocalesInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
-}
-
-input TSWhereStripe_PaymentMethodDetailsInteracPresentReceiptInput {
-  account_type: TSWhereInput
-  application_cryptogram: TSWhereStringInput
-  application_preferred_name: TSWhereStringInput
-  authorization_code: TSWhereStringInput
-  authorization_response_code: TSWhereStringInput
-  cardholder_verification_method: TSWhereStringInput
-  dedicated_file_name: TSWhereStringInput
-  terminal_verification_results: TSWhereStringInput
-  transaction_status_information: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsKlarnaInput {
-  payment_method_category: TSWhereStringInput
-  preferred_locale: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsKonbiniInput {
-  store: TSWhereStripe_PaymentMethodDetailsKonbiniStoreInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsKonbiniStoreInput {
-  chain: TSWhereInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsMultibancoInput {
-  entity: TSWhereStringInput
-  reference: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsOxxoInput {
-  number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsP24Input {
-  bank: TSWhereInput
-  reference: TSWhereStringInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsPaynowInput {
-  reference: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsSepaDebitInput {
-  bank_code: TSWhereStringInput
-  branch_code: TSWhereStringInput
-  country: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  mandate: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsSofortInput {
-  bank_code: TSWhereStringInput
-  bank_name: TSWhereStringInput
-  bic: TSWhereStringInput
-  country: TSWhereStringInput
-  generated_sepa_debit: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  generated_sepa_debit_mandate: TSWhereStripe_MandateWrappedStringUnionInput
-  iban_last4: TSWhereStringInput
-  preferred_language: TSWhereInput
-  verified_name: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsUsBankAccountInput {
-  account_holder_type: TSWhereInput
-  account_type: TSWhereInput
-  bank_name: TSWhereStringInput
-  fingerprint: TSWhereStringInput
-  last4: TSWhereStringInput
-  routing_number: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentMethodDetailsWechatPayInput {
-  fingerprint: TSWhereStringInput
-  transaction_id: TSWhereStringInput
-}
-
-input TSWhereStripe_PaymentIntentRefundsInput {
-  data: TSWhereStripe_RefundInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_RefundInput {
-  amount: TSWhereIntegerInput
-  balance_transaction: TSWhereStripe_BalanceTransactionWrappedStringUnionInput
-  charge: TSWhereStripe_ChargeWrappedStringUnionInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  failure_balance_transaction: TSWhereStripe_BalanceTransactionWrappedStringUnionInput
-  failure_reason: TSWhereStringInput
-  id: TSWhereStringInput
-  next_action: TSWhereStripe_RefundNextActionInput
-  object: TSWhereInput
-  payment_intent: TSWhereStripe_PaymentIntentWrappedStringUnionInput
-  reason: TSWhereInput
-  receipt_number: TSWhereStringInput
-  source_transfer_reversal: TSWhereStripe_TransferReversalWrappedStringUnionInput
-  status: TSWhereStringInput
-  transfer_reversal: TSWhereStripe_TransferReversalWrappedStringUnionInput
-}
-
-input TSWhereStripe_ChargeWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  amount_captured: TSWhereIntegerInput
-  amount_refunded: TSWhereIntegerInput
-  application_fee_amount: TSWhereIntegerInput
-  billing_details: TSWhereStripe_BillingDetailsInput
-  calculated_statement_descriptor: TSWhereStringInput
-  captured: TSWhereBooleanInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  description: TSWhereStringInput
-  disputed: TSWhereBooleanInput
-  failure_code: TSWhereStringInput
-  failure_message: TSWhereStringInput
-  fraud_details: TSWhereStripe_ChargeFraudDetailsInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  outcome: TSWhereStripe_ChargeOutcomeInput
-  paid: TSWhereBooleanInput
-  payment_method: TSWhereStringInput
-  payment_method_details: TSWhereStripe_PaymentMethodDetailsInput
-  receipt_email: TSWhereStringInput
-  receipt_number: TSWhereStringInput
-  receipt_url: TSWhereStringInput
-  refunded: TSWhereBooleanInput
-  refunds: TSWhereStripe_ChargeRefundsInput
-  shipping: TSWhereStripe_ShippingInput
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_suffix: TSWhereStringInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_ChargeTransferDataInput
-  transfer_group: TSWhereStringInput
-}
-
-input TSWhereStripe_ChargeRefundsInput {
-  data: TSWhereStripe_RefundInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_ChargeTransferDataInput {
-  amount: TSWhereIntegerInput
-  destination: TSWhereStripe_AccountWrappedStringUnionInput
-}
-
-input TSWhereStripe_RefundNextActionInput {
-  display_details: TSWhereStripe_RefundNextActionDisplayDetailsInput
-  type: TSWhereStringInput
-}
-
-input TSWhereStripe_RefundNextActionDisplayDetailsInput {
-  email_sent: TSWhereStripe_EmailSentInput
-  expires_at: TSWhereIntegerInput
-}
-
-input TSWhereStripe_EmailSentInput {
-  email_sent_at: TSWhereIntegerInput
-  email_sent_to: TSWhereStringInput
-}
-
-input TSWhereStripe_TransferReversalWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  id: TSWhereStringInput
-  object: TSWhereInput
-}
-
-input TSWhereStripe_TransferWrappedStringUnionInput {
-  value: TSWhereStringInput
-  amount: TSWhereIntegerInput
-  amount_reversed: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  description: TSWhereStringInput
-  id: TSWhereStringInput
-  livemode: TSWhereBooleanInput
-  object: TSWhereInput
-  reversals: TSWhereStripe_TransferReversalsInput
-  reversed: TSWhereBooleanInput
-  source_type: TSWhereStringInput
-  transfer_group: TSWhereStringInput
-}
-
-input TSWhereStripe_TransferReversalsInput {
-  data: TSWhereStripe_TransferReversalInput
-  has_more: TSWhereBooleanInput
-  object: TSWhereInput
-  url: TSWhereStringInput
-}
-
-input TSWhereStripe_TransferReversalInput {
-  amount: TSWhereIntegerInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  id: TSWhereStringInput
-  object: TSWhereInput
-}
-
 input TSWhereAssetRelationshipInput {
   title: TSWhereStringInput
   description: TSWhereStringInput
@@ -4780,11 +1716,11 @@ input TSWhereAssetRelationshipInput {
 }
 
 input TSWhereNavigationDataLinksInput {
-  categories: TSWhereNavigationDataLinksCategoriesInput
-  pages: TSWhereNavigationDataLinksPagesInput
+  categories: TSWhereNavigationDataCategoriesInput
+  pages: TSWhereNavigationDataPagesInput
 }
 
-input TSWhereNavigationDataLinksCategoriesInput {
+input TSWhereNavigationDataCategoriesInput {
   name: TSWhereStringInput
   featured: TSWhereNavigationDataLinksCategoriesFeaturedInput
   collection: TSWhereNavigationDataLinksCategoriesCollectionInput
@@ -4812,21 +1748,21 @@ input TSWhereNavigationDataLinksCategoriesBrandsInput {
   href: TSWhereStringInput
 }
 
-input TSWhereNavigationDataLinksPagesInput {
+input TSWhereNavigationDataPagesInput {
   name: TSWhereStringInput
   href: TSWhereStringInput
 }
 
 input TSWhereFooterNavigationInput {
-  sections: TSWhereFooterNavigationSectionsInput
+  sections: TSWhereFooterSectionsInput
 }
 
-input TSWhereFooterNavigationSectionsInput {
+input TSWhereFooterSectionsInput {
   name: TSWhereStringInput
-  items: TSWhereFooterItemsInput
+  items: TSWhereFooterNavigationSectionsItemsInput
 }
 
-input TSWhereFooterItemsInput {
+input TSWhereFooterNavigationSectionsItemsInput {
   name: TSWhereStringInput
   href: TSWhereStringInput
 }
@@ -4839,6 +1775,108 @@ input TSWhereTextInput {
   primary: TSWhereStringInput
   secondary: TSWhereStringInput
   button: TSWhereStringInput
+}
+
+input TSWhereStorefrontComponentsInput {
+  offers: TSWhereOffersComponentOffersInput
+  primaryText: TSWhereStringInput
+  secondaryText: TSWhereStringInput
+  buttonText: TSWhereStringInput
+  image: TSWhereAssetRelationshipInput
+  collections: TSWhereCollectionsComponentCollectionsInput
+  components: TSWhereBackgroundImageComponentComponentsInput
+  testimonials: TSWhereTestimonialsComponentTestimonialsInput
+  temp: TSWhereStringInput
+}
+
+input TSWhereOffersComponentOffersInput {
+  name: TSWhereStringInput
+  description: TSWhereStringInput
+  href: TSWhereStringInput
+}
+
+input TSWhereCollectionsComponentCollectionsInput {
+  name: TSWhereStringInput
+  description: TSWhereStringInput
+  href: TSWhereStringInput
+  image: TSWhereAssetRelationshipInput
+}
+
+input TSWhereBackgroundImageComponentComponentsInput {
+  collections: TSWhereCollectionsComponentCollectionsInput
+  primaryText: TSWhereStringInput
+  secondaryText: TSWhereStringInput
+  buttonText: TSWhereStringInput
+  testimonials: TSWhereTestimonialsComponentTestimonialsInput
+  offers: TSWhereOffersComponentOffersInput
+  image: TSWhereAssetRelationshipInput
+  components: TSWhereBackgroundImageComponentComponentsInput
+}
+
+input TSWhereTestimonialsComponentTestimonialsInput {
+  quote: TSWhereStringInput
+  attribution: TSWhereStringInput
+}
+
+input TSWhereProductPageDetailsRelationshipInput {
+  name: TSWhereStringInput
+  text: TSShallowWhereProductPageDetailsTextInput
+  details: TSShallowWhereProductPageDetailsDetailsInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+}
+
+input TSShallowWhereProductPageDetailsTextInput {
+  primary: TSWhereDraftjsInput
+  secondary: TSWhereDraftjsInput
+}
+
+input TSShallowWhereProductPageDetailsDetailsInput {
+  description: TSWhereDraftjsInput
+}
+
+input TSWhereProductPagePoliciesRelationshipInput {
+  name: TSWhereStringInput
+  policies: TSShallowWhereProductPagePoliciesPoliciesInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+}
+
+input TSShallowWhereProductPagePoliciesPoliciesInput {
+  name: TSWhereDraftjsInput
+  description: TSWhereDraftjsInput
+}
+
+input TSWhereProductPageDetailsTextInput {
+  primary: TSWhereDraftjsInput
+  secondary: TSWhereDraftjsInput
+}
+
+input TSWhereProductPageDetailsDetailsInput {
+  image: TSWhereAssetRelationshipInput
+  description: TSWhereDraftjsInput
+}
+
+input TSWhereProductPagePoliciesPoliciesInput {
+  name: TSWhereDraftjsInput
+  description: TSWhereDraftjsInput
+  image: TSWhereAssetRelationshipInput
 }
 
 type Profile implements TSSearchable {
@@ -18830,7 +15868,7 @@ type Stripe_ApiErrors {
   type: Stripe_ApiErrorsTypeProperty
 }
 
-type Stripe_PaymentIntent implements TSSearchable {
+type Stripe_PaymentIntent {
   """
   Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
   """
@@ -18965,9 +16003,6 @@ type Stripe_PaymentIntent implements TSSearchable {
 
   """The ShipEngine label associated with this payment."""
   shipment: ShipEngine_Label
-  _shapeId: String
-  _id: ID
-  searchSummary: String
 }
 
 type Stripe_PaymentFlowsAmountDetails {
@@ -28641,59 +25676,6 @@ type Voucherify_LoyaltyCardAsset {
   url: String
 }
 
-type Stripe_PaymentIntentPaginatedList {
-  items: [Stripe_PaymentIntent!]!
-  total: Int!
-}
-
-input TSWhereStripePaymentIntentInput {
-  amount: TSWhereIntegerInput
-  amount_capturable: TSWhereIntegerInput
-  amount_details: TSWhereStripe_PaymentFlowsAmountDetailsInput
-  amount_received: TSWhereIntegerInput
-  application: TSWhereStripe_ApplicationWrappedStringUnionInput
-  application_fee_amount: TSWhereIntegerInput
-  automatic_payment_methods: TSWhereStripe_PaymentFlowsAutomaticPaymentMethodsPaymentIntentInput
-  canceled_at: TSWhereIntegerInput
-  cancellation_reason: TSWhereInput
-  capture_method: TSWhereInput
-  charges: TSWhereStripe_PaymentIntentChargesInput
-  client_secret: TSWhereStringInput
-  confirmation_method: TSWhereInput
-  created: TSWhereIntegerInput
-  currency: TSWhereStringInput
-  customer: TSWhereStringInput
-  description: TSWhereStringInput
-  id: TSWhereStringInput
-  invoice: TSWhereStripe_InvoiceWrappedStringUnionInput
-  last_payment_error: TSWhereStripe_ApiErrorsInput
-  livemode: TSWhereBooleanInput
-  next_action: TSWhereStripe_PaymentIntentNextActionInput
-  object: TSWhereInput
-  on_behalf_of: TSWhereStripe_AccountWrappedStringUnionInput
-  payment_method: TSWhereStripe_PaymentMethodWrappedStringUnionInput
-  payment_method_options: TSWhereStripe_PaymentIntentPaymentMethodOptionsInput
-  payment_method_types: TSWhereStripe_PaymentIntentPaymentMethodTypesInput
-  processing: TSWhereStripe_PaymentIntentProcessingInput
-  receipt_email: TSWhereStringInput
-  review: TSWhereStripe_ReviewWrappedStringUnionInput
-  setup_future_usage: TSWhereInput
-  shipping: TSWhereStripe_ShippingInput
-  statement_descriptor: TSWhereStringInput
-  statement_descriptor_suffix: TSWhereStringInput
-  status: TSWhereInput
-  transfer_data: TSWhereStripe_TransferDataInput
-  transfer_group: TSWhereStringInput
-  invoiceItems: TSWhereStripe_InvoiceitemInput
-  sessionItems: TSWhereStripe_ItemInput
-  shipment: TSWhereShipEngine_LabelInput
-  _shapeId: TSWhereIDInput
-  _id: TSWhereIDInput
-  AND: [TSWhereStripePaymentIntentInput]
-  OR: [TSWhereStripePaymentIntentInput]
-  NOT: TSWhereStripePaymentIntentInput
-}
-
 type ProfilePaginatedList {
   items: [Profile!]!
   total: Int!
@@ -32258,6 +29240,352 @@ enum ShopifyStorefront_OrderSortKeys {
   RELEVANCE
 }
 
+type Storefront implements TSSearchable {
+  components: [StorefrontComponentsProperty!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+union StorefrontComponentsProperty = OffersComponent | HeroComponent | CollectionsComponent | BackgroundImageComponent | SaleComponent | TestimonialsComponent | TrendingProductsComponent
+
+type OffersComponent {
+  """"""
+  offers: [OffersComponentOffers!]!
+}
+
+type OffersComponentOffers {
+  """"""
+  name: String!
+
+  """"""
+  description: String!
+
+  """"""
+  href: String!
+}
+
+type HeroComponent {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+}
+
+type CollectionsComponent {
+  """"""
+  collections: [CollectionsComponentCollections!]!
+}
+
+type CollectionsComponentCollections {
+  """"""
+  name: String!
+
+  """"""
+  description: String!
+
+  """"""
+  href: String!
+
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+}
+
+type BackgroundImageComponent {
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+
+  """"""
+  components: [BackgroundImageComponentComponentsProperty!]!
+}
+
+union BackgroundImageComponentComponentsProperty = CollectionsComponent | SaleComponent | TestimonialsComponent | OffersComponent | HeroComponent | BackgroundImageComponent
+
+type SaleComponent {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+}
+
+type TestimonialsComponent {
+  """"""
+  testimonials: [TestimonialsComponentTestimonials!]!
+}
+
+type TestimonialsComponentTestimonials {
+  """"""
+  quote: String!
+
+  """"""
+  attribution: String!
+}
+
+type TrendingProductsComponent {
+  temp: String
+}
+
+type Product implements TSSearchable {
+  """Initialized with title from shopify"""
+  name: String
+
+  """"""
+  productComponent: String
+
+  """"""
+  hideReviews: Boolean
+
+  """"""
+  hideRelatedProducts: Boolean
+
+  """"""
+  showDetails: Boolean
+
+  """"""
+  details(enableLocaleFallback: Boolean = true, locale: String): ProductPageDetails
+
+  """"""
+  showPolicies: Boolean
+
+  """"""
+  policies(enableLocaleFallback: Boolean = true, locale: String): ProductPagePolicies
+  shopifyProductId: String
+  shopifyProduct: Shopify_Product
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type ProductPageDetails implements TSSearchable {
+  """"""
+  name: String!
+
+  """"""
+  text: ProductPageDetailsText!
+
+  """"""
+  details: [ProductPageDetailsDetails!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type ProductPageDetailsText {
+  primary: JSON!
+  primaryHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+  secondary: JSON!
+  secondaryHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+}
+
+type ProductPageDetailsDetails {
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+  description: JSON!
+  descriptionHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+}
+
+type ProductPagePolicies implements TSSearchable {
+  """"""
+  name: String!
+
+  """"""
+  policies: [ProductPagePoliciesPolicies!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+type ProductPagePoliciesPolicies {
+  name: JSON!
+  nameHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+  description: JSON!
+  descriptionHtml(
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements in the generated HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+
+  """"""
+  image(enableLocaleFallback: Boolean = true, locale: String): Asset
+}
+
+type ProductPaginatedList {
+  items: [Product!]!
+  total: Int!
+}
+
+input TSWhereProductInput {
+  name: TSWhereStringInput
+  productComponent: TSWhereStringInput
+  hideReviews: TSWhereBooleanInput
+  hideRelatedProducts: TSWhereBooleanInput
+  showDetails: TSWhereBooleanInput
+  details: TSWhereProductPageDetailsRelationshipInput
+  showPolicies: TSWhereBooleanInput
+  policies: TSWhereProductPagePoliciesRelationshipInput
+  shopifyProductId: TSWhereStringInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWhereProductInput]
+  OR: [TSWhereProductInput]
+  NOT: TSWhereProductInput
+}
+
+type ProductPageDetailsPaginatedList {
+  items: [ProductPageDetails!]!
+  total: Int!
+}
+
+input TSWhereProductPageDetailsInput {
+  name: TSWhereStringInput
+  text: TSWhereProductPageDetailsTextInput
+  details: TSWhereProductPageDetailsDetailsInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWhereProductPageDetailsInput]
+  OR: [TSWhereProductPageDetailsInput]
+  NOT: TSWhereProductPageDetailsInput
+}
+
+type ProductPagePoliciesPaginatedList {
+  items: [ProductPagePolicies!]!
+  total: Int!
+}
+
+input TSWhereProductPagePoliciesInput {
+  name: TSWhereStringInput
+  policies: TSWhereProductPagePoliciesPoliciesInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWhereProductPagePoliciesInput]
+  OR: [TSWhereProductPagePoliciesInput]
+  NOT: TSWhereProductPagePoliciesInput
+}
+
 """Asset search results"""
 type AssetSearchResults {
   results: [Asset!]!
@@ -32273,6 +29601,24 @@ type TsStaticSiteSearchResults {
 """Profile search results"""
 type ProfileSearchResults {
   results: [Profile!]!
+  total: Int!
+}
+
+"""Product search results"""
+type ProductSearchResults {
+  results: [Product!]!
+  total: Int!
+}
+
+"""ProductPageDetails search results"""
+type ProductPageDetailsSearchResults {
+  results: [ProductPageDetails!]!
+  total: Int!
+}
+
+"""ProductPagePolicies search results"""
+type ProductPagePoliciesSearchResults {
+  results: [ProductPagePolicies!]!
   total: Int!
 }
 
@@ -32405,66 +29751,6 @@ type WithContext {
 
   """Get the signed in user's subscriptions from Stripe"""
   getMySubscriptions(expand: [String]): [Stripe_Subscription]
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPayments_UNINDEXED(expand: [String], limit: Float, created: JSON, startingAfter: String, endingBefore: String): [Stripe_PaymentIntent]
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPayments_INDEXED(
-    terms: String
-
-    """The offset from the first result you want to fetch."""
-    from: Int
-
-    """The maximum number of items to return."""
-    size: Int
-
-    """An elasticsearch style filter. Overrides onlyEnabled."""
-    filter: JSONObject
-
-    """An list of fields to sort by."""
-    sort: [TSSearchSortInput]
-    locale: String
-    enableLocaleFallback: Boolean = true
-
-    """Filter out content that is not enabled. Defaults to true."""
-    onlyEnabled: Boolean = true
-
-    """
-    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
-    """
-    where: TSWhereStripePaymentIntentInput
-  ): Stripe_PaymentIntentPaginatedList
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPayments(expand: [String], limit: Float, created: JSON, startingAfter: String, endingBefore: String): [Stripe_PaymentIntent]
-
-  """Get the signed-in user's payments from Stripe"""
-  getMyPaymentsIndexed(
-    terms: String
-
-    """The offset from the first result you want to fetch."""
-    from: Int
-
-    """The maximum number of items to return."""
-    size: Int
-
-    """An elasticsearch style filter. Overrides onlyEnabled."""
-    filter: JSONObject
-
-    """An list of fields to sort by."""
-    sort: [TSSearchSortInput]
-    locale: String
-    enableLocaleFallback: Boolean = true
-
-    """Filter out content that is not enabled. Defaults to true."""
-    onlyEnabled: Boolean = true
-
-    """
-    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
-    """
-    where: TSWhereStripePaymentIntentInput
-  ): Stripe_PaymentIntentPaginatedList
 
   """Get a profile by ID"""
   getProfile(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Profile
@@ -32655,6 +29941,142 @@ type WithContext {
   ): ShopifyStorefront_Customer
   getMyCustomer: ShopifyStorefront_Customer
   getMyAdminCustomer: Shopify_Customer
+
+  """Get a Storefront by ID"""
+  getStorefront(locale: String, enableLocaleFallback: Boolean = true): Storefront
+
+  """Get a Product by ID"""
+  getProduct(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Product
+
+  """Returns a list Product in natural order."""
+  getProductList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductPaginatedList
+  Shopify_collectionByHandle(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection
+  Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
+
+  """Get a ProductPageDetails by ID"""
+  getProductPageDetails(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPageDetails
+
+  """Returns a list ProductPageDetails in natural order."""
+  getProductPageDetailsList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsPaginatedList
+
+  """Get a ProductPagePolicies by ID"""
+  getProductPagePolicies(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): ProductPagePolicies
+
+  """Returns a list ProductPagePolicies in natural order."""
+  getProductPagePoliciesList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesPaginatedList
   searchAssetIndex(
     terms: String
 
@@ -32721,6 +30143,72 @@ type WithContext {
     """
     where: TSWhereProfileInput
   ): ProfileSearchResults
+  searchProductIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductSearchResults
+  searchProductPageDetailsIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPageDetailsInput
+  ): ProductPageDetailsSearchResults
+  searchProductPagePoliciesIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductPagePoliciesInput
+  ): ProductPagePoliciesSearchResults
   search(
     terms: String
 
@@ -32820,7 +30308,7 @@ type Mutation {
 
   """Create an order in Voucherify"""
   Voucherify_createOrder(email: String, amount: Float, status: String, items: [Voucherify_OrderItemInput]): Voucherify_Order
-  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!): Klaviyo_AddMembersResponse
+  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
   Klaviyo_removeMembers(
     "\nThe profiles that you would like to remove from the list. \n\nExample:\n\n{\n  \"emails\":[\"george.washington@klaviyo.com\",\"abraham.lincoln@klaviyo.com\"],\n  \"phone_numbers\":[\"+13239169023\"],\n  \"push_tokens\":[\"03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2r\"]\n}\n"
     input: Klaviyo_RemoveMembersPropertiesPropertyInput
@@ -32856,6 +30344,7 @@ type Mutation {
   ShopifyStorefront_customerRecover(
     """The email address of the customer to recover."""
     email: String!
+    recaptchaToken: String!
   ): ShopifyStorefront_CustomerRecoverPayload
   ShopifyStorefront_customerUpdate(
     """The access token used to identify the customer."""
@@ -32891,7 +30380,51 @@ type Mutation {
     """The customer’s mailing address."""
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
-  Gorgias_createTicket(message: String, email: String!): Gorgias_CreateTicketResponse
+  Gorgias_createTicket: Gorgias_CreateTicketResponse
+
+  """Update Storefront"""
+  updateStorefront(input: UpdateStorefrontInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateStorefrontResult
+
+  """
+  Update Product. If the input has Shopify values and a Shopify ID, the Shopify product with that ID is updated.
+  If the input has Shopify values and no Shopify ID, a Shopify product is created.
+  """
+  updateProduct(input: UpdateProductInterfaceInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProductResult
+
+  """
+  Create Product. If Shopify values are provided, a Shopify product is also created and the new product ID is saved.
+  """
+  createProduct(input: CreateProductInterfaceInput!, clientMutationId: String): CreateProductResult
+
+  """Duplicate Product"""
+  duplicateProduct(input: DuplicateProductInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicateProductResult
+
+  """Delete Product"""
+  deleteProduct(input: DeleteProductInput!, clientMutationId: String): DeleteProductResult
+
+  """Update ProductPageDetails"""
+  updateProductPageDetails(input: UpdateProductPageDetailsInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProductPageDetailsResult
+
+  """Create ProductPageDetails"""
+  createProductPageDetails(input: CreateProductPageDetailsInput!, clientMutationId: String): CreateProductPageDetailsResult
+
+  """Duplicate ProductPageDetails"""
+  duplicateProductPageDetails(input: DuplicateProductPageDetailsInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicateProductPageDetailsResult
+
+  """Delete ProductPageDetails"""
+  deleteProductPageDetails(input: DeleteProductPageDetailsInput!, clientMutationId: String): DeleteProductPageDetailsResult
+
+  """Update ProductPagePolicies"""
+  updateProductPagePolicies(input: UpdateProductPagePoliciesInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateProductPagePoliciesResult
+
+  """Create ProductPagePolicies"""
+  createProductPagePolicies(input: CreateProductPagePoliciesInput!, clientMutationId: String): CreateProductPagePoliciesResult
+
+  """Duplicate ProductPagePolicies"""
+  duplicateProductPagePolicies(input: DuplicateProductPagePoliciesInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicateProductPagePoliciesResult
+
+  """Delete ProductPagePolicies"""
+  deleteProductPagePolicies(input: DeleteProductPagePoliciesInput!, clientMutationId: String): DeleteProductPagePoliciesResult
 }
 
 """A project file stored on s3"""
@@ -38585,8 +36118,6 @@ input Stripe_PaymentIntentInput {
 
   """The Stripe checkout session associated with this payment."""
   sessionItems: [Stripe_ItemInput]
-  _shapeId: String
-  _id: ID
 }
 
 input Stripe_PaymentFlowsAmountDetailsInput {
@@ -46200,10 +43731,14 @@ input UpdateNavigationDataInput {
 
 input NavigationDataLinksInput {
   """"""
-  categories: [NavigationDataLinksCategoriesInput]
+  categories: [NavigationDataLinksCategoriesInputUnion]
 
   """"""
-  pages: [NavigationDataLinksPagesInput]
+  pages: [NavigationDataLinksPagesInputUnion]
+}
+
+input NavigationDataLinksCategoriesInputUnion {
+  navigationDataLinksCategories: NavigationDataLinksCategoriesInput
 }
 
 input NavigationDataLinksCategoriesInput {
@@ -46211,16 +43746,20 @@ input NavigationDataLinksCategoriesInput {
   name: String
 
   """"""
-  featured: [NavigationDataLinksCategoriesFeaturedInput]
+  featured: [NavigationDataLinksCategoriesFeaturedInputUnion]
 
   """"""
-  collection: [NavigationDataLinksCategoriesCollectionInput]
+  collection: [NavigationDataLinksCategoriesCollectionInputUnion]
 
   """"""
-  categories: [NavigationDataLinksCategoriesCategoriesInput]
+  categories: [NavigationDataLinksCategoriesCategoriesInputUnion]
 
   """"""
-  brands: [NavigationDataLinksCategoriesBrandsInput]
+  brands: [NavigationDataLinksCategoriesBrandsInputUnion]
+}
+
+input NavigationDataLinksCategoriesFeaturedInputUnion {
+  navigationDataLinksCategoriesFeatured: NavigationDataLinksCategoriesFeaturedInput
 }
 
 input NavigationDataLinksCategoriesFeaturedInput {
@@ -46231,12 +43770,20 @@ input NavigationDataLinksCategoriesFeaturedInput {
   href: String
 }
 
+input NavigationDataLinksCategoriesCollectionInputUnion {
+  navigationDataLinksCategoriesCollection: NavigationDataLinksCategoriesCollectionInput
+}
+
 input NavigationDataLinksCategoriesCollectionInput {
   """"""
   name: String
 
   """"""
   href: String
+}
+
+input NavigationDataLinksCategoriesCategoriesInputUnion {
+  navigationDataLinksCategoriesCategories: NavigationDataLinksCategoriesCategoriesInput
 }
 
 input NavigationDataLinksCategoriesCategoriesInput {
@@ -46247,12 +43794,20 @@ input NavigationDataLinksCategoriesCategoriesInput {
   href: String
 }
 
+input NavigationDataLinksCategoriesBrandsInputUnion {
+  navigationDataLinksCategoriesBrands: NavigationDataLinksCategoriesBrandsInput
+}
+
 input NavigationDataLinksCategoriesBrandsInput {
   """"""
   name: String
 
   """"""
   href: String
+}
+
+input NavigationDataLinksPagesInputUnion {
+  navigationDataLinksPages: NavigationDataLinksPagesInput
 }
 
 input NavigationDataLinksPagesInput {
@@ -46293,7 +43848,11 @@ input UpdateFooterInput {
 
 input FooterNavigationInput {
   """"""
-  sections: [FooterNavigationSectionsInput]
+  sections: [FooterNavigationSectionsInputUnion]
+}
+
+input FooterNavigationSectionsInputUnion {
+  footerNavigationSections: FooterNavigationSectionsInput
 }
 
 input FooterNavigationSectionsInput {
@@ -46566,6 +44125,7 @@ input CreateCustomerPropertiesPropertyInput {
   phone: String
   password: String!
   acceptsMarketing: Boolean
+  recaptchaToken: String
 }
 
 """Return type for `customerRecover` mutation."""
@@ -46677,4 +44237,766 @@ input ShopifyStorefront_MailingAddressInput {
 
 type Gorgias_CreateTicketResponse {
   id: Int!
+}
+
+type UpdateStorefrontResult {
+  clientMutationId: String
+  result: Storefront
+}
+
+"""update Storefront input"""
+input UpdateStorefrontInput {
+  components: [BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion]
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentTrendingProductsComponentInputUnion {
+  offersComponent: OffersComponentInput
+  heroComponent: HeroComponentInput
+  collectionsComponent: CollectionsComponentInput
+  backgroundImageComponent: BackgroundImageComponentInput
+  saleComponent: SaleComponentInput
+  testimonialsComponent: TestimonialsComponentInput
+  trendingProductsComponent: TrendingProductsComponentInput
+}
+
+input OffersComponentInput {
+  """"""
+  offers: [OffersComponentOffersInput!]!
+}
+
+input OffersComponentOffersInput {
+  """"""
+  name: String!
+
+  """"""
+  description: String!
+
+  """"""
+  href: String!
+}
+
+input HeroComponentInput {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+  image: TSRelationshipInput!
+}
+
+input CollectionsComponentInput {
+  """"""
+  collections: [CollectionsComponentCollectionsInput!]!
+}
+
+input CollectionsComponentCollectionsInput {
+  """"""
+  name: String!
+
+  """"""
+  description: String!
+
+  """"""
+  href: String!
+  image: TSRelationshipInput!
+}
+
+input BackgroundImageComponentInput {
+  image: TSRelationshipInput!
+
+  """"""
+  components: [BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion!]!
+}
+
+input BackgroundImageComponentCollectionsComponentHeroComponentOffersComponentSaleComponentTestimonialsComponentInputUnion {
+  collectionsComponent: CollectionsComponentInput
+  saleComponent: SaleComponentInput
+  testimonialsComponent: TestimonialsComponentInput
+  offersComponent: OffersComponentInput
+  heroComponent: HeroComponentInput
+  backgroundImageComponent: BackgroundImageComponentInput
+}
+
+input SaleComponentInput {
+  primaryText: String!
+  secondaryText: String!
+  buttonText: String!
+}
+
+input TestimonialsComponentInput {
+  """"""
+  testimonials: [TestimonialsComponentTestimonialsInput!]!
+}
+
+input TestimonialsComponentTestimonialsInput {
+  """"""
+  quote: String!
+
+  """"""
+  attribution: String!
+}
+
+input TrendingProductsComponentInput {
+  temp: String
+}
+
+type UpdateProductResult {
+  clientMutationId: String
+  result: Product
+}
+
+"""update ProductInterface input"""
+input UpdateProductInterfaceInput {
+  _id: ID!
+  _version: Float
+  _status: DefaultWorkflow
+
+  """Initialized with title from shopify"""
+  name: String
+  productComponent: String
+  hideReviews: Boolean
+  hideRelatedProducts: Boolean
+  showDetails: Boolean
+  details: TSRelationshipInput
+  showPolicies: Boolean
+  policies: TSRelationshipInput
+  shopifyProductId: String
+  shopifyProduct: Shopify_ProductInput
+}
+
+"""Specifies the input fields required to create a product."""
+input Shopify_ProductInput {
+  """The description of the product, complete with HTML formatting."""
+  descriptionHtml: String
+
+  """
+  A unique human-friendly string for the product. Automatically generated from the product's title.
+  """
+  handle: String
+
+  """
+  Whether a redirect is required after a new handle has been provided.
+  If true, then the old handle is redirected to the new one automatically.
+  """
+  redirectNewHandle: Boolean = false
+
+  """The SEO information associated with the product."""
+  seo: Shopify_SEOInput
+
+  """The product type specified by the merchant."""
+  productType: String
+
+  """The standardized product type in the Shopify product taxonomy."""
+  standardizedProductType: Shopify_StandardizedProductTypeInput
+
+  """The custom product type specified by the merchant."""
+  customProductType: String
+
+  """A comma separated list tags that have been added to the product."""
+  tags: [String]
+
+  """The theme template used when viewing the product in a store."""
+  templateSuffix: String
+
+  """Whether the product is a gift card."""
+  giftCard: Boolean
+
+  """The theme template used when viewing the gift card in a store."""
+  giftCardTemplateSuffix: String
+
+  """The title of the product."""
+  title: String
+
+  """The name of the product's vendor."""
+  vendor: String
+
+  """
+  A description of the product. Supports HTML formatting. This argument is deprecated: Use `descriptionHtml` instead.
+  """
+  bodyHtml: String
+
+  """The IDs of the collections that this product will be added to."""
+  collectionsToJoin: [ID]
+
+  """The IDs of collections that will no longer include the product."""
+  collectionsToLeave: [ID]
+
+  """
+  Specifies the product to update in productUpdate or creates a new product if absent in productCreate.
+  """
+  id: ID
+
+  """The images to associate with the product."""
+  images: [Shopify_ImageInput]
+
+  """The metafields to associate with this product."""
+  metafields: [Shopify_MetafieldInput]
+
+  """The private metafields to associate with this product."""
+  privateMetafields: [Shopify_PrivateMetafieldInput]
+
+  """List of custom product options (maximum of 3 per product)."""
+  options: [String]
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  publishDate: DateTime
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  publishOn: DateTime
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  published: Boolean
+
+  """
+  Only products with an active status can be published. This argument is deprecated: Use `PublishablePublish` instead.
+  """
+  publishedAt: DateTime
+
+  """A list of variants associated with the product."""
+  variants: [Shopify_ProductVariantInput]
+
+  """The status of the product."""
+  status: Shopify_ProductStatus
+
+  """
+  Whether the product can only be purchased with a selling plan (subscription). Products that are sold exclusively on subscription can only be created on online stores. If set to `true` on an already existing product, then the product will be marked unavailable on channels that don't support subscriptions.
+  """
+  requiresSellingPlan: Boolean
+}
+
+"""SEO information."""
+input Shopify_SEOInput {
+  """SEO title of the product."""
+  title: String
+
+  """SEO description of the product."""
+  description: String
+}
+
+"""
+Provides the fields and values to use when adding a standard product type to a product. The [Shopify product taxonomy](https://help.shopify.com/txt/product_taxonomy/en.txt) contains the full list of available values.
+"""
+input Shopify_StandardizedProductTypeInput {
+  """
+  The id of the node in the Shopify taxonomy that represents the product type.
+  """
+  productTaxonomyNodeId: ID!
+}
+
+"""Specifies the input fields for an image."""
+input Shopify_ImageInput {
+  """A globally-unique identifier."""
+  id: ID
+
+  """A word or phrase to share the nature or contents of an image."""
+  altText: String
+
+  """The URL of the image. May be a signed upload URL."""
+  src: String
+}
+
+"""
+The input fields to use to create or update a metafield through a mutation on the owning resource.
+An alternative way to create or update a metafield is by using the
+[metafieldsSet](https://shopify.dev/api/admin-graphql/latest/mutations/metafieldsSet) mutation.
+"""
+input Shopify_MetafieldInput {
+  """The description of the metafield."""
+  description: String
+
+  """
+  The unique ID of the metafield. You don't include an ID when you create a metafield because the metafield ID
+  is created automatically. The ID is required when you update a metafield.
+  """
+  id: ID
+
+  """
+  The namespace for a metafield. The namespace is required when you create a metafield and is optional when you
+  update a metafield.
+  """
+  namespace: String
+
+  """
+  The key name of the metafield. Required when creating but optional when updating.
+  """
+  key: String
+
+  """The value of a metafield."""
+  value: String
+
+  """
+  The metafield's [type](https://shopify.dev/apps/metafields/types). The metafield type is required
+  when you create a metafield and is optional when you update a metafield.
+  """
+  type: String
+}
+
+"""The input fields for a private metafield."""
+input Shopify_PrivateMetafieldInput {
+  """
+  The resource that owns the metafield. If the field is blank, then the `Shop` resource owns the metafield.
+  """
+  owner: ID
+
+  """The namespace of the private metafield."""
+  namespace: String!
+
+  """The key of the private metafield."""
+  key: String!
+
+  """
+  The `value` and `valueType` of the private metafield, wrapped in a `ValueInput` object.
+  """
+  valueInput: Shopify_PrivateMetafieldValueInput!
+}
+
+"""
+The value input contains the value and value type of the private metafield.
+"""
+input Shopify_PrivateMetafieldValueInput {
+  """The value of a private metafield."""
+  value: String!
+
+  """Represents the private metafield value type."""
+  valueType: Shopify_PrivateMetafieldValueType!
+}
+
+"""Specifies a product variant to create or update."""
+input Shopify_ProductVariantInput {
+  """The value of the barcode associated with the product."""
+  barcode: String
+
+  """The compare-at price of the variant."""
+  compareAtPrice: Money
+
+  """The ID of the fulfillment service associated with the variant."""
+  fulfillmentServiceId: ID
+
+  """The Harmonized System Code (or HS Tariff Code) for the variant."""
+  harmonizedSystemCode: String
+
+  """
+  Specifies the product variant to update or create a new variant if absent.
+  """
+  id: ID
+
+  """The ID of the image that's associated with the variant."""
+  imageId: ID
+
+  """
+  The URL of an image to associate with the variant.  This field can only be used through mutations that create product images and must match one of the URLs being created on the product.
+  """
+  imageSrc: String
+
+  """
+  The URL of the media to associate with the variant. This field can only be used in mutations that create media images and must match one of the URLs being created on the product. This field only accepts one value.
+  """
+  mediaSrc: [String]
+
+  """
+  The fulfillment service that tracks the number of items in stock for the product variant. If you track the inventory yourself using the admin, then set the value to `shopify`. Valid values: `shopify` or the handle of a fulfillment service that has inventory management enabled.
+   This argument is deprecated: Use tracked attribute on `inventoryItem` instead.
+  """
+  inventoryManagement: Shopify_ProductVariantInventoryManagement
+
+  """
+  Whether customers are allowed to place an order for the product variant when it's out of stock.
+  """
+  inventoryPolicy: Shopify_ProductVariantInventoryPolicy
+
+  """
+  Create only field. The inventory quantities at each location where the variant is stocked.
+  """
+  inventoryQuantities: [Shopify_InventoryLevelInput]
+
+  """Inventory Item associated with the variant, used for unit cost."""
+  inventoryItem: Shopify_InventoryItemInput
+
+  """Additional customizable information about the product variant."""
+  metafields: [Shopify_MetafieldInput]
+
+  """The private metafields to associated with this product."""
+  privateMetafields: [Shopify_PrivateMetafieldInput]
+
+  """
+  The custom properties that a shop owner uses to define product variants.
+  """
+  options: [String]
+
+  """
+  The order of the product variant in the list of product variants. The first position in the list is 1.
+  """
+  position: Int
+
+  """The price of the variant."""
+  price: Money
+
+  """
+  Create only required field. Specifies the product on which to create the variant.
+  """
+  productId: ID
+
+  """Whether the variant requires shipping."""
+  requiresShipping: Boolean
+
+  """The SKU for the variant."""
+  sku: String
+
+  """Whether the variant is taxable."""
+  taxable: Boolean
+
+  """
+  This argument is deprecated: Variant title is not a writable field; it is generated from the selected variant options.
+  """
+  title: String
+
+  """The tax code associated with the variant."""
+  taxCode: String
+
+  """The weight of the variant."""
+  weight: Float
+
+  """The unit of weight that's used to measure the variant."""
+  weightUnit: Shopify_WeightUnit
+}
+
+"""Specifies the input fields for an inventory level."""
+input Shopify_InventoryLevelInput {
+  """The available quantity of an inventory item at a location."""
+  availableQuantity: Int!
+
+  """The ID of a location."""
+  locationId: ID!
+}
+
+"""Specifies the input fields for an inventory item."""
+input Shopify_InventoryItemInput {
+  """
+  Unit cost associated with the inventory item, the currency is the shop's default currency.
+  """
+  cost: Decimal
+
+  """Whether the inventory item is tracked."""
+  tracked: Boolean
+}
+
+type CreateProductResult {
+  clientMutationId: String
+  result: Product
+}
+
+"""create ProductInterface input"""
+input CreateProductInterfaceInput {
+  _id: ID
+  _version: Float
+  _status: DefaultWorkflow
+
+  """Initialized with title from shopify"""
+  name: String
+  productComponent: String
+  hideReviews: Boolean = false
+  hideRelatedProducts: Boolean = false
+  showDetails: Boolean = false
+  details: TSRelationshipInput
+  showPolicies: Boolean = false
+  policies: TSRelationshipInput
+  shopifyProductId: String
+  shopifyProduct: Shopify_ProductInput
+}
+
+type DuplicateProductResult {
+  clientMutationId: String
+  result: Product
+}
+
+"""duplicate Product input"""
+input DuplicateProductInput {
+  _id: ID!
+
+  """Initialized with title from shopify"""
+  name: String
+
+  """"""
+  productComponent: String
+
+  """"""
+  hideReviews: Boolean
+
+  """"""
+  hideRelatedProducts: Boolean
+
+  """"""
+  showDetails: Boolean
+  details: TSRelationshipInput
+
+  """"""
+  showPolicies: Boolean
+  policies: TSRelationshipInput
+  shopifyProductId: String
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeleteProductResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete Product input"""
+input DeleteProductInput {
+  _id: ID!
+}
+
+type UpdateProductPageDetailsResult {
+  clientMutationId: String
+  result: ProductPageDetails
+}
+
+"""update ProductPageDetails input"""
+input UpdateProductPageDetailsInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  text: ProductPageDetailsTextInput
+
+  """"""
+  details: [ProductPageDetailsDetailsInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input ProductPageDetailsTextInput {
+  """"""
+  primary: JSON!
+
+  """"""
+  secondary: JSON!
+}
+
+input ProductPageDetailsDetailsInput {
+  image: TSRelationshipInput
+
+  """"""
+  description: JSON!
+}
+
+type CreateProductPageDetailsResult {
+  clientMutationId: String
+  result: ProductPageDetails
+}
+
+"""create ProductPageDetails input"""
+input CreateProductPageDetailsInput {
+  """"""
+  name: String!
+
+  """"""
+  text: ProductPageDetailsTextInput!
+
+  """"""
+  details: [ProductPageDetailsDetailsInput!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DuplicateProductPageDetailsResult {
+  clientMutationId: String
+  result: ProductPageDetails
+}
+
+"""duplicate ProductPageDetails input"""
+input DuplicateProductPageDetailsInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  text: ProductPageDetailsTextInput
+
+  """"""
+  details: [ProductPageDetailsDetailsInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeleteProductPageDetailsResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete ProductPageDetails input"""
+input DeleteProductPageDetailsInput {
+  _id: ID!
+}
+
+type UpdateProductPagePoliciesResult {
+  clientMutationId: String
+  result: ProductPagePolicies
+}
+
+"""update ProductPagePolicies input"""
+input UpdateProductPagePoliciesInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  policies: [ProductPagePoliciesPoliciesInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input ProductPagePoliciesPoliciesInput {
+  """"""
+  name: JSON!
+
+  """"""
+  description: JSON!
+  image: TSRelationshipInput!
+}
+
+type CreateProductPagePoliciesResult {
+  clientMutationId: String
+  result: ProductPagePolicies
+}
+
+"""create ProductPagePolicies input"""
+input CreateProductPagePoliciesInput {
+  """"""
+  name: String!
+
+  """"""
+  policies: [ProductPagePoliciesPoliciesInput!]!
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DuplicateProductPagePoliciesResult {
+  clientMutationId: String
+  result: ProductPagePolicies
+}
+
+"""duplicate ProductPagePolicies input"""
+input DuplicateProductPagePoliciesInput {
+  _id: ID!
+
+  """"""
+  name: String
+
+  """"""
+  policies: [ProductPagePoliciesPoliciesInput]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeleteProductPagePoliciesResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete ProductPagePolicies input"""
+input DeleteProductPagePoliciesInput {
+  _id: ID!
 }

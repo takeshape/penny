@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { _BackgroundImage } from 'features/Storefront/BackgroundImage/BackgroundImage.stories';
 import { _Hero } from 'features/Storefront/Hero/Hero.stories';
 import { _Offers } from 'features/Storefront/Offers/Offers.stories';

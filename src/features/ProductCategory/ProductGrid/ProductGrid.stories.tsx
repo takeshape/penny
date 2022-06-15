@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import ProductGrid from './ProductGrid';
 import { products } from './ProductGrid.fixture';
 

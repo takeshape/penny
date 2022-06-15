@@ -1,11 +1,15 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
-import type { GetCustomerResponse, UpdateCustomerAddressResponse } from 'queries';
-import { GetCustomerQuery, UpdateCustomerAddressMutation } from 'queries';
+import {
+  GetCustomerQuery,
+  GetCustomerResponse,
+  UpdateCustomerAddressMutation,
+  UpdateCustomerAddressResponse
+} from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
+import { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
 import FormCardPanel from '../../../components/Form/CardPanel/CardPanel';
