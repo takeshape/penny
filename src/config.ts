@@ -106,7 +106,7 @@ export const defaultProductImage = {
 };
 
 /* Collections */
-export const collectionsPageSize = 5;
+export const collectionsPageSize = 12;
 
 /* Product Options - LUTs to decorate options */
 export const productOptions = {
