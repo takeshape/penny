@@ -1,0 +1,148 @@
+{
+  "fulfilled": {
+    "id": "gid://shopify/Order/4150845341796",
+    "createdAt": "2022-05-27T16:06:03Z",
+    "displayFulfillmentStatus": "FULFILLED",
+    "totalPriceSet": {
+      "shopMoney": {
+        "amount": "60.0",
+        "currencyCode": "USD",
+        "__typename": "Shopify_MoneyV2"
+      },
+      "__typename": "Shopify_MoneyBag"
+    },
+    "lineItems": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/LineItem/10692433084516",
+            "image": {
+              "url": "https://cdn.shopify.com/s/files/1/0579/6744/4068/products/blouse.jpg?v=1650570192",
+              "height": 1058,
+              "width": 820,
+              "__typename": "Shopify_Image"
+            },
+            "name": "Elegant Blouse",
+            "quantity": 2,
+            "product": {
+              "id": "gid://shopify/Product/6827068850276",
+              "__typename": "Shopify_Product"
+            },
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "60.0",
+                "currencyCode": "USD",
+                "__typename": "Shopify_MoneyV2"
+              },
+              "__typename": "Shopify_MoneyBag"
+            },
+            "__typename": "Shopify_LineItem"
+          },
+          "__typename": "Shopify_LineItemEdge"
+        }
+      ],
+      "__typename": "Shopify_LineItemConnection"
+    },
+    "fulfillments": [
+      {
+        "id": "gid://shopify/Fulfillment/3675907358820",
+        "displayStatus": "FULFILLED",
+        "deliveredAt": null,
+        "estimatedDeliveryAt": null,
+        "inTransitAt": null,
+        "updatedAt": "2022-05-27T16:51:15Z",
+        "trackingInfo": [
+          {
+            "company": "USPS",
+            "number": "456",
+            "__typename": "Shopify_FulfillmentTrackingInfo"
+          }
+        ],
+        "fulfillmentLineItems": {
+          "edges": [
+            {
+              "node": {
+                "lineItem": {
+                  "id": "gid://shopify/LineItem/10692433084516",
+                  "image": {
+                    "url": "https://cdn.shopify.com/s/files/1/0579/6744/4068/products/blouse.jpg?v=1650570192",
+                    "height": 1058,
+                    "width": 820,
+                    "__typename": "Shopify_Image"
+                  },
+                  "name": "Elegant Blouse",
+                  "quantity": 2,
+                  "product": {
+                    "id": "gid://shopify/Product/6827068850276",
+                    "__typename": "Shopify_Product"
+                  },
+                  "originalTotalSet": {
+                    "shopMoney": {
+                      "amount": "60.0",
+                      "currencyCode": "USD",
+                      "__typename": "Shopify_MoneyV2"
+                    },
+                    "__typename": "Shopify_MoneyBag"
+                  },
+                  "__typename": "Shopify_LineItem"
+                },
+                "__typename": "Shopify_FulfillmentLineItem"
+              },
+              "__typename": "Shopify_FulfillmentLineItemEdge"
+            }
+          ],
+          "__typename": "Shopify_FulfillmentLineItemConnection"
+        },
+        "__typename": "Shopify_Fulfillment"
+      }
+    ],
+    "__typename": "Shopify_Order"
+  },
+  "unfulfilled": {
+    "id": "gid://shopify/Order/4162126774372",
+    "createdAt": "2022-06-08T22:25:07Z",
+    "displayFulfillmentStatus": "UNFULFILLED",
+    "totalPriceSet": {
+      "shopMoney": {
+        "amount": "192.0",
+        "currencyCode": "USD",
+        "__typename": "Shopify_MoneyV2"
+      },
+      "__typename": "Shopify_MoneyBag"
+    },
+    "lineItems": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/LineItem/10717032415332",
+            "image": {
+              "url": "https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530699",
+              "height": 1088,
+              "width": 840,
+              "__typename": "Shopify_Image"
+            },
+            "name": "Basic Tee 6-Pack - XS / Black",
+            "quantity": 1,
+            "product": {
+              "id": "gid://shopify/Product/6857243132004",
+              "__typename": "Shopify_Product"
+            },
+            "originalTotalSet": {
+              "shopMoney": {
+                "amount": "192.0",
+                "currencyCode": "USD",
+                "__typename": "Shopify_MoneyV2"
+              },
+              "__typename": "Shopify_MoneyBag"
+            },
+            "__typename": "Shopify_LineItem"
+          },
+          "__typename": "Shopify_LineItemEdge"
+        }
+      ],
+      "__typename": "Shopify_LineItemConnection"
+    },
+    "fulfillments": [],
+    "__typename": "Shopify_Order"
+  }
+}

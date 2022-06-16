@@ -64,7 +64,7 @@ export const Top = () => {
               <div className="h-16 flex items-center justify-between">
                 {/* Logo (lg+) */}
                 <div className="hidden lg:flex lg:items-center">
-                  <NextLink href="#">
+                  <NextLink href="/">
                     <span className="sr-only">Workflow</span>
                     <div className="h-8 w-8 relative">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
