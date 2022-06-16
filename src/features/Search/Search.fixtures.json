@@ -16,7 +16,7 @@
                 {
                   "id": "price_1Kj60YEjMGaPiQ74U08NcmDI",
                   "unit_amount": 1000,
-                  "currency": "usd",
+                  "currency": "USD",
                   "recurring": null,
                   "__typename": "Stripe_Price"
                 }
@@ -34,7 +34,7 @@
                 {
                   "id": "price_1KgyNyEjMGaPiQ74w5knSXdZ",
                   "unit_amount": 700,
-                  "currency": "usd",
+                  "currency": "USD",
                   "recurring": {
                     "interval": "month",
                     "interval_count": 1,
@@ -45,7 +45,7 @@
                 {
                   "id": "price_1KgxxhEjMGaPiQ74gcw80L7h",
                   "unit_amount": 900,
-                  "currency": "usd",
+                  "currency": "USD",
                   "recurring": null,
                   "__typename": "Stripe_Price"
                 }

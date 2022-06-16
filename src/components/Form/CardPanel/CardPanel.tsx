@@ -1,6 +1,5 @@
-import type { PropsWithChildren, ReactEventHandler } from 'react';
-import type { FormCardPanelActionsProps } from './CardPanelActions';
-import FormCardPanelActions from './CardPanelActions';
+import { PropsWithChildren, ReactEventHandler } from 'react';
+import FormCardPanelActions, { FormCardPanelActionsProps } from './CardPanelActions';
 
 export interface FormCardPanelProps extends FormCardPanelActionsProps {
   primaryText: string;

@@ -1,7 +1,7 @@
 import CardPanel from 'components/Card/Panel/Panel';
 import Image from 'components/NextImage';
-import type { SetRequired } from 'type-fest';
-import type { Voucherify_LoyaltyCard } from 'types/takeshape';
+import { SetRequired } from 'type-fest';
+import { Voucherify_LoyaltyCard } from 'types/takeshape';
 
 export type AccountLoyaltyCardProps = SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>;
 

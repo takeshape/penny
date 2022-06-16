@@ -1,10 +1,11 @@
 import { StarIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import type { Product } from 'types/product';
+import { Product } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
+
 export interface ProductGridProps {
   products?: { product: Product; reviews: ReviewHighlights }[];
 }
@@ -24,8 +25,6 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
               <NextImage
                 layout="fill"
                 src={product.featuredImage.url}
-                height={product.featuredImage.height}
-                width={product.featuredImage.width}
                 alt={`Picture of ${product.name}`}
                 className="w-full h-full object-center object-cover"
               />
@@ -37,7 +36,7 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
                   {product.name}
                 </NextLink>
               </h3>
-              {reviews.stats.average ? (
+              {reviews?.stats.average ? (
                 <div className="mt-3 flex flex-col items-center">
                   <p className="sr-only">{reviews.stats.average} out of 5 stars</p>
                   <div className="flex items-center">

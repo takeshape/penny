@@ -2,7 +2,7 @@ import Wrapper from 'components/Wrapper/Content';
 import ContentBodySimple from 'features/Content/Body/Simple';
 import ContentHeaderSimple from 'features/Content/Header/Simple';
 import Layout from 'layouts/Default';
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 
 const AboutPage: NextPage = () => {
   return (

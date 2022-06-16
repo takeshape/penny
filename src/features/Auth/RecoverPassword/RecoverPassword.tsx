@@ -1,13 +1,14 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
+import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
-import type { RecoverCustomerPasswordResponse } from 'queries';
-import { RecoverCustomerPasswordMutation } from 'queries';
+import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from 'queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
+import { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
+import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 
 export interface AuthRecoverPasswordForm {
   email: string;
@@ -25,11 +26,18 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
     MutationShopifyStorefront_CustomerRecoverArgs
   >(RecoverCustomerPasswordMutation);
 
+  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
+
   const onSubmit = useCallback(
-    async ({ email }: AuthRecoverPasswordForm) => {
-      await setRecoverPasswordPayload({ variables: { email } });
+    (e) => {
+      e.preventDefault();
+      executeRecaptcha((recaptchaToken) => {
+        handleSubmit(async ({ email }: AuthRecoverPasswordForm) => {
+          await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
+        })();
+      });
     },
-    [setRecoverPasswordPayload]
+    [executeRecaptcha, handleSubmit, setRecoverPasswordPayload]
   );
 
   const hasData = Boolean(recoverPasswordData);
@@ -45,7 +53,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             {hasErrors && (
               <Alert
                 status="error"
@@ -78,7 +86,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
                     }
                   }}
                 />
-
+                <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
                 <div>
                   <Button disabled={formState.isSubmitting} type="submit" color="primary" className="w-full">
                     Reset password

@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { _BackgroundImage } from 'features/Storefront/BackgroundImage/BackgroundImage.stories';
 import { _Collections } from 'features/Storefront/Collections/Collections.stories';
 import { _Hero } from 'features/Storefront/Hero/Hero.stories';
@@ -6,6 +6,7 @@ import { _Offers } from 'features/Storefront/Offers/Offers.stories';
 import { _Sale } from 'features/Storefront/Sale/Sale.stories';
 import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
 import { _TrendingProducts } from 'features/Storefront/TrendingProducts/TrendingProducts.stories';
+import { products } from '../ProductCategory/ProductGrid/ProductGrid.fixture';
 import Storefront from './Storefront';
 
 const Meta: ComponentMeta<typeof Storefront> = {
@@ -17,6 +18,7 @@ const Template: ComponentStory<typeof Storefront> = (args) => <Storefront {...ar
 
 export const _Storefront = Template.bind({});
 _Storefront.args = {
+  products,
   storefront: {
     components: [
       { __typename: 'OffersComponent', ..._Offers.args },

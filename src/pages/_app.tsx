@@ -1,8 +1,9 @@
+import { ErrorBoundary } from 'components/Error/ErrorBoundary';
 import { seo } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import type { AppContext, AppInitialProps } from 'next/app';
+import { AppContext, AppInitialProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import 'styles/globals.css';
@@ -33,11 +34,13 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
   }, [router, setLoadingRouteChange]);
 
   return (
-    <SessionProvider session={pageProps.session} refetchInterval={30 * 60} refetchOnWindowFocus={true}>
-      <ApolloProvider pageProps={pageProps}>
-        <DefaultSeo {...seo} />
-        {loadingRouteChange ? <PageLoader /> : <Component {...pageProps} />}
-      </ApolloProvider>
-    </SessionProvider>
+    <ErrorBoundary>
+      <SessionProvider session={pageProps.session} refetchInterval={30 * 60} refetchOnWindowFocus={true}>
+        <ApolloProvider pageProps={pageProps}>
+          <DefaultSeo {...seo} />
+          {loadingRouteChange ? <PageLoader /> : <Component {...pageProps} />}
+        </ApolloProvider>
+      </SessionProvider>
+    </ErrorBoundary>
   );
 }

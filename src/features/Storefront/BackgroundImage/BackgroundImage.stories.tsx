@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Testimonials from 'features/Storefront/Testimonials/Testimonials';
 import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
 import Sale from '../Sale/Sale';

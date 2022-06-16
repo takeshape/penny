@@ -1,24 +1,24 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
-import type {
-  Product,
+import {
   ProductImage,
-  ProductListItem,
   ProductPrice,
   ProductPriceCurrencyCode,
   ProductPriceOption,
   ProductSeo,
   ProductVariant
 } from 'types/product';
-import type {
+import {
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
+  Shopify_ProductOption,
   Shopify_ProductVariant,
+  Shopify_SellingPlanInterval,
   Shopify_SellingPlanPricingPolicy,
+  Shopify_SellingPlanPricingPolicyAdjustmentType,
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
-import { Shopify_SellingPlanInterval, Shopify_SellingPlanPricingPolicyAdjustmentType } from 'types/takeshape';
 
 function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
   switch (adjustmentType) {
@@ -100,18 +100,20 @@ function getSubscriptionInterval({
   }
 }
 
-function getImage(shopifyProduct: Shopify_Product, shopifyImage?: Shopify_Image): ProductImage {
-  const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
-  return {
-    height,
-    url,
-    width,
-    altText: altText ?? `Image of ${shopifyProduct.title}`
+export function createImageGetter(defaultAltText: string) {
+  return (shopifyImage?: Shopify_Image): ProductImage => {
+    const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
+    return {
+      height,
+      url,
+      width,
+      altText: altText ?? defaultAltText
+    };
   };
 }
 
-function getPriceOptions(
-  shopifyProduct: Shopify_Product,
+export function getPriceOptions(
+  shopifyProduct: Pick<Shopify_Product, 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'>,
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
   // variant.contextualPricing would be better for a true multi-currency site
@@ -173,16 +175,24 @@ function getPriceOptions(
   return prices;
 }
 
-function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_ProductVariant): ProductVariant {
+function getVariant(
+  shopifyProduct: Pick<
+    Shopify_Product,
+    'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
+  >,
+  shopifyVariant: Shopify_ProductVariant
+): ProductVariant {
+  const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
   const { id, title, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
     shopifyVariant;
+
   return {
     id,
     name: title,
     description: title, // use a metafield
     prices: getPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
-    image: getImage(shopifyProduct, image),
+    image: getImage(image),
     inventory: sellableOnlineQuantity,
     inventoryPolicy,
     sku,
@@ -190,27 +200,32 @@ function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_Pro
   };
 }
 
-function getVariants(shopifyProduct: Shopify_Product): ProductVariant[] {
+export function getVariants(
+  shopifyProduct: Pick<
+    Shopify_Product,
+    'variants' | 'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
+  >
+): ProductVariant[] {
   return shopifyProduct.variants.edges.map(({ node }) => getVariant(shopifyProduct, node));
 }
 
-function getPrice(price: Shopify_MoneyV2): ProductPrice {
+export function getPrice(price: Shopify_MoneyV2): ProductPrice {
   return {
     amount: Number(price.amount) * 100,
     currencyCode: price.currencyCode.toLowerCase() as ProductPriceCurrencyCode
   };
 }
 
-function getSeo(shopifyProduct: Shopify_Product): ProductSeo {
+export function getSeo(shopifyProduct: Pick<Shopify_Product, 'seo' | 'title' | 'description'>): ProductSeo {
   return {
-    title: shopifyProduct.seo.title ?? shopifyProduct.title,
-    description: shopifyProduct.seo.description ?? shopifyProduct.description
+    title: shopifyProduct.seo?.title ?? shopifyProduct.title,
+    description: shopifyProduct.seo?.description ?? shopifyProduct.description
   };
 }
 
-function getOptions(shopifyProduct: Shopify_Product, variants?: ProductVariant[]) {
+export function getOptions(options: Shopify_ProductOption[], variants?: ProductVariant[]) {
   return (
-    shopifyProduct.options?.map(({ name, position, id, values }) => {
+    options?.map(({ name, position, id, values }) => {
       return {
         name,
         position,
@@ -241,52 +256,4 @@ export function shopifyGidToId(gid: string): string {
 
 export function shopifyIdToGid(id: string): string {
   return `gid://shopify/Product/${id}`;
-}
-
-export function shopifyProductToProductListItem(shopifyProduct: Shopify_Product): ProductListItem {
-  return {
-    id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
-    name: shopifyProduct.title,
-    description: shopifyProduct.description,
-    descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct, shopifyProduct.featuredImage),
-    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(shopifyProduct, node)) ?? [
-      getImage(shopifyProduct)
-    ],
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct),
-    data: {}
-  };
-}
-
-export function shopifyProductToProduct(shopifyProduct: Shopify_Product): Product {
-  const variants = getVariants(shopifyProduct);
-
-  return {
-    id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
-    name: shopifyProduct.title,
-    description: shopifyProduct.description,
-    descriptionHtml: shopifyProduct.descriptionHtml,
-    featuredImage: getImage(shopifyProduct, shopifyProduct.featuredImage),
-    images: shopifyProduct.images?.edges?.map(({ node }) => getImage(shopifyProduct, node)) ?? [
-      getImage(shopifyProduct)
-    ],
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    variants,
-    seo: getSeo(shopifyProduct),
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct, variants),
-    data: {}
-  };
 }

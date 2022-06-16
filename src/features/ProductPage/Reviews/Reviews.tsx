@@ -1,13 +1,16 @@
-import NextImage from 'components/NextImage';
-import Stars from 'components/Stars/Stars';
-import { ReviewList } from 'types/review';
+import { Stars } from 'components/Stars/Stars';
+import { ProductPageReviewsReviewList } from '../types';
+import { ReviewsListItem } from './ReviewsListItem';
+import { ReviewsListItemLoading } from './ReviewsListItemLoading';
+import { ReviewsRollup } from './ReviewsRollup';
 
 export interface ReviewsProps {
-  reviews: ReviewList;
+  reviews: ProductPageReviewsReviewList;
+  showRollup?: boolean;
 }
 
-const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
-  const { stats, data } = reviews;
+export const Reviews = ({ reviews, showRollup }: ReviewsProps) => {
+  const { stats, rollup, data } = reviews;
 
   return (
     <section aria-labelledby="reviews-heading" className="bg-white">
@@ -19,44 +22,19 @@ const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
 
           <div className="mt-3 flex items-center">
             <div>
-              <Stars rating={stats.average} />
-              <p className="sr-only">{stats.average} out of 5 stars</p>
+              <Stars rating={stats.average ?? 0} />
+              <p className="sr-only">{stats.average ?? 0} out of 5 stars</p>
             </div>
-            <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>
+            {stats.average !== null && <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>}
           </div>
 
-          {/* Reviews.IO does not provide sufficient data for this view */}
-          {/* <div className="mt-6">
-            <h3 className="sr-only">Review data</h3>
+          {showRollup && rollup && (
+            <div className="mt-6">
+              <h3 className="sr-only">Review data</h3>
 
-            <dl className="space-y-3">
-              {data.map((review) => (
-                <div key={review.rating} className="flex items-center text-sm">
-                  <dt className="flex-1 flex items-center">
-                    <p className="w-3 font-medium text-gray-900">
-                      {review.rating}
-                      <span className="sr-only"> star reviews</span>
-                    </p>
-                    <div aria-hidden="true" className="ml-1 flex-1 flex items-center">
-                      <Star lit={review.count > 0} />
-                      <div className="ml-3 relative flex-1">
-                        <div className="h-3 bg-gray-100 border border-gray-200 rounded-full" />
-                        {review.count > 0 ? (
-                          <div
-                            className="absolute inset-y-0 bg-yellow-400 border border-yellow-400 rounded-full"
-                            style={{ width: `calc(${count.count} / ${reviews.totalCount} * 100%)` }}
-                          />
-                        ) : null}
-                      </div>
-                    </div>
-                  </dt>
-                  <dd className="ml-3 w-10 text-right tabular-nums text-sm text-gray-900">
-                    {Math.round((count.count / reviews.totalCount) * 100)}%
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div> */}
+              <ReviewsRollup rollup={rollup} stats={stats} />
+            </div>
+          )}
 
           <div className="mt-10">
             <h3 className="text-lg font-medium text-gray-900">Share your thoughts</h3>
@@ -78,31 +56,9 @@ const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
 
           <div className="flow-root">
             <div className="-my-12 divide-y divide-gray-200">
-              {data.map((review) => (
-                <div key={review.id} className="py-12">
-                  <div className="flex items-center">
-                    {review.reviewer.imageUrl && (
-                      <NextImage
-                        height={48}
-                        width={48}
-                        src={review.reviewer.imageUrl}
-                        alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
-                        className="rounded-full"
-                      />
-                    )}
-                    <div className="ml-4">
-                      <h4 className="text-sm font-bold text-gray-900">
-                        {review.reviewer.firstName} {review.reviewer.lastName}
-                      </h4>
-                      <Stars rating={review.rating} />
-                      <p className="sr-only">{review.rating} out of 5 stars</p>
-                    </div>
-                  </div>
-
-                  <div
-                    className="mt-4 space-y-6 text-base italic text-gray-600"
-                    dangerouslySetInnerHTML={{ __html: review.body }}
-                  />
+              {data.map((review, idx) => (
+                <div key={review?.id ?? idx} className="py-12">
+                  {review ? <ReviewsListItem review={review} /> : <ReviewsListItemLoading />}
                 </div>
               ))}
             </div>
@@ -112,5 +68,3 @@ const Reviews = ({ reviews }: React.PropsWithChildren<ReviewsProps>) => {
     </section>
   );
 };
-
-export default Reviews;

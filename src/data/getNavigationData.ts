@@ -1,4 +1,4 @@
-import type { NormalizedCacheObject } from '@apollo/client';
+import { NormalizedCacheObject } from '@apollo/client';
 import { GetNavigationDataQuery } from 'features/Navigation/Navigation.queries';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 

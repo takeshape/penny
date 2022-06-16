@@ -1,4 +1,4 @@
-import type { ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 import { atom } from 'jotai';
 import fixtures from '../Cart.fixtures.json';
 import { CartItem } from './Item';

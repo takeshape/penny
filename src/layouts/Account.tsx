@@ -2,9 +2,9 @@ import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroic
 import Wrapper from 'components/Wrapper/Content';
 import AccountNavigation from 'features/Account/Navigation/Navigation';
 import { useSession } from 'next-auth/react';
-import type { NextSeoProps } from 'next-seo';
+import { NextSeoProps } from 'next-seo';
 import { useRouter } from 'next/router';
-import type { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import DefaultLayout from './Default';
 
 const navigation = [

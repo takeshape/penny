@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import { currencyList } from 'config';
-import type { NavigationData } from 'types/takeshape';
+import { NavigationData } from 'types/takeshape';
 
 // TakeShape doesn't support scalar arrays, so sticking with this for now
 export type NavigationCurrency = typeof currencyList[number];

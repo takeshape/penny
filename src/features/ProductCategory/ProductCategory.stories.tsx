@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { _Filters } from './Filters/Filters.stories';
 import { _Header } from './Header/Header.stories';
 import { _Pagination } from './Pagination/Pagination.stories';

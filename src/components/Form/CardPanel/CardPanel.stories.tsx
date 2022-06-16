@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import FormInput from 'components/Form/Input/Input';
 import { useForm } from 'react-hook-form';
 import { FormCardPanel } from './CardPanel';

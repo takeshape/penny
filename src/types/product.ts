@@ -1,4 +1,5 @@
 import { currencyList } from 'config';
+import { SetRequired } from 'type-fest';
 
 export type ProductImage = {
   height: number;
@@ -85,7 +86,7 @@ export type ProductBase = {
   description: string;
   descriptionHtml: string;
   featuredImage: ProductImage;
-  images: ProductImage[];
+  images?: ProductImage[];
   priceMin: ProductPrice;
   priceMax: ProductPrice;
   options: ProductOption[];
@@ -94,14 +95,9 @@ export type ProductBase = {
   hasOneTimePurchaseOption: boolean;
   hasSubscriptionPurchaseOption: boolean;
   hasStock: boolean;
-  // Freeform data, for display or later API calls
-  data: Record<string, unknown>;
   seo?: ProductSeo;
 };
 
 export type ProductListItem = ProductBase;
 
-export type Product = ProductBase & {
-  variants: ProductVariant[];
-  seo: ProductSeo;
-};
+export type Product = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;

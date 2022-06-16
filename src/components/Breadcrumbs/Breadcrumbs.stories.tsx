@@ -1,4 +1,4 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import Breadcrumbs from './Breadcrumbs';
 
 const Meta: ComponentMeta<typeof Breadcrumbs> = {

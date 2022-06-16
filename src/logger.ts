@@ -1,6 +1,5 @@
 import { commitSha, logLevel, nodeEnv } from 'config';
-import type { LoggerOptions } from 'pino';
-import pino from 'pino';
+import pino, { LoggerOptions } from 'pino';
 
 const config: LoggerOptions = {
   level: logLevel,

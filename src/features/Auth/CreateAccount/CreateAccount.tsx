@@ -1,14 +1,15 @@
 import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
+import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
-import type { CreateCustomerResponse } from 'queries';
-import { CreateCustomerMutation } from 'queries';
+import { CreateCustomerMutation, CreateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import type { MutationCreateCustomerArgs } from 'types/takeshape';
+import { MutationCreateCustomerArgs } from 'types/takeshape';
+import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 
 export interface AuthCreateAccountForm {
   email: string;
@@ -40,11 +41,20 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
     }
   }, [customerResponse, callbackUrl]);
 
+  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
+
   const onSubmit = useCallback(
-    async ({ email, password }: AuthCreateAccountForm) => {
-      await setCustomerPayload({ variables: { input: { email, password } } });
+    (e) => {
+      e.preventDefault();
+      executeRecaptcha((recaptchaToken) => {
+        handleSubmit(async ({ email, password }: AuthCreateAccountForm) => {
+          await setCustomerPayload({
+            variables: { input: { email, password, recaptchaToken } }
+          });
+        })();
+      });
     },
-    [setCustomerPayload]
+    [executeRecaptcha, handleSubmit, setCustomerPayload]
   );
 
   return (
@@ -57,7 +67,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             {error && (
               <Alert
                 status="error"
@@ -117,6 +127,8 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
                 validate: (value) => value === watched.current.password || 'The passwords do not match'
               }}
             />
+
+            <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
 
             <div>
               <Button
