@@ -28,12 +28,13 @@ const styles = {
 export const Button = <T extends React.ElementType = 'button'>(
   props: ButtonProps<T> & Omit<React.ComponentProps<T>, keyof ButtonProps<T>>
 ) => {
+  const { loading, ...rest } = props;
   const Component = props.as ?? 'button';
   return (
     <Component
-      {...props}
+      {...rest}
       onClick={props.onClick}
-      disabled={props.loading ?? props.disabled}
+      disabled={props.disabled || props.loading}
       className={classNames(
         props.className,
         styles.base,

@@ -403,6 +403,10 @@ type Query {
     """
     where: TSWhereProductPagePoliciesInput
   ): ProductPagePoliciesPaginatedList
+  Shopify_collection(
+    """The ID of the Collection to return."""
+    id: ID!
+  ): Shopify_Collection
   searchAssetIndex(
     terms: String
 
@@ -1220,6 +1224,61 @@ input TSWhereInput {
   environmentVariables: TSWhereTsStaticSiteEnvironmentVariablesInput
   triggers: TSWhereTsStaticSiteTriggersInput
   templateHash: TSWhereStringInput
+  bodyHtml: TSWhereStringInput
+  collections: TSWhereShopify_CollectionConnectionInput
+  contextualPricing: TSWhereShopify_ProductContextualPricingInput
+  createdAt: TSWhereInput
+  customProductType: TSWhereStringInput
+  defaultCursor: TSWhereStringInput
+  descriptionHtml: TSWhereInput
+  descriptionPlainSummary: TSWhereStringInput
+  featuredImage: TSWhereShopify_ImageInput
+  featuredMedia: TSWhereShopify_MediaInput
+  feedback: TSWhereShopify_ResourceFeedbackInput
+  giftCardTemplateSuffix: TSWhereStringInput
+  handle: TSWhereStringInput
+  hasOnlyDefaultVariant: TSWhereBooleanInput
+  hasOutOfStockVariants: TSWhereBooleanInput
+  id: TSWhereStringInput
+  Shopify_Product_images: TSWhereShopify_ImageConnectionInput
+  inCollection: TSWhereBooleanInput
+  isGiftCard: TSWhereBooleanInput
+  legacyResourceId: TSWhereInput
+  media: TSWhereShopify_MediaConnectionInput
+  mediaCount: TSWhereIntegerInput
+  metafield: TSWhereShopify_MetafieldInput
+  metafieldDefinitions: TSWhereShopify_MetafieldDefinitionConnectionInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  onlineStorePreviewUrl: TSWhereInput
+  onlineStoreUrl: TSWhereInput
+  options: TSWhereShopify_ProductOptionInput
+  priceRange: TSWhereShopify_ProductPriceRangeInput
+  priceRangeV2: TSWhereShopify_ProductPriceRangeV2Input
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  productType: TSWhereStringInput
+  publishedAt: TSWhereInput
+  publishedOnChannel: TSWhereBooleanInput
+  publishedOnPublication: TSWhereBooleanInput
+  requiresSellingPlan: TSWhereBooleanInput
+  resourcePublicationOnCurrentPublication: TSWhereShopify_ResourcePublicationV2Input
+  sellingPlanGroupCount: TSWhereIntegerInput
+  sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
+  seo: TSWhereShopify_SEOInput
+  standardizedProductType: TSWhereShopify_StandardizedProductTypeInput
+  status: TSWhereStringInput
+  storefrontId: TSWhereInput
+  tags: TSWhereShopify_ProductTagsInput
+  templateSuffix: TSWhereStringInput
+  totalInventory: TSWhereIntegerInput
+  totalVariants: TSWhereIntegerInput
+  tracksInventory: TSWhereBooleanInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  updatedAt: TSWhereInput
+  variants: TSWhereShopify_ProductVariantConnectionInput
+  vendor: TSWhereStringInput
+  reviews: TSWhereReviewsIo_ListProductReviewsResponseInput
+  recharge: TSWhereRecharge_ProductInput
   message: TSWhereStringInput
   links: TSWhereNavigationDataLinksInput
   navigation: TSWhereFooterNavigationInput
@@ -1239,8 +1298,7 @@ input TSWhereInput {
   ProductPagePolicies_policies: TSWhereProductPagePoliciesPoliciesInput
   active: TSWhereBooleanInput
   created: TSWhereIntegerInput
-  id: TSWhereStringInput
-  images: TSWhereStripe_ProductImagesInput
+  Stripe_Product_images: TSWhereStripe_Product_ImagesInput
   livemode: TSWhereBooleanInput
   object: TSWhereInput
   package_dimensions: TSWhereStripe_PackageDimensionsInput
@@ -1253,6 +1311,1435 @@ input TSWhereInput {
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
+}
+
+input TSWhereShopify_CollectionConnectionInput {
+  edges: TSWhereShopify_CollectionEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_CollectionEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_CollectionInput
+}
+
+input TSWhereShopify_CollectionInput {
+  description: TSWhereStringInput
+  descriptionHtml: TSWhereInput
+  feedback: TSWhereShopify_ResourceFeedbackInput
+  handle: TSWhereStringInput
+  hasProduct: TSWhereBooleanInput
+  id: TSWhereStringInput
+  image: TSWhereShopify_ImageInput
+  legacyResourceId: TSWhereInput
+  metafield: TSWhereShopify_MetafieldInput
+  metafieldDefinitions: TSWhereShopify_MetafieldDefinitionConnectionInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  products: TSWhereShopify_ProductConnectionInput
+  productsCount: TSWhereIntegerInput
+  publishedOnChannel: TSWhereBooleanInput
+  publishedOnPublication: TSWhereBooleanInput
+  ruleSet: TSWhereShopify_CollectionRuleSetInput
+  seo: TSWhereShopify_SEOInput
+  sortOrder: TSWhereStringInput
+  storefrontId: TSWhereInput
+  templateSuffix: TSWhereStringInput
+  title: TSWhereStringInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  updatedAt: TSWhereInput
+}
+
+input TSWhereShopify_ResourceFeedbackInput {
+  appFeedback: TSWhereShopify_AppFeedbackInput
+  details: TSWhereShopify_AppFeedbackInput
+  summary: TSWhereStringInput
+}
+
+input TSWhereShopify_AppFeedbackInput {
+  app: TSWhereShopify_AppInput
+  link: TSWhereShopify_LinkInput
+  messages: TSWhereShopify_UserErrorInput
+}
+
+input TSWhereShopify_AppInput {
+  apiKey: TSWhereStringInput
+  appStoreAppUrl: TSWhereInput
+  appStoreDeveloperUrl: TSWhereInput
+  banner: TSWhereShopify_ImageInput
+  description: TSWhereStringInput
+  developerName: TSWhereStringInput
+  developerUrl: TSWhereInput
+  embedded: TSWhereBooleanInput
+  failedRequirements: TSWhereShopify_FailedRequirementInput
+  features: TSWhereShopify_ProductFeaturesInput
+  feedback: TSWhereShopify_AppFeedbackInput
+  handle: TSWhereStringInput
+  icon: TSWhereShopify_ImageInput
+  id: TSWhereStringInput
+  installUrl: TSWhereInput
+  installation: TSWhereShopify_AppInstallationInput
+  isPostPurchaseAppInUse: TSWhereBooleanInput
+  launchUrl: TSWhereInput
+  navigationItems: TSWhereShopify_NavigationItemInput
+  pricingDetails: TSWhereStringInput
+  pricingDetailsSummary: TSWhereStringInput
+  privacyPolicyUrl: TSWhereInput
+  published: TSWhereBooleanInput
+  screenshots: TSWhereShopify_ImageInput
+  shopifyDeveloped: TSWhereBooleanInput
+  title: TSWhereStringInput
+  uninstallMessage: TSWhereStringInput
+  uninstallUrl: TSWhereInput
+}
+
+input TSWhereShopify_ImageInput {
+  altText: TSWhereStringInput
+  height: TSWhereIntegerInput
+  id: TSWhereStringInput
+  metafield: TSWhereShopify_MetafieldInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  originalSrc: TSWhereInput
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  src: TSWhereInput
+  transformedSrc: TSWhereInput
+  url: TSWhereInput
+  width: TSWhereIntegerInput
+}
+
+input TSWhereShopify_MetafieldInput {
+  createdAt: TSWhereInput
+  definition: TSWhereShopify_MetafieldDefinitionInput
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  key: TSWhereStringInput
+  legacyResourceId: TSWhereInput
+  namespace: TSWhereStringInput
+  owner: TSWhereShopify_HasMetafieldsInput
+  ownerType: TSWhereStringInput
+  reference: TSWhereShopify_MetafieldReferenceInput
+  type: TSWhereStringInput
+  updatedAt: TSWhereInput
+  value: TSWhereStringInput
+}
+
+input TSWhereShopify_MetafieldDefinitionInput {
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  key: TSWhereStringInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  metafieldsCount: TSWhereIntegerInput
+  name: TSWhereStringInput
+  namespace: TSWhereStringInput
+  ownerType: TSWhereStringInput
+  pinnedPosition: TSWhereIntegerInput
+  standardTemplate: TSWhereShopify_StandardMetafieldDefinitionTemplateInput
+  type: TSWhereShopify_MetafieldDefinitionTypeInput
+  validationStatus: TSWhereStringInput
+  validations: TSWhereShopify_MetafieldDefinitionValidationInput
+}
+
+input TSWhereShopify_MetafieldConnectionInput {
+  edges: TSWhereShopify_MetafieldEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_MetafieldEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_MetafieldInput
+}
+
+input TSWhereShopify_PageInfoInput {
+  hasNextPage: TSWhereBooleanInput
+  hasPreviousPage: TSWhereBooleanInput
+}
+
+input TSWhereShopify_StandardMetafieldDefinitionTemplateInput {
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  key: TSWhereStringInput
+  name: TSWhereStringInput
+  namespace: TSWhereStringInput
+  type: TSWhereShopify_MetafieldDefinitionTypeInput
+  validations: TSWhereShopify_MetafieldDefinitionValidationInput
+}
+
+input TSWhereShopify_MetafieldDefinitionTypeInput {
+  category: TSWhereStringInput
+  name: TSWhereStringInput
+  supportedValidations: TSWhereShopify_MetafieldDefinitionSupportedValidationInput
+  supportsDefinitionMigrations: TSWhereBooleanInput
+  valueType: TSWhereStringInput
+}
+
+input TSWhereShopify_MetafieldDefinitionSupportedValidationInput {
+  name: TSWhereStringInput
+  type: TSWhereStringInput
+}
+
+input TSWhereShopify_MetafieldDefinitionValidationInput {
+  name: TSWhereStringInput
+  type: TSWhereStringInput
+  value: TSWhereStringInput
+}
+
+input TSWhereShopify_HasMetafieldsInput {
+  metafield: TSWhereShopify_MetafieldInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+}
+
+input TSWhereShopify_PrivateMetafieldInput {
+  createdAt: TSWhereInput
+  id: TSWhereStringInput
+  key: TSWhereStringInput
+  namespace: TSWhereStringInput
+  updatedAt: TSWhereInput
+  value: TSWhereStringInput
+  valueType: TSWhereStringInput
+}
+
+input TSWhereShopify_PrivateMetafieldConnectionInput {
+  edges: TSWhereShopify_PrivateMetafieldEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_PrivateMetafieldEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_PrivateMetafieldInput
+}
+
+input TSWhereShopify_MetafieldReferenceInput {
+  alt: TSWhereStringInput
+  createdAt: TSWhereInput
+  fileErrors: TSWhereShopify_FileErrorInput
+  fileStatus: TSWhereStringInput
+  id: TSWhereStringInput
+  preview: TSWhereShopify_MediaPreviewImageInput
+  url: TSWhereInput
+  image: TSWhereShopify_ImageInput
+  mediaContentType: TSWhereStringInput
+  mediaErrors: TSWhereShopify_MediaErrorInput
+  mediaWarnings: TSWhereShopify_MediaWarningInput
+  mimeType: TSWhereStringInput
+  status: TSWhereStringInput
+  defaultCursor: TSWhereStringInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  bodyHtml: TSWhereStringInput
+  collections: TSWhereShopify_CollectionConnectionInput
+  contextualPricing: TSWhereShopify_ProductVariantContextualPricingInput
+  customProductType: TSWhereStringInput
+  description: TSWhereStringInput
+  descriptionHtml: TSWhereInput
+  descriptionPlainSummary: TSWhereStringInput
+  featuredImage: TSWhereShopify_ImageInput
+  featuredMedia: TSWhereShopify_MediaInput
+  feedback: TSWhereShopify_ResourceFeedbackInput
+  giftCardTemplateSuffix: TSWhereStringInput
+  handle: TSWhereStringInput
+  hasOnlyDefaultVariant: TSWhereBooleanInput
+  hasOutOfStockVariants: TSWhereBooleanInput
+  images: TSWhereShopify_ImageConnectionInput
+  inCollection: TSWhereBooleanInput
+  isGiftCard: TSWhereBooleanInput
+  legacyResourceId: TSWhereInput
+  media: TSWhereShopify_MediaConnectionInput
+  mediaCount: TSWhereIntegerInput
+  metafield: TSWhereShopify_MetafieldInput
+  metafieldDefinitions: TSWhereShopify_MetafieldDefinitionConnectionInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  onlineStorePreviewUrl: TSWhereInput
+  onlineStoreUrl: TSWhereInput
+  options: TSWhereShopify_ProductOptionInput
+  priceRange: TSWhereShopify_ProductPriceRangeInput
+  priceRangeV2: TSWhereShopify_ProductPriceRangeV2Input
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  productType: TSWhereStringInput
+  publishedAt: TSWhereInput
+  publishedOnChannel: TSWhereBooleanInput
+  publishedOnPublication: TSWhereBooleanInput
+  requiresSellingPlan: TSWhereBooleanInput
+  resourcePublicationOnCurrentPublication: TSWhereShopify_ResourcePublicationV2Input
+  sellingPlanGroupCount: TSWhereIntegerInput
+  sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
+  seo: TSWhereShopify_SEOInput
+  standardizedProductType: TSWhereShopify_StandardizedProductTypeInput
+  storefrontId: TSWhereInput
+  tags: TSWhereShopify_ProductTagsInput
+  templateSuffix: TSWhereStringInput
+  title: TSWhereStringInput
+  totalInventory: TSWhereIntegerInput
+  totalVariants: TSWhereIntegerInput
+  tracksInventory: TSWhereBooleanInput
+  updatedAt: TSWhereInput
+  variants: TSWhereShopify_ProductVariantConnectionInput
+  vendor: TSWhereStringInput
+  reviews: TSWhereReviewsIo_ListProductReviewsResponseInput
+  recharge: TSWhereRecharge_ProductInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  availableForSale: TSWhereBooleanInput
+  barcode: TSWhereStringInput
+  compareAtPrice: TSWhereInput
+  deliveryProfile: TSWhereShopify_DeliveryProfileInput
+  displayName: TSWhereStringInput
+  fulfillmentService: TSWhereShopify_FulfillmentServiceInput
+  fulfillmentServiceEditable: TSWhereShopify_EditablePropertyInput
+  harmonizedSystemCode: TSWhereStringInput
+  inventoryItem: TSWhereShopify_InventoryItemInput
+  inventoryManagement: TSWhereStringInput
+  inventoryPolicy: TSWhereStringInput
+  inventoryQuantity: TSWhereIntegerInput
+  position: TSWhereIntegerInput
+  presentmentPrices: TSWhereShopify_ProductVariantPricePairConnectionInput
+  price: TSWhereInput
+  product: TSWhereShopify_ProductInput
+  requiresShipping: TSWhereBooleanInput
+  selectedOptions: TSWhereShopify_SelectedOptionInput
+  sellableOnlineQuantity: TSWhereIntegerInput
+  sku: TSWhereStringInput
+  taxCode: TSWhereStringInput
+  taxable: TSWhereBooleanInput
+  weight: TSWhereNumberInput
+  weightUnit: TSWhereStringInput
+}
+
+input TSWhereShopify_FileErrorInput {
+  code: TSWhereStringInput
+  details: TSWhereStringInput
+  message: TSWhereStringInput
+}
+
+input TSWhereShopify_MediaPreviewImageInput {
+  image: TSWhereShopify_ImageInput
+  status: TSWhereStringInput
+}
+
+input TSWhereShopify_MediaErrorInput {
+  code: TSWhereStringInput
+  details: TSWhereStringInput
+  message: TSWhereStringInput
+}
+
+input TSWhereShopify_MediaWarningInput {
+  code: TSWhereStringInput
+  message: TSWhereStringInput
+}
+
+input TSWhereShopify_PublishedTranslationInput {
+  key: TSWhereStringInput
+  locale: TSWhereStringInput
+  value: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductVariantContextualPricingInput {
+  compareAtPrice: TSWhereShopify_MoneyV2Input
+  price: TSWhereShopify_MoneyV2Input
+}
+
+input TSWhereShopify_MoneyV2Input {
+  amount: TSWhereInput
+  currencyCode: TSWhereStringInput
+}
+
+input TSWhereShopify_MediaInput {
+  alt: TSWhereStringInput
+  mediaContentType: TSWhereStringInput
+  mediaErrors: TSWhereShopify_MediaErrorInput
+  mediaWarnings: TSWhereShopify_MediaWarningInput
+  preview: TSWhereShopify_MediaPreviewImageInput
+  status: TSWhereStringInput
+}
+
+input TSWhereShopify_ImageConnectionInput {
+  edges: TSWhereShopify_ImageEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ImageEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ImageInput
+}
+
+input TSWhereShopify_MediaConnectionInput {
+  edges: TSWhereShopify_MediaEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_MediaEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_MediaInput
+}
+
+input TSWhereShopify_MetafieldDefinitionConnectionInput {
+  edges: TSWhereShopify_MetafieldDefinitionEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_MetafieldDefinitionEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_MetafieldDefinitionInput
+}
+
+input TSWhereShopify_ProductOptionInput {
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  position: TSWhereIntegerInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  values: TSWhereShopify_ProductValuesInput
+}
+
+input TSWhereShopify_ProductValuesInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_ProductPriceRangeInput {
+  maxVariantPrice: TSWhereShopify_MoneyV2Input
+  minVariantPrice: TSWhereShopify_MoneyV2Input
+}
+
+input TSWhereShopify_ProductPriceRangeV2Input {
+  maxVariantPrice: TSWhereShopify_MoneyV2Input
+  minVariantPrice: TSWhereShopify_MoneyV2Input
+}
+
+input TSWhereShopify_ResourcePublicationV2Input {
+  isPublished: TSWhereBooleanInput
+  publication: TSWhereShopify_PublicationInput
+  publishDate: TSWhereInput
+  publishable: TSWhereShopify_PublishableInput
+}
+
+input TSWhereShopify_PublicationInput {
+  app: TSWhereShopify_AppInput
+  collectionPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
+  collections: TSWhereShopify_CollectionConnectionInput
+  hasCollection: TSWhereBooleanInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  productPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
+  products: TSWhereShopify_ProductConnectionInput
+  supportsFuturePublishing: TSWhereBooleanInput
+}
+
+input TSWhereShopify_ResourcePublicationConnectionInput {
+  edges: TSWhereShopify_ResourcePublicationEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ResourcePublicationEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ResourcePublicationInput
+}
+
+input TSWhereShopify_ResourcePublicationInput {
+  channel: TSWhereShopify_ChannelInput
+  isPublished: TSWhereBooleanInput
+  publication: TSWhereShopify_PublicationInput
+  publishDate: TSWhereInput
+  publishable: TSWhereShopify_PublishableInput
+}
+
+input TSWhereShopify_ChannelInput {
+  app: TSWhereShopify_AppInput
+  collectionPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
+  collections: TSWhereShopify_CollectionConnectionInput
+  handle: TSWhereStringInput
+  hasCollection: TSWhereBooleanInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  navigationItems: TSWhereShopify_NavigationItemInput
+  overviewPath: TSWhereInput
+  productPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
+  products: TSWhereShopify_ProductConnectionInput
+  supportsFuturePublishing: TSWhereBooleanInput
+}
+
+input TSWhereShopify_NavigationItemInput {
+  id: TSWhereStringInput
+  title: TSWhereStringInput
+  url: TSWhereInput
+}
+
+input TSWhereShopify_ProductConnectionInput {
+  edges: TSWhereShopify_ProductEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ProductEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ProductInput
+}
+
+input TSWhereShopify_ProductInput {
+  bodyHtml: TSWhereStringInput
+  collections: TSWhereShopify_CollectionConnectionInput
+  contextualPricing: TSWhereShopify_ProductContextualPricingInput
+  createdAt: TSWhereInput
+  customProductType: TSWhereStringInput
+  defaultCursor: TSWhereStringInput
+  description: TSWhereStringInput
+  descriptionHtml: TSWhereInput
+  descriptionPlainSummary: TSWhereStringInput
+  featuredImage: TSWhereShopify_ImageInput
+  featuredMedia: TSWhereShopify_MediaInput
+  feedback: TSWhereShopify_ResourceFeedbackInput
+  giftCardTemplateSuffix: TSWhereStringInput
+  handle: TSWhereStringInput
+  hasOnlyDefaultVariant: TSWhereBooleanInput
+  hasOutOfStockVariants: TSWhereBooleanInput
+  id: TSWhereStringInput
+  images: TSWhereShopify_ImageConnectionInput
+  inCollection: TSWhereBooleanInput
+  isGiftCard: TSWhereBooleanInput
+  legacyResourceId: TSWhereInput
+  media: TSWhereShopify_MediaConnectionInput
+  mediaCount: TSWhereIntegerInput
+  metafield: TSWhereShopify_MetafieldInput
+  metafieldDefinitions: TSWhereShopify_MetafieldDefinitionConnectionInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  onlineStorePreviewUrl: TSWhereInput
+  onlineStoreUrl: TSWhereInput
+  options: TSWhereShopify_ProductOptionInput
+  priceRange: TSWhereShopify_ProductPriceRangeInput
+  priceRangeV2: TSWhereShopify_ProductPriceRangeV2Input
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  productType: TSWhereStringInput
+  publishedAt: TSWhereInput
+  publishedOnChannel: TSWhereBooleanInput
+  publishedOnPublication: TSWhereBooleanInput
+  requiresSellingPlan: TSWhereBooleanInput
+  resourcePublicationOnCurrentPublication: TSWhereShopify_ResourcePublicationV2Input
+  sellingPlanGroupCount: TSWhereIntegerInput
+  sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
+  seo: TSWhereShopify_SEOInput
+  standardizedProductType: TSWhereShopify_StandardizedProductTypeInput
+  status: TSWhereStringInput
+  storefrontId: TSWhereInput
+  tags: TSWhereShopify_ProductVariantTagsInput
+  templateSuffix: TSWhereStringInput
+  title: TSWhereStringInput
+  totalInventory: TSWhereIntegerInput
+  totalVariants: TSWhereIntegerInput
+  tracksInventory: TSWhereBooleanInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  updatedAt: TSWhereInput
+  variants: TSWhereShopify_ProductVariantConnectionInput
+  vendor: TSWhereStringInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+}
+
+input TSWhereShopify_ProductContextualPricingInput {
+  maxVariantPricing: TSWhereShopify_ProductVariantContextualPricingInput
+  minVariantPricing: TSWhereShopify_ProductVariantContextualPricingInput
+  priceRange: TSWhereShopify_ProductPriceRangeV2Input
+}
+
+input TSWhereShopify_SellingPlanGroupConnectionInput {
+  edges: TSWhereShopify_SellingPlanGroupEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_SellingPlanGroupEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_SellingPlanGroupInput
+}
+
+input TSWhereShopify_SellingPlanGroupInput {
+  appId: TSWhereStringInput
+  appliesToProduct: TSWhereBooleanInput
+  appliesToProductVariant: TSWhereBooleanInput
+  appliesToProductVariants: TSWhereBooleanInput
+  createdAt: TSWhereInput
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  merchantCode: TSWhereStringInput
+  name: TSWhereStringInput
+  options: TSWhereShopify_ProductOptionsInput
+  position: TSWhereIntegerInput
+  productCount: TSWhereIntegerInput
+  productVariantCount: TSWhereIntegerInput
+  productVariants: TSWhereShopify_ProductVariantConnectionInput
+  products: TSWhereShopify_ProductConnectionInput
+  sellingPlans: TSWhereShopify_SellingPlanConnectionInput
+  summary: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductOptionsInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_ProductVariantConnectionInput {
+  edges: TSWhereShopify_ProductVariantEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ProductVariantEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ProductVariantInput
+}
+
+input TSWhereShopify_ProductVariantInput {
+  availableForSale: TSWhereBooleanInput
+  barcode: TSWhereStringInput
+  compareAtPrice: TSWhereInput
+  contextualPricing: TSWhereShopify_ProductVariantContextualPricingInput
+  createdAt: TSWhereInput
+  defaultCursor: TSWhereStringInput
+  deliveryProfile: TSWhereShopify_DeliveryProfileInput
+  displayName: TSWhereStringInput
+  fulfillmentService: TSWhereShopify_FulfillmentServiceInput
+  fulfillmentServiceEditable: TSWhereShopify_EditablePropertyInput
+  harmonizedSystemCode: TSWhereStringInput
+  id: TSWhereStringInput
+  image: TSWhereShopify_ImageInput
+  inventoryItem: TSWhereShopify_InventoryItemInput
+  inventoryManagement: TSWhereStringInput
+  inventoryPolicy: TSWhereStringInput
+  inventoryQuantity: TSWhereIntegerInput
+  legacyResourceId: TSWhereInput
+  media: TSWhereShopify_MediaConnectionInput
+  metafield: TSWhereShopify_MetafieldInput
+  metafieldDefinitions: TSWhereShopify_MetafieldDefinitionConnectionInput
+  metafields: TSWhereShopify_MetafieldConnectionInput
+  position: TSWhereIntegerInput
+  presentmentPrices: TSWhereShopify_ProductVariantPricePairConnectionInput
+  price: TSWhereInput
+  privateMetafield: TSWhereShopify_PrivateMetafieldInput
+  privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  product: TSWhereShopify_ProductInput
+  requiresShipping: TSWhereBooleanInput
+  selectedOptions: TSWhereShopify_SelectedOptionInput
+  sellableOnlineQuantity: TSWhereIntegerInput
+  sellingPlanGroupCount: TSWhereIntegerInput
+  sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
+  sku: TSWhereStringInput
+  storefrontId: TSWhereInput
+  taxCode: TSWhereStringInput
+  taxable: TSWhereBooleanInput
+  title: TSWhereStringInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  updatedAt: TSWhereInput
+  weight: TSWhereNumberInput
+  weightUnit: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryProfileInput {
+  activeMethodDefinitionsCount: TSWhereIntegerInput
+  default: TSWhereBooleanInput
+  id: TSWhereStringInput
+  legacyMode: TSWhereBooleanInput
+  locationsWithoutRatesCount: TSWhereIntegerInput
+  name: TSWhereStringInput
+  originLocationCount: TSWhereIntegerInput
+  productVariantsCount: TSWhereIntegerInput
+  productVariantsCountV2: TSWhereShopify_DeliveryProductVariantsCountInput
+  profileItems: TSWhereShopify_DeliveryProfileItemConnectionInput
+  profileLocationGroups: TSWhereShopify_DeliveryProfileLocationGroupInput
+  sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
+  unassignedLocations: TSWhereShopify_LocationInput
+  zoneCountryCount: TSWhereIntegerInput
+}
+
+input TSWhereShopify_DeliveryProductVariantsCountInput {
+  capped: TSWhereBooleanInput
+  count: TSWhereIntegerInput
+}
+
+input TSWhereShopify_DeliveryProfileItemConnectionInput {
+  edges: TSWhereShopify_DeliveryProfileItemEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_DeliveryProfileItemEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_DeliveryProfileItemInput
+}
+
+input TSWhereShopify_DeliveryProfileItemInput {
+  id: TSWhereStringInput
+  product: TSWhereShopify_ProductInput
+  variants: TSWhereShopify_ProductVariantConnectionInput
+}
+
+input TSWhereShopify_DeliveryProfileLocationGroupInput {
+  countriesInAnyZone: TSWhereShopify_DeliveryCountryAndZoneInput
+  locationGroup: TSWhereShopify_DeliveryLocationGroupInput
+  locationGroupZones: TSWhereShopify_DeliveryLocationGroupZoneConnectionInput
+}
+
+input TSWhereShopify_DeliveryCountryAndZoneInput {
+  country: TSWhereShopify_DeliveryCountryInput
+  zone: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryCountryInput {
+  code: TSWhereShopify_DeliveryCountryCodeOrRestOfWorldInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  provinces: TSWhereShopify_DeliveryProvinceInput
+  translatedName: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryCountryCodeOrRestOfWorldInput {
+  countryCode: TSWhereStringInput
+  restOfWorld: TSWhereBooleanInput
+}
+
+input TSWhereShopify_DeliveryProvinceInput {
+  code: TSWhereStringInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  translatedName: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryLocationGroupInput {
+  id: TSWhereStringInput
+  locations: TSWhereShopify_LocationConnectionInput
+}
+
+input TSWhereShopify_LocationConnectionInput {
+  edges: TSWhereShopify_LocationEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_LocationEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_LocationInput
+}
+
+input TSWhereShopify_LocationInput {
+  activatable: TSWhereBooleanInput
+  address: TSWhereShopify_LocationAddressInput
+  addressVerified: TSWhereBooleanInput
+  deactivatable: TSWhereBooleanInput
+  deactivatedAt: TSWhereStringInput
+  deletable: TSWhereBooleanInput
+  fulfillmentService: TSWhereShopify_FulfillmentServiceInput
+  fulfillsOnlineOrders: TSWhereBooleanInput
+  hasActiveInventory: TSWhereBooleanInput
+  hasUnfulfilledOrders: TSWhereBooleanInput
+  id: TSWhereStringInput
+  inventoryLevel: TSWhereShopify_InventoryLevelInput
+  inventoryLevels: TSWhereShopify_InventoryLevelConnectionInput
+  isActive: TSWhereBooleanInput
+  isPrimary: TSWhereBooleanInput
+  legacyResourceId: TSWhereInput
+  metafieldDefinitions: TSWhereShopify_MetafieldDefinitionConnectionInput
+  name: TSWhereStringInput
+  shipsInventory: TSWhereBooleanInput
+  suggestedAddresses: TSWhereShopify_LocationSuggestedAddressInput
+}
+
+input TSWhereShopify_LocationAddressInput {
+  address1: TSWhereStringInput
+  address2: TSWhereStringInput
+  city: TSWhereStringInput
+  country: TSWhereStringInput
+  countryCode: TSWhereStringInput
+  formatted: TSWhereShopify_ProductVariantFormattedInput
+  latitude: TSWhereNumberInput
+  longitude: TSWhereNumberInput
+  phone: TSWhereStringInput
+  province: TSWhereStringInput
+  provinceCode: TSWhereStringInput
+  zip: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductVariantFormattedInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_FulfillmentServiceInput {
+  callbackUrl: TSWhereInput
+  fulfillmentOrdersOptIn: TSWhereBooleanInput
+  handle: TSWhereStringInput
+  id: TSWhereStringInput
+  inventoryManagement: TSWhereBooleanInput
+  location: TSWhereShopify_LocationInput
+  productBased: TSWhereBooleanInput
+  serviceName: TSWhereStringInput
+  shippingMethods: TSWhereShopify_ShippingMethodInput
+  type: TSWhereStringInput
+}
+
+input TSWhereShopify_ShippingMethodInput {
+  code: TSWhereStringInput
+  label: TSWhereStringInput
+}
+
+input TSWhereShopify_InventoryLevelInput {
+  available: TSWhereIntegerInput
+  canDeactivate: TSWhereBooleanInput
+  createdAt: TSWhereInput
+  deactivationAlert: TSWhereStringInput
+  deactivationAlertHtml: TSWhereInput
+  id: TSWhereStringInput
+  incoming: TSWhereIntegerInput
+  item: TSWhereShopify_InventoryItemInput
+  location: TSWhereShopify_LocationInput
+  updatedAt: TSWhereInput
+}
+
+input TSWhereShopify_InventoryItemInput {
+  countryCodeOfOrigin: TSWhereStringInput
+  countryHarmonizedSystemCodes: TSWhereShopify_CountryHarmonizedSystemCodeConnectionInput
+  createdAt: TSWhereInput
+  duplicateSkuCount: TSWhereIntegerInput
+  harmonizedSystemCode: TSWhereStringInput
+  id: TSWhereStringInput
+  inventoryHistoryUrl: TSWhereInput
+  inventoryLevel: TSWhereShopify_InventoryLevelInput
+  inventoryLevels: TSWhereShopify_InventoryLevelConnectionInput
+  legacyResourceId: TSWhereInput
+  locationsCount: TSWhereIntegerInput
+  provinceCodeOfOrigin: TSWhereStringInput
+  requiresShipping: TSWhereBooleanInput
+  sku: TSWhereStringInput
+  tracked: TSWhereBooleanInput
+  trackedEditable: TSWhereShopify_EditablePropertyInput
+  unitCost: TSWhereShopify_MoneyV2Input
+  updatedAt: TSWhereInput
+  variant: TSWhereShopify_ProductVariantInput
+}
+
+input TSWhereShopify_CountryHarmonizedSystemCodeConnectionInput {
+  edges: TSWhereShopify_CountryHarmonizedSystemCodeEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_CountryHarmonizedSystemCodeEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_CountryHarmonizedSystemCodeInput
+}
+
+input TSWhereShopify_CountryHarmonizedSystemCodeInput {
+  countryCode: TSWhereStringInput
+  harmonizedSystemCode: TSWhereStringInput
+}
+
+input TSWhereShopify_InventoryLevelConnectionInput {
+  edges: TSWhereShopify_InventoryLevelEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_InventoryLevelEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_InventoryLevelInput
+}
+
+input TSWhereShopify_EditablePropertyInput {
+  locked: TSWhereBooleanInput
+  reason: TSWhereInput
+}
+
+input TSWhereShopify_LocationSuggestedAddressInput {
+  address1: TSWhereStringInput
+  address2: TSWhereStringInput
+  city: TSWhereStringInput
+  country: TSWhereStringInput
+  countryCode: TSWhereStringInput
+  formatted: TSWhereShopify_ProductVariantFormattedInput
+  province: TSWhereStringInput
+  provinceCode: TSWhereStringInput
+  zip: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryLocationGroupZoneConnectionInput {
+  edges: TSWhereShopify_DeliveryLocationGroupZoneEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_DeliveryLocationGroupZoneEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_DeliveryLocationGroupZoneInput
+}
+
+input TSWhereShopify_DeliveryLocationGroupZoneInput {
+  methodDefinitionCounts: TSWhereShopify_DeliveryMethodDefinitionCountsInput
+  methodDefinitions: TSWhereShopify_DeliveryMethodDefinitionConnectionInput
+  zone: TSWhereShopify_DeliveryZoneInput
+}
+
+input TSWhereShopify_DeliveryMethodDefinitionCountsInput {
+  participantDefinitionsCount: TSWhereIntegerInput
+  rateDefinitionsCount: TSWhereIntegerInput
+}
+
+input TSWhereShopify_DeliveryMethodDefinitionConnectionInput {
+  edges: TSWhereShopify_DeliveryMethodDefinitionEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_DeliveryMethodDefinitionEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_DeliveryMethodDefinitionInput
+}
+
+input TSWhereShopify_DeliveryMethodDefinitionInput {
+  active: TSWhereBooleanInput
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  methodConditions: TSWhereShopify_DeliveryConditionInput
+  name: TSWhereStringInput
+  rateProvider: TSWhereShopify_DeliveryRateProviderInput
+}
+
+input TSWhereShopify_DeliveryConditionInput {
+  conditionCriteria: TSWhereShopify_DeliveryConditionCriteriaInput
+  field: TSWhereStringInput
+  id: TSWhereStringInput
+  operator: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryConditionCriteriaInput {
+  amount: TSWhereInput
+  currencyCode: TSWhereStringInput
+  unit: TSWhereStringInput
+  value: TSWhereNumberInput
+}
+
+input TSWhereShopify_DeliveryRateProviderInput {
+  adaptToNewServicesFlag: TSWhereBooleanInput
+  carrierService: TSWhereShopify_DeliveryCarrierServiceInput
+  fixedFee: TSWhereShopify_MoneyV2Input
+  id: TSWhereStringInput
+  participantServices: TSWhereShopify_DeliveryParticipantServiceInput
+  percentageOfRateFee: TSWhereNumberInput
+  price: TSWhereShopify_MoneyV2Input
+}
+
+input TSWhereShopify_DeliveryCarrierServiceInput {
+  availableServicesForCountries: TSWhereShopify_DeliveryAvailableServiceInput
+  formattedName: TSWhereStringInput
+  icon: TSWhereShopify_ImageInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryAvailableServiceInput {
+  countries: TSWhereShopify_DeliveryCountryCodesOrRestOfWorldInput
+  name: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryCountryCodesOrRestOfWorldInput {
+  restOfWorld: TSWhereBooleanInput
+}
+
+input TSWhereShopify_DeliveryParticipantServiceInput {
+  active: TSWhereBooleanInput
+  name: TSWhereStringInput
+}
+
+input TSWhereShopify_DeliveryZoneInput {
+  countries: TSWhereShopify_DeliveryCountryInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductVariantPricePairConnectionInput {
+  edges: TSWhereShopify_ProductVariantPricePairEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ProductVariantPricePairEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ProductVariantPricePairInput
+}
+
+input TSWhereShopify_ProductVariantPricePairInput {
+  compareAtPrice: TSWhereShopify_MoneyV2Input
+  price: TSWhereShopify_MoneyV2Input
+}
+
+input TSWhereShopify_SelectedOptionInput {
+  name: TSWhereStringInput
+  value: TSWhereStringInput
+}
+
+input TSWhereShopify_SellingPlanConnectionInput {
+  edges: TSWhereShopify_SellingPlanEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_SellingPlanEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_SellingPlanInput
+}
+
+input TSWhereShopify_SellingPlanInput {
+  billingPolicy: TSWhereShopify_SellingPlanBillingPolicyInput
+  createdAt: TSWhereInput
+  deliveryPolicy: TSWhereShopify_SellingPlanDeliveryPolicyInput
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  options: TSWhereShopify_ProductOptionsInput
+  position: TSWhereIntegerInput
+  pricingPolicies: TSWhereShopify_SellingPlanPricingPolicyInput
+}
+
+input TSWhereShopify_SellingPlanBillingPolicyInput {
+  anchors: TSWhereShopify_SellingPlanAnchorInput
+  createdAt: TSWhereInput
+  interval: TSWhereStringInput
+  intervalCount: TSWhereIntegerInput
+  maxCycles: TSWhereIntegerInput
+  minCycles: TSWhereIntegerInput
+}
+
+input TSWhereShopify_SellingPlanAnchorInput {
+  day: TSWhereIntegerInput
+  month: TSWhereIntegerInput
+  type: TSWhereStringInput
+}
+
+input TSWhereShopify_SellingPlanDeliveryPolicyInput {
+  anchors: TSWhereShopify_SellingPlanAnchorInput
+  createdAt: TSWhereInput
+  cutoff: TSWhereIntegerInput
+  intent: TSWhereStringInput
+  interval: TSWhereStringInput
+  intervalCount: TSWhereIntegerInput
+  preAnchorBehavior: TSWhereStringInput
+}
+
+input TSWhereShopify_SellingPlanPricingPolicyInput {
+  adjustmentType: TSWhereStringInput
+  adjustmentValue: TSWhereShopify_SellingPlanPricingPolicyAdjustmentValueInput
+  createdAt: TSWhereInput
+  afterCycle: TSWhereIntegerInput
+}
+
+input TSWhereShopify_SellingPlanPricingPolicyAdjustmentValueInput {
+  amount: TSWhereInput
+  currencyCode: TSWhereStringInput
+  percentage: TSWhereNumberInput
+}
+
+input TSWhereShopify_SEOInput {
+  description: TSWhereStringInput
+  title: TSWhereStringInput
+}
+
+input TSWhereShopify_StandardizedProductTypeInput {
+  productTaxonomyNode: TSWhereShopify_ProductTaxonomyNodeInput
+}
+
+input TSWhereShopify_ProductTaxonomyNodeInput {
+  fullName: TSWhereStringInput
+  id: TSWhereStringInput
+  isLeaf: TSWhereBooleanInput
+  isRoot: TSWhereBooleanInput
+  name: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductVariantTagsInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_PublishableInput {
+  publishedOnChannel: TSWhereBooleanInput
+  publishedOnPublication: TSWhereBooleanInput
+}
+
+input TSWhereShopify_ProductTagsInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereReviewsIo_ListProductReviewsResponseInput {
+  write_review_link: TSWhereStringInput
+  word: TSWhereStringInput
+  stats: TSWhereShopify_ProductStatsInput
+  store: TSWhereShopify_ProductStoreInput
+  reviews: TSWhereShopify_ProductReviewsInput
+  products: TSWhereShopify_ProductProductsInput
+}
+
+input TSWhereShopify_ProductStatsInput {
+  average: TSWhereNumberInput
+  count: TSWhereIntegerInput
+}
+
+input TSWhereShopify_ProductStoreInput {
+  name: TSWhereStringInput
+  logo: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductReviewsInput {
+  total: TSWhereIntegerInput
+  per_page: TSWhereIntegerInput
+  current_page: TSWhereIntegerInput
+  last_page: TSWhereIntegerInput
+  from: TSWhereIntegerInput
+  to: TSWhereIntegerInput
+  data: TSWhereReviewsIo_ProductReviewInput
+}
+
+input TSWhereReviewsIo_ProductReviewInput {
+  product_review_id: TSWhereIntegerInput
+  product_make: TSWhereStringInput
+  order_id: TSWhereStringInput
+  name: TSWhereStringInput
+  sku: TSWhereStringInput
+  review: TSWhereStringInput
+  title: TSWhereStringInput
+  rating: TSWhereIntegerInput
+  date_created: TSWhereStringInput
+  votes: TSWhereStringInput
+  flags: TSWhereStringInput
+  timeago: TSWhereStringInput
+  date_formatted: TSWhereStringInput
+  product: TSWhereReviewsIo_ProductInput
+  reviewer: TSWhereReviewsIo_ReviewerInput
+  images: TSWhereShopify_ProductImagesInput
+  tags: TSWhereShopify_ProductTagsInput
+  author: TSWhereShopify_ProductAuthorInput
+}
+
+input TSWhereReviewsIo_ProductInput {
+  sku: TSWhereStringInput
+  name: TSWhereStringInput
+  description: TSWhereStringInput
+  image_url: TSWhereStringInput
+  link: TSWhereStringInput
+  mpn: TSWhereStringInput
+  gtin: TSWhereStringInput
+  brand: TSWhereStringInput
+  category: TSWhereStringInput
+  custom: TSWhereStringInput
+  pageUrl: TSWhereStringInput
+}
+
+input TSWhereReviewsIo_ReviewerInput {
+  user_id: TSWhereIntegerInput
+  first_name: TSWhereStringInput
+  last_name: TSWhereStringInput
+  verified_buyer: TSWhereInput
+  address: TSWhereStringInput
+  profile_picture: TSWhereStringInput
+  gravatar: TSWhereStringInput
+  email: TSWhereStringInput
+  name_formatted: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductImagesInput {
+  large: TSWhereStringInput
+  medium: TSWhereStringInput
+  original: TSWhereStringInput
+  small: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductAuthorInput {
+  email: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductProductsInput {
+  sku: TSWhereStringInput
+  name: TSWhereStringInput
+}
+
+input TSWhereRecharge_ProductInput {
+  id: TSWhereNumberInput
+  product_id: TSWhereNumberInput
+  shopify_product_id: TSWhereNumberInput
+  discount_type: TSWhereStringInput
+  discount_amount: TSWhereNumberInput
+  subscription_defaults: TSWhereShopify_ProductSubscriptionDefaultsInput
+  external_product_id: TSWhereStringInput
+  brand: TSWhereStringInput
+  images: TSWhereShopify_ProductImagesInput
+  title: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductSubscriptionDefaultsInput {
+  charge_interval_frequency: TSWhereNumberInput
+  cutoff_day_of_month: TSWhereNumberInput
+  cutoff_day_of_week: TSWhereNumberInput
+  expire_after_specific_number_of_charges: TSWhereNumberInput
+  order_day_of_month: TSWhereNumberInput
+  order_day_of_week: TSWhereNumberInput
+  order_interval_frequency: TSWhereNumberInput
+  order_interval_unit: TSWhereStringInput
+  storefront_purchase_options: TSWhereStringInput
+  order_interval_frequency_options: TSWhereShopify_ProductOrderIntervalFrequencyOptionsInput
+}
+
+input TSWhereShopify_ProductOrderIntervalFrequencyOptionsInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_FailedRequirementInput {
+  action: TSWhereShopify_NavigationItemInput
+  message: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductFeaturesInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_AppInstallationInput {
+  accessScopes: TSWhereShopify_AccessScopeInput
+  activeSubscriptions: TSWhereShopify_AppSubscriptionInput
+  allSubscriptions: TSWhereShopify_AppSubscriptionConnectionInput
+  app: TSWhereShopify_AppInput
+  channel: TSWhereShopify_ChannelInput
+  credits: TSWhereShopify_AppCreditConnectionInput
+  id: TSWhereStringInput
+  launchUrl: TSWhereInput
+  oneTimePurchases: TSWhereShopify_AppPurchaseOneTimeConnectionInput
+  publication: TSWhereShopify_PublicationInput
+  revenueAttributionRecords: TSWhereShopify_AppRevenueAttributionRecordConnectionInput
+  subscriptions: TSWhereShopify_AppSubscriptionInput
+  uninstallUrl: TSWhereInput
+}
+
+input TSWhereShopify_AccessScopeInput {
+  description: TSWhereStringInput
+  handle: TSWhereStringInput
+}
+
+input TSWhereShopify_AppSubscriptionInput {
+  createdAt: TSWhereInput
+  currentPeriodEnd: TSWhereInput
+  id: TSWhereStringInput
+  lineItems: TSWhereShopify_AppSubscriptionLineItemInput
+  name: TSWhereStringInput
+  returnUrl: TSWhereInput
+  status: TSWhereStringInput
+  test: TSWhereBooleanInput
+  trialDays: TSWhereIntegerInput
+}
+
+input TSWhereShopify_AppSubscriptionLineItemInput {
+  id: TSWhereStringInput
+  plan: TSWhereShopify_AppPlanV2Input
+  usageRecords: TSWhereShopify_AppUsageRecordConnectionInput
+}
+
+input TSWhereShopify_AppPlanV2Input {
+  pricingDetails: TSWhereShopify_AppPricingDetailsInput
+}
+
+input TSWhereShopify_AppPricingDetailsInput {
+  interval: TSWhereStringInput
+  price: TSWhereShopify_MoneyV2Input
+  balanceUsed: TSWhereShopify_MoneyV2Input
+  cappedAmount: TSWhereShopify_MoneyV2Input
+  terms: TSWhereStringInput
+}
+
+input TSWhereShopify_AppUsageRecordConnectionInput {
+  edges: TSWhereShopify_AppUsageRecordEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_AppUsageRecordEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_AppUsageRecordInput
+}
+
+input TSWhereShopify_AppUsageRecordInput {
+  createdAt: TSWhereInput
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  price: TSWhereShopify_MoneyV2Input
+  subscriptionLineItem: TSWhereShopify_AppSubscriptionLineItemInput
+}
+
+input TSWhereShopify_AppSubscriptionConnectionInput {
+  edges: TSWhereShopify_AppSubscriptionEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_AppSubscriptionEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_AppSubscriptionInput
+}
+
+input TSWhereShopify_AppCreditConnectionInput {
+  edges: TSWhereShopify_AppCreditEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_AppCreditEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_AppCreditInput
+}
+
+input TSWhereShopify_AppCreditInput {
+  amount: TSWhereShopify_MoneyV2Input
+  createdAt: TSWhereInput
+  description: TSWhereStringInput
+  id: TSWhereStringInput
+  test: TSWhereBooleanInput
+}
+
+input TSWhereShopify_AppPurchaseOneTimeConnectionInput {
+  edges: TSWhereShopify_AppPurchaseOneTimeEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_AppPurchaseOneTimeEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_AppPurchaseOneTimeInput
+}
+
+input TSWhereShopify_AppPurchaseOneTimeInput {
+  createdAt: TSWhereInput
+  id: TSWhereStringInput
+  name: TSWhereStringInput
+  price: TSWhereShopify_MoneyV2Input
+  status: TSWhereStringInput
+  test: TSWhereBooleanInput
+}
+
+input TSWhereShopify_AppRevenueAttributionRecordConnectionInput {
+  edges: TSWhereShopify_AppRevenueAttributionRecordEdgeInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_AppRevenueAttributionRecordEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_AppRevenueAttributionRecordInput
+}
+
+input TSWhereShopify_AppRevenueAttributionRecordInput {
+  amount: TSWhereShopify_MoneyV2Input
+  capturedAt: TSWhereInput
+  createdAt: TSWhereInput
+  id: TSWhereStringInput
+  idempotencyKey: TSWhereStringInput
+  test: TSWhereBooleanInput
+  type: TSWhereStringInput
+}
+
+input TSWhereShopify_LinkInput {
+  label: TSWhereStringInput
+  translations: TSWhereShopify_PublishedTranslationInput
+  url: TSWhereInput
+}
+
+input TSWhereShopify_UserErrorInput {
+  field: TSWhereShopify_ProductFieldInput
+  message: TSWhereStringInput
+}
+
+input TSWhereShopify_ProductFieldInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
+}
+
+input TSWhereShopify_CollectionRuleSetInput {
+  appliedDisjunctively: TSWhereBooleanInput
+  rules: TSWhereShopify_CollectionRuleInput
+}
+
+input TSWhereShopify_CollectionRuleInput {
+  column: TSWhereStringInput
+  condition: TSWhereStringInput
+  relation: TSWhereStringInput
 }
 
 input TSWhereNavigationDataLinksInput {
@@ -1444,6 +2931,22 @@ input TSWhereProductPagePoliciesPoliciesInput {
   name: TSWhereDraftjsInput
   description: TSWhereDraftjsInput
   image: TSWhereAssetRelationshipInput
+}
+
+input TSWhereStripe_Product_ImagesInput {
+  """Exact match"""
+  eq: String
+
+  """Array of possible exact match values."""
+  in: [String]
+
+  """Full text searching with fuzzy matching."""
+  match: String
+
+  """
+  Regular expression string matching. Use of * wildcards could degrade performance.
+  """
+  regexp: String
 }
 
 input TSWhereStripe_PackageDimensionsInput {
@@ -2605,7 +4108,7 @@ type Shopify_DeliveryProfileItem {
   ): Shopify_ProductVariantConnection!
 }
 
-type Shopify_Product {
+type Shopify_Product implements TSSearchable {
   """The description of the product, complete with HTML formatting."""
   bodyHtml: String @deprecated(reason: "Use `descriptionHtml` instead")
 
@@ -3044,6 +4547,9 @@ type Shopify_Product {
 
   """The Recharge subscription data associated with this product"""
   recharge: Recharge_Product
+  _shapeId: String
+  _id: ID
+  searchSummary: String
 }
 
 """An auto-generated type for paginating through multiple Collections."""
@@ -16224,6 +17730,10 @@ type WithContext {
     """
     where: TSWhereProductPagePoliciesInput
   ): ProductPagePoliciesPaginatedList
+  Shopify_collection(
+    """The ID of the Collection to return."""
+    id: ID!
+  ): Shopify_Collection
   searchAssetIndex(
     terms: String
 
@@ -16403,7 +17913,7 @@ type Mutation {
 
   """Create an order in Voucherify"""
   Voucherify_createOrder(email: String, amount: Float, status: String, items: [Voucherify_OrderItemInput]): Voucherify_Order
-  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!): Klaviyo_AddMembersResponse
+  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
   Klaviyo_removeMembers(
     "\nThe profiles that you would like to remove from the list. \n\nExample:\n\n{\n  \"emails\":[\"george.washington@klaviyo.com\",\"abraham.lincoln@klaviyo.com\"],\n  \"phone_numbers\":[\"+13239169023\"],\n  \"push_tokens\":[\"03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2r\"]\n}\n"
     input: Klaviyo_RemoveMembersPropertiesPropertyInput
@@ -16472,7 +17982,7 @@ type Mutation {
     """The customer’s mailing address."""
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
-  Gorgias_createTicket: Gorgias_CreateTicketResponse
+  Gorgias_createTicket(email: String!, message: String!, recaptchaToken: String!): Gorgias_CreateTicketResponse
 
   """Update Storefront"""
   updateStorefront(input: UpdateStorefrontInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateStorefrontResult
