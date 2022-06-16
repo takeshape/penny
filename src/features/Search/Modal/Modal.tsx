@@ -10,9 +10,9 @@ import { Fragment, useCallback, useEffect } from 'react';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
-import type { SearchShopifyProductsResults } from '../Search.queries';
+import type { SearchShopifyProductsResults } from '../queries';
 import type { Shopify_Product } from 'types/takeshape';
-import { SearchShopifyProducts } from '../Search.queries';
+import { SearchShopifyProducts } from '../queries';
 
 import { shopifyGidToId } from 'transforms/shopify';
 

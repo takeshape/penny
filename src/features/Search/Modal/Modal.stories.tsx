@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { isSearchOpenAtom } from 'store';
-import SearchFixtures from '../Search.fixtures.json';
+import { SearchShopifyProducts } from '../queries.fixtures';
 import { Modal } from './Modal';
 
 const Meta: ComponentMeta<typeof Modal> = {
@@ -47,7 +47,7 @@ _Loading.parameters = {
     handlers: {
       search: [
         graphql.query('SearchShopifyProducts', (req, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data(SearchFixtures.SearchShopifyProducts.result.data));
+          return res(ctx.delay('infinite'), ctx.data(SearchShopifyProducts.result.data));
         })
       ]
     }
@@ -67,7 +67,7 @@ _WithResults.parameters = {
     handlers: {
       search: [
         graphql.query('SearchShopifyProducts', (req, res, ctx) => {
-          return res(ctx.data(SearchFixtures.SearchShopifyProducts.result.data));
+          return res(ctx.data(SearchShopifyProducts.result.data));
         })
       ]
     }
