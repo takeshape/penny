@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ProductCategory } from './ProductCategory';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -15,25 +15,35 @@ export interface ProductCategoryWithDataProps {
 }
 
 export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryWithDataProps) => {
-  page = page ?? 1;
   pageSize = pageSize ?? 5;
+
+  const [currentPage, setCurrentPage] = useState(page ?? 1);
 
   const [loadCollection, { data, error, loading }] = useLazyQuery<
     ProductCategoryShopifyCollectionResponse,
     ProductCategoryShopifyCollectionArgs
   >(ProductCategoryShopifyCollectionQuery);
 
-  const handleSetCurrentPage = useCallback((page) => {
-    //  loadCollection({ variables: { id } });
-    // eslint-disable-next-line no-console
-    console.log('setting page', page);
-  }, []);
-
   useEffect(() => {
     if (id && !data && !loading && !error) {
-      loadCollection({ variables: { id, first: pageSize, after: '' } });
+      loadCollection({ variables: { id, first: pageSize } });
     }
   }, [loadCollection, id, data, error, loading, pageSize]);
+
+  const handleSetCurrentPage = useCallback(
+    (nextPage, prevPage) => {
+      const isNext = nextPage > prevPage;
+      if (isNext) {
+        const lastCursor = data.collection.products.edges[data.collection.products.edges.length - 1].cursor;
+        loadCollection({ variables: { id, first: pageSize, after: lastCursor } });
+      } else {
+        const firstCursor = data.collection.products.edges[0].cursor;
+        loadCollection({ variables: { id, last: pageSize, before: firstCursor } });
+      }
+      setCurrentPage(nextPage);
+    },
+    [data, id, loadCollection, pageSize]
+  );
 
   if (error) {
     return null;
@@ -53,7 +63,7 @@ export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryW
       products={collection.products}
       pagination={{
         pageCount,
-        currentPage: page,
+        currentPage,
         setCurrentPage: handleSetCurrentPage
       }}
     />

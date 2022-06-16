@@ -16,7 +16,6 @@ import { shopifyCollectionIdToGid } from 'transforms/shopify';
 import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { getSingle } from 'utils/types';
 
 type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
   page: number;
@@ -49,8 +48,7 @@ const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, descriptio
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
-  const collectionId = getSingle(params.collection);
-  const page = Number(getSingle(params.page));
+  const [collectionId, pageNumber] = params.collection;
 
   // TODO We'll need to use indexing to make pagination work with a page index
   // Shopify requires a product ID cursor which would make for nasty urls, e.g,
@@ -64,8 +62,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     query: ProductCategoryShopifyCollectionQuery,
     variables: {
       id: shopifyCollectionIdToGid(collectionId),
-      first: collectionsPageSize,
-      after: ''
+      first: collectionsPageSize
     }
   });
 
@@ -73,7 +70,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 
   return addApolloQueryCache(apolloClient, {
     props: {
-      page,
+      page: Number(pageNumber ?? 1),
       id: collection.id,
       handle: collection.handle,
       name: collection.name,

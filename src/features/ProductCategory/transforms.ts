@@ -67,14 +67,23 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
     return null;
   }
 
+  // TODO Need to support slugs
   return collections.flatMap(({ node }) => {
     const pageCount = Math.ceil(node.productsCount / pageSize);
     const pagesParams = new Array(pageCount).fill(undefined);
-    return pagesParams.map((_, pageIdx) => ({
-      params: {
-        collection: shopifyGidToId(node.id),
-        page: String(pageIdx + 1)
+
+    return pagesParams.map((_, pageIdx) => {
+      let collection = [shopifyGidToId(node.id)];
+
+      if (pageIdx > 0) {
+        collection.push(String(pageIdx + 1));
       }
-    }));
+
+      return {
+        params: {
+          collection
+        }
+      };
+    });
   });
 }

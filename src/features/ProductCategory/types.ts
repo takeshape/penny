@@ -29,6 +29,7 @@ export type ProductCategoryShopifyCollection = Pick<
 > & {
   products: {
     edges: Array<{
+      cursor: string;
       node: ProductCategoryShopifyProduct;
     }>;
   };
