@@ -22,5 +22,3 @@ export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps)
     </p>
   </div>
 );
-
-export default ReferralListItem;

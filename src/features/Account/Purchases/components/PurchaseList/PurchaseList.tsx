@@ -1,8 +1,8 @@
 import { NetworkStatus, useQuery } from '@apollo/client';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
 import { shopifyCustomerToOrders } from '../../transforms';
-import Order from '../Order/Order';
-import OrderSkeleton from '../Order/OrderSkeleton';
+import { PurchaseOrder } from '../Order/Order';
+import { OrderSkeleton } from '../Order/OrderSkeleton';
 
 const Empty = () => (
   <div className="p-4 sm:p-6 flex flex-col items-center gap-2 text-neutral-500">
@@ -44,12 +44,10 @@ export const AccountPurchaseList = () => {
         </h2>
         <div className="space-y-4 min-h-40">
           {orders.map((order) => (
-            <Order key={order.id} order={order} />
+            <PurchaseOrder key={order.id} order={order} />
           ))}
         </div>
       </section>
     </div>
   );
 };
-
-export default AccountPurchaseList;

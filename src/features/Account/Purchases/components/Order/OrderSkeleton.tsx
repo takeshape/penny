@@ -1,4 +1,4 @@
-const OrderSkeleton = () => (
+export const OrderSkeleton = () => (
   <div className="animate-pulse shadow sm:rounded-md sm:overflow-hidden bg-white p-2 sm:p-4 w-full">
     <header className="mb-4 bg-gray-50 rounded-lg p-2 sm:p-4 sm:flex sm:items-center sm:justify-between sm:space-x-6 lg:space-x-8">
       <dl className="divide-y divide-gray-200 space-y-6 text-sm text-gray-600 flex-auto sm:divide-y-0 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-x-6 lg:gap-x-8">
@@ -71,5 +71,3 @@ const OrderSkeleton = () => (
     </main>
   </div>
 );
-
-export default OrderSkeleton;

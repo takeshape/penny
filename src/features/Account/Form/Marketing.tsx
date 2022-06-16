@@ -167,5 +167,3 @@ export const AccountFormMarketing = () => {
     </FormCardPanel>
   );
 };
-
-export default AccountFormMarketing;

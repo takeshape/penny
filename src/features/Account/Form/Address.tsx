@@ -229,5 +229,3 @@ export const AccountFormAddress = () => {
     </FormCardPanel>
   );
 };
-
-export default AccountFormAddress;

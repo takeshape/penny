@@ -151,5 +151,3 @@ export const AccountFormProfile = () => {
     </FormCardPanel>
   );
 };
-
-export default AccountFormProfile;

@@ -101,5 +101,3 @@ export const AccountFormPassword = () => {
     </FormCardPanel>
   );
 };
-
-export default AccountFormPassword;

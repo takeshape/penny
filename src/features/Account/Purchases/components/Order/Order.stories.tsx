@@ -3,7 +3,7 @@ import { Shopify_Order } from 'types/takeshape';
 import { shopifyOrderToOrder } from '../../transforms';
 import { PurchaseOrder } from './Order';
 import fixtures from './Order.fixtures.json';
-import OrderSkeleton from './OrderSkeleton';
+import { OrderSkeleton } from './OrderSkeleton';
 
 const Meta: ComponentMeta<typeof PurchaseOrder> = {
   title: 'Features / Account / Purchases / Components / Order',

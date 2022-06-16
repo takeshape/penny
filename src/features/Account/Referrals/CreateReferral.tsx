@@ -7,7 +7,7 @@ export interface CreateReferralProps {
 }
 
 export const CreateReferral = ({ sendReferral }: CreateReferralProps) => {
-  const { register, handleSubmit, reset, control } = useForm<{ email: string }>({
+  const { handleSubmit, reset } = useForm<{ email: string }>({
     defaultValues: {
       email: ''
     }
@@ -41,5 +41,3 @@ export const CreateReferral = ({ sendReferral }: CreateReferralProps) => {
     </form>
   );
 };
-
-export default CreateReferral;

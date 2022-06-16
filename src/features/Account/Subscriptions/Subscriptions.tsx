@@ -7,5 +7,3 @@ export const AccountSubscriptions = () => {
     </CardPanel>
   );
 };
-
-export default AccountSubscriptions;

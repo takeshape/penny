@@ -4,7 +4,7 @@ import { shopifyGidToId } from 'transforms/shopify';
 import { formatPrice } from 'utils/text';
 import { LineItem as LineItemType } from '../../types';
 
-const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType }>) => {
+export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType }>) => {
   return (
     <tr>
       <td className="py-6 pr-8">
@@ -33,5 +33,3 @@ const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType
     </tr>
   );
 };
-
-export default LineItem;

@@ -22,5 +22,3 @@ export const AccountLoyaltyCard = ({ code, loyalty_card, assets }: AccountLoyalt
     </CardPanel>
   );
 };
-
-export default AccountLoyaltyCard;

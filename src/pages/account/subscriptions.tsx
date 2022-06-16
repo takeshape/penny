@@ -1,4 +1,4 @@
-import AccountSubscriptions from 'features/Account/Subscriptions/Subscriptions';
+import { AccountSubscriptions } from 'features/Account/Subscriptions/Subscriptions';
 import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 

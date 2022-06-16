@@ -1,7 +1,7 @@
 import CardPanel from 'components/Card/Panel/Panel';
 import { useState } from 'react';
-import ReferralsCreateReferral from './CreateReferral';
-import ReferralsList from './ReferralList';
+import { CreateReferral } from './CreateReferral';
+import { ReferralList } from './ReferralList';
 import { ReferralListItemProps } from './ReferralListItem';
 
 const referralsFixtureData: ReferralListItemProps[] = [
@@ -17,10 +17,8 @@ export const AccountReferrals = () => {
 
   return (
     <CardPanel primaryText="Referrals" secondaryText="Refer your friends and get cool stuff">
-      <ReferralsCreateReferral sendReferral={(data) => setReferrals([...referrals, data])} />
-      <ReferralsList referrals={referrals} />
+      <CreateReferral sendReferral={(data) => setReferrals([...referrals, data])} />
+      <ReferralList referrals={referrals} />
     </CardPanel>
   );
 };
-
-export default AccountReferrals;

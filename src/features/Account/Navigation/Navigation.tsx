@@ -70,5 +70,3 @@ export const AccountNavigation = ({ items }: AccountNavigationProps) => {
     </aside>
   );
 };
-
-export default AccountNavigation;

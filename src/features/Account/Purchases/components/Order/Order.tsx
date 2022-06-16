@@ -2,8 +2,8 @@ import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
 import { formatPrice } from 'utils/text';
 import { Order } from '../../types';
-import LineItem from '../LineItem/LineItem';
-import OrderStatus from '../OrderStatus/OrderStatus';
+import { LineItem } from '../LineItem/LineItem';
+import { PurchaseItemOrderStatus } from '../OrderStatus/OrderStatus';
 
 export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Order }>) => {
   return (
@@ -40,7 +40,7 @@ export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Order }>) =>
         </a> */}
       </header>
       <div className="my-2">
-        <OrderStatus {...order.fulfillments[0]} unfulfilled={order.status === 'UNFULFILLED'} />
+        <PurchaseItemOrderStatus {...order.fulfillments[0]} unfulfilled={order.status === 'UNFULFILLED'} />
       </div>
       <main className="mb-2 px-2">
         {Boolean(order.lineItems.length) && (
@@ -70,5 +70,3 @@ export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Order }>) =>
     </div>
   );
 };
-
-export default PurchaseOrder;

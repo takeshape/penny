@@ -48,5 +48,3 @@ export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boo
     </div>
   );
 };
-
-export default PurchaseItemOrderStatus;

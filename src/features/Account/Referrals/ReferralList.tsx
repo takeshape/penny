@@ -1,5 +1,5 @@
 import { GiftIcon } from '@heroicons/react/solid';
-import ReferralListItem, { ReferralListItemProps } from './ReferralListItem';
+import { ReferralListItem, ReferralListItemProps } from './ReferralListItem';
 
 export interface Reward {
   name: string;
@@ -39,5 +39,3 @@ export const ReferralList = ({ referrals }) => {
     </ul>
   );
 };
-
-export default ReferralList;
