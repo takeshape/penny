@@ -8,7 +8,9 @@ import {
   ProductVariant
 } from 'types/product';
 import {
-  Shopify_Image, Shopify_MoneyV2, Shopify_Product,
+  Shopify_Image,
+  Shopify_MoneyV2,
+  Shopify_Product,
   Shopify_ProductOption,
   Shopify_ProductVariant,
   Shopify_SellingPlanInterval,

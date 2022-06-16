@@ -1,6 +1,12 @@
-import { shopifyGidToId } from "transforms/shopify";
-import { Shopify_Customer, Shopify_Fulfillment, Shopify_FulfillmentDisplayStatus, Shopify_LineItem, Shopify_Order } from "types/takeshape";
-import { Fulfillment, FulfillmentStatus, LineItem, Order } from "./types";
+import { shopifyGidToId } from 'transforms/shopify';
+import {
+  Shopify_Customer,
+  Shopify_Fulfillment,
+  Shopify_FulfillmentDisplayStatus,
+  Shopify_LineItem,
+  Shopify_Order
+} from 'types/takeshape';
+import { Fulfillment, FulfillmentStatus, LineItem, Order } from './types';
 
 function shopifyFulfillmentToFulfillmentStatus(
   status: Shopify_FulfillmentDisplayStatus,

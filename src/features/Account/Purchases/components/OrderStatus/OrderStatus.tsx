@@ -43,7 +43,7 @@ export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boo
               {props.trackingInfo.length > 1 && `#${index + 1}`}
             </a>
           </div>
-        )
+        );
       })}
     </div>
   );
