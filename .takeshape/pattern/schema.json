@@ -2915,6 +2915,121 @@
         }
       }
     },
+    "ProductInterface": {
+      "id": "ProductInterface",
+      "name": "ProductInterface",
+      "title": "ProductInterface",
+      "description": "ProductInterface",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "_version": {
+            "type": "number"
+          },
+          "_status": {
+            "type": "string",
+            "@workflow": "default"
+          },
+          "name": {
+            "type": "string",
+            "description": "Initialized with title from shopify",
+            "title": "Name"
+          },
+          "productComponent": {
+            "minLength": 1,
+            "type": "string",
+            "oneOf": [
+              {
+                "enum": [
+                  "withImageGrid"
+                ],
+                "title": "withImageGrid"
+              },
+              {
+                "enum": [
+                  "withImage"
+                ],
+                "title": "withImage"
+              }
+            ],
+            "title": "Product Component"
+          },
+          "hideReviews": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Hide Reviews"
+          },
+          "hideRelatedProducts": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Hide Related Products"
+          },
+          "showDetails": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Show Details"
+          },
+          "details": {
+            "@ref": "local:TSRelationship",
+            "title": "Details",
+            "@output": {
+              "description": "",
+              "@args": "TSRelationshipArgs",
+              "@resolver": {
+                "name": "takeshape:getRelated",
+                "service": "takeshape:local",
+                "options": {
+                  "nullable": true
+                }
+              },
+              "@ref": "local:ProductPageDetails",
+              "@backreference": {
+                "enabled": false
+              }
+            }
+          },
+          "showPolicies": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Show Policies"
+          },
+          "policies": {
+            "@ref": "local:TSRelationship",
+            "title": "Policies",
+            "@output": {
+              "description": "",
+              "@args": "TSRelationshipArgs",
+              "@resolver": {
+                "name": "takeshape:getRelated",
+                "service": "takeshape:local",
+                "options": {
+                  "nullable": true
+                }
+              },
+              "@ref": "local:ProductPagePolicies",
+              "@backreference": {
+                "enabled": false
+              }
+            }
+          },
+          "shopifyProductId": {
+            "title": "Service ID",
+            "type": "string"
+          },
+          "shopifyProduct": {
+            "@ref": "shopify:ProductInput"
+          }
+        },
+        "required": []
+      }
+    },
     "Product": {
       "id": "cpHSCQfwY",
       "name": "Product",

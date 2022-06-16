@@ -1,4 +1,5 @@
 import { getImageUrl } from '@takeshape/routing';
+import slug from 'slug';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import { createImageGetter, getOptions, getPrice, getSeo, getVariants, shopifyGidToId } from 'transforms/shopify';
 import {
@@ -145,5 +146,9 @@ export function getProductPageParams(response: ProductPageShopifyProductIdListRe
     return null;
   }
 
-  return items.map((item) => ({ params: { id: shopifyGidToId(item.shopifyProductId) } }));
+  return items.map((item) => ({
+    params: {
+      id: `${shopifyGidToId(item.shopifyProductId)}-${slug('foo')}`
+    }
+  }));
 }
