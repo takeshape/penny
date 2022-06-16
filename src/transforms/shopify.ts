@@ -314,6 +314,22 @@ function shopifyFulfillmentToFulfillmentStatus(
   }
 }
 
+export function getTrackingUrl(carrier, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
+  switch (carrier) {
+    case 'USPS':
+      return `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`;
+
+    case 'UPS':
+      return `https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=${trackingNumber}`;
+
+    case 'FedEx':
+      return `https://www.fedex.com/Tracking?action=track&tracknumbers=${trackingNumber}`;
+
+    default:
+      return null;
+  }
+}
+
 export function shopifyFulfillmentToFulfillment(fulfillment: Shopify_Fulfillment): Fulfillment {
   return {
     status: shopifyFulfillmentToFulfillmentStatus(
@@ -322,7 +338,11 @@ export function shopifyFulfillmentToFulfillment(fulfillment: Shopify_Fulfillment
       fulfillment.estimatedDeliveryAt,
       fulfillment.updatedAt
     ),
-    trackingInfo: fulfillment.trackingInfo.map((tracking) => ({ company: tracking.company, number: tracking.number }))
+    trackingInfo: fulfillment.trackingInfo.map((tracking) => ({
+      company: tracking.company,
+      number: tracking.number,
+      trackingUrl: getTrackingUrl(tracking.company, tracking.number)
+    }))
   };
 }
 

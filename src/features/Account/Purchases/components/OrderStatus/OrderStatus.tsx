@@ -2,22 +2,6 @@ import { TruckIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
 import { Fulfillment } from 'types/order';
 
-export function getTrackingUrl(carrier, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
-  switch (carrier) {
-    case 'USPS':
-      return `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`;
-
-    case 'UPS':
-      return `https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=${trackingNumber}`;
-
-    case 'FedEx':
-      return `https://www.fedex.com/Tracking?action=track&tracknumbers=${trackingNumber}`;
-
-    default:
-      return null;
-  }
-}
-
 const OrderStatusChip = ({ color, label }: { color?: string; label?: string }) => (
   <p
     className={`inline-flex items-baseline px-2.5 py-0.5 rounded-full text-sm font-medium md:mt-2 lg:mt-0 bg-${
@@ -45,19 +29,22 @@ export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boo
       <p className="text-sm text-gray-500 flex-1">
         {text} {format(new Date(date), 'PP')}
       </p>
-      {props.trackingInfo.map((tracking, index) => (
-        <div key={tracking.number} className="flex gap-2 items-center m-2">
-          <a
-            href={getTrackingUrl(tracking.company, tracking.number)}
-            target="_blank"
-            className="flex items-center gap-2 text-sm font-medium text-indigo-700 decoration-indigo-500 underline"
-            rel="noreferrer"
-          >
-            <TruckIcon height={16} width={16} className="inline-block" /> Track Shipment{' '}
-            {props.trackingInfo.length > 1 && `#${index + 1}`}
-          </a>
-        </div>
-      ))}
+      {props.trackingInfo.map((tracking, index) => {
+        if (!tracking.trackingUrl) return null;
+        return (
+          <div key={tracking.number} className="flex gap-2 items-center m-2">
+            <a
+              href={tracking.trackingUrl}
+              target="_blank"
+              className="flex items-center gap-2 text-sm font-medium text-indigo-700 decoration-indigo-500 underline"
+              rel="noreferrer"
+            >
+              <TruckIcon height={16} width={16} className="inline-block" /> Track Shipment{' '}
+              {props.trackingInfo.length > 1 && `#${index + 1}`}
+            </a>
+          </div>
+        )
+      })}
     </div>
   );
 };

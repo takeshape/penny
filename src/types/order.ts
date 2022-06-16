@@ -43,6 +43,7 @@ export interface Fulfillment {
 export interface TrackingInfo {
   company: string;
   number: string;
+  trackingUrl: string | null;
 }
 
 export interface Order {
