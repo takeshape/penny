@@ -1,4 +1,4 @@
-import { AccountPurchaseList } from 'features/Account/Purchases/components/PurchaseList/PurchaseList';
+import { AccountPurchaseList } from 'features/AccountPurchases/AccountPurchaseList';
 import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 

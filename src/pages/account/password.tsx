@@ -1,4 +1,4 @@
-import { AccountFormPassword } from 'features/Account/Form/Password';
+import { AccountFormPassword } from 'features/AccountForm/AccountFormPassword';
 import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 

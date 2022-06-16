@@ -1,4 +1,4 @@
-import { AuthCreateAccount } from 'features/Auth/CreateAccount/CreateAccount';
+import { AuthCreateAccount } from 'features/AuthCreateAccount/AuthCreateAccount';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';

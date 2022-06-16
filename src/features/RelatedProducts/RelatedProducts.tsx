@@ -1,5 +1,5 @@
-import { RelatedProductsListItem } from './RelatedProductsListItem';
-import { RelatedProductsListItemLoading } from './RelatedProductsListItemLoading';
+import { ListItem } from './components/ListItem';
+import { ListItemLoading } from './components/ListItemLoading';
 import { RelatedProductsProduct } from './types';
 
 export interface RelatedProductsProps {
@@ -16,8 +16,8 @@ export const RelatedProducts = ({ products }: RelatedProductsProps) => {
       <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
         {products.map((product, idx) => (
           <div key={product?.id ?? idx}>
-            {!product && <RelatedProductsListItemLoading />}
-            {product && <RelatedProductsListItem product={product} />}
+            {!product && <ListItemLoading />}
+            {product && <ListItem product={product} />}
           </div>
         ))}
       </div>

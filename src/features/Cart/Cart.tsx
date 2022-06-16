@@ -4,7 +4,7 @@ import PageLoader from 'components/PageLoader';
 import { isStorybook } from 'config';
 import { useAtom, useAtomValue } from 'jotai';
 import { Fragment } from 'react';
-import { CartItem } from './CartItem';
+import { CartItem } from './components/CartItem';
 import { CartCheckout } from './components/Checkout';
 import { CartEmpty } from './components/Empty';
 import { CartSubtotal } from './components/Subtotal';

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { AccountLoyaltyCard } from 'features/Account/LoyaltyCard/LoyaltyCard';
-import { AccountReferrals } from 'features/Account/Referrals/Referrals';
+import { AccountLoyaltyCard } from 'features/AccountLoyaltyCard/AccountLoyaltyCard';
+import { AccountReferrals } from 'features/AccountReferrals/AccountReferrals';
 import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 import { GetMyLoyaltyCardQuery, GetMyLoyaltyCardResponse } from 'queries';
