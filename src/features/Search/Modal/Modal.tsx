@@ -11,7 +11,6 @@ import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
 import type { SearchShopifyProductsResults } from '../queries';
-import type { Shopify_Product } from 'types/takeshape';
 import { SearchShopifyProducts } from '../queries';
 
 import { shopifyGidToId } from 'transforms/shopify';
@@ -21,10 +20,6 @@ const resultsFn = (data: SearchShopifyProductsResults) =>
     ...result,
     id: shopifyGidToId(result.id)
   }));
-
-function getImageUrl(product: Shopify_Product): string {
-  return product.featuredImage?.url ?? product.images.edges[0]?.node.url;
-}
 
 export const Modal = () => {
   const router = useRouter();
@@ -125,7 +120,7 @@ export const Modal = () => {
                               <NextImage
                                 width={60}
                                 height={60}
-                                src={getImageUrl(item)}
+                                src={item.featuredImage?.url}
                                 className="object-center object-cover"
                               />
                             </div>
