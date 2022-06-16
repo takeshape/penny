@@ -21,7 +21,7 @@ export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryW
   const [loadCollection, { data, error, loading }] = useLazyQuery<
     ProductCategoryShopifyCollectionResponse,
     ProductCategoryShopifyCollectionArgs
-  >(ProductCategoryShopifyCollectionQuery, { variables: { id } });
+  >(ProductCategoryShopifyCollectionQuery);
 
   const handleSetCurrentPage = useCallback((page) => {
     //  loadCollection({ variables: { id } });
@@ -31,9 +31,9 @@ export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryW
 
   useEffect(() => {
     if (id && !data && !loading && !error) {
-      loadCollection({ variables: { id } });
+      loadCollection({ variables: { id, first: pageSize, after: '' } });
     }
-  }, [loadCollection, id, data, error, loading]);
+  }, [loadCollection, id, data, error, loading, pageSize]);
 
   if (error) {
     return null;

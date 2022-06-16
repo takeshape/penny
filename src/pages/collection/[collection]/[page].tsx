@@ -63,7 +63,9 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   >({
     query: ProductCategoryShopifyCollectionQuery,
     variables: {
-      id: shopifyCollectionIdToGid(collectionId)
+      id: shopifyCollectionIdToGid(collectionId),
+      first: collectionsPageSize,
+      after: ''
     }
   });
 

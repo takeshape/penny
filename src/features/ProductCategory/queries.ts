@@ -29,6 +29,8 @@ export const ProductCategoryShopifyCollectionIdsQuery = gql`
 
 export type ProductCategoryShopifyCollectionArgs = {
   id: string;
+  first: number;
+  after: string;
 };
 
 export type ProductCategoryShopifyCollectionResponse = {
@@ -36,7 +38,7 @@ export type ProductCategoryShopifyCollectionResponse = {
 };
 
 export const ProductCategoryShopifyCollectionQuery = gql`
-  query ProductCategoryShopifyCollectionQuery($id: ID!) {
+  query ProductCategoryShopifyCollectionQuery($id: ID!, $first: Int!, $after: String!) {
     collection: Shopify_collection(id: $id) {
       id
       handle
@@ -44,7 +46,7 @@ export const ProductCategoryShopifyCollectionQuery = gql`
       description
       descriptionHtml
       productsCount
-      products(first: 5) {
+      products(first: $first, after: $after) {
         edges {
           node {
             id
