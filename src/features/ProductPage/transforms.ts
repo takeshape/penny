@@ -145,5 +145,5 @@ export function getProductPageParams(response: ProductPageShopifyProductIdListRe
     return null;
   }
 
-  return items.map((item) => ({ params: { id: item.shopifyProductId } }));
+  return items.map((item) => ({ params: { id: shopifyGidToId(item.shopifyProductId) } }));
 }
