@@ -9,12 +9,12 @@ import {
 import { getCollection } from './transforms';
 
 export interface ProductCategoryWithDataProps {
-  id: string;
+  collectionId: string;
   page?: number;
   pageSize?: number;
 }
 
-export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryWithDataProps) => {
+export const ProductCategoryWithData = ({ collectionId, page, pageSize }: ProductCategoryWithDataProps) => {
   pageSize = pageSize ?? 5;
 
   const [currentPage, setCurrentPage] = useState(page ?? 1);
@@ -25,24 +25,28 @@ export const ProductCategoryWithData = ({ id, page, pageSize }: ProductCategoryW
   >(ProductCategoryShopifyCollectionQuery);
 
   useEffect(() => {
-    if (id && !data && !loading && !error) {
-      loadCollection({ variables: { id, first: pageSize } });
+    if (collectionId && !data && !loading && !error) {
+      loadCollection({ variables: { id: collectionId, first: pageSize } });
     }
-  }, [loadCollection, id, data, error, loading, pageSize]);
+  }, [loadCollection, collectionId, data, error, loading, pageSize]);
 
   const handleSetCurrentPage = useCallback(
     (nextPage, prevPage) => {
       const isNext = nextPage > prevPage;
+      const variables: ProductCategoryShopifyCollectionArgs = { id: collectionId };
+
       if (isNext) {
-        const lastCursor = data.collection.products.edges[data.collection.products.edges.length - 1].cursor;
-        loadCollection({ variables: { id, first: pageSize, after: lastCursor } });
+        variables.first = pageSize;
+        variables.after = data.collection.products.edges[data.collection.products.edges.length - 1].cursor;
       } else {
-        const firstCursor = data.collection.products.edges[0].cursor;
-        loadCollection({ variables: { id, last: pageSize, before: firstCursor } });
+        variables.last = pageSize;
+        variables.before = data.collection.products.edges[0].cursor;
       }
+
+      loadCollection({ variables });
       setCurrentPage(nextPage);
     },
-    [data, id, loadCollection, pageSize]
+    [data, collectionId, loadCollection, pageSize]
   );
 
   if (error) {

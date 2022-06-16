@@ -40,7 +40,7 @@ const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, descriptio
 
   return (
     <Layout title={name} description={description}>
-      <ProductCategoryWithData id={id} pageSize={collectionsPageSize} page={page} />
+      <ProductCategoryWithData collectionId={id} pageSize={collectionsPageSize} page={page} />
     </Layout>
   );
 };
