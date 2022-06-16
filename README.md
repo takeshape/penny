@@ -11,6 +11,9 @@
 - The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
+- Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
+  will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
+  removed from the relevant mutations in the project schema.
 
 ```erb
 {% if checkout.attributes.redirect_origin %}
