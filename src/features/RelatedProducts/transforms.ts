@@ -1,4 +1,4 @@
-import { createImageGetter, getOptions, getPrice, shopifyGidToId } from 'transforms/shopify';
+import { createImageGetter, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
 import { RelatedProductsShopifyCollectionResponse } from './queries';
 import { RelatedProductsProduct, RelatedProductsShopifyProduct } from './types';
 
@@ -7,7 +7,7 @@ function getProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProdu
 
   return {
     id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -18,7 +18,7 @@ function getProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProdu
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options)
+    options: getProductOptions(shopifyProduct.options)
   };
 }
 

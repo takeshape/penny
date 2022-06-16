@@ -1,4 +1,5 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
+import slug from 'slug';
 import {
   ProductImage,
   ProductPrice,
@@ -8,6 +9,7 @@ import {
   ProductVariant
 } from 'types/product';
 import {
+  Product,
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
@@ -113,7 +115,7 @@ export function createImageGetter(defaultAltText: string) {
   };
 }
 
-export function getPriceOptions(
+export function getProductVariantPriceOptions(
   shopifyProduct: Pick<Shopify_Product, 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'>,
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
@@ -191,7 +193,7 @@ function getVariant(
     id,
     name: title,
     description: title, // use a metafield
-    prices: getPriceOptions(shopifyProduct, shopifyVariant),
+    prices: getProductVariantPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
     image: getImage(image),
     inventory: sellableOnlineQuantity,
@@ -201,7 +203,7 @@ function getVariant(
   };
 }
 
-export function getVariants(
+export function getProductVariants(
   shopifyProduct: Pick<
     Shopify_Product,
     'variants' | 'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
@@ -224,7 +226,7 @@ export function getSeo(shopifyProduct: Pick<Shopify_Product, 'seo' | 'title' | '
   };
 }
 
-export function getOptions(options: Shopify_ProductOption[], variants?: ProductVariant[]) {
+export function getProductOptions(options: Shopify_ProductOption[], variants?: ProductVariant[]) {
   return (
     options?.map(({ name, position, id, values }) => {
       return {
@@ -249,6 +251,14 @@ export function getOptions(options: Shopify_ProductOption[], variants?: ProductV
       };
     }) ?? []
   );
+}
+
+export function getProductUrl(id: string, product: Pick<Product, 'name' | 'slug'>, base = 'product') {
+  if (product.slug) {
+    return `/${base}/${product.slug}`;
+  }
+
+  return `/${base}/${shopifyGidToId(id)}/${slug(product.name)}`;
 }
 
 export function shopifyGidToId(gid: string): string {

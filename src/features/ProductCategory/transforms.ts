@@ -1,5 +1,5 @@
 import { getStats } from 'transforms/reviewsIo';
-import { createImageGetter, getOptions, getPrice, shopifyGidToId } from 'transforms/shopify';
+import { createImageGetter, getPrice, getProductOptions, getProductUrl, shopifyGidToId } from 'transforms/shopify';
 import { ProductCategoryShopifyCollectionIdsResponse, ProductCategoryShopifyCollectionResponse } from './queries';
 import {
   ProductCategoryCollection,
@@ -20,7 +20,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
 
   return {
     id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -31,7 +31,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options)
+    options: getProductOptions(shopifyProduct.options)
   };
 }
 

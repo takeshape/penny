@@ -1,24 +1,23 @@
 import { gql } from '@apollo/client';
-import {
-  ProductPageReviewsIoReviews,
-  ProductPageShopifyProduct,
-  ProductPageTakeshapeItem,
-  ProductPageTakeshapeItemDetails,
-  ProductPageTakeshapeItemPolicies
-} from './types';
+import { ProductPageReviewsIoReviews, ProductPageShopifyProduct, ProductPageTakeshapeProduct } from './types';
 
 export type ProductPageShopifyProductIdListResponse = {
   products: {
     items: Array<{
+      name: string;
+      slug: string;
       shopifyProductId: string;
     }>;
   };
 };
 
+// TODO Avoid throttling issues for now
 export const ProductPageShopifyProductIdListQuery = gql`
   query ProductPageShopifyProductIdListQuery {
-    products: getProductList(size: 50) {
+    products: getProductList(size: 10, sort: { field: "_createdAt", order: "asc" }) {
       items {
+        name
+        slug
         shopifyProductId
       }
     }
@@ -27,57 +26,31 @@ export const ProductPageShopifyProductIdListQuery = gql`
 
 export type ProductPageShopifyProductArgs = {
   id: string;
+  slug: string;
 };
 
-export type ProductPageShopifyProductReponse = {
+export type ProductPageShopifyProductResponse = {
   productList: {
-    items: Array<
-      ProductPageTakeshapeItem & {
-        shopifyProduct: ProductPageShopifyProduct;
-      }
-    >;
+    items: Array<{
+      shopifyProduct: ProductPageShopifyProduct;
+    }>;
   };
 };
 
 export const ProductPageShopifyProductQuery = gql`
-  query ProductPageShopifyProductQuery($id: String!) {
-    productList: getProductList(where: { shopifyProductId: { eq: $id } }, size: 1) {
+  query ProductPageShopifyProductQuery($id: String, $slug: String) {
+    productList: getProductList(size: 1, where: { OR: [{ slug: { eq: $slug } }, { shopifyProductId: { eq: $id } }] }) {
       items {
-        productComponent
-        hideReviews
-        hideRelatedProducts
-        showDetails
-        showPolicies
-        details {
-          _id
-          text {
-            primaryHtml
-            secondaryHtml
-          }
-          details {
-            image {
-              path
-              description
-            }
-            descriptionHtml
-          }
-        }
-        policies {
-          _id
-          policies {
-            image {
-              path
-              description
-            }
-            nameHtml
-            descriptionHtml
-          }
-        }
         shopifyProduct {
           id
           title
           description
           descriptionHtml
+          takeshape {
+            _id
+            name
+            slug
+          }
           requiresSellingPlan
           featuredImage {
             id
@@ -136,7 +109,6 @@ export const ProductPageShopifyProductQuery = gql`
               }
             }
           }
-
           options {
             name
             position
@@ -203,20 +175,36 @@ export const ProductPageShopifyProductQuery = gql`
   }
 `;
 
-export type ProductPageTakeshapeDetailsArgs = {
+export type ProductPageTakeshapeProductArgs = {
   productId: string;
 };
 
-export type ProductPageTakeshapeDetailsResponse = {
+export type ProductPageTakeshapeProductResponse = {
   productList: {
-    items: Array<ProductPageTakeshapeItemDetails>;
+    items: Array<ProductPageTakeshapeProduct>;
   };
 };
 
-export const ProductPageTakeshapeDetailsQuery = gql`
-  query ProductPageTakeshapeDetailsQuery($productId: String!) {
+export const ProductPageTakeshapeProductQuery = gql`
+  query ProductPageTakeshapeProductQuery($productId: String!) {
     productList: getProductList(where: { shopifyProductId: { eq: $productId } }, size: 1) {
       items {
+        productComponent
+        hideReviews
+        hideRelatedProducts
+        showDetails
+        showPolicies
+        policies {
+          _id
+          policies {
+            image {
+              path
+              description
+            }
+            nameHtml
+            descriptionHtml
+          }
+        }
         details {
           _id
           text {
@@ -228,36 +216,6 @@ export const ProductPageTakeshapeDetailsQuery = gql`
               path
               description
             }
-            descriptionHtml
-          }
-        }
-      }
-    }
-  }
-`;
-
-export type ProductPageTakeshapePoliciesArgs = {
-  productId: string;
-};
-
-export type ProductPageTakeshapePoliciesResponse = {
-  productList: {
-    items: Array<ProductPageTakeshapeItemPolicies>;
-  };
-};
-
-export const ProductPageTakeshapePoliciesQuery = gql`
-  query ProductPageTakeshapePoliciesQuery($productId: String!) {
-    productList: getProductList(where: { shopifyProductId: { eq: $productId } }, size: 1) {
-      items {
-        policies {
-          _id
-          policies {
-            image {
-              path
-              description
-            }
-            nameHtml
             descriptionHtml
           }
         }

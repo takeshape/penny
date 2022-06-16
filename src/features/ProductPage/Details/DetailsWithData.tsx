@@ -1,9 +1,9 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import {
-  ProductPageTakeshapeDetailsArgs,
-  ProductPageTakeshapeDetailsQuery,
-  ProductPageTakeshapeDetailsResponse
+  ProductPageTakeshapeProductArgs,
+  ProductPageTakeshapeProductQuery,
+  ProductPageTakeshapeProductResponse
 } from '../queries';
 import { getDetails } from '../transforms';
 import { Details, DetailsProps } from './Details';
@@ -15,9 +15,9 @@ export type DetailsWithDataProps = {
 
 export const DetailsWithData = ({ productId, ...props }: DetailsWithDataProps) => {
   const [loadDetails, { data, loading, error }] = useLazyQuery<
-    ProductPageTakeshapeDetailsResponse,
-    ProductPageTakeshapeDetailsArgs
-  >(ProductPageTakeshapeDetailsQuery);
+    ProductPageTakeshapeProductResponse,
+    ProductPageTakeshapeProductArgs
+  >(ProductPageTakeshapeProductQuery);
 
   useEffect(() => {
     if (productId && !data && !loading && !error) {

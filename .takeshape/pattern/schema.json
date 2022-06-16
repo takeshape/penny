@@ -2715,6 +2715,22 @@
                   }
                 }
               },
+              "takeshape": {
+                "@ref": "local:Product",
+                "@resolver": {
+                  "name": "takeshape:find",
+                  "service": "takeshape:local",
+                  "shapeName": "Product",
+                  "args": {
+                    "ops": [
+                      {
+                        "path": "where.shopifyProductId.eq",
+                        "mapping": "$source.id"
+                      }
+                    ]
+                  }
+                }
+              },
               "recharge": {
                 "description": "The Recharge subscription data associated with this product",
                 "title": "Recharge",

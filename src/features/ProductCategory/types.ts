@@ -18,6 +18,7 @@ export type ProductCategoryShopifyProduct = Pick<
   | 'sellingPlanGroupCount'
   | 'sellingPlanGroups'
   | 'reviews'
+  | 'takeshape'
 >;
 
 export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
