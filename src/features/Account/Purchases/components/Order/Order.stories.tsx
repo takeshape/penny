@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { shopifyOrderToOrder } from 'transforms/shopify';
 import { Shopify_Order } from 'types/takeshape';
+import { shopifyOrderToOrder } from '../../transforms';
 import { PurchaseOrder } from './Order';
 import fixtures from './Order.fixtures.json';
 import OrderSkeleton from './OrderSkeleton';

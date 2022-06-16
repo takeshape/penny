@@ -1,8 +1,8 @@
 import { NetworkStatus, useQuery } from '@apollo/client';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
-import { shopifyCustomerToOrders } from 'transforms/shopify';
-import Order from './components/Order/Order';
-import OrderSkeleton from './components/Order/OrderSkeleton';
+import { shopifyCustomerToOrders } from '../../transforms';
+import Order from '../Order/Order';
+import OrderSkeleton from '../Order/OrderSkeleton';
 
 const Empty = () => (
   <div className="p-4 sm:p-6 flex flex-col items-center gap-2 text-neutral-500">

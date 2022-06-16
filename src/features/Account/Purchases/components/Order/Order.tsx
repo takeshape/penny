@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
-import { Order } from 'types/order';
 import { formatPrice } from 'utils/text';
+import { Order } from '../../types';
 import LineItem from '../LineItem/LineItem';
 import OrderStatus from '../OrderStatus/OrderStatus';
 

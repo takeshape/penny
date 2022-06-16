@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { shopifyFulfillmentToFulfillment } from 'transforms/shopify';
 import { Shopify_Fulfillment } from 'types/takeshape';
+import { shopifyFulfillmentToFulfillment } from '../../transforms';
 import { PurchaseItemOrderStatus } from './OrderStatus';
 import OrderStatusFixtures from './OrderStatus.fixtures.json';
 

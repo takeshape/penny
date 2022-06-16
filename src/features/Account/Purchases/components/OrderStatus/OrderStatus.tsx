@@ -1,6 +1,6 @@
 import { TruckIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
-import { Fulfillment } from 'types/order';
+import { Fulfillment } from '../../types';
 
 const OrderStatusChip = ({ color, label }: { color?: string; label?: string }) => (
   <p

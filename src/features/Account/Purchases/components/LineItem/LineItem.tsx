@@ -1,8 +1,8 @@
 import Image from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import { shopifyGidToId } from 'transforms/shopify';
-import { LineItem as LineItemType } from 'types/order';
 import { formatPrice } from 'utils/text';
+import { LineItem as LineItemType } from '../../types';
 
 const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType }>) => {
   return (
