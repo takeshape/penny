@@ -121,8 +121,13 @@ export const Modal = () => {
                       >
                         {({ active }) => (
                           <>
-                            <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg">
-                              <NextImage src={getImageUrl(item)} />
+                            <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg overflow-hidden">
+                              <NextImage
+                                width={60}
+                                height={60}
+                                src={getImageUrl(item)}
+                                className="object-center object-cover"
+                              />
                             </div>
                             <div className="ml-4 flex-auto">
                               <p
