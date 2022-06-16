@@ -34,7 +34,7 @@ export const Button = <T extends React.ElementType = 'button'>(
     <Component
       {...rest}
       onClick={props.onClick}
-      disabled={props.disabled ?? props.loading}
+      disabled={props.disabled || props.loading}
       className={classNames(
         props.className,
         styles.base,
