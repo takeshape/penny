@@ -19,9 +19,10 @@ export interface AuthCreateAccountForm {
 
 export interface AuthCreateAccountProps {
   callbackUrl: string;
+  signIn: typeof signIn;
 }
 
-export const AuthCreateAccount = ({ callbackUrl }) => {
+export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProps) => {
   const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
 
   const [setCustomerPayload, { data: customerResponse, error }] = useMutation<
@@ -39,7 +40,7 @@ export const AuthCreateAccount = ({ callbackUrl }) => {
       const { email, password } = watched.current;
       signIn('shopify', { email, password, callbackUrl });
     }
-  }, [customerResponse, callbackUrl]);
+  }, [customerResponse, signIn, callbackUrl]);
 
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 

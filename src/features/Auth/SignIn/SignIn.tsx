@@ -15,11 +15,12 @@ export interface AuthSignInForm {
 }
 
 export interface AuthSignInProps {
+  signIn: typeof signIn;
   callbackUrl: string;
   error?: string;
 }
 
-const errors: Record<SignInErrorTypes, string> = {
+export const errors: Record<SignInErrorTypes, string> = {
   Signin: 'Try signing in with a different account.',
   OAuthSignin: 'Try signing in with a different account.',
   OAuthCallback: 'Try signing in with a different account.',
@@ -33,14 +34,14 @@ const errors: Record<SignInErrorTypes, string> = {
   default: 'Unable to sign in.'
 };
 
-export const AuthSignIn = ({ callbackUrl, error }: AuthSignInProps) => {
+export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
   const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
 
   const onSubmit = useCallback(
     async ({ email, password, rememberMe }: AuthSignInForm) => {
       await signIn('shopify', { email, password, rememberMe, callbackUrl });
     },
-    [callbackUrl]
+    [callbackUrl, signIn]
   );
 
   const hasErrors = Boolean(error);

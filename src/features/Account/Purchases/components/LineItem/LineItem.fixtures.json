@@ -1,0 +1,24 @@
+{
+  "id": "gid://shopify/LineItem/10717032415332",
+  "image": {
+    "url": "https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530699",
+    "height": 1088,
+    "width": 840,
+    "__typename": "Shopify_Image"
+  },
+  "name": "Basic Tee 6-Pack - XS / Black",
+  "quantity": 1,
+  "product": {
+    "id": "gid://shopify/Product/6857243132004",
+    "__typename": "Shopify_Product"
+  },
+  "originalTotalSet": {
+    "shopMoney": {
+      "amount": "192.0",
+      "currencyCode": "USD",
+      "__typename": "Shopify_MoneyV2"
+    },
+    "__typename": "Shopify_MoneyBag"
+  },
+  "__typename": "Shopify_LineItem"
+}
