@@ -108,6 +108,8 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     }
   });
 
+  console.log(JSON.stringify(takeshapeData, null, 2));
+
   const sku = shopifyGidToId(product.id);
 
   // Cache priming
