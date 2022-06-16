@@ -33,9 +33,30 @@ export interface GetMyAdminCustomerOrdersResponse {
 }
 
 export const GetMyAdminCustomerOrdersQuery = gql`
+  fragment LineItem on Shopify_LineItem {
+    id
+    image {
+      url
+      height
+      width
+      altText
+    }
+    name
+    quantity
+    product {
+      id
+    }
+    originalTotalSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+  }
+
   query GetMyAdminCustomerOrdersQuery {
     customer: getMyAdminCustomer {
-      orders(first: 10) {
+      orders(first: 10, reverse: true) {
         edges {
           node {
             id
@@ -45,6 +66,13 @@ export const GetMyAdminCustomerOrdersQuery = gql`
               shopMoney {
                 amount
                 currencyCode
+              }
+            }
+            lineItems(first: 10) {
+              edges {
+                node {
+                  ...LineItem
+                }
               }
             }
             fulfillments {
@@ -62,23 +90,7 @@ export const GetMyAdminCustomerOrdersQuery = gql`
                 edges {
                   node {
                     lineItem {
-                      id
-                      image {
-                        url
-                        height
-                        width
-                      }
-                      name
-                      quantity
-                      product {
-                        id
-                      }
-                      originalTotalSet {
-                        shopMoney {
-                          amount
-                          currencyCode
-                        }
-                      }
+                      ...LineItem
                     }
                   }
                 }
@@ -320,6 +332,18 @@ export const UpdateCustomerAddressMutation = gql`
         field
         message
       }
+    }
+  }
+`;
+
+export type GorgiasCreateTicketResponse = {
+  id: number;
+};
+
+export const GorgiasCreateTicketMutation = gql`
+  mutation ($email: String!, $message: String!, $recaptchaToken: String!) {
+    Gorgias_createTicket(email: $email, message: $message, recaptchaToken: $recaptchaToken) {
+      id
     }
   }
 `;
