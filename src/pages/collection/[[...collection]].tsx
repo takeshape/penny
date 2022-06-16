@@ -52,8 +52,10 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 
   // TODO We'll need to use indexing to make pagination work with a page index
   // Shopify requires a product ID cursor which would make for nasty urls, e.g,
-  // /collections/270097776740/6857243132004/ or impractical schemes where we
+  // /collections/270097776740/adf09uadf09ausdf09audf-9adsuf90ad/ or impractical schemes where we
   // iterate through collection pages until we find the product id needed.
+
+  // TODO Support slugs
 
   const { data } = await apolloClient.query<
     ProductCategoryShopifyCollectionResponse,
