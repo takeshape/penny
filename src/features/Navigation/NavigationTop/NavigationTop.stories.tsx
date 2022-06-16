@@ -1,12 +1,12 @@
 import { ComponentMeta } from '@storybook/react';
 import { graphql } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import NavigationFixtures from '../Navigation.fixtures.json';
-import { Top } from './Top';
+import { GetNavigationDataQuery } from '../queries.fixtures';
+import { NavigationTop } from './NavigationTop';
 
-const Meta: ComponentMeta<typeof Top> = {
-  title: 'Features / Navigation / Components / Top',
-  component: Top,
+const Meta: ComponentMeta<typeof NavigationTop> = {
+  title: 'Features / Navigation / Navigation Top',
+  component: NavigationTop,
   parameters: {
     layout: 'fullscreen',
     // Allows inspecting these values since they don't do anything in this context
@@ -22,9 +22,9 @@ const Meta: ComponentMeta<typeof Top> = {
     },
     msw: {
       handlers: {
-        newsletter: [
+        navigation: [
           graphql.query('GetNavigationData', (req, res, ctx) => {
-            return res(ctx.data(NavigationFixtures.GetNavigationDataQuery.result.data));
+            return res(ctx.data(GetNavigationDataQuery.result.data));
           })
         ]
       }
@@ -32,7 +32,7 @@ const Meta: ComponentMeta<typeof Top> = {
   }
 };
 
-const Template = (args) => <Top {...args} />;
+const Template = (args) => <NavigationTop {...args} />;
 
 export const _Mobile = Template.bind({});
 _Mobile.parameters = {

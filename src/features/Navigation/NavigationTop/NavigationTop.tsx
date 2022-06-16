@@ -2,14 +2,14 @@ import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
 import NextLink from 'components/NextLink';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import TopAccountIcon from './TopAccountIcon';
-import TopCartIcon from './TopCartIcon';
-import TopCreateOrSignIn from './TopCreateOrSignIn';
-import TopCurrencySelect from './TopCurrencySelect';
-import TopLinks from './TopLinks';
-import TopMessage from './TopMessage';
+import TopAccountIcon from './components/TopAccountIcon';
+import TopCartIcon from './components/TopCartIcon';
+import TopCreateOrSignIn from './components/TopCreateOrSignIn';
+import TopCurrencySelect from './components/TopCurrencySelect';
+import TopLinks from './components/TopLinks';
+import TopMessage from './components/TopMessage';
 
-export const Top = () => {
+export const NavigationTop = () => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
   const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
 
@@ -130,5 +130,3 @@ export const Top = () => {
     </>
   );
 };
-
-export default Top;

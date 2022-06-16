@@ -4,11 +4,11 @@ import { isStorybook } from 'config';
 import { useAtom } from 'jotai';
 import { Fragment } from 'react';
 import { isMobileMenuOpenAtom } from 'store';
-import MobileMenuCreateOrSignIn from './MobileMenuCreateOrSignIn';
-import MobileMenuCurrencySelect from './MobileMenuCurrencySelect';
-import MobileMenuLinks from './MobileMenuLinks';
+import MobileMenuCreateOrSignIn from './components/MobileMenuCreateOrSignIn';
+import MobileMenuCurrencySelect from './components/MobileMenuCurrencySelect';
+import MobileMenuLinks from './components/MobileMenuLinks';
 
-export const MobileMenu = () => {
+export const NavigationMobileMenu = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
 
   return (
@@ -66,5 +66,3 @@ export const MobileMenu = () => {
     </Transition.Root>
   );
 };
-
-export default MobileMenu;

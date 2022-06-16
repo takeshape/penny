@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react';
 import NextLink from 'components/NextLink';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import { GetNavigationDataQuery, NavigationDataResults } from '../Navigation.queries';
+import { GetNavigationDataQuery, NavigationDataResults } from '../../queries';
 
 export const MobileMenuLinks = () => {
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);

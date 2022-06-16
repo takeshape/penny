@@ -1,12 +1,12 @@
 import { ComponentMeta } from '@storybook/react';
 import { graphql } from 'msw';
 import { isMobileMenuOpenAtom } from 'store';
-import NavigationFixtures from '../Navigation.fixtures.json';
-import { MobileMenu } from './MobileMenu';
+import { GetNavigationDataQuery } from '../queries.fixtures';
+import { NavigationMobileMenu } from './NavigationMobileMenu';
 
-const Meta: ComponentMeta<typeof MobileMenu> = {
-  title: 'Features / Navigation / Components / MobileMenu',
-  component: MobileMenu,
+const Meta: ComponentMeta<typeof NavigationMobileMenu> = {
+  title: 'Features / Navigation / Navigation Mobile Menu',
+  component: NavigationMobileMenu,
   parameters: {
     layout: 'fullscreen',
     viewport: {
@@ -14,9 +14,9 @@ const Meta: ComponentMeta<typeof MobileMenu> = {
     },
     msw: {
       handlers: {
-        newsletter: [
+        navigation: [
           graphql.query('GetNavigationData', (req, res, ctx) => {
-            return res(ctx.data(NavigationFixtures.GetNavigationDataQuery.result.data));
+            return res(ctx.data(GetNavigationDataQuery.result.data));
           })
         ]
       }
@@ -24,7 +24,7 @@ const Meta: ComponentMeta<typeof MobileMenu> = {
   }
 };
 
-const Template = (args) => <MobileMenu {...args} />;
+const Template = (args) => <NavigationMobileMenu {...args} />;
 
 export const _Open = Template.bind({});
 _Open.parameters = {

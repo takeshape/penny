@@ -3,7 +3,7 @@ import { Popover, Transition } from '@headlessui/react';
 import NextLink from 'components/NextLink';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import { GetNavigationDataQuery, NavigationDataResults } from '../Navigation.queries';
+import { GetNavigationDataQuery, NavigationDataResults } from '../../queries';
 
 export const TopLinks = () => {
   const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);

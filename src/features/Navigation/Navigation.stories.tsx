@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from './Navigation';
-import NavigationFixtures from './Navigation.fixtures.json';
+import { GetNavigationDataQuery } from './queries.fixtures';
 
 const Meta: ComponentMeta<typeof Navigation> = {
   title: 'Features / Navigation',
@@ -22,9 +22,9 @@ const Meta: ComponentMeta<typeof Navigation> = {
     },
     msw: {
       handlers: {
-        newsletter: [
+        navigation: [
           graphql.query('GetNavigationData', (req, res, ctx) => {
-            return res(ctx.data(NavigationFixtures.GetNavigationDataQuery.result.data));
+            return res(ctx.data(GetNavigationDataQuery.result.data));
           })
         ]
       }
