@@ -831,6 +831,14 @@
               }
             }
           }
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       }
     },
@@ -850,6 +858,14 @@
               "mapping": "$claims.custom.customer_access_token"
             }
           ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       },
       "shape": "ShopifyStorefront_Customer"
@@ -866,6 +882,14 @@
               "mapping": "$claims.sub"
             }
           ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       },
       "shape": "Shopify_Customer"
@@ -882,7 +906,13 @@
             "service": "shopify-storefront",
             "fieldName": "customer",
             "options": {
-              "selectionSet": "{ displayName email }"
+              "selectionSet": "{ displayName email }",
+              "retry": {
+                "limit": 10,
+                "statusCode": [
+                  429
+                ]
+              }
             },
             "args": {
               "ops": [
@@ -977,6 +1007,14 @@
               "mapping": "$loop.item.list_name"
             }
           ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       }
     },
@@ -994,7 +1032,15 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify-storefront",
-        "fieldName": "customer"
+        "fieldName": "customer",
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
+        }
       },
       "args": {
         "type": "object",
@@ -1054,7 +1100,15 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "collectionByHandle"
+        "fieldName": "collectionByHandle",
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
+        }
       },
       "args": {
         "type": "object",
@@ -1597,7 +1651,15 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "products"
+        "fieldName": "products",
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
+        }
       },
       "args": {
         "type": "object",
@@ -1645,7 +1707,15 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "product"
+        "fieldName": "product",
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
+        }
       },
       "args": {
         "type": "object",
@@ -2902,7 +2972,13 @@
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600
+                    "ttl": 3600,
+                    "retry": {
+                      "limit": 10,
+                      "statusCode": [
+                        429
+                      ]
+                    }
                   },
                   "searchParams": {
                     "ops": [
@@ -2953,7 +3029,13 @@
                   "service": "recharge",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600
+                    "ttl": 3600,
+                    "retry": {
+                      "limit": 10,
+                      "statusCode": [
+                        429
+                      ]
+                    }
                   },
                   "path": "/products",
                   "searchParams": {
@@ -3389,6 +3471,14 @@
                     "mapping": "$source.shopifyProductId"
                   }
                 ]
+              },
+              "options": {
+                "retry": {
+                  "limit": 10,
+                  "statusCode": [
+                    429
+                  ]
+                }
               }
             },
             "@tag": "pattern:service-object:1"

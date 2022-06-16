@@ -107,6 +107,14 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       productId: product.id
     }
   });
+  //const { data } = await retryShopifyThrottle(async () => {
+  //  return await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
+  //    query: ProductPageShopifyProductQuery,
+  //    variables: {
+  //      id: shopifyIdToGid(id)
+  //    }
+  //  });
+  //});
 
   const sku = shopifyGidToId(product.id);
 
