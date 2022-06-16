@@ -609,7 +609,23 @@
       }
     }
   },
-  "indexedShapes": {},
+  "indexedShapes": {
+    "Shopify_Product": {
+      "queries": {
+        "list": {"name": "Shopify_products", "objectDepthLimit": 2},
+        "get": {"name": "Shopify_product", "objectDepthLimit": 2}
+      },
+      "triggers": [
+        {"type": "schedule", "query": "list", "interval": 1440},
+        {
+          "type": "webhook",
+          "query": "get",
+          "service": "shopify",
+          "events": ["products/create", "products/update", "products/delete"]
+        }
+      ]
+    }
+  },
   "queries": {
     "getProduct": {
       "shape": "Product",
