@@ -1,5 +1,5 @@
-import Cart from 'features/Cart/Cart';
-import CartProvider from 'features/Cart/CartProvider';
+import { Cart } from 'features/Cart/Cart';
+import { CartProvider } from 'features/Cart/CartProvider';
 import Footer from 'features/Footer/Footer';
 import Navigation from 'features/Navigation/Navigation';
 import Notification from 'features/Notification/Notification';

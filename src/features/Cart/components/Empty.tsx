@@ -13,5 +13,3 @@ export const CartEmpty = () => {
     </button>
   );
 };
-
-export default CartEmpty;

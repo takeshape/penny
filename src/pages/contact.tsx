@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import Contact, { ContactForm } from 'features/Contact/Contact';
+import { Contact, ContactForm } from 'features/Contact/Contact';
 import Layout from 'layouts/Default';
 import { NextPage } from 'next';
 import { GorgiasCreateTicketMutation, GorgiasCreateTicketResponse } from 'queries';

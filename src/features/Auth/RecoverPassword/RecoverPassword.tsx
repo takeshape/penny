@@ -100,5 +100,3 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
     </div>
   );
 };
-
-export default AuthRecoverPassword;

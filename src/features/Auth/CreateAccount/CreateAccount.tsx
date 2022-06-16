@@ -165,5 +165,3 @@ export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProp
     </div>
   );
 };
-
-export default AuthCreateAccount;

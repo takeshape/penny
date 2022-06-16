@@ -144,5 +144,3 @@ export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
     </div>
   );
 };
-
-export default AuthSignIn;

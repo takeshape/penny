@@ -14,5 +14,3 @@ export const CartSubtotal = () => {
     </div>
   );
 };
-
-export default CartSubtotal;

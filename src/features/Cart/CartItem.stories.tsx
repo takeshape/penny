@@ -1,7 +1,7 @@
 import { ComponentMeta } from '@storybook/react';
 import { atom } from 'jotai';
-import fixtures from '../Cart.fixtures.json';
-import { CartItem } from './Item';
+import fixtures from './Cart.fixtures.json';
+import { CartItem } from './CartItem';
 
 const Meta: ComponentMeta<typeof CartItem> = {
   title: 'Features / Cart / Components / Item',

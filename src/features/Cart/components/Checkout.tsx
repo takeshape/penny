@@ -45,5 +45,3 @@ export const CartCheckout = () => {
     </Button>
   );
 };
-
-export default CartCheckout;

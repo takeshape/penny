@@ -31,5 +31,3 @@ export const AuthSignOut = (props: { signOut: typeof signOut }) => {
     </div>
   );
 };
-
-export default AuthSignOut;
