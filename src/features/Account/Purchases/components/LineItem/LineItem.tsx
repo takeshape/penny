@@ -14,7 +14,7 @@ const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType
               src={lineItem.image.url}
               height={lineItem.image.height}
               width={lineItem.image.width}
-              alt={lineItem.name}
+              alt={lineItem.image.altText}
               className="rounded"
             />
           </div>

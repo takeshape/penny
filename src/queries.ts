@@ -39,6 +39,7 @@ export const GetMyAdminCustomerOrdersQuery = gql`
       url
       height
       width
+      altText
     }
     name
     quantity
