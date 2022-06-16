@@ -92,6 +92,10 @@ export const GetMyAdminCustomerOrdersQuery = gql`
 `;
 
 export interface GetMyLoyaltyCardResponse {
+
+
+
+
   loyaltyCard: Voucherify_LoyaltyCard;
 }
 
