@@ -11,8 +11,6 @@ export const Product = ({ component, ...props }: ProductProps) => {
   let Component;
 
   switch (component) {
-
-    
     case 'withImage':
       Component = ProductWithImage;
       break;
