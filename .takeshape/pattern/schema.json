@@ -331,6 +331,182 @@
           "shopifyProduct"
         ]
       }
+    },
+    "OffersComponent": {
+      "default": {
+        "properties": {
+          "offers": {
+            "widget": "repeater",
+            "properties": {
+              "name": {
+                "widget": "singleLineText"
+              },
+              "description": {
+                "widget": "singleLineText"
+              },
+              "href": {
+                "widget": "singleLineText"
+              }
+            },
+            "order": [
+              "name",
+              "description",
+              "href"
+            ]
+          }
+        },
+        "order": [
+          "offers"
+        ]
+      }
+    },
+    "HeroComponent": {
+      "default": {
+        "properties": {
+          "primaryText": {
+            "widget": "singleLineText"
+          },
+          "secondaryText": {
+            "widget": "singleLineText"
+          },
+          "buttonText": {
+            "widget": "singleLineText"
+          },
+          "image": {
+            "widget": "image"
+          }
+        },
+        "order": [
+          "primaryText",
+          "secondaryText",
+          "buttonText",
+          "image"
+        ]
+      }
+    },
+    "CollectionsComponent": {
+      "default": {
+        "properties": {
+          "collections": {
+            "widget": "repeater",
+            "properties": {
+              "name": {
+                "widget": "singleLineText"
+              },
+              "description": {
+                "widget": "singleLineText"
+              },
+              "href": {
+                "widget": "singleLineText"
+              },
+              "image": {
+                "widget": "image"
+              }
+            },
+            "order": [
+              "name",
+              "description",
+              "href",
+              "image"
+            ]
+          }
+        },
+        "order": [
+          "collections"
+        ]
+      }
+    },
+    "BackgroundImageComponent": {
+      "default": {
+        "properties": {
+          "image": {
+            "widget": "image"
+          },
+          "components": {
+            "widget": "shapeArray"
+          }
+        },
+        "order": [
+          "image",
+          "components"
+        ]
+      }
+    },
+    "SaleComponent": {
+      "default": {
+        "properties": {
+          "primaryText": {
+            "widget": "singleLineText"
+          },
+          "secondaryText": {
+            "widget": "singleLineText"
+          },
+          "buttonText": {
+            "widget": "singleLineText"
+          }
+        },
+        "order": [
+          "primaryText",
+          "secondaryText",
+          "buttonText"
+        ]
+      }
+    },
+    "TestimonialsComponent": {
+      "default": {
+        "properties": {
+          "testimonials": {
+            "widget": "repeater",
+            "properties": {
+              "quote": {
+                "widget": "singleLineText"
+              },
+              "attribution": {
+                "widget": "singleLineText"
+              }
+            },
+            "order": [
+              "quote",
+              "attribution"
+            ]
+          }
+        },
+        "order": [
+          "testimonials"
+        ]
+      }
+    },
+    "TrendingProductsComponent": {
+      "default": {
+        "properties": {
+          "trendingProducts": {
+            "widget": "repeater",
+            "properties": {
+              "shopifyProductId": {
+                "widget": "singleLineText"
+              }
+            },
+            "order": [
+              "shopifyProductId"
+            ]
+          }
+        },
+        "order": [
+          "trendingProducts"
+        ]
+      }
+    },
+    "Storefront": {
+      "default": {
+        "properties": {
+          "components": {
+            "widget": "shapeArray"
+          }
+        },
+        "order": [
+          "components"
+        ]
+      }
     }
   },
   "services": {
@@ -893,6 +1069,16 @@
         ]
       },
       "shape": "Shopify_Collection"
+    },
+    "getStorefront": {
+      "shape": "Storefront",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Storefront"
+      },
+      "description": "Get a Storefront by ID",
+      "args": "TSGetSingletonArgs<Storefront>"
     }
   },
   "mutations": {
@@ -3396,6 +3582,439 @@
         "required": [
           "name",
           "policies"
+        ]
+      }
+    },
+    "OffersComponent": {
+      "id": "TB5fn0JVs",
+      "name": "OffersComponent",
+      "title": "Offers Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "offers": {
+            "title": "Offers",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:OffersComponentOffers"
+            },
+            "@mapping": "takeshape:local:OffersComponent.xT4pw1DQX"
+          }
+        },
+        "required": [
+          "offers"
+        ]
+      }
+    },
+    "HeroComponent": {
+      "id": "ryd1vUTw_",
+      "name": "HeroComponent",
+      "title": "Hero Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "primaryText": {
+            "minLength": 1,
+            "type": "string",
+            "title": "Primary Text",
+            "@mapping": "takeshape:local:HeroComponent.dBpjebsDG"
+          },
+          "secondaryText": {
+            "minLength": 1,
+            "type": "string",
+            "title": "Secondary Text",
+            "@mapping": "takeshape:local:HeroComponent.GtIaaH1nJ"
+          },
+          "buttonText": {
+            "minLength": 1,
+            "type": "string",
+            "title": "Button Text",
+            "@mapping": "takeshape:local:HeroComponent.1UlfVUH6m"
+          },
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:HeroComponent.f8GnBKxdc"
+          }
+        },
+        "required": [
+          "primaryText",
+          "secondaryText",
+          "buttonText",
+          "image"
+        ]
+      }
+    },
+    "CollectionsComponent": {
+      "id": "N442MMRnP",
+      "name": "CollectionsComponent",
+      "title": "Collections Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "collections": {
+            "title": "Collections",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:CollectionsComponentCollections"
+            },
+            "@mapping": "takeshape:local:CollectionsComponent.CkeuB_BtQ"
+          }
+        },
+        "required": [
+          "collections"
+        ]
+      }
+    },
+    "BackgroundImageComponent": {
+      "id": "owFx1bK_N",
+      "name": "BackgroundImageComponent",
+      "title": "Background Image Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:BackgroundImageComponent.JiPgzhzwi"
+          },
+          "components": {
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:CollectionsComponent"
+                },
+                {
+                  "@ref": "local:SaleComponent"
+                },
+                {
+                  "@ref": "local:TestimonialsComponent"
+                },
+                {
+                  "@ref": "local:OffersComponent"
+                },
+                {
+                  "@ref": "local:HeroComponent"
+                },
+                {
+                  "@ref": "local:BackgroundImageComponent"
+                }
+              ]
+            },
+            "minItems": 1,
+            "type": "array",
+            "description": "",
+            "title": "Components",
+            "@mapping": "takeshape:local:BackgroundImageComponent.9aCDl8bvs"
+          }
+        },
+        "required": [
+          "image",
+          "components"
+        ]
+      }
+    },
+    "SaleComponent": {
+      "id": "J99fCvBVY",
+      "name": "SaleComponent",
+      "title": "Sale Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "primaryText": {
+            "type": "string",
+            "title": "Primary Text",
+            "@mapping": "takeshape:local:SaleComponent.RDiJiVicD"
+          },
+          "secondaryText": {
+            "type": "string",
+            "title": "Secondary Text",
+            "@mapping": "takeshape:local:SaleComponent.kAUoEI-vc"
+          },
+          "buttonText": {
+            "type": "string",
+            "title": "Button Text",
+            "@mapping": "takeshape:local:SaleComponent.6rugQZtXB"
+          }
+        },
+        "required": [
+          "primaryText",
+          "secondaryText",
+          "buttonText"
+        ]
+      }
+    },
+    "TestimonialsComponent": {
+      "id": "mLflhkK49",
+      "name": "TestimonialsComponent",
+      "title": "Testimonials Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "testimonials": {
+            "title": "Testimonials",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:TestimonialsComponentTestimonials"
+            },
+            "@mapping": "takeshape:local:TestimonialsComponent.it7qU6IPS"
+          }
+        },
+        "required": [
+          "testimonials"
+        ]
+      }
+    },
+    "CollectionsComponentCollections": {
+      "id": "CkeuB_BtQ",
+      "name": "CollectionsComponentCollections",
+      "title": "Collections Component Collections",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.GtqbZV_yV"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Description",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.-qIw4ksCG"
+          },
+          "href": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.qBq3Hp4pU"
+          },
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.44EIR8MU5"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "href",
+          "image"
+        ]
+      }
+    },
+    "OffersComponentOffers": {
+      "id": "xT4pw1DQX",
+      "name": "OffersComponentOffers",
+      "title": "Offers Component Offers",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:OffersComponentOffers.U7DX6k9t8"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Description",
+            "@mapping": "takeshape:local:OffersComponentOffers.w1TXpbdet"
+          },
+          "href": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:OffersComponentOffers.ZwRQHanTW"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "href"
+        ]
+      }
+    },
+    "TestimonialsComponentTestimonials": {
+      "id": "it7qU6IPS",
+      "name": "TestimonialsComponentTestimonials",
+      "title": "Testimonials Component Testimonials",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "quote": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Quote",
+            "@mapping": "takeshape:local:TestimonialsComponentTestimonials.KFwmm_umC"
+          },
+          "attribution": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Attribution",
+            "@mapping": "takeshape:local:TestimonialsComponentTestimonials.ZCRhMIZOP"
+          }
+        },
+        "required": [
+          "quote",
+          "attribution"
+        ]
+      }
+    },
+    "TrendingProductsComponentTrendingProducts": {
+      "id": "B6g6lGJm_",
+      "name": "TrendingProductsComponentTrendingProducts",
+      "title": "Trending Products Component TrendingProducts",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "shopifyProductId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Shopify Product ID",
+            "@mapping": "takeshape:local:TrendingProductsComponentTrendingProducts.X9e5hJImy"
+          },
+          "shopifyProduct": {
+            "@ref": "shopify:Product",
+            "@resolver": {
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "product",
+              "args": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.shopifyProductId"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "shopifyProductId"
+        ]
+      }
+    },
+    "TrendingProductsComponent": {
+      "id": "8fw2VcmMH",
+      "name": "TrendingProductsComponent",
+      "title": "Trending Products Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "trendingProducts": {
+            "title": "Trending Products",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:TrendingProductsComponentTrendingProducts"
+            },
+            "@mapping": "takeshape:local:TrendingProductsComponent.B6g6lGJm_"
+          }
+        },
+        "required": [
+          "trendingProducts"
+        ]
+      }
+    },
+    "Storefront": {
+      "id": "u3-xM1Ynt",
+      "name": "Storefront",
+      "title": "Storefront",
+      "model": {
+        "type": "single"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "components": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:OffersComponent"
+                },
+                {
+                  "@ref": "local:HeroComponent"
+                },
+                {
+                  "@ref": "local:CollectionsComponent"
+                },
+                {
+                  "@ref": "local:BackgroundImageComponent"
+                },
+                {
+                  "@ref": "local:SaleComponent"
+                },
+                {
+                  "@ref": "local:TestimonialsComponent"
+                },
+                {
+                  "@ref": "local:TrendingProductsComponent"
+                }
+              ]
+            },
+            "title": "Components",
+            "@mapping": "takeshape:local:Storefront.nSsbsiM-3"
+          }
+        },
+        "required": [
+          "components"
         ]
       }
     }
