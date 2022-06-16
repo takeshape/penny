@@ -4,7 +4,7 @@ const config = {
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies:
-      process.env.NODE_ENV === 'production' ? [{ userAgent: '*', allow: '/' }] : [{ userAgent: '*', disallow: '/' }]
+      process.env.VERCEL_ENV === 'production' ? [{ userAgent: '*', allow: '/' }] : [{ userAgent: '*', disallow: '/' }]
   }
 };
 
