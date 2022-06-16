@@ -1,6 +1,6 @@
 import Wrapper from 'components/Wrapper/Content';
-import ProductHeader from 'features/ProductCategory/Header/Header';
-import ProductGrid, { ProductGridProps } from 'features/ProductCategory/ProductGrid/ProductGrid';
+import { Header } from 'features/ProductCategory/Header/Header';
+import { ProductGrid, ProductGridProps } from 'features/ProductCategory/ProductGrid/ProductGrid';
 import BackgroundImage from 'features/Storefront/BackgroundImage/BackgroundImage';
 import Hero from 'features/Storefront/Hero/Hero';
 import Offers from 'features/Storefront/Offers/Offers';
@@ -32,7 +32,7 @@ function storefrontResponseToComponent(products: ProductGridProps['products']) {
       case 'TrendingProductsComponent':
         return (
           <Wrapper>
-            <ProductHeader header={{ text: { primary: 'Trending Products', secondary: '' } }} />
+            <Header header={{ text: { primary: 'Trending Products', secondary: '' } }} />
             <ProductGrid products={products} />;
           </Wrapper>
         );
