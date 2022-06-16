@@ -21,7 +21,13 @@ export const FormInput = ({
   shouldUnregister,
   ...props
 }: FormInputProps & UseControllerProps<any, any>) => {
-  const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
+  const { field, fieldState } = useController({
+    name,
+    control,
+    defaultValue: defaultValue ?? '',
+    rules,
+    shouldUnregister
+  });
   const { error } = fieldState;
   return (
     <div className={`${className} relative`}>

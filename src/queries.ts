@@ -275,8 +275,8 @@ export type RecoverCustomerPasswordResponse = {
 };
 
 export const RecoverCustomerPasswordMutation = gql`
-  mutation RecoverCustomerPasswordMutation($email: String!) {
-    customerRecover: ShopifyStorefront_customerRecover(email: $email) {
+  mutation RecoverCustomerPasswordMutation($email: String!, $recaptchaToken: String!) {
+    customerRecover: ShopifyStorefront_customerRecover(email: $email, recaptchaToken: $recaptchaToken) {
       customerUserErrors {
         code
         field
@@ -320,6 +320,18 @@ export const UpdateCustomerAddressMutation = gql`
         field
         message
       }
+    }
+  }
+`;
+
+export type GorgiasCreateTicketResponse = {
+  id: number;
+};
+
+export const GorgiasCreateTicketMutation = gql`
+  mutation ($email: String!, $message: String!, $recaptchaToken: String!) {
+    Gorgias_createTicket(email: $email, message: $message, recaptchaToken: $recaptchaToken) {
+      id
     }
   }
 `;

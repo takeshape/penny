@@ -29,6 +29,10 @@ export const GetFooterQueryData: { footer: Footer } = {
           name: 'Support',
           items: [
             {
+              name: 'Contact',
+              href: 'contact'
+            },
+            {
               name: 'Pricing',
               href: '#'
             },
