@@ -23,7 +23,7 @@ WithImageGrid.args = {
   component: 'withImageGrid',
   breadcrumbs,
   product: getProduct(productResponse),
-  reviews: getReviewHighlights(reviewsResponse),
+  reviewHighlights: getReviewHighlights(reviewsResponse),
   showFeaturedReviews: true
 };
 
@@ -32,7 +32,7 @@ WithImage.args = {
   component: 'withImage',
   breadcrumbs,
   product: getProduct(productResponse),
-  reviews: getReviewHighlights(reviewsResponse),
+  reviewHighlights: getReviewHighlights(reviewsResponse),
   showFeaturedReviews: true
 };
 

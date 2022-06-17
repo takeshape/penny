@@ -1,14 +1,10 @@
-import { useQuery } from '@apollo/client';
 import { Popover, Transition } from '@headlessui/react';
 import NextLink from 'components/NextLink';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import { GetNavigationDataQuery, NavigationDataResults } from '../../queries';
+import { Navigation } from '../../types';
 
-export const TopLinks = () => {
-  const { data } = useQuery<NavigationDataResults>(GetNavigationDataQuery);
-  const { links } = data?.navigation ?? {};
-
+export const TopLinks = ({ links }: Pick<Navigation, 'links'>) => {
   return (
     <div className="hidden h-full lg:flex">
       {/* Mega menus */}

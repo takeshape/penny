@@ -5,7 +5,7 @@ import { signOut } from 'next-auth/react';
 
 const SignOutPage: NextPage = () => {
   return (
-    <Layout title="Register">
+    <Layout seo={{ title: 'Sign Out' }}>
       <AuthSignOut signOut={signOut} />
     </Layout>
   );

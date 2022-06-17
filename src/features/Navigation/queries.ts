@@ -1,45 +1,40 @@
 import { gql } from '@apollo/client';
-import { currencyList } from 'config';
-import { NavigationData } from 'types/takeshape';
+import { Navigation } from 'types/takeshape';
 
-// TakeShape doesn't support scalar arrays, so sticking with this for now
-export type NavigationCurrency = typeof currencyList[number];
-
-export interface NavigationDataResults {
-  navigation: NavigationData & {
-    currencies: NavigationCurrency[];
-  };
+export interface NavigationResponse {
+  navigation: Navigation;
 }
 
-export const GetNavigationDataQuery = gql`
-  query GetNavigationData {
-    navigation: getNavigationData {
-      message
+export const NavigationQuery = gql`
+  query NavigationQuery {
+    navigation: getNavigation {
+      _id
       links {
         categories {
-          name
-          featured {
-            name
+          brands {
             href
-          }
-          collection {
             name
-            href
           }
           categories {
-            name
             href
-          }
-          brands {
             name
-            href
           }
+          collection {
+            href
+            name
+          }
+          featured {
+            href
+            name
+          }
+          name
         }
         pages {
-          name
           href
+          name
         }
       }
+      messageHtml
     }
   }
 `;

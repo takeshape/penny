@@ -15,7 +15,7 @@ const Template: ComponentStory<typeof Reviews> = (args) => <Reviews {...args} />
 
 export const _Reviews = Template.bind({});
 _Reviews.args = {
-  reviews: getReviewList(reviewsResponse)
+  reviewList: getReviewList(reviewsResponse)
 };
 
 export default Meta;

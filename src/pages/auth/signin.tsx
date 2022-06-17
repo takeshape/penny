@@ -9,7 +9,7 @@ const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
-    <Layout title="Sign In">
+    <Layout seo={{ title: 'Sign In' }}>
       <AuthSignIn
         signIn={signIn}
         callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}

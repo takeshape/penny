@@ -1,8 +1,11 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { graphql } from 'msw';
+import { rest } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from './Navigation';
-import { GetNavigationDataQuery } from './queries.fixtures';
+import { navigationResponse } from './queries.fixtures';
+import { getNavigation } from './transforms';
+
+const navigation = getNavigation(navigationResponse);
 
 const Meta: ComponentMeta<typeof Navigation> = {
   title: 'Features / Navigation',
@@ -22,9 +25,9 @@ const Meta: ComponentMeta<typeof Navigation> = {
     },
     msw: {
       handlers: {
-        navigation: [
-          graphql.query('GetNavigationData', (req, res, ctx) => {
-            return res(ctx.data(GetNavigationDataQuery.result.data));
+        auth: [
+          rest.get('/api/auth/session', (req, res, ctx) => {
+            return res(ctx.json({ expires: '2050-10-05T14:48:00.000Z' }));
           })
         ]
       }
@@ -32,9 +35,13 @@ const Meta: ComponentMeta<typeof Navigation> = {
   }
 };
 
-const Template: ComponentStory<typeof Navigation> = () => <Navigation />;
+const Template: ComponentStory<typeof Navigation> = (args) => <Navigation {...args} />;
 
 export const _Navigation = Template.bind({});
-_Navigation.args = {};
+_Navigation.args = {
+  message: navigation.message,
+  links: navigation.links,
+  currencies: navigation.currencies
+};
 
 export default Meta;

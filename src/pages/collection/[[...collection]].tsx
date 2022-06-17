@@ -1,5 +1,6 @@
 import PageLoader from 'components/PageLoader';
 import { collectionsPageSize } from 'config';
+import { getLayoutData } from 'data/getLayoutData';
 import { ProductCategoryWithData } from 'features/ProductCategory/ProductCategoryWithData';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -10,36 +11,33 @@ import {
 } from 'features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyCollectionIdToGid } from 'transforms/shopify';
-import { Product } from 'types/product';
-import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
-  page: number;
-  id: string;
-  handle: string;
-  name: string;
-  description: string;
-};
-
-const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, description }) => {
+const CollectionPage: NextPage = ({
+  page,
+  id,
+  name,
+  description,
+  navigation,
+  footer
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Layout title="Collection is loading...">
+      <Layout navigation={navigation} footer={footer} seo={{ title: 'Collection is loading...' }}>
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout title={name} description={description}>
+    <Layout navigation={navigation} footer={footer} seo={{ title: name, description }}>
       <ProductCategoryWithData collectionId={id} pageSize={collectionsPageSize} page={page} />
     </Layout>
   );
@@ -47,7 +45,7 @@ const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, descriptio
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   const [collectionId, pageNumber] = params.collection;
 
   // TODO We'll need to use indexing to make pagination work with a page index
@@ -56,6 +54,8 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   // iterate through collection pages until we find the product id needed.
 
   // TODO Support slugs
+
+  const { navigation, footer } = await getLayoutData();
 
   const { data } = await apolloClient.query<
     ProductCategoryShopifyCollectionResponse,
@@ -70,15 +70,17 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 
   const collection = getCollection(data);
 
-  return addApolloQueryCache(apolloClient, {
+  return {
     props: {
       page: Number(pageNumber ?? 1),
       id: collection.id,
       handle: collection.handle,
       name: collection.name,
-      description: collection.description
+      description: collection.description,
+      navigation,
+      footer
     }
-  });
+  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

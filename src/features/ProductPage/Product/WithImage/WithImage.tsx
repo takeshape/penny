@@ -13,11 +13,11 @@ import { formatPrice } from 'utils/text';
 
 export interface ProductWithImageProps {
   product: ProductType;
-  reviews: ReviewHighlights;
+  reviewHighlights: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
 }
 
-export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithImageProps) => {
+export const ProductWithImage = ({ product, reviewHighlights, breadcrumbs }: ProductWithImageProps) => {
   const { priceMin, name, descriptionHtml, featuredImage, options } = product;
 
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
@@ -79,10 +79,10 @@ export const ProductWithImage = ({ product, reviews, breadcrumbs }: ProductWithI
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <div>
-                  <Stars rating={reviews.stats.average} />
-                  <p className="sr-only">{reviews.stats.average} out of 5 stars</p>
+                  <Stars rating={reviewHighlights.stats.average} />
+                  <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
                 </div>
-                <p className="ml-2 text-sm text-gray-500">{reviews.stats.count} reviews</p>
+                <p className="ml-2 text-sm text-gray-500">{reviewHighlights.stats.count} reviews</p>
               </div>
             </div>
           </div>

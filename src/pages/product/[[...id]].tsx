@@ -1,4 +1,5 @@
 import PageLoader from 'components/PageLoader';
+import { getLayoutData } from 'data/getLayoutData';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageReviewsIoReviewsArgs,
@@ -16,53 +17,61 @@ import {
   ProductPageTakeshapeProductResponse
 } from 'features/ProductPage/queries';
 import {
+  getDetails,
   getPageOptions,
+  getPolicies,
   getProduct,
   getProductPageIdOrSlug,
-  getProductPageParams
+  getProductPageParams,
+  getReviewHighlights,
+  getReviewList
 } from 'features/ProductPage/transforms';
-import { ProductPageOptions } from 'features/ProductPage/types';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyGidToId } from 'transforms/shopify';
-import { Product } from 'types/product';
-import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 import { retryShopifyThrottle } from '../../utils/apollo/retry-shopify-throttle';
-
-type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
-  sku: string;
-  options: ProductPageOptions;
-};
 
 const breadcrumbs = [
   { id: 1, name: 'Men', href: '#' },
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, options }) => {
+const ProductPage: NextPage = ({
+  options,
+  navigation,
+  footer,
+  product,
+  reviewHighlights,
+  reviewList,
+  details,
+  policies
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Layout title="Product is loading...">
+      <Layout navigation={navigation} footer={footer} seo={{ title: 'Product is loading...' }}>
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout title={name} description={description}>
+    <Layout navigation={navigation} footer={footer} seo={{ title: product.name, description: product.description }}>
       <ProductPageComponent
-        productId={id}
-        sku={sku}
         component={options.component}
         options={options}
         breadcrumbs={breadcrumbs}
+        product={product}
+        reviewHighlights={reviewHighlights}
+        reviewList={reviewList}
+        details={details}
+        policies={policies}
       />
     </Layout>
   );
@@ -70,13 +79,15 @@ const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, o
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   const idOrSlug = getProductPageIdOrSlug(getSingle(params.id));
 
-  let shopifyData;
+  const { navigation, footer } = await getLayoutData();
+
+  let productData;
 
   if (idOrSlug.slug) {
-    ({ data: shopifyData } = await retryShopifyThrottle(async () => {
+    ({ data: productData } = await retryShopifyThrottle(async () => {
       return await apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductBySlugArgs>({
         query: ProductPageShopifyProductBySlugQuery,
         variables: {
@@ -85,7 +96,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       });
     }));
   } else {
-    ({ data: shopifyData } = await retryShopifyThrottle(async () => {
+    ({ data: productData } = await retryShopifyThrottle(async () => {
       return await apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductByIdArgs>({
         query: ProductPageShopifyProductByIdQuery,
         variables: {
@@ -95,7 +106,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     }));
   }
 
-  const product = getProduct(shopifyData);
+  const product = getProduct(productData);
 
   const { data: takeshapeData } = await retryShopifyThrottle(async () => {
     return await apolloClient.query<ProductPageTakeshapeProductResponse, ProductPageTakeshapeProductArgs>({
@@ -106,25 +117,28 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
     });
   });
 
-  const sku = shopifyGidToId(product.id);
-
-  // Cache priming
-  await apolloClient.query<ProductPageReviewsIoReviewsResponse, ProductPageReviewsIoReviewsArgs>({
+  const { data: reviewsData } = await apolloClient.query<
+    ProductPageReviewsIoReviewsResponse,
+    ProductPageReviewsIoReviewsArgs
+  >({
     query: ProductPageReviewsIoReviewsQuery,
     variables: {
-      sku
+      sku: shopifyGidToId(product.id)
     }
   });
 
-  return addApolloQueryCache(apolloClient, {
+  return {
     props: {
-      id: product.id,
-      sku,
-      name: product.name,
-      description: product.description,
-      options: getPageOptions(takeshapeData)
+      options: getPageOptions(takeshapeData),
+      navigation,
+      footer,
+      product,
+      reviewHighlights: getReviewHighlights(reviewsData),
+      reviewList: getReviewList(reviewsData),
+      details: getDetails(takeshapeData),
+      policies: getPolicies(takeshapeData)
     }
-  });
+  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
