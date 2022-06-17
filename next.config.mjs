@@ -1,4 +1,5 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs';
 import withPlugins from 'next-compose-plugins';
 
 const withBundleAnalyzer = createBundleAnalyzer({
@@ -103,4 +104,4 @@ const config = {
   }
 };
 
-export default withPlugins([withBundleAnalyzer], config);
+export default withSentryConfig(withPlugins([withBundleAnalyzer], config));

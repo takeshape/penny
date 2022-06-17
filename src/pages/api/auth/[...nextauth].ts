@@ -1,3 +1,4 @@
+import { withSentry } from '@sentry/nextjs';
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
 import {
@@ -141,7 +142,7 @@ const nextAuthConfig = {
   }
 };
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = parseCookies({ req });
   const rememberMe = cookies['remember-me'] ?? req.body.rememberMe;
   const maxAge = rememberMe === 'false' ? maxAgeForgetMe : maxAgeRememberMe;
@@ -161,4 +162,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const nextAuth = withAllAccess(NextAuth, nextAuthConfig);
 
   return await nextAuth(req, res);
-}
+};
+
+export default withSentry(handler);
