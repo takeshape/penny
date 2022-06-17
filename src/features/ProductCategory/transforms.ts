@@ -1,6 +1,7 @@
 import { getStats } from 'transforms/reviewsIo';
 import {
   createImageGetter,
+  getCollectionUrl,
   getPrice,
   getProductOptions,
   getProductUrl,
@@ -28,7 +29,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -63,12 +64,15 @@ export function getCollection(response: ProductCategoryShopifyCollectionResponse
 
   return {
     id: collection.id,
+    url: getCollectionUrl(collection.id, collection.takeshape),
     handle: collection.handle,
     name: collection.title,
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     productsCount: collection.productsCount,
-    products: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor))
+    products: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
+    hasNextPage: collection.products.pageInfo.hasNextPage ?? false,
+    hasPreviousPage: collection.products.pageInfo.hasPreviousPage ?? false
   };
 }
 
@@ -79,29 +83,20 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
     return null;
   }
 
-  return collections.flatMap((item) => {
-    const pageCount = Math.ceil(item.shopifyCollection.productsCount / pageSize);
-    const pagesParams = new Array(pageCount).fill(undefined);
+  return collections.map((item) => {
+    let collection;
 
-    return pagesParams.map((_, pageIdx) => {
-      let collection;
+    if (item.slug) {
+      collection = [item.slug];
+    } else {
+      collection = [shopifyGidToId(item.shopifyCollectionId)];
+    }
 
-      if (item.slug) {
-        collection = [item.slug];
-      } else {
-        collection = [shopifyGidToId(item.shopifyCollectionId)];
+    return {
+      params: {
+        collection
       }
-
-      if (pageIdx > 0) {
-        collection.push(String(pageIdx + 1));
-      }
-
-      return {
-        params: {
-          collection
-        }
-      };
-    });
+    };
   });
 }
 

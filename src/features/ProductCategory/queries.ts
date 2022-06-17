@@ -1,15 +1,19 @@
 import { gql } from '@apollo/client';
 import { ProductCategoryShopifyCollection } from './types';
 
+export type ProductCategoryShopifyPaginationArgs = {
+  first?: number;
+  last?: number;
+  after?: string;
+  before?: string;
+};
+
 export type ProductCategoryShopifyCollectionIdsResponse = {
   collections: {
     items: Array<{
       name: string;
       slug: string;
       shopifyCollectionId: string;
-      shopifyCollection: {
-        productsCount: number;
-      };
     }>;
   };
 };
@@ -21,21 +25,10 @@ export const ProductCategoryShopifyCollectionIdsQuery = gql`
         name
         slug
         shopifyCollectionId
-        shopifyCollection {
-          productsCount
-        }
       }
     }
   }
 `;
-
-export type ProductCategoryShopifyCollectionArgs = {
-  id: string;
-  first?: number;
-  last?: number;
-  after?: string;
-  before?: string;
-};
 
 const ProductCategoryProductFragment = gql`
   fragment ProductCategoryCollection on Shopify_Collection {
@@ -45,6 +38,11 @@ const ProductCategoryProductFragment = gql`
     description
     descriptionHtml
     productsCount
+    takeshape {
+      _id
+      name
+      slug
+    }
   }
 
   fragment ProductCategoryProduct on Shopify_Product {
@@ -88,23 +86,6 @@ const ProductCategoryProductFragment = gql`
   }
 `;
 
-export const ProductCategoryShopifyCollectionQuery = gql`
-  ${ProductCategoryProductFragment}
-  query ProductCategoryShopifyCollectionQuery($id: ID!, $first: Int, $last: Int, $after: String, $before: String) {
-    collection: Shopify_collection(id: $id) {
-      ...ProductCategoryCollection
-      products(first: $first, last: $last, after: $after, before: $before) {
-        edges {
-          cursor
-          node {
-            ...ProductCategoryProduct
-          }
-        }
-      }
-    }
-  }
-`;
-
 export type ProductCategoryShopifyCollectionResponse = {
   collectionList: {
     items: Array<{
@@ -115,11 +96,7 @@ export type ProductCategoryShopifyCollectionResponse = {
 
 export type ProductCategoryShopifyCollectionByIdArgs = {
   id: string;
-  first?: number;
-  last?: number;
-  after?: string;
-  before?: string;
-};
+} & ProductCategoryShopifyPaginationArgs;
 
 export const ProductCategoryShopifyCollectionByIdQuery = gql`
   ${ProductCategoryProductFragment}
@@ -129,6 +106,10 @@ export const ProductCategoryShopifyCollectionByIdQuery = gql`
         shopifyCollection {
           ...ProductCategoryCollection
           products(first: $first, last: $last, after: $after, before: $before) {
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+            }
             edges {
               cursor
               node {
@@ -144,11 +125,7 @@ export const ProductCategoryShopifyCollectionByIdQuery = gql`
 
 export type ProductCategoryShopifyCollectionBySlugArgs = {
   slug: string;
-  first?: number;
-  last?: number;
-  after?: string;
-  before?: string;
-};
+} & ProductCategoryShopifyPaginationArgs;
 
 export const ProductCategoryShopifyCollectionBySlugQuery = gql`
   ${ProductCategoryProductFragment}
@@ -158,6 +135,10 @@ export const ProductCategoryShopifyCollectionBySlugQuery = gql`
         shopifyCollection {
           ...ProductCategoryCollection
           products(first: $first, last: $last, after: $after, before: $before) {
+            pageInfo {
+              hasNextPage
+              hasPreviousPage
+            }
             edges {
               cursor
               node {

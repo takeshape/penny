@@ -3134,15 +3134,15 @@
             "type": "object",
             "properties": {
               "takeshape": {
-                "@ref": "local:Product",
+                "@ref": "local:Collection",
                 "@resolver": {
                   "name": "takeshape:find",
                   "service": "takeshape:local",
-                  "shapeName": "Product",
+                  "shapeName": "Collection",
                   "args": {
                     "ops": [
                       {
-                        "path": "where.shopifyProductId.eq",
+                        "path": "where.shopifyCollectionId.eq",
                         "mapping": "$source.id"
                       }
                     ]
