@@ -4,12 +4,13 @@ name: 'Chromatic'
 
 on:
   pull_request:
-  push: 
-    branches: 
+  push:
+    branches:
       - main
 
 jobs:
   chromatic-deployment:
+    name: Chromatic Deployment
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:
@@ -26,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-            
+
       - name: Install dependencies
         run: npm ci
 
