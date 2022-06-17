@@ -4,6 +4,7 @@
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import { RetryLink } from '@apollo/client/link/retry';
 import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from 'config';
 import logger from 'logger';
@@ -15,6 +16,7 @@ export interface InitializeApolloProps {
   getAccessToken?: () => string | Promise<string>;
   accessToken?: string;
   ssrMode?: boolean;
+  rateLimit?: boolean;
   uri: string;
 }
 
@@ -84,10 +86,18 @@ function createApolloClient({
   //   });
   // });
 
+  const retryLink = new RetryLink({
+    attempts: {
+      retryIf: (error, _operation) => {
+        return error.statusCode === 429;
+      }
+    }
+  });
+
   const httpLinkWithoutTypeName = ApolloLink.from([httpLink]);
 
   return new ApolloClient<NormalizedCacheObject>({
-    link: ApolloLink.from([withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
+    link: ApolloLink.from([retryLink, withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
     cache: new InMemoryCache(),
     ssrMode
   });
