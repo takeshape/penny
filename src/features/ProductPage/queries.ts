@@ -13,18 +13,24 @@ export type ProductPageShopifyProductIdListResponse = {
       slug: string;
       shopifyProductId: string;
     }>;
+    total: number;
   };
+};
+
+export type ProductPageShopifyProductIdListArgs = {
+  from: number;
 };
 
 // TODO Avoid throttling issues for now
 export const ProductPageShopifyProductIdListQuery = gql`
-  query ProductPageShopifyProductIdListQuery {
-    products: getProductList(size: 10, sort: { field: "_createdAt", order: "asc" }) {
+  query ProductPageShopifyProductIdListQuery($from: Int!) {
+    products: getProductList(size: 10, sort: { field: "_createdAt", order: "asc" }, from: $from) {
       items {
         name
         slug
         shopifyProductId
       }
+      total
     }
   }
 `;
