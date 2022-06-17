@@ -1,8 +1,8 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { Fragment, MouseEvent, useCallback } from 'react';
-import { QuickAddItem } from './QuickAddItem';
-import { QuickAddItemLoading } from './QuickAddItemLoading';
+import { QuickAddItem } from './components/QuickAddItem';
+import { QuickAddItemLoading } from './components/QuickAddItemLoading';
 import { QuickAddProduct } from './types';
 
 export interface QuickAddProps {

@@ -80,5 +80,3 @@ export const Notification = () => {
     </>
   );
 };
-
-export default Notification;

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
-import NavigationMobileMenu from './MobileMenu/MobileMenu';
-import NavigationTop from './Top/Top';
+import { NavigationMobileMenu } from './NavigationMobileMenu/NavigationMobileMenu';
+import { NavigationTop } from './NavigationTop/NavigationTop';
 
 export const Navigation = () => {
   return (
@@ -12,5 +12,3 @@ export const Navigation = () => {
     </Fragment>
   );
 };
-
-export default Navigation;

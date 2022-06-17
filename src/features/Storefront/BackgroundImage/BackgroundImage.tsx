@@ -3,7 +3,7 @@ import NextImage from 'components/NextImage';
 import { PropsWithChildren } from 'react';
 import { BackgroundImageComponent } from 'types/takeshape';
 
-const BackgroundImage = ({ image, children }: PropsWithChildren<BackgroundImageComponent>) => {
+export const BackgroundImage = ({ image, children }: PropsWithChildren<BackgroundImageComponent>) => {
   return (
     <div className="relative overflow-hidden">
       {/* Decorative background image and gradient */}
@@ -23,5 +23,3 @@ const BackgroundImage = ({ image, children }: PropsWithChildren<BackgroundImageC
     </div>
   );
 };
-
-export default BackgroundImage;

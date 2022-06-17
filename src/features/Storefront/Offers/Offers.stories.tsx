@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Offers from './Offers';
+import { Offers } from './Offers';
 
 const Meta: ComponentMeta<typeof Offers> = {
   title: 'Features / Storefront / Components / Offers',

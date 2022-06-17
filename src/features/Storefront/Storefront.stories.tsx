@@ -7,7 +7,7 @@ import { _Sale } from 'features/Storefront/Sale/Sale.stories';
 import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
 import { _TrendingProducts } from 'features/Storefront/TrendingProducts/TrendingProducts.stories';
 import { products } from '../ProductCategory/ProductGrid/ProductGrid.fixture';
-import Storefront from './Storefront';
+import { Storefront } from './Storefront';
 
 const Meta: ComponentMeta<typeof Storefront> = {
   title: 'Features / Storefront',

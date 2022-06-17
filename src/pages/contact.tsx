@@ -1,14 +1,14 @@
 import { useMutation } from '@apollo/client';
-import Contact, { ContactForm } from 'features/Contact/Contact';
+import { Contact, ContactForm } from 'features/Contact/Contact';
+import { GorgiasCreateTicketMutation, GorgiasCreateTicketResponse } from 'features/Contact/queries';
 import Layout from 'layouts/Default';
 import { NextPage } from 'next';
-import { GorgiasCreateTicketMutation, GorgiasCreateTicketResponse } from 'queries';
 import { useCallback, useState } from 'react';
 import { MutationGorgias_CreateTicketArgs } from 'types/takeshape';
 
 const ContactPage: NextPage = () => {
   const [success, setSuccess] = useState<string>();
-  const [createTicket, { data: customerResponse, error }] = useMutation<
+  const [createTicket, { error }] = useMutation<
     { Gorgias_createTicket: GorgiasCreateTicketResponse },
     MutationGorgias_CreateTicketArgs
   >(GorgiasCreateTicketMutation);

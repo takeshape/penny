@@ -1,14 +1,14 @@
 import Wrapper from 'components/Wrapper/Content';
 import { Header } from 'features/ProductCategory/Header/Header';
 import { ProductGrid, ProductGridProps } from 'features/ProductCategory/ProductGrid/ProductGrid';
-import BackgroundImage from 'features/Storefront/BackgroundImage/BackgroundImage';
-import Hero from 'features/Storefront/Hero/Hero';
-import Offers from 'features/Storefront/Offers/Offers';
-import Sale from 'features/Storefront/Sale/Sale';
-import Testimonials from 'features/Storefront/Testimonials/Testimonials';
 import { StorefrontComponentsProperty } from 'types/takeshape';
-import { GetStorefrontResponse } from '../../queries';
-import Collections from './Collections/Collections';
+import { BackgroundImage } from './BackgroundImage/BackgroundImage';
+import { Collections } from './Collections/Collections';
+import { Hero } from './Hero/Hero';
+import { Offers } from './Offers/Offers';
+import { GetStorefrontResponse } from './queries';
+import { Sale } from './Sale/Sale';
+import { Testimonials } from './Testimonials/Testimonials';
 
 function storefrontResponseToComponent(products: ProductGridProps['products']) {
   const StorefrontComponent = (component: StorefrontComponentsProperty) => {
@@ -44,8 +44,6 @@ function storefrontResponseToComponent(products: ProductGridProps['products']) {
   return StorefrontComponent;
 }
 
-const Storefront = ({ products, storefront }: GetStorefrontResponse & ProductGridProps) => {
+export const Storefront = ({ products, storefront }: GetStorefrontResponse & ProductGridProps) => {
   return <main className="bg-white">{storefront.components.map(storefrontResponseToComponent(products))}</main>;
 };
-
-export default Storefront;

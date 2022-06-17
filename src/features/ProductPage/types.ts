@@ -24,6 +24,26 @@ export type ProductPageShopifyProduct = Pick<
   | 'takeshape'
 >;
 
+export type RelatedProductsShopifyProduct = Pick<
+  Shopify_Product,
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'descriptionHtml'
+  | 'requiresSellingPlan'
+  | 'priceRangeV2'
+  | 'featuredImage'
+  | 'publishedAt'
+  | 'totalInventory'
+  | 'totalVariants'
+  | 'options'
+  | 'sellingPlanGroupCount'
+  | 'sellingPlanGroups'
+  | 'takeshape'
+>;
+
+export type RelatedProductsProduct = ProductBase;
+
 export type ProductPageTakeshapeProduct = Pick<
   Product,
   'details' | 'policies' | 'hideRelatedProducts' | 'hideReviews' | 'showPolicies' | 'showDetails' | 'productComponent'

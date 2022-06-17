@@ -5,13 +5,13 @@ import {
   RelatedProductsShopifyCollectionArgs,
   RelatedProductsShopifyCollectionQuery,
   RelatedProductsShopifyCollectionResponse
-} from 'features/RelatedProducts/queries';
-import { getProductList } from 'features/RelatedProducts/transforms';
-import Storefront from 'features/Storefront/Storefront';
+} from 'features/ProductPage/queries';
+import { getRelatedProductList } from 'features/ProductPage/transforms';
+import { GetStorefrontQuery, GetStorefrontResponse } from 'features/Storefront/queries';
+import { Storefront } from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { GetStorefrontQuery, GetStorefrontResponse } from 'queries';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -63,7 +63,7 @@ export async function getStaticProps() {
         handle: 'frontpage'
       }
     });
-    products = getProductList(productsData).map((product) => ({ product }));
+    products = getRelatedProductList(productsData).map((product) => ({ product }));
 
     const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
       query: GetStorefrontQuery

@@ -1,7 +1,7 @@
 import Button from 'components/Button/Button';
 import { SaleComponent } from 'types/takeshape';
 
-const Sale = ({ buttonText, primaryText, secondaryText }: SaleComponent) => {
+export const Sale = ({ buttonText, primaryText, secondaryText }: SaleComponent) => {
   return (
     <section
       aria-labelledby="sale-heading"
@@ -19,5 +19,3 @@ const Sale = ({ buttonText, primaryText, secondaryText }: SaleComponent) => {
     </section>
   );
 };
-
-export default Sale;

@@ -1,6 +1,6 @@
 import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import Wrapper from 'components/Wrapper/Content';
-import AccountNavigation from 'features/Account/Navigation/Navigation';
+import { AccountNavigation } from 'features/AccountNavigation/AccountNavigation';
 import { useSession } from 'next-auth/react';
 import { NextSeoProps } from 'next-seo';
 import { useRouter } from 'next/router';

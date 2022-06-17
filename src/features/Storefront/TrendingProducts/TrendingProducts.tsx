@@ -21,7 +21,7 @@ export interface TrendingProductsProps {
   trendingProducts?: TrendingProduct[];
 }
 
-const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<TrendingProductsProps>) => {
+export const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<TrendingProductsProps>) => {
   if (!(trendingProducts ?? trendingProducts.length)) return null;
   return (
     <section aria-labelledby="trending-heading" className="bg-white">
@@ -91,5 +91,3 @@ const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<Trending
     </section>
   );
 };
-
-export default TrendingProducts;

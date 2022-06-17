@@ -1,11 +1,11 @@
 import { useApolloClient } from '@apollo/client';
 import PageLoader from 'components/PageLoader';
+import { CreateMyCartMutation, CreateMyCartResponse } from 'features/Cart/queries';
 import { cartItemsAtom } from 'features/Cart/store';
 import { getCheckoutPayload } from 'features/Cart/utils';
 import { useAtomValue } from 'jotai';
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
-import { CreateMyCartMutation, CreateMyCartResponse } from 'queries';
 import { useEffect } from 'react';
 import { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
 

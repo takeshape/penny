@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Contact from './Contact';
+import { Contact } from './Contact';
 
 const Meta: ComponentMeta<typeof Contact> = {
   title: 'Features / Contact',

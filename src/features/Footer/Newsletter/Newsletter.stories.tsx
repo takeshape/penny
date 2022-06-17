@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
-import Newsletter from './Newsletter';
+import { Newsletter } from './Newsletter';
 
 const Meta: ComponentMeta<typeof Newsletter> = {
   title: 'Features / Footer / Components / Newsletter',

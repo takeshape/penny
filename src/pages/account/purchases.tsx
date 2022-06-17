@@ -1,11 +1,11 @@
-import AccountPastPurchases from 'features/Account/Purchases/components/PurchaseList/PurchaseList';
+import { AccountPurchaseList } from 'features/AccountPurchases/AccountPurchaseList';
 import Layout from 'layouts/Account';
 import { NextPage } from 'next';
 
 const AccountPurchasesPage: NextPage = () => {
   return (
     <Layout title="Purchases">
-      <AccountPastPurchases />
+      <AccountPurchaseList />
     </Layout>
   );
 };

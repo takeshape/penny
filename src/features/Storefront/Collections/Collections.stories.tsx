@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Collections from './Collections';
+import { Collections } from './Collections';
 
 const Meta: ComponentMeta<typeof Collections> = {
   title: 'Features / Storefront / Components / Collections',

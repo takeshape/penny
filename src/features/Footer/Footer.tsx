@@ -2,9 +2,9 @@ import { useQuery } from '@apollo/client';
 import * as Icons from 'components/Icons/Icons';
 import { Footer as FooterShape } from 'types/takeshape';
 import { GetFooterQuery } from './Footer.queries';
-import Navigation from './Navigation/Navigation';
-import Newsletter from './Newsletter/Newsletter';
-import Social, { SocialProps } from './Social/Social';
+import { Navigation } from './Navigation/Navigation';
+import { Newsletter } from './Newsletter/Newsletter';
+import { Social, SocialProps } from './Social/Social';
 
 const social: SocialProps = {
   channels: [
@@ -36,7 +36,7 @@ const social: SocialProps = {
   ]
 };
 
-const Footer = () => {
+export const Footer = () => {
   const { data } = useQuery<{ footer: FooterShape }>(GetFooterQuery);
   const currentYear = new Date().getFullYear();
   return (
@@ -61,5 +61,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

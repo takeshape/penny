@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Testimonials from 'features/Storefront/Testimonials/Testimonials';
+import { Testimonials } from 'features/Storefront/Testimonials/Testimonials';
 import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
-import Sale from '../Sale/Sale';
+import { Sale } from '../Sale/Sale';
 import { _Sale } from '../Sale/Sale.stories';
-import BackgroundImage from './BackgroundImage';
+import { BackgroundImage } from './BackgroundImage';
 
 const Meta: ComponentMeta<typeof BackgroundImage> = {
   title: 'Features / Storefront / Components / Background Image',

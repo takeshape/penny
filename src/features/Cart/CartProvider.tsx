@@ -51,5 +51,3 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
 
   return <Fragment>{children}</Fragment>;
 };
-
-export default CartProvider;

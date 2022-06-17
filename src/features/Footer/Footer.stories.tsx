@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
-import Footer from './Footer';
+import { Footer } from './Footer';
 import { GetFooterQueryData } from './Footer.fixtures';
 
 const Meta: ComponentMeta<typeof Footer> = {
