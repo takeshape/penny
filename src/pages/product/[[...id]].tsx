@@ -40,8 +40,6 @@ const breadcrumbs = [
 ];
 
 const ProductPage: NextPage = ({
-  name,
-  description,
   options,
   navigation,
   footer,
@@ -64,7 +62,7 @@ const ProductPage: NextPage = ({
   }
 
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: name, description }}>
+    <Layout navigation={navigation} footer={footer} seo={{ title: product.name, description: product.description }}>
       <ProductPageComponent
         component={options.component}
         options={options}
@@ -119,24 +117,18 @@ export const getStaticProps = async ({ params }) => {
     });
   });
 
-  const sku = shopifyGidToId(product.id);
-
   const { data: reviewsData } = await apolloClient.query<
     ProductPageReviewsIoReviewsResponse,
     ProductPageReviewsIoReviewsArgs
   >({
     query: ProductPageReviewsIoReviewsQuery,
     variables: {
-      sku
+      sku: shopifyGidToId(product.id)
     }
   });
 
   return {
     props: {
-      id: product.id,
-      sku,
-      name: product.name,
-      description: product.description,
       options: getPageOptions(takeshapeData),
       navigation,
       footer,

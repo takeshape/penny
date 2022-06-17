@@ -13,7 +13,6 @@ import { Storefront } from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
@@ -85,7 +84,7 @@ export async function getStaticProps() {
     error = formatError(err);
   }
 
-  return addApolloQueryCache(apolloClient, { props: { navigation, footer, products, storefront, error } });
+  return { props: { navigation, footer, products, storefront, error } };
 }
 
 export default IndexPage;

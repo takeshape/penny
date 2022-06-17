@@ -10,23 +10,20 @@ import {
   ProductCategoryShopifyCollectionResponse
 } from 'features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
-import Layout, { LayoutProps } from 'layouts/Default';
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
+import Layout from 'layouts/Default';
+import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyCollectionIdToGid } from 'transforms/shopify';
-import { Product } from 'types/product';
-import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
-  page: number;
-  id: string;
-  handle: string;
-  name: string;
-  description: string;
-} & LayoutProps;
-
-const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, description, navigation, footer }) => {
+const CollectionPage: NextPage = ({
+  page,
+  id,
+  name,
+  description,
+  navigation,
+  footer
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
@@ -48,7 +45,7 @@ const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, descriptio
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
+export const getStaticProps = async ({ params }) => {
   const [collectionId, pageNumber] = params.collection;
 
   // TODO We'll need to use indexing to make pagination work with a page index
@@ -73,7 +70,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
 
   const collection = getCollection(data);
 
-  return addApolloQueryCache(apolloClient, {
+  return {
     props: {
       page: Number(pageNumber ?? 1),
       id: collection.id,
@@ -83,7 +80,7 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       navigation,
       footer
     }
-  });
+  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
