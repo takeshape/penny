@@ -1,5 +1,13 @@
 import { getStats } from 'transforms/reviewsIo';
-import { createImageGetter, getPrice, getProductOptions, getProductUrl, shopifyGidToId } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getPrice,
+  getProductOptions,
+  getProductUrl,
+  shopifyCollectionIdToGid,
+  shopifyGidToId
+} from 'transforms/shopify';
+import { isNumericString } from 'utils/types';
 import { ProductCategoryShopifyCollectionIdsResponse, ProductCategoryShopifyCollectionResponse } from './queries';
 import {
   ProductCategoryCollection,
@@ -35,15 +43,19 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
   };
 }
 
-function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): ProductCategoryProductListItem {
+function getProductListItem(
+  shopifyProduct: ProductCategoryShopifyProduct,
+  cursor: string
+): ProductCategoryProductListItem {
   return {
+    cursor,
     product: getProduct(shopifyProduct),
     reviews: getReviews(shopifyProduct.reviews)
   };
 }
 
 export function getCollection(response: ProductCategoryShopifyCollectionResponse): ProductCategoryCollection {
-  const collection = response?.collection;
+  const collection = response?.collectionList?.items?.[0].shopifyCollection;
 
   if (!collection) {
     return null;
@@ -56,24 +68,29 @@ export function getCollection(response: ProductCategoryShopifyCollectionResponse
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     productsCount: collection.productsCount,
-    products: collection.products.edges.map(({ node }) => getProductListItem(node))
+    products: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor))
   };
 }
 
 export function getCollectionPageParams(response: ProductCategoryShopifyCollectionIdsResponse, pageSize: number) {
-  const collections = response?.collections?.edges;
+  const collections = response?.collections?.items;
 
   if (!collections) {
     return null;
   }
 
-  // TODO Need to support slugs
-  return collections.flatMap(({ node }) => {
-    const pageCount = Math.ceil(node.productsCount / pageSize);
+  return collections.flatMap((item) => {
+    const pageCount = Math.ceil(item.shopifyCollection.productsCount / pageSize);
     const pagesParams = new Array(pageCount).fill(undefined);
 
     return pagesParams.map((_, pageIdx) => {
-      let collection = [shopifyGidToId(node.id)];
+      let collection;
+
+      if (item.slug) {
+        collection = [item.slug];
+      } else {
+        collection = [shopifyGidToId(item.shopifyCollectionId)];
+      }
 
       if (pageIdx > 0) {
         collection.push(String(pageIdx + 1));
@@ -86,4 +103,19 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
       };
     });
   });
+}
+
+export function getCollectionPageIdOrSlug(idOrSlug: string) {
+  // This is a product id, 9 is arbitrary, but Shopify Collection Ids shouldn't be shorter.
+  if (idOrSlug.length > 9 && isNumericString(idOrSlug)) {
+    return {
+      id: shopifyCollectionIdToGid(idOrSlug),
+      slug: ''
+    };
+  }
+
+  return {
+    id: '',
+    slug: idOrSlug
+  };
 }

@@ -25,7 +25,7 @@ export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsR
 
 export type ProductCategoryShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'productsCount'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'productsCount' | 'takeshape'
 > & {
   products: {
     edges: Array<{
@@ -42,6 +42,7 @@ export type ProductCategoryReviewStats = {
 };
 
 export type ProductCategoryProductListItem = {
+  cursor: string;
   product: ProductCategoryProduct;
   reviews: ProductCategoryReviewStats;
 };

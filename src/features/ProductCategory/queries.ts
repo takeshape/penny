@@ -3,25 +3,25 @@ import { ProductCategoryShopifyCollection } from './types';
 
 export type ProductCategoryShopifyCollectionIdsResponse = {
   collections: {
-    edges: {
-      cursor: string;
-      node: {
-        id: string;
-        handle: string;
+    items: Array<{
+      name: string;
+      slug: string;
+      shopifyCollectionId: string;
+      shopifyCollection: {
         productsCount: number;
       };
-    }[];
+    }>;
   };
 };
 
 export const ProductCategoryShopifyCollectionIdsQuery = gql`
   query ProductCategoryShopifyCollectionIdsQuery {
-    collections: Shopify_collections(first: 100) {
-      edges {
-        cursor
-        node {
-          id
-          handle
+    collections: getCollectionList(size: 100, sort: { field: "_createdAt", order: "asc" }) {
+      items {
+        name
+        slug
+        shopifyCollectionId
+        shopifyCollection {
           productsCount
         }
       }
@@ -37,11 +37,16 @@ export type ProductCategoryShopifyCollectionArgs = {
   before?: string;
 };
 
-export type ProductCategoryShopifyCollectionResponse = {
-  collection: ProductCategoryShopifyCollection;
-};
-
 const ProductCategoryProductFragment = gql`
+  fragment ProductCategoryCollection on Shopify_Collection {
+    id
+    handle
+    title
+    description
+    descriptionHtml
+    productsCount
+  }
+
   fragment ProductCategoryProduct on Shopify_Product {
     id
     title
@@ -87,17 +92,78 @@ export const ProductCategoryShopifyCollectionQuery = gql`
   ${ProductCategoryProductFragment}
   query ProductCategoryShopifyCollectionQuery($id: ID!, $first: Int, $last: Int, $after: String, $before: String) {
     collection: Shopify_collection(id: $id) {
-      id
-      handle
-      title
-      description
-      descriptionHtml
-      productsCount
+      ...ProductCategoryCollection
       products(first: $first, last: $last, after: $after, before: $before) {
         edges {
           cursor
           node {
             ...ProductCategoryProduct
+          }
+        }
+      }
+    }
+  }
+`;
+
+export type ProductCategoryShopifyCollectionResponse = {
+  collectionList: {
+    items: Array<{
+      shopifyCollection: ProductCategoryShopifyCollection;
+    }>;
+  };
+};
+
+export type ProductCategoryShopifyCollectionByIdArgs = {
+  id: string;
+  first?: number;
+  last?: number;
+  after?: string;
+  before?: string;
+};
+
+export const ProductCategoryShopifyCollectionByIdQuery = gql`
+  ${ProductCategoryProductFragment}
+  query ProductPageShopifyProductByIdQuery($id: String!, $first: Int, $last: Int, $after: String, $before: String) {
+    collectionList: getCollectionList(size: 1, where: { shopifyCollectionId: { eq: $id } }) {
+      items {
+        shopifyCollection {
+          ...ProductCategoryCollection
+          products(first: $first, last: $last, after: $after, before: $before) {
+            edges {
+              cursor
+              node {
+                ...ProductCategoryProduct
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export type ProductCategoryShopifyCollectionBySlugArgs = {
+  slug: string;
+  first?: number;
+  last?: number;
+  after?: string;
+  before?: string;
+};
+
+export const ProductCategoryShopifyCollectionBySlugQuery = gql`
+  ${ProductCategoryProductFragment}
+  query ProductPageShopifyProductByIdQuery($slug: String!, $first: Int, $last: Int, $after: String, $before: String) {
+    collectionList: getCollectionList(size: 1, where: { slug: { eq: $slug } }) {
+      items {
+        shopifyCollection {
+          ...ProductCategoryCollection
+          products(first: $first, last: $last, after: $after, before: $before) {
+            edges {
+              cursor
+              node {
+                ...ProductCategoryProduct
+              }
+            }
           }
         }
       }
