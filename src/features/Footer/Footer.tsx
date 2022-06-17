@@ -36,7 +36,7 @@ const social: SocialProps = {
   ]
 };
 
-const Footer = () => {
+export const Footer = () => {
   const { data } = useQuery<{ footer: FooterShape }>(GetFooterQuery);
   const currentYear = new Date().getFullYear();
   return (
@@ -61,5 +61,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

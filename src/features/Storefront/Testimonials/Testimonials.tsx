@@ -1,6 +1,6 @@
 import { TestimonialsComponent } from 'types/takeshape';
 
-const Testimonials = ({ testimonials }: TestimonialsComponent) => {
+export const Testimonials = ({ testimonials }: TestimonialsComponent) => {
   if (!testimonials || !testimonials.length) return null;
   return (
     <section
@@ -39,5 +39,3 @@ const Testimonials = ({ testimonials }: TestimonialsComponent) => {
     </section>
   );
 };
-
-export default Testimonials;

@@ -33,5 +33,3 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroComp
     </div>
   );
 };
-
-export default Hero;

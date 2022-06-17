@@ -1,6 +1,6 @@
 import { OffersComponent } from 'types/takeshape';
 
-const Offers = ({ offers }: OffersComponent) => {
+export const Offers = ({ offers }: OffersComponent) => {
   if (!offers) return null;
   return (
     <nav aria-label="Offers" className="order-last lg:order-first">
@@ -22,5 +22,3 @@ const Offers = ({ offers }: OffersComponent) => {
     </nav>
   );
 };
-
-export default Offers;

@@ -3,7 +3,7 @@ import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import { CollectionsComponent } from 'types/takeshape';
 
-const Collections = ({ collections }: CollectionsComponent) => {
+export const Collections = ({ collections }: CollectionsComponent) => {
   if (!collections || !collections.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-gray-100">
@@ -39,5 +39,3 @@ const Collections = ({ collections }: CollectionsComponent) => {
     </section>
   );
 };
-
-export default Collections;

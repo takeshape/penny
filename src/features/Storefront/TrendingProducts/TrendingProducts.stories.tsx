@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import TrendingProducts from './TrendingProducts';
+import { TrendingProducts } from './TrendingProducts';
 
 const Meta: ComponentMeta<typeof TrendingProducts> = {
   title: 'Features / Storefront / Components / Trending Products',
