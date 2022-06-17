@@ -831,6 +831,14 @@
               }
             }
           }
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       }
     },
@@ -977,6 +985,14 @@
               "mapping": "$loop.item.list_name"
             }
           ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       }
     },
@@ -2902,7 +2918,13 @@
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600
+                    "ttl": 3600,
+                    "retry": {
+                      "limit": 10,
+                      "statusCode": [
+                        429
+                      ]
+                    }
                   },
                   "searchParams": {
                     "ops": [
@@ -2953,7 +2975,13 @@
                   "service": "recharge",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600
+                    "ttl": 3600,
+                    "retry": {
+                      "limit": 10,
+                      "statusCode": [
+                        429
+                      ]
+                    }
                   },
                   "path": "/products",
                   "searchParams": {

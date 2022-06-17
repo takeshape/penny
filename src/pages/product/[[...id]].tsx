@@ -30,6 +30,7 @@ import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
+import { retryShopifyThrottle } from '../../utils/apollo/retry-shopify-throttle';
 
 type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
   sku: string;
@@ -75,37 +76,34 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   let shopifyData;
 
   if (idOrSlug.slug) {
-    ({ data: shopifyData } = await apolloClient.query<
-      ProductPageShopifyProductResponse,
-      ProductPageShopifyProductBySlugArgs
-    >({
-      query: ProductPageShopifyProductBySlugQuery,
-      variables: {
-        slug: idOrSlug.slug
-      }
+    ({ data: shopifyData } = await retryShopifyThrottle(async () => {
+      return await apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductBySlugArgs>({
+        query: ProductPageShopifyProductBySlugQuery,
+        variables: {
+          slug: idOrSlug.slug
+        }
+      });
     }));
   } else {
-    ({ data: shopifyData } = await apolloClient.query<
-      ProductPageShopifyProductResponse,
-      ProductPageShopifyProductByIdArgs
-    >({
-      query: ProductPageShopifyProductByIdQuery,
-      variables: {
-        id: idOrSlug.id
-      }
+    ({ data: shopifyData } = await retryShopifyThrottle(async () => {
+      return await apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductByIdArgs>({
+        query: ProductPageShopifyProductByIdQuery,
+        variables: {
+          id: idOrSlug.id
+        }
+      });
     }));
   }
 
   const product = getProduct(shopifyData);
 
-  const { data: takeshapeData } = await apolloClient.query<
-    ProductPageTakeshapeProductResponse,
-    ProductPageTakeshapeProductArgs
-  >({
-    query: ProductPageTakeshapeProductQuery,
-    variables: {
-      productId: product.id
-    }
+  const { data: takeshapeData } = await retryShopifyThrottle(async () => {
+    return await apolloClient.query<ProductPageTakeshapeProductResponse, ProductPageTakeshapeProductArgs>({
+      query: ProductPageTakeshapeProductQuery,
+      variables: {
+        productId: product.id
+      }
+    });
   });
 
   const sku = shopifyGidToId(product.id);
