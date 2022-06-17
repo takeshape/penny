@@ -1,8 +1,11 @@
 import { ComponentMeta } from '@storybook/react';
-import { graphql } from 'msw';
+import { rest } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import { GetNavigationDataQuery } from '../queries.fixtures';
+import { navigationResponse } from '../queries.fixtures';
+import { getNavigation } from '../transforms';
 import { NavigationTop } from './NavigationTop';
+
+const navigation = getNavigation(navigationResponse);
 
 const Meta: ComponentMeta<typeof NavigationTop> = {
   title: 'Features / Navigation / Navigation Top',
@@ -22,9 +25,9 @@ const Meta: ComponentMeta<typeof NavigationTop> = {
     },
     msw: {
       handlers: {
-        navigation: [
-          graphql.query('GetNavigationData', (req, res, ctx) => {
-            return res(ctx.data(GetNavigationDataQuery.result.data));
+        auth: [
+          rest.get('/api/auth/session', (req, res, ctx) => {
+            return res(ctx.json({ expires: '2050-10-05T14:48:00.000Z' }));
           })
         ]
       }
@@ -35,6 +38,11 @@ const Meta: ComponentMeta<typeof NavigationTop> = {
 const Template = (args) => <NavigationTop {...args} />;
 
 export const _Mobile = Template.bind({});
+_Mobile.args = {
+  message: navigation.message,
+  links: navigation.links,
+  currencies: navigation.currencies
+};
 _Mobile.parameters = {
   viewport: {
     defaultViewport: 'mobile2'
@@ -42,6 +50,11 @@ _Mobile.parameters = {
 };
 
 export const _Tablet = Template.bind({});
+_Tablet.args = {
+  message: navigation.message,
+  links: navigation.links,
+  currencies: navigation.currencies
+};
 _Tablet.parameters = {
   viewport: {
     defaultViewport: 'tablet'
@@ -49,6 +62,11 @@ _Tablet.parameters = {
 };
 
 export const _Desktop = Template.bind({});
+_Desktop.args = {
+  message: navigation.message,
+  links: navigation.links,
+  currencies: navigation.currencies
+};
 _Desktop.parameters = {};
 
 export default Meta;

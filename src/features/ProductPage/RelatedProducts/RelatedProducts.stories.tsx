@@ -4,7 +4,7 @@ import { getRelatedProductList } from '../transforms';
 import { RelatedProducts } from './RelatedProducts';
 
 const Meta: ComponentMeta<typeof RelatedProducts> = {
-  title: 'Features / Product Page / Related Products',
+  title: 'Features / Product Page / Components / Related Products',
   component: RelatedProducts
 };
 
