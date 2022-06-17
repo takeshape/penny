@@ -49,7 +49,6 @@ const IndexPage: NextPage = ({
         <PageLoader />
       )}
     </Layout>
-    
   );
 };
 
