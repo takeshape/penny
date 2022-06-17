@@ -19,13 +19,6 @@ export const SearchShopifyProducts = gql`
           featuredImage {
             url
           }
-          images {
-            edges {
-              node {
-                url
-              }
-            }
-          }
         }
       }
     }

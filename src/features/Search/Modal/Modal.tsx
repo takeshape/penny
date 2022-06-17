@@ -14,6 +14,7 @@ import type { SearchShopifyProductsResults } from '../queries';
 import { SearchShopifyProducts } from '../queries';
 
 import { shopifyGidToId } from 'transforms/shopify';
+import { truncate } from 'lodash-es';
 
 const resultsFn = (data: SearchShopifyProductsResults) =>
   data.search.results.map((result) => ({
@@ -135,7 +136,7 @@ export const Modal = () => {
                               </p>
                               {item.description && (
                                 <p className={classNames('text-sm', active ? 'text-gray-700' : 'text-gray-500')}>
-                                  {item.description}
+                                  {truncate(item.description, { length: 160 })}
                                 </p>
                               )}
                             </div>
