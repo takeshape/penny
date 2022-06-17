@@ -11,27 +11,27 @@ import { Sale } from './Sale/Sale';
 import { Testimonials } from './Testimonials/Testimonials';
 
 function storefrontResponseToComponent(products: ProductGridProps['products']) {
-  const StorefrontComponent = (component: StorefrontComponentsProperty) => {
+  const StorefrontComponent = (component: StorefrontComponentsProperty, index = 0) => {
     switch (component.__typename) {
       case 'BackgroundImageComponent':
         return (
-          <BackgroundImage {...component}>
+          <BackgroundImage key={index} {...component}>
             {component.components.map(storefrontResponseToComponent(products))}
           </BackgroundImage>
         );
       case 'CollectionsComponent':
-        return <Collections {...component} />;
+        return <Collections key={index} {...component} />;
       case 'HeroComponent':
-        return <Hero {...component} />;
+        return <Hero key={index} {...component} />;
       case 'OffersComponent':
-        return <Offers {...component} />;
+        return <Offers key={index} {...component} />;
       case 'SaleComponent':
-        return <Sale {...component} />;
+        return <Sale key={index} {...component} />;
       case 'TestimonialsComponent':
-        return <Testimonials {...component} />;
+        return <Testimonials key={index} {...component} />;
       case 'TrendingProductsComponent':
         return (
-          <Wrapper>
+          <Wrapper key={index}>
             <Header header={{ text: { primary: 'Trending Products', secondary: '' } }} />
             <ProductGrid products={products} />;
           </Wrapper>
