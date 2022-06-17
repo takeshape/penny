@@ -1,23 +1,19 @@
-import { useQuery } from '@apollo/client';
-import AccountPastPurchases from 'features/Account/Purchases/PurchaseList';
+import { getLayoutData } from 'data/getLayoutData';
+import { AccountPurchaseList } from 'features/AccountPurchases/AccountPurchaseList';
 import Layout from 'layouts/Account';
-import { NextPage } from 'next';
-import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
+import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AccountPurchasesPage: NextPage = () => {
-  const { data } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
-
-  if (!data) {
-    return null;
-  }
-
-  const orders = data?.customer.orders.edges.map(({ node }) => node);
-
+const AccountPurchasesPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout title="Purchases">
-      <AccountPastPurchases orders={orders} />
+    <Layout navigation={navigation} footer={footer} seo={{ title: 'Purchases' }}>
+      <AccountPurchaseList />
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const { navigation, footer } = await getLayoutData();
+  return { props: { navigation, footer } };
+}
 
 export default AccountPurchasesPage;

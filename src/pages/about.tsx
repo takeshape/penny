@@ -1,20 +1,21 @@
 import Wrapper from 'components/Wrapper/Content';
-import ContentBodySimple from 'features/Content/Body/Simple';
-import ContentHeaderSimple from 'features/Content/Header/Simple';
+import { getLayoutData } from 'data/getLayoutData';
+import { ContentBody } from 'features/Content/ContentBody';
+import { ContentHeader } from 'features/Content/ContentHeader';
 import Layout from 'layouts/Default';
-import { NextPage } from 'next';
+import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AboutPage: NextPage = () => {
+const AboutPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout title="About">
+    <Layout navigation={navigation} footer={footer} seo={{ title: 'About' }}>
       <Wrapper>
         <div className="relative px-4 sm:px-6 lg:px-8">
-          <ContentHeaderSimple
+          <ContentHeader
             heading="The Deluxe ™️ Story"
             subheading="How a brand defied the odds and overcame everything."
             label="About"
           />
-          <ContentBodySimple>
+          <ContentBody>
             <p>
               At Spindrift Beverage Co. we celebrate the amazing taste of real, simple ingredients every day. Because we
               think real food deserves a real drink to go with it.
@@ -41,11 +42,16 @@ const AboutPage: NextPage = () => {
             </p>
 
             <p>We drink it, we share it, we love it.</p>
-          </ContentBodySimple>
+          </ContentBody>
         </div>
       </Wrapper>
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const { navigation, footer } = await getLayoutData();
+  return { props: { navigation, footer } };
+}
 
 export default AboutPage;

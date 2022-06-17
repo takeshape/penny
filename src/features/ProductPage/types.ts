@@ -21,15 +21,33 @@ export type ProductPageShopifyProduct = Pick<
   | 'seo'
   | 'images'
   | 'variants'
+  | 'takeshape'
 >;
 
-export type ProductPageTakeshapeItem = Pick<
+export type RelatedProductsShopifyProduct = Pick<
+  Shopify_Product,
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'descriptionHtml'
+  | 'requiresSellingPlan'
+  | 'priceRangeV2'
+  | 'featuredImage'
+  | 'publishedAt'
+  | 'totalInventory'
+  | 'totalVariants'
+  | 'options'
+  | 'sellingPlanGroupCount'
+  | 'sellingPlanGroups'
+  | 'takeshape'
+>;
+
+export type RelatedProductsProduct = ProductBase;
+
+export type ProductPageTakeshapeProduct = Pick<
   Product,
-  'showDetails' | 'showPolicies' | 'hideRelatedProducts' | 'hideReviews' | 'productComponent' | 'details' | 'policies'
+  'details' | 'policies' | 'hideRelatedProducts' | 'hideReviews' | 'showPolicies' | 'showDetails' | 'productComponent'
 >;
-
-export type ProductPageTakeshapeItemDetails = Pick<Product, 'details'>;
-export type ProductPageTakeshapeItemPolicies = Pick<Product, 'policies'>;
 
 export type ProductPageDetail = {
   image: {

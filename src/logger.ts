@@ -1,10 +1,10 @@
-import { commitSha, logLevel, nodeEnv } from 'config';
+import { commitSha, logLevel, vercelEnv } from 'config';
 import pino, { LoggerOptions } from 'pino';
 
 const config: LoggerOptions = {
   level: logLevel,
   base: {
-    env: nodeEnv,
+    env: vercelEnv,
     revision: commitSha
   }
 };

@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import * as Icons from 'components/Icons/Icons';
-import Social from './Social';
+import { Social } from './Social';
 
 const Meta: ComponentMeta<typeof Social> = {
   title: 'Features / Footer / Components / Social',

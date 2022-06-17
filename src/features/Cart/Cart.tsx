@@ -4,11 +4,11 @@ import PageLoader from 'components/PageLoader';
 import { isStorybook } from 'config';
 import { useAtom, useAtomValue } from 'jotai';
 import { Fragment } from 'react';
-import CartCheckout from './Checkout/Checkout';
-import CartEmpty from './Empty/Empty';
-import CartItem from './Item/Item';
+import { CartItem } from './components/CartItem';
+import { CartCheckout } from './components/Checkout';
+import { CartEmpty } from './components/Empty';
+import { CartSubtotal } from './components/Subtotal';
 import { cartItemAtomsAtom, isCartCheckingOutAtom, isCartOpenAtom } from './store';
-import CartSubtotal from './Subtotal/Subtotal';
 
 export const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
@@ -111,5 +111,3 @@ export const Cart = () => {
     </Transition.Root>
   );
 };
-
-export default Cart;

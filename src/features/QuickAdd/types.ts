@@ -21,6 +21,7 @@ export type QuickAddShopifyProduct = Pick<
   | 'options'
   | 'sellingPlanGroupCount'
   | 'sellingPlanGroups'
+  | 'takeshape'
 > & {
   variants: Shopify_ProductVariantConnection;
 };

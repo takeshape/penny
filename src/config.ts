@@ -9,8 +9,8 @@ export const shopifyToken = process.env.SHOPIFY_TOKEN;
 export const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 
 /* Nerd Stuff */
-export const nodeEnv = process.env.NODE_ENV ?? 'development';
-export const isProduction = nodeEnv === 'production';
+export const vercelEnv = process.env.VERCEL_ENV;
+export const isProduction = vercelEnv === 'production';
 export const isStorybook = Boolean(process.env.STORYBOOK);
 export const isSsr = typeof window === 'undefined';
 export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
@@ -104,6 +104,9 @@ export const defaultProductImage = {
   width: 480,
   altText: 'Default product image'
 };
+
+/* Collections */
+export const collectionsPageSize = 12;
 
 /* Product Options - LUTs to decorate options */
 export const productOptions = {

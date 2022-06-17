@@ -1,4 +1,4 @@
-import AuthCreateAccount from 'features/Auth/CreateAccount/CreateAccount';
+import { AuthCreateAccount } from 'features/Auth/AuthCreateAccount/AuthCreateAccount';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
@@ -9,7 +9,7 @@ const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
-    <Layout title="Register">
+    <Layout seo={{ title: 'Register' }}>
       <AuthCreateAccount signIn={signIn} callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'} />
     </Layout>
   );

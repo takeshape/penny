@@ -1,11 +1,23 @@
 import { getImageUrl } from '@takeshape/routing';
+import slug from 'slug';
 import { getReview, getStats } from 'transforms/reviewsIo';
-import { createImageGetter, getOptions, getPrice, getSeo, getVariants, shopifyGidToId } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getPrice,
+  getProductOptions,
+  getProductUrl,
+  getProductVariants,
+  getSeo,
+  shopifyGidToId,
+  shopifyProductIdToGid
+} from 'transforms/shopify';
+import { isNumericString } from 'utils/types';
 import {
   ProductPageReviewsIoReviewsResponse,
-  ProductPageShopifyProductReponse,
-  ProductPageTakeshapeDetailsResponse,
-  ProductPageTakeshapePoliciesResponse
+  ProductPageShopifyProductIdListResponse,
+  ProductPageShopifyProductResponse,
+  ProductPageTakeshapeProductResponse,
+  RelatedProductsShopifyCollectionResponse
 } from './queries';
 import {
   ProductPageDetails,
@@ -15,22 +27,24 @@ import {
   ProductPageProduct,
   ProductPageProductComponent,
   ProductPageReviewHighlights,
-  ProductPageReviewsReviewList
+  ProductPageReviewsReviewList,
+  RelatedProductsProduct,
+  RelatedProductsShopifyProduct
 } from './types';
 
-export function getProduct(response: ProductPageShopifyProductReponse): ProductPageProduct {
+export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct {
   const shopifyProduct = response?.productList?.items?.[0]?.shopifyProduct;
 
   if (!shopifyProduct) {
     return null;
   }
 
-  const variants = getVariants(shopifyProduct);
+  const variants = getProductVariants(shopifyProduct);
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
   return {
     id: shopifyProduct.id,
-    url: `/product/${shopifyGidToId(shopifyProduct.id)}`,
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -44,7 +58,7 @@ export function getProduct(response: ProductPageShopifyProductReponse): ProductP
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getOptions(shopifyProduct.options, variants)
+    options: getProductOptions(shopifyProduct.options, variants)
   };
 }
 
@@ -69,7 +83,7 @@ export function getReviewHighlights(response: ProductPageReviewsIoReviewsRespons
   };
 }
 
-export function getPolicies(response: ProductPageTakeshapePoliciesResponse): ProductPagePolicies {
+export function getPolicies(response: ProductPageTakeshapeProductResponse): ProductPagePolicies {
   const policies = response?.productList?.items?.[0]?.policies;
 
   if (!policies) {
@@ -88,7 +102,7 @@ export function getPolicies(response: ProductPageTakeshapePoliciesResponse): Pro
   };
 }
 
-export function getDetails(response: ProductPageTakeshapeDetailsResponse): ProductPageDetails {
+export function getDetails(response: ProductPageTakeshapeProductResponse): ProductPageDetails {
   const details = response?.productList?.items?.[0]?.details;
 
   if (!details) {
@@ -121,18 +135,87 @@ function getProductComponent(productComponent?: string): ProductPageProductCompo
   }
 }
 
-export function getPageOptions(response: ProductPageShopifyProductReponse): ProductPageOptions {
-  const takeshapeItem = response?.productList?.items?.[0];
+export function getPageOptions(response: ProductPageTakeshapeProductResponse): ProductPageOptions {
+  const takeshapeProduct = response?.productList?.items?.[0];
 
-  if (!takeshapeItem) {
+  if (!takeshapeProduct) {
     return null;
   }
 
   return {
-    showDetails: takeshapeItem.showDetails ?? false,
-    showPolicies: takeshapeItem.showPolicies ?? false,
-    showReviews: takeshapeItem.hideReviews === true ? false : true,
-    showRelatedProducts: takeshapeItem.hideRelatedProducts === true ? false : true,
-    component: getProductComponent(takeshapeItem.productComponent)
+    showDetails: takeshapeProduct.showDetails ?? false,
+    showPolicies: takeshapeProduct.showPolicies ?? false,
+    showReviews: takeshapeProduct.hideReviews === true ? false : true,
+    showRelatedProducts: takeshapeProduct.hideRelatedProducts === true ? false : true,
+    component: getProductComponent(takeshapeProduct.productComponent)
   };
+}
+
+export function getProductPageIdOrSlug(idOrSlug: string) {
+  // This is a product id, 9 is arbitrary, but Shopify Product Ids shouldn't be shorter.
+  if (idOrSlug.length > 9 && isNumericString(idOrSlug)) {
+    return {
+      id: shopifyProductIdToGid(idOrSlug),
+      slug: ''
+    };
+  }
+
+  return {
+    id: '',
+    slug: idOrSlug
+  };
+}
+
+export function getProductPageParams(response: ProductPageShopifyProductIdListResponse) {
+  const items = response?.products?.items;
+
+  if (!items) {
+    return null;
+  }
+
+  return items.map((item) => {
+    let id;
+
+    if (item.slug) {
+      id = [item.slug];
+    } else {
+      id = [shopifyGidToId(item.shopifyProductId), slug(item.name)];
+    }
+
+    return {
+      params: {
+        id
+      }
+    };
+  });
+}
+
+function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
+  const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
+
+  return {
+    id: shopifyProduct.id,
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
+    name: shopifyProduct.title,
+    description: shopifyProduct.description,
+    descriptionHtml: shopifyProduct.descriptionHtml,
+    featuredImage: getImage(shopifyProduct.featuredImage),
+    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
+    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
+    variantsCount: shopifyProduct.totalVariants,
+    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
+    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
+    hasStock: shopifyProduct.totalInventory > 0,
+    options: getProductOptions(shopifyProduct.options)
+  };
+}
+
+export function getRelatedProductList(response: RelatedProductsShopifyCollectionResponse): RelatedProductsProduct[] {
+  const productEdges = response?.collection?.products?.edges;
+
+  if (!productEdges) {
+    return;
+  }
+
+  return productEdges.map(({ node }) => getRelatedProduct(node));
 }

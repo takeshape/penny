@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client';
+import { Footer } from 'types/takeshape';
 
-export const GetFooterQuery = gql`
-  query GetFooter {
+export type FooterResponse = {
+  footer: Footer;
+};
+
+export const FooterQuery = gql`
+  query Footer {
     footer: getFooter {
       navigation {
         sections {

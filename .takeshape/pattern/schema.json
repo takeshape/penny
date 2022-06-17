@@ -32,22 +32,6 @@
         ]
       }
     },
-    "NavigationLink": {
-      "default": {
-        "properties": {
-          "name": {
-            "widget": "singleLineText"
-          },
-          "href": {
-            "widget": "singleLineText"
-          }
-        },
-        "order": [
-          "name",
-          "href"
-        ]
-      }
-    },
     "Footer": {
       "default": {
         "properties": {
@@ -89,118 +73,6 @@
         "order": [
           "navigation",
           "newsletter"
-        ]
-      }
-    },
-    "NavigationData": {
-      "default": {
-        "properties": {
-          "message": {
-            "widget": "singleLineText"
-          },
-          "links": {
-            "widget": "object",
-            "properties": {
-              "categories": {
-                "widget": "repeater",
-                "properties": {
-                  "name": {
-                    "widget": "singleLineText"
-                  },
-                  "featured": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  },
-                  "collection": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  },
-                  "categories": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  },
-                  "brands": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  }
-                },
-                "order": [
-                  "name",
-                  "featured",
-                  "collection",
-                  "categories",
-                  "brands"
-                ]
-              },
-              "pages": {
-                "widget": "repeater",
-                "properties": {
-                  "name": {
-                    "widget": "singleLineText"
-                  },
-                  "href": {
-                    "widget": "singleLineText"
-                  }
-                },
-                "order": [
-                  "name",
-                  "href"
-                ]
-              }
-            },
-            "order": [
-              "categories",
-              "pages"
-            ]
-          }
-        },
-        "order": [
-          "message",
-          "links"
         ]
       }
     },
@@ -329,6 +201,294 @@
           "policies",
           "shopifyProductId",
           "shopifyProduct"
+        ]
+      }
+    },
+    "OffersComponent": {
+      "default": {
+        "properties": {
+          "offers": {
+            "widget": "repeater",
+            "properties": {
+              "name": {
+                "widget": "singleLineText"
+              },
+              "description": {
+                "widget": "singleLineText"
+              },
+              "href": {
+                "widget": "singleLineText"
+              }
+            },
+            "order": [
+              "name",
+              "description",
+              "href"
+            ]
+          }
+        },
+        "order": [
+          "offers"
+        ]
+      }
+    },
+    "HeroComponent": {
+      "default": {
+        "properties": {
+          "primaryText": {
+            "widget": "singleLineText"
+          },
+          "secondaryText": {
+            "widget": "singleLineText"
+          },
+          "buttonText": {
+            "widget": "singleLineText"
+          },
+          "image": {
+            "widget": "image"
+          }
+        },
+        "order": [
+          "primaryText",
+          "secondaryText",
+          "buttonText",
+          "image"
+        ]
+      }
+    },
+    "CollectionsComponent": {
+      "default": {
+        "properties": {
+          "collections": {
+            "widget": "repeater",
+            "properties": {
+              "name": {
+                "widget": "singleLineText"
+              },
+              "description": {
+                "widget": "singleLineText"
+              },
+              "href": {
+                "widget": "singleLineText"
+              },
+              "image": {
+                "widget": "image"
+              }
+            },
+            "order": [
+              "name",
+              "description",
+              "href",
+              "image"
+            ]
+          }
+        },
+        "order": [
+          "collections"
+        ]
+      }
+    },
+    "BackgroundImageComponent": {
+      "default": {
+        "properties": {
+          "image": {
+            "widget": "image"
+          },
+          "components": {
+            "widget": "shapeArray"
+          }
+        },
+        "order": [
+          "image",
+          "components"
+        ]
+      }
+    },
+    "SaleComponent": {
+      "default": {
+        "properties": {
+          "primaryText": {
+            "widget": "singleLineText"
+          },
+          "secondaryText": {
+            "widget": "singleLineText"
+          },
+          "buttonText": {
+            "widget": "singleLineText"
+          }
+        },
+        "order": [
+          "primaryText",
+          "secondaryText",
+          "buttonText"
+        ]
+      }
+    },
+    "TestimonialsComponent": {
+      "default": {
+        "properties": {
+          "testimonials": {
+            "widget": "repeater",
+            "properties": {
+              "quote": {
+                "widget": "singleLineText"
+              },
+              "attribution": {
+                "widget": "singleLineText"
+              }
+            },
+            "order": [
+              "quote",
+              "attribution"
+            ]
+          }
+        },
+        "order": [
+          "testimonials"
+        ]
+      }
+    },
+    "TrendingProductsComponent": {
+      "default": {
+        "properties": {
+          "trendingProducts": {
+            "widget": "repeater",
+            "properties": {
+              "shopifyProductId": {
+                "widget": "singleLineText"
+              }
+            },
+            "order": [
+              "shopifyProductId"
+            ]
+          }
+        },
+        "order": [
+          "trendingProducts"
+        ]
+      }
+    },
+    "Storefront": {
+      "default": {
+        "properties": {
+          "components": {
+            "widget": "shapeArray"
+          }
+        },
+        "order": [
+          "components"
+        ]
+      }
+    },
+    "Navigation": {
+      "default": {
+        "properties": {
+          "message": {
+            "widget": "wysiwygSingleLineText"
+          },
+          "links": {
+            "widget": "object",
+            "properties": {
+              "categories": {
+                "widget": "repeater",
+                "properties": {
+                  "name": {
+                    "widget": "singleLineText"
+                  },
+                  "featured": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
+                    },
+                    "order": [
+                      "name",
+                      "href"
+                    ]
+                  },
+                  "collection": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
+                    },
+                    "order": [
+                      "name",
+                      "href"
+                    ]
+                  },
+                  "categories": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
+                    },
+                    "order": [
+                      "name",
+                      "href"
+                    ]
+                  },
+                  "brands": {
+                    "widget": "repeater",
+                    "properties": {
+                      "name": {
+                        "widget": "singleLineText"
+                      },
+                      "href": {
+                        "widget": "singleLineText"
+                      }
+                    },
+                    "order": [
+                      "name",
+                      "href"
+                    ]
+                  }
+                },
+                "order": [
+                  "name",
+                  "featured",
+                  "collection",
+                  "categories",
+                  "brands"
+                ]
+              },
+              "pages": {
+                "widget": "repeater",
+                "properties": {
+                  "name": {
+                    "widget": "singleLineText"
+                  },
+                  "href": {
+                    "widget": "singleLineText"
+                  }
+                },
+                "order": [
+                  "name",
+                  "href"
+                ]
+              }
+            },
+            "order": [
+              "categories",
+              "pages"
+            ]
+          }
+        },
+        "order": [
+          "message",
+          "links"
         ]
       }
     }
@@ -655,6 +815,14 @@
               }
             }
           }
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       }
     },
@@ -801,18 +969,26 @@
               "mapping": "$loop.item.list_name"
             }
           ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
         }
       }
     },
-    "getNavigationData": {
-      "shape": "NavigationData",
+    "getNavigation": {
+      "shape": "Navigation",
       "resolver": {
         "name": "takeshape:get",
         "service": "takeshape:local",
-        "shapeName": "NavigationData"
+        "shapeName": "Navigation"
       },
-      "description": "Get a NavigationData by ID",
-      "args": "TSGetSingletonArgs<NavigationData>"
+      "description": "Get a Navigation by ID",
+      "args": "TSGetSingletonArgs<Navigation>"
     },
     "ShopifyStorefront_customer": {
       "resolver": {
@@ -893,6 +1069,16 @@
         ]
       },
       "shape": "Shopify_Collection"
+    },
+    "getStorefront": {
+      "shape": "Storefront",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Storefront"
+      },
+      "description": "Get a Storefront by ID",
+      "args": "TSGetSingletonArgs<Storefront>"
     }
   },
   "mutations": {
@@ -906,15 +1092,15 @@
       "description": "Update Footer",
       "args": "UpdateArgs<Footer>"
     },
-    "updateNavigationData": {
-      "shape": "UpdateResult<NavigationData>",
+    "updateNavigation": {
+      "shape": "UpdateResult<Navigation>",
       "resolver": {
         "name": "takeshape:update",
         "service": "takeshape:local",
-        "shapeName": "NavigationData"
+        "shapeName": "Navigation"
       },
-      "description": "Update NavigationData",
-      "args": "UpdateArgs<NavigationData>"
+      "description": "Update Navigation",
+      "args": "UpdateArgs<Navigation>"
     },
     "createMyCart": {
       "resolver": {
@@ -2327,234 +2513,6 @@
         "type": "object"
       }
     },
-    "NavigationDataLinksCategoriesFeatured": {
-      "id": "68vvVsGMR",
-      "name": "NavigationDataLinksCategoriesFeatured",
-      "title": "Navigation Data Links Categories Featured",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "name",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesFeatured.ju6MThWm_"
-          },
-          "href": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "href",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesFeatured.Yvb2N4Bwq"
-          }
-        }
-      }
-    },
-    "NavigationDataLinksCategoriesCollection": {
-      "id": "wyJWNPt3z",
-      "name": "NavigationDataLinksCategoriesCollection",
-      "title": "Navigation Data Links Categories Collection",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "name",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCollection.MHxRsVP0V"
-          },
-          "href": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "href",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCollection.OJ88NAamE"
-          }
-        }
-      }
-    },
-    "NavigationDataLinksCategories": {
-      "id": "gFm-OwTpX",
-      "name": "NavigationDataLinksCategories",
-      "title": "Navigation Data Links Categories",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "name",
-            "@mapping": "takeshape:local:NavigationDataLinksCategories.x_VqrjyTh"
-          },
-          "featured": {
-            "title": "featured",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationDataLinksCategoriesFeatured"
-            },
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationDataLinksCategories.68vvVsGMR"
-          },
-          "collection": {
-            "title": "collection",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationDataLinksCategoriesCollection"
-            },
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationDataLinksCategories.wyJWNPt3z"
-          },
-          "categories": {
-            "title": "categories",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationDataLinksCategoriesCategories"
-            },
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationDataLinksCategories.l8hbX9gQa"
-          },
-          "brands": {
-            "title": "brands",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationDataLinksCategoriesBrands"
-            },
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationDataLinksCategories.ZN1Zl5dGX"
-          }
-        }
-      }
-    },
-    "NavigationDataLinksPages": {
-      "id": "w2GofQlUo",
-      "name": "NavigationDataLinksPages",
-      "title": "Navigation Data Links Pages",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "name",
-            "@mapping": "takeshape:local:NavigationDataLinksPages.rNquPKTsP"
-          },
-          "href": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "href",
-            "@mapping": "takeshape:local:NavigationDataLinksPages.5WjR-bis-"
-          }
-        }
-      }
-    },
-    "NavigationDataLinks": {
-      "id": "pjLk12fP9",
-      "name": "NavigationDataLinks",
-      "title": "Navigation Data Links",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "categories": {
-            "title": "categories",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationDataLinksCategories"
-            },
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationDataLinks.gFm-OwTpX"
-          },
-          "pages": {
-            "title": "pages",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationDataLinksPages"
-            },
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationDataLinks.w2GofQlUo"
-          }
-        }
-      }
-    },
-    "NavigationData": {
-      "id": "VHo3Y6Rab",
-      "name": "NavigationData",
-      "title": "Navigation Data",
-      "workflow": "default",
-      "model": {
-        "type": "single"
-      },
-      "schema": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "minLength": 0,
-            "description": "",
-            "title": "message",
-            "@mapping": "takeshape:local:NavigationData.oXXaz-sxe"
-          },
-          "links": {
-            "title": "links",
-            "description": "",
-            "@ref": "local:NavigationDataLinks",
-            "@mapping": "takeshape:local:NavigationData.pjLk12fP9"
-          }
-        }
-      }
-    },
-    "NavigationDataLinksCategoriesCategories": {
-      "id": "l8hbX9gQa",
-      "name": "NavigationDataLinksCategoriesCategories",
-      "title": "Navigation Data Links Categories Categories",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "name",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCategories.bxi7I7fb_"
-          },
-          "href": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "href",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesCategories.LH1Ztc4Ii"
-          }
-        }
-      }
-    },
-    "NavigationDataLinksCategoriesBrands": {
-      "id": "ZN1Zl5dGX",
-      "name": "NavigationDataLinksCategoriesBrands",
-      "title": "Navigation Data Links Categories Brands",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "name",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesBrands.0EyRktMNj"
-          },
-          "href": {
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "href",
-            "@mapping": "takeshape:local:NavigationDataLinksCategoriesBrands.I0s8qSosl"
-          }
-        }
-      }
-    },
     "Text": {
       "id": "gl5yJyZb7",
       "name": "Text",
@@ -2716,7 +2674,13 @@
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600
+                    "ttl": 3600,
+                    "retry": {
+                      "limit": 10,
+                      "statusCode": [
+                        429
+                      ]
+                    }
                   },
                   "searchParams": {
                     "ops": [
@@ -2742,6 +2706,22 @@
                   }
                 }
               },
+              "takeshape": {
+                "@ref": "local:Product",
+                "@resolver": {
+                  "name": "takeshape:find",
+                  "service": "takeshape:local",
+                  "shapeName": "Product",
+                  "args": {
+                    "ops": [
+                      {
+                        "path": "where.shopifyProductId.eq",
+                        "mapping": "$source.id"
+                      }
+                    ]
+                  }
+                }
+              },
               "recharge": {
                 "description": "The Recharge subscription data associated with this product",
                 "title": "Recharge",
@@ -2751,7 +2731,13 @@
                   "service": "recharge",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600
+                    "ttl": 3600,
+                    "retry": {
+                      "limit": 10,
+                      "statusCode": [
+                        429
+                      ]
+                    }
                   },
                   "path": "/products",
                   "searchParams": {
@@ -2940,6 +2926,121 @@
             }
           }
         }
+      }
+    },
+    "ProductInterface": {
+      "id": "ProductInterface",
+      "name": "ProductInterface",
+      "title": "ProductInterface",
+      "description": "ProductInterface",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "_version": {
+            "type": "number"
+          },
+          "_status": {
+            "type": "string",
+            "@workflow": "default"
+          },
+          "name": {
+            "type": "string",
+            "description": "Initialized with title from shopify",
+            "title": "Name"
+          },
+          "productComponent": {
+            "minLength": 1,
+            "type": "string",
+            "oneOf": [
+              {
+                "enum": [
+                  "withImageGrid"
+                ],
+                "title": "withImageGrid"
+              },
+              {
+                "enum": [
+                  "withImage"
+                ],
+                "title": "withImage"
+              }
+            ],
+            "title": "Product Component"
+          },
+          "hideReviews": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Hide Reviews"
+          },
+          "hideRelatedProducts": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Hide Related Products"
+          },
+          "showDetails": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Show Details"
+          },
+          "details": {
+            "@ref": "local:TSRelationship",
+            "title": "Details",
+            "@output": {
+              "description": "",
+              "@args": "TSRelationshipArgs",
+              "@resolver": {
+                "name": "takeshape:getRelated",
+                "service": "takeshape:local",
+                "options": {
+                  "nullable": true
+                }
+              },
+              "@ref": "local:ProductPageDetails",
+              "@backreference": {
+                "enabled": false
+              }
+            }
+          },
+          "showPolicies": {
+            "default": false,
+            "@l10n": false,
+            "type": "boolean",
+            "title": "Show Policies"
+          },
+          "policies": {
+            "@ref": "local:TSRelationship",
+            "title": "Policies",
+            "@output": {
+              "description": "",
+              "@args": "TSRelationshipArgs",
+              "@resolver": {
+                "name": "takeshape:getRelated",
+                "service": "takeshape:local",
+                "options": {
+                  "nullable": true
+                }
+              },
+              "@ref": "local:ProductPagePolicies",
+              "@backreference": {
+                "enabled": false
+              }
+            }
+          },
+          "shopifyProductId": {
+            "title": "Service ID",
+            "type": "string"
+          },
+          "shopifyProduct": {
+            "@ref": "shopify:ProductInput"
+          }
+        },
+        "required": []
       }
     },
     "Product": {
@@ -3266,6 +3367,704 @@
           "name",
           "policies"
         ]
+      }
+    },
+    "OffersComponent": {
+      "id": "TB5fn0JVs",
+      "name": "OffersComponent",
+      "title": "Offers Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "offers": {
+            "title": "Offers",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:OffersComponentOffers"
+            },
+            "@mapping": "takeshape:local:OffersComponent.xT4pw1DQX"
+          }
+        },
+        "required": [
+          "offers"
+        ]
+      }
+    },
+    "HeroComponent": {
+      "id": "ryd1vUTw_",
+      "name": "HeroComponent",
+      "title": "Hero Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "primaryText": {
+            "minLength": 1,
+            "type": "string",
+            "title": "Primary Text",
+            "@mapping": "takeshape:local:HeroComponent.dBpjebsDG"
+          },
+          "secondaryText": {
+            "minLength": 1,
+            "type": "string",
+            "title": "Secondary Text",
+            "@mapping": "takeshape:local:HeroComponent.GtIaaH1nJ"
+          },
+          "buttonText": {
+            "minLength": 1,
+            "type": "string",
+            "title": "Button Text",
+            "@mapping": "takeshape:local:HeroComponent.1UlfVUH6m"
+          },
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:HeroComponent.f8GnBKxdc"
+          }
+        },
+        "required": [
+          "primaryText",
+          "secondaryText",
+          "buttonText",
+          "image"
+        ]
+      }
+    },
+    "CollectionsComponent": {
+      "id": "N442MMRnP",
+      "name": "CollectionsComponent",
+      "title": "Collections Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "collections": {
+            "title": "Collections",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:CollectionsComponentCollections"
+            },
+            "@mapping": "takeshape:local:CollectionsComponent.CkeuB_BtQ"
+          }
+        },
+        "required": [
+          "collections"
+        ]
+      }
+    },
+    "BackgroundImageComponent": {
+      "id": "owFx1bK_N",
+      "name": "BackgroundImageComponent",
+      "title": "Background Image Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:BackgroundImageComponent.JiPgzhzwi"
+          },
+          "components": {
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:CollectionsComponent"
+                },
+                {
+                  "@ref": "local:SaleComponent"
+                },
+                {
+                  "@ref": "local:TestimonialsComponent"
+                },
+                {
+                  "@ref": "local:OffersComponent"
+                },
+                {
+                  "@ref": "local:HeroComponent"
+                },
+                {
+                  "@ref": "local:BackgroundImageComponent"
+                }
+              ]
+            },
+            "minItems": 1,
+            "type": "array",
+            "description": "",
+            "title": "Components",
+            "@mapping": "takeshape:local:BackgroundImageComponent.9aCDl8bvs"
+          }
+        },
+        "required": [
+          "image",
+          "components"
+        ]
+      }
+    },
+    "SaleComponent": {
+      "id": "J99fCvBVY",
+      "name": "SaleComponent",
+      "title": "Sale Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "primaryText": {
+            "type": "string",
+            "title": "Primary Text",
+            "@mapping": "takeshape:local:SaleComponent.RDiJiVicD"
+          },
+          "secondaryText": {
+            "type": "string",
+            "title": "Secondary Text",
+            "@mapping": "takeshape:local:SaleComponent.kAUoEI-vc"
+          },
+          "buttonText": {
+            "type": "string",
+            "title": "Button Text",
+            "@mapping": "takeshape:local:SaleComponent.6rugQZtXB"
+          }
+        },
+        "required": [
+          "primaryText",
+          "secondaryText",
+          "buttonText"
+        ]
+      }
+    },
+    "TestimonialsComponent": {
+      "id": "mLflhkK49",
+      "name": "TestimonialsComponent",
+      "title": "Testimonials Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "testimonials": {
+            "title": "Testimonials",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:TestimonialsComponentTestimonials"
+            },
+            "@mapping": "takeshape:local:TestimonialsComponent.it7qU6IPS"
+          }
+        },
+        "required": [
+          "testimonials"
+        ]
+      }
+    },
+    "CollectionsComponentCollections": {
+      "id": "CkeuB_BtQ",
+      "name": "CollectionsComponentCollections",
+      "title": "Collections Component Collections",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.GtqbZV_yV"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Description",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.-qIw4ksCG"
+          },
+          "href": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.qBq3Hp4pU"
+          },
+          "image": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Asset",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Image",
+            "@mapping": "takeshape:local:CollectionsComponentCollections.44EIR8MU5"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "href",
+          "image"
+        ]
+      }
+    },
+    "OffersComponentOffers": {
+      "id": "xT4pw1DQX",
+      "name": "OffersComponentOffers",
+      "title": "Offers Component Offers",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:OffersComponentOffers.U7DX6k9t8"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Description",
+            "@mapping": "takeshape:local:OffersComponentOffers.w1TXpbdet"
+          },
+          "href": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:OffersComponentOffers.ZwRQHanTW"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "href"
+        ]
+      }
+    },
+    "TestimonialsComponentTestimonials": {
+      "id": "it7qU6IPS",
+      "name": "TestimonialsComponentTestimonials",
+      "title": "Testimonials Component Testimonials",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "quote": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Quote",
+            "@mapping": "takeshape:local:TestimonialsComponentTestimonials.KFwmm_umC"
+          },
+          "attribution": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Attribution",
+            "@mapping": "takeshape:local:TestimonialsComponentTestimonials.ZCRhMIZOP"
+          }
+        },
+        "required": [
+          "quote",
+          "attribution"
+        ]
+      }
+    },
+    "TrendingProductsComponentTrendingProducts": {
+      "id": "B6g6lGJm_",
+      "name": "TrendingProductsComponentTrendingProducts",
+      "title": "Trending Products Component TrendingProducts",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "shopifyProductId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "",
+            "title": "Shopify Product ID",
+            "@mapping": "takeshape:local:TrendingProductsComponentTrendingProducts.X9e5hJImy"
+          },
+          "shopifyProduct": {
+            "@ref": "shopify:Product",
+            "@resolver": {
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "product",
+              "args": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.shopifyProductId"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "shopifyProductId"
+        ]
+      }
+    },
+    "TrendingProductsComponent": {
+      "id": "8fw2VcmMH",
+      "name": "TrendingProductsComponent",
+      "title": "Trending Products Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "trendingProducts": {
+            "title": "Trending Products",
+            "description": "",
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "@ref": "local:TrendingProductsComponentTrendingProducts"
+            },
+            "@mapping": "takeshape:local:TrendingProductsComponent.B6g6lGJm_"
+          }
+        },
+        "required": [
+          "trendingProducts"
+        ]
+      }
+    },
+    "Storefront": {
+      "id": "u3-xM1Ynt",
+      "name": "Storefront",
+      "title": "Storefront",
+      "model": {
+        "type": "single"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "components": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:OffersComponent"
+                },
+                {
+                  "@ref": "local:HeroComponent"
+                },
+                {
+                  "@ref": "local:CollectionsComponent"
+                },
+                {
+                  "@ref": "local:BackgroundImageComponent"
+                },
+                {
+                  "@ref": "local:SaleComponent"
+                },
+                {
+                  "@ref": "local:TestimonialsComponent"
+                },
+                {
+                  "@ref": "local:TrendingProductsComponent"
+                }
+              ]
+            },
+            "title": "Components",
+            "@mapping": "takeshape:local:Storefront.nSsbsiM-3"
+          }
+        },
+        "required": [
+          "components"
+        ]
+      }
+    },
+    "NavigationLinksCategoriesFeatured": {
+      "id": "dQHi8IKXY",
+      "name": "NavigationLinksCategoriesFeatured",
+      "title": "Navigation Links Categories Featured",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesFeatured.kBLyPeRMR"
+          },
+          "href": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesFeatured.HIUoSRzOK"
+          }
+        },
+        "required": [
+          "name",
+          "href"
+        ]
+      }
+    },
+    "NavigationLinksCategoriesCollection": {
+      "id": "hF0j28rBh",
+      "name": "NavigationLinksCategoriesCollection",
+      "title": "Navigation Links Categories Collection",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesCollection.qAMGs33f0"
+          },
+          "href": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesCollection.TIucx2vA5"
+          }
+        },
+        "required": [
+          "name",
+          "href"
+        ]
+      }
+    },
+    "NavigationLinksCategoriesCategories": {
+      "id": "YYp0_OCPe",
+      "name": "NavigationLinksCategoriesCategories",
+      "title": "Navigation Links Categories Categories",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesCategories.Eh7XAugnb"
+          },
+          "href": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesCategories.AFVv3BQRT"
+          }
+        },
+        "required": [
+          "name",
+          "href"
+        ]
+      }
+    },
+    "NavigationLinksCategoriesBrands": {
+      "id": "gPUjtRTzf",
+      "name": "NavigationLinksCategoriesBrands",
+      "title": "Navigation Links Categories Brands",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesBrands.fRRh9Eo4r"
+          },
+          "href": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:NavigationLinksCategoriesBrands.GQVp2Zg3D"
+          }
+        },
+        "required": [
+          "name",
+          "href"
+        ]
+      }
+    },
+    "NavigationLinksCategories": {
+      "id": "zybdlWXQs",
+      "name": "NavigationLinksCategories",
+      "title": "Navigation Links Categories",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLinksCategories.gANzQp3eC"
+          },
+          "featured": {
+            "title": "Featured",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationLinksCategoriesFeatured"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationLinksCategories.dQHi8IKXY"
+          },
+          "collection": {
+            "title": "Collection",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationLinksCategoriesCollection"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationLinksCategories.hF0j28rBh"
+          },
+          "categories": {
+            "title": "Categories",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationLinksCategoriesCategories"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationLinksCategories.YYp0_OCPe"
+          },
+          "brands": {
+            "title": "Brands",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationLinksCategoriesBrands"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationLinksCategories.gPUjtRTzf"
+          }
+        },
+        "required": [
+          "name",
+          "featured",
+          "collection",
+          "categories",
+          "brands"
+        ]
+      }
+    },
+    "NavigationLinksPages": {
+      "id": "H2mxhkhX3",
+      "name": "NavigationLinksPages",
+      "title": "Navigation Links Pages",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationLinksPages.KOKj1Bj-Z"
+          },
+          "href": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Href",
+            "@mapping": "takeshape:local:NavigationLinksPages.y-ZspDXpz"
+          }
+        },
+        "required": [
+          "name",
+          "href"
+        ]
+      }
+    },
+    "NavigationLinks": {
+      "id": "d1o5S0w1Y",
+      "name": "NavigationLinks",
+      "title": "Navigation Links",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "title": "Categories",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationLinksCategories"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationLinks.zybdlWXQs"
+          },
+          "pages": {
+            "title": "Pages",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationLinksPages"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationLinks.H2mxhkhX3"
+          }
+        },
+        "required": [
+          "categories",
+          "pages"
+        ]
+      }
+    },
+    "Navigation": {
+      "id": "Go7s7M7Ij",
+      "name": "Navigation",
+      "title": "Navigation",
+      "workflow": "default",
+      "model": {
+        "type": "single"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "object",
+            "@tag": "draftjs",
+            "description": "",
+            "title": "Message",
+            "@mapping": "takeshape:local:Navigation.PL-G7Y5Vx"
+          },
+          "links": {
+            "title": "Links",
+            "description": "",
+            "@ref": "local:NavigationLinks",
+            "@mapping": "takeshape:local:Navigation.d1o5S0w1Y"
+          }
+        }
       }
     }
   },

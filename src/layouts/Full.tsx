@@ -1,8 +1,12 @@
-import Seo from 'features/Seo';
+import Seo from 'components/Seo';
 import { NextSeoProps } from 'next-seo';
 import { PropsWithChildren } from 'react';
 
-export const Layout = ({ children, ...seo }: PropsWithChildren<NextSeoProps>) => {
+export interface LayoutProps {
+  seo: NextSeoProps;
+}
+
+export const Layout = ({ children, seo }: PropsWithChildren<LayoutProps>) => {
   return (
     <div className="h-full bg-gray-50">
       <div className="h-full">

@@ -29,7 +29,7 @@ export interface BlogProps {
   };
 }
 
-const Blog = (props: BlogProps) => {
+export const Blog = (props: BlogProps) => {
   const {
     blog: { text, posts }
   } = props;
@@ -89,5 +89,3 @@ const Blog = (props: BlogProps) => {
     </div>
   );
 };
-
-export default Blog;

@@ -1,4 +1,4 @@
-import AuthRecoverPassword from 'features/Auth/RecoverPassword/RecoverPassword';
+import { AuthRecoverPassword } from 'features/Auth/AuthRecoverPassword/AuthRecoverPassword';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -8,7 +8,7 @@ const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
-    <Layout title="Sign In">
+    <Layout seo={{ title: 'Reset Password' }}>
       <AuthRecoverPassword callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/auth/signin'} />
     </Layout>
   );

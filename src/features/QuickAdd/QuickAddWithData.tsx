@@ -27,5 +27,3 @@ export const QuickAddWithData = () => {
 
   return <QuickAdd isOpen={Boolean(quickAdd)} onClose={() => resetQuickAdd()} product={product} />;
 };
-
-export default QuickAddWithData;

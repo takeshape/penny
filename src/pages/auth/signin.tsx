@@ -1,4 +1,4 @@
-import AuthSignIn from 'features/Auth/SignIn/SignIn';
+import { AuthSignIn } from 'features/Auth/AuthSignIn/AuthSignIn';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
@@ -9,7 +9,7 @@ const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
-    <Layout title="Sign In">
+    <Layout seo={{ title: 'Sign In' }}>
       <AuthSignIn
         signIn={signIn}
         callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}

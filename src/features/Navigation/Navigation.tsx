@@ -1,16 +1,17 @@
 import { Fragment } from 'react';
-import NavigationMobileMenu from './MobileMenu/MobileMenu';
-import NavigationTop from './Top/Top';
+import { NavigationMobileMenu } from './NavigationMobileMenu/NavigationMobileMenu';
+import { NavigationTop } from './NavigationTop/NavigationTop';
+import { Navigation as NavigationType } from './types';
 
-export const Navigation = () => {
+export interface NavigationProps extends NavigationType {}
+
+export const Navigation = ({ message, links, currencies }) => {
   return (
     <Fragment>
-      <NavigationMobileMenu />
+      <NavigationMobileMenu links={links} currencies={currencies} />
       <header className="relative z-10">
-        <NavigationTop />
+        <NavigationTop message={message} links={links} currencies={currencies} />
       </header>
     </Fragment>
   );
 };
-
-export default Navigation;

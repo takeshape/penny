@@ -1,13 +1,19 @@
-import AccountSubscriptions from 'features/Account/Subscriptions/Subscriptions';
+import { getLayoutData } from 'data/getLayoutData';
+import { AccountSubscriptions } from 'features/AccountSubscriptions/AccountSubscriptions';
 import Layout from 'layouts/Account';
-import { NextPage } from 'next';
+import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AccountPurchasesPage: NextPage = () => {
+const AccountPurchasesPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout title="Subscriptions">
+    <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscriptions' }}>
       <AccountSubscriptions />
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const { navigation, footer } = await getLayoutData();
+  return { props: { navigation, footer } };
+}
 
 export default AccountPurchasesPage;

@@ -1,11 +1,12 @@
 import { useQuery } from '@apollo/client';
-import AccountLoyaltyCard from 'features/Account/LoyaltyCard/LoyaltyCard';
-import AccountReferrals from 'features/Account/Referrals/Referrals';
+import { getLayoutData } from 'data/getLayoutData';
+import { AccountLoyaltyCard } from 'features/AccountLoyaltyCard/AccountLoyaltyCard';
+import { GetMyLoyaltyCardQuery, GetMyLoyaltyCardResponse } from 'features/AccountLoyaltyCard/queries';
+import { AccountReferrals } from 'features/AccountReferrals/AccountReferrals';
 import Layout from 'layouts/Account';
-import { NextPage } from 'next';
-import { GetMyLoyaltyCardQuery, GetMyLoyaltyCardResponse } from 'queries';
+import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AccountRewardsPage: NextPage = () => {
+const AccountRewardsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data } = useQuery<GetMyLoyaltyCardResponse>(GetMyLoyaltyCardQuery);
 
   if (!data) {
@@ -13,7 +14,7 @@ const AccountRewardsPage: NextPage = () => {
   }
 
   return (
-    <Layout title="Rewards">
+    <Layout navigation={navigation} footer={footer} seo={{ title: 'Rewards' }}>
       <AccountReferrals />
       <AccountLoyaltyCard
         code={data?.loyaltyCard.code}
@@ -23,5 +24,10 @@ const AccountRewardsPage: NextPage = () => {
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const { navigation, footer } = await getLayoutData();
+  return { props: { navigation, footer } };
+}
 
 export default AccountRewardsPage;
