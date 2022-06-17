@@ -5,8 +5,8 @@ import {
   RelatedProductsShopifyCollectionArgs,
   RelatedProductsShopifyCollectionQuery,
   RelatedProductsShopifyCollectionResponse
-} from 'features/RelatedProducts/queries';
-import { getProductList } from 'features/RelatedProducts/transforms';
+} from 'features/ProductPage/queries';
+import { getRelatedProductList } from 'features/ProductPage/transforms';
 import { GetStorefrontQuery, GetStorefrontResponse } from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
@@ -63,7 +63,7 @@ export async function getStaticProps() {
         handle: 'frontpage'
       }
     });
-    products = getProductList(productsData).map((product) => ({ product }));
+    products = getRelatedProductList(productsData).map((product) => ({ product }));
 
     const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
       query: GetStorefrontQuery

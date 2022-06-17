@@ -1,13 +1,9 @@
 import { ErrorBoundary } from 'components/Error/ErrorBoundary';
 import Wrapper from 'components/Wrapper/Content';
-import { DetailsWithData, DetailsWithDataProps } from 'features/ProductPage/Details/DetailsWithData';
-import { PoliciesWithData } from 'features/ProductPage/Policies/PoliciesWithData';
-import {
-  RelatedProductsWithData,
-  RelatedProductsWithDataProps
-} from 'features/RelatedProducts/RelatedProductsWithData';
-import { PoliciesWithDataProps } from './Policies/PoliciesWithData';
+import { DetailsWithData, DetailsWithDataProps } from './Details/DetailsWithData';
+import { PoliciesWithData, PoliciesWithDataProps } from './Policies/PoliciesWithData';
 import { ProductWithData, ProductWithDataProps } from './Product/ProductWithData';
+import { RelatedProductsWithData, RelatedProductsWithDataProps } from './RelatedProducts/RelatedProductsWithData';
 import { ReviewsWithData, ReviewsWithDataProps } from './Reviews/ReviewsWithData';
 import { ProductPageOptions } from './types';
 

@@ -1,5 +1,10 @@
 import { gql } from '@apollo/client';
-import { ProductPageReviewsIoReviews, ProductPageShopifyProduct, ProductPageTakeshapeProduct } from './types';
+import {
+  ProductPageReviewsIoReviews,
+  ProductPageShopifyProduct,
+  ProductPageTakeshapeProduct,
+  RelatedProductsShopifyProduct
+} from './types';
 
 export type ProductPageShopifyProductIdListResponse = {
   products: {
@@ -280,6 +285,64 @@ export const ProductPageReviewsIoReviewsQuery = gql`
         per_page
         current_page
         total
+      }
+    }
+  }
+`;
+
+export type RelatedProductsShopifyCollectionArgs = {
+  handle: string;
+};
+
+export type RelatedProductsShopifyCollectionResponse = {
+  collection: {
+    products: {
+      edges: {
+        node: RelatedProductsShopifyProduct;
+      }[];
+    };
+  };
+};
+
+export const RelatedProductsShopifyCollectionQuery = gql`
+  query RelatedProductsShopifyCollectionQuery($handle: String!) {
+    collection: Shopify_collectionByHandle(handle: $handle) {
+      products(first: 10) {
+        edges {
+          node {
+            id
+            title
+            description
+            descriptionHtml
+            takeshape {
+              _id
+              name
+              slug
+            }
+            requiresSellingPlan
+            featuredImage {
+              id
+              width
+              height
+              url
+              altText
+            }
+            priceRangeV2 {
+              maxVariantPrice {
+                currencyCode
+                amount
+              }
+              minVariantPrice {
+                currencyCode
+                amount
+              }
+            }
+            publishedAt
+            totalVariants
+            totalInventory
+            sellingPlanGroupCount
+          }
+        }
       }
     }
   }

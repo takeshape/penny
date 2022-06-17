@@ -3,10 +3,10 @@ import {
   RelatedProductsShopifyCollectionArgs,
   RelatedProductsShopifyCollectionQuery,
   RelatedProductsShopifyCollectionResponse
-} from './queries';
+} from '../queries';
+import { getRelatedProductList } from '../transforms';
+import { RelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
-import { getProductList } from './transforms';
-import { RelatedProductsProduct } from './types';
 
 export interface RelatedProductsWithDataProps {
   collection?: string;
@@ -25,7 +25,7 @@ export const RelatedProductsWithData = ({ collection }: RelatedProductsWithDataP
     return null;
   }
 
-  const products = data && getProductList(data);
+  const products = data && getRelatedProductList(data);
 
   return <RelatedProducts products={products ?? loadingProducts} />;
 };

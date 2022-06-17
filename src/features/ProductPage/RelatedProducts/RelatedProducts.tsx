@@ -1,6 +1,6 @@
+import { RelatedProductsProduct } from '../types';
 import { ListItem } from './components/ListItem';
 import { ListItemLoading } from './components/ListItemLoading';
-import { RelatedProductsProduct } from './types';
 
 export interface RelatedProductsProps {
   products: RelatedProductsProduct[];

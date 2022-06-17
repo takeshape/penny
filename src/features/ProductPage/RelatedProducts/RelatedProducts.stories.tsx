@@ -1,10 +1,10 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { relatedProductsResponse } from './queries.fixtures';
+import { relatedProductsResponse } from '../queries.fixtures';
+import { getRelatedProductList } from '../transforms';
 import { RelatedProducts } from './RelatedProducts';
-import { getProductList } from './transforms';
 
 const Meta: ComponentMeta<typeof RelatedProducts> = {
-  title: 'Features / Related Products',
+  title: 'Features / Product Page / Related Products',
   component: RelatedProducts
 };
 
@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof RelatedProducts> = (args) => <RelatedProdu
 
 export const _RelatedProducts = Template.bind({});
 _RelatedProducts.args = {
-  products: getProductList(relatedProductsResponse)
+  products: getRelatedProductList(relatedProductsResponse)
 };
 
 export default Meta;

@@ -4,7 +4,7 @@ import { quickAddAtom } from 'features/QuickAdd/store';
 import { useSetAtom } from 'jotai';
 import { MouseEvent, useCallback } from 'react';
 import { formatPrice } from 'utils/text';
-import { RelatedProductsProduct } from '../types';
+import { RelatedProductsProduct } from '../../types';
 
 export interface ListItemProps {
   product: RelatedProductsProduct;

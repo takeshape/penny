@@ -1,8 +1,12 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { relatedProductsResponse } from 'features/RelatedProducts/queries.fixtures';
 import { graphql } from 'msw';
 import { ProductPage } from './ProductPage';
-import { productResponse, reviewsResponse, takeshapeProductResponse } from './queries.fixtures';
+import {
+  productResponse,
+  relatedProductsResponse,
+  reviewsResponse,
+  takeshapeProductResponse
+} from './queries.fixtures';
 
 const Meta: ComponentMeta<typeof ProductPage> = {
   title: 'Features / Product Page',
