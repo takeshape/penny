@@ -117,5 +117,3 @@ export const MobileMenuLinks = () => {
     </Fragment>
   );
 };
-
-export default MobileMenuLinks;

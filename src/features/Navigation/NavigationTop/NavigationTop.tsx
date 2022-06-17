@@ -2,12 +2,12 @@ import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
 import NextLink from 'components/NextLink';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
-import TopAccountIcon from './components/TopAccountIcon';
-import TopCartIcon from './components/TopCartIcon';
-import TopCreateOrSignIn from './components/TopCreateOrSignIn';
-import TopCurrencySelect from './components/TopCurrencySelect';
-import TopLinks from './components/TopLinks';
-import TopMessage from './components/TopMessage';
+import { TopAccountIcon } from './components/TopAccountIcon';
+import { TopCartIcon } from './components/TopCartIcon';
+import { TopCreateOrSignIn } from './components/TopCreateOrSignIn';
+import { TopCurrencySelect } from './components/TopCurrencySelect';
+import { TopLinks } from './components/TopLinks';
+import { TopMessage } from './components/TopMessage';
 
 export const NavigationTop = () => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);

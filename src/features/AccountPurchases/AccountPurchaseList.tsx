@@ -1,7 +1,7 @@
 import { NetworkStatus, useQuery } from '@apollo/client';
-import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from 'queries';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
+import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from './queries';
 import { shopifyCustomerToOrders } from './transforms';
 
 const Empty = () => (

@@ -2,7 +2,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { AuthSignIn, errors } from './AuthSignIn';
 
 const Meta: ComponentMeta<typeof AuthSignIn> = {
-  title: 'Features / Auth Sign In',
+  title: 'Features / Auth / Sign In',
   component: AuthSignIn,
   argTypes: {
     signIn: {

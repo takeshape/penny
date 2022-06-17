@@ -2,7 +2,7 @@ import { ComponentMeta } from '@storybook/react';
 import { AuthSignOut } from './AuthSignOut';
 
 const Meta: ComponentMeta<typeof AuthSignOut> = {
-  title: 'Features / Auth Sign Out',
+  title: 'Features / Auth / Sign Out',
   component: AuthSignOut,
   argTypes: {
     signOut: {

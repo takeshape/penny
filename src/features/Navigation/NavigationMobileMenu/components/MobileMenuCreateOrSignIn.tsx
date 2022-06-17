@@ -36,5 +36,3 @@ export const MobileMenuCreateOrSignIn = () => {
     </div>
   );
 };
-
-export default MobileMenuCreateOrSignIn;

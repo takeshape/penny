@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
+import FormCardPanel from 'components/Form/CardPanel/CardPanel';
 import FormInput from 'components/Form/Input/Input';
 import { signOut } from 'next-auth/react';
-import { UpdateCustomerMutation, UpdateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
+import { UpdateCustomerMutation, UpdateCustomerResponse } from './queries';
 
 export interface AccountFormPasswordForm {
   password: string;

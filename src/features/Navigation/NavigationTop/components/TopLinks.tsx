@@ -148,5 +148,3 @@ export const TopLinks = () => {
     </div>
   );
 };
-
-export default TopLinks;

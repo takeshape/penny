@@ -20,5 +20,3 @@ export const TopCurrencySelect = () => {
     </select>
   );
 };
-
-export default TopCurrencySelect;

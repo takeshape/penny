@@ -25,5 +25,3 @@ export const TopCartIcon = () => {
     </div>
   );
 };
-
-export default TopCartIcon;

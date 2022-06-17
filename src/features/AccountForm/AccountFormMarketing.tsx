@@ -1,5 +1,14 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
+import { useCallback, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import {
+  MutationSubscribeMyEmailToNewsletterArgs,
+  MutationUnsubscribeMyEmailFromNewsletterArgs,
+  MutationUpdateMyCustomerArgs
+} from 'types/takeshape';
+import { formatError } from 'utils/errors';
+import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
 import {
   GetCustomerQuery,
   GetCustomerResponse,
@@ -11,16 +20,7 @@ import {
   UnsubscribeMyEmailFromNewsletterResponse,
   UpdateCustomerMutation,
   UpdateCustomerResponse
-} from 'queries';
-import { useCallback, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import {
-  MutationSubscribeMyEmailToNewsletterArgs,
-  MutationUnsubscribeMyEmailFromNewsletterArgs,
-  MutationUpdateMyCustomerArgs
-} from 'types/takeshape';
-import { formatError } from 'utils/errors';
-import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
+} from './queries';
 
 interface AccountFormMarketingForm {
   newsletters: Record<string, boolean>;

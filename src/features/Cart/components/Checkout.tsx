@@ -2,9 +2,9 @@ import { useMutation } from '@apollo/client';
 import Button from 'components/Button/Button';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
-import { CreateMyCartMutation, CreateMyCartResponse } from 'queries';
 import { useCallback, useEffect } from 'react';
 import { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
+import { CreateMyCartMutation, CreateMyCartResponse } from '../queries';
 import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
 import { getCheckoutPayload } from '../utils';
 

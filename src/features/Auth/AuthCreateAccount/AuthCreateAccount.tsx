@@ -5,11 +5,11 @@ import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
-import { CreateCustomerMutation, CreateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { MutationCreateCustomerArgs } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
+import { CreateCustomerMutation, CreateCustomerResponse } from '../queries';
 
 export interface AuthCreateAccountForm {
   email: string;

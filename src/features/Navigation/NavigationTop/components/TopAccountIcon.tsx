@@ -31,5 +31,3 @@ export const TopAccountIcon = () => {
     </div>
   );
 };
-
-export default TopAccountIcon;

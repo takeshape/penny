@@ -3,7 +3,7 @@ import { graphql } from 'msw';
 import { AuthRecoverPassword } from './AuthRecoverPassword';
 
 const Meta: ComponentMeta<typeof AuthRecoverPassword> = {
-  title: 'Features / Auth Recover Password',
+  title: 'Features / Auth / Recover Password',
   component: AuthRecoverPassword
 };
 

@@ -3,7 +3,7 @@ import { graphql } from 'msw';
 import { AuthCreateAccount } from './AuthCreateAccount';
 
 const Meta: ComponentMeta<typeof AuthCreateAccount> = {
-  title: 'Features / Auth Create Account',
+  title: 'Features / Auth / Create Account',
   component: AuthCreateAccount,
   argTypes: {
     signIn: {

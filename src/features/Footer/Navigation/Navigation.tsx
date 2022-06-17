@@ -34,7 +34,7 @@ export interface NavigationProps {
   sections?: NavigationSectionProps[];
 }
 
-const Navigation = (props: React.PropsWithChildren<NavigationProps>) => {
+export const Navigation = (props: React.PropsWithChildren<NavigationProps>) => {
   const { sections } = props;
   const navigationItems = useMemo(() => {
     const items = [];
@@ -58,5 +58,3 @@ const Navigation = (props: React.PropsWithChildren<NavigationProps>) => {
   }, [sections]);
   return <div className="grid grid-cols-2 gap-8 xl:col-span-2">{navigationItems}</div>;
 };
-
-export default Navigation;

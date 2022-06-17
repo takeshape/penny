@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from '@apollo/client';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
-import { GetCustomerQuery, GetCustomerResponse, UpdateCustomerMutation, UpdateCustomerResponse } from 'queries';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { MutationUpdateMyCustomerArgs } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
+import { GetCustomerQuery, GetCustomerResponse, UpdateCustomerMutation, UpdateCustomerResponse } from './queries';
 
 interface AccountFormProfileForm {
   firstName: string;

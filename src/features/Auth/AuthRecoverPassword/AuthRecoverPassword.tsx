@@ -4,11 +4,11 @@ import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import { siteLogo } from 'config';
-import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from 'queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { MutationShopifyStorefront_CustomerRecoverArgs } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
+import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from '../queries';
 
 export interface AuthRecoverPasswordForm {
   email: string;

@@ -27,5 +27,3 @@ export const TopCreateOrSignIn = () => {
     </div>
   );
 };
-
-export default TopCreateOrSignIn;

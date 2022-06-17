@@ -1,4 +1,4 @@
-import { AuthSignIn } from 'features/AuthSignIn/AuthSignIn';
+import { AuthSignIn } from 'features/Auth/AuthSignIn/AuthSignIn';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';

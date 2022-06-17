@@ -1,4 +1,4 @@
-import { AuthSignOut } from 'features/AuthSignOut/AuthSignOut';
+import { AuthSignOut } from 'features/Auth/AuthSignOut/AuthSignOut';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { signOut } from 'next-auth/react';

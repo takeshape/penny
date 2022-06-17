@@ -46,5 +46,3 @@ export const MobileMenuCurrencySelect = () => {
     </form>
   );
 };
-
-export default MobileMenuCurrencySelect;
