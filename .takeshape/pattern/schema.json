@@ -858,14 +858,6 @@
               "mapping": "$claims.custom.customer_access_token"
             }
           ]
-        },
-        "options": {
-          "retry": {
-            "limit": 10,
-            "statusCode": [
-              429
-            ]
-          }
         }
       },
       "shape": "ShopifyStorefront_Customer"
@@ -882,14 +874,6 @@
               "mapping": "$claims.sub"
             }
           ]
-        },
-        "options": {
-          "retry": {
-            "limit": 10,
-            "statusCode": [
-              429
-            ]
-          }
         }
       },
       "shape": "Shopify_Customer"
@@ -906,13 +890,7 @@
             "service": "shopify-storefront",
             "fieldName": "customer",
             "options": {
-              "selectionSet": "{ displayName email }",
-              "retry": {
-                "limit": 10,
-                "statusCode": [
-                  429
-                ]
-              }
+              "selectionSet": "{ displayName email }"
             },
             "args": {
               "ops": [
@@ -1032,15 +1010,7 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify-storefront",
-        "fieldName": "customer",
-        "options": {
-          "retry": {
-            "limit": 10,
-            "statusCode": [
-              429
-            ]
-          }
-        }
+        "fieldName": "customer"
       },
       "args": {
         "type": "object",
@@ -1100,15 +1070,7 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "collectionByHandle",
-        "options": {
-          "retry": {
-            "limit": 10,
-            "statusCode": [
-              429
-            ]
-          }
-        }
+        "fieldName": "collectionByHandle"
       },
       "args": {
         "type": "object",
@@ -1651,15 +1613,7 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "products",
-        "options": {
-          "retry": {
-            "limit": 10,
-            "statusCode": [
-              429
-            ]
-          }
-        }
+        "fieldName": "products"
       },
       "args": {
         "type": "object",
@@ -1707,15 +1661,7 @@
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "product",
-        "options": {
-          "retry": {
-            "limit": 10,
-            "statusCode": [
-              429
-            ]
-          }
-        }
+        "fieldName": "product"
       },
       "args": {
         "type": "object",
@@ -3471,14 +3417,6 @@
                     "mapping": "$source.shopifyProductId"
                   }
                 ]
-              },
-              "options": {
-                "retry": {
-                  "limit": 10,
-                  "statusCode": [
-                    429
-                  ]
-                }
               }
             },
             "@tag": "pattern:service-object:1"
