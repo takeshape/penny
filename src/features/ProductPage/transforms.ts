@@ -166,28 +166,14 @@ export function getProductPageIdOrSlug(idOrSlug: string) {
   };
 }
 
-export function getProductPageParams(response: ProductPageShopifyProductIdListResponse) {
-  const items = response?.products?.items;
+export function getProductPageParams(item: ProductPageShopifyProductIdListResponse['products']['items'][0]) {
+  const id = item.slug ? [item.slug] : [shopifyGidToId(item.shopifyProductId), slug(item.name)];
 
-  if (!items) {
-    return null;
-  }
-
-  return items.map((item) => {
-    let id;
-
-    if (item.slug) {
-      id = [item.slug];
-    } else {
-      id = [shopifyGidToId(item.shopifyProductId), slug(item.name)];
+  return {
+    params: {
+      id
     }
-
-    return {
-      params: {
-        id
-      }
-    };
-  });
+  };
 }
 
 function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
