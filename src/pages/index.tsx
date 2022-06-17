@@ -40,7 +40,6 @@ const IndexPage: NextPage = ({
   }
 
   return (
-    
     <Layout navigation={navigation} footer={footer}>
       {storefront ? (
         <Wrapper>
