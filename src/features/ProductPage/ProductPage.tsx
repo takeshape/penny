@@ -1,16 +1,16 @@
 import { ErrorBoundary } from 'components/Error/ErrorBoundary';
 import Wrapper from 'components/Wrapper/Content';
-import { DetailsWithData, DetailsWithDataProps } from './Details/DetailsWithData';
-import { PoliciesWithData, PoliciesWithDataProps } from './Policies/PoliciesWithData';
-import { ProductWithData, ProductWithDataProps } from './Product/ProductWithData';
+import { Details, DetailsProps } from './Details/Details';
+import { Policies, PoliciesProps } from './Policies/Policies';
+import { Product, ProductProps } from './Product/Product';
 import { RelatedProductsWithData, RelatedProductsWithDataProps } from './RelatedProducts/RelatedProductsWithData';
-import { ReviewsWithData, ReviewsWithDataProps } from './Reviews/ReviewsWithData';
+import { Reviews, ReviewsProps } from './Reviews/Reviews';
 import { ProductPageOptions } from './types';
 
-export type ProductPageProps = ProductWithDataProps &
-  PoliciesWithDataProps &
-  ReviewsWithDataProps &
-  DetailsWithDataProps &
+export type ProductPageProps = ProductProps &
+  PoliciesProps &
+  ReviewsProps &
+  DetailsProps &
   RelatedProductsWithDataProps & {
     options: ProductPageOptions;
   };
@@ -20,7 +20,15 @@ const breadcrumbs = [
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-export const ProductPage = ({ productId, sku, component, options }: ProductPageProps) => {
+export const ProductPage = ({
+  product,
+  reviewHighlights,
+  component,
+  options,
+  details,
+  policies,
+  reviewList
+}: ProductPageProps) => {
   const { showDetails, showPolicies, showReviews, showRelatedProducts } = options;
 
   return (
@@ -32,18 +40,23 @@ export const ProductPage = ({ productId, sku, component, options }: ProductPageP
       <div className="bg-gray-50">
         <div className="bg-white">
           <Wrapper>
-            <ProductWithData component={component} productId={productId} breadcrumbs={breadcrumbs} />
+            <Product
+              component={component}
+              product={product}
+              reviewHighlights={reviewHighlights}
+              breadcrumbs={breadcrumbs}
+            />
           </Wrapper>
         </div>
 
         <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 bg-gray-50">
-          {showDetails && <DetailsWithData productId={productId} />}
-          {showPolicies && <PoliciesWithData productId={productId} />}
+          {showDetails && <Details details={details} />}
+          {showPolicies && <Policies policies={policies} />}
         </div>
 
         <div className="bg-white">
           <Wrapper>
-            {showReviews && <ReviewsWithData sku={sku} />}
+            {showReviews && <Reviews reviewList={reviewList} />}
             {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
           </Wrapper>
         </div>

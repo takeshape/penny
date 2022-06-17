@@ -5,12 +5,12 @@ import { ReviewsListItemLoading } from './ReviewsListItemLoading';
 import { ReviewsRollup } from './ReviewsRollup';
 
 export interface ReviewsProps {
-  reviews: ProductPageReviewsReviewList;
+  reviewList: ProductPageReviewsReviewList;
   showRollup?: boolean;
 }
 
-export const Reviews = ({ reviews, showRollup }: ReviewsProps) => {
-  const { stats, rollup, data } = reviews;
+export const Reviews = ({ reviewList, showRollup }: ReviewsProps) => {
+  const { stats, rollup, data } = reviewList;
 
   return (
     <section aria-labelledby="reviews-heading" className="bg-white">

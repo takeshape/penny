@@ -15,14 +15,14 @@ import { ReviewsCallout } from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
   product: ProductType;
-  reviews?: ReviewHighlights;
+  reviewHighlights?: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
   showFeaturedReviews?: boolean;
 }
 
 export const ProductWithImageGrid = ({
   product,
-  reviews,
+  reviewHighlights,
   breadcrumbs,
   showFeaturedReviews
 }: PropsWithChildren<ProductWithImageGridProps>) => {
@@ -94,9 +94,9 @@ export const ProductWithImageGrid = ({
 
           <ProductPrice price={selectedPrice} hasStock={hasStock} size="large" />
 
-          {reviews && (
+          {reviewHighlights && (
             <div className="mt-6">
-              <ReviewsCallout stats={reviews.stats} />
+              <ReviewsCallout stats={reviewHighlights.stats} />
             </div>
           )}
 
@@ -146,7 +146,7 @@ export const ProductWithImageGrid = ({
           <div className="prose prose-indigo prose-sm" dangerouslySetInnerHTML={{ __html: descriptionHtml }}></div>
         </div>
 
-        {showFeaturedReviews && reviews && (
+        {showFeaturedReviews && reviewHighlights && (
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             {/* Reviews */}
             <section aria-labelledby="reviews-heading" className="border-t border-gray-200 pt-10 lg:pt-16">
@@ -155,7 +155,7 @@ export const ProductWithImageGrid = ({
               </h2>
 
               <div className="space-y-10">
-                <FeaturedReviews reviews={reviews.featured} />
+                <FeaturedReviews reviews={reviewHighlights.featured} />
               </div>
             </section>
           </div>
