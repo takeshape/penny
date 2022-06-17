@@ -4,8 +4,12 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+
 jobs:
   npm-test:
+    name: 'Unit Tests & Hygiene'
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
@@ -29,6 +33,9 @@ jobs:
       - name: Run typecheck
         run: npm run typecheck
 
+      - name: Run eslint
+        run: npm run lint
+
       # TODO Re-enable after captcha merges and schema gets up-to-date
       # - name: Run graphql:validate
       #   run: npm run graphql:validate
@@ -36,13 +43,11 @@ jobs:
       - name: Run takeshape:validate
         run: npm run takeshape:validate
 
-      - name: Run lint
-        run: npm run lint
-
       - name: Run tests
         run: npm test
 
   cypress-run:
+    name: 'E2E Tests'
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
