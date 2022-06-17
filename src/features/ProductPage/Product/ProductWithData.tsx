@@ -5,9 +5,9 @@ import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,
   ProductPageReviewsIoReviewsResponse,
-  ProductPageShopifyProductArgs,
-  ProductPageShopifyProductQuery,
-  ProductPageShopifyProductReponse
+  ProductPageShopifyProductByIdArgs,
+  ProductPageShopifyProductByIdQuery,
+  ProductPageShopifyProductResponse
 } from '../queries';
 import { getProduct, getReviewHighlights } from '../transforms';
 import { Product, ProductProps } from './Product';
@@ -19,9 +19,9 @@ export type ProductWithDataProps = {
 
 export const ProductWithData = ({ productId, ...props }: ProductWithDataProps) => {
   const [loadProduct, { data: productData, loading: productLoading, error: productError }] = useLazyQuery<
-    ProductPageShopifyProductReponse,
-    ProductPageShopifyProductArgs
-  >(ProductPageShopifyProductQuery);
+    ProductPageShopifyProductResponse,
+    ProductPageShopifyProductByIdArgs
+  >(ProductPageShopifyProductByIdQuery);
 
   const [loadReviews, { data: reviewsData, loading: reviewsLoading, error: reviewsError }] = useLazyQuery<
     ProductPageReviewsIoReviewsResponse,

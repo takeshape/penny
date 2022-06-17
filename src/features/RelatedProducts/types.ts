@@ -16,6 +16,7 @@ export type RelatedProductsShopifyProduct = Pick<
   | 'options'
   | 'sellingPlanGroupCount'
   | 'sellingPlanGroups'
+  | 'takeshape'
 >;
 
 export type RelatedProductsProduct = ProductBase;

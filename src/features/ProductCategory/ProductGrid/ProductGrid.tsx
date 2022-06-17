@@ -1,16 +1,16 @@
 import { StarIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import { Product } from 'types/product';
-import { ReviewHighlights } from 'types/review';
+import { PropsWithChildren } from 'react';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
+import { ProductCategoryProductListItem } from '../types';
 
 export interface ProductGridProps {
-  products?: { product: Product; reviews: ReviewHighlights }[];
+  products?: ProductCategoryProductListItem[];
 }
 
-const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) => {
+export const ProductGrid = ({ products }: PropsWithChildren<ProductGridProps>) => {
   if (!products || !products.length) return null;
   return (
     <section aria-labelledby="products-heading" className="max-w-7xl mx-auto overflow-hidden sm:px-6 lg:px-8">
@@ -72,5 +72,3 @@ const ProductGrid = ({ products }: React.PropsWithChildren<ProductGridProps>) =>
     </section>
   );
 };
-
-export default ProductGrid;

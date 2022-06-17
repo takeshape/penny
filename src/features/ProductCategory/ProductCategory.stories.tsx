@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { _Filters } from './Filters/Filters.stories';
-import { _Header } from './Header/Header.stories';
-import { _Pagination } from './Pagination/Pagination.stories';
 import { ProductCategory } from './ProductCategory';
-import { _ProductGrid } from './ProductGrid/ProductGrid.stories';
+import { collectionResponse } from './queries.fixtures';
+import { getCollection } from './transforms';
+
+const collection = getCollection(collectionResponse);
 
 const Meta: ComponentMeta<typeof ProductCategory> = {
   title: 'Features / Product Category',
@@ -15,12 +15,15 @@ const Meta: ComponentMeta<typeof ProductCategory> = {
 
 const Template: ComponentStory<typeof ProductCategory> = (args) => <ProductCategory {...args} />;
 
-export default Meta;
-
 export const _ProductCategory = Template.bind({});
 _ProductCategory.args = {
-  ..._Header.args,
-  ..._Filters.args,
-  ..._ProductGrid.args,
-  ..._Pagination.args
+  header: { text: { primary: collection.name, secondary: collection.descriptionHtml } },
+  products: collection.products,
+  pagination: {
+    pageCount: 2,
+    currentPage: 1,
+    setCurrentPage: () => {}
+  }
 };
+
+export default Meta;
