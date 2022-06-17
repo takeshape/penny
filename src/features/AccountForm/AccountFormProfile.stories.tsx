@@ -1,7 +1,7 @@
 import { ComponentMeta } from '@storybook/react';
 import { graphql } from 'msw';
-import fixtures from 'queries.fixtures.json';
 import { AccountFormProfile } from './AccountFormProfile';
+import fixtures from './queries.fixtures.json';
 
 const Meta: ComponentMeta<typeof AccountFormProfile> = {
   title: 'Features / Account Form / Profile',

@@ -16,7 +16,7 @@ export interface NewsletterProps {
   };
 }
 
-const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
+export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
   const { text } = props;
   const [loading, setLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ message: string; type: 'success' | 'error' }>();
@@ -84,5 +84,3 @@ const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     </>
   );
 };
-
-export default Newsletter;

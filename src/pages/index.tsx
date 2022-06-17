@@ -7,11 +7,11 @@ import {
   RelatedProductsShopifyCollectionResponse
 } from 'features/RelatedProducts/queries';
 import { getProductList } from 'features/RelatedProducts/transforms';
+import { GetStorefrontQuery, GetStorefrontResponse } from 'features/Storefront/queries';
 import Storefront from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { GetStorefrontQuery, GetStorefrontResponse } from 'queries';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
