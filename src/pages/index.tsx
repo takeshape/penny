@@ -64,8 +64,6 @@ export async function getStaticProps() {
   try {
     ({ navigation, footer } = await getLayoutData());
 
-    console.log(JSON.stringify(navigation));
-
     const { data: productsData } = await apolloClient.query<
       RelatedProductsShopifyCollectionResponse,
       RelatedProductsShopifyCollectionArgs
