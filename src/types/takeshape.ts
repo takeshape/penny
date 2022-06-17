@@ -80,6 +80,8 @@ export type Query = {
   getProduct?: Maybe<Product>;
   /** Returns a list Product in natural order. */
   getProductList?: Maybe<ProductPaginatedList>;
+  /** Get a Navigation by ID */
+  getNavigation?: Maybe<Navigation>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
@@ -380,6 +382,13 @@ export type QueryGetProductListArgs = {
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   onlyEnabled?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetNavigationArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -1086,8 +1095,64 @@ export type TsWhereInput = {
   environmentVariables?: InputMaybe<TsWhereTsStaticSiteEnvironmentVariablesInput>;
   triggers?: InputMaybe<TsWhereTsStaticSiteTriggersInput>;
   templateHash?: InputMaybe<TsWhereStringInput>;
-  message?: InputMaybe<TsWhereStringInput>;
-  links?: InputMaybe<TsWhereNavigationDataLinksInput>;
+  bodyHtml?: InputMaybe<TsWhereStringInput>;
+  collections?: InputMaybe<TsWhereShopify_CollectionConnectionInput>;
+  contextualPricing?: InputMaybe<TsWhereShopify_ProductContextualPricingInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  customProductType?: InputMaybe<TsWhereStringInput>;
+  defaultCursor?: InputMaybe<TsWhereStringInput>;
+  descriptionHtml?: InputMaybe<TsWhereInput>;
+  descriptionPlainSummary?: InputMaybe<TsWhereStringInput>;
+  featuredImage?: InputMaybe<TsWhereShopify_ImageInput>;
+  featuredMedia?: InputMaybe<TsWhereShopify_MediaInput>;
+  feedback?: InputMaybe<TsWhereShopify_ResourceFeedbackInput>;
+  giftCardTemplateSuffix?: InputMaybe<TsWhereStringInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  hasOnlyDefaultVariant?: InputMaybe<TsWhereBooleanInput>;
+  hasOutOfStockVariants?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  Shopify_Product_images?: InputMaybe<TsWhereShopify_ImageConnectionInput>;
+  inCollection?: InputMaybe<TsWhereBooleanInput>;
+  isGiftCard?: InputMaybe<TsWhereBooleanInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  media?: InputMaybe<TsWhereShopify_MediaConnectionInput>;
+  mediaCount?: InputMaybe<TsWhereIntegerInput>;
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafieldDefinitions?: InputMaybe<TsWhereShopify_MetafieldDefinitionConnectionInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  onlineStorePreviewUrl?: InputMaybe<TsWhereInput>;
+  onlineStoreUrl?: InputMaybe<TsWhereInput>;
+  options?: InputMaybe<TsWhereShopify_ProductOptionInput>;
+  priceRange?: InputMaybe<TsWhereShopify_ProductPriceRangeInput>;
+  priceRangeV2?: InputMaybe<TsWhereShopify_ProductPriceRangeV2Input>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+  productType?: InputMaybe<TsWhereStringInput>;
+  publishedAt?: InputMaybe<TsWhereInput>;
+  publishedOnChannel?: InputMaybe<TsWhereBooleanInput>;
+  publishedOnPublication?: InputMaybe<TsWhereBooleanInput>;
+  requiresSellingPlan?: InputMaybe<TsWhereBooleanInput>;
+  resourcePublicationOnCurrentPublication?: InputMaybe<TsWhereShopify_ResourcePublicationV2Input>;
+  sellingPlanGroupCount?: InputMaybe<TsWhereIntegerInput>;
+  sellingPlanGroups?: InputMaybe<TsWhereShopify_SellingPlanGroupConnectionInput>;
+  seo?: InputMaybe<TsWhereShopify_SeoInput>;
+  standardizedProductType?: InputMaybe<TsWhereShopify_StandardizedProductTypeInput>;
+  status?: InputMaybe<TsWhereStringInput>;
+  storefrontId?: InputMaybe<TsWhereInput>;
+  tags?: InputMaybe<TsWhereShopify_ProductTagsInput>;
+  templateSuffix?: InputMaybe<TsWhereStringInput>;
+  totalInventory?: InputMaybe<TsWhereIntegerInput>;
+  totalVariants?: InputMaybe<TsWhereIntegerInput>;
+  tracksInventory?: InputMaybe<TsWhereBooleanInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  variants?: InputMaybe<TsWhereShopify_ProductVariantConnectionInput>;
+  vendor?: InputMaybe<TsWhereStringInput>;
+  reviews?: InputMaybe<TsWhereReviewsIo_ListProductReviewsResponseInput>;
+  takeshape?: InputMaybe<TsWhereProductInput>;
+  recharge?: InputMaybe<TsWhereRecharge_ProductInput>;
+  NavigationData_message?: InputMaybe<TsWhereStringInput>;
+  links?: InputMaybe<TsWhereNavigationLinksInput>;
   navigation?: InputMaybe<TsWhereFooterNavigationInput>;
   newsletter?: InputMaybe<TsWhereFooterNewsletterInput>;
   components?: InputMaybe<TsWhereStorefrontComponentsInput>;
@@ -1104,10 +1169,10 @@ export type TsWhereInput = {
   showDetails?: InputMaybe<TsWhereBooleanInput>;
   Product_details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
+  Navigation_message?: InputMaybe<TsWhereDraftjsInput>;
   active?: InputMaybe<TsWhereBooleanInput>;
   created?: InputMaybe<TsWhereIntegerInput>;
-  id?: InputMaybe<TsWhereStringInput>;
-  images?: InputMaybe<TsWhereStripe_ProductImagesInput>;
+  Stripe_Product_images?: InputMaybe<TsWhereStripe_Product_ImagesInput>;
   livemode?: InputMaybe<TsWhereBooleanInput>;
   object?: InputMaybe<TsWhereInput>;
   package_dimensions?: InputMaybe<TsWhereStripe_PackageDimensionsInput>;
@@ -1122,40 +1187,1493 @@ export type TsWhereInput = {
   NOT?: InputMaybe<TsWhereInput>;
 };
 
-export type TsWhereNavigationDataLinksInput = {
-  categories?: InputMaybe<TsWhereNavigationDataCategoriesInput>;
-  pages?: InputMaybe<TsWhereNavigationDataPagesInput>;
+export type TsWhereShopify_CollectionConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_CollectionEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
 };
 
-export type TsWhereNavigationDataCategoriesInput = {
+export type TsWhereShopify_CollectionEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_CollectionInput>;
+};
+
+export type TsWhereShopify_CollectionInput = {
+  description?: InputMaybe<TsWhereStringInput>;
+  descriptionHtml?: InputMaybe<TsWhereInput>;
+  feedback?: InputMaybe<TsWhereShopify_ResourceFeedbackInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  hasProduct?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereShopify_ImageInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafieldDefinitions?: InputMaybe<TsWhereShopify_MetafieldDefinitionConnectionInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+  products?: InputMaybe<TsWhereShopify_ProductConnectionInput>;
+  productsCount?: InputMaybe<TsWhereIntegerInput>;
+  publishedOnChannel?: InputMaybe<TsWhereBooleanInput>;
+  publishedOnPublication?: InputMaybe<TsWhereBooleanInput>;
+  ruleSet?: InputMaybe<TsWhereShopify_CollectionRuleSetInput>;
+  seo?: InputMaybe<TsWhereShopify_SeoInput>;
+  sortOrder?: InputMaybe<TsWhereStringInput>;
+  storefrontId?: InputMaybe<TsWhereInput>;
+  templateSuffix?: InputMaybe<TsWhereStringInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_ResourceFeedbackInput = {
+  appFeedback?: InputMaybe<TsWhereShopify_AppFeedbackInput>;
+  details?: InputMaybe<TsWhereShopify_AppFeedbackInput>;
+  summary?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_AppFeedbackInput = {
+  app?: InputMaybe<TsWhereShopify_AppInput>;
+  link?: InputMaybe<TsWhereShopify_LinkInput>;
+  messages?: InputMaybe<TsWhereShopify_UserErrorInput>;
+};
+
+export type TsWhereShopify_AppInput = {
+  apiKey?: InputMaybe<TsWhereStringInput>;
+  appStoreAppUrl?: InputMaybe<TsWhereInput>;
+  appStoreDeveloperUrl?: InputMaybe<TsWhereInput>;
+  banner?: InputMaybe<TsWhereShopify_ImageInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  developerName?: InputMaybe<TsWhereStringInput>;
+  developerUrl?: InputMaybe<TsWhereInput>;
+  embedded?: InputMaybe<TsWhereBooleanInput>;
+  failedRequirements?: InputMaybe<TsWhereShopify_FailedRequirementInput>;
+  features?: InputMaybe<TsWhereShopify_ProductFeaturesInput>;
+  feedback?: InputMaybe<TsWhereShopify_AppFeedbackInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  icon?: InputMaybe<TsWhereShopify_ImageInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  installUrl?: InputMaybe<TsWhereInput>;
+  installation?: InputMaybe<TsWhereShopify_AppInstallationInput>;
+  isPostPurchaseAppInUse?: InputMaybe<TsWhereBooleanInput>;
+  launchUrl?: InputMaybe<TsWhereInput>;
+  navigationItems?: InputMaybe<TsWhereShopify_NavigationItemInput>;
+  pricingDetails?: InputMaybe<TsWhereStringInput>;
+  pricingDetailsSummary?: InputMaybe<TsWhereStringInput>;
+  privacyPolicyUrl?: InputMaybe<TsWhereInput>;
+  published?: InputMaybe<TsWhereBooleanInput>;
+  screenshots?: InputMaybe<TsWhereShopify_ImageInput>;
+  shopifyDeveloped?: InputMaybe<TsWhereBooleanInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  uninstallMessage?: InputMaybe<TsWhereStringInput>;
+  uninstallUrl?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_ImageInput = {
+  altText?: InputMaybe<TsWhereStringInput>;
+  height?: InputMaybe<TsWhereIntegerInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  originalSrc?: InputMaybe<TsWhereInput>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+  src?: InputMaybe<TsWhereInput>;
+  transformedSrc?: InputMaybe<TsWhereInput>;
+  url?: InputMaybe<TsWhereInput>;
+  width?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_MetafieldInput = {
+  createdAt?: InputMaybe<TsWhereInput>;
+  definition?: InputMaybe<TsWhereShopify_MetafieldDefinitionInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  key?: InputMaybe<TsWhereStringInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  namespace?: InputMaybe<TsWhereStringInput>;
+  owner?: InputMaybe<TsWhereShopify_HasMetafieldsInput>;
+  ownerType?: InputMaybe<TsWhereStringInput>;
+  reference?: InputMaybe<TsWhereShopify_MetafieldReferenceInput>;
+  type?: InputMaybe<TsWhereStringInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  value?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MetafieldDefinitionInput = {
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  key?: InputMaybe<TsWhereStringInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  metafieldsCount?: InputMaybe<TsWhereIntegerInput>;
   name?: InputMaybe<TsWhereStringInput>;
-  featured?: InputMaybe<TsWhereNavigationDataLinksCategoriesFeaturedInput>;
-  collection?: InputMaybe<TsWhereNavigationDataLinksCategoriesCollectionInput>;
-  categories?: InputMaybe<TsWhereNavigationDataLinksCategoriesCategoriesInput>;
-  brands?: InputMaybe<TsWhereNavigationDataLinksCategoriesBrandsInput>;
+  namespace?: InputMaybe<TsWhereStringInput>;
+  ownerType?: InputMaybe<TsWhereStringInput>;
+  pinnedPosition?: InputMaybe<TsWhereIntegerInput>;
+  standardTemplate?: InputMaybe<TsWhereShopify_StandardMetafieldDefinitionTemplateInput>;
+  type?: InputMaybe<TsWhereShopify_MetafieldDefinitionTypeInput>;
+  validationStatus?: InputMaybe<TsWhereStringInput>;
+  validations?: InputMaybe<TsWhereShopify_MetafieldDefinitionValidationInput>;
 };
 
-export type TsWhereNavigationDataLinksCategoriesFeaturedInput = {
+export type TsWhereShopify_MetafieldConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_MetafieldEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_MetafieldEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_MetafieldInput>;
+};
+
+export type TsWhereShopify_PageInfoInput = {
+  hasNextPage?: InputMaybe<TsWhereBooleanInput>;
+  hasPreviousPage?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_StandardMetafieldDefinitionTemplateInput = {
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  key?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  namespace?: InputMaybe<TsWhereStringInput>;
+  type?: InputMaybe<TsWhereShopify_MetafieldDefinitionTypeInput>;
+  validations?: InputMaybe<TsWhereShopify_MetafieldDefinitionValidationInput>;
+};
+
+export type TsWhereShopify_MetafieldDefinitionTypeInput = {
+  category?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  supportedValidations?: InputMaybe<TsWhereShopify_MetafieldDefinitionSupportedValidationInput>;
+  supportsDefinitionMigrations?: InputMaybe<TsWhereBooleanInput>;
+  valueType?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MetafieldDefinitionSupportedValidationInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  type?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MetafieldDefinitionValidationInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  type?: InputMaybe<TsWhereStringInput>;
+  value?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_HasMetafieldsInput = {
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+};
+
+export type TsWhereShopify_PrivateMetafieldInput = {
+  createdAt?: InputMaybe<TsWhereInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  key?: InputMaybe<TsWhereStringInput>;
+  namespace?: InputMaybe<TsWhereStringInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  value?: InputMaybe<TsWhereStringInput>;
+  valueType?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_PrivateMetafieldConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_PrivateMetafieldEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_PrivateMetafieldEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+};
+
+export type TsWhereShopify_MetafieldReferenceInput = {
+  alt?: InputMaybe<TsWhereStringInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  fileErrors?: InputMaybe<TsWhereShopify_FileErrorInput>;
+  fileStatus?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  preview?: InputMaybe<TsWhereShopify_MediaPreviewImageInput>;
+  url?: InputMaybe<TsWhereInput>;
+  image?: InputMaybe<TsWhereShopify_ImageInput>;
+  mediaContentType?: InputMaybe<TsWhereStringInput>;
+  mediaErrors?: InputMaybe<TsWhereShopify_MediaErrorInput>;
+  mediaWarnings?: InputMaybe<TsWhereShopify_MediaWarningInput>;
+  mimeType?: InputMaybe<TsWhereStringInput>;
+  status?: InputMaybe<TsWhereStringInput>;
+  defaultCursor?: InputMaybe<TsWhereStringInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  bodyHtml?: InputMaybe<TsWhereStringInput>;
+  collections?: InputMaybe<TsWhereShopify_CollectionConnectionInput>;
+  contextualPricing?: InputMaybe<TsWhereShopify_ProductVariantContextualPricingInput>;
+  customProductType?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  descriptionHtml?: InputMaybe<TsWhereInput>;
+  descriptionPlainSummary?: InputMaybe<TsWhereStringInput>;
+  featuredImage?: InputMaybe<TsWhereShopify_ImageInput>;
+  featuredMedia?: InputMaybe<TsWhereShopify_MediaInput>;
+  feedback?: InputMaybe<TsWhereShopify_ResourceFeedbackInput>;
+  giftCardTemplateSuffix?: InputMaybe<TsWhereStringInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  hasOnlyDefaultVariant?: InputMaybe<TsWhereBooleanInput>;
+  hasOutOfStockVariants?: InputMaybe<TsWhereBooleanInput>;
+  images?: InputMaybe<TsWhereShopify_ImageConnectionInput>;
+  inCollection?: InputMaybe<TsWhereBooleanInput>;
+  isGiftCard?: InputMaybe<TsWhereBooleanInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  media?: InputMaybe<TsWhereShopify_MediaConnectionInput>;
+  mediaCount?: InputMaybe<TsWhereIntegerInput>;
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafieldDefinitions?: InputMaybe<TsWhereShopify_MetafieldDefinitionConnectionInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  onlineStorePreviewUrl?: InputMaybe<TsWhereInput>;
+  onlineStoreUrl?: InputMaybe<TsWhereInput>;
+  options?: InputMaybe<TsWhereShopify_ProductOptionInput>;
+  priceRange?: InputMaybe<TsWhereShopify_ProductPriceRangeInput>;
+  priceRangeV2?: InputMaybe<TsWhereShopify_ProductPriceRangeV2Input>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+  productType?: InputMaybe<TsWhereStringInput>;
+  publishedAt?: InputMaybe<TsWhereInput>;
+  publishedOnChannel?: InputMaybe<TsWhereBooleanInput>;
+  publishedOnPublication?: InputMaybe<TsWhereBooleanInput>;
+  requiresSellingPlan?: InputMaybe<TsWhereBooleanInput>;
+  resourcePublicationOnCurrentPublication?: InputMaybe<TsWhereShopify_ResourcePublicationV2Input>;
+  sellingPlanGroupCount?: InputMaybe<TsWhereIntegerInput>;
+  sellingPlanGroups?: InputMaybe<TsWhereShopify_SellingPlanGroupConnectionInput>;
+  seo?: InputMaybe<TsWhereShopify_SeoInput>;
+  standardizedProductType?: InputMaybe<TsWhereShopify_StandardizedProductTypeInput>;
+  storefrontId?: InputMaybe<TsWhereInput>;
+  tags?: InputMaybe<TsWhereShopify_ProductTagsInput>;
+  templateSuffix?: InputMaybe<TsWhereStringInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  totalInventory?: InputMaybe<TsWhereIntegerInput>;
+  totalVariants?: InputMaybe<TsWhereIntegerInput>;
+  tracksInventory?: InputMaybe<TsWhereBooleanInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  variants?: InputMaybe<TsWhereShopify_ProductVariantConnectionInput>;
+  vendor?: InputMaybe<TsWhereStringInput>;
+  reviews?: InputMaybe<TsWhereReviewsIo_ListProductReviewsResponseInput>;
+  takeshape?: InputMaybe<TsWhereProductInput>;
+  recharge?: InputMaybe<TsWhereRecharge_ProductInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  availableForSale?: InputMaybe<TsWhereBooleanInput>;
+  barcode?: InputMaybe<TsWhereStringInput>;
+  compareAtPrice?: InputMaybe<TsWhereInput>;
+  deliveryProfile?: InputMaybe<TsWhereShopify_DeliveryProfileInput>;
+  displayName?: InputMaybe<TsWhereStringInput>;
+  fulfillmentService?: InputMaybe<TsWhereShopify_FulfillmentServiceInput>;
+  fulfillmentServiceEditable?: InputMaybe<TsWhereShopify_EditablePropertyInput>;
+  harmonizedSystemCode?: InputMaybe<TsWhereStringInput>;
+  inventoryItem?: InputMaybe<TsWhereShopify_InventoryItemInput>;
+  inventoryManagement?: InputMaybe<TsWhereStringInput>;
+  inventoryPolicy?: InputMaybe<TsWhereStringInput>;
+  inventoryQuantity?: InputMaybe<TsWhereIntegerInput>;
+  position?: InputMaybe<TsWhereIntegerInput>;
+  presentmentPrices?: InputMaybe<TsWhereShopify_ProductVariantPricePairConnectionInput>;
+  price?: InputMaybe<TsWhereInput>;
+  product?: InputMaybe<TsWhereShopify_ProductInput>;
+  requiresShipping?: InputMaybe<TsWhereBooleanInput>;
+  selectedOptions?: InputMaybe<TsWhereShopify_SelectedOptionInput>;
+  sellableOnlineQuantity?: InputMaybe<TsWhereIntegerInput>;
+  sku?: InputMaybe<TsWhereStringInput>;
+  taxCode?: InputMaybe<TsWhereStringInput>;
+  taxable?: InputMaybe<TsWhereBooleanInput>;
+  weight?: InputMaybe<TsWhereNumberInput>;
+  weightUnit?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_FileErrorInput = {
+  code?: InputMaybe<TsWhereStringInput>;
+  details?: InputMaybe<TsWhereStringInput>;
+  message?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MediaPreviewImageInput = {
+  image?: InputMaybe<TsWhereShopify_ImageInput>;
+  status?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MediaErrorInput = {
+  code?: InputMaybe<TsWhereStringInput>;
+  details?: InputMaybe<TsWhereStringInput>;
+  message?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MediaWarningInput = {
+  code?: InputMaybe<TsWhereStringInput>;
+  message?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_PublishedTranslationInput = {
+  key?: InputMaybe<TsWhereStringInput>;
+  locale?: InputMaybe<TsWhereStringInput>;
+  value?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductVariantContextualPricingInput = {
+  compareAtPrice?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  price?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+};
+
+export type TsWhereShopify_MoneyV2Input = {
+  amount?: InputMaybe<TsWhereInput>;
+  currencyCode?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_MediaInput = {
+  alt?: InputMaybe<TsWhereStringInput>;
+  mediaContentType?: InputMaybe<TsWhereStringInput>;
+  mediaErrors?: InputMaybe<TsWhereShopify_MediaErrorInput>;
+  mediaWarnings?: InputMaybe<TsWhereShopify_MediaWarningInput>;
+  preview?: InputMaybe<TsWhereShopify_MediaPreviewImageInput>;
+  status?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ImageConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_ImageEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_ImageEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_ImageInput>;
+};
+
+export type TsWhereShopify_MediaConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_MediaEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_MediaEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_MediaInput>;
+};
+
+export type TsWhereShopify_MetafieldDefinitionConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_MetafieldDefinitionEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_MetafieldDefinitionEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_MetafieldDefinitionInput>;
+};
+
+export type TsWhereShopify_ProductOptionInput = {
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  position?: InputMaybe<TsWhereIntegerInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  values?: InputMaybe<TsWhereShopify_ProductValuesInput>;
+};
+
+export type TsWhereShopify_ProductValuesInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereShopify_ProductPriceRangeInput = {
+  maxVariantPrice?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  minVariantPrice?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+};
+
+export type TsWhereShopify_ProductPriceRangeV2Input = {
+  maxVariantPrice?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  minVariantPrice?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+};
+
+export type TsWhereShopify_ResourcePublicationV2Input = {
+  isPublished?: InputMaybe<TsWhereBooleanInput>;
+  publication?: InputMaybe<TsWhereShopify_PublicationInput>;
+  publishDate?: InputMaybe<TsWhereInput>;
+  publishable?: InputMaybe<TsWhereShopify_PublishableInput>;
+};
+
+export type TsWhereShopify_PublicationInput = {
+  app?: InputMaybe<TsWhereShopify_AppInput>;
+  collectionPublicationsV3?: InputMaybe<TsWhereShopify_ResourcePublicationConnectionInput>;
+  collections?: InputMaybe<TsWhereShopify_CollectionConnectionInput>;
+  hasCollection?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  productPublicationsV3?: InputMaybe<TsWhereShopify_ResourcePublicationConnectionInput>;
+  products?: InputMaybe<TsWhereShopify_ProductConnectionInput>;
+  supportsFuturePublishing?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_ResourcePublicationConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_ResourcePublicationEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_ResourcePublicationEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_ResourcePublicationInput>;
+};
+
+export type TsWhereShopify_ResourcePublicationInput = {
+  channel?: InputMaybe<TsWhereShopify_ChannelInput>;
+  isPublished?: InputMaybe<TsWhereBooleanInput>;
+  publication?: InputMaybe<TsWhereShopify_PublicationInput>;
+  publishDate?: InputMaybe<TsWhereInput>;
+  publishable?: InputMaybe<TsWhereShopify_PublishableInput>;
+};
+
+export type TsWhereShopify_ChannelInput = {
+  app?: InputMaybe<TsWhereShopify_AppInput>;
+  collectionPublicationsV3?: InputMaybe<TsWhereShopify_ResourcePublicationConnectionInput>;
+  collections?: InputMaybe<TsWhereShopify_CollectionConnectionInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  hasCollection?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  navigationItems?: InputMaybe<TsWhereShopify_NavigationItemInput>;
+  overviewPath?: InputMaybe<TsWhereInput>;
+  productPublicationsV3?: InputMaybe<TsWhereShopify_ResourcePublicationConnectionInput>;
+  products?: InputMaybe<TsWhereShopify_ProductConnectionInput>;
+  supportsFuturePublishing?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_NavigationItemInput = {
+  id?: InputMaybe<TsWhereStringInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  url?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_ProductConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_ProductEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_ProductEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_ProductInput>;
+};
+
+export type TsWhereShopify_ProductInput = {
+  bodyHtml?: InputMaybe<TsWhereStringInput>;
+  collections?: InputMaybe<TsWhereShopify_CollectionConnectionInput>;
+  contextualPricing?: InputMaybe<TsWhereShopify_ProductContextualPricingInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  customProductType?: InputMaybe<TsWhereStringInput>;
+  defaultCursor?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  descriptionHtml?: InputMaybe<TsWhereInput>;
+  descriptionPlainSummary?: InputMaybe<TsWhereStringInput>;
+  featuredImage?: InputMaybe<TsWhereShopify_ImageInput>;
+  featuredMedia?: InputMaybe<TsWhereShopify_MediaInput>;
+  feedback?: InputMaybe<TsWhereShopify_ResourceFeedbackInput>;
+  giftCardTemplateSuffix?: InputMaybe<TsWhereStringInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  hasOnlyDefaultVariant?: InputMaybe<TsWhereBooleanInput>;
+  hasOutOfStockVariants?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  images?: InputMaybe<TsWhereShopify_ImageConnectionInput>;
+  inCollection?: InputMaybe<TsWhereBooleanInput>;
+  isGiftCard?: InputMaybe<TsWhereBooleanInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  media?: InputMaybe<TsWhereShopify_MediaConnectionInput>;
+  mediaCount?: InputMaybe<TsWhereIntegerInput>;
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafieldDefinitions?: InputMaybe<TsWhereShopify_MetafieldDefinitionConnectionInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  onlineStorePreviewUrl?: InputMaybe<TsWhereInput>;
+  onlineStoreUrl?: InputMaybe<TsWhereInput>;
+  options?: InputMaybe<TsWhereShopify_ProductOptionInput>;
+  priceRange?: InputMaybe<TsWhereShopify_ProductPriceRangeInput>;
+  priceRangeV2?: InputMaybe<TsWhereShopify_ProductPriceRangeV2Input>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+  productType?: InputMaybe<TsWhereStringInput>;
+  publishedAt?: InputMaybe<TsWhereInput>;
+  publishedOnChannel?: InputMaybe<TsWhereBooleanInput>;
+  publishedOnPublication?: InputMaybe<TsWhereBooleanInput>;
+  requiresSellingPlan?: InputMaybe<TsWhereBooleanInput>;
+  resourcePublicationOnCurrentPublication?: InputMaybe<TsWhereShopify_ResourcePublicationV2Input>;
+  sellingPlanGroupCount?: InputMaybe<TsWhereIntegerInput>;
+  sellingPlanGroups?: InputMaybe<TsWhereShopify_SellingPlanGroupConnectionInput>;
+  seo?: InputMaybe<TsWhereShopify_SeoInput>;
+  standardizedProductType?: InputMaybe<TsWhereShopify_StandardizedProductTypeInput>;
+  status?: InputMaybe<TsWhereStringInput>;
+  storefrontId?: InputMaybe<TsWhereInput>;
+  tags?: InputMaybe<TsWhereShopify_ProductTagsInput>;
+  templateSuffix?: InputMaybe<TsWhereStringInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  totalInventory?: InputMaybe<TsWhereIntegerInput>;
+  totalVariants?: InputMaybe<TsWhereIntegerInput>;
+  tracksInventory?: InputMaybe<TsWhereBooleanInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  variants?: InputMaybe<TsWhereShopify_ProductVariantConnectionInput>;
+  vendor?: InputMaybe<TsWhereStringInput>;
+  reviews?: InputMaybe<TsWhereReviewsIo_ListProductReviewsResponseInput>;
+  takeshape?: InputMaybe<TsWhereProductInput>;
+  recharge?: InputMaybe<TsWhereRecharge_ProductInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+};
+
+export type TsWhereShopify_ProductContextualPricingInput = {
+  maxVariantPricing?: InputMaybe<TsWhereShopify_ProductVariantContextualPricingInput>;
+  minVariantPricing?: InputMaybe<TsWhereShopify_ProductVariantContextualPricingInput>;
+  priceRange?: InputMaybe<TsWhereShopify_ProductPriceRangeV2Input>;
+};
+
+export type TsWhereShopify_SellingPlanGroupConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_SellingPlanGroupEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_SellingPlanGroupEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_SellingPlanGroupInput>;
+};
+
+export type TsWhereShopify_SellingPlanGroupInput = {
+  appId?: InputMaybe<TsWhereStringInput>;
+  appliesToProduct?: InputMaybe<TsWhereBooleanInput>;
+  appliesToProductVariant?: InputMaybe<TsWhereBooleanInput>;
+  appliesToProductVariants?: InputMaybe<TsWhereBooleanInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  merchantCode?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  options?: InputMaybe<TsWhereShopify_ProductOptionsInput>;
+  position?: InputMaybe<TsWhereIntegerInput>;
+  productCount?: InputMaybe<TsWhereIntegerInput>;
+  productVariantCount?: InputMaybe<TsWhereIntegerInput>;
+  productVariants?: InputMaybe<TsWhereShopify_ProductVariantConnectionInput>;
+  products?: InputMaybe<TsWhereShopify_ProductConnectionInput>;
+  sellingPlans?: InputMaybe<TsWhereShopify_SellingPlanConnectionInput>;
+  summary?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductOptionsInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereShopify_ProductVariantConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_ProductVariantEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_ProductVariantEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_ProductVariantInput>;
+};
+
+export type TsWhereShopify_ProductVariantInput = {
+  availableForSale?: InputMaybe<TsWhereBooleanInput>;
+  barcode?: InputMaybe<TsWhereStringInput>;
+  compareAtPrice?: InputMaybe<TsWhereInput>;
+  contextualPricing?: InputMaybe<TsWhereShopify_ProductVariantContextualPricingInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  defaultCursor?: InputMaybe<TsWhereStringInput>;
+  deliveryProfile?: InputMaybe<TsWhereShopify_DeliveryProfileInput>;
+  displayName?: InputMaybe<TsWhereStringInput>;
+  fulfillmentService?: InputMaybe<TsWhereShopify_FulfillmentServiceInput>;
+  fulfillmentServiceEditable?: InputMaybe<TsWhereShopify_EditablePropertyInput>;
+  harmonizedSystemCode?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  image?: InputMaybe<TsWhereShopify_ImageInput>;
+  inventoryItem?: InputMaybe<TsWhereShopify_InventoryItemInput>;
+  inventoryManagement?: InputMaybe<TsWhereStringInput>;
+  inventoryPolicy?: InputMaybe<TsWhereStringInput>;
+  inventoryQuantity?: InputMaybe<TsWhereIntegerInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  media?: InputMaybe<TsWhereShopify_MediaConnectionInput>;
+  metafield?: InputMaybe<TsWhereShopify_MetafieldInput>;
+  metafieldDefinitions?: InputMaybe<TsWhereShopify_MetafieldDefinitionConnectionInput>;
+  metafields?: InputMaybe<TsWhereShopify_MetafieldConnectionInput>;
+  position?: InputMaybe<TsWhereIntegerInput>;
+  presentmentPrices?: InputMaybe<TsWhereShopify_ProductVariantPricePairConnectionInput>;
+  price?: InputMaybe<TsWhereInput>;
+  privateMetafield?: InputMaybe<TsWhereShopify_PrivateMetafieldInput>;
+  privateMetafields?: InputMaybe<TsWhereShopify_PrivateMetafieldConnectionInput>;
+  product?: InputMaybe<TsWhereShopify_ProductInput>;
+  requiresShipping?: InputMaybe<TsWhereBooleanInput>;
+  selectedOptions?: InputMaybe<TsWhereShopify_SelectedOptionInput>;
+  sellableOnlineQuantity?: InputMaybe<TsWhereIntegerInput>;
+  sellingPlanGroupCount?: InputMaybe<TsWhereIntegerInput>;
+  sellingPlanGroups?: InputMaybe<TsWhereShopify_SellingPlanGroupConnectionInput>;
+  sku?: InputMaybe<TsWhereStringInput>;
+  storefrontId?: InputMaybe<TsWhereInput>;
+  taxCode?: InputMaybe<TsWhereStringInput>;
+  taxable?: InputMaybe<TsWhereBooleanInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  weight?: InputMaybe<TsWhereNumberInput>;
+  weightUnit?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryProfileInput = {
+  activeMethodDefinitionsCount?: InputMaybe<TsWhereIntegerInput>;
+  default?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  legacyMode?: InputMaybe<TsWhereBooleanInput>;
+  locationsWithoutRatesCount?: InputMaybe<TsWhereIntegerInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  originLocationCount?: InputMaybe<TsWhereIntegerInput>;
+  productVariantsCount?: InputMaybe<TsWhereIntegerInput>;
+  productVariantsCountV2?: InputMaybe<TsWhereShopify_DeliveryProductVariantsCountInput>;
+  profileItems?: InputMaybe<TsWhereShopify_DeliveryProfileItemConnectionInput>;
+  profileLocationGroups?: InputMaybe<TsWhereShopify_DeliveryProfileLocationGroupInput>;
+  sellingPlanGroups?: InputMaybe<TsWhereShopify_SellingPlanGroupConnectionInput>;
+  unassignedLocations?: InputMaybe<TsWhereShopify_LocationInput>;
+  zoneCountryCount?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_DeliveryProductVariantsCountInput = {
+  capped?: InputMaybe<TsWhereBooleanInput>;
+  count?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_DeliveryProfileItemConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_DeliveryProfileItemEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_DeliveryProfileItemEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_DeliveryProfileItemInput>;
+};
+
+export type TsWhereShopify_DeliveryProfileItemInput = {
+  id?: InputMaybe<TsWhereStringInput>;
+  product?: InputMaybe<TsWhereShopify_ProductInput>;
+  variants?: InputMaybe<TsWhereShopify_ProductVariantConnectionInput>;
+};
+
+export type TsWhereShopify_DeliveryProfileLocationGroupInput = {
+  countriesInAnyZone?: InputMaybe<TsWhereShopify_DeliveryCountryAndZoneInput>;
+  locationGroup?: InputMaybe<TsWhereShopify_DeliveryLocationGroupInput>;
+  locationGroupZones?: InputMaybe<TsWhereShopify_DeliveryLocationGroupZoneConnectionInput>;
+};
+
+export type TsWhereShopify_DeliveryCountryAndZoneInput = {
+  country?: InputMaybe<TsWhereShopify_DeliveryCountryInput>;
+  zone?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryCountryInput = {
+  code?: InputMaybe<TsWhereShopify_DeliveryCountryCodeOrRestOfWorldInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  provinces?: InputMaybe<TsWhereShopify_DeliveryProvinceInput>;
+  translatedName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryCountryCodeOrRestOfWorldInput = {
+  countryCode?: InputMaybe<TsWhereStringInput>;
+  restOfWorld?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_DeliveryProvinceInput = {
+  code?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  translatedName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryLocationGroupInput = {
+  id?: InputMaybe<TsWhereStringInput>;
+  locations?: InputMaybe<TsWhereShopify_LocationConnectionInput>;
+};
+
+export type TsWhereShopify_LocationConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_LocationEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_LocationEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_LocationInput>;
+};
+
+export type TsWhereShopify_LocationInput = {
+  activatable?: InputMaybe<TsWhereBooleanInput>;
+  address?: InputMaybe<TsWhereShopify_LocationAddressInput>;
+  addressVerified?: InputMaybe<TsWhereBooleanInput>;
+  deactivatable?: InputMaybe<TsWhereBooleanInput>;
+  deactivatedAt?: InputMaybe<TsWhereStringInput>;
+  deletable?: InputMaybe<TsWhereBooleanInput>;
+  fulfillmentService?: InputMaybe<TsWhereShopify_FulfillmentServiceInput>;
+  fulfillsOnlineOrders?: InputMaybe<TsWhereBooleanInput>;
+  hasActiveInventory?: InputMaybe<TsWhereBooleanInput>;
+  hasUnfulfilledOrders?: InputMaybe<TsWhereBooleanInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  inventoryLevel?: InputMaybe<TsWhereShopify_InventoryLevelInput>;
+  inventoryLevels?: InputMaybe<TsWhereShopify_InventoryLevelConnectionInput>;
+  isActive?: InputMaybe<TsWhereBooleanInput>;
+  isPrimary?: InputMaybe<TsWhereBooleanInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  metafieldDefinitions?: InputMaybe<TsWhereShopify_MetafieldDefinitionConnectionInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  shipsInventory?: InputMaybe<TsWhereBooleanInput>;
+  suggestedAddresses?: InputMaybe<TsWhereShopify_LocationSuggestedAddressInput>;
+};
+
+export type TsWhereShopify_LocationAddressInput = {
+  address1?: InputMaybe<TsWhereStringInput>;
+  address2?: InputMaybe<TsWhereStringInput>;
+  city?: InputMaybe<TsWhereStringInput>;
+  country?: InputMaybe<TsWhereStringInput>;
+  countryCode?: InputMaybe<TsWhereStringInput>;
+  formatted?: InputMaybe<TsWhereShopify_ProductVariantFormattedInput>;
+  latitude?: InputMaybe<TsWhereNumberInput>;
+  longitude?: InputMaybe<TsWhereNumberInput>;
+  phone?: InputMaybe<TsWhereStringInput>;
+  province?: InputMaybe<TsWhereStringInput>;
+  provinceCode?: InputMaybe<TsWhereStringInput>;
+  zip?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductVariantFormattedInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereShopify_FulfillmentServiceInput = {
+  callbackUrl?: InputMaybe<TsWhereInput>;
+  fulfillmentOrdersOptIn?: InputMaybe<TsWhereBooleanInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  inventoryManagement?: InputMaybe<TsWhereBooleanInput>;
+  location?: InputMaybe<TsWhereShopify_LocationInput>;
+  productBased?: InputMaybe<TsWhereBooleanInput>;
+  serviceName?: InputMaybe<TsWhereStringInput>;
+  shippingMethods?: InputMaybe<TsWhereShopify_ShippingMethodInput>;
+  type?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ShippingMethodInput = {
+  code?: InputMaybe<TsWhereStringInput>;
+  label?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_InventoryLevelInput = {
+  available?: InputMaybe<TsWhereIntegerInput>;
+  canDeactivate?: InputMaybe<TsWhereBooleanInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  deactivationAlert?: InputMaybe<TsWhereStringInput>;
+  deactivationAlertHtml?: InputMaybe<TsWhereInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  incoming?: InputMaybe<TsWhereIntegerInput>;
+  item?: InputMaybe<TsWhereShopify_InventoryItemInput>;
+  location?: InputMaybe<TsWhereShopify_LocationInput>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_InventoryItemInput = {
+  countryCodeOfOrigin?: InputMaybe<TsWhereStringInput>;
+  countryHarmonizedSystemCodes?: InputMaybe<TsWhereShopify_CountryHarmonizedSystemCodeConnectionInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  duplicateSkuCount?: InputMaybe<TsWhereIntegerInput>;
+  harmonizedSystemCode?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  inventoryHistoryUrl?: InputMaybe<TsWhereInput>;
+  inventoryLevel?: InputMaybe<TsWhereShopify_InventoryLevelInput>;
+  inventoryLevels?: InputMaybe<TsWhereShopify_InventoryLevelConnectionInput>;
+  legacyResourceId?: InputMaybe<TsWhereInput>;
+  locationsCount?: InputMaybe<TsWhereIntegerInput>;
+  provinceCodeOfOrigin?: InputMaybe<TsWhereStringInput>;
+  requiresShipping?: InputMaybe<TsWhereBooleanInput>;
+  sku?: InputMaybe<TsWhereStringInput>;
+  tracked?: InputMaybe<TsWhereBooleanInput>;
+  trackedEditable?: InputMaybe<TsWhereShopify_EditablePropertyInput>;
+  unitCost?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  updatedAt?: InputMaybe<TsWhereInput>;
+  variant?: InputMaybe<TsWhereShopify_ProductVariantInput>;
+};
+
+export type TsWhereShopify_CountryHarmonizedSystemCodeConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_CountryHarmonizedSystemCodeEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_CountryHarmonizedSystemCodeEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_CountryHarmonizedSystemCodeInput>;
+};
+
+export type TsWhereShopify_CountryHarmonizedSystemCodeInput = {
+  countryCode?: InputMaybe<TsWhereStringInput>;
+  harmonizedSystemCode?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_InventoryLevelConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_InventoryLevelEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_InventoryLevelEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_InventoryLevelInput>;
+};
+
+export type TsWhereShopify_EditablePropertyInput = {
+  locked?: InputMaybe<TsWhereBooleanInput>;
+  reason?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_LocationSuggestedAddressInput = {
+  address1?: InputMaybe<TsWhereStringInput>;
+  address2?: InputMaybe<TsWhereStringInput>;
+  city?: InputMaybe<TsWhereStringInput>;
+  country?: InputMaybe<TsWhereStringInput>;
+  countryCode?: InputMaybe<TsWhereStringInput>;
+  formatted?: InputMaybe<TsWhereShopify_ProductVariantFormattedInput>;
+  province?: InputMaybe<TsWhereStringInput>;
+  provinceCode?: InputMaybe<TsWhereStringInput>;
+  zip?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryLocationGroupZoneConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_DeliveryLocationGroupZoneEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_DeliveryLocationGroupZoneEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_DeliveryLocationGroupZoneInput>;
+};
+
+export type TsWhereShopify_DeliveryLocationGroupZoneInput = {
+  methodDefinitionCounts?: InputMaybe<TsWhereShopify_DeliveryMethodDefinitionCountsInput>;
+  methodDefinitions?: InputMaybe<TsWhereShopify_DeliveryMethodDefinitionConnectionInput>;
+  zone?: InputMaybe<TsWhereShopify_DeliveryZoneInput>;
+};
+
+export type TsWhereShopify_DeliveryMethodDefinitionCountsInput = {
+  participantDefinitionsCount?: InputMaybe<TsWhereIntegerInput>;
+  rateDefinitionsCount?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_DeliveryMethodDefinitionConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_DeliveryMethodDefinitionEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_DeliveryMethodDefinitionEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_DeliveryMethodDefinitionInput>;
+};
+
+export type TsWhereShopify_DeliveryMethodDefinitionInput = {
+  active?: InputMaybe<TsWhereBooleanInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  methodConditions?: InputMaybe<TsWhereShopify_DeliveryConditionInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  rateProvider?: InputMaybe<TsWhereShopify_DeliveryRateProviderInput>;
+};
+
+export type TsWhereShopify_DeliveryConditionInput = {
+  conditionCriteria?: InputMaybe<TsWhereShopify_DeliveryConditionCriteriaInput>;
+  field?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  operator?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryConditionCriteriaInput = {
+  amount?: InputMaybe<TsWhereInput>;
+  currencyCode?: InputMaybe<TsWhereStringInput>;
+  unit?: InputMaybe<TsWhereStringInput>;
+  value?: InputMaybe<TsWhereNumberInput>;
+};
+
+export type TsWhereShopify_DeliveryRateProviderInput = {
+  adaptToNewServicesFlag?: InputMaybe<TsWhereBooleanInput>;
+  carrierService?: InputMaybe<TsWhereShopify_DeliveryCarrierServiceInput>;
+  fixedFee?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  id?: InputMaybe<TsWhereStringInput>;
+  participantServices?: InputMaybe<TsWhereShopify_DeliveryParticipantServiceInput>;
+  percentageOfRateFee?: InputMaybe<TsWhereNumberInput>;
+  price?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+};
+
+export type TsWhereShopify_DeliveryCarrierServiceInput = {
+  availableServicesForCountries?: InputMaybe<TsWhereShopify_DeliveryAvailableServiceInput>;
+  formattedName?: InputMaybe<TsWhereStringInput>;
+  icon?: InputMaybe<TsWhereShopify_ImageInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryAvailableServiceInput = {
+  countries?: InputMaybe<TsWhereShopify_DeliveryCountryCodesOrRestOfWorldInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryCountryCodesOrRestOfWorldInput = {
+  restOfWorld?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_DeliveryParticipantServiceInput = {
+  active?: InputMaybe<TsWhereBooleanInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_DeliveryZoneInput = {
+  countries?: InputMaybe<TsWhereShopify_DeliveryCountryInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductVariantPricePairConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_ProductVariantPricePairEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_ProductVariantPricePairEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_ProductVariantPricePairInput>;
+};
+
+export type TsWhereShopify_ProductVariantPricePairInput = {
+  compareAtPrice?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  price?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+};
+
+export type TsWhereShopify_SelectedOptionInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  value?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_SellingPlanConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_SellingPlanEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_SellingPlanEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_SellingPlanInput>;
+};
+
+export type TsWhereShopify_SellingPlanInput = {
+  billingPolicy?: InputMaybe<TsWhereShopify_SellingPlanBillingPolicyInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  deliveryPolicy?: InputMaybe<TsWhereShopify_SellingPlanDeliveryPolicyInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  options?: InputMaybe<TsWhereShopify_ProductOptionsInput>;
+  position?: InputMaybe<TsWhereIntegerInput>;
+  pricingPolicies?: InputMaybe<TsWhereShopify_SellingPlanPricingPolicyInput>;
+};
+
+export type TsWhereShopify_SellingPlanBillingPolicyInput = {
+  anchors?: InputMaybe<TsWhereShopify_SellingPlanAnchorInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  interval?: InputMaybe<TsWhereStringInput>;
+  intervalCount?: InputMaybe<TsWhereIntegerInput>;
+  maxCycles?: InputMaybe<TsWhereIntegerInput>;
+  minCycles?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_SellingPlanAnchorInput = {
+  day?: InputMaybe<TsWhereIntegerInput>;
+  month?: InputMaybe<TsWhereIntegerInput>;
+  type?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_SellingPlanDeliveryPolicyInput = {
+  anchors?: InputMaybe<TsWhereShopify_SellingPlanAnchorInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  cutoff?: InputMaybe<TsWhereIntegerInput>;
+  intent?: InputMaybe<TsWhereStringInput>;
+  interval?: InputMaybe<TsWhereStringInput>;
+  intervalCount?: InputMaybe<TsWhereIntegerInput>;
+  preAnchorBehavior?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_SellingPlanPricingPolicyInput = {
+  adjustmentType?: InputMaybe<TsWhereStringInput>;
+  adjustmentValue?: InputMaybe<TsWhereShopify_SellingPlanPricingPolicyAdjustmentValueInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  afterCycle?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_SellingPlanPricingPolicyAdjustmentValueInput = {
+  amount?: InputMaybe<TsWhereInput>;
+  currencyCode?: InputMaybe<TsWhereStringInput>;
+  percentage?: InputMaybe<TsWhereNumberInput>;
+};
+
+export type TsWhereShopify_SeoInput = {
+  description?: InputMaybe<TsWhereStringInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_StandardizedProductTypeInput = {
+  productTaxonomyNode?: InputMaybe<TsWhereShopify_ProductTaxonomyNodeInput>;
+};
+
+export type TsWhereShopify_ProductTaxonomyNodeInput = {
+  fullName?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  isLeaf?: InputMaybe<TsWhereBooleanInput>;
+  isRoot?: InputMaybe<TsWhereBooleanInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductTagsInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereReviewsIo_ListProductReviewsResponseInput = {
+  write_review_link?: InputMaybe<TsWhereStringInput>;
+  word?: InputMaybe<TsWhereStringInput>;
+  stats?: InputMaybe<TsWhereShopify_ProductStatsInput>;
+  store?: InputMaybe<TsWhereShopify_ProductStoreInput>;
+  reviews?: InputMaybe<TsWhereShopify_ProductReviewsInput>;
+  products?: InputMaybe<TsWhereShopify_ProductProductsInput>;
+};
+
+export type TsWhereShopify_ProductStatsInput = {
+  average?: InputMaybe<TsWhereNumberInput>;
+  count?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_ProductStoreInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  logo?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductReviewsInput = {
+  total?: InputMaybe<TsWhereIntegerInput>;
+  per_page?: InputMaybe<TsWhereIntegerInput>;
+  current_page?: InputMaybe<TsWhereIntegerInput>;
+  last_page?: InputMaybe<TsWhereIntegerInput>;
+  from?: InputMaybe<TsWhereIntegerInput>;
+  to?: InputMaybe<TsWhereIntegerInput>;
+  data?: InputMaybe<TsWhereReviewsIo_ProductReviewInput>;
+};
+
+export type TsWhereReviewsIo_ProductReviewInput = {
+  product_review_id?: InputMaybe<TsWhereIntegerInput>;
+  product_make?: InputMaybe<TsWhereStringInput>;
+  order_id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  sku?: InputMaybe<TsWhereStringInput>;
+  review?: InputMaybe<TsWhereStringInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+  rating?: InputMaybe<TsWhereIntegerInput>;
+  date_created?: InputMaybe<TsWhereStringInput>;
+  votes?: InputMaybe<TsWhereStringInput>;
+  flags?: InputMaybe<TsWhereStringInput>;
+  timeago?: InputMaybe<TsWhereStringInput>;
+  date_formatted?: InputMaybe<TsWhereStringInput>;
+  product?: InputMaybe<TsWhereReviewsIo_ProductInput>;
+  reviewer?: InputMaybe<TsWhereReviewsIo_ReviewerInput>;
+  images?: InputMaybe<TsWhereShopify_ProductImagesInput>;
+  tags?: InputMaybe<TsWhereShopify_ProductTagsInput>;
+  author?: InputMaybe<TsWhereShopify_ProductAuthorInput>;
+};
+
+export type TsWhereReviewsIo_ProductInput = {
+  sku?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  image_url?: InputMaybe<TsWhereStringInput>;
+  link?: InputMaybe<TsWhereStringInput>;
+  mpn?: InputMaybe<TsWhereStringInput>;
+  gtin?: InputMaybe<TsWhereStringInput>;
+  brand?: InputMaybe<TsWhereStringInput>;
+  category?: InputMaybe<TsWhereStringInput>;
+  custom?: InputMaybe<TsWhereStringInput>;
+  pageUrl?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereReviewsIo_ReviewerInput = {
+  user_id?: InputMaybe<TsWhereIntegerInput>;
+  first_name?: InputMaybe<TsWhereStringInput>;
+  last_name?: InputMaybe<TsWhereStringInput>;
+  verified_buyer?: InputMaybe<TsWhereInput>;
+  address?: InputMaybe<TsWhereStringInput>;
+  profile_picture?: InputMaybe<TsWhereStringInput>;
+  gravatar?: InputMaybe<TsWhereStringInput>;
+  email?: InputMaybe<TsWhereStringInput>;
+  name_formatted?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductImagesInput = {
+  large?: InputMaybe<TsWhereStringInput>;
+  medium?: InputMaybe<TsWhereStringInput>;
+  original?: InputMaybe<TsWhereStringInput>;
+  small?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductAuthorInput = {
+  email?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductProductsInput = {
+  sku?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereProductInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  slug?: InputMaybe<TsWhereStringInput>;
+  productComponent?: InputMaybe<TsWhereStringInput>;
+  hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
+  hideReviews?: InputMaybe<TsWhereBooleanInput>;
+  showPolicies?: InputMaybe<TsWhereBooleanInput>;
+  policies?: InputMaybe<TsWhereProductPagePoliciesRelationshipInput>;
+  showDetails?: InputMaybe<TsWhereBooleanInput>;
+  details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
+  shopifyProductId?: InputMaybe<TsWhereStringInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
+  NOT?: InputMaybe<TsWhereProductInput>;
+};
+
+export type TsWhereProductPagePoliciesRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  policies?: InputMaybe<TsShallowWhereProductPagePoliciesPoliciesInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsShallowWhereProductPagePoliciesPoliciesInput = {
+  name?: InputMaybe<TsWhereDraftjsInput>;
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereProductPageDetailsRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  text?: InputMaybe<TsShallowWhereProductPageDetailsTextInput>;
+  details?: InputMaybe<TsShallowWhereProductPageDetailsDetailsInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsShallowWhereProductPageDetailsTextInput = {
+  primary?: InputMaybe<TsWhereDraftjsInput>;
+  secondary?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsShallowWhereProductPageDetailsDetailsInput = {
+  description?: InputMaybe<TsWhereDraftjsInput>;
+};
+
+export type TsWhereRecharge_ProductInput = {
+  id?: InputMaybe<TsWhereNumberInput>;
+  product_id?: InputMaybe<TsWhereNumberInput>;
+  shopify_product_id?: InputMaybe<TsWhereNumberInput>;
+  discount_type?: InputMaybe<TsWhereStringInput>;
+  discount_amount?: InputMaybe<TsWhereNumberInput>;
+  subscription_defaults?: InputMaybe<TsWhereShopify_ProductSubscriptionDefaultsInput>;
+  external_product_id?: InputMaybe<TsWhereStringInput>;
+  brand?: InputMaybe<TsWhereStringInput>;
+  images?: InputMaybe<TsWhereShopify_ProductImagesInput>;
+  title?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductSubscriptionDefaultsInput = {
+  charge_interval_frequency?: InputMaybe<TsWhereNumberInput>;
+  cutoff_day_of_month?: InputMaybe<TsWhereNumberInput>;
+  cutoff_day_of_week?: InputMaybe<TsWhereNumberInput>;
+  expire_after_specific_number_of_charges?: InputMaybe<TsWhereNumberInput>;
+  order_day_of_month?: InputMaybe<TsWhereNumberInput>;
+  order_day_of_week?: InputMaybe<TsWhereNumberInput>;
+  order_interval_frequency?: InputMaybe<TsWhereNumberInput>;
+  order_interval_unit?: InputMaybe<TsWhereStringInput>;
+  storefront_purchase_options?: InputMaybe<TsWhereStringInput>;
+  order_interval_frequency_options?: InputMaybe<TsWhereShopify_ProductOrderIntervalFrequencyOptionsInput>;
+};
+
+export type TsWhereShopify_ProductOrderIntervalFrequencyOptionsInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereShopify_PublishableInput = {
+  publishedOnChannel?: InputMaybe<TsWhereBooleanInput>;
+  publishedOnPublication?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_FailedRequirementInput = {
+  action?: InputMaybe<TsWhereShopify_NavigationItemInput>;
+  message?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductFeaturesInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereShopify_AppInstallationInput = {
+  accessScopes?: InputMaybe<TsWhereShopify_AccessScopeInput>;
+  activeSubscriptions?: InputMaybe<TsWhereShopify_AppSubscriptionInput>;
+  allSubscriptions?: InputMaybe<TsWhereShopify_AppSubscriptionConnectionInput>;
+  app?: InputMaybe<TsWhereShopify_AppInput>;
+  channel?: InputMaybe<TsWhereShopify_ChannelInput>;
+  credits?: InputMaybe<TsWhereShopify_AppCreditConnectionInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  launchUrl?: InputMaybe<TsWhereInput>;
+  oneTimePurchases?: InputMaybe<TsWhereShopify_AppPurchaseOneTimeConnectionInput>;
+  publication?: InputMaybe<TsWhereShopify_PublicationInput>;
+  revenueAttributionRecords?: InputMaybe<TsWhereShopify_AppRevenueAttributionRecordConnectionInput>;
+  subscriptions?: InputMaybe<TsWhereShopify_AppSubscriptionInput>;
+  uninstallUrl?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_AccessScopeInput = {
+  description?: InputMaybe<TsWhereStringInput>;
+  handle?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_AppSubscriptionInput = {
+  createdAt?: InputMaybe<TsWhereInput>;
+  currentPeriodEnd?: InputMaybe<TsWhereInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  lineItems?: InputMaybe<TsWhereShopify_AppSubscriptionLineItemInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  returnUrl?: InputMaybe<TsWhereInput>;
+  status?: InputMaybe<TsWhereStringInput>;
+  test?: InputMaybe<TsWhereBooleanInput>;
+  trialDays?: InputMaybe<TsWhereIntegerInput>;
+};
+
+export type TsWhereShopify_AppSubscriptionLineItemInput = {
+  id?: InputMaybe<TsWhereStringInput>;
+  plan?: InputMaybe<TsWhereShopify_AppPlanV2Input>;
+  usageRecords?: InputMaybe<TsWhereShopify_AppUsageRecordConnectionInput>;
+};
+
+export type TsWhereShopify_AppPlanV2Input = {
+  pricingDetails?: InputMaybe<TsWhereShopify_AppPricingDetailsInput>;
+};
+
+export type TsWhereShopify_AppPricingDetailsInput = {
+  interval?: InputMaybe<TsWhereStringInput>;
+  price?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  balanceUsed?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  cappedAmount?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  terms?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_AppUsageRecordConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_AppUsageRecordEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_AppUsageRecordEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_AppUsageRecordInput>;
+};
+
+export type TsWhereShopify_AppUsageRecordInput = {
+  createdAt?: InputMaybe<TsWhereInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  price?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  subscriptionLineItem?: InputMaybe<TsWhereShopify_AppSubscriptionLineItemInput>;
+};
+
+export type TsWhereShopify_AppSubscriptionConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_AppSubscriptionEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_AppSubscriptionEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_AppSubscriptionInput>;
+};
+
+export type TsWhereShopify_AppCreditConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_AppCreditEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_AppCreditEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_AppCreditInput>;
+};
+
+export type TsWhereShopify_AppCreditInput = {
+  amount?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  description?: InputMaybe<TsWhereStringInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  test?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_AppPurchaseOneTimeConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_AppPurchaseOneTimeEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_AppPurchaseOneTimeEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_AppPurchaseOneTimeInput>;
+};
+
+export type TsWhereShopify_AppPurchaseOneTimeInput = {
+  createdAt?: InputMaybe<TsWhereInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  name?: InputMaybe<TsWhereStringInput>;
+  price?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  status?: InputMaybe<TsWhereStringInput>;
+  test?: InputMaybe<TsWhereBooleanInput>;
+};
+
+export type TsWhereShopify_AppRevenueAttributionRecordConnectionInput = {
+  edges?: InputMaybe<TsWhereShopify_AppRevenueAttributionRecordEdgeInput>;
+  pageInfo?: InputMaybe<TsWhereShopify_PageInfoInput>;
+};
+
+export type TsWhereShopify_AppRevenueAttributionRecordEdgeInput = {
+  cursor?: InputMaybe<TsWhereStringInput>;
+  node?: InputMaybe<TsWhereShopify_AppRevenueAttributionRecordInput>;
+};
+
+export type TsWhereShopify_AppRevenueAttributionRecordInput = {
+  amount?: InputMaybe<TsWhereShopify_MoneyV2Input>;
+  capturedAt?: InputMaybe<TsWhereInput>;
+  createdAt?: InputMaybe<TsWhereInput>;
+  id?: InputMaybe<TsWhereStringInput>;
+  idempotencyKey?: InputMaybe<TsWhereStringInput>;
+  test?: InputMaybe<TsWhereBooleanInput>;
+  type?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_LinkInput = {
+  label?: InputMaybe<TsWhereStringInput>;
+  translations?: InputMaybe<TsWhereShopify_PublishedTranslationInput>;
+  url?: InputMaybe<TsWhereInput>;
+};
+
+export type TsWhereShopify_UserErrorInput = {
+  field?: InputMaybe<TsWhereShopify_ProductFieldInput>;
+  message?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereShopify_ProductFieldInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
+};
+
+export type TsWhereShopify_CollectionRuleSetInput = {
+  appliedDisjunctively?: InputMaybe<TsWhereBooleanInput>;
+  rules?: InputMaybe<TsWhereShopify_CollectionRuleInput>;
+};
+
+export type TsWhereShopify_CollectionRuleInput = {
+  column?: InputMaybe<TsWhereStringInput>;
+  condition?: InputMaybe<TsWhereStringInput>;
+  relation?: InputMaybe<TsWhereStringInput>;
+};
+
+export type TsWhereNavigationLinksInput = {
+  categories?: InputMaybe<TsWhereNavigationLinksCategoriesInput>;
+  pages?: InputMaybe<TsWhereNavigationLinksPagesInput>;
+};
+
+export type TsWhereNavigationLinksCategoriesInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  featured?: InputMaybe<TsWhereNavigationLinksCategoriesFeaturedInput>;
+  collection?: InputMaybe<TsWhereNavigationLinksCategoriesCollectionInput>;
+  categories?: InputMaybe<TsWhereNavigationLinksCategoriesCategoriesInput>;
+  brands?: InputMaybe<TsWhereNavigationLinksCategoriesBrandsInput>;
+};
+
+export type TsWhereNavigationLinksCategoriesFeaturedInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
 
-export type TsWhereNavigationDataLinksCategoriesCollectionInput = {
+export type TsWhereNavigationLinksCategoriesCollectionInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
 
-export type TsWhereNavigationDataLinksCategoriesCategoriesInput = {
+export type TsWhereNavigationLinksCategoriesCategoriesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
 
-export type TsWhereNavigationDataLinksCategoriesBrandsInput = {
+export type TsWhereNavigationLinksCategoriesBrandsInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
 
-export type TsWhereNavigationDataPagesInput = {
+export type TsWhereNavigationLinksPagesInput = {
   name?: InputMaybe<TsWhereStringInput>;
   href?: InputMaybe<TsWhereStringInput>;
 };
@@ -1268,49 +2786,15 @@ export type TsWhereProductPagePoliciesPoliciesInput = {
   image?: InputMaybe<TsWhereAssetRelationshipInput>;
 };
 
-export type TsWhereProductPagePoliciesRelationshipInput = {
-  name?: InputMaybe<TsWhereStringInput>;
-  policies?: InputMaybe<TsShallowWhereProductPagePoliciesPoliciesInput>;
-  _shapeId?: InputMaybe<TsWhereIdInput>;
-  _id?: InputMaybe<TsWhereIdInput>;
-  _version?: InputMaybe<TsWhereIntegerInput>;
-  _shapeName?: InputMaybe<TsWhereStringInput>;
-  _createdAt?: InputMaybe<TsWhereDateInput>;
-  _updatedAt?: InputMaybe<TsWhereDateInput>;
-  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
-  _status?: InputMaybe<TsWhereWorkflowInput>;
-  _contentTypeId?: InputMaybe<TsWhereIdInput>;
-  _contentTypeName?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsShallowWhereProductPagePoliciesPoliciesInput = {
-  name?: InputMaybe<TsWhereDraftjsInput>;
-  description?: InputMaybe<TsWhereDraftjsInput>;
-};
-
-export type TsWhereProductPageDetailsRelationshipInput = {
-  name?: InputMaybe<TsWhereStringInput>;
-  text?: InputMaybe<TsShallowWhereProductPageDetailsTextInput>;
-  details?: InputMaybe<TsShallowWhereProductPageDetailsDetailsInput>;
-  _shapeId?: InputMaybe<TsWhereIdInput>;
-  _id?: InputMaybe<TsWhereIdInput>;
-  _version?: InputMaybe<TsWhereIntegerInput>;
-  _shapeName?: InputMaybe<TsWhereStringInput>;
-  _createdAt?: InputMaybe<TsWhereDateInput>;
-  _updatedAt?: InputMaybe<TsWhereDateInput>;
-  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
-  _status?: InputMaybe<TsWhereWorkflowInput>;
-  _contentTypeId?: InputMaybe<TsWhereIdInput>;
-  _contentTypeName?: InputMaybe<TsWhereStringInput>;
-};
-
-export type TsShallowWhereProductPageDetailsTextInput = {
-  primary?: InputMaybe<TsWhereDraftjsInput>;
-  secondary?: InputMaybe<TsWhereDraftjsInput>;
-};
-
-export type TsShallowWhereProductPageDetailsDetailsInput = {
-  description?: InputMaybe<TsWhereDraftjsInput>;
+export type TsWhereStripe_Product_ImagesInput = {
+  /** Exact match */
+  eq?: InputMaybe<Scalars['String']>;
+  /** Array of possible exact match values. */
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+  /** Regular expression string matching. Use of * wildcards could degrade performance. */
+  regexp?: InputMaybe<Scalars['String']>;
 };
 
 export type TsWhereStripe_PackageDimensionsInput = {
@@ -2272,7 +3756,7 @@ export type Shopify_DeliveryProfileItemVariantsArgs = {
   sortKey?: InputMaybe<Shopify_ProductVariantSortKeys>;
 };
 
-export type Shopify_Product = {
+export type Shopify_Product = TsSearchable & {
   __typename?: 'Shopify_Product';
   /**
    * The description of the product, complete with HTML formatting.
@@ -2419,6 +3903,9 @@ export type Shopify_Product = {
   takeshape?: Maybe<Product>;
   /** The Recharge subscription data associated with this product */
   recharge?: Maybe<Recharge_Product>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  searchSummary?: Maybe<Scalars['String']>;
 };
 
 
@@ -13098,30 +14585,81 @@ export type ProductPaginatedList = {
   total: Scalars['Int'];
 };
 
-export type TsWhereProductInput = {
-  name?: InputMaybe<TsWhereStringInput>;
-  slug?: InputMaybe<TsWhereStringInput>;
-  productComponent?: InputMaybe<TsWhereStringInput>;
-  hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
-  hideReviews?: InputMaybe<TsWhereBooleanInput>;
-  showPolicies?: InputMaybe<TsWhereBooleanInput>;
-  policies?: InputMaybe<TsWhereProductPagePoliciesRelationshipInput>;
-  showDetails?: InputMaybe<TsWhereBooleanInput>;
-  details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
-  shopifyProductId?: InputMaybe<TsWhereStringInput>;
-  _shapeId?: InputMaybe<TsWhereIdInput>;
-  _id?: InputMaybe<TsWhereIdInput>;
-  _version?: InputMaybe<TsWhereIntegerInput>;
-  _shapeName?: InputMaybe<TsWhereStringInput>;
-  _createdAt?: InputMaybe<TsWhereDateInput>;
-  _updatedAt?: InputMaybe<TsWhereDateInput>;
-  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
-  _status?: InputMaybe<TsWhereWorkflowInput>;
-  _contentTypeId?: InputMaybe<TsWhereIdInput>;
-  _contentTypeName?: InputMaybe<TsWhereStringInput>;
-  AND?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
-  OR?: InputMaybe<Array<InputMaybe<TsWhereProductInput>>>;
-  NOT?: InputMaybe<TsWhereProductInput>;
+export type Navigation = TsSearchable & {
+  __typename?: 'Navigation';
+  message?: Maybe<Scalars['JSON']>;
+  messageHtml?: Maybe<Scalars['String']>;
+  links?: Maybe<NavigationLinks>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+
+export type NavigationMessageHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export type NavigationLinks = {
+  __typename?: 'NavigationLinks';
+  categories: Array<NavigationLinksCategories>;
+  pages: Array<NavigationLinksPages>;
+};
+
+export type NavigationLinksCategories = {
+  __typename?: 'NavigationLinksCategories';
+  name: Scalars['String'];
+  featured: Array<NavigationLinksCategoriesFeatured>;
+  collection: Array<NavigationLinksCategoriesCollection>;
+  categories: Array<NavigationLinksCategoriesCategories>;
+  brands: Array<NavigationLinksCategoriesBrands>;
+};
+
+export type NavigationLinksCategoriesFeatured = {
+  __typename?: 'NavigationLinksCategoriesFeatured';
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksCategoriesCollection = {
+  __typename?: 'NavigationLinksCategoriesCollection';
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksCategoriesCategories = {
+  __typename?: 'NavigationLinksCategoriesCategories';
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksCategoriesBrands = {
+  __typename?: 'NavigationLinksCategoriesBrands';
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksPages = {
+  __typename?: 'NavigationLinksPages';
+  name: Scalars['String'];
+  href: Scalars['String'];
 };
 
 /** Asset search results */
@@ -13221,6 +14759,8 @@ export type WithContext = {
   getProduct?: Maybe<Product>;
   /** Returns a list Product in natural order. */
   getProductList?: Maybe<ProductPaginatedList>;
+  /** Get a Navigation by ID */
+  getNavigation?: Maybe<Navigation>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
@@ -13524,6 +15064,13 @@ export type WithContextGetProductListArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetNavigationArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -13681,6 +15228,8 @@ export type Mutation = {
   duplicateProduct?: Maybe<DuplicateProductResult>;
   /** Delete Product */
   deleteProduct?: Maybe<DeleteProductResult>;
+  /** Update Navigation */
+  updateNavigation?: Maybe<UpdateNavigationResult>;
 };
 
 
@@ -13978,6 +15527,15 @@ export type MutationDuplicateProductArgs = {
 export type MutationDeleteProductArgs = {
   input: DeleteProductInput;
   clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateNavigationArgs = {
+  input: UpdateNavigationInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
 };
 
 /** A project file stored on s3 */
@@ -15543,4 +17101,68 @@ export type DeleteProductResult = {
 /** delete Product input */
 export type DeleteProductInput = {
   _id: Scalars['ID'];
+};
+
+export type UpdateNavigationResult = {
+  __typename?: 'UpdateNavigationResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Navigation>;
+};
+
+/** update Navigation input */
+export type UpdateNavigationInput = {
+  message?: InputMaybe<Scalars['JSON']>;
+  links?: InputMaybe<NavigationLinksInput>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type NavigationLinksInput = {
+  categories: Array<NavigationLinksCategoriesInput>;
+  pages: Array<NavigationLinksPagesInput>;
+};
+
+export type NavigationLinksCategoriesInput = {
+  name: Scalars['String'];
+  featured: Array<NavigationLinksCategoriesFeaturedInput>;
+  collection: Array<NavigationLinksCategoriesCollectionInput>;
+  categories: Array<NavigationLinksCategoriesCategoriesInput>;
+  brands: Array<NavigationLinksCategoriesBrandsInput>;
+};
+
+export type NavigationLinksCategoriesFeaturedInput = {
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksCategoriesCollectionInput = {
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksCategoriesCategoriesInput = {
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksCategoriesBrandsInput = {
+  name: Scalars['String'];
+  href: Scalars['String'];
+};
+
+export type NavigationLinksPagesInput = {
+  name: Scalars['String'];
+  href: Scalars['String'];
 };

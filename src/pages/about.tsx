@@ -1,12 +1,13 @@
 import Wrapper from 'components/Wrapper/Content';
+import { getLayoutData } from 'data/getLayoutData';
 import { ContentBody } from 'features/Content/ContentBody';
 import { ContentHeader } from 'features/Content/ContentHeader';
 import Layout from 'layouts/Default';
-import { NextPage } from 'next';
+import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AboutPage: NextPage = () => {
+const AboutPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layout title="About">
+    <Layout navigation={navigation} footer={footer} seo={{ title: 'About' }}>
       <Wrapper>
         <div className="relative px-4 sm:px-6 lg:px-8">
           <ContentHeader
@@ -47,5 +48,10 @@ const AboutPage: NextPage = () => {
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const { navigation, footer } = await getLayoutData();
+  return { props: { navigation, footer } };
+}
 
 export default AboutPage;

@@ -1,10 +1,9 @@
-import { currencyList } from 'config';
 import { useAtom } from 'jotai';
 import { currencyAtom } from 'store';
+import { Navigation } from '../../types';
 
-export const TopCurrencySelect = () => {
+export const TopCurrencySelect = ({ currencies }: Pick<Navigation, 'currencies'>) => {
   const [selectedCurrency, updateCurrency] = useAtom(currencyAtom);
-  const currencies = [...currencyList];
 
   return (
     <select

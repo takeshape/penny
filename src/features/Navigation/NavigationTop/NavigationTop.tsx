@@ -2,6 +2,7 @@ import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
 import NextLink from 'components/NextLink';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
+import { Navigation } from '../types';
 import { TopAccountIcon } from './components/TopAccountIcon';
 import { TopCartIcon } from './components/TopCartIcon';
 import { TopCreateOrSignIn } from './components/TopCreateOrSignIn';
@@ -9,7 +10,9 @@ import { TopCurrencySelect } from './components/TopCurrencySelect';
 import { TopLinks } from './components/TopLinks';
 import { TopMessage } from './components/TopMessage';
 
-export const NavigationTop = () => {
+export interface NavigationTopProps extends Navigation {}
+
+export const NavigationTop = ({ message, links, currencies }: NavigationTopProps) => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
   const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
 
@@ -30,7 +33,7 @@ export const NavigationTop = () => {
                   Currency
                 </label>
                 <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                  <TopCurrencySelect />
+                  <TopCurrencySelect currencies={currencies} />
                   <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
                     <svg
                       aria-hidden="true"
@@ -52,7 +55,7 @@ export const NavigationTop = () => {
               </div>
             </form>
 
-            <TopMessage />
+            <TopMessage message={message} />
             <TopCreateOrSignIn />
           </div>
         </div>
@@ -73,7 +76,7 @@ export const NavigationTop = () => {
                   </NextLink>
                 </div>
 
-                <TopLinks />
+                <TopLinks links={links} />
 
                 {/* Mobile menu and search (lg-) */}
                 <div className="flex-1 flex items-center lg:hidden">

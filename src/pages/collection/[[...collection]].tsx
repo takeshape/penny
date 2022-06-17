@@ -1,5 +1,6 @@
 import PageLoader from 'components/PageLoader';
 import { collectionsPageSize } from 'config';
+import { getLayoutData } from 'data/getLayoutData';
 import { ProductCategoryWithData } from 'features/ProductCategory/ProductCategoryWithData';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -9,7 +10,7 @@ import {
   ProductCategoryShopifyCollectionResponse
 } from 'features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
-import Layout from 'layouts/Default';
+import Layout, { LayoutProps } from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyCollectionIdToGid } from 'transforms/shopify';
@@ -23,23 +24,23 @@ type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
   handle: string;
   name: string;
   description: string;
-};
+} & LayoutProps;
 
-const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, description }) => {
+const CollectionPage: NextPage<ProductPageProps> = ({ page, id, name, description, navigation, footer }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Layout title="Collection is loading...">
+      <Layout navigation={navigation} footer={footer} seo={{ title: 'Collection is loading...' }}>
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout title={name} description={description}>
+    <Layout navigation={navigation} footer={footer} seo={{ title: name, description }}>
       <ProductCategoryWithData collectionId={id} pageSize={collectionsPageSize} page={page} />
     </Layout>
   );
@@ -56,6 +57,8 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   // iterate through collection pages until we find the product id needed.
 
   // TODO Support slugs
+
+  const { navigation, footer } = await getLayoutData();
 
   const { data } = await apolloClient.query<
     ProductCategoryShopifyCollectionResponse,
@@ -76,7 +79,9 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       id: collection.id,
       handle: collection.handle,
       name: collection.name,
-      description: collection.description
+      description: collection.description,
+      navigation,
+      footer
     }
   });
 };

@@ -32,7 +32,7 @@ const Meta: ComponentMeta<typeof Navigation> = {
   }
 };
 
-const Template: ComponentStory<typeof Navigation> = () => <Navigation />;
+const Template: ComponentStory<typeof Navigation> = (args) => <Navigation {...args} />;
 
 export const _Navigation = Template.bind({});
 _Navigation.args = {};

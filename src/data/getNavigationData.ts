@@ -1,5 +1,5 @@
 import { NormalizedCacheObject } from '@apollo/client';
-import { GetNavigationDataQuery } from 'features/Navigation/queries';
+import { NavigationQuery } from 'features/Navigation/queries';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 interface Cache {
@@ -15,7 +15,7 @@ async function getNavigationData() {
 
   if (!queryCache) {
     await apolloClient.query({
-      query: GetNavigationDataQuery
+      query: NavigationQuery
     });
     queryCache = apolloClient.cache.extract();
     cache.navigationData = queryCache;

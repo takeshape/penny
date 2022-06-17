@@ -1,4 +1,5 @@
 import PageLoader from 'components/PageLoader';
+import { getLayoutData } from 'data/getLayoutData';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageReviewsIoReviewsArgs,
@@ -22,7 +23,7 @@ import {
   getProductPageParams
 } from 'features/ProductPage/transforms';
 import { ProductPageOptions } from 'features/ProductPage/types';
-import Layout from 'layouts/Default';
+import Layout, { LayoutProps } from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyGidToId } from 'transforms/shopify';
@@ -34,28 +35,28 @@ import { getSingle } from 'utils/types';
 type ProductPageProps = Pick<Product, 'id' | 'name' | 'description'> & {
   sku: string;
   options: ProductPageOptions;
-};
+} & LayoutProps;
 
 const breadcrumbs = [
   { id: 1, name: 'Men', href: '#' },
   { id: 2, name: 'Clothing', href: '#' }
 ];
 
-const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, options }) => {
+const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, options, navigation, footer }) => {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
     return (
-      <Layout title="Product is loading...">
+      <Layout navigation={navigation} footer={footer} seo={{ title: 'Product is loading...' }}>
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout title={name} description={description}>
+    <Layout navigation={navigation} footer={footer} seo={{ title: name, description }}>
       <ProductPageComponent
         productId={id}
         sku={sku}
@@ -73,6 +74,8 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
   const idOrSlug = getProductPageIdOrSlug(getSingle(params.id));
 
   let shopifyData;
+
+  const { navigation, footer } = await getLayoutData();
 
   if (idOrSlug.slug) {
     ({ data: shopifyData } = await apolloClient.query<
@@ -124,7 +127,9 @@ export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params 
       sku,
       name: product.name,
       description: product.description,
-      options: getPageOptions(takeshapeData)
+      options: getPageOptions(takeshapeData),
+      navigation,
+      footer
     }
   });
 };

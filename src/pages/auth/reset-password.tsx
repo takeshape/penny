@@ -8,7 +8,7 @@ const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
-    <Layout title="Sign In">
+    <Layout seo={{ title: 'Reset Password' }}>
       <AuthRecoverPassword callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/auth/signin'} />
     </Layout>
   );

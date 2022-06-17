@@ -1,6 +1,7 @@
 import Alert from 'components/Alert/Alert';
 import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
+import { getLayoutData } from 'data/getLayoutData';
 import {
   RelatedProductsShopifyCollectionArgs,
   RelatedProductsShopifyCollectionQuery,
@@ -16,10 +17,16 @@ import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { formatError } from 'utils/errors';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const IndexPage: NextPage = ({ products, storefront, error }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndexPage: NextPage = ({
+  navigation,
+  footer,
+  products,
+  storefront,
+  error
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (error) {
     return (
-      <Layout>
+      <Layout navigation={navigation} footer={footer}>
         <Wrapper>
           <div className="my-10">
             <Alert
@@ -34,7 +41,7 @@ const IndexPage: NextPage = ({ products, storefront, error }: InferGetStaticProp
   }
 
   return (
-    <Layout>
+    <Layout navigation={navigation} footer={footer}>
       {storefront ? (
         <Wrapper>
           <Storefront products={products} storefront={storefront} />
@@ -52,8 +59,12 @@ export async function getStaticProps() {
   let products = null;
   let storefront = null;
   let error = null;
+  let navigation = null;
+  let footer = null;
 
   try {
+    ({ navigation, footer } = await getLayoutData());
+
     const { data: productsData } = await apolloClient.query<
       RelatedProductsShopifyCollectionResponse,
       RelatedProductsShopifyCollectionArgs
@@ -74,7 +85,7 @@ export async function getStaticProps() {
     error = formatError(err);
   }
 
-  return addApolloQueryCache(apolloClient, { props: { products, storefront, error } });
+  return addApolloQueryCache(apolloClient, { props: { navigation, footer, products, storefront, error } });
 }
 
 export default IndexPage;
