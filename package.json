@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
+    "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
@@ -93,6 +94,7 @@
     "jest-environment-jsdom": "^28.1.1",
     "msw": "^0.42.1",
     "msw-storybook-addon": "^1.6.3",
+    "next-sitemap": "^3.0.5",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
     "storybook-addon-jotai": "0.0.5",
