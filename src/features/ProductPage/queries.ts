@@ -24,7 +24,7 @@ export type ProductPageShopifyProductIdListArgs = {
 // TODO Avoid throttling issues for now
 export const ProductPageShopifyProductIdListQuery = gql`
   query ProductPageShopifyProductIdListQuery($from: Int!) {
-    products: getProductList(size: 10, sort: { field: "_createdAt", order: "asc" }, from: $from) {
+    products: getProductList(size: 50, sort: { field: "_createdAt", order: "asc" }, from: $from) {
       items {
         name
         slug
