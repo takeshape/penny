@@ -1,4 +1,11 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import {
+  getDetails,
+  getPolicies,
+  getProduct,
+  getReviewHighlights,
+  getReviewList
+} from 'features/ProductPage/transforms';
 import { graphql } from 'msw';
 import { ProductPage } from './ProductPage';
 import {
@@ -18,108 +25,26 @@ const Template: ComponentStory<typeof ProductPage> = (args) => <ProductPage {...
 export const _ProductPage = Template.bind({});
 
 _ProductPage.args = {
-  productId: 'gid://shopify/Product/6857243132004',
-  sku: '6857243132004',
   component: 'withImageGrid',
   options: {
     showDetails: true,
     showReviews: true,
     showRelatedProducts: true,
     showPolicies: true
-  }
+  },
+  product: getProduct(productResponse),
+  reviewHighlights: getReviewHighlights(reviewsResponse),
+  reviewList: getReviewList(reviewsResponse),
+  details: getDetails(takeshapeProductResponse),
+  policies: getPolicies(takeshapeProductResponse)
 };
 
 _ProductPage.parameters = {
   msw: {
     handlers: {
-      product: [
-        graphql.query('ProductPageShopifyProductByIdQuery', (req, res, ctx) => {
-          return res(ctx.data(productResponse));
-        }),
-        graphql.query('ProductPageReviewsIoReviewsQuery', (req, res, ctx) => {
-          return res(ctx.data(reviewsResponse));
-        }),
-        graphql.query('ProductPageTakeshapeProductQuery', (req, res, ctx) => {
-          return res(ctx.data(takeshapeProductResponse));
-        })
-      ],
-      reviews: [
+      related: [
         graphql.query('RelatedProductsShopifyCollectionQuery', (req, res, ctx) => {
           return res(ctx.data(relatedProductsResponse));
-        })
-      ]
-    }
-  }
-};
-
-export const _ProductPageLoading = Template.bind({});
-
-_ProductPageLoading.args = {
-  productId: 'gid://shopify/Product/6857243132004',
-  sku: '6857243132004',
-  component: 'withImageGrid',
-  options: {
-    showDetails: true,
-    showReviews: true,
-    showRelatedProducts: true,
-    showPolicies: true
-  }
-};
-
-_ProductPageLoading.parameters = {
-  msw: {
-    handlers: {
-      product: [
-        graphql.query('ProductPageShopifyProductByIdQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        }),
-        graphql.query('ProductPageReviewsIoReviewsQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        }),
-        graphql.query('ProductPageTakeshapeProductQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        })
-      ],
-      reviews: [
-        graphql.query('RelatedProductsShopifyCollectionQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        })
-      ]
-    }
-  }
-};
-
-export const _ProductPageError = Template.bind({});
-
-_ProductPageError.args = {
-  productId: 'gid://shopify/Product/6857243132004',
-  sku: '6857243132004',
-  component: 'withImageGrid',
-  options: {
-    showDetails: true,
-    showReviews: true,
-    showRelatedProducts: true,
-    showPolicies: true
-  }
-};
-
-_ProductPageError.parameters = {
-  msw: {
-    handlers: {
-      product: [
-        graphql.query('ProductPageShopifyProductByIdQuery', (req, res, ctx) => {
-          return res(ctx.errors([{ message: 'Could not load product' }]));
-        }),
-        graphql.query('ProductPageReviewsIoReviewsQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        }),
-        graphql.query('ProductPageTakeshapeProductQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        })
-      ],
-      reviews: [
-        graphql.query('RelatedProductsShopifyCollectionQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
         })
       ]
     }
