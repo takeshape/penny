@@ -1,5 +1,3 @@
-# .github/workflows/chromatic.yml
-
 name: 'Chromatic'
 
 on:
@@ -10,7 +8,7 @@ on:
 
 jobs:
   chromatic-deployment:
-    name: Chromatic Deployment
+    name: Deployment
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     steps:

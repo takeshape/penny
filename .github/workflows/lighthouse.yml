@@ -5,7 +5,7 @@ on:
 
 jobs:
   lighthouse-run:
-    name: Lighthouse Audit
+    name: Audit
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
