@@ -4,18 +4,28 @@ import {
   ProductPageReviewsIoReviewsArgs,
   ProductPageReviewsIoReviewsQuery,
   ProductPageReviewsIoReviewsResponse,
-  ProductPageShopifyProductArgs,
+  ProductPageShopifyProductByIdArgs,
+  ProductPageShopifyProductByIdQuery,
+  ProductPageShopifyProductBySlugArgs,
+  ProductPageShopifyProductBySlugQuery,
   ProductPageShopifyProductIdListQuery,
   ProductPageShopifyProductIdListResponse,
-  ProductPageShopifyProductQuery,
-  ProductPageShopifyProductReponse
+  ProductPageShopifyProductResponse,
+  ProductPageTakeshapeProductArgs,
+  ProductPageTakeshapeProductQuery,
+  ProductPageTakeshapeProductResponse
 } from 'features/ProductPage/queries';
-import { getPageOptions, getProduct } from 'features/ProductPage/transforms';
+import {
+  getPageOptions,
+  getProduct,
+  getProductPageIdOrSlug,
+  getProductPageParams
+} from 'features/ProductPage/transforms';
 import { ProductPageOptions } from 'features/ProductPage/types';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { shopifyGidToId, shopifyIdToGid } from 'transforms/shopify';
+import { shopifyGidToId } from 'transforms/shopify';
 import { Product } from 'types/product';
 import addApolloQueryCache from 'utils/apollo/addApolloQueryCache';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -60,32 +70,61 @@ const ProductPage: NextPage<ProductPageProps> = ({ id, sku, name, description, o
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps: GetStaticProps<ProductPageProps> = async ({ params }) => {
-  const id = getSingle(params.id);
+  const idOrSlug = getProductPageIdOrSlug(getSingle(params.id));
 
-  const { data } = await apolloClient.query<ProductPageShopifyProductReponse, ProductPageShopifyProductArgs>({
-    query: ProductPageShopifyProductQuery,
+  let shopifyData;
+
+  if (idOrSlug.slug) {
+    ({ data: shopifyData } = await apolloClient.query<
+      ProductPageShopifyProductResponse,
+      ProductPageShopifyProductBySlugArgs
+    >({
+      query: ProductPageShopifyProductBySlugQuery,
+      variables: {
+        slug: idOrSlug.slug
+      }
+    }));
+  } else {
+    ({ data: shopifyData } = await apolloClient.query<
+      ProductPageShopifyProductResponse,
+      ProductPageShopifyProductByIdArgs
+    >({
+      query: ProductPageShopifyProductByIdQuery,
+      variables: {
+        id: idOrSlug.id
+      }
+    }));
+  }
+
+  const product = getProduct(shopifyData);
+
+  const { data: takeshapeData } = await apolloClient.query<
+    ProductPageTakeshapeProductResponse,
+    ProductPageTakeshapeProductArgs
+  >({
+    query: ProductPageTakeshapeProductQuery,
     variables: {
-      id: shopifyIdToGid(id)
+      productId: product.id
     }
   });
 
-  // Just priming the cache
+  const sku = shopifyGidToId(product.id);
+
+  // Cache priming
   await apolloClient.query<ProductPageReviewsIoReviewsResponse, ProductPageReviewsIoReviewsArgs>({
     query: ProductPageReviewsIoReviewsQuery,
     variables: {
-      sku: id
+      sku
     }
   });
-
-  const product = getProduct(data);
 
   return addApolloQueryCache(apolloClient, {
     props: {
       id: product.id,
-      sku: id,
+      sku,
       name: product.name,
       description: product.description,
-      options: getPageOptions(data)
+      options: getPageOptions(takeshapeData)
     }
   });
 };
@@ -95,12 +134,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
     query: ProductPageShopifyProductIdListQuery
   });
 
-  const paths = data.products.items.map(({ shopifyProductId }) => ({
-    params: { id: shopifyGidToId(shopifyProductId) }
-  }));
+  const params = getProductPageParams(data);
 
   return {
-    paths,
+    paths: params,
     fallback: true
   };
 };

@@ -105,6 +105,9 @@ export const defaultProductImage = {
   altText: 'Default product image'
 };
 
+/* Collections */
+export const collectionsPageSize = 12;
+
 /* Product Options - LUTs to decorate options */
 export const productOptions = {
   color: {

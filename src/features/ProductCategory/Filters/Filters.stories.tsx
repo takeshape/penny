@@ -1,6 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import Filters from './Filters';
+import { Filters } from './Filters';
 
 const Meta: ComponentMeta<typeof Filters> = {
   title: 'Features / Product Category / Components / Filters',

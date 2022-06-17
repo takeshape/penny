@@ -71,5 +71,3 @@ export const usePagination = ({ pageCount, siblingCount = 1, currentPage }) => {
 
   return paginationRange;
 };
-
-export default usePagination;

@@ -1,9 +1,9 @@
 import { useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import {
-  ProductPageTakeshapePoliciesArgs,
-  ProductPageTakeshapePoliciesQuery,
-  ProductPageTakeshapePoliciesResponse
+  ProductPageTakeshapeProductArgs,
+  ProductPageTakeshapeProductQuery,
+  ProductPageTakeshapeProductResponse
 } from '../queries';
 import { getPolicies } from '../transforms';
 import { Policies, PoliciesProps } from './Policies';
@@ -15,9 +15,9 @@ export type PoliciesWithDataProps = {
 
 export const PoliciesWithData = ({ productId, ...props }: PoliciesWithDataProps) => {
   const [loadPolicies, { data, loading, error }] = useLazyQuery<
-    ProductPageTakeshapePoliciesResponse,
-    ProductPageTakeshapePoliciesArgs
-  >(ProductPageTakeshapePoliciesQuery);
+    ProductPageTakeshapeProductResponse,
+    ProductPageTakeshapeProductArgs
+  >(ProductPageTakeshapeProductQuery);
 
   useEffect(() => {
     if (productId && !data && !loading && !error) {

@@ -1,26 +1,23 @@
-import Filters, { FiltersProps } from './Filters/Filters';
-import Header, { HeaderProps } from './Header/Header';
-import Pagination, { PaginationProps } from './Pagination/Pagination';
-import ProductGrid, { ProductGridProps } from './ProductGrid/ProductGrid';
+import { PropsWithChildren } from 'react';
+import { Header, HeaderProps } from './Header/Header';
+import { Pagination, PaginationProps } from './Pagination/Pagination';
+import { ProductGrid, ProductGridProps } from './ProductGrid/ProductGrid';
 
-export type ProductCategoryProps = HeaderProps & FiltersProps & ProductGridProps & PaginationProps;
+export type ProductCategoryProps = HeaderProps & ProductGridProps & PaginationProps;
 
-export const ProductCategory = (props: React.PropsWithChildren<ProductCategoryProps>) => {
-  const { header, filters, sortOptions, setFilters, clearAllFilters, setSortOption, products, pagination } = props;
+export const ProductCategory = ({ header, products, pagination }: PropsWithChildren<ProductCategoryProps>) => {
   return (
     <main className="pb-24">
       <Header header={header} />
-      <Filters
+      {/* <Filters
         filters={filters}
         sortOptions={sortOptions}
         setFilters={setFilters}
         clearAllFilters={clearAllFilters}
         setSortOption={setSortOption}
-      />
+      /> */}
       <ProductGrid products={products} />
       <Pagination pagination={pagination} />
     </main>
   );
 };
-
-export default ProductCategory;
