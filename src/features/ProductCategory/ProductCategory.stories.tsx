@@ -18,7 +18,7 @@ const Template: ComponentStory<typeof ProductCategory> = (args) => <ProductCateg
 export const _ProductCategory = Template.bind({});
 _ProductCategory.args = {
   header: { text: { primary: collection.name, secondary: collection.descriptionHtml } },
-  products: collection.products,
+  products: collection.items,
   pagination: {
     pageCount: 2,
     currentPage: 1,

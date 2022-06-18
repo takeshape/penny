@@ -61,7 +61,8 @@ export type ProductCategoryCollection = {
   description: string;
   descriptionHtml: string;
   productsCount: number;
-  products: ProductCategoryProductListItem[];
+  items: ProductCategoryProductListItem[];
   hasNextPage: boolean;
   hasPreviousPage: boolean;
+  cursor?: string;
 };

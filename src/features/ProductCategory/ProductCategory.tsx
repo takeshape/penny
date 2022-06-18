@@ -5,9 +5,9 @@ import { ProductGrid, ProductGridProps } from './ProductGrid/ProductGrid';
 
 export type ProductCategoryProps = HeaderProps & ProductGridProps & PaginationProps;
 
-export const ProductCategory = ({ header, products, pagination }: PropsWithChildren<ProductCategoryProps>) => {
+export const ProductCategory = ({ header, items, pagination }: PropsWithChildren<ProductCategoryProps>) => {
   return (
-    <main className="pb-24">
+    <div className="pb-24">
       <Header header={header} />
       {/* <Filters
         filters={filters}
@@ -16,8 +16,8 @@ export const ProductCategory = ({ header, products, pagination }: PropsWithChild
         clearAllFilters={clearAllFilters}
         setSortOption={setSortOption}
       /> */}
-      <ProductGrid products={products} />
+      <ProductGrid items={items} />
       <Pagination pagination={pagination} />
-    </main>
+    </div>
   );
 };

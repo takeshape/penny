@@ -21,7 +21,8 @@ import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 const CollectionPage: NextPage = ({
   navigation,
   footer,
-  collection
+  collection,
+  page
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
@@ -41,7 +42,7 @@ const CollectionPage: NextPage = ({
       footer={footer}
       seo={{ title: collection.name, description: collection.description }}
     >
-      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
+      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} page={page} />
     </Layout>
   );
 };
@@ -49,7 +50,7 @@ const CollectionPage: NextPage = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }) => {
-  const [collectionId, cursor] = params.collection;
+  const [collectionId, cursor, page] = params.collection;
   const idOrSlug = getCollectionPageIdOrSlug(collectionId);
 
   const { navigation, footer } = await getLayoutData();
@@ -86,10 +87,11 @@ export const getStaticProps = async ({ params }) => {
     }));
   }
 
-  const collection = getCollection(collectionData);
+  const collection = getCollection(collectionData, collectionsPageSize, cursor);
 
   return {
     props: {
+      page: Number(page ?? 1),
       id: collection.id,
       handle: collection.handle,
       navigation,

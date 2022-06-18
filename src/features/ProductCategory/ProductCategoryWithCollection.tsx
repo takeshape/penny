@@ -1,26 +1,31 @@
 import { useLazyQuery } from '@apollo/client';
+import Seo from 'components/Seo';
 import {
   ProductCategoryShopifyCollectionByIdArgs,
   ProductCategoryShopifyCollectionByIdQuery
 } from 'features/ProductCategory/queries';
 import { ProductCategoryCollection } from 'features/ProductCategory/types';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
+import { silentlyUpdateUrl } from 'utils/history';
 import { ProductCategory } from './ProductCategory';
 import { ProductCategoryShopifyCollectionResponse } from './queries';
-import { getCollection } from './transforms';
+import { getCollection, getCurrentTitle, getCurrentUrl } from './transforms';
 
 export interface ProductCategoryWithCollectionProps {
   collection: ProductCategoryCollection;
   pageSize?: number;
-  pathVariable?: string;
+  page?: number;
+  cursor?: string;
 }
 
-export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
+export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
   pageSize = pageSize ?? 5;
 
-  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(page ?? 1);
+  const [currentCursor, setCurrentCursor] = useState(collection.cursor);
+  const [currentDirection, setCurrentDirection] = useState<'forward' | 'back'>('forward');
   const [currentCollection, setCurrentCollection] = useState(collection);
+  const [currentTitle, setCurrentTitle] = useState(getCurrentTitle(collection, page));
 
   const [loadCollection, { data, error, loading }] = useLazyQuery<
     ProductCategoryShopifyCollectionResponse,
@@ -29,45 +34,61 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
 
   useEffect(() => {
     if (data && !error && !loading) {
-      const newCollection = getCollection(data);
+      const newCollection = getCollection(data, pageSize, currentCursor, currentDirection);
       setCurrentCollection(newCollection);
-      router.push(`${newCollection.url}/${newCollection.products[0].cursor}`);
+      setCurrentTitle(getCurrentTitle(newCollection, currentPage));
+      window.scrollTo(0, 0);
+      silentlyUpdateUrl(getCurrentUrl(newCollection, currentCursor, currentPage));
+      setCurrentCursor(newCollection.cursor);
     }
-  }, [data, error, loading, router]);
+  }, [currentCursor, currentDirection, currentPage, data, error, loading, pageSize]);
 
   const handleSetCurrentPage = useCallback(
     (nextPage) => {
-      const isNext = nextPage > 0;
+      const isForward = nextPage > 0;
       const variables: ProductCategoryShopifyCollectionByIdArgs = { id: currentCollection.id };
 
-      if (isNext) {
+      if (isForward) {
         variables.first = pageSize;
-        variables.after = currentCollection.products[currentCollection.products.length - 1].cursor;
+        variables.after = currentCollection.items[currentCollection.items.length - 1].cursor;
+        setCurrentDirection('forward');
+        setCurrentCursor(variables.after);
+        setCurrentPage(currentPage + 1);
       } else {
-        variables.last = pageSize;
-        variables.before = currentCollection.products[0].cursor;
+        // When going back, need to fetch pageSize + 1 to get the correct cursor
+        variables.last = pageSize + 1;
+        variables.before = currentCollection.items[0].cursor;
+        setCurrentDirection('back');
+        setCurrentPage(currentPage - 1);
       }
 
       loadCollection({ variables });
     },
-    [currentCollection.id, currentCollection.products, loadCollection, pageSize]
+    [currentCollection.id, currentCollection.items, currentPage, loadCollection, pageSize]
   );
 
   if (error) {
     throw error;
   }
 
-  const pageCount = Math.ceil(collection.productsCount / pageSize);
+  let items = currentCollection.items;
+
+  if (loading) {
+    items = Array(pageSize).fill(undefined);
+  }
 
   return (
-    <ProductCategory
-      header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
-      products={currentCollection.products}
-      pagination={{
-        hasNextPage: currentCollection.hasNextPage,
-        hasPreviousPage: currentCollection.hasPreviousPage,
-        setCurrentPage: handleSetCurrentPage
-      }}
-    />
+    <>
+      <Seo title={currentTitle} />
+      <ProductCategory
+        header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
+        items={items}
+        pagination={{
+          hasNextPage: currentCollection.hasNextPage,
+          hasPreviousPage: currentCollection.hasPreviousPage,
+          setCurrentPage: handleSetCurrentPage
+        }}
+      />
+    </>
   );
 };

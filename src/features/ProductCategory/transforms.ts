@@ -55,11 +55,24 @@ function getProductListItem(
   };
 }
 
-export function getCollection(response: ProductCategoryShopifyCollectionResponse): ProductCategoryCollection {
+export function getCollection(
+  response: ProductCategoryShopifyCollectionResponse,
+  pageSize: number,
+  cursor?: string,
+  direction: 'forward' | 'back' = 'forward'
+): ProductCategoryCollection {
   const collection = response?.collectionList?.items?.[0].shopifyCollection;
 
   if (!collection) {
     return null;
+  }
+
+  // When getting a 'back' collection, overfetch for the current cursor
+  if (direction === 'back' && collection.products.edges.length > pageSize) {
+    const cursorEdge = collection.products.edges.shift();
+    cursor = cursorEdge.cursor;
+  } else if (direction === 'forward' && collection.products.edges.length > pageSize) {
+    collection.products.edges.pop();
   }
 
   return {
@@ -70,7 +83,8 @@ export function getCollection(response: ProductCategoryShopifyCollectionResponse
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     productsCount: collection.productsCount,
-    products: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
+    items: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
+    cursor: cursor ?? null,
     hasNextPage: collection.products.pageInfo.hasNextPage ?? false,
     hasPreviousPage: collection.products.pageInfo.hasPreviousPage ?? false
   };
@@ -113,4 +127,16 @@ export function getCollectionPageIdOrSlug(idOrSlug: string) {
     id: '',
     slug: idOrSlug
   };
+}
+
+export function getCurrentCursor(collection: ProductCategoryCollection) {
+  return collection.items[collection.items.length - 1].cursor;
+}
+
+export function getCurrentUrl(collection: ProductCategoryCollection, cursor: string, page: number) {
+  return collection.hasPreviousPage ? `${collection.url}/${cursor}/${page}` : collection.url;
+}
+
+export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {
+  return collection.hasPreviousPage ? `Page ${page} | ${collection.name}` : collection.name;
 }

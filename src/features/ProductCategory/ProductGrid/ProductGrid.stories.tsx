@@ -17,7 +17,7 @@ const Template: ComponentStory<typeof ProductGrid> = (args) => <ProductGrid {...
 
 export const _ProductGrid = Template.bind({});
 _ProductGrid.args = {
-  products: collection.products
+  products: collection.items
 };
 
 export default Meta;
