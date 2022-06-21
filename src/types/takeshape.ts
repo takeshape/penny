@@ -84,12 +84,17 @@ export type Query = {
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
+  /** Get a Page by ID */
+  getPage?: Maybe<Page>;
+  /** Returns a list Page in natural order. */
+  getPageList?: Maybe<PagePaginatedList>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
   searchProductPagePoliciesIndex?: Maybe<ProductPagePoliciesSearchResults>;
   searchProductIndex?: Maybe<ProductSearchResults>;
   searchCollectionIndex?: Maybe<CollectionSearchResults>;
+  searchPageIndex?: Maybe<PageSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
   withContext?: Maybe<WithContext>;
 };
@@ -404,6 +409,28 @@ export type QueryGetCollectionListArgs = {
 
 
 /** Root of the Schema */
+export type QueryGetPageArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetPageListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWherePageInput>;
+};
+
+
+/** Root of the Schema */
 export type QuerySearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -478,6 +505,19 @@ export type QuerySearchCollectionIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereCollectionInput>;
+};
+
+
+/** Root of the Schema */
+export type QuerySearchPageIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWherePageInput>;
 };
 
 
@@ -13415,6 +13455,93 @@ export type TsWhereCollectionInput = {
   NOT?: InputMaybe<TsWhereCollectionInput>;
 };
 
+export type Page = TsSearchable & {
+  __typename?: 'Page';
+  title?: Maybe<Scalars['String']>;
+  sections?: Maybe<Array<Maybe<PageSectionsProperty>>>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type PageSectionsProperty = PageSectionTitle | PageSectionMdx;
+
+export type PageSectionTitle = {
+  __typename?: 'PageSectionTitle';
+  label?: Maybe<Scalars['String']>;
+  heading?: Maybe<Scalars['String']>;
+  subheading?: Maybe<Scalars['String']>;
+};
+
+export type PageSectionMdx = {
+  __typename?: 'PageSectionMdx';
+  content?: Maybe<Scalars['String']>;
+};
+
+
+export type PageSectionMdxContentArgs = {
+  format?: InputMaybe<TsmdxSerializationFormat>;
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export enum TsmdxSerializationFormat {
+  Mdx = 'mdx',
+  Html = 'html'
+}
+
+export type PagePaginatedList = {
+  __typename?: 'PagePaginatedList';
+  items: Array<Page>;
+  total: Scalars['Int'];
+};
+
+export type TsWherePageInput = {
+  title?: InputMaybe<TsWhereStringInput>;
+  sections?: InputMaybe<TsWherePageSectionsInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+  AND?: InputMaybe<Array<InputMaybe<TsWherePageInput>>>;
+  OR?: InputMaybe<Array<InputMaybe<TsWherePageInput>>>;
+  NOT?: InputMaybe<TsWherePageInput>;
+};
+
+export type TsWherePageSectionsInput = {
+  label?: InputMaybe<TsWhereStringInput>;
+  heading?: InputMaybe<TsWhereStringInput>;
+  subheading?: InputMaybe<TsWhereStringInput>;
+  content?: InputMaybe<TsWhereMdxInput>;
+};
+
+export type TsWhereMdxInput = {
+  /** Full text searching with fuzzy matching. */
+  match?: InputMaybe<Scalars['String']>;
+};
+
 /** Asset search results */
 export type AssetSearchResults = {
   __typename?: 'AssetSearchResults';
@@ -13454,6 +13581,13 @@ export type ProductSearchResults = {
 export type CollectionSearchResults = {
   __typename?: 'CollectionSearchResults';
   results: Array<Collection>;
+  total: Scalars['Int'];
+};
+
+/** Page search results */
+export type PageSearchResults = {
+  __typename?: 'PageSearchResults';
+  results: Array<Page>;
   total: Scalars['Int'];
 };
 
@@ -13569,6 +13703,7 @@ export type TsWhereInput = {
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
   Navigation_message?: InputMaybe<TsWhereDraftjsInput>;
   shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
+  sections?: InputMaybe<TsWherePageSectionsInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
@@ -15187,12 +15322,17 @@ export type WithContext = {
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
+  /** Get a Page by ID */
+  getPage?: Maybe<Page>;
+  /** Returns a list Page in natural order. */
+  getPageList?: Maybe<PagePaginatedList>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
   searchProductPagePoliciesIndex?: Maybe<ProductPagePoliciesSearchResults>;
   searchProductIndex?: Maybe<ProductSearchResults>;
   searchCollectionIndex?: Maybe<CollectionSearchResults>;
+  searchPageIndex?: Maybe<PageSearchResults>;
   search?: Maybe<TsSearchableSearchResults>;
 };
 
@@ -15506,6 +15646,28 @@ export type WithContextGetCollectionListArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetPageArgs = {
+  _id: Scalars['ID'];
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetPageListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWherePageInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -15580,6 +15742,19 @@ export type WithContextSearchCollectionIndexArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWhereCollectionInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextSearchPageIndexArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWherePageInput>;
 };
 
 
@@ -15689,6 +15864,14 @@ export type Mutation = {
   duplicateCollection?: Maybe<DuplicateCollectionResult>;
   /** Delete Collection */
   deleteCollection?: Maybe<DeleteCollectionResult>;
+  /** Update Page */
+  updatePage?: Maybe<UpdatePageResult>;
+  /** Create Page */
+  createPage?: Maybe<CreatePageResult>;
+  /** Duplicate Page */
+  duplicatePage?: Maybe<DuplicatePageResult>;
+  /** Delete Page */
+  deletePage?: Maybe<DeletePageResult>;
 };
 
 
@@ -16023,6 +16206,35 @@ export type MutationDuplicateCollectionArgs = {
 
 export type MutationDeleteCollectionArgs = {
   input: DeleteCollectionInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUpdatePageArgs = {
+  input: UpdatePageInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  structure?: InputMaybe<Array<InputMaybe<ContentStructureInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationCreatePageArgs = {
+  input: CreatePageInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationDuplicatePageArgs = {
+  input: DuplicatePageInput;
+  clientMutationId?: InputMaybe<Scalars['String']>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type MutationDeletePageArgs = {
+  input: DeletePageInput;
   clientMutationId?: InputMaybe<Scalars['String']>;
 };
 
@@ -17804,5 +18016,109 @@ export type DeleteCollectionResult = {
 
 /** delete Collection input */
 export type DeleteCollectionInput = {
+  _id: Scalars['ID'];
+};
+
+export type UpdatePageResult = {
+  __typename?: 'UpdatePageResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Page>;
+};
+
+/** update Page input */
+export type UpdatePageInput = {
+  _id: Scalars['ID'];
+  title?: InputMaybe<Scalars['String']>;
+  sections?: InputMaybe<Array<InputMaybe<PageSectionMdxPageSectionTitleInputUnion>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type PageSectionMdxPageSectionTitleInputUnion = {
+  pageSectionTitle?: InputMaybe<PageSectionTitleInput>;
+  pageSectionMdx?: InputMaybe<PageSectionMdxInput>;
+};
+
+export type PageSectionTitleInput = {
+  label?: InputMaybe<Scalars['String']>;
+  heading?: InputMaybe<Scalars['String']>;
+  subheading?: InputMaybe<Scalars['String']>;
+};
+
+export type PageSectionMdxInput = {
+  content?: InputMaybe<Scalars['String']>;
+};
+
+export type CreatePageResult = {
+  __typename?: 'CreatePageResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Page>;
+};
+
+/** create Page input */
+export type CreatePageInput = {
+  title?: InputMaybe<Scalars['String']>;
+  sections?: InputMaybe<Array<InputMaybe<PageSectionMdxPageSectionTitleInputUnion>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _id?: InputMaybe<Scalars['ID']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DuplicatePageResult = {
+  __typename?: 'DuplicatePageResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Page>;
+};
+
+/** duplicate Page input */
+export type DuplicatePageInput = {
+  _id: Scalars['ID'];
+  title?: InputMaybe<Scalars['String']>;
+  sections?: InputMaybe<Array<InputMaybe<PageSectionMdxPageSectionTitleInputUnion>>>;
+  _shapeId?: InputMaybe<Scalars['String']>;
+  _version?: InputMaybe<Scalars['Int']>;
+  _shapeName?: InputMaybe<Scalars['String']>;
+  _createdAt?: InputMaybe<Scalars['String']>;
+  _createdBy?: InputMaybe<Scalars['String']>;
+  _updatedAt?: InputMaybe<Scalars['String']>;
+  _updatedBy?: InputMaybe<Scalars['String']>;
+  _schemaVersion?: InputMaybe<Scalars['Float']>;
+  _enabled?: InputMaybe<Scalars['Boolean']>;
+  _enabledAt?: InputMaybe<Scalars['String']>;
+  _status?: InputMaybe<DefaultWorkflow>;
+  _contentTypeId?: InputMaybe<Scalars['String']>;
+  _contentTypeName?: InputMaybe<Scalars['String']>;
+};
+
+export type DeletePageResult = {
+  __typename?: 'DeletePageResult';
+  clientMutationId?: Maybe<Scalars['String']>;
+  result?: Maybe<Scalars['Boolean']>;
+};
+
+/** delete Page input */
+export type DeletePageInput = {
   _id: Scalars['ID'];
 };

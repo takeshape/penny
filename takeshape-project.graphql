@@ -413,6 +413,36 @@ type Query {
     """
     where: TSWhereCollectionInput
   ): CollectionPaginatedList
+
+  """Get a Page by ID"""
+  getPage(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Page
+
+  """Returns a list Page in natural order."""
+  getPageList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWherePageInput
+  ): PagePaginatedList
   searchAssetIndex(
     terms: String
 
@@ -545,6 +575,28 @@ type Query {
     """
     where: TSWhereCollectionInput
   ): CollectionSearchResults
+  searchPageIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWherePageInput
+  ): PageSearchResults
   search(
     terms: String
 
@@ -16352,6 +16404,92 @@ input TSWhereCollectionInput {
   NOT: TSWhereCollectionInput
 }
 
+type Page implements TSSearchable {
+  """"""
+  title: String
+  sections: [PageSectionsProperty]
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: TSUser
+  _updatedAt: String
+  _updatedBy: TSUser
+  _schemaVersion: Float
+  _enabled: Boolean @deprecated(reason: "Use _status instead")
+  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+  searchSummary: String
+}
+
+union PageSectionsProperty = PageSectionTitle | PageSectionMdx
+
+type PageSectionTitle {
+  label: String
+  heading: String
+  subheading: String
+}
+
+type PageSectionMdx {
+  content(
+    """Output MDX in another format"""
+    format: TSMDXSerializationFormat = mdx
+    imageConfig: JSON
+    images: TSImagesConfig
+
+    """A prefix to be added to all CSS classes in the generated HTML"""
+    classPrefix: String = ""
+
+    """
+    A prefix to be added to all id properties on header elements when outputting as HTML
+    """
+    headerIdPrefix: String = ""
+  ): String
+}
+
+enum TSMDXSerializationFormat {
+  mdx
+  html
+}
+
+type PagePaginatedList {
+  items: [Page!]!
+  total: Int!
+}
+
+input TSWherePageInput {
+  title: TSWhereStringInput
+  sections: TSWherePageSectionsInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+  AND: [TSWherePageInput]
+  OR: [TSWherePageInput]
+  NOT: TSWherePageInput
+}
+
+input TSWherePageSectionsInput {
+  label: TSWhereStringInput
+  heading: TSWhereStringInput
+  subheading: TSWhereStringInput
+  content: TSWhereMdxInput
+}
+
+input TSWhereMdxInput {
+  """Full text searching with fuzzy matching."""
+  match: String
+}
+
 """Asset search results"""
 type AssetSearchResults {
   results: [Asset!]!
@@ -16385,6 +16523,12 @@ type ProductSearchResults {
 """Collection search results"""
 type CollectionSearchResults {
   results: [Collection!]!
+  total: Int!
+}
+
+"""Page search results"""
+type PageSearchResults {
+  results: [Page!]!
   total: Int!
 }
 
@@ -16499,6 +16643,7 @@ input TSWhereInput {
   shopifyProductId: TSWhereStringInput
   Navigation_message: TSWhereDraftjsInput
   shopifyCollectionId: TSWhereStringInput
+  sections: TSWherePageSectionsInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
@@ -18508,6 +18653,36 @@ type WithContext {
     """
     where: TSWhereCollectionInput
   ): CollectionPaginatedList
+
+  """Get a Page by ID"""
+  getPage(_id: ID!, locale: String, enableLocaleFallback: Boolean = true): Page
+
+  """Returns a list Page in natural order."""
+  getPageList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWherePageInput
+  ): PagePaginatedList
   searchAssetIndex(
     terms: String
 
@@ -18640,6 +18815,28 @@ type WithContext {
     """
     where: TSWhereCollectionInput
   ): CollectionSearchResults
+  searchPageIndex(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWherePageInput
+  ): PageSearchResults
   search(
     terms: String
 
@@ -18843,6 +19040,18 @@ type Mutation {
 
   """Delete Collection"""
   deleteCollection(input: DeleteCollectionInput!, clientMutationId: String): DeleteCollectionResult
+
+  """Update Page"""
+  updatePage(input: UpdatePageInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdatePageResult
+
+  """Create Page"""
+  createPage(input: CreatePageInput!, clientMutationId: String): CreatePageResult
+
+  """Duplicate Page"""
+  duplicatePage(input: DuplicatePageInput!, clientMutationId: String, locale: String, enableLocaleFallback: Boolean = true): DuplicatePageResult
+
+  """Delete Page"""
+  deletePage(input: DeletePageInput!, clientMutationId: String): DeletePageResult
 }
 
 """A project file stored on s3"""
@@ -20970,5 +21179,111 @@ type DeleteCollectionResult {
 
 """delete Collection input"""
 input DeleteCollectionInput {
+  _id: ID!
+}
+
+type UpdatePageResult {
+  clientMutationId: String
+  result: Page
+}
+
+"""update Page input"""
+input UpdatePageInput {
+  _id: ID!
+
+  """"""
+  title: String
+  sections: [PageSectionMdxPageSectionTitleInputUnion]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+input PageSectionMdxPageSectionTitleInputUnion {
+  pageSectionTitle: PageSectionTitleInput
+  pageSectionMdx: PageSectionMdxInput
+}
+
+input PageSectionTitleInput {
+  label: String
+  heading: String
+  subheading: String
+}
+
+input PageSectionMdxInput {
+  """"""
+  content: String
+}
+
+type CreatePageResult {
+  clientMutationId: String
+  result: Page
+}
+
+"""create Page input"""
+input CreatePageInput {
+  """"""
+  title: String
+  sections: [PageSectionMdxPageSectionTitleInputUnion]
+  _shapeId: String
+  _id: ID
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DuplicatePageResult {
+  clientMutationId: String
+  result: Page
+}
+
+"""duplicate Page input"""
+input DuplicatePageInput {
+  _id: ID!
+
+  """"""
+  title: String
+  sections: [PageSectionMdxPageSectionTitleInputUnion]
+  _shapeId: String
+  _version: Int
+  _shapeName: String
+  _createdAt: String
+  _createdBy: String
+  _updatedAt: String
+  _updatedBy: String
+  _schemaVersion: Float
+  _enabled: Boolean
+  _enabledAt: String
+  _status: DefaultWorkflow
+  _contentTypeId: String
+  _contentTypeName: String
+}
+
+type DeletePageResult {
+  clientMutationId: String
+  result: Boolean
+}
+
+"""delete Page input"""
+input DeletePageInput {
   _id: ID!
 }
