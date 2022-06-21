@@ -140,7 +140,7 @@ type Query {
      - `title`
      - `updated_at`
      - `vendor`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -196,7 +196,7 @@ type Query {
      - `title`
      - `updated_at`
      - `vendor`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -267,7 +267,7 @@ type Query {
      - `published_status`
      - `title`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -410,6 +410,33 @@ type Query {
 
   """Returns a list Collection in natural order."""
   getCollectionList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereCollectionInput
+  ): CollectionPaginatedList
+
+  """Returns a list Collection in natural order."""
+  getCollectionListWithTtl(
     terms: String
 
     """The offset from the first result you want to fetch."""
@@ -1491,7 +1518,7 @@ type Shopify_ProductVariant {
      - `namespace`
      - `owner_type`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -1630,7 +1657,7 @@ type Shopify_ProductVariant {
 
   """
   The Storefront GraphQL API ID of the `ProductVariant`.
-
+  
   As of the `2022-04` version release, the Storefront GraphQL API will no longer return Base64 encoded IDs to match the behavior of the Admin GraphQL API. Therefore, you can safely use the `id` field's value instead.
   """
   storefrontId: StorefrontId! @deprecated(reason: "Use `id` instead")
@@ -2298,7 +2325,7 @@ type Shopify_Product implements TSSearchable {
      - `published_status`
      - `title`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -2490,7 +2517,7 @@ type Shopify_Product implements TSSearchable {
      - `namespace`
      - `owner_type`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -2637,7 +2664,7 @@ type Shopify_Product implements TSSearchable {
 
   """
   The Storefront GraphQL API ID of the `Product`.
-
+  
   As of the `2022-04` version release, the Storefront GraphQL API will no longer return Base64 encoded IDs to match the behavior of the Admin GraphQL API. Therefore, you can safely use the `id` field's value instead.
   """
   storefrontId: StorefrontId! @deprecated(reason: "Use `id` instead")
@@ -2756,9 +2783,9 @@ type Shopify_Collection {
 
   """
   A unique string that identifies the collection. If a handle isn't specified when a collection is created, it's automatically generated from the collection's original title, and typically includes words from the title separated by hyphens. For example, a collection that was created with the title `Summer Catalog 2022` might have the handle `summer-catalog-2022`.
-
+  
   If the title is changed, the handle doesn't automatically change.
-
+  
   The handle can be used in themes by the Liquid templating language to refer to the collection, but using the ID is preferred because it never changes.
   """
   handle: String!
@@ -2840,7 +2867,7 @@ type Shopify_Collection {
      - `namespace`
      - `owner_type`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -2953,7 +2980,7 @@ type Shopify_Collection {
 
   """
   The Storefront GraphQL API ID of the `Collection`.
-
+  
   As of the `2022-04` version release, the Storefront GraphQL API will no longer return Base64 encoded IDs to match the behavior of the Admin GraphQL API. Therefore, you can safely use the `id` field's value instead.
   """
   storefrontId: StorefrontId! @deprecated(reason: "Use `id` instead")
@@ -3194,7 +3221,7 @@ type Shopify_Image {
 
   """
   The location of the original image as a URL.
-
+  
   If there are any existing transformations in the original source URL, they will remain and not be stripped.
   """
   originalSrc: Url! @deprecated(reason: "Use `url` instead")
@@ -3236,7 +3263,7 @@ type Shopify_Image {
 
   """
   The location of the transformed image as a URL.
-
+  
   All transformation arguments are considered "best-effort". If they can be applied to an image, they will be.
   Otherwise any transformations which an image type does not support will be ignored.
   """
@@ -3263,11 +3290,11 @@ type Shopify_Image {
 
   """
   The location of the image as a URL.
-
+  
   If no transform options are specified, then the original image will be preserved including any pre-applied transforms.
-
+  
   All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
-
+  
   If you need multiple variations of the same image, then you can use [GraphQL aliases](https://graphql.org/learn/queries/#aliases).
   """
   url(
@@ -3992,81 +4019,6 @@ type Shopify_PublishedTranslation {
 type Shopify_Video {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
-
-  """
-  The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
-  """
-  createdAt: DateTime!
-
-  """The duration of the video. Only available when `status` is READY."""
-  duration: Int
-
-  """Any errors that have occurred on the file."""
-  fileErrors: [Shopify_FileError!]!
-
-  """The status of the file."""
-  fileStatus: Shopify_FileStatus!
-
-  """The filename of the video."""
-  filename: String!
-
-  """A globally-unique identifier."""
-  id: ID!
-
-  """The media content type."""
-  mediaContentType: Shopify_MediaContentType!
-
-  """Any errors which have occurred on the media."""
-  mediaErrors: [Shopify_MediaError!]!
-
-  """The warnings attached to the media."""
-  mediaWarnings: [Shopify_MediaWarning!]!
-
-  """
-  The original source for a video. Value is `null` when `status` is PROCESSING.
-  """
-  originalSource: Shopify_VideoSource
-
-  """The preview image for the media."""
-  preview: Shopify_MediaPreviewImage
-
-  """
-  The sources for a video. Sources are only available when `status` is READY.
-  """
-  sources: [Shopify_VideoSource!]!
-
-  """Current status of the media."""
-  status: Shopify_MediaStatus!
-}
-
-"""Represents a source for a Shopify hosted video."""
-type Shopify_VideoSource {
-  """The size of the video file in bytes."""
-  fileSize: Int
-
-  """The format of the video source."""
-  format: String!
-
-  """The height of the video."""
-  height: Int!
-
-  """The video MIME type."""
-  mimeType: String!
-
-  """The URL of the video."""
-  url: String!
-
-  """The width of the video."""
-  width: Int!
-}
-
-enum Shopify_CropRegion {
-  CENTER
-  TOP
-  BOTTOM
-  LEFT
-  RIGHT
-}
 
   """
   The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
@@ -5672,7 +5624,7 @@ type Shopify_SellingPlan {
 
   """
   A customer-facing description of the selling plan.
-
+  
   If your store supports multiple currencies, then don't include country-specific pricing content, such as "Buy monthly, get 10$ CAD off". This field won't be converted to reflect different currencies.
   """
   name: String!
@@ -5726,10 +5678,10 @@ type Shopify_SellingPlanRecurringBillingPolicy {
 type Shopify_SellingPlanAnchor {
   """
   The day of the anchor.
-
+  
   If `type` is WEEKDAY, then the value must be between 1-7. Shopify interprets
   the days of the week according to ISO 8601, where 1 is Monday.
-
+  
   If `type` is not WEEKDAY, then the value must be between 1-31.
   """
   day: Int!
@@ -6091,180 +6043,6 @@ type ProductPageDetailsDetails {
   ): String
 }
 
-type Product implements TSSearchable {
-  """Initialized with title from shopify"""
-  name: String
-
-  """"""
-  slug: String
-
-  """"""
-  productComponent: String
-
-  """"""
-  hideRelatedProducts: Boolean
-
-  """"""
-  hideReviews: Boolean
-
-  """"""
-  showPolicies: Boolean
-
-  """"""
-  policies(enableLocaleFallback: Boolean = true, locale: String): ProductPagePolicies
-
-  """"""
-  showDetails: Boolean
-
-  """"""
-  details(enableLocaleFallback: Boolean = true, locale: String): ProductPageDetails
-  shopifyProductId: String
-  shopifyProduct: Shopify_Product
-  _shapeId: String
-  _id: ID
-  _version: Int
-  _shapeName: String
-  _createdAt: String
-  _createdBy: TSUser
-  _updatedAt: String
-  _updatedBy: TSUser
-  _schemaVersion: Float
-  _enabled: Boolean @deprecated(reason: "Use _status instead")
-  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
-  _status: DefaultWorkflow
-  _contentTypeId: String
-  _contentTypeName: String
-  searchSummary: String
-}
-
-type ProductPagePolicies implements TSSearchable {
-  """"""
-  name: String!
-
-  """"""
-  policies: [ProductPagePoliciesPolicies!]!
-  _shapeId: String
-  _id: ID
-  _version: Int
-  _shapeName: String
-  _createdAt: String
-  _createdBy: TSUser
-  _updatedAt: String
-  _updatedBy: TSUser
-  _schemaVersion: Float
-  _enabled: Boolean @deprecated(reason: "Use _status instead")
-  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
-  _status: DefaultWorkflow
-  _contentTypeId: String
-  _contentTypeName: String
-  searchSummary: String
-}
-
-type ProductPagePoliciesPolicies {
-  name: JSON!
-  nameHtml(
-    imageConfig: JSON
-    images: TSImagesConfig
-
-    """A prefix to be added to all CSS classes in the generated HTML"""
-    classPrefix: String = ""
-
-    """
-    A prefix to be added to all id properties on header elements in the generated HTML
-    """
-    headerIdPrefix: String = ""
-  ): String
-  description: JSON!
-  descriptionHtml(
-    imageConfig: JSON
-    images: TSImagesConfig
-
-    """A prefix to be added to all CSS classes in the generated HTML"""
-    classPrefix: String = ""
-
-    """
-    A prefix to be added to all id properties on header elements in the generated HTML
-    """
-    headerIdPrefix: String = ""
-  ): String
-
-  """"""
-  image(enableLocaleFallback: Boolean = true, locale: String): Asset
-}
-
-type ProductPageDetails implements TSSearchable {
-  """"""
-  name: String!
-
-  """"""
-  text: ProductPageDetailsText!
-
-  """"""
-  details: [ProductPageDetailsDetails!]!
-  _shapeId: String
-  _id: ID
-  _version: Int
-  _shapeName: String
-  _createdAt: String
-  _createdBy: TSUser
-  _updatedAt: String
-  _updatedBy: TSUser
-  _schemaVersion: Float
-  _enabled: Boolean @deprecated(reason: "Use _status instead")
-  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
-  _status: DefaultWorkflow
-  _contentTypeId: String
-  _contentTypeName: String
-  searchSummary: String
-}
-
-type ProductPageDetailsText {
-  primary: JSON!
-  primaryHtml(
-    imageConfig: JSON
-    images: TSImagesConfig
-
-    """A prefix to be added to all CSS classes in the generated HTML"""
-    classPrefix: String = ""
-
-    """
-    A prefix to be added to all id properties on header elements in the generated HTML
-    """
-    headerIdPrefix: String = ""
-  ): String
-  secondary: JSON!
-  secondaryHtml(
-    imageConfig: JSON
-    images: TSImagesConfig
-
-    """A prefix to be added to all CSS classes in the generated HTML"""
-    classPrefix: String = ""
-
-    """
-    A prefix to be added to all id properties on header elements in the generated HTML
-    """
-    headerIdPrefix: String = ""
-  ): String
-}
-
-type ProductPageDetailsDetails {
-  """"""
-  image(enableLocaleFallback: Boolean = true, locale: String): Asset
-  description: JSON!
-  descriptionHtml(
-    imageConfig: JSON
-    images: TSImagesConfig
-
-    """A prefix to be added to all CSS classes in the generated HTML"""
-    classPrefix: String = ""
-
-    """
-    A prefix to be added to all id properties on header elements in the generated HTML
-    """
-    headerIdPrefix: String = ""
-  ): String
-}
-
 type Recharge_Product {
   id: Float
   product_id: Float
@@ -6441,7 +6219,7 @@ type Shopify_DeliveryLocationGroup {
      - `name`
      - `province`
      - `zip`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -6546,7 +6324,7 @@ type Shopify_Location {
      - `inventory_group_id`
      - `inventory_item_id`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -6595,7 +6373,7 @@ type Shopify_Location {
      - `namespace`
      - `owner_type`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -6833,7 +6611,7 @@ type Shopify_InventoryItem {
      - `inventory_group_id`
      - `inventory_item_id`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -7393,7 +7171,7 @@ type Shopify_Customer {
 
   """
   Whether the merchant can delete the customer from their store.
-
+  
   A customer can be deleted from a store only if they have not yet made an order. After a customer makes an
   order, they can't be deleted from a store.
   """
@@ -7446,7 +7224,7 @@ type Shopify_Customer {
      - `created_at`
      - `subject_type`
      - `verb`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -7483,7 +7261,7 @@ type Shopify_Customer {
 
   """
   The amount of time since the customer was first added to the store.
-
+  
   Example: 'about 12 years'.
   """
   lifetimeDuration: String!
@@ -7494,7 +7272,7 @@ type Shopify_Customer {
   """
   The marketing subscription opt-in level, as described by the M3AAWG best practices guidelines, that the
   customer gave when they consented to receive marketing material by email.
-
+  
   If the customer does not accept email marketing, then this property is `null`.
   """
   marketingOptInLevel: Shopify_CustomerMarketingOptInLevel @deprecated(reason: "Use `emailMarketingConsent` instead")
@@ -7541,7 +7319,7 @@ type Shopify_Customer {
      - `namespace`
      - `owner_type`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -7634,7 +7412,7 @@ type Shopify_Customer {
      - `tag_not`
      - `test`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -7704,7 +7482,7 @@ type Shopify_Customer {
 
   """
   The current SMS marketing state for the customer's phone number.
-
+  
   If the customer does not have a phone number, then this property is `null`.
   """
   smsMarketingConsent: Shopify_CustomerSmsMarketingConsentState
@@ -7786,14 +7564,14 @@ type Shopify_MailingAddress {
 
   """
   The two-letter code for the country of the address.
-
+  
   For example, US.
   """
   countryCode: String @deprecated(reason: "Use `countryCodeV2` instead")
 
   """
   The two-letter code for the country of the address.
-
+  
   For example, US.
   """
   countryCodeV2: Shopify_CountryCode
@@ -7832,7 +7610,7 @@ type Shopify_MailingAddress {
 
   """
   A unique phone number for the customer.
-
+  
   Formatted using E.164 standard. For example, _+16135551111_.
   """
   phone: String
@@ -7842,7 +7620,7 @@ type Shopify_MailingAddress {
 
   """
   The two-letter code for the region.
-
+  
   For example, ON.
   """
   provinceCode: String
@@ -7975,7 +7753,7 @@ type Shopify_Order {
     """
     Supported filter parameters:
      - `happened_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -8210,7 +7988,7 @@ type Shopify_Order {
      - `created_at`
      - `subject_type`
      - `verb`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -8251,7 +8029,7 @@ type Shopify_Order {
     Supported filter parameters:
      - `assigned_location_id`
      - `status`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -8404,7 +8182,7 @@ type Shopify_Order {
      - `namespace`
      - `owner_type`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -9714,7 +9492,7 @@ type Shopify_LineItem {
 
   """
   The service provider that fulfills the line item.
-
+  
   Deleted fulfillment services will return null.
   """
   fulfillmentService: Shopify_FulfillmentService @deprecated(reason: "Use [FulfillmentOrder#assignedLocation](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder#field-fulfillmentorder-assignedlocation) instead.")
@@ -10379,7 +10157,7 @@ type Shopify_SubscriptionMailingAddress {
 
   """
   The two-letter code for the country of the address.
-
+  
   For example, US.
   """
   countryCode: Shopify_CountryCode
@@ -10403,7 +10181,7 @@ type Shopify_SubscriptionMailingAddress {
 
   """
   The two-letter code for the region.
-
+  
   For example, ON.
   """
   provinceCode: String
@@ -10589,11 +10367,11 @@ type Shopify_SubscriptionLine {
 
   """
   The selling plan ID associated to the line.
-
+  
   Indicates which selling plan was used to create this
   contract line initially. The selling plan ID is also used to
   find the associated delivery profile.
-
+  
   The subscription contract, subscription line, or selling plan might have
   changed. As a result, the selling plan's attributes might not
   match the information on the contract.
@@ -10604,7 +10382,7 @@ type Shopify_SubscriptionLine {
   The selling plan name associated to the line. This name describes
   the order line items created from this subscription line
   for both merchants and customers.
-
+  
   The value can be different from the selling plan's name, because both
   the selling plan's name and the subscription line's selling_plan_name
   attribute can be updated independently.
@@ -11677,7 +11455,7 @@ type Shopify_LineItemMutable {
 
   """
   The service provider that fulfills the line item.
-
+  
   Deleted fulfillment services will return null.
   """
   fulfillmentService: Shopify_FulfillmentService
@@ -12462,7 +12240,7 @@ type Shopify_OrderRisk {
 
   """
   The likelihood that an order is fraudulent, based on this order risk.
-
+  
   The level can be set by Shopify risk analysis or by an app.
   """
   level: Shopify_OrderRiskLevel
@@ -12949,7 +12727,7 @@ type ShopifyStorefront_Customer {
     """
     Supported filter parameters:
      - `processed_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -13014,14 +12792,14 @@ type ShopifyStorefront_MailingAddress {
 
   """
   The two-letter code for the country of the address.
-
+  
   For example, US.
   """
   countryCode: String @deprecated(reason: "Use `countryCodeV2` instead")
 
   """
   The two-letter code for the country of the address.
-
+  
   For example, US.
   """
   countryCodeV2: ShopifyStorefront_CountryCode
@@ -13060,7 +12838,7 @@ type ShopifyStorefront_MailingAddress {
 
   """
   A unique phone number for the customer.
-
+  
   Formatted using E.164 standard. For example, _+16135551111_.
   """
   phone: String
@@ -13070,7 +12848,7 @@ type ShopifyStorefront_MailingAddress {
 
   """
   The two-letter code for the region.
-
+  
   For example, ON.
   """
   provinceCode: String
@@ -14030,7 +13808,7 @@ type ShopifyStorefront_Image {
 
   """
   The location of the original image as a URL.
-
+  
   If there are any existing transformations in the original source URL, they will remain and not be stripped.
   """
   originalSrc: Url! @deprecated(reason: "Use `url` instead")
@@ -14040,7 +13818,7 @@ type ShopifyStorefront_Image {
 
   """
   The location of the transformed image as a URL.
-
+  
   All transformation arguments are considered "best-effort". If they can be applied to an image, they will be.
   Otherwise any transformations which an image type does not support will be ignored.
   """
@@ -14067,11 +13845,11 @@ type ShopifyStorefront_Image {
 
   """
   The location of the image as a URL.
-
+  
   If no transform options are specified, then the original image will be preserved including any pre-applied transforms.
-
+  
   All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
-
+  
   If you need multiple variations of the same image, then you can use [GraphQL aliases](https://graphql.org/learn/queries/#aliases).
   """
   url(
@@ -14330,7 +14108,7 @@ type ShopifyStorefront_Blog {
      - `tag`
      - `tag_not`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -14657,7 +14435,7 @@ type ShopifyStorefront_Product {
 
   """
   The featured image for the product.
-
+  
   This field is functionally equivalent to `images(first: 1)`.
   """
   featuredImage: ShopifyStorefront_Image
@@ -15207,7 +14985,7 @@ type ShopifyStorefront_FilterValue {
 
   """
   An input object that can be used to filter by this value on the parent field.
-
+  
   The value is provided as a helper for building dynamic filtering UI. For example, if you have a list of selected `FilterValue` objects, you can combine their respective `input` values to use in a subsequent query.
   """
   input: Json!
@@ -18518,7 +18296,7 @@ type WithContext {
      - `title`
      - `updated_at`
      - `vendor`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -18574,7 +18352,7 @@ type WithContext {
      - `title`
      - `updated_at`
      - `vendor`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -18645,7 +18423,7 @@ type WithContext {
      - `published_status`
      - `title`
      - `updated_at`
-
+    
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
     for more information about using filters.
     """
@@ -18788,6 +18566,33 @@ type WithContext {
 
   """Returns a list Collection in natural order."""
   getCollectionList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereCollectionInput
+  ): CollectionPaginatedList
+
+  """Returns a list Collection in natural order."""
+  getCollectionListWithTtl(
     terms: String
 
     """The offset from the first result you want to fetch."""
@@ -19083,6 +18888,10 @@ type Mutation {
     input: ShopifyStorefront_CartInput
   ): ShopifyStorefront_CartCreatePayload
   createMyCart(
+    """The fields used to create a cart."""
+    input: ShopifyStorefront_CartInput
+  ): ShopifyStorefront_CartCreatePayload
+  createCart(
     """The fields used to create a cart."""
     input: ShopifyStorefront_CartInput
   ): ShopifyStorefront_CartCreatePayload
@@ -20140,7 +19949,7 @@ input ShopifyStorefront_CustomerCreateInput {
 
   """
   A unique phone number for the customer.
-
+  
   Formatted using E.164 standard. For example, _+16135551111_.
   """
   phone: String
@@ -20217,7 +20026,7 @@ input ShopifyStorefront_CustomerUpdateInput {
 
   """
   A unique phone number for the customer.
-
+  
   Formatted using E.164 standard. For example, _+16135551111_. To remove the phone number, specify `null`.
   """
   phone: String
@@ -20272,7 +20081,7 @@ input ShopifyStorefront_MailingAddressInput {
 
   """
   A unique phone number for the customer.
-
+  
   Formatted using E.164 standard. For example, _+16135551111_.
   """
   phone: String
