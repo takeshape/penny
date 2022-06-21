@@ -46,6 +46,9 @@ yarn-error.log*
 # build cache
 *.cache
 
+# intellij
+.idea
+
 # sitemap
 /public/robots.txt
 /public/sitemap*.xml

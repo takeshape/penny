@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { isSearchOpenAtom } from 'store';
-import SearchFixtures from '../Search.fixtures.json';
+import { SearchShopifyProducts } from '../queries.fixtures';
 import { Modal } from './Modal';
 
 const Meta: ComponentMeta<typeof Modal> = {
@@ -26,7 +26,7 @@ _Empty.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
           return res(ctx.data({ search: { results: [] } }));
         })
       ]
@@ -46,8 +46,8 @@ _Loading.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data(SearchFixtures.SearchStripeProducts.result.data));
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+          return res(ctx.delay('infinite'), ctx.data(SearchShopifyProducts.result.data));
         })
       ]
     }
@@ -66,8 +66,8 @@ _WithResults.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
-          return res(ctx.data(SearchFixtures.SearchStripeProducts.result.data));
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+          return res(ctx.data(SearchShopifyProducts.result.data));
         })
       ]
     }
@@ -86,7 +86,7 @@ _NoResults.parameters = {
   msw: {
     handlers: {
       search: [
-        graphql.query('SearchStripeProducts', (req, res, ctx) => {
+        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
           return res(ctx.data({ search: { results: [] } }));
         })
       ]

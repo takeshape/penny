@@ -609,7 +609,23 @@
       }
     }
   },
-  "indexedShapes": {},
+  "indexedShapes": {
+    "Shopify_Product": {
+      "queries": {
+        "list": {"name": "Shopify_products", "objectDepthLimit": 2},
+        "get": {"name": "Shopify_product", "objectDepthLimit": 2}
+      },
+      "triggers": [
+        {"type": "schedule", "query": "list", "interval": 1440},
+        {
+          "type": "webhook",
+          "query": "get",
+          "service": "shopify",
+          "events": ["products/create", "products/update", "products/delete"]
+        }
+      ]
+    }
+  },
   "queries": {
     "getProduct": {
       "shape": "Product",
@@ -1069,6 +1085,73 @@
         ]
       },
       "shape": "Shopify_Collection"
+    },
+    "Shopify_products": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "products"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "integer",
+            "description": "Returns up to the first `n` elements from the list."
+          },
+          "after": {
+            "type": "string",
+            "description": "Returns the elements that come after the specified cursor."
+          },
+          "last": {
+            "type": "integer",
+            "description": "Returns up to the last `n` elements from the list."
+          },
+          "before": {
+            "type": "string",
+            "description": "Returns the elements that come before the specified cursor."
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "Reverse the order of the underlying list.",
+            "default": false
+          },
+          "sortKey": {
+            "@ref": "shopify:ProductSortKeys",
+            "description": "Sort the underlying list by the given key.",
+            "default": "ID"
+          },
+          "query": {
+            "type": "string",
+            "description": "Supported filter parameters:\n - `barcode`\n - `created_at`\n - `delivery_profile_id`\n - `error_feedback`\n - `gift_card`\n - `has_only_composites`\n - `has_only_default_variant`\n - `id`\n - `inventory_total`\n - `is_price_reduced`\n - `out_of_stock_somewhere`\n - `price`\n - `product_type`\n - `publishable_status`\n - `published_status`\n - `sku`\n - `status`\n - `tag`\n - `tag_not`\n - `title`\n - `updated_at`\n - `vendor`\n\nSee the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)\nfor more information about using filters."
+          },
+          "savedSearchId": {
+            "type": "string",
+            "@tag": "id",
+            "description": "The ID of an existing saved search.\nThe search’s query string is used as the query argument.\nRefer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch)."
+          }
+        }
+      },
+      "shape": "Shopify_ProductConnection"
+    },
+    "Shopify_product": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "product"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "@tag": "id",
+            "description": "The ID of the Product to return."
+          }
+        },
+        "required": ["id"]
+      },
+      "shape": "Shopify_Product"
     },
     "getStorefront": {
       "shape": "Storefront",
