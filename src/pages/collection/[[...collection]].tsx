@@ -103,8 +103,10 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await apolloClient.query<ProductCategoryShopifyCollectionIdsResponse>({
-    query: ProductCategoryShopifyCollectionIdsQuery
+  const { data } = await retryShopifyThrottle<ProductCategoryShopifyCollectionIdsResponse>(async () => {
+    return await apolloClient.query<ProductCategoryShopifyCollectionIdsResponse>({
+      query: ProductCategoryShopifyCollectionIdsQuery
+    });
   });
 
   const params = getCollectionPageParams(data, collectionsPageSize);
