@@ -237,6 +237,10 @@ type Query {
     """The handle of the collection."""
     handle: String!
   ): Shopify_Collection
+  collectionByHandleWithTtl(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection
   Shopify_collections(
     """Returns up to the first `n` elements from the list."""
     first: Int
@@ -371,6 +375,33 @@ type Query {
     where: TSWhereProductInput
   ): ProductPaginatedList
 
+  """Returns a list Product in natural order."""
+  getProductListWithTtl(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductPaginatedList
+
   """Get a Navigation by ID"""
   getNavigation(locale: String, enableLocaleFallback: Boolean = true): Navigation
 
@@ -379,6 +410,33 @@ type Query {
 
   """Returns a list Collection in natural order."""
   getCollectionList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereCollectionInput
+  ): CollectionPaginatedList
+
+  """Returns a list Collection in natural order."""
+  getCollectionListWithTtl(
     terms: String
 
     """The offset from the first result you want to fetch."""
@@ -18335,6 +18393,10 @@ type WithContext {
     """The handle of the collection."""
     handle: String!
   ): Shopify_Collection
+  collectionByHandleWithTtl(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection
   Shopify_collections(
     """Returns up to the first `n` elements from the list."""
     first: Int
@@ -18469,6 +18531,33 @@ type WithContext {
     where: TSWhereProductInput
   ): ProductPaginatedList
 
+  """Returns a list Product in natural order."""
+  getProductListWithTtl(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereProductInput
+  ): ProductPaginatedList
+
   """Get a Navigation by ID"""
   getNavigation(locale: String, enableLocaleFallback: Boolean = true): Navigation
 
@@ -18477,6 +18566,33 @@ type WithContext {
 
   """Returns a list Collection in natural order."""
   getCollectionList(
+    terms: String
+
+    """The offset from the first result you want to fetch."""
+    from: Int
+
+    """The maximum number of items to return."""
+    size: Int
+
+    """An elasticsearch style filter. Overrides onlyEnabled."""
+    filter: JSONObject
+
+    """An list of fields to sort by."""
+    sort: [TSSearchSortInput]
+    locale: String
+    enableLocaleFallback: Boolean = true
+
+    """Filter out content that is not enabled. Defaults to true."""
+    onlyEnabled: Boolean = true
+
+    """
+    The where clause uses the boolean AND, OR, and NOT parameters to construct complex filters based on the values of your fields. It applies an implicit AND to all the top-level keys. To avoid this, use a single OR or NOT key as the only top-level key.
+    """
+    where: TSWhereCollectionInput
+  ): CollectionPaginatedList
+
+  """Returns a list Collection in natural order."""
+  getCollectionListWithTtl(
     terms: String
 
     """The offset from the first result you want to fetch."""

@@ -60,6 +60,7 @@ export type Query = {
   /** Get a Storefront by ID */
   getStorefront?: Maybe<Storefront>;
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  collectionByHandleWithTtl?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
   /** Get a ProductPageDetails by ID */
   getProductPageDetails?: Maybe<ProductPageDetails>;
@@ -74,12 +75,16 @@ export type Query = {
   getProduct?: Maybe<Product>;
   /** Returns a list Product in natural order. */
   getProductList?: Maybe<ProductPaginatedList>;
+  /** Returns a list Product in natural order. */
+  getProductListWithTtl?: Maybe<ProductPaginatedList>;
   /** Get a Navigation by ID */
   getNavigation?: Maybe<Navigation>;
   /** Get a Collection by ID */
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
+  /** Returns a list Collection in natural order. */
+  getCollectionListWithTtl?: Maybe<CollectionPaginatedList>;
   /** Get a Page by ID */
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
@@ -270,6 +275,12 @@ export type QueryShopify_CollectionByHandleArgs = {
 
 
 /** Root of the Schema */
+export type QueryCollectionByHandleWithTtlArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** Root of the Schema */
 export type QueryShopify_CollectionsArgs = {
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
@@ -355,6 +366,20 @@ export type QueryGetProductListArgs = {
 
 
 /** Root of the Schema */
+export type QueryGetProductListWithTtlArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
 export type QueryGetNavigationArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
@@ -371,6 +396,20 @@ export type QueryGetCollectionArgs = {
 
 /** Root of the Schema */
 export type QueryGetCollectionListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereCollectionInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetCollectionListWithTtlArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -15184,6 +15223,7 @@ export type WithContext = {
   /** Get a Storefront by ID */
   getStorefront?: Maybe<Storefront>;
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  collectionByHandleWithTtl?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
   /** Get a ProductPageDetails by ID */
   getProductPageDetails?: Maybe<ProductPageDetails>;
@@ -15198,12 +15238,16 @@ export type WithContext = {
   getProduct?: Maybe<Product>;
   /** Returns a list Product in natural order. */
   getProductList?: Maybe<ProductPaginatedList>;
+  /** Returns a list Product in natural order. */
+  getProductListWithTtl?: Maybe<ProductPaginatedList>;
   /** Get a Navigation by ID */
   getNavigation?: Maybe<Navigation>;
   /** Get a Collection by ID */
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
+  /** Returns a list Collection in natural order. */
+  getCollectionListWithTtl?: Maybe<CollectionPaginatedList>;
   /** Get a Page by ID */
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
@@ -15393,6 +15437,12 @@ export type WithContextShopify_CollectionByHandleArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextCollectionByHandleWithTtlArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextShopify_CollectionsArgs = {
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
@@ -15478,6 +15528,20 @@ export type WithContextGetProductListArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetProductListWithTtlArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextGetNavigationArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
@@ -15494,6 +15558,20 @@ export type WithContextGetCollectionArgs = {
 
 /** This query allow you to pass context to your queries */
 export type WithContextGetCollectionListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereCollectionInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetCollectionListWithTtlArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
   size?: InputMaybe<Scalars['Int']>;
