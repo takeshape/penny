@@ -38,7 +38,10 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
 
   // Pre-fetch the next page
   useEffect(() => {
-    setRequestPage(currentPage + 1);
+    const nextPage = currentPage + 1;
+    if (!loadedPages.current.has(nextPage)) {
+      setRequestPage(nextPage);
+    }
   }, [currentPage]);
 
   // Handle page requests
@@ -154,8 +157,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
         header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
         items={items}
         pagination={{
-          hasNextPage: currentCollection.pageInfo.hasNextPage,
-          hasPreviousPage: currentCollection.pageInfo.hasPreviousPage,
+          hasNextPage: isLoading ? false : currentCollection.pageInfo.hasNextPage,
+          hasPreviousPage: isLoading ? false : currentCollection.pageInfo.hasPreviousPage,
           setCurrentPage: handleSetCurrentPage
         }}
       />

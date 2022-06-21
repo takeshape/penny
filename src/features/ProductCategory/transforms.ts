@@ -76,6 +76,8 @@ export function getCollection(
   collection: ProductCategoryShopifyCollection,
   { before, after }: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
 ): ProductCategoryCollection {
+  const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
+
   return {
     id: collection.id,
     url: getCollectionUrl(collection.id, collection.takeshape),
@@ -86,7 +88,7 @@ export function getCollection(
     productsCount: collection.productsCount,
     items: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
     pageInfo: collection.products.pageInfo,
-    anchor: (before !== undefined ? collection.products.pageInfo.startCursor : after) ?? null
+    anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null
   };
 }
 
