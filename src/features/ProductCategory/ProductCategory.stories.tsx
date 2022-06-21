@@ -3,7 +3,7 @@ import { ProductCategory } from './ProductCategory';
 import { collectionResponse } from './queries.fixtures';
 import { getCollection } from './transforms';
 
-const collection = getCollection(collectionResponse);
+const collection = getCollection(collectionResponse, {});
 
 const Meta: ComponentMeta<typeof ProductCategory> = {
   title: 'Features / Product Category',

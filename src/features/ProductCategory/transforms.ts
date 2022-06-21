@@ -13,7 +13,8 @@ import {
   ProductCategoryShopifyCollectionByIdArgs,
   ProductCategoryShopifyCollectionBySlugArgs,
   ProductCategoryShopifyCollectionIdsResponse,
-  ProductCategoryShopifyCollectionResponse
+  ProductCategoryShopifyCollectionResponse,
+  ProductCategoryShopifyPaginationArgs
 } from './queries';
 import {
   ProductCategoryCollection,
@@ -74,7 +75,7 @@ export function getCollectionPageInfo(
 
 export function getCollection(
   response: ProductCategoryShopifyCollectionResponse,
-  variables: ProductCategoryShopifyCollectionByIdArgs | ProductCategoryShopifyCollectionBySlugArgs
+  { before, after }: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
 ): ProductCategoryCollection {
   const collection = response?.collectionList?.items?.[0].shopifyCollection;
 
@@ -92,7 +93,7 @@ export function getCollection(
     productsCount: collection.productsCount,
     items: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
     pageInfo: collection.products.pageInfo,
-    anchor: (variables.before !== undefined ? collection.products.pageInfo.startCursor : variables.after) ?? null
+    anchor: (before !== undefined ? collection.products.pageInfo.startCursor : after) ?? null
   };
 }
 

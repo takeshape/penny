@@ -155,3 +155,30 @@ export const ProductCategoryShopifyCollectionBySlugQuery = gql`
     }
   }
 `;
+
+export type ProductCategoryShopifyCollectionByHandleArgs = {
+  handle: string;
+} & ProductCategoryShopifyPaginationArgs;
+
+export const ProductCategoryShopifyCollectionByHandleQuery = gql`
+  ${ProductCategoryProductFragment}
+  query ProductPageShopifyProductByIdQuery($handle: String!, $first: Int, $last: Int, $after: String, $before: String) {
+    collectionList: Shopify_collectionByHandle(handle: $handle) {
+      ...ProductCategoryCollection
+      products(first: $first, last: $last, after: $after, before: $before) {
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
+        }
+        edges {
+          cursor
+          node {
+            ...ProductCategoryProduct
+          }
+        }
+      }
+    }
+  }
+`;

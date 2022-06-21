@@ -3,7 +3,7 @@ import { collectionResponse } from '../queries.fixtures';
 import { getCollection } from '../transforms';
 import { ProductGrid } from './ProductGrid';
 
-const collection = getCollection(collectionResponse);
+const collection = getCollection(collectionResponse, {});
 
 const Meta: ComponentMeta<typeof ProductGrid> = {
   title: 'Features / Product Category / Components / Product Grid',
