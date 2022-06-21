@@ -3,7 +3,7 @@ import ProductColorSelect from 'components/Product/ProductColorSelect';
 import ProductPrice from 'components/Product/ProductPrice';
 import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
-import { addToCartAtom } from 'features/Cart/store';
+import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { Product as ProductType } from 'types/product';
@@ -48,6 +48,7 @@ export const ProductWithImageGrid = ({
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 
   const addToCart = useSetAtom(addToCartAtom);
+  const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
   const handleAddToCart = useCallback(
     (e) => {
@@ -58,8 +59,10 @@ export const ProductWithImageGrid = ({
         variant: selectedVariant,
         price: selectedPrice
       });
+
+      setIsCartOpen(true);
     },
-    [product, selectedVariant, selectedPrice, addToCart]
+    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen]
   );
 
   useEffect(() => {
