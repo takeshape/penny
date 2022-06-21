@@ -101,7 +101,7 @@ export type ProductCategoryShopifyCollectionByIdArgs = {
 export const ProductCategoryShopifyCollectionByIdQuery = gql`
   ${ProductCategoryProductFragment}
   query ProductPageShopifyProductByIdQuery($id: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: getCollectionList(size: 1, where: { shopifyCollectionId: { eq: $id } }) {
+    collectionList: getCollectionListWithTtl(size: 1, where: { shopifyCollectionId: { eq: $id } }) {
       items {
         shopifyCollection {
           ...ProductCategoryCollection
@@ -132,7 +132,7 @@ export type ProductCategoryShopifyCollectionBySlugArgs = {
 export const ProductCategoryShopifyCollectionBySlugQuery = gql`
   ${ProductCategoryProductFragment}
   query ProductPageShopifyProductByIdQuery($slug: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: getCollectionList(size: 1, where: { slug: { eq: $slug } }) {
+    collectionList: getCollectionListWithTtl(size: 1, where: { slug: { eq: $slug } }) {
       items {
         shopifyCollection {
           ...ProductCategoryCollection
@@ -167,7 +167,7 @@ export type ProductCategoryShopifyCollectionByHandleArgs = {
 export const ProductCategoryShopifyCollectionByHandleQuery = gql`
   ${ProductCategoryProductFragment}
   query ProductPageShopifyProductByIdQuery($handle: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collection: Shopify_collectionByHandle(handle: $handle) {
+    collection: collectionByHandleWithTtl(handle: $handle) {
       ...ProductCategoryCollection
       products(first: $first, last: $last, after: $after, before: $before) {
         pageInfo {
