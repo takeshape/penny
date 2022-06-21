@@ -3,7 +3,7 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader/Loader';
 import NextImage from 'components/NextImage';
-import useSearch from 'features/Search/useSearch';
+import useSearch, { SearchResult } from 'features/Search/useSearch';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Fragment, useCallback, useEffect } from 'react';
@@ -16,11 +16,15 @@ import { SearchShopifyProducts } from '../queries';
 import { shopifyGidToId } from 'transforms/shopify';
 import { truncate } from 'lodash-es';
 
-const resultsFn = (data: SearchShopifyProductsResults) =>
-  data.search.results.map((result) => ({
-    ...result,
-    id: shopifyGidToId(result.id)
-  }));
+const resultsFn = (data: SearchShopifyProductsResults): SearchResult[] =>
+  data.search.results.map(
+    (result): SearchResult => ({
+      id: shopifyGidToId(result.id),
+      title: result.title,
+      imageUrl: result.featuredImage?.url,
+      description: result.description
+    })
+  );
 
 export const Modal = () => {
   const router = useRouter();
@@ -121,7 +125,7 @@ export const Modal = () => {
                               <NextImage
                                 width={60}
                                 height={60}
-                                src={item.featuredImage?.url}
+                                src={item.imageUrl}
                                 className="object-center object-cover"
                               />
                             </div>
