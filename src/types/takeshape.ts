@@ -42,10 +42,6 @@ export type Query = {
   /** Returns a list TsStaticSite in natural order. */
   getTsStaticSiteList?: Maybe<TsStaticSitePaginatedList>;
   ReviewsIo_listProductReviews?: Maybe<ReviewsIo_ListProductReviewsResponse>;
-  /** <p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p> */
-  Stripe_listProducts?: Maybe<Stripe_ListProductsResponse>;
-  /** <p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p> */
-  Stripe_getProduct?: Maybe<Stripe_Product>;
   /** Get a loyalty card from Voucherify */
   getMyLoyaltyCard?: Maybe<Voucherify_LoyaltyCard>;
   getMyNewsletterSubscriptions?: Maybe<Array<Maybe<ProfileNewsletterStatus>>>;
@@ -64,6 +60,7 @@ export type Query = {
   /** Get a Storefront by ID */
   getStorefront?: Maybe<Storefront>;
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  collectionByHandleWithTtl?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
   /** Get a ProductPageDetails by ID */
   getProductPageDetails?: Maybe<ProductPageDetails>;
@@ -78,12 +75,16 @@ export type Query = {
   getProduct?: Maybe<Product>;
   /** Returns a list Product in natural order. */
   getProductList?: Maybe<ProductPaginatedList>;
+  /** Returns a list Product in natural order. */
+  getProductListWithTtl?: Maybe<ProductPaginatedList>;
   /** Get a Navigation by ID */
   getNavigation?: Maybe<Navigation>;
   /** Get a Collection by ID */
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
+  /** Returns a list Collection in natural order. */
+  getCollectionListWithTtl?: Maybe<CollectionPaginatedList>;
   /** Get a Page by ID */
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
@@ -196,27 +197,6 @@ export type QueryReviewsIo_ListProductReviewsArgs = {
 
 
 /** Root of the Schema */
-export type QueryStripe_ListProductsArgs = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  created?: InputMaybe<Scalars['JSON']>;
-  ending_before?: InputMaybe<Scalars['String']>;
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ids?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  shippable?: InputMaybe<Scalars['Boolean']>;
-  starting_after?: InputMaybe<Scalars['String']>;
-  url?: InputMaybe<Scalars['String']>;
-};
-
-
-/** Root of the Schema */
-export type QueryStripe_GetProductArgs = {
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  id: Scalars['String'];
-};
-
-
-/** Root of the Schema */
 export type QueryGetNavigationDataArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
@@ -290,6 +270,12 @@ export type QueryGetStorefrontArgs = {
 
 /** Root of the Schema */
 export type QueryShopify_CollectionByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** Root of the Schema */
+export type QueryCollectionByHandleWithTtlArgs = {
   handle: Scalars['String'];
 };
 
@@ -380,6 +366,20 @@ export type QueryGetProductListArgs = {
 
 
 /** Root of the Schema */
+export type QueryGetProductListWithTtlArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** Root of the Schema */
 export type QueryGetNavigationArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
@@ -396,6 +396,20 @@ export type QueryGetCollectionArgs = {
 
 /** Root of the Schema */
 export type QueryGetCollectionListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereCollectionInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryGetCollectionListWithTtlArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -1013,95 +1027,6 @@ export type ReviewsIo_ListProductReviewsResponseProductsProperty = {
   sku?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
-
-export type Stripe_ListProductsResponse = {
-  __typename?: 'Stripe_ListProductsResponse';
-  /** Details about each object. */
-  data?: Maybe<Array<Maybe<Stripe_Product>>>;
-  /** True if this list has another page of items after this one that can be fetched. */
-  has_more?: Maybe<Scalars['Boolean']>;
-  /** String representing the object's type. Objects of the same type share the same value. Always has the value `list`. */
-  object?: Maybe<Stripe_ListProductsResponseObjectProperty>;
-  /** The URL where this list can be accessed. */
-  url?: Maybe<Scalars['String']>;
-};
-
-export type Stripe_Product = {
-  __typename?: 'Stripe_Product';
-  /** Whether the product is currently available for purchase. */
-  active?: Maybe<Scalars['Boolean']>;
-  /** Time at which the object was created. Measured in seconds since the Unix epoch. */
-  created?: Maybe<Scalars['Int']>;
-  /** The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes. */
-  description?: Maybe<Scalars['String']>;
-  /** Unique identifier for the object. */
-  id?: Maybe<Scalars['String']>;
-  /** A list of up to 8 URLs of images for this product, meant to be displayable to the customer. */
-  images?: Maybe<Array<Maybe<Scalars['String']>>>;
-  /** Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode. */
-  livemode?: Maybe<Scalars['Boolean']>;
-  /** Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. */
-  metadata?: Maybe<Scalars['JSONObject']>;
-  /** The product's name, meant to be displayable to the customer. */
-  name?: Maybe<Scalars['String']>;
-  /** String representing the object's type. Objects of the same type share the same value. */
-  object?: Maybe<Stripe_ProductObjectProperty>;
-  package_dimensions?: Maybe<Stripe_PackageDimensions>;
-  /** Whether this product is shipped (i.e., physical goods). */
-  shippable?: Maybe<Scalars['Boolean']>;
-  /** Extra information about a product which will appear on your customer's credit card statement. In the case that multiple products are billed at once, the first statement descriptor will be used. */
-  statement_descriptor?: Maybe<Scalars['String']>;
-  tax_code?: Maybe<Stripe_ProductTaxCodeProperty>;
-  /** A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions. */
-  unit_label?: Maybe<Scalars['String']>;
-  /** Time at which the object was last updated. Measured in seconds since the Unix epoch. */
-  updated?: Maybe<Scalars['Int']>;
-  /** A URL of a publicly-accessible webpage for this product. */
-  url?: Maybe<Scalars['String']>;
-};
-
-export enum Stripe_ProductObjectProperty {
-  Product = 'product'
-}
-
-export type Stripe_PackageDimensions = {
-  __typename?: 'Stripe_PackageDimensions';
-  /** Height, in inches. */
-  height?: Maybe<Scalars['Float']>;
-  /** Length, in inches. */
-  length?: Maybe<Scalars['Float']>;
-  /** Weight, in ounces. */
-  weight?: Maybe<Scalars['Float']>;
-  /** Width, in inches. */
-  width?: Maybe<Scalars['Float']>;
-};
-
-export type Stripe_ProductTaxCodeProperty = WrappedString | Stripe_TaxCode;
-
-export type WrappedString = {
-  __typename?: 'WrappedString';
-  value: Scalars['String'];
-};
-
-export type Stripe_TaxCode = {
-  __typename?: 'Stripe_TaxCode';
-  /** A detailed description of which types of products the tax code represents. */
-  description?: Maybe<Scalars['String']>;
-  /** Unique identifier for the object. */
-  id?: Maybe<Scalars['String']>;
-  /** A short name for the tax code. */
-  name?: Maybe<Scalars['String']>;
-  /** String representing the object's type. Objects of the same type share the same value. */
-  object?: Maybe<Stripe_TaxCodeObjectProperty>;
-};
-
-export enum Stripe_TaxCodeObjectProperty {
-  TaxCode = 'tax_code'
-}
-
-export enum Stripe_ListProductsResponseObjectProperty {
-  List = 'list'
-}
 
 export type Voucherify_LoyaltyCard = {
   __typename?: 'Voucherify_LoyaltyCard';
@@ -15280,10 +15205,6 @@ export type WithContext = {
   /** Returns a list TsStaticSite in natural order. */
   getTsStaticSiteList?: Maybe<TsStaticSitePaginatedList>;
   ReviewsIo_listProductReviews?: Maybe<ReviewsIo_ListProductReviewsResponse>;
-  /** <p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p> */
-  Stripe_listProducts?: Maybe<Stripe_ListProductsResponse>;
-  /** <p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p> */
-  Stripe_getProduct?: Maybe<Stripe_Product>;
   /** Get a loyalty card from Voucherify */
   getMyLoyaltyCard?: Maybe<Voucherify_LoyaltyCard>;
   getMyNewsletterSubscriptions?: Maybe<Array<Maybe<ProfileNewsletterStatus>>>;
@@ -15302,6 +15223,7 @@ export type WithContext = {
   /** Get a Storefront by ID */
   getStorefront?: Maybe<Storefront>;
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
+  collectionByHandleWithTtl?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
   /** Get a ProductPageDetails by ID */
   getProductPageDetails?: Maybe<ProductPageDetails>;
@@ -15316,12 +15238,16 @@ export type WithContext = {
   getProduct?: Maybe<Product>;
   /** Returns a list Product in natural order. */
   getProductList?: Maybe<ProductPaginatedList>;
+  /** Returns a list Product in natural order. */
+  getProductListWithTtl?: Maybe<ProductPaginatedList>;
   /** Get a Navigation by ID */
   getNavigation?: Maybe<Navigation>;
   /** Get a Collection by ID */
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
+  /** Returns a list Collection in natural order. */
+  getCollectionListWithTtl?: Maybe<CollectionPaginatedList>;
   /** Get a Page by ID */
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
@@ -15433,27 +15359,6 @@ export type WithContextReviewsIo_ListProductReviewsArgs = {
 
 
 /** This query allow you to pass context to your queries */
-export type WithContextStripe_ListProductsArgs = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  created?: InputMaybe<Scalars['JSON']>;
-  ending_before?: InputMaybe<Scalars['String']>;
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  ids?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  shippable?: InputMaybe<Scalars['Boolean']>;
-  starting_after?: InputMaybe<Scalars['String']>;
-  url?: InputMaybe<Scalars['String']>;
-};
-
-
-/** This query allow you to pass context to your queries */
-export type WithContextStripe_GetProductArgs = {
-  expand?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  id: Scalars['String'];
-};
-
-
-/** This query allow you to pass context to your queries */
 export type WithContextGetNavigationDataArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
@@ -15527,6 +15432,12 @@ export type WithContextGetStorefrontArgs = {
 
 /** This query allow you to pass context to your queries */
 export type WithContextShopify_CollectionByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextCollectionByHandleWithTtlArgs = {
   handle: Scalars['String'];
 };
 
@@ -15617,6 +15528,20 @@ export type WithContextGetProductListArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextGetProductListWithTtlArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereProductInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextGetNavigationArgs = {
   locale?: InputMaybe<Scalars['String']>;
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
@@ -15633,6 +15558,20 @@ export type WithContextGetCollectionArgs = {
 
 /** This query allow you to pass context to your queries */
 export type WithContextGetCollectionListArgs = {
+  terms?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  size?: InputMaybe<Scalars['Int']>;
+  filter?: InputMaybe<Scalars['JSONObject']>;
+  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
+  locale?: InputMaybe<Scalars['String']>;
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
+  where?: InputMaybe<TsWhereCollectionInput>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextGetCollectionListWithTtlArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -15813,6 +15752,7 @@ export type Mutation = {
   updateFooter?: Maybe<UpdateFooterResult>;
   ShopifyStorefront_cartCreate?: Maybe<ShopifyStorefront_CartCreatePayload>;
   createMyCart?: Maybe<ShopifyStorefront_CartCreatePayload>;
+  createCart?: Maybe<ShopifyStorefront_CartCreatePayload>;
   ShopifyStorefront_customerAccessTokenCreate?: Maybe<ShopifyStorefront_CustomerAccessTokenCreatePayload>;
   ShopifyStorefront_customerCreate?: Maybe<ShopifyStorefront_CustomerCreatePayload>;
   createCustomer?: Maybe<CreateCustomerPayload>;
@@ -16018,6 +15958,11 @@ export type MutationShopifyStorefront_CartCreateArgs = {
 
 
 export type MutationCreateMyCartArgs = {
+  input?: InputMaybe<ShopifyStorefront_CartInput>;
+};
+
+
+export type MutationCreateCartArgs = {
   input?: InputMaybe<ShopifyStorefront_CartInput>;
 };
 

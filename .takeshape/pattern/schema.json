@@ -709,6 +709,19 @@
       "description": "Returns a list Product in natural order.",
       "args": "TSListArgs<Product>"
     },
+    "getProductListWithTtl": {
+      "shape": "PaginatedList<Product>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Product",
+        "options": {
+          "ttl": 60
+        }
+      },
+      "description": "Returns a list Product in natural order.",
+      "args": "TSListArgs<Product>"
+    },
     "getFooter": {
       "shape": "Footer",
       "resolver": {
@@ -1133,6 +1146,29 @@
         "name": "graphql:query",
         "service": "shopify",
         "fieldName": "collectionByHandle"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "handle": {
+            "type": "string",
+            "description": "The handle of the collection."
+          }
+        },
+        "required": [
+          "handle"
+        ]
+      },
+      "shape": "Shopify_Collection"
+    },
+    "collectionByHandleWithTtl": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "collectionByHandle",
+        "options": {
+          "ttl": 60
+        }
       },
       "args": {
         "type": "object",
@@ -2881,7 +2917,7 @@
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600,
+                    "ttl": 300,
                     "retry": {
                       "limit": 10,
                       "statusCode": [
