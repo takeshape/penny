@@ -9,6 +9,7 @@ import {
   ProductPageShopifyProductByIdQuery,
   ProductPageShopifyProductBySlugArgs,
   ProductPageShopifyProductBySlugQuery,
+  ProductPageShopifyProductIdListArgs,
   ProductPageShopifyProductIdListQuery,
   ProductPageShopifyProductIdListResponse,
   ProductPageShopifyProductResponse,
@@ -142,14 +143,26 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await apolloClient.query<ProductPageShopifyProductIdListResponse>({
-    query: ProductPageShopifyProductIdListQuery
-  });
+  const paths: ReturnType<typeof getProductPageParams>[] = [];
+  let total = null;
 
-  const params = getProductPageParams(data);
+  while (total === null || paths.length < total) {
+    const { data } = await apolloClient.query<
+      ProductPageShopifyProductIdListResponse,
+      ProductPageShopifyProductIdListArgs
+    >({
+      query: ProductPageShopifyProductIdListQuery,
+      variables: {
+        from: paths.length
+      }
+    });
+
+    paths.push(...data.products.items.map(getProductPageParams));
+    total = data.products.total;
+  }
 
   return {
-    paths: params,
+    paths,
     fallback: true
   };
 };
