@@ -15752,6 +15752,7 @@ export type Mutation = {
   updateFooter?: Maybe<UpdateFooterResult>;
   ShopifyStorefront_cartCreate?: Maybe<ShopifyStorefront_CartCreatePayload>;
   createMyCart?: Maybe<ShopifyStorefront_CartCreatePayload>;
+  createCart?: Maybe<ShopifyStorefront_CartCreatePayload>;
   ShopifyStorefront_customerAccessTokenCreate?: Maybe<ShopifyStorefront_CustomerAccessTokenCreatePayload>;
   ShopifyStorefront_customerCreate?: Maybe<ShopifyStorefront_CustomerCreatePayload>;
   createCustomer?: Maybe<CreateCustomerPayload>;
@@ -15957,6 +15958,11 @@ export type MutationShopifyStorefront_CartCreateArgs = {
 
 
 export type MutationCreateMyCartArgs = {
+  input?: InputMaybe<ShopifyStorefront_CartInput>;
+};
+
+
+export type MutationCreateCartArgs = {
   input?: InputMaybe<ShopifyStorefront_CartInput>;
 };
 

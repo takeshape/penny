@@ -18891,6 +18891,10 @@ type Mutation {
     """The fields used to create a cart."""
     input: ShopifyStorefront_CartInput
   ): ShopifyStorefront_CartCreatePayload
+  createCart(
+    """The fields used to create a cart."""
+    input: ShopifyStorefront_CartInput
+  ): ShopifyStorefront_CartCreatePayload
   ShopifyStorefront_customerAccessTokenCreate(
     """The fields used to create a customer access token."""
     input: ShopifyStorefront_CustomerAccessTokenCreateInput!

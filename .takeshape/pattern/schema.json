@@ -565,6 +565,54 @@
           "shopifyCollection"
         ]
       }
+    },
+    "PageSectionMdx": {
+      "default": {
+        "properties": {
+          "content": {
+            "widget": "wysiwygTextMdx"
+          }
+        },
+        "order": [
+          "content"
+        ]
+      }
+    },
+    "PageSectionTitle": {
+      "default": {
+        "properties": {
+          "label": {
+            "widget": "singleLineText"
+          },
+          "heading": {
+            "widget": "singleLineText"
+          },
+          "subheading": {
+            "widget": "singleLineText"
+          }
+        },
+        "order": [
+          "label",
+          "heading",
+          "subheading"
+        ]
+      }
+    },
+    "Page": {
+      "default": {
+        "properties": {
+          "title": {
+            "widget": "singleLineText"
+          },
+          "sections": {
+            "widget": "shapeArray"
+          }
+        },
+        "order": [
+          "title",
+          "sections"
+        ]
+      }
     }
   },
   "services": {
@@ -731,6 +779,19 @@
         "name": "takeshape:list",
         "service": "takeshape:local",
         "shapeName": "Product"
+      },
+      "description": "Returns a list Product in natural order.",
+      "args": "TSListArgs<Product>"
+    },
+    "getProductListWithTtl": {
+      "shape": "PaginatedList<Product>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Product",
+        "options": {
+          "ttl": 60
+        }
       },
       "description": "Returns a list Product in natural order.",
       "args": "TSListArgs<Product>"
@@ -1308,6 +1369,26 @@
       },
       "description": "Returns a list Collection in natural order.",
       "args": "TSListArgs<Collection>"
+    },
+    "getPage": {
+      "shape": "Page",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Page"
+      },
+      "description": "Get a Page by ID",
+      "args": "TSGetArgs<Page>"
+    },
+    "getPageList": {
+      "shape": "PaginatedList<Page>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Page"
+      },
+      "description": "Returns a list Page in natural order.",
+      "args": "TSListArgs<Page>"
     }
   },
   "mutations": {
@@ -2731,6 +2812,46 @@
       },
       "description": "Delete Collection",
       "args": "DeleteArgs<Collection>"
+    },
+    "updatePage": {
+      "shape": "UpdateResult<Page>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "Page"
+      },
+      "description": "Update Page",
+      "args": "UpdateArgs<Page>"
+    },
+    "createPage": {
+      "shape": "CreateResult<Page>",
+      "resolver": {
+        "name": "takeshape:create",
+        "service": "takeshape:local",
+        "shapeName": "Page"
+      },
+      "description": "Create Page",
+      "args": "CreateArgs<Page>"
+    },
+    "duplicatePage": {
+      "shape": "DuplicateResult<Page>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "Page"
+      },
+      "description": "Duplicate Page",
+      "args": "DuplicateArgs<Page>"
+    },
+    "deletePage": {
+      "shape": "DeleteResult<Page>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "Page"
+      },
+      "description": "Delete Page",
+      "args": "DeleteArgs<Page>"
     }
   },
   "shapes": {
@@ -3153,7 +3274,7 @@
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600,
+                    "ttl": 300,
                     "retry": {
                       "limit": 10,
                       "statusCode": [
@@ -4575,6 +4696,84 @@
             "description": "",
             "@ref": "local:NavigationLinks",
             "@mapping": "takeshape:local:Navigation.d1o5S0w1Y"
+          }
+        }
+      }
+    },
+    "PageSectionMdx": {
+      "id": "lwxiF15wp",
+      "name": "PageSectionMdx",
+      "title": "Page Section MDX",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "@tag": "mdx",
+            "description": "",
+            "title": "Content",
+            "@mapping": "takeshape:local:PageSectionMdx.RTs7-IfiY"
+          }
+        }
+      }
+    },
+    "PageSectionTitle": {
+      "id": "6YndNJhLe",
+      "name": "PageSectionTitle",
+      "title": "Page Section Title",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label",
+            "@mapping": "takeshape:local:PageSectionTitle.zGM21XRy7"
+          },
+          "heading": {
+            "type": "string",
+            "title": "Heading",
+            "@mapping": "takeshape:local:PageSectionTitle.CBTKizd-7"
+          },
+          "subheading": {
+            "type": "string",
+            "title": "Subheading",
+            "@mapping": "takeshape:local:PageSectionTitle.4ewzEFL1U"
+          }
+        }
+      }
+    },
+    "Page": {
+      "id": "bAWkmGdzI",
+      "name": "Page",
+      "title": "Page",
+      "workflow": "default",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "Title",
+            "@mapping": "takeshape:local:Page.Zy4z602Ci"
+          },
+          "sections": {
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:PageSectionTitle"
+                },
+                {
+                  "@ref": "local:PageSectionMdx"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Sections",
+            "@mapping": "takeshape:local:Page.Mlup98oFX"
           }
         }
       }
