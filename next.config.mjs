@@ -101,7 +101,10 @@ const config = {
   reactStrictMode: true,
   eslint: {
     dirs: ['src']
+  },
+  publicRuntimeConfig: {
+    vercelEnv: process.env.VERCEL_ENV ?? 'development'
   }
 };
 
-export default withSentryConfig(withPlugins([withBundleAnalyzer], config));
+export default withPlugins([withBundleAnalyzer, withSentryConfig], config);
