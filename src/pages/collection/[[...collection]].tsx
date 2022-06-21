@@ -78,7 +78,7 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
-  const { data: collectionData } = await retryShopifyThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
+  const { data } = await retryShopifyThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
     return apolloClient.query<
       ProductCategoryShopifyCollectionResponse,
       ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs
@@ -88,7 +88,7 @@ export const getStaticProps = async ({ params }) => {
     });
   });
 
-  const collection = getCollectionFromTakeshape(collectionData, variables);
+  const collection = getCollectionFromTakeshape(data, variables);
 
   return {
     props: {

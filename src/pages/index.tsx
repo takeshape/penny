@@ -38,20 +38,22 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export async function getStaticProps() {
   const { navigation, footer } = await getLayoutData();
 
-  const { data } = await retryShopifyThrottle<ProductCategoryShopifyCollectionByHandleResponse>(async () => {
-    return apolloClient.query<
-      ProductCategoryShopifyCollectionByHandleResponse,
-      ProductCategoryShopifyCollectionByHandleArgs
-    >({
-      query: ProductCategoryShopifyCollectionByHandleQuery,
-      variables: {
-        handle: 'frontpage',
-        first: 10
-      }
-    });
-  });
+  const { data: collectionData } = await retryShopifyThrottle<ProductCategoryShopifyCollectionByHandleResponse>(
+    async () => {
+      return apolloClient.query<
+        ProductCategoryShopifyCollectionByHandleResponse,
+        ProductCategoryShopifyCollectionByHandleArgs
+      >({
+        query: ProductCategoryShopifyCollectionByHandleQuery,
+        variables: {
+          handle: 'frontpage',
+          first: 10
+        }
+      });
+    }
+  );
 
-  const collection = getCollection(data.collection, {});
+  const collection = getCollection(collectionData.collection, {});
 
   const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
     query: GetStorefrontQuery
