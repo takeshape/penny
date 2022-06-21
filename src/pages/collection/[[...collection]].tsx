@@ -21,6 +21,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } fro
 import { useRouter } from 'next/router';
 import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+import { retryShopifyThrottle } from '../../utils/apollo/retry-shopify-throttle';
 
 const CollectionPage: NextPage = ({
   navigation,
@@ -112,8 +113,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await apolloClient.query<ProductCategoryShopifyCollectionIdsResponse>({
-    query: ProductCategoryShopifyCollectionIdsQuery
+  const { data } = await retryShopifyThrottle(async () => {
+    return await apolloClient.query<ProductCategoryShopifyCollectionIdsResponse>({
+      query: ProductCategoryShopifyCollectionIdsQuery
+    });
   });
 
   const params = getCollectionPageParams(data, collectionsPageSize);
