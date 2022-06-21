@@ -1,0 +1,29 @@
+# Cypress is run against the Vercel deployment to save on API access during
+# `npm run build`. Building / Static Site Generation is very API intensive.
+
+name: Cypress
+
+on:
+  deployment_status:
+
+jobs:
+  cypress-run:
+    name: 'E2E Tests'
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v4
+        env:
+          BASE_URL: ${{ github.event.deployment_status.target_url }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: artifacts-${{ github.run_id }}
+          path: |
+            ${{ github.workspace }}/cypress/screenshots
+            ${{ github.workspace }}/cypress/videos
