@@ -1,4 +1,4 @@
-name: PR
+name: Test
 
 on:
   pull_request:
@@ -44,29 +44,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-  # cypress-run:
-  #   name: 'E2E Tests'
-  #   if: github.event.action != 'closed'
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     # Triggers loading env vars from .env.test
-  #     NODE_ENV: test
-  #   steps:
-  #     - uses: actions/checkout@v3
-
-  #     - name: Cypress run
-  #       uses: cypress-io/github-action@v4
-  #       with:
-  #         build: npm run build
-  #         start: npm start
-  #         wait-on: "http://localhost:3000"
-
-  #     - name: Upload artifacts
-  #       uses: actions/upload-artifact@v2
-  #       if: failure()
-  #       with:
-  #         name: artifacts-${{ github.run_id }}
-  #         path: |
-  #           ${{ github.workspace }}/cypress/screenshots
-  #           ${{ github.workspace }}/cypress/videos
