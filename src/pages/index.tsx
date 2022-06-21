@@ -1,5 +1,4 @@
 import Alert from 'components/Alert/Alert';
-import PageLoader from 'components/PageLoader';
 import Wrapper from 'components/Wrapper/Content';
 import { getLayoutData } from 'data/getLayoutData';
 import {
@@ -41,13 +40,7 @@ const IndexPage: NextPage = ({
 
   return (
     <Layout navigation={navigation} footer={footer}>
-      {storefront ? (
-        <Wrapper>
-          <Storefront products={products} storefront={storefront} />
-        </Wrapper>
-      ) : (
-        <PageLoader />
-      )}
+      <Storefront products={products} storefront={storefront} />
     </Layout>
   );
 };

@@ -23,6 +23,7 @@ export const GetStorefrontQuery = gql`
           buttonText
           image {
             path
+            description
           }
         }
         ... on CollectionsComponent {
@@ -39,6 +40,7 @@ export const GetStorefrontQuery = gql`
         ... on BackgroundImageComponent {
           image {
             path
+            description
           }
           components {
             __typename

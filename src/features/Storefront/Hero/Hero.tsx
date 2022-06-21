@@ -21,13 +21,16 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroComp
           </div>
         </div>
         <div className="relative w-full h-48 sm:h-64 lg:h-full">
-          <NextImage
-            layout="fill"
-            src={getImageUrl(image)}
-            alt=""
-            className="w-full h-full object-center object-cover"
-            priority
-          />
+          <div className="w-full h-full">
+            <NextImage
+              layout="fill"
+              src={getImageUrl(image)}
+              alt=""
+              objectFit="cover"
+              objectPosition="center"
+              priority
+            />
+          </div>
         </div>
       </div>
     </div>
