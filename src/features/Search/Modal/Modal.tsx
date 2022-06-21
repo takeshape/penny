@@ -2,25 +2,36 @@ import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader/Loader';
-import useSearch from 'features/Search/useSearch';
+import NextImage from 'components/NextImage';
+import useSearch, { SearchResult } from 'features/Search/useSearch';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Fragment, useCallback, useEffect } from 'react';
 import { isSearchOpenAtom } from 'store';
 import classNames from 'utils/classNames';
 import { getSingle } from 'utils/types';
-import { SearchStripeProducts, SearchStripeProductsResults } from '../Search.queries';
+import type { SearchShopifyProductsResults } from '../queries';
+import { SearchShopifyProducts } from '../queries';
 
-const resultsFn = (data: SearchStripeProductsResults) =>
-  data.search.results.filter((result) => result.__typename === 'Stripe_Product');
+import { shopifyGidToId } from 'transforms/shopify';
+import { truncate } from 'lodash-es';
+
+const resultsFn = (data: SearchShopifyProductsResults): SearchResult[] =>
+  data.search.results.map(
+    (result): SearchResult => ({
+      id: shopifyGidToId(result.id),
+      title: result.title,
+      imageUrl: result.featuredImage?.url,
+      description: result.description
+    })
+  );
 
 export const Modal = () => {
   const router = useRouter();
   const [loading, query, results, setQuery] = useSearch({
-    graphqlQuery: SearchStripeProducts,
+    graphqlQuery: SearchShopifyProducts,
     resultsFn
   });
-
   const [isSearchOpen, setIsSearchOpen] = useAtom(isSearchOpenAtom);
 
   // This should only be called once, on page load, to avoid a loop
@@ -99,16 +110,42 @@ export const Modal = () => {
                 </div>
 
                 {results.length > 0 && (
-                  <Combobox.Options static className="max-h-72 scroll-py-2 overflow-y-auto py-2 text-sm text-gray-800">
-                    {results.map((product) => (
+                  <Combobox.Options static className="max-h-96 scroll-py-3 overflow-y-auto p-3">
+                    {results.map((item) => (
                       <Combobox.Option
-                        key={product.id}
-                        value={product.id}
+                        key={item.id}
+                        value={item.id}
                         className={({ active }) =>
-                          classNames('cursor-default select-none px-4 py-2', active && 'bg-indigo-600 text-white')
+                          classNames('flex cursor-default select-none rounded-xl p-3', active && 'bg-gray-100')
                         }
                       >
-                        {product.name}
+                        {({ active }) => (
+                          <>
+                            <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg overflow-hidden">
+                              <NextImage
+                                width={60}
+                                height={60}
+                                src={item.imageUrl}
+                                className="object-center object-cover"
+                              />
+                            </div>
+                            <div className="ml-4 flex-auto">
+                              <p
+                                className={classNames(
+                                  'text-sm font-medium',
+                                  active ? 'text-gray-900' : 'text-gray-700'
+                                )}
+                              >
+                                {item.title}
+                              </p>
+                              {item.description && (
+                                <p className={classNames('text-sm', active ? 'text-gray-700' : 'text-gray-500')}>
+                                  {truncate(item.description, { length: 160 })}
+                                </p>
+                              )}
+                            </div>
+                          </>
+                        )}
                       </Combobox.Option>
                     ))}
                   </Combobox.Options>
