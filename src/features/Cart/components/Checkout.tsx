@@ -4,9 +4,9 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect } from 'react';
 import { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
-import { CreateMyCartMutation, CreateMyCartResponse } from '../queries';
+import { CreateCartMutation, CreateCartResponse } from '../queries';
 import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
-import { getCheckoutPayload } from '../utils';
+import { getCartVariables } from '../utils';
 
 export const CartCheckout = () => {
   const { data: session } = useSession();
@@ -15,23 +15,22 @@ export const CartCheckout = () => {
   const quantity = useAtomValue(cartQuantityAtom);
   const items = useAtomValue(cartItemsAtom);
 
-  const [setCheckoutPayload, { data: checkoutData }] = useMutation<
-    CreateMyCartResponse,
-    MutationShopifyStorefront_CartCreateArgs
-  >(CreateMyCartMutation);
+  const [setCartMutation, { data }] = useMutation<CreateCartResponse, MutationShopifyStorefront_CartCreateArgs>(
+    CreateCartMutation
+  );
 
   const handleCheckout = useCallback(() => {
     setIsCartCheckingOut(true);
-    setCheckoutPayload({
-      variables: getCheckoutPayload(items, session)
+    setCartMutation({
+      variables: getCartVariables(items, session)
     });
-  }, [items, setCheckoutPayload, setIsCartCheckingOut, session]);
+  }, [items, setCartMutation, setIsCartCheckingOut, session]);
 
   useEffect(() => {
-    if (checkoutData?.myCart?.cart?.checkoutUrl) {
-      window.location.href = checkoutData.myCart.cart.checkoutUrl;
+    if (data?.cart?.cart?.checkoutUrl) {
+      window.location.href = data.cart.cart.checkoutUrl;
     }
-  }, [checkoutData]);
+  }, [data]);
 
   return (
     <Button
