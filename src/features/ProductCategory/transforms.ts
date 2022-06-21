@@ -10,8 +10,6 @@ import {
 } from 'transforms/shopify';
 import { isNumericString } from 'utils/types';
 import {
-  ProductCategoryShopifyCollectionByIdArgs,
-  ProductCategoryShopifyCollectionBySlugArgs,
   ProductCategoryShopifyCollectionIdsResponse,
   ProductCategoryShopifyCollectionResponse,
   ProductCategoryShopifyPaginationArgs
@@ -21,6 +19,7 @@ import {
   ProductCategoryProduct,
   ProductCategoryProductListItem,
   ProductCategoryReviewsIoReviews,
+  ProductCategoryShopifyCollection,
   ProductCategoryShopifyProduct
 } from './types';
 
@@ -74,15 +73,9 @@ export function getCollectionPageInfo(
 }
 
 export function getCollection(
-  response: ProductCategoryShopifyCollectionResponse,
+  collection: ProductCategoryShopifyCollection,
   { before, after }: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
 ): ProductCategoryCollection {
-  const collection = response?.collectionList?.items?.[0].shopifyCollection;
-
-  if (!collection) {
-    return null;
-  }
-
   return {
     id: collection.id,
     url: getCollectionUrl(collection.id, collection.takeshape),
@@ -97,10 +90,9 @@ export function getCollection(
   };
 }
 
-export function getCollectionWithOverfetch(
-  { pageSize }: { pageSize: number },
+export function getCollectionFromTakeshape(
   response: ProductCategoryShopifyCollectionResponse,
-  variables: ProductCategoryShopifyCollectionByIdArgs | ProductCategoryShopifyCollectionBySlugArgs
+  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
 ): ProductCategoryCollection {
   const collection = response?.collectionList?.items?.[0].shopifyCollection;
 
@@ -108,16 +100,29 @@ export function getCollectionWithOverfetch(
     return null;
   }
 
-  response = structuredClone(response);
-  const products = response.collectionList.items[0].shopifyCollection.products;
+  return getCollection(collection, variables);
+}
 
-  // This was an overfetch to get the start anchor for backwards pagination
-  if (variables.last > pageSize && products.edges.length > pageSize) {
-    const [, ...edges] = products.edges;
-    products.edges = edges;
+export function getCollectionWithOverfetch(
+  { pageSize }: { pageSize: number },
+  response: ProductCategoryShopifyCollectionResponse,
+  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after' | 'last'>
+): ProductCategoryCollection {
+  const shopifyCollection = response?.collectionList?.items?.[0].shopifyCollection;
+
+  if (!shopifyCollection) {
+    return null;
   }
 
-  return getCollection(response, variables);
+  const collection = structuredClone(shopifyCollection);
+
+  // This was an overfetch to get the start anchor for backwards pagination
+  if (variables.last > pageSize && collection.products.edges.length > pageSize) {
+    const [, ...edges] = collection.products.edges;
+    collection.products.edges = edges;
+  }
+
+  return getCollection(collection, variables);
 }
 
 export function getCollectionPageParams(response: ProductCategoryShopifyCollectionIdsResponse, pageSize: number) {

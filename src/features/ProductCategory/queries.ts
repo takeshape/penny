@@ -156,6 +156,10 @@ export const ProductCategoryShopifyCollectionBySlugQuery = gql`
   }
 `;
 
+export type ProductCategoryShopifyCollectionByHandleResponse = {
+  collection: ProductCategoryShopifyCollection;
+};
+
 export type ProductCategoryShopifyCollectionByHandleArgs = {
   handle: string;
 } & ProductCategoryShopifyPaginationArgs;
@@ -163,7 +167,7 @@ export type ProductCategoryShopifyCollectionByHandleArgs = {
 export const ProductCategoryShopifyCollectionByHandleQuery = gql`
   ${ProductCategoryProductFragment}
   query ProductPageShopifyProductByIdQuery($handle: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: Shopify_collectionByHandle(handle: $handle) {
+    collection: Shopify_collectionByHandle(handle: $handle) {
       ...ProductCategoryCollection
       products(first: $first, last: $last, after: $after, before: $before) {
         pageInfo {

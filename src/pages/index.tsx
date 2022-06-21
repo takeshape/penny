@@ -4,13 +4,14 @@ import { getLayoutData } from 'data/getLayoutData';
 import {
   ProductCategoryShopifyCollectionByHandleArgs,
   ProductCategoryShopifyCollectionByHandleQuery,
-  ProductCategoryShopifyCollectionResponse
+  ProductCategoryShopifyCollectionByHandleResponse
 } from 'features/ProductCategory/queries';
 import { getCollection } from 'features/ProductCategory/transforms';
 import { GetStorefrontQuery, GetStorefrontResponse } from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
 import Layout from 'layouts/Default';
 import { InferGetStaticPropsType, NextPage } from 'next';
+import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const IndexPage: NextPage = ({
@@ -37,17 +38,20 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export async function getStaticProps() {
   const { navigation, footer } = await getLayoutData();
 
-  const { data } = await apolloClient.query<
-    ProductCategoryShopifyCollectionResponse,
-    ProductCategoryShopifyCollectionByHandleArgs
-  >({
-    query: ProductCategoryShopifyCollectionByHandleQuery,
-    variables: {
-      handle: 'frontpage'
-    }
+  const { data } = await retryShopifyThrottle<ProductCategoryShopifyCollectionByHandleResponse>(async () => {
+    return apolloClient.query<
+      ProductCategoryShopifyCollectionByHandleResponse,
+      ProductCategoryShopifyCollectionByHandleArgs
+    >({
+      query: ProductCategoryShopifyCollectionByHandleQuery,
+      variables: {
+        handle: 'frontpage',
+        first: 10
+      }
+    });
   });
 
-  const collection = getCollection(data, {});
+  const collection = getCollection(data.collection, {});
 
   const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
     query: GetStorefrontQuery

@@ -11,11 +11,15 @@ import {
   ProductCategoryShopifyCollectionIdsResponse,
   ProductCategoryShopifyCollectionResponse
 } from 'features/ProductCategory/queries';
-import { getCollection, getCollectionPageIdOrSlug, getCollectionPageParams } from 'features/ProductCategory/transforms';
+import {
+  getCollectionFromTakeshape,
+  getCollectionPageIdOrSlug,
+  getCollectionPageParams
+} from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { retryShopifyThrottle } from 'utils/apollo/retry-shopify-throttle';
+import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const CollectionPage: NextPage = ({
@@ -74,8 +78,8 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
-  const { data: collectionData } = await retryShopifyThrottle(async () => {
-    return await apolloClient.query<
+  const { data: collectionData } = await retryShopifyThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
+    return apolloClient.query<
       ProductCategoryShopifyCollectionResponse,
       ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs
     >({
@@ -84,7 +88,7 @@ export const getStaticProps = async ({ params }) => {
     });
   });
 
-  const collection = getCollection(collectionData, variables);
+  const collection = getCollectionFromTakeshape(collectionData, variables);
 
   return {
     props: {

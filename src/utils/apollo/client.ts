@@ -98,15 +98,7 @@ function createApolloClient({
 
   return new ApolloClient<NormalizedCacheObject>({
     link: ApolloLink.from([retryLink, withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
-    cache: new InMemoryCache({
-      // typePolicies: {
-      //   Shopify_Collection: {
-      //     fields: {
-      //       products: relayStylePagination()
-      //     }
-      //   }
-      // }
-    }),
+    cache: new InMemoryCache(),
     ssrMode
   });
 }
