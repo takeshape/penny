@@ -612,16 +612,30 @@
   "indexedShapes": {
     "Shopify_Product": {
       "queries": {
-        "list": {"name": "Shopify_products", "objectDepthLimit": 2},
-        "get": {"name": "Shopify_product", "objectDepthLimit": 2}
+        "list": {
+          "name": "Shopify_products",
+          "objectDepthLimit": 2
+        },
+        "get": {
+          "name": "Shopify_product",
+          "objectDepthLimit": 2
+        }
       },
       "triggers": [
-        {"type": "schedule", "query": "list", "interval": 1440},
+        {
+          "type": "schedule",
+          "query": "list",
+          "interval": 1440
+        },
         {
           "type": "webhook",
           "query": "get",
           "service": "shopify",
-          "events": ["products/create", "products/update", "products/delete"]
+          "events": [
+            "products/create",
+            "products/update",
+            "products/delete"
+          ]
         }
       ]
     }
@@ -643,6 +657,19 @@
         "name": "takeshape:list",
         "service": "takeshape:local",
         "shapeName": "Product"
+      },
+      "description": "Returns a list Product in natural order.",
+      "args": "TSListArgs<Product>"
+    },
+    "getProductListWithTtl": {
+      "shape": "PaginatedList<Product>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Product",
+        "options": {
+          "ttl": 60
+        }
       },
       "description": "Returns a list Product in natural order.",
       "args": "TSListArgs<Product>"
@@ -1086,6 +1113,29 @@
       },
       "shape": "Shopify_Collection"
     },
+    "collectionByHandleWithTtl": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "collectionByHandle",
+        "options": {
+          "ttl": 60
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "handle": {
+            "type": "string",
+            "description": "The handle of the collection."
+          }
+        },
+        "required": [
+          "handle"
+        ]
+      },
+      "shape": "Shopify_Collection"
+    },
     "Shopify_products": {
       "resolver": {
         "name": "graphql:query",
@@ -1149,7 +1199,9 @@
             "description": "The ID of the Product to return."
           }
         },
-        "required": ["id"]
+        "required": [
+          "id"
+        ]
       },
       "shape": "Shopify_Product"
     },
@@ -2757,7 +2809,7 @@
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 3600,
+                    "ttl": 300,
                     "retry": {
                       "limit": 10,
                       "statusCode": [
