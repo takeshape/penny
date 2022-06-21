@@ -3,7 +3,7 @@ import Breadcrumbs, { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import NextImage from 'components/NextImage';
 import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSelectWithDescription';
 import Stars from 'components/Stars/Stars';
-import { addToCartAtom } from 'features/Cart/store';
+import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { Product as ProductType } from 'types/product';
@@ -33,6 +33,7 @@ export const ProductWithImage = ({ product, reviewHighlights, breadcrumbs }: Pro
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 
   const addToCart = useSetAtom(addToCartAtom);
+  const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
   const handleAddToCart = useCallback(
     (e) => {
@@ -43,8 +44,10 @@ export const ProductWithImage = ({ product, reviewHighlights, breadcrumbs }: Pro
         variant: selectedVariant,
         price: selectedPrice
       });
+
+      setIsCartOpen(true);
     },
-    [product, selectedVariant, selectedPrice, addToCart]
+    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen]
   );
 
   useEffect(() => {
