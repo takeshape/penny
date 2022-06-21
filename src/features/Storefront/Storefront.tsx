@@ -10,13 +10,13 @@ import { GetStorefrontResponse } from './queries';
 import { Sale } from './Sale/Sale';
 import { Testimonials } from './Testimonials/Testimonials';
 
-function storefrontResponseToComponent(products: ProductGridProps['products']) {
+function storefrontResponseToComponent(items: ProductGridProps['items']) {
   const StorefrontComponent = (component: StorefrontComponentsProperty, index = 0) => {
     switch (component.__typename) {
       case 'BackgroundImageComponent':
         return (
           <BackgroundImage key={index} {...component}>
-            {component.components.map(storefrontResponseToComponent(products))}
+            {component.components.map(storefrontResponseToComponent(items))}
           </BackgroundImage>
         );
       case 'CollectionsComponent':
@@ -45,13 +45,5 @@ function storefrontResponseToComponent(products: ProductGridProps['products']) {
 }
 
 export const Storefront = ({ items, storefront }: GetStorefrontResponse & ProductGridProps) => {
-  const components = storefrontResponseToComponent(items);
-
-  return (
-    <main className="bg-white">
-      {storefront.components.map((component, idx) => {
-        return <div key={idx}>{components(component)}</div>;
-      })}
-    </main>
-  );
+  return <main className="bg-white">{storefront.components.map(storefrontResponseToComponent(items))}</main>;
 };
