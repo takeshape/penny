@@ -129,5 +129,8 @@ export const productOptions = {
   }
 };
 
+/* Checkout */
+export const signedInCheckout = process.env.NEXT_PUBLIC_SIGNED_IN_CHECKOUT === 'true' ? true : false;
+
 /* Misc */
 export const defaultKlaviyoListId = process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID;

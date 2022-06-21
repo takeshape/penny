@@ -6,8 +6,8 @@ import {
   MutationShopifyStorefront_CartCreateArgs
 } from 'types/takeshape';
 
-export const getCheckoutPayload = (items: CartItem[], session: Session): MutationShopifyStorefront_CartCreateArgs => {
-  return {
+export const getCartVariables = (items: CartItem[], session?: Session) => {
+  const createCartVariables: MutationShopifyStorefront_CartCreateArgs = {
     input: {
       attributes: [
         {
@@ -21,11 +21,16 @@ export const getCheckoutPayload = (items: CartItem[], session: Session): Mutatio
           sellingPlanId: (i.data.price as ProductPriceOption).subscriptionId,
           quantity: i.quantity
         })
-      ),
-      buyerIdentity: {
-        email: session.user.email,
-        customerAccessToken: session.shopifyCustomerAccessToken as string
-      }
+      )
     }
   };
+
+  if (session) {
+    createCartVariables.input.buyerIdentity = {
+      email: session.user.email,
+      customerAccessToken: session.shopifyCustomerAccessToken as string
+    };
+  }
+
+  return createCartVariables;
 };

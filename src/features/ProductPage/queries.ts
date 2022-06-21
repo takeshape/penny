@@ -23,7 +23,7 @@ export type ProductPageShopifyProductIdListArgs = {
 
 export const ProductPageShopifyProductIdListQuery = gql`
   query ProductPageShopifyProductIdListQuery($from: Int!) {
-    products: getProductList(size: 50, sort: { field: "_createdAt", order: "asc" }, from: $from) {
+    products: getProductListWithTtl(size: 50, sort: { field: "_createdAt", order: "asc" }, from: $from) {
       items {
         name
         slug
@@ -183,7 +183,7 @@ export type ProductPageShopifyProductByIdArgs = {
 export const ProductPageShopifyProductByIdQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProductByIdQuery($id: String) {
-    productList: getProductList(size: 1, where: { shopifyProductId: { eq: $id } }) {
+    productList: getProductListWithTtl(size: 1, where: { shopifyProductId: { eq: $id } }) {
       items {
         ...ProductPageProduct
       }
@@ -198,7 +198,7 @@ export type ProductPageShopifyProductBySlugArgs = {
 export const ProductPageShopifyProductBySlugQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProductBySlugQuery($slug: String) {
-    productList: getProductList(size: 1, where: { slug: { eq: $slug } }) {
+    productList: getProductListWithTtl(size: 1, where: { slug: { eq: $slug } }) {
       items {
         ...ProductPageProduct
       }
@@ -218,7 +218,7 @@ export type ProductPageTakeshapeProductResponse = {
 
 export const ProductPageTakeshapeProductQuery = gql`
   query ProductPageTakeshapeProductQuery($productId: String!) {
-    productList: getProductList(where: { shopifyProductId: { eq: $productId } }, size: 1) {
+    productList: getProductListWithTtl(where: { shopifyProductId: { eq: $productId } }, size: 1) {
       items {
         productComponent
         hideReviews
@@ -311,7 +311,7 @@ export type RelatedProductsShopifyCollectionResponse = {
 
 export const RelatedProductsShopifyCollectionQuery = gql`
   query RelatedProductsShopifyCollectionQuery($handle: String!) {
-    collection: Shopify_collectionByHandle(handle: $handle) {
+    collection: collectionByHandleWithTtl(handle: $handle) {
       products(first: 10) {
         edges {
           node {
