@@ -83,8 +83,6 @@ export type Query = {
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
-  /** Returns a list Collection in natural order. */
-  getCollectionListWithTtl?: Maybe<CollectionPaginatedList>;
   /** Get a Page by ID */
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
@@ -396,20 +394,6 @@ export type QueryGetCollectionArgs = {
 
 /** Root of the Schema */
 export type QueryGetCollectionListArgs = {
-  terms?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Scalars['Int']>;
-  filter?: InputMaybe<Scalars['JSONObject']>;
-  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
-  locale?: InputMaybe<Scalars['String']>;
-  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
-  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<TsWhereCollectionInput>;
-};
-
-
-/** Root of the Schema */
-export type QueryGetCollectionListWithTtlArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
   size?: InputMaybe<Scalars['Int']>;
@@ -4824,6 +4808,157 @@ export enum Shopify_ProductVariantSortKeys {
   Id = 'ID',
   Relevance = 'RELEVANCE'
 }
+
+export type Product = TsSearchable & {
+  __typename?: 'Product';
+  /** Initialized with title from shopify */
+  name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+  productComponent?: Maybe<Scalars['String']>;
+  hideRelatedProducts?: Maybe<Scalars['Boolean']>;
+  hideReviews?: Maybe<Scalars['Boolean']>;
+  showPolicies?: Maybe<Scalars['Boolean']>;
+  policies?: Maybe<ProductPagePolicies>;
+  showDetails?: Maybe<Scalars['Boolean']>;
+  details?: Maybe<ProductPageDetails>;
+  shopifyProductId?: Maybe<Scalars['String']>;
+  shopifyProduct?: Maybe<Shopify_Product>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPoliciesArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductDetailsArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPagePolicies = TsSearchable & {
+  __typename?: 'ProductPagePolicies';
+  name: Scalars['String'];
+  policies: Array<ProductPagePoliciesPolicies>;
+  _shapeId?: Maybe<Scalars['String']>;
+  _id?: Maybe<Scalars['ID']>;
+  _version?: Maybe<Scalars['Int']>;
+  _shapeName?: Maybe<Scalars['String']>;
+  _createdAt?: Maybe<Scalars['String']>;
+  _createdBy?: Maybe<TsUser>;
+  _updatedAt?: Maybe<Scalars['String']>;
+  _updatedBy?: Maybe<TsUser>;
+  _schemaVersion?: Maybe<Scalars['Float']>;
+  /** @deprecated Use _status instead */
+  _enabled?: Maybe<Scalars['Boolean']>;
+  /** @deprecated Use a custom date field instead */
+  _enabledAt?: Maybe<Scalars['String']>;
+  _status?: Maybe<DefaultWorkflow>;
+  _contentTypeId?: Maybe<Scalars['String']>;
+  _contentTypeName?: Maybe<Scalars['String']>;
+  searchSummary?: Maybe<Scalars['String']>;
+};
+
+export type ProductPagePoliciesPolicies = {
+  __typename?: 'ProductPagePoliciesPolicies';
+  name: Scalars['JSON'];
+  nameHtml?: Maybe<Scalars['String']>;
+  description: Scalars['JSON'];
+  descriptionHtml?: Maybe<Scalars['String']>;
+  image?: Maybe<Asset>;
+};
+
+
+export type ProductPagePoliciesPoliciesNameHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPagePoliciesPoliciesDescriptionHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPagePoliciesPoliciesImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+/** The percentage value of a selling plan pricing policy percentage type. */
+export type Shopify_SellingPlanPricingPolicyPercentageValue = {
+  __typename?: 'Shopify_SellingPlanPricingPolicyPercentageValue';
+  /** The percentage value. */
+  percentage: Scalars['Float'];
+};
+
+export type ProductPageDetailsText = {
+  __typename?: 'ProductPageDetailsText';
+  primary: Scalars['JSON'];
+  primaryHtml?: Maybe<Scalars['String']>;
+  secondary: Scalars['JSON'];
+  secondaryHtml?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsTextPrimaryHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsTextSecondaryHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
+
+export type ProductPageDetailsDetails = {
+  __typename?: 'ProductPageDetailsDetails';
+  image?: Maybe<Asset>;
+  description: Scalars['JSON'];
+  descriptionHtml?: Maybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsDetailsImageArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+export type ProductPageDetailsDetailsDescriptionHtmlArgs = {
+  imageConfig?: InputMaybe<Scalars['JSON']>;
+  images?: InputMaybe<TsImagesConfig>;
+  classPrefix?: InputMaybe<Scalars['String']>;
+  headerIdPrefix?: InputMaybe<Scalars['String']>;
+};
 
 export type Product = TsSearchable & {
   __typename?: 'Product';
@@ -15246,8 +15381,6 @@ export type WithContext = {
   getCollection?: Maybe<Collection>;
   /** Returns a list Collection in natural order. */
   getCollectionList?: Maybe<CollectionPaginatedList>;
-  /** Returns a list Collection in natural order. */
-  getCollectionListWithTtl?: Maybe<CollectionPaginatedList>;
   /** Get a Page by ID */
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
@@ -15558,20 +15691,6 @@ export type WithContextGetCollectionArgs = {
 
 /** This query allow you to pass context to your queries */
 export type WithContextGetCollectionListArgs = {
-  terms?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  size?: InputMaybe<Scalars['Int']>;
-  filter?: InputMaybe<Scalars['JSONObject']>;
-  sort?: InputMaybe<Array<InputMaybe<TsSearchSortInput>>>;
-  locale?: InputMaybe<Scalars['String']>;
-  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
-  onlyEnabled?: InputMaybe<Scalars['Boolean']>;
-  where?: InputMaybe<TsWhereCollectionInput>;
-};
-
-
-/** This query allow you to pass context to your queries */
-export type WithContextGetCollectionListWithTtlArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
   size?: InputMaybe<Scalars['Int']>;

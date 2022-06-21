@@ -5,7 +5,7 @@ import ProductColorSelect from 'components/Product/ProductColorSelect';
 import ProductPrice from 'components/Product/ProductPrice';
 import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
-import { addToCartAtom } from 'features/Cart/store';
+import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';
 import { getVariant } from 'utils/products';
@@ -36,6 +36,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 
   const addToCart = useSetAtom(addToCartAtom);
+  const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
   const handleAddToCart = useCallback(
     (e) => {
@@ -45,9 +46,10 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
         variant: selectedVariant,
         price: selectedPrice
       });
+      setIsCartOpen(true);
       onClose();
     },
-    [addToCart, product, selectedVariant, selectedPrice, onClose]
+    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen, onClose]
   );
 
   useEffect(() => {
