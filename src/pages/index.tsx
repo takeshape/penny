@@ -9,6 +9,7 @@ import {
 import { getRelatedProductList } from 'features/ProductPage/transforms';
 import { GetStorefrontQuery, GetStorefrontResponse } from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
+import { getStorefront } from 'features/Storefront/transforms';
 import Layout from 'layouts/Default';
 import logger from 'logger';
 import { InferGetStaticPropsType, NextPage } from 'next';
@@ -71,7 +72,8 @@ export async function getStaticProps() {
     const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
       query: GetStorefrontQuery
     });
-    storefront = storefrontData.storefront;
+
+    storefront = getStorefront(storefrontData);
   } catch (err) {
     logger.error(err);
     error = formatError(err);

@@ -1,27 +1,11 @@
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-
-interface AvailableColor {
-  name: string;
-  colorBg: string;
-}
-
-interface TrendingProduct {
-  id: string;
-  href: string;
-  name: string;
-  color: string;
-  price: string;
-  imageSrc: string;
-  imageAlt: string;
-  availableColors: AvailableColor[];
-}
-
+import { TrendingProduct } from '../types';
 export interface TrendingProductsProps {
-  trendingProducts?: TrendingProduct[];
+  products?: TrendingProduct[];
 }
 
-export const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<TrendingProductsProps>) => {
+export const TrendingProducts = ({ products: trendingProducts }: TrendingProductsProps) => {
   if (!(trendingProducts ?? trendingProducts.length)) return null;
   return (
     <section aria-labelledby="trending-heading" className="bg-white">
@@ -30,11 +14,11 @@ export const TrendingProducts = ({ trendingProducts }: React.PropsWithChildren<T
           <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
             Trending products
           </h2>
+
           <NextLink href="#" className="hidden sm:block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
             See everything<span aria-hidden="true"> &rarr;</span>
           </NextLink>
         </div>
-
         <div className="mt-8 relative">
           <div className="relative w-full overflow-x-auto">
             <ul

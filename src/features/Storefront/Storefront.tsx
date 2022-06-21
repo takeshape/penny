@@ -45,5 +45,5 @@ function storefrontResponseToComponent(products: ProductGridProps['products']) {
 }
 
 export const Storefront = ({ products, storefront }: GetStorefrontResponse & ProductGridProps) => {
-  return <main className="bg-white">{storefront.components.map(storefrontResponseToComponent(products))}</main>;
+  return <div className="bg-white">{storefront.components.map(storefrontResponseToComponent(products))}</div>;
 };

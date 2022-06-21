@@ -20,12 +20,12 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroComp
             </div>
           </div>
         </div>
-        <div className="relative w-full h-48 sm:h-64 lg:h-full">
-          <div className="w-full h-full">
+        <div className="w-full h-48 sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:w-1/2 lg:h-full">
+          <div className="relative w-full h-full">
             <NextImage
               layout="fill"
               src={getImageUrl(image)}
-              alt=""
+              alt={image.description ?? ''}
               objectFit="cover"
               objectPosition="center"
               priority

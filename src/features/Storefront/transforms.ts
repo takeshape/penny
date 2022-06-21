@@ -1,14 +1,15 @@
+import { TrendingProduct } from 'features/Storefront/types';
+import { Storefront } from 'types/takeshape';
 import { GetStorefrontResponse } from './queries';
-import { StorefrontComponent, StorefrontTakeshapeComponent } from './types';
 
-export function getComponent(component: StorefrontTakeshapeComponent): StorefrontComponent {}
+export function getTrendingProducts() {}
 
-export function getComponents(response: GetStorefrontResponse): StorefrontComponent[] {
-  const components = response?.storefront?.components;
+export function getStorefront(response: GetStorefrontResponse, trendingProducts: TrendingProduct[]): Storefront {
+  const storefront = response?.storefront;
 
-  if (!components) {
+  if (!storefront) {
     return null;
   }
 
-  return components.map(getComponent);
+  return storefront;
 }
