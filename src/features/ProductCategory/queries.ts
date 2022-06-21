@@ -107,6 +107,8 @@ export const ProductCategoryShopifyCollectionByIdQuery = gql`
           ...ProductCategoryCollection
           products(first: $first, last: $last, after: $after, before: $before) {
             pageInfo {
+              endCursor
+              startCursor
               hasNextPage
               hasPreviousPage
             }
@@ -136,6 +138,8 @@ export const ProductCategoryShopifyCollectionBySlugQuery = gql`
           ...ProductCategoryCollection
           products(first: $first, last: $last, after: $after, before: $before) {
             pageInfo {
+              endCursor
+              startCursor
               hasNextPage
               hasPreviousPage
             }

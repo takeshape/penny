@@ -62,7 +62,6 @@ export type ProductCategoryCollection = {
   descriptionHtml: string;
   productsCount: number;
   items: ProductCategoryProductListItem[];
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  cursor?: string;
+  pageInfo: Shopify_PageInfo;
+  anchor?: string;
 };

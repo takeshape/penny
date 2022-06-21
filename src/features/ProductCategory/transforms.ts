@@ -9,7 +9,12 @@ import {
   shopifyGidToId
 } from 'transforms/shopify';
 import { isNumericString } from 'utils/types';
-import { ProductCategoryShopifyCollectionIdsResponse, ProductCategoryShopifyCollectionResponse } from './queries';
+import {
+  ProductCategoryShopifyCollectionByIdArgs,
+  ProductCategoryShopifyCollectionBySlugArgs,
+  ProductCategoryShopifyCollectionIdsResponse,
+  ProductCategoryShopifyCollectionResponse
+} from './queries';
 import {
   ProductCategoryCollection,
   ProductCategoryProduct,
@@ -55,24 +60,26 @@ function getProductListItem(
   };
 }
 
-export function getCollection(
-  response: ProductCategoryShopifyCollectionResponse,
-  pageSize: number,
-  cursor?: string,
-  direction: 'forward' | 'back' = 'forward'
-): ProductCategoryCollection {
+export function getCollectionPageInfo(
+  response: ProductCategoryShopifyCollectionResponse
+): ProductCategoryCollection['pageInfo'] {
   const collection = response?.collectionList?.items?.[0].shopifyCollection;
 
   if (!collection) {
     return null;
   }
 
-  // When getting a 'back' collection, overfetch for the current cursor
-  if (direction === 'back' && collection.products.edges.length > pageSize) {
-    const cursorEdge = collection.products.edges.shift();
-    cursor = cursorEdge.cursor;
-  } else if (direction === 'forward' && collection.products.edges.length > pageSize) {
-    collection.products.edges.pop();
+  return collection.products.pageInfo;
+}
+
+export function getCollection(
+  response: ProductCategoryShopifyCollectionResponse,
+  variables: ProductCategoryShopifyCollectionByIdArgs | ProductCategoryShopifyCollectionBySlugArgs
+): ProductCategoryCollection {
+  const collection = response?.collectionList?.items?.[0].shopifyCollection;
+
+  if (!collection) {
+    return null;
   }
 
   return {
@@ -84,10 +91,32 @@ export function getCollection(
     descriptionHtml: collection.descriptionHtml,
     productsCount: collection.productsCount,
     items: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
-    cursor: cursor ?? null,
-    hasNextPage: collection.products.pageInfo.hasNextPage ?? false,
-    hasPreviousPage: collection.products.pageInfo.hasPreviousPage ?? false
+    pageInfo: collection.products.pageInfo,
+    anchor: (variables.before !== undefined ? collection.products.pageInfo.startCursor : variables.after) ?? null
   };
+}
+
+export function getCollectionWithOverfetch(
+  { pageSize }: { pageSize: number },
+  response: ProductCategoryShopifyCollectionResponse,
+  variables: ProductCategoryShopifyCollectionByIdArgs | ProductCategoryShopifyCollectionBySlugArgs
+): ProductCategoryCollection {
+  const collection = response?.collectionList?.items?.[0].shopifyCollection;
+
+  if (!collection) {
+    return null;
+  }
+
+  response = structuredClone(response);
+  const products = response.collectionList.items[0].shopifyCollection.products;
+
+  // This was an overfetch to get the start anchor for backwards pagination
+  if (variables.last > pageSize && products.edges.length > pageSize) {
+    const [, ...edges] = products.edges;
+    products.edges = edges;
+  }
+
+  return getCollection(response, variables);
 }
 
 export function getCollectionPageParams(response: ProductCategoryShopifyCollectionIdsResponse, pageSize: number) {
@@ -133,10 +162,10 @@ export function getCurrentCursor(collection: ProductCategoryCollection) {
   return collection.items[collection.items.length - 1].cursor;
 }
 
-export function getCurrentUrl(collection: ProductCategoryCollection, cursor: string, page: number) {
-  return collection.hasPreviousPage ? `${collection.url}/${cursor}/${page}` : collection.url;
+export function getCurrentUrl(collection: ProductCategoryCollection, page: number) {
+  return collection.anchor ? `${collection.url}/${collection.anchor}/${page}` : collection.url;
 }
 
 export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {
-  return collection.hasPreviousPage ? `Page ${page} | ${collection.name}` : collection.name;
+  return collection.pageInfo.hasPreviousPage ? `Page ${page} | ${collection.name}` : collection.name;
 }

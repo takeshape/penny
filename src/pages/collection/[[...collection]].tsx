@@ -55,39 +55,36 @@ export const getStaticProps = async ({ params }) => {
 
   const { navigation, footer } = await getLayoutData();
 
-  let collectionData;
+  let query;
+  let variables: ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs;
 
   if (idOrSlug.slug) {
-    ({ data: collectionData } = await retryShopifyThrottle(async () => {
-      return await apolloClient.query<
-        ProductCategoryShopifyCollectionResponse,
-        ProductCategoryShopifyCollectionBySlugArgs
-      >({
-        query: ProductCategoryShopifyCollectionBySlugQuery,
-        variables: {
-          slug: idOrSlug.slug,
-          first: collectionsPageSize,
-          after: cursor
-        }
-      });
-    }));
+    query = ProductCategoryShopifyCollectionBySlugQuery;
+    variables = {
+      slug: idOrSlug.slug,
+      first: collectionsPageSize,
+      after: cursor
+    };
   } else {
-    ({ data: collectionData } = await retryShopifyThrottle(async () => {
-      return await apolloClient.query<
-        ProductCategoryShopifyCollectionResponse,
-        ProductCategoryShopifyCollectionByIdArgs
-      >({
-        query: ProductCategoryShopifyCollectionByIdQuery,
-        variables: {
-          id: idOrSlug.id,
-          first: collectionsPageSize,
-          after: cursor
-        }
-      });
-    }));
+    query = ProductCategoryShopifyCollectionByIdQuery;
+    variables = {
+      id: idOrSlug.id,
+      first: collectionsPageSize,
+      after: cursor
+    };
   }
 
-  const collection = getCollection(collectionData, collectionsPageSize, cursor);
+  const { data: collectionData } = await retryShopifyThrottle(async () => {
+    return await apolloClient.query<
+      ProductCategoryShopifyCollectionResponse,
+      ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs
+    >({
+      query,
+      variables
+    });
+  });
+
+  const collection = getCollection(collectionData, variables);
 
   return {
     props: {
