@@ -1,3 +1,4 @@
+import PageLoader from 'components/PageLoader';
 import { getLayoutData } from 'data/getLayoutData';
 import Page from 'features/Page/Page';
 import {
@@ -10,12 +11,23 @@ import {
 import { getPage, getPageParams } from 'features/Page/transforms';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 const AboutPage: NextPage = ({ navigation, footer, page }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return (
+      <Layout navigation={navigation} footer={footer} seo={{ title: 'Page is loading...' }}>
+        <PageLoader />
+      </Layout>
+    );
+  }
+
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: page.title }}>
       <Page page={page} />;
@@ -61,7 +73,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: params,
-    fallback: false
+    fallback: true
   };
 };
 
