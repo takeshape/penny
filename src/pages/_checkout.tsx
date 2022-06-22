@@ -1,8 +1,8 @@
 import { useApolloClient } from '@apollo/client';
 import PageLoader from 'components/PageLoader';
-import { CreateMyCartMutation, CreateMyCartResponse } from 'features/Cart/queries';
+import { CreateCartMutation, CreateCartResponse } from 'features/Cart/queries';
 import { cartItemsAtom } from 'features/Cart/store';
-import { getCheckoutPayload } from 'features/Cart/utils';
+import { getCartVariables } from 'features/Cart/utils';
 import { useAtomValue } from 'jotai';
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
@@ -17,13 +17,13 @@ const _CheckoutPage: NextPage = () => {
 
   useEffect(() => {
     const doCheckout = async () => {
-      const { data } = await client.mutate<CreateMyCartResponse, MutationShopifyStorefront_CartCreateArgs>({
-        mutation: CreateMyCartMutation,
-        variables: getCheckoutPayload(cartItems, session)
+      const { data } = await client.mutate<CreateCartResponse, MutationShopifyStorefront_CartCreateArgs>({
+        mutation: CreateCartMutation,
+        variables: getCartVariables(cartItems, session)
       });
 
-      if (data?.myCart?.cart?.checkoutUrl) {
-        window.location.href = data.myCart.cart.checkoutUrl;
+      if (data?.cart?.cart?.checkoutUrl) {
+        window.location.href = data.cart.cart.checkoutUrl;
       }
     };
 

@@ -1412,7 +1412,7 @@
       "description": "Update Navigation",
       "args": "UpdateArgs<Navigation>"
     },
-    "createMyCart": {
+    "createCart": {
       "resolver": {
         "name": "graphql:mutation",
         "service": "shopify-storefront",

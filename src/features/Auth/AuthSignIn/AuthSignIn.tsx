@@ -20,7 +20,7 @@ export interface AuthSignInProps {
   error?: string;
 }
 
-export const errors: Record<SignInErrorTypes, string> = {
+export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string> = {
   Signin: 'Try signing in with a different account.',
   OAuthSignin: 'Try signing in with a different account.',
   OAuthCallback: 'Try signing in with a different account.',
@@ -31,6 +31,7 @@ export const errors: Record<SignInErrorTypes, string> = {
   EmailSignin: 'The e-mail could not be sent.',
   CredentialsSignin: 'Email address or password are incorrect.',
   SessionRequired: 'Please sign in to access this page.',
+  CheckoutSessionRequired: 'Please sign in to checkout.',
   default: 'Unable to sign in.'
 };
 
