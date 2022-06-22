@@ -30,32 +30,39 @@
 A full-featured e-commerce experience using the best services out there:
 
 - Auth0 for user authentication
-- Shopify for products and payments
+- OpenID for greater identity management
+- Gorgias for customer support
+- Shopify Admin and Storefront for customer data, product info and payment processing
 - Recharge for subscriptions
 - Klaviyo for newsletter subscriptions
-- Reviews.io for product reviews
+- REVIEWS.io for product reviews
 - Voucherify for customer loyalty
 - Ship Engine for shipping
+- Tailwind UI for styling
 - Next.js to build the pages and bundle it all up
 - Vercel to host it
-- **TakeShape ShapeDB for profile data storage**
-- **TakeShape Indexing for query optimization and search**
-- **TakeShape API Mesh to bring all these services together in one easy-to-use GraphQL API**
+- **TakeShape's [ShapeDB](https://app.takeshape.io/docs/data/modeling) to host custom content**
+- **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) to speed up queries over 50%, enable product search, and cache Shopify data**
+- **TakeShape's [API Mesh](https://app.takeshape.io/docs/major-concepts) to bring all these features and services together in one unified GraphQL API**
 
 ```mermaid
 graph TD
     A[Frontend NextJS Client] --> |Unified GraphQL API| Mesh{TakeShape's API Mesh}
-    Mesh --> |User Authentication| Auth0
+    Mesh --> |User Authentication| OpenID
+    Mesh --> |DDoS prevention| reCAPTCHA
+    OpenID --> Auth0
     Mesh --> P{Products}
-    P --> Stripe
+    P --> Shopify[Shopify Admin and Storefront]
     Mesh --> UP{User Profile}
     UP --> |Referrals| RC(Referral Candy)
-    UP --> |Orders and Subscriptions| Stripe
+    UP --> |Orders, Subscriptions, and Customer Data| Shopify
     UP --> |Newsletter| Klaviyo
-    P --> |Product Reviews| Reviews.io
-    UP --> |Reviews Written| Reviews.io
+    P --> |Product Reviews| REVIEWS.io
+    UP --> |Reviews Written| REVIEWS.io
     UP --> |Shipping info| ShipEngine
     UP --> |Loyalty Points| Voucherify
+    UP --> |Customer Support| Gorgias
+    Shopify --> |Subscriptions| Recharge
 ```
 
 ## Screenshot
