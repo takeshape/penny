@@ -2,6 +2,7 @@ import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
+import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { defaultKlaviyoListId } from 'config';
 import { useCallback, useState } from 'react';
 import { Klaviyo_AddMembersResponse } from 'types/takeshape';
@@ -76,6 +77,9 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
           </Button>
         </div>
       </form>
+      <div className="mt-4">
+        <RecaptchaBranding />
+      </div>
       {feedback && (
         <div className="mt-2">
           <Alert status={feedback.type} primaryText={feedback.message} />

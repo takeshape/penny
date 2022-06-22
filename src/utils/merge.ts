@@ -1,20 +1,23 @@
-import { MergeWithCustomizer } from 'lodash';
-import isEqual from 'lodash-es/isEqual';
-import mergeWith from 'lodash-es/mergeWith';
-
 /**
- * Lodash `mergeWith` customizer to merge arrays
+ * Deep merge that concatenates arrays from https://stackoverflow.com/a/48218209
  */
-const arrayMergeCustomizer: MergeWithCustomizer = (value, srcValue) => {
-  if (Array.isArray(value)) {
-    return [...srcValue, ...value.filter((d) => srcValue.every((s) => !isEqual(d, s)))];
-  }
-};
+export function mergeDeep<TObject>(...objects: TObject[]) {
+  const isObject = (obj) => obj && typeof obj === 'object';
 
-/**
- * Lodash `mergeWith` loaded with a customizer that concatenates arrays for a
- * deeper merge.
- */
-export function mergeWithArrayMerge<TObject, TSource>(object: TObject, source: TSource) {
-  return mergeWith(object, source, arrayMergeCustomizer);
+  return objects.reduce((prev, obj) => {
+    Object.keys(obj).forEach((key) => {
+      const pVal = prev[key];
+      const oVal = obj[key];
+
+      if (Array.isArray(pVal) && Array.isArray(oVal)) {
+        prev[key] = oVal.concat(...pVal);
+      } else if (isObject(pVal) && isObject(oVal)) {
+        prev[key] = mergeDeep(pVal, oVal);
+      } else {
+        prev[key] = oVal;
+      }
+    });
+
+    return prev;
+  }, {});
 }
