@@ -3,23 +3,17 @@ import type { DocumentNode } from 'graphql';
 import type { Dispatch } from 'react';
 import { useEffect, useState } from 'react';
 import useDebounce from 'utils/hooks/useDebounce';
-
-export interface SearchResult {
-  id: string;
-  title: string;
-  imageUrl?: string;
-  description?: string;
-}
+import { SearchItem } from './types';
 
 export interface UseSearchProps {
   graphqlQuery: DocumentNode;
-  resultsFn: (data: any) => SearchResult[];
+  resultsFn: (data: any) => SearchItem[];
 }
 
 export function useSearch({
   graphqlQuery,
   resultsFn
-}: UseSearchProps): [boolean, string, SearchResult[], Dispatch<string>] {
+}: UseSearchProps): [boolean, string, SearchItem[], Dispatch<string>] {
   const [search, { loading, data }] = useLazyQuery(graphqlQuery);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -43,5 +37,3 @@ export function useSearch({
 
   return [loading, query, results, setQuery];
 }
-
-export default useSearch;
