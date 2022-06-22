@@ -33,29 +33,6 @@ export type StorefrontShopifyCollection = Pick<
   };
 };
 
-export type StorefrontTrendingProductsShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'takeshape'
->;
-
-export type AvailableColor = {
-  name: string;
-  colorBg: string;
-};
-
 export type StorefrontCollectionItemProduct = ProductBase;
 
 export type StorefrontCollectionItem = {

@@ -40,7 +40,7 @@ _Loading.parameters = {
     path: '/',
     isReady: true,
     query: {
-      search: 'socks'
+      search: 'basic'
     }
   },
   msw: {
@@ -60,7 +60,7 @@ _WithResults.parameters = {
     path: '/',
     isReady: true,
     query: {
-      search: 'socks'
+      search: 'basic'
     }
   },
   msw: {
@@ -80,7 +80,7 @@ _NoResults.parameters = {
     path: '/',
     isReady: true,
     query: {
-      search: 'socks'
+      search: 'basic'
     }
   },
   msw: {

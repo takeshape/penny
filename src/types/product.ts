@@ -79,13 +79,16 @@ export type ProductOption = {
   values: ProductOptionValue[];
 };
 
-export type ProductBase = {
+export type ProductCore = {
   id: string;
   name: string;
   url: string;
   description: string;
-  descriptionHtml: string;
   featuredImage: ProductImage;
+};
+
+export type ProductBase = ProductCore & {
+  descriptionHtml: string;
   images?: ProductImage[];
   priceMin: ProductPrice;
   priceMax: ProductPrice;

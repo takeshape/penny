@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client';
 import Seo from 'components/Seo';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { silentlyUpdateUrl } from 'utils/history';
+import { pushState } from 'utils/history';
 import { ProductCategory } from './ProductCategory';
 import {
   ProductCategoryShopifyCollectionByIdArgs,
@@ -117,7 +117,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
     if (pageCollection) {
       setCurrentCollection(pageCollection);
       setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
-      silentlyUpdateUrl(getCurrentUrl(pageCollection, currentPage));
+      pushState(getCurrentUrl(pageCollection, currentPage));
       window.scrollTo(0, 0);
     }
   }, [currentPage]);

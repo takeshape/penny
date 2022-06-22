@@ -1,9 +1,10 @@
 import { gql } from '@apollo/client';
-import type { Shopify_Product, TsSearchableSearchResults } from 'types/takeshape';
+import { TsSearchableSearchResults } from 'types/takeshape';
+import { SearchShopifyProduct } from './types';
 
 export interface SearchShopifyProductsResults extends TsSearchableSearchResults {
   search: {
-    results: Shopify_Product[];
+    results: SearchShopifyProduct[];
   };
 }
 
@@ -18,6 +19,13 @@ export const SearchShopifyProducts = gql`
           description
           featuredImage {
             url
+            altText
+            height
+            width
+          }
+          takeshape {
+            name
+            slug
           }
         }
       }
