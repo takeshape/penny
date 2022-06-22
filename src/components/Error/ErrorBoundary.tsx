@@ -4,13 +4,13 @@ import NextLink from 'components/NextLink';
 import Wrapper from 'components/Wrapper/Content';
 import { PropsWithChildren } from 'react';
 
-export interface ErrorBoundaryProps extends PropsWithChildren {
+export interface ErrorBoundaryProps {
   headline?: string;
   subhead?: string;
   body?: string;
 }
 
-export const ErrorBoundary: React.FC<ErrorBoundaryProps> = (props) => {
+export const ErrorBoundary = (props: PropsWithChildren<ErrorBoundaryProps>) => {
   const { children, headline, subhead, body } = props;
 
   return (

@@ -2,6 +2,8 @@ import createBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import withPlugins from 'next-compose-plugins';
 
+const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
 });
@@ -107,4 +109,4 @@ const config = {
   }
 };
 
-export default withPlugins([withBundleAnalyzer, withSentryConfig], config);
+export default withPlugins([withBundleAnalyzer, SENTRY_DSN ? withSentryConfig : {}], config);

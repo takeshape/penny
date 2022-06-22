@@ -1,4 +1,3 @@
-import { withSentry } from '@sentry/nextjs';
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
 import {
@@ -17,6 +16,7 @@ import {
   MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
   QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
+import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
 
 const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
