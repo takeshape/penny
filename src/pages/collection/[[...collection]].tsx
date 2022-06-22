@@ -17,7 +17,7 @@ import {
   getCollectionPageParams
 } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -53,7 +53,7 @@ const CollectionPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const [collectionId, ...rest] = params.collection;
   const idOrSlug = getCollectionPageIdOrSlug(collectionId);
 
@@ -95,11 +95,15 @@ export const getStaticProps = async ({ params }) => {
 
   const collection = getCollectionFromTakeshape(data, variables);
 
+  if (!collection) {
+    return {
+      notFound: true
+    };
+  }
+
   return {
     props: {
       page: Number(page ?? 1),
-      id: collection.id,
-      handle: collection.handle,
       navigation,
       footer,
       collection

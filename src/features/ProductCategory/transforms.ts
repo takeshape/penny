@@ -63,7 +63,7 @@ function getProductListItem(
 export function getCollectionPageInfo(
   response: ProductCategoryShopifyCollectionResponse
 ): ProductCategoryCollection['pageInfo'] {
-  const collection = response?.collectionList?.items?.[0].shopifyCollection;
+  const collection = response?.collectionList?.items?.[0]?.shopifyCollection;
 
   if (!collection) {
     return null;
@@ -96,7 +96,7 @@ export function getCollectionFromTakeshape(
   response: ProductCategoryShopifyCollectionResponse,
   variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
 ): ProductCategoryCollection {
-  const collection = response?.collectionList?.items?.[0].shopifyCollection;
+  const collection = response?.collectionList?.items?.[0]?.shopifyCollection;
 
   if (!collection) {
     return null;
@@ -110,7 +110,7 @@ export function getCollectionWithOverfetch(
   response: ProductCategoryShopifyCollectionResponse,
   variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after' | 'last'>
 ): ProductCategoryCollection {
-  const shopifyCollection = response?.collectionList?.items?.[0].shopifyCollection;
+  const shopifyCollection = response?.collectionList?.items?.[0]?.shopifyCollection;
 
   if (!shopifyCollection) {
     return null;
