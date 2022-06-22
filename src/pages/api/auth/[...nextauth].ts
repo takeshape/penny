@@ -16,6 +16,7 @@ import {
   MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
   QueryShopifyStorefront_CustomerArgs
 } from 'types/takeshape';
+import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
 
 const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
@@ -141,7 +142,7 @@ const nextAuthConfig = {
   }
 };
 
-export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = parseCookies({ req });
   const rememberMe = cookies['remember-me'] ?? req.body.rememberMe;
   const maxAge = rememberMe === 'false' ? maxAgeForgetMe : maxAgeRememberMe;
@@ -161,4 +162,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const nextAuth = withAllAccess(NextAuth, nextAuthConfig);
 
   return await nextAuth(req, res);
-}
+};
+
+export default withSentry(handler);

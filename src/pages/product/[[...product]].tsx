@@ -33,7 +33,7 @@ import { useRouter } from 'next/router';
 import { shopifyGidToId } from 'transforms/shopify';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
-import { retryShopifyThrottle } from '../../utils/apollo/retryShopifyThrottle';
+import { retryGraphqlThrottle } from '../../utils/apollo/retryGraphqlThrottle';
 
 const breadcrumbs = [
   { id: 1, name: 'Men', href: '#' },
@@ -88,7 +88,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   let productData;
 
   if (idOrSlug.slug) {
-    ({ data: productData } = await retryShopifyThrottle<ProductPageShopifyProductResponse>(async () => {
+    ({ data: productData } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
       return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductBySlugArgs>({
         query: ProductPageShopifyProductBySlugQuery,
         variables: {
@@ -97,7 +97,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       });
     }));
   } else {
-    ({ data: productData } = await retryShopifyThrottle<ProductPageShopifyProductResponse>(async () => {
+    ({ data: productData } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
       return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductByIdArgs>({
         query: ProductPageShopifyProductByIdQuery,
         variables: {

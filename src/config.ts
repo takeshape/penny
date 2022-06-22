@@ -9,7 +9,7 @@ export const shopifyToken = process.env.SHOPIFY_TOKEN;
 export const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 
 /* Nerd Stuff */
-export const vercelEnv = process.env.VERCEL_ENV;
+export const vercelEnv = process.env.VERCEL_ENV ?? 'development';
 export const isProduction = vercelEnv === 'production';
 export const isStorybook = Boolean(process.env.STORYBOOK);
 export const isSsr = typeof window === 'undefined';
