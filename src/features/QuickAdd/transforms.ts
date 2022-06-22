@@ -14,7 +14,7 @@ export function getProduct(response: QuickAddResponse): QuickAddProduct {
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,

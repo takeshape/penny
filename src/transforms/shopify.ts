@@ -9,7 +9,6 @@ import {
   ProductVariant
 } from 'types/product';
 import {
-  Product,
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
@@ -253,12 +252,20 @@ export function getProductOptions(options: Shopify_ProductOption[], variants?: P
   );
 }
 
-export function getProductUrl(id: string, product: Pick<Product, 'name' | 'slug'>, base = 'product') {
-  if (product.slug) {
-    return `/${base}/${product.slug}`;
+export function getUrl(id: string, item: { name?: string; slug?: string }, base: string) {
+  if (item.slug) {
+    return `/${base}/${item.slug}`;
   }
 
-  return `/${base}/${shopifyGidToId(id)}/${slug(product.name)}`;
+  return `/${base}/${shopifyGidToId(id)}/${slug(item.name)}`;
+}
+
+export function getProductUrl(id: string, item: { name?: string; slug?: string }) {
+  return getUrl(id, item, 'product');
+}
+
+export function getCollectionUrl(id: string, item: { name?: string; slug?: string }) {
+  return getUrl(id, item, 'collection');
 }
 
 export function shopifyGidToId(gid: string): string {

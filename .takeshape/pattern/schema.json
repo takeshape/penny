@@ -492,6 +492,80 @@
         ]
       }
     },
+    "Collection": {
+      "default": {
+        "properties": {
+          "name": {
+            "widget": "singleLineText"
+          },
+          "slug": {
+            "widget": "slug"
+          },
+          "shopifyCollection": {
+            "properties": {
+              "descriptionHtml": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "handle": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "image": {
+                "widget": "shopifyCollectionImage",
+                "provider": "shopify"
+              },
+              "products": {
+                "widget": "shopifyRelationshipSummary",
+                "provider": "shopify"
+              },
+              "templateSuffix": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "sortOrder": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "title": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "redirectNewHandle": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              }
+            },
+            "widget": "shopify",
+            "wrapper": "shopifyServiceWrapper",
+            "order": [
+              "title",
+              "handle",
+              "descriptionHtml",
+              "products",
+              "image",
+              "templateSuffix",
+              "sortOrder",
+              "redirectNewHandle"
+            ]
+          },
+          "shopifyCollectionId": {
+            "instructions": "Format: gid://shopify/Collection/1111111111111",
+            "label": "collection ID",
+            "widget": "serviceObjectId",
+            "provider": "shopify",
+            "serviceObjectType": "collection",
+            "service": "shopify"
+          }
+        },
+        "order": [
+          "name",
+          "slug",
+          "shopifyCollectionId",
+          "shopifyCollection"
+        ]
+      }
+    },
     "PageSectionMdx": {
       "default": {
         "properties": {
@@ -1262,6 +1336,39 @@
       },
       "description": "Get a Storefront by ID",
       "args": "TSGetSingletonArgs<Storefront>"
+    },
+    "getCollection": {
+      "shape": "Collection",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Collection"
+      },
+      "description": "Get a Collection by ID",
+      "args": "TSGetArgs<Collection>"
+    },
+    "getCollectionList": {
+      "shape": "PaginatedList<Collection>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Collection"
+      },
+      "description": "Returns a list Collection in natural order.",
+      "args": "TSListArgs<Collection>"
+    },
+    "getCollectionListWithTtl": {
+      "shape": "PaginatedList<Collection>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Collection",
+        "options": {
+          "ttl": 60
+        }
+      },
+      "description": "Returns a list Collection in natural order.",
+      "args": "TSListArgs<Collection>"
     },
     "getPage": {
       "shape": "Page",
@@ -2456,6 +2563,256 @@
       "description": "Delete ProductPagePolicies",
       "args": "DeleteArgs<ProductPagePolicies>"
     },
+    "updateCollection": {
+      "shape": "UpdateResult<Collection>",
+      "resolver": {
+        "compose": [
+          {
+            "id": "createNewShopifyObject",
+            "if": "isEmpty(args.input.shopifyCollectionId) && !isEmpty(args.input.shopifyCollection)",
+            "name": "graphql:mutation",
+            "service": "shopify",
+            "fieldName": "collectionCreate",
+            "options": {
+              "selectionSet": "{ collection { id } }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "input.descriptionHtml",
+                  "mapping": "$args.input.shopifyCollection.descriptionHtml"
+                },
+                {
+                  "path": "input.handle",
+                  "mapping": "$args.input.shopifyCollection.handle"
+                },
+                {
+                  "path": "input.templateSuffix",
+                  "mapping": "$args.input.shopifyCollection.templateSuffix"
+                },
+                {
+                  "path": "input.sortOrder",
+                  "mapping": "$args.input.shopifyCollection.sortOrder"
+                },
+                {
+                  "path": "input.title",
+                  "mapping": "$args.input.shopifyCollection.title"
+                },
+                {
+                  "path": "input.redirectNewHandle",
+                  "mapping": "$args.input.shopifyCollection.redirectNewHandle"
+                }
+              ]
+            }
+          },
+          {
+            "id": "editTakeshape",
+            "name": "takeshape:update",
+            "service": "takeshape:local",
+            "shapeName": "Collection",
+            "args": {
+              "ops": [
+                {
+                  "path": "input",
+                  "mapping": "$args.input"
+                },
+                {
+                  "path": "input.shopifyCollectionId",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.createNewShopifyObject.collection.id"
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$args.input.shopifyCollectionId"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "id": "updateExistingShopifyObject",
+            "if": "!isEmpty(args.input.shopifyCollectionId) && !isEmpty(args.input.shopifyCollection)",
+            "name": "graphql:mutation",
+            "service": "shopify",
+            "fieldName": "collectionUpdate",
+            "options": {
+              "selectionSet": "{ collection { id } }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "input.descriptionHtml",
+                  "mapping": "$args.input.shopifyCollection.descriptionHtml"
+                },
+                {
+                  "path": "input.handle",
+                  "mapping": "$args.input.shopifyCollection.handle"
+                },
+                {
+                  "path": "input.templateSuffix",
+                  "mapping": "$args.input.shopifyCollection.templateSuffix"
+                },
+                {
+                  "path": "input.sortOrder",
+                  "mapping": "$args.input.shopifyCollection.sortOrder"
+                },
+                {
+                  "path": "input.title",
+                  "mapping": "$args.input.shopifyCollection.title"
+                },
+                {
+                  "path": "input.redirectNewHandle",
+                  "mapping": "$args.input.shopifyCollection.redirectNewHandle"
+                },
+                {
+                  "path": "input.id",
+                  "mapping": "$args.input.shopifyCollectionId"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "result",
+              "mapping": "$resolvers.editTakeshape.result"
+            }
+          ]
+        }
+      },
+      "description": "Update Collection. If the input has Shopify values and a Shopify ID, the Shopify collection with that ID is updated.\nIf the input has Shopify values and no Shopify ID, a Shopify collection is created.",
+      "args": "UpdateArgs<CollectionInterface>"
+    },
+    "createCollection": {
+      "shape": "CreateResult<Collection>",
+      "resolver": {
+        "compose": [
+          {
+            "id": "shopifyCreate",
+            "if": "!isEmpty(args.input.shopifyCollection)",
+            "name": "graphql:mutation",
+            "service": "shopify",
+            "fieldName": "collectionCreate",
+            "options": {
+              "selectionSet": "{ collection { id } }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "input.descriptionHtml",
+                  "mapping": "$args.input.shopifyCollection.descriptionHtml"
+                },
+                {
+                  "path": "input.handle",
+                  "mapping": "$args.input.shopifyCollection.handle"
+                },
+                {
+                  "path": "input.templateSuffix",
+                  "mapping": "$args.input.shopifyCollection.templateSuffix"
+                },
+                {
+                  "path": "input.sortOrder",
+                  "mapping": "$args.input.shopifyCollection.sortOrder"
+                },
+                {
+                  "path": "input.title",
+                  "mapping": "$args.input.shopifyCollection.title"
+                },
+                {
+                  "path": "input.redirectNewHandle",
+                  "mapping": "$args.input.shopifyCollection.redirectNewHandle"
+                }
+              ]
+            }
+          },
+          {
+            "id": "creatingShopifyObject",
+            "if": "!isEmpty(args.input.shopifyCollection)",
+            "name": "takeshape:create",
+            "service": "takeshape:local",
+            "shapeName": "Collection",
+            "args": {
+              "ops": [
+                {
+                  "path": "input",
+                  "mapping": "$args.input"
+                },
+                {
+                  "path": "input.shopifyCollectionId",
+                  "mapping": "$resolvers.shopifyCreate.collection.id"
+                }
+              ]
+            }
+          },
+          {
+            "id": "notCreatingShopifyObject",
+            "if": "isEmpty(args.input.shopifyCollection)",
+            "name": "takeshape:create",
+            "service": "takeshape:local",
+            "shapeName": "Collection",
+            "args": {
+              "ops": [
+                {
+                  "path": "input",
+                  "mapping": "$args.input"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "result",
+              "mapping": [
+                [
+                  "get",
+                  {
+                    "path": "$resolvers.creatingShopifyObject.result"
+                  }
+                ],
+                [
+                  "get",
+                  {
+                    "path": "$resolvers.notCreatingShopifyObject.result"
+                  }
+                ]
+              ]
+            }
+          ]
+        }
+      },
+      "description": "Create Collection. If Shopify values are provided, a Shopify collection is also created and the new collection ID is saved.",
+      "args": "CreateArgs<CollectionInterface>"
+    },
+    "duplicateCollection": {
+      "shape": "DuplicateResult<Collection>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "Collection"
+      },
+      "description": "Duplicate Collection",
+      "args": "DuplicateArgs<Collection>"
+    },
+    "deleteCollection": {
+      "shape": "DeleteResult<Collection>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "Collection"
+      },
+      "description": "Delete Collection",
+      "args": "DeleteArgs<Collection>"
+    },
     "updatePage": {
       "shape": "UpdateResult<Page>",
       "resolver": {
@@ -3010,6 +3367,39 @@
                       {
                         "path": "$",
                         "mapping": "$finalResolver.products[0]"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "Shopify_Collection": {
+      "id": "Shopify_Collection",
+      "name": "Shopify_Collection",
+      "title": "Shopify_Collection",
+      "schema": {
+        "extends": [
+          {
+            "@ref": "shopify:Collection"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "takeshape": {
+                "@ref": "local:Collection",
+                "@resolver": {
+                  "name": "takeshape:find",
+                  "service": "takeshape:local",
+                  "shapeName": "Collection",
+                  "args": {
+                    "ops": [
+                      {
+                        "path": "where.shopifyCollectionId.eq",
+                        "mapping": "$source.id"
                       }
                     ]
                   }
@@ -4384,6 +4774,59 @@
             "type": "array",
             "title": "Sections",
             "@mapping": "takeshape:local:Page.Mlup98oFX"
+          }
+        }
+      }
+    },
+    "Collection": {
+      "id": "wsEbSG-yV",
+      "name": "Collection",
+      "title": "Collection",
+      "workflow": "default",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Initialized with title from shopify",
+            "title": "Name",
+            "@mapping": "takeshape:local:Collection.sZuVCwK3h7"
+          },
+          "slug": {
+            "@derivedFrom": "name",
+            "pattern": "^[\\w-]*$",
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "Slug",
+            "@mapping": "takeshape:local:Collection.WMx9SpOPY"
+          },
+          "shopifyCollectionId": {
+            "type": "string",
+            "@mapping": "takeshape:local:Collection.shopifyCollectionId",
+            "title": "shopify collection",
+            "minLength": 1,
+            "pattern": "(^gid://shopify/Collection/\\d+$)"
+          },
+          "shopifyCollection": {
+            "@ref": "shopify:Collection",
+            "@resolver": {
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "collection",
+              "args": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.shopifyCollectionId"
+                  }
+                ]
+              }
+            },
+            "@tag": "pattern:service-object:1"
           }
         }
       }

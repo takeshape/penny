@@ -1,11 +1,25 @@
 import { getStats } from 'transforms/reviewsIo';
-import { createImageGetter, getPrice, getProductOptions, getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import { ProductCategoryShopifyCollectionIdsResponse, ProductCategoryShopifyCollectionResponse } from './queries';
+import {
+  createImageGetter,
+  getCollectionUrl,
+  getPrice,
+  getProductOptions,
+  getProductUrl,
+  shopifyCollectionIdToGid,
+  shopifyGidToId
+} from 'transforms/shopify';
+import { isNumericString } from 'utils/types';
+import {
+  ProductCategoryShopifyCollectionIdsResponse,
+  ProductCategoryShopifyCollectionResponse,
+  ProductCategoryShopifyPaginationArgs
+} from './queries';
 import {
   ProductCategoryCollection,
   ProductCategoryProduct,
   ProductCategoryProductListItem,
   ProductCategoryReviewsIoReviews,
+  ProductCategoryShopifyCollection,
   ProductCategoryShopifyProduct
 } from './types';
 
@@ -20,7 +34,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape, 'product'),
+    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -35,55 +49,131 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
   };
 }
 
-function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): ProductCategoryProductListItem {
+function getProductListItem(
+  shopifyProduct: ProductCategoryShopifyProduct,
+  cursor: string
+): ProductCategoryProductListItem {
   return {
+    cursor,
     product: getProduct(shopifyProduct),
     reviews: getReviews(shopifyProduct.reviews)
   };
 }
 
-export function getCollection(response: ProductCategoryShopifyCollectionResponse): ProductCategoryCollection {
-  const collection = response?.collection;
+export function getCollectionPageInfo(
+  response: ProductCategoryShopifyCollectionResponse
+): ProductCategoryCollection['pageInfo'] {
+  const collection = response?.collectionList?.items?.[0].shopifyCollection;
 
   if (!collection) {
     return null;
   }
 
+  return collection.products.pageInfo;
+}
+
+export function getCollection(
+  collection: ProductCategoryShopifyCollection,
+  { before, after }: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
+): ProductCategoryCollection {
+  const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
+
   return {
     id: collection.id,
+    url: getCollectionUrl(collection.id, collection.takeshape),
     handle: collection.handle,
     name: collection.title,
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     productsCount: collection.productsCount,
-    products: collection.products.edges.map(({ node }) => getProductListItem(node))
+    items: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
+    pageInfo: collection.products.pageInfo,
+    anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null
   };
 }
 
+export function getCollectionFromTakeshape(
+  response: ProductCategoryShopifyCollectionResponse,
+  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
+): ProductCategoryCollection {
+  const collection = response?.collectionList?.items?.[0].shopifyCollection;
+
+  if (!collection) {
+    return null;
+  }
+
+  return getCollection(collection, variables);
+}
+
+export function getCollectionWithOverfetch(
+  { pageSize }: { pageSize: number },
+  response: ProductCategoryShopifyCollectionResponse,
+  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after' | 'last'>
+): ProductCategoryCollection {
+  const shopifyCollection = response?.collectionList?.items?.[0].shopifyCollection;
+
+  if (!shopifyCollection) {
+    return null;
+  }
+
+  const collection = structuredClone(shopifyCollection);
+
+  // This was an overfetch to get the start anchor for backwards pagination
+  if (variables.last > pageSize && collection.products.edges.length > pageSize) {
+    const [, ...edges] = collection.products.edges;
+    collection.products.edges = edges;
+  }
+
+  return getCollection(collection, variables);
+}
+
 export function getCollectionPageParams(response: ProductCategoryShopifyCollectionIdsResponse, pageSize: number) {
-  const collections = response?.collections?.edges;
+  const collections = response?.collections?.items;
 
   if (!collections) {
     return null;
   }
 
-  // TODO Need to support slugs
-  return collections.flatMap(({ node }) => {
-    const pageCount = Math.ceil(node.productsCount / pageSize);
-    const pagesParams = new Array(pageCount).fill(undefined);
+  return collections.map((item) => {
+    let collection;
 
-    return pagesParams.map((_, pageIdx) => {
-      let collection = [shopifyGidToId(node.id)];
+    if (item.slug) {
+      collection = [item.slug];
+    } else {
+      collection = [shopifyGidToId(item.shopifyCollectionId)];
+    }
 
-      if (pageIdx > 0) {
-        collection.push(String(pageIdx + 1));
+    return {
+      params: {
+        collection
       }
-
-      return {
-        params: {
-          collection
-        }
-      };
-    });
+    };
   });
+}
+
+export function getCollectionPageIdOrSlug(idOrSlug: string) {
+  // This is a product id, 9 is arbitrary, but Shopify Collection Ids shouldn't be shorter.
+  if (idOrSlug.length > 9 && isNumericString(idOrSlug)) {
+    return {
+      id: shopifyCollectionIdToGid(idOrSlug),
+      slug: ''
+    };
+  }
+
+  return {
+    id: '',
+    slug: idOrSlug
+  };
+}
+
+export function getCurrentCursor(collection: ProductCategoryCollection) {
+  return collection.items[collection.items.length - 1].cursor;
+}
+
+export function getCurrentUrl(collection: ProductCategoryCollection, page: number) {
+  return collection.anchor ? `${collection.url}/${collection.anchor}/${page}` : collection.url;
+}
+
+export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {
+  return collection.pageInfo.hasPreviousPage ? `Page ${page} | ${collection.name}` : collection.name;
 }

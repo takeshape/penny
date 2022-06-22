@@ -1,28 +1,32 @@
 import PageLoader from 'components/PageLoader';
 import { collectionsPageSize } from 'config';
 import { getLayoutData } from 'data/getLayoutData';
-import { ProductCategoryWithData } from 'features/ProductCategory/ProductCategoryWithData';
+import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
-  ProductCategoryShopifyCollectionArgs,
+  ProductCategoryShopifyCollectionByIdArgs,
+  ProductCategoryShopifyCollectionByIdQuery,
+  ProductCategoryShopifyCollectionBySlugArgs,
+  ProductCategoryShopifyCollectionBySlugQuery,
   ProductCategoryShopifyCollectionIdsQuery,
   ProductCategoryShopifyCollectionIdsResponse,
-  ProductCategoryShopifyCollectionQuery,
   ProductCategoryShopifyCollectionResponse
 } from 'features/ProductCategory/queries';
-import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
+import {
+  getCollectionFromTakeshape,
+  getCollectionPageIdOrSlug,
+  getCollectionPageParams
+} from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { shopifyCollectionIdToGid } from 'transforms/shopify';
+import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const CollectionPage: NextPage = ({
-  page,
-  id,
-  name,
-  description,
   navigation,
-  footer
+  footer,
+  collection,
+  page
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
@@ -37,8 +41,12 @@ const CollectionPage: NextPage = ({
   }
 
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: name, description }}>
-      <ProductCategoryWithData collectionId={id} pageSize={collectionsPageSize} page={page} />
+    <Layout
+      navigation={navigation}
+      footer={footer}
+      seo={{ title: collection.name, description: collection.description }}
+    >
+      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} page={page} />
     </Layout>
   );
 };
@@ -46,39 +54,50 @@ const CollectionPage: NextPage = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }) => {
-  const [collectionId, pageNumber] = params.collection;
-
-  // TODO We'll need to use indexing to make pagination work with a page index
-  // Shopify requires a product ID cursor which would make for nasty urls, e.g,
-  // /collections/270097776740/adf09uadf09ausdf09audf-9adsuf90ad/ or impractical schemes where we
-  // iterate through collection pages until we find the product id needed.
-
-  // TODO Support slugs
+  const [collectionId, cursor, page] = params.collection;
+  const idOrSlug = getCollectionPageIdOrSlug(collectionId);
 
   const { navigation, footer } = await getLayoutData();
 
-  const { data } = await apolloClient.query<
-    ProductCategoryShopifyCollectionResponse,
-    ProductCategoryShopifyCollectionArgs
-  >({
-    query: ProductCategoryShopifyCollectionQuery,
-    variables: {
-      id: shopifyCollectionIdToGid(collectionId),
-      first: collectionsPageSize
-    }
+  let query;
+  let variables: ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs;
+
+  if (idOrSlug.slug) {
+    query = ProductCategoryShopifyCollectionBySlugQuery;
+    variables = {
+      slug: idOrSlug.slug,
+      first: collectionsPageSize,
+      after: cursor
+    };
+  } else {
+    query = ProductCategoryShopifyCollectionByIdQuery;
+    variables = {
+      id: idOrSlug.id,
+      first: collectionsPageSize,
+      after: cursor
+    };
+  }
+
+  const { data } = await retryShopifyThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
+    return apolloClient.query<
+      ProductCategoryShopifyCollectionResponse,
+      ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs
+    >({
+      query,
+      variables
+    });
   });
 
-  const collection = getCollection(data);
+  const collection = getCollectionFromTakeshape(data, variables);
 
   return {
     props: {
-      page: Number(pageNumber ?? 1),
+      page: Number(page ?? 1),
       id: collection.id,
       handle: collection.handle,
-      name: collection.name,
-      description: collection.description,
       navigation,
-      footer
+      footer,
+      collection
     }
   };
 };
