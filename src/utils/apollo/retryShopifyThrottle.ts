@@ -1,10 +1,13 @@
-import { ApolloError } from '@apollo/client';
+import { ApolloError, ApolloQueryResult } from '@apollo/client';
 import { sleep } from '../sleep';
 
 // Shopify may throttle in a GraphQL error rather than 429. As a result
 // it bypasses RetryLink. Apollo onError can catch it but isn't suited for
 // throttle handling as it is synchronous and cannot retry more than once.
-export const retryShopifyThrottle = async (execute, attempt = 0) => {
+export const retryShopifyThrottle = async <T>(
+  execute: () => Promise<ApolloQueryResult<T>>,
+  attempt = 0
+): Promise<ApolloQueryResult<T>> => {
   try {
     return await execute();
   } catch (e) {

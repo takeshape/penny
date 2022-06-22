@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ProductCategory } from './ProductCategory';
 import { collectionResponse } from './queries.fixtures';
-import { getCollection } from './transforms';
+import { getCollectionFromTakeshape } from './transforms';
 
-const collection = getCollection(collectionResponse);
+const collection = getCollectionFromTakeshape(collectionResponse, {});
 
 const Meta: ComponentMeta<typeof ProductCategory> = {
   title: 'Features / Product Category',
@@ -18,10 +18,10 @@ const Template: ComponentStory<typeof ProductCategory> = (args) => <ProductCateg
 export const _ProductCategory = Template.bind({});
 _ProductCategory.args = {
   header: { text: { primary: collection.name, secondary: collection.descriptionHtml } },
-  products: collection.products,
+  items: collection.items,
   pagination: {
-    pageCount: 2,
-    currentPage: 1,
+    hasNextPage: collection.pageInfo.hasNextPage,
+    hasPreviousPage: collection.pageInfo.hasPreviousPage,
     setCurrentPage: () => {}
   }
 };
