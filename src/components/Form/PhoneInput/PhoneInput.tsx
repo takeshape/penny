@@ -32,7 +32,7 @@ export const FormPhoneInput = ({
 }: FormPhoneInputProps & UseControllerProps<any, any>) => {
   rules = {
     ...rules,
-    validate: isPossiblePhoneNumber
+    validate: (value) => (value ? isPossiblePhoneNumber(`${value}`) : true)
   };
 
   const { field, fieldState } = useController({ name, control, defaultValue, rules, shouldUnregister });
