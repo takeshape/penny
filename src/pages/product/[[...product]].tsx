@@ -28,7 +28,7 @@ import {
   getReviewList
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, InferGetStaticPropsType, NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { shopifyGidToId } from 'transforms/shopify';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -80,8 +80,8 @@ const ProductPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps = async ({ params }) => {
-  const idOrSlug = getProductPageIdOrSlug(getSingle(params.id));
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const idOrSlug = getProductPageIdOrSlug(getSingle(params.product));
 
   const { navigation, footer } = await getLayoutData();
 
@@ -109,6 +109,12 @@ export const getStaticProps = async ({ params }) => {
 
   const product = getProduct(productData);
 
+  if (!product) {
+    return {
+      notFound: true
+    };
+  }
+
   const { data: takeshapeData } = await apolloClient.query<
     ProductPageTakeshapeProductResponse,
     ProductPageTakeshapeProductArgs
@@ -131,10 +137,10 @@ export const getStaticProps = async ({ params }) => {
 
   return {
     props: {
-      options: getPageOptions(takeshapeData),
       navigation,
       footer,
       product,
+      options: getPageOptions(takeshapeData),
       reviewHighlights: getReviewHighlights(reviewsData),
       reviewList: getReviewList(reviewsData),
       details: getDetails(takeshapeData),

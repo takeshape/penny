@@ -167,11 +167,11 @@ export function getProductPageIdOrSlug(idOrSlug: string) {
 }
 
 export function getProductPageParams(item: ProductPageShopifyProductIdListResponse['products']['items'][0]) {
-  const id = item.slug ? [item.slug] : [shopifyGidToId(item.shopifyProductId), slug(item.name)];
+  const product = item.slug ? [item.slug] : [shopifyGidToId(item.shopifyProductId), slug(item.name)];
 
   return {
     params: {
-      id
+      product
     }
   };
 }
