@@ -3,6 +3,7 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
+import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { siteLogo } from 'config';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -92,6 +93,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
                     Reset password
                   </Button>
                 </div>
+                <RecaptchaBranding />
               </>
             )}
           </form>

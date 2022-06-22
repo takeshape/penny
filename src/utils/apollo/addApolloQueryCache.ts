@@ -1,7 +1,7 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import getFooterData from 'data/getFooterData';
 import getNavigationData from 'data/getNavigationData';
-import { mergeWithArrayMerge } from 'utils/merge';
+import { mergeDeep } from 'utils/merge';
 import { APOLLO_CACHE_PROP_NAME } from './client';
 
 async function addApolloQueryCache(client: ApolloClient<NormalizedCacheObject>, pageProps: any) {
@@ -15,7 +15,7 @@ async function addApolloQueryCache(client: ApolloClient<NormalizedCacheObject>, 
 
     let apolloCache = clientCache;
     for (const queryCache of commonQueryCache) {
-      apolloCache = mergeWithArrayMerge(apolloCache, queryCache);
+      apolloCache = mergeDeep(apolloCache, queryCache);
     }
 
     pageProps.props[APOLLO_CACHE_PROP_NAME] = apolloCache;

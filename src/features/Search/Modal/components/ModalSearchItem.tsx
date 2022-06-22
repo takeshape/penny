@@ -1,7 +1,7 @@
 import { Combobox } from '@headlessui/react';
 import NextImage from 'components/NextImage';
-import { truncate } from 'lodash-es';
 import classNames from 'utils/classNames';
+import { truncate } from 'utils/truncate';
 import { SearchItem } from '../../types';
 
 export interface ModalSearchItemProps extends SearchItem {}
@@ -32,7 +32,7 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
             </p>
             {product.description && (
               <p className={classNames('text-sm', active ? 'text-gray-700' : 'text-gray-500')}>
-                {truncate(product.description, { length: 160 })}
+                {truncate(product.description, { length: 160, separator: ' ' })}
               </p>
             )}
           </div>

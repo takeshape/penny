@@ -36,3 +36,9 @@
     @apply text-base text-gray-900 mt-4;
   }
 }
+
+/*
+* Hide reCAPTCHA badge
+ * https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge.-what-is-allowed
+ */
+.grecaptcha-badge { visibility: hidden; }
