@@ -4,8 +4,7 @@
   ],
   "extends": [
     "next/core-web-vitals",
-    "plugin:prettier/recommended",
-    "plugin:storybook/recommended"
+    "plugin:prettier/recommended"
   ],
   "rules": {
     "no-unreachable": "error",
@@ -39,6 +38,14 @@
         "mdx/code-blocks": true,
         "mdx/language-mapper": {}
       }
+    },
+    {
+      "extends": [
+        "plugin:storybook/recommended"
+      ],
+      "files": [
+        "**/*.stories.*"
+      ]
     }
   ],
   "parserOptions": {
