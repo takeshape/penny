@@ -15,7 +15,7 @@ export type QuickAddResponse = {
 
 export const QuickAddQuery = gql`
   query ProductPageShopifyProductQuery($id: String!) {
-    productList: getProductListWithTtl(where: { shopifyProductId: { eq: $id } }, size: 1) {
+    productList: getProductListWithTtl(where: { shopifyProductId: { eq: $id }, _status: { eq: "enabled" } }, size: 1) {
       items {
         shopifyProduct {
           id

@@ -97,7 +97,10 @@ export type ProductCategoryShopifyCollectionByIdArgs = {
 export const ProductCategoryShopifyCollectionByIdQuery = gql`
   ${ProductCategoryFragments}
   query ProductPageShopifyProductByIdQuery($id: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: getCollectionListWithTtl(size: 1, where: { shopifyCollectionId: { eq: $id } }) {
+    collectionList: getCollectionListWithTtl(
+      size: 1
+      where: { shopifyCollectionId: { eq: $id }, _status: { eq: "enabled" } }
+    ) {
       items {
         shopifyCollection {
           ...ProductCategoryCollection
@@ -128,7 +131,7 @@ export type ProductCategoryShopifyCollectionBySlugArgs = {
 export const ProductCategoryShopifyCollectionBySlugQuery = gql`
   ${ProductCategoryFragments}
   query ProductPageShopifyProductByIdQuery($slug: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: getCollectionListWithTtl(size: 1, where: { slug: { eq: $slug } }) {
+    collectionList: getCollectionListWithTtl(size: 1, where: { slug: { eq: $slug }, _status: { eq: "enabled" } }) {
       items {
         shopifyCollection {
           ...ProductCategoryCollection
