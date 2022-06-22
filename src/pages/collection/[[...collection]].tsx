@@ -19,7 +19,7 @@ import {
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
+import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const CollectionPage: NextPage = ({
@@ -83,7 +83,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
-  const { data } = await retryShopifyThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
+  const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
     return apolloClient.query<
       ProductCategoryShopifyCollectionResponse,
       ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs
@@ -112,7 +112,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await retryShopifyThrottle(async () => {
+  const { data } = await retryGraphqlThrottle(async () => {
     return await apolloClient.query<ProductCategoryShopifyCollectionIdsResponse>({
       query: ProductCategoryShopifyCollectionIdsQuery
     });

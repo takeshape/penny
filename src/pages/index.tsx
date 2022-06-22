@@ -10,7 +10,7 @@ import { Storefront } from 'features/Storefront/Storefront';
 import { getCollection, getStorefront } from 'features/Storefront/transforms';
 import Layout from 'layouts/Default';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
+import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const IndexPage: NextPage = ({
@@ -43,7 +43,7 @@ export async function getStaticProps() {
     first: 5
   };
 
-  const { data: collectionData } = await retryShopifyThrottle<StorefrontShopifyCollectionByHandleResponse>(async () => {
+  const { data: collectionData } = await retryGraphqlThrottle<StorefrontShopifyCollectionByHandleResponse>(async () => {
     return apolloClient.query<StorefrontShopifyCollectionByHandleResponse, StorefrontShopifyCollectionByHandleArgs>({
       query: StorefrontShopifyCollectionByHandleQuery,
       variables: collectionVariables
