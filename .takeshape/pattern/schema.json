@@ -687,17 +687,6 @@
       },
       "id": "shopify"
     },
-    "recharge": {
-      "id": "recharge",
-      "provider": "generic",
-      "title": "Recharge",
-      "namespace": "Rechare",
-      "serviceType": "rest",
-      "authenticationType": "bearer",
-      "options": {
-        "endpoint": "https://api.rechargeapps.com"
-      }
-    },
     "shopify-storefront": {
       "id": "shopify-storefront",
       "provider": "generic",
@@ -3321,56 +3310,6 @@
                     ]
                   }
                 }
-              },
-              "recharge": {
-                "description": "The Recharge subscription data associated with this product",
-                "title": "Recharge",
-                "@ref": "local:Recharge_Product",
-                "@resolver": {
-                  "name": "rest:get",
-                  "service": "recharge",
-                  "options": {
-                    "ignoreErrors": true,
-                    "ttl": 3600,
-                    "retry": {
-                      "limit": 10,
-                      "statusCode": [
-                        429
-                      ]
-                    }
-                  },
-                  "path": "/products",
-                  "searchParams": {
-                    "ops": [
-                      {
-                        "path": "shopify_product_id",
-                        "mapping": [
-                          [
-                            "get",
-                            {
-                              "path": "$source.id"
-                            }
-                          ],
-                          [
-                            "replace",
-                            {
-                              "pattern": "gid://shopify/Product/",
-                              "replacement": ""
-                            }
-                          ]
-                        ]
-                      }
-                    ]
-                  },
-                  "results": {
-                    "ops": [
-                      {
-                        "path": "$",
-                        "mapping": "$finalResolver.products[0]"
-                      }
-                    ]
-                  }
-                }
               }
             }
           }
@@ -3408,108 +3347,6 @@
             }
           }
         ]
-      }
-    },
-    "Recharge_Product": {
-      "id": "Recharge_Product",
-      "name": "Recharge_Product",
-      "title": "Recharge_Product",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "title": "ID"
-          },
-          "product_id": {
-            "type": "number",
-            "title": "product_id"
-          },
-          "shopify_product_id": {
-            "type": "number",
-            "title": "shopify_product_id"
-          },
-          "discount_type": {
-            "type": "string"
-          },
-          "discount_amount": {
-            "type": "number",
-            "title": "discount_amount"
-          },
-          "subscription_defaults": {
-            "type": "object",
-            "title": "subscription_defaults",
-            "properties": {
-              "charge_interval_frequency": {
-                "type": "number"
-              },
-              "cutoff_day_of_month": {
-                "type": "number"
-              },
-              "cutoff_day_of_week": {
-                "type": "number"
-              },
-              "expire_after_specific_number_of_charges": {
-                "type": "number"
-              },
-              "order_day_of_month": {
-                "type": "number"
-              },
-              "order_day_of_week": {
-                "type": "number"
-              },
-              "order_interval_frequency": {
-                "type": "number"
-              },
-              "order_interval_unit": {
-                "type": "string"
-              },
-              "storefront_purchase_options": {
-                "type": "string"
-              },
-              "order_interval_frequency_options": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "external_product_id": {
-            "type": "string",
-            "title": "external_product_id"
-          },
-          "brand": {
-            "type": "string",
-            "title": "brand"
-          },
-          "images": {
-            "type": "object",
-            "title": "images",
-            "properties": {
-              "large": {
-                "type": "string",
-                "title": "large"
-              },
-              "medium": {
-                "type": "string",
-                "title": "medium"
-              },
-              "original": {
-                "type": "string",
-                "title": "original"
-              },
-              "small": {
-                "type": "string",
-                "title": "small"
-              }
-            }
-          },
-          "title": {
-            "type": "string",
-            "title": "title"
-          }
-        }
       }
     },
     "Gorgias_CreateTicketResponse": {
