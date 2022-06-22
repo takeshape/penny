@@ -1,22 +1,20 @@
-import Wrapper from 'components/Wrapper/Content';
-import { Header } from 'features/ProductCategory/Header/Header';
-import { ProductGrid, ProductGridProps } from 'features/ProductCategory/ProductGrid/ProductGrid';
-import { StorefrontComponentsProperty } from 'types/takeshape';
+import { Storefront as StorefrontType, StorefrontComponentsProperty } from 'types/takeshape';
 import { BackgroundImage } from './BackgroundImage/BackgroundImage';
+import { Collection } from './Collection/Collection';
 import { Collections } from './Collections/Collections';
 import { Hero } from './Hero/Hero';
 import { Offers } from './Offers/Offers';
-import { GetStorefrontResponse } from './queries';
 import { Sale } from './Sale/Sale';
 import { Testimonials } from './Testimonials/Testimonials';
+import { StorefrontCollection } from './types';
 
-function storefrontResponseToComponent(items: ProductGridProps['items']) {
+function storefrontResponseToComponent(collection: StorefrontCollection) {
   const StorefrontComponent = (component: StorefrontComponentsProperty, index = 0) => {
     switch (component.__typename) {
       case 'BackgroundImageComponent':
         return (
           <BackgroundImage key={index} {...component}>
-            {component.components.map(storefrontResponseToComponent(items))}
+            {component.components.map(storefrontResponseToComponent(collection))}
           </BackgroundImage>
         );
       case 'CollectionsComponent':
@@ -30,12 +28,7 @@ function storefrontResponseToComponent(items: ProductGridProps['items']) {
       case 'TestimonialsComponent':
         return <Testimonials key={index} {...component} />;
       case 'TrendingProductsComponent':
-        return (
-          <Wrapper key={index}>
-            <Header header={{ text: { primary: 'Trending Products', secondary: '' } }} />
-            <ProductGrid items={items} />;
-          </Wrapper>
-        );
+        return <Collection key={index} collection={collection} {...component} />;
       default:
         return null;
     }
@@ -44,6 +37,11 @@ function storefrontResponseToComponent(items: ProductGridProps['items']) {
   return StorefrontComponent;
 }
 
-export const Storefront = ({ items, storefront }: GetStorefrontResponse & ProductGridProps) => {
-  return <div className="bg-white">{storefront.components.map(storefrontResponseToComponent(items))}</div>;
+export interface StorefrontProps {
+  storefront: StorefrontType;
+  collection: StorefrontCollection;
+}
+
+export const Storefront = ({ collection, storefront }: StorefrontProps) => {
+  return <div className="bg-white">{storefront.components.map(storefrontResponseToComponent(collection))}</div>;
 };

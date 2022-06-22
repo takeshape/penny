@@ -1,12 +1,13 @@
 import { getLayoutData } from 'data/getLayoutData';
 import {
-  ProductCategoryShopifyCollectionByHandleArgs,
-  ProductCategoryShopifyCollectionByHandleQuery,
-  ProductCategoryShopifyCollectionByHandleResponse
-} from 'features/ProductCategory/queries';
-import { getCollection } from 'features/ProductCategory/transforms';
-import { GetStorefrontQuery, GetStorefrontResponse } from 'features/Storefront/queries';
+  GetStorefrontQuery,
+  GetStorefrontResponse,
+  StorefrontShopifyCollectionByHandleArgs,
+  StorefrontShopifyCollectionByHandleQuery,
+  StorefrontShopifyCollectionByHandleResponse
+} from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
+import { getCollection, getStorefront } from 'features/Storefront/transforms';
 import Layout from 'layouts/Default';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
@@ -20,7 +21,7 @@ const IndexPage: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout navigation={navigation} footer={footer}>
-      <Storefront items={collection.items} storefront={storefront} />
+      <Storefront collection={collection} storefront={storefront} />
     </Layout>
   );
 };
@@ -30,28 +31,26 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export async function getStaticProps() {
   const { navigation, footer } = await getLayoutData();
 
-  const { data: collectionData } = await retryShopifyThrottle<ProductCategoryShopifyCollectionByHandleResponse>(
-    async () => {
-      return apolloClient.query<
-        ProductCategoryShopifyCollectionByHandleResponse,
-        ProductCategoryShopifyCollectionByHandleArgs
-      >({
-        query: ProductCategoryShopifyCollectionByHandleQuery,
-        variables: {
-          handle: 'frontpage',
-          first: 10
-        }
-      });
-    }
-  );
-
-  const collection = getCollection(collectionData.collection, {});
-
   const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
     query: GetStorefrontQuery
   });
 
-  const storefront = storefrontData.storefront;
+  const storefront = getStorefront(storefrontData);
+
+  const collectionVariables: StorefrontShopifyCollectionByHandleArgs = {
+    // Imagine this handle comes from the Storefront data
+    handle: 'frontpage',
+    first: 5
+  };
+
+  const { data: collectionData } = await retryShopifyThrottle<StorefrontShopifyCollectionByHandleResponse>(async () => {
+    return apolloClient.query<StorefrontShopifyCollectionByHandleResponse, StorefrontShopifyCollectionByHandleArgs>({
+      query: StorefrontShopifyCollectionByHandleQuery,
+      variables: collectionVariables
+    });
+  });
+
+  const collection = getCollection(collectionData, collectionVariables);
 
   return { props: { navigation, footer, collection, storefront } };
 }

@@ -1,16 +1,16 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { TrendingProducts } from './TrendingProducts';
+import { Collection } from './Collection';
 
-const Meta: ComponentMeta<typeof TrendingProducts> = {
-  title: 'Features / Storefront / Components / Trending Products',
-  component: TrendingProducts
+const Meta: ComponentMeta<typeof Collection> = {
+  title: 'Features / Storefront / Components / Collection',
+  component: Collection
 };
 
-const Template: ComponentStory<typeof TrendingProducts> = (args) => <TrendingProducts {...args} />;
+const Template: ComponentStory<typeof Collection> = (args) => <Collection {...args} />;
 
-export const _TrendingProducts = Template.bind({});
-_TrendingProducts.args = {
-  trendingProducts: [
+export const WithTrendingProducts = Template.bind({});
+WithTrendingProducts.args = {
+  collection: [
     {
       id: 1,
       name: 'Machined Pen',

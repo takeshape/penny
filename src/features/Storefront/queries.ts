@@ -1,6 +1,8 @@
 import { gql } from '@apollo/client';
-import { Storefront } from 'types/takeshape';
-import { StorefrontTrendingProductsShopifyProduct } from './types';
+import { QueryShopify_ProductsArgs, Storefront } from 'types/takeshape';
+import { StorefrontShopifyCollection } from './types';
+
+export type StorefrontShopifyPaginationArgs = QueryShopify_ProductsArgs;
 
 export interface GetStorefrontResponse {
   storefront: Storefront;
@@ -63,57 +65,92 @@ export const GetStorefrontQuery = gql`
   }
 `;
 
-export type StorefrontTrendingProductsShopifyCollectionArgs = {
+const StorefrontFragments = gql`
+  fragment StorefrontCollection on Shopify_Collection {
+    id
+    handle
+    title
+    description
+    descriptionHtml
+    productsCount
+    takeshape {
+      _id
+      name
+      slug
+    }
+  }
+
+  fragment StorefrontProduct on Shopify_Product {
+    id
+    title
+    description
+    descriptionHtml
+    takeshape {
+      _id
+      name
+      slug
+    }
+    requiresSellingPlan
+    featuredImage {
+      id
+      width
+      height
+      url
+      altText
+    }
+    priceRangeV2 {
+      maxVariantPrice {
+        currencyCode
+        amount
+      }
+      minVariantPrice {
+        currencyCode
+        amount
+      }
+    }
+    publishedAt
+    totalVariants
+    totalInventory
+    sellingPlanGroupCount
+    options {
+      name
+      position
+      id
+      values
+    }
+  }
+`;
+
+export type StorefrontShopifyCollectionByHandleResponse = {
+  collection: StorefrontShopifyCollection;
+};
+
+export type StorefrontShopifyCollectionByHandleArgs = {
   handle: string;
-};
+} & StorefrontShopifyPaginationArgs;
 
-export type StorefrontTrendingProductsShopifyCollectionResponse = {
-  collection: {
-    products: {
-      edges: {
-        node: StorefrontTrendingProductsShopifyProduct;
-      }[];
-    };
-  };
-};
-
-export const StorefrontTrendingProductsShopifyCollectionQuery = gql`
-  query StorefrontTrendingProductsShopifyCollectionQuery($handle: String!) {
+export const StorefrontShopifyCollectionByHandleQuery = gql`
+  ${StorefrontFragments}
+  query StorefrontShopifyCollectionByHandleQuery(
+    $handle: String!
+    $first: Int
+    $last: Int
+    $after: String
+    $before: String
+  ) {
     collection: collectionByHandleWithTtl(handle: $handle) {
-      products(first: 10) {
+      ...StorefrontCollection
+      products(first: $first, last: $last, after: $after, before: $before) {
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
+        }
         edges {
+          cursor
           node {
-            id
-            title
-            description
-            descriptionHtml
-            takeshape {
-              _id
-              name
-              slug
-            }
-            requiresSellingPlan
-            featuredImage {
-              id
-              width
-              height
-              url
-              altText
-            }
-            priceRangeV2 {
-              maxVariantPrice {
-                currencyCode
-                amount
-              }
-              minVariantPrice {
-                currencyCode
-                amount
-              }
-            }
-            publishedAt
-            totalVariants
-            totalInventory
-            sellingPlanGroupCount
+            ...StorefrontProduct
           }
         }
       }

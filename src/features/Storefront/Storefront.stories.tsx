@@ -2,12 +2,12 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { collectionByHandleResponse } from 'features/ProductCategory/queries.fixtures';
 import { getCollection } from 'features/ProductCategory/transforms';
 import { _BackgroundImage } from 'features/Storefront/BackgroundImage/BackgroundImage.stories';
+import { WithTrendingProducts } from 'features/Storefront/Collection/Collection.stories';
 import { _Collections } from 'features/Storefront/Collections/Collections.stories';
 import { _Hero } from 'features/Storefront/Hero/Hero.stories';
 import { _Offers } from 'features/Storefront/Offers/Offers.stories';
 import { _Sale } from 'features/Storefront/Sale/Sale.stories';
 import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
-import { _TrendingProducts } from 'features/Storefront/TrendingProducts/TrendingProducts.stories';
 import { Storefront } from './Storefront';
 
 const collection = getCollection(collectionByHandleResponse.collection, {});
@@ -47,7 +47,7 @@ _Storefront.args = {
 };
 
 _Storefront.parameters = {
-  ..._TrendingProducts.parameters
+  ...WithTrendingProducts.parameters
 };
 
 export default Meta;
