@@ -17,7 +17,7 @@ import { getSingle } from 'utils/types';
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-const AboutPage: NextPage = ({ navigation, footer, page }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const PagePage: NextPage = ({ navigation, footer, page }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -77,4 +77,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default AboutPage;
+export default PagePage;
