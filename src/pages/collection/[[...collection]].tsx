@@ -21,7 +21,6 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } fro
 import { useRouter } from 'next/router';
 import { retryShopifyThrottle } from 'utils/apollo/retryShopifyThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { retryShopifyThrottle } from '../../utils/apollo/retry-shopify-throttle';
 
 const CollectionPage: NextPage = ({
   navigation,
