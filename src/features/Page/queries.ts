@@ -26,7 +26,7 @@ export type PageGetPageArgs = {
 
 export const PageGetPage = gql`
   query PageGetPage($slug: String!) {
-    pageList: getPageList(size: 1, where: { slug: { eq: $slug } }) {
+    pageList: getPageList(size: 1, where: { slug: { eq: $slug }, _status: { eq: "enabled" } }) {
       items {
         _id
         sections {

@@ -183,7 +183,7 @@ export type ProductPageShopifyProductByIdArgs = {
 export const ProductPageShopifyProductByIdQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProductByIdQuery($id: String) {
-    productList: getProductListWithTtl(size: 1, where: { shopifyProductId: { eq: $id } }) {
+    productList: getProductListWithTtl(size: 1, where: { shopifyProductId: { eq: $id }, _status: { eq: "enabled" } }) {
       items {
         ...ProductPageProduct
       }
@@ -198,7 +198,7 @@ export type ProductPageShopifyProductBySlugArgs = {
 export const ProductPageShopifyProductBySlugQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProductBySlugQuery($slug: String) {
-    productList: getProductListWithTtl(size: 1, where: { slug: { eq: $slug } }) {
+    productList: getProductListWithTtl(size: 1, where: { slug: { eq: $slug }, _status: { eq: "enabled" } }) {
       items {
         ...ProductPageProduct
       }
@@ -218,7 +218,10 @@ export type ProductPageTakeshapeProductResponse = {
 
 export const ProductPageTakeshapeProductQuery = gql`
   query ProductPageTakeshapeProductQuery($productId: String!) {
-    productList: getProductListWithTtl(where: { shopifyProductId: { eq: $productId } }, size: 1) {
+    productList: getProductListWithTtl(
+      where: { shopifyProductId: { eq: $productId }, _status: { eq: "enabled" } }
+      size: 1
+    ) {
       items {
         productComponent
         hideReviews
