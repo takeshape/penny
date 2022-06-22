@@ -5,16 +5,16 @@ import Loader from 'components/Loader/Loader';
 import NextImage from 'components/NextImage';
 import useSearch, { SearchResult } from 'features/Search/useSearch';
 import { useAtom } from 'jotai';
+import { truncate } from 'lodash-es';
 import { useRouter } from 'next/router';
 import { Fragment, useCallback, useEffect } from 'react';
 import { isSearchOpenAtom } from 'store';
+import { shopifyGidToId } from 'transforms/shopify';
 import classNames from 'utils/classNames';
+import { replaceState } from 'utils/history';
 import { getSingle } from 'utils/types';
 import type { SearchShopifyProductsResults } from '../queries';
 import { SearchShopifyProducts } from '../queries';
-
-import { shopifyGidToId } from 'transforms/shopify';
-import { truncate } from 'lodash-es';
 
 const resultsFn = (data: SearchShopifyProductsResults): SearchResult[] =>
   data.search.results.map(
@@ -48,9 +48,7 @@ export const Modal = () => {
   const onQueryChange = useCallback(
     (e) => {
       setQuery(e.target.value);
-      router.replace({ pathname: router.pathname, query: { search: e.target.value } }, null, {
-        shallow: true
-      });
+      replaceState(`?search=${e.target.value}`);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setQuery]

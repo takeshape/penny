@@ -1,3 +1,7 @@
-export function silentlyUpdateUrl(url: string, title?: string) {
-  window.history.pushState(null, title, url);
+export function pushState(url: string | URL, title?: string, data?: any) {
+  window.history.pushState(data, title, url);
+}
+
+export function replaceState(url: string | URL, title?: string, data?: any) {
+  window.history.replaceState(data, title, url);
 }
