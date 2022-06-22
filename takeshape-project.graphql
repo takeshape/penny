@@ -93,9 +93,6 @@ type Query {
   getMyLoyaltyCard: Voucherify_LoyaltyCard
   getMyNewsletterSubscriptions: [ProfileNewsletterStatus]
 
-  """Get a NavigationData by ID"""
-  getNavigationData(locale: String, enableLocaleFallback: Boolean = true): NavigationData
-
   """Get a Footer by ID"""
   getFooter(locale: String, enableLocaleFallback: Boolean = true): Footer
   Shopify_productVariants(
@@ -1201,94 +1198,6 @@ type ProfileNewsletterStatus {
 
   """"""
   subscribed: Boolean
-}
-
-type NavigationData implements TSSearchable {
-  """"""
-  message: String
-
-  """"""
-  links: NavigationDataLinks
-  _shapeId: String
-  _id: ID
-  _version: Int
-  _shapeName: String
-  _createdAt: String
-  _createdBy: TSUser
-  _updatedAt: String
-  _updatedBy: TSUser
-  _schemaVersion: Float
-  _enabled: Boolean @deprecated(reason: "Use _status instead")
-  _enabledAt: String @deprecated(reason: "Use a custom date field instead")
-  _status: DefaultWorkflow
-  _contentTypeId: String
-  _contentTypeName: String
-  searchSummary: String
-}
-
-type NavigationDataLinks {
-  """"""
-  categories: [NavigationDataLinksCategories]
-
-  """"""
-  pages: [NavigationDataLinksPages]
-}
-
-type NavigationDataLinksCategories {
-  """"""
-  name: String
-
-  """"""
-  featured: [NavigationDataLinksCategoriesFeatured]
-
-  """"""
-  collection: [NavigationDataLinksCategoriesCollection]
-
-  """"""
-  categories: [NavigationDataLinksCategoriesCategories]
-
-  """"""
-  brands: [NavigationDataLinksCategoriesBrands]
-}
-
-type NavigationDataLinksCategoriesFeatured {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-type NavigationDataLinksCategoriesCollection {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-type NavigationDataLinksCategoriesCategories {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-type NavigationDataLinksCategoriesBrands {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-type NavigationDataLinksPages {
-  """"""
-  name: String
-
-  """"""
-  href: String
 }
 
 type Footer implements TSSearchable {
@@ -2731,9 +2640,6 @@ type Shopify_Product implements TSSearchable {
   vendor: String!
   reviews: ReviewsIo_ListProductReviewsResponse
   takeshape: Product
-
-  """The Recharge subscription data associated with this product"""
-  recharge: Recharge_Product
   _shapeId: String
   _id: ID
   searchSummary: String
@@ -6041,39 +5947,6 @@ type ProductPageDetailsDetails {
     """
     headerIdPrefix: String = ""
   ): String
-}
-
-type Recharge_Product {
-  id: Float
-  product_id: Float
-  shopify_product_id: Float
-  discount_type: String
-  discount_amount: Float
-  subscription_defaults: Recharge_ProductSubscriptionDefaultsProperty
-  external_product_id: String
-  brand: String
-  images: Recharge_ProductImagesProperty
-  title: String
-}
-
-type Recharge_ProductSubscriptionDefaultsProperty {
-  charge_interval_frequency: Float
-  cutoff_day_of_month: Float
-  cutoff_day_of_week: Float
-  expire_after_specific_number_of_charges: Float
-  order_day_of_month: Float
-  order_day_of_week: Float
-  order_interval_frequency: Float
-  order_interval_unit: String
-  storefront_purchase_options: String
-  order_interval_frequency_options: [String]
-}
-
-type Recharge_ProductImagesProperty {
-  large: String
-  medium: String
-  original: String
-  small: String
 }
 
 enum Shopify_ProfileItemSortKeys {
@@ -15931,7 +15804,7 @@ enum ShopifyStorefront_OrderSortKeys {
 }
 
 type Storefront implements TSSearchable {
-  components: [StorefrontComponentsProperty!]!
+  components: [StorefrontComponentsProperty]
   _shapeId: String
   _id: ID
   _version: Int
@@ -16322,7 +16195,10 @@ input TSWhereCollectionInput {
 
 type Page implements TSSearchable {
   """"""
-  title: String
+  title: String!
+
+  """"""
+  slug: String!
   sections: [PageSectionsProperty]
   _shapeId: String
   _id: ID
@@ -16378,6 +16254,7 @@ type PagePaginatedList {
 
 input TSWherePageInput {
   title: TSWhereStringInput
+  slug: TSWhereStringInput
   sections: TSWherePageSectionsInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
@@ -16538,9 +16415,6 @@ input TSWhereInput {
   vendor: TSWhereStringInput
   reviews: TSWhereReviewsIo_ListProductReviewsResponseInput
   takeshape: TSWhereProductInput
-  recharge: TSWhereRecharge_ProductInput
-  NavigationData_message: TSWhereStringInput
-  links: TSWhereNavigationLinksInput
   navigation: TSWhereFooterNavigationInput
   newsletter: TSWhereFooterNewsletterInput
   components: TSWhereStorefrontComponentsInput
@@ -16557,7 +16431,8 @@ input TSWhereInput {
   showDetails: TSWhereBooleanInput
   Product_details: TSWhereProductPageDetailsRelationshipInput
   shopifyProductId: TSWhereStringInput
-  Navigation_message: TSWhereDraftjsInput
+  message: TSWhereDraftjsInput
+  links: TSWhereNavigationLinksInput
   shopifyCollectionId: TSWhereStringInput
   sections: TSWherePageSectionsInput
   AND: [TSWhereInput]
@@ -16853,7 +16728,6 @@ input TSWhereShopify_MetafieldReferenceInput {
   vendor: TSWhereStringInput
   reviews: TSWhereReviewsIo_ListProductReviewsResponseInput
   takeshape: TSWhereProductInput
-  recharge: TSWhereRecharge_ProductInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
   availableForSale: TSWhereBooleanInput
@@ -17136,7 +17010,6 @@ input TSWhereShopify_ProductInput {
   vendor: TSWhereStringInput
   reviews: TSWhereReviewsIo_ListProductReviewsResponseInput
   takeshape: TSWhereProductInput
-  recharge: TSWhereRecharge_ProductInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
 }
@@ -17741,7 +17614,6 @@ input TSWhereReviewsIo_ProductReviewInput {
   date_formatted: TSWhereStringInput
   product: TSWhereReviewsIo_ProductInput
   reviewer: TSWhereReviewsIo_ReviewerInput
-  images: TSWhereShopify_ProductImagesInput
   tags: TSWhereShopify_ProductTagsInput
   author: TSWhereShopify_ProductAuthorInput
 }
@@ -17772,13 +17644,6 @@ input TSWhereReviewsIo_ReviewerInput {
   name_formatted: TSWhereStringInput
 }
 
-input TSWhereShopify_ProductImagesInput {
-  large: TSWhereStringInput
-  medium: TSWhereStringInput
-  original: TSWhereStringInput
-  small: TSWhereStringInput
-}
-
 input TSWhereShopify_ProductAuthorInput {
   email: TSWhereStringInput
 }
@@ -17786,48 +17651,6 @@ input TSWhereShopify_ProductAuthorInput {
 input TSWhereShopify_ProductProductsInput {
   sku: TSWhereStringInput
   name: TSWhereStringInput
-}
-
-input TSWhereRecharge_ProductInput {
-  id: TSWhereNumberInput
-  product_id: TSWhereNumberInput
-  shopify_product_id: TSWhereNumberInput
-  discount_type: TSWhereStringInput
-  discount_amount: TSWhereNumberInput
-  subscription_defaults: TSWhereShopify_ProductSubscriptionDefaultsInput
-  external_product_id: TSWhereStringInput
-  brand: TSWhereStringInput
-  images: TSWhereShopify_ProductImagesInput
-  title: TSWhereStringInput
-}
-
-input TSWhereShopify_ProductSubscriptionDefaultsInput {
-  charge_interval_frequency: TSWhereNumberInput
-  cutoff_day_of_month: TSWhereNumberInput
-  cutoff_day_of_week: TSWhereNumberInput
-  expire_after_specific_number_of_charges: TSWhereNumberInput
-  order_day_of_month: TSWhereNumberInput
-  order_day_of_week: TSWhereNumberInput
-  order_interval_frequency: TSWhereNumberInput
-  order_interval_unit: TSWhereStringInput
-  storefront_purchase_options: TSWhereStringInput
-  order_interval_frequency_options: TSWhereShopify_ProductOrderIntervalFrequencyOptionsInput
-}
-
-input TSWhereShopify_ProductOrderIntervalFrequencyOptionsInput {
-  """Exact match"""
-  eq: String
-
-  """Array of possible exact match values."""
-  in: [String]
-
-  """Full text searching with fuzzy matching."""
-  match: String
-
-  """
-  Regular expression string matching. Use of * wildcards could degrade performance.
-  """
-  regexp: String
 }
 
 input TSWhereShopify_PublishableInput {
@@ -18047,44 +17870,6 @@ input TSWhereShopify_CollectionRuleInput {
   relation: TSWhereStringInput
 }
 
-input TSWhereNavigationLinksInput {
-  categories: TSWhereNavigationLinksCategoriesInput
-  pages: TSWhereNavigationLinksPagesInput
-}
-
-input TSWhereNavigationLinksCategoriesInput {
-  name: TSWhereStringInput
-  featured: TSWhereNavigationLinksCategoriesFeaturedInput
-  collection: TSWhereNavigationLinksCategoriesCollectionInput
-  categories: TSWhereNavigationLinksCategoriesCategoriesInput
-  brands: TSWhereNavigationLinksCategoriesBrandsInput
-}
-
-input TSWhereNavigationLinksCategoriesFeaturedInput {
-  name: TSWhereStringInput
-  href: TSWhereStringInput
-}
-
-input TSWhereNavigationLinksCategoriesCollectionInput {
-  name: TSWhereStringInput
-  href: TSWhereStringInput
-}
-
-input TSWhereNavigationLinksCategoriesCategoriesInput {
-  name: TSWhereStringInput
-  href: TSWhereStringInput
-}
-
-input TSWhereNavigationLinksCategoriesBrandsInput {
-  name: TSWhereStringInput
-  href: TSWhereStringInput
-}
-
-input TSWhereNavigationLinksPagesInput {
-  name: TSWhereStringInput
-  href: TSWhereStringInput
-}
-
 input TSWhereFooterNavigationInput {
   sections: TSWhereFooterSectionsInput
 }
@@ -18152,6 +17937,44 @@ input TSWhereTestimonialsComponentTestimonialsInput {
 
 input TSWhereTrendingProductsComponentTrendingProductsInput {
   shopifyProductId: TSWhereStringInput
+}
+
+input TSWhereNavigationLinksInput {
+  categories: TSWhereNavigationLinksCategoriesInput
+  pages: TSWhereNavigationLinksPagesInput
+}
+
+input TSWhereNavigationLinksCategoriesInput {
+  name: TSWhereStringInput
+  featured: TSWhereNavigationLinksCategoriesFeaturedInput
+  collection: TSWhereNavigationLinksCategoriesCollectionInput
+  categories: TSWhereNavigationLinksCategoriesCategoriesInput
+  brands: TSWhereNavigationLinksCategoriesBrandsInput
+}
+
+input TSWhereNavigationLinksCategoriesFeaturedInput {
+  name: TSWhereStringInput
+  href: TSWhereStringInput
+}
+
+input TSWhereNavigationLinksCategoriesCollectionInput {
+  name: TSWhereStringInput
+  href: TSWhereStringInput
+}
+
+input TSWhereNavigationLinksCategoriesCategoriesInput {
+  name: TSWhereStringInput
+  href: TSWhereStringInput
+}
+
+input TSWhereNavigationLinksCategoriesBrandsInput {
+  name: TSWhereStringInput
+  href: TSWhereStringInput
+}
+
+input TSWhereNavigationLinksPagesInput {
+  name: TSWhereStringInput
+  href: TSWhereStringInput
 }
 
 """This query allow you to pass context to your queries"""
@@ -18248,9 +18071,6 @@ type WithContext {
   """Get a loyalty card from Voucherify"""
   getMyLoyaltyCard: Voucherify_LoyaltyCard
   getMyNewsletterSubscriptions: [ProfileNewsletterStatus]
-
-  """Get a NavigationData by ID"""
-  getNavigationData(locale: String, enableLocaleFallback: Boolean = true): NavigationData
 
   """Get a Footer by ID"""
   getFooter(locale: String, enableLocaleFallback: Boolean = true): Footer
@@ -18877,9 +18697,6 @@ type Mutation {
     list_id: String!
   ): Klaviyo_200Ok
   ReviewsIo_createInvitation(input: ReviewsIo_CreateInvitationPropertiesPropertyInput): ReviewsIo_CreateInvitationResponse
-
-  """Update NavigationData"""
-  updateNavigationData(input: UpdateNavigationDataInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateNavigationDataResult
 
   """Update Footer"""
   updateFooter(input: UpdateFooterInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateFooterResult
@@ -19557,123 +19374,6 @@ input ReviewsIo_InvitationProductInput {
 
   """Product page url"""
   pageUrl: String
-}
-
-type UpdateNavigationDataResult {
-  clientMutationId: String
-  result: NavigationData
-}
-
-"""update NavigationData input"""
-input UpdateNavigationDataInput {
-  """"""
-  message: String
-
-  """"""
-  links: NavigationDataLinksInput
-  _shapeId: String
-  _id: ID
-  _version: Int
-  _shapeName: String
-  _createdAt: String
-  _createdBy: String
-  _updatedAt: String
-  _updatedBy: String
-  _schemaVersion: Float
-  _enabled: Boolean
-  _enabledAt: String
-  _status: DefaultWorkflow
-  _contentTypeId: String
-  _contentTypeName: String
-}
-
-input NavigationDataLinksInput {
-  """"""
-  categories: [NavigationDataLinksCategoriesInputUnion]
-
-  """"""
-  pages: [NavigationDataLinksPagesInputUnion]
-}
-
-input NavigationDataLinksCategoriesInputUnion {
-  navigationDataLinksCategories: NavigationDataLinksCategoriesInput
-}
-
-input NavigationDataLinksCategoriesInput {
-  """"""
-  name: String
-
-  """"""
-  featured: [NavigationDataLinksCategoriesFeaturedInputUnion]
-
-  """"""
-  collection: [NavigationDataLinksCategoriesCollectionInputUnion]
-
-  """"""
-  categories: [NavigationDataLinksCategoriesCategoriesInputUnion]
-
-  """"""
-  brands: [NavigationDataLinksCategoriesBrandsInputUnion]
-}
-
-input NavigationDataLinksCategoriesFeaturedInputUnion {
-  navigationDataLinksCategoriesFeatured: NavigationDataLinksCategoriesFeaturedInput
-}
-
-input NavigationDataLinksCategoriesFeaturedInput {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-input NavigationDataLinksCategoriesCollectionInputUnion {
-  navigationDataLinksCategoriesCollection: NavigationDataLinksCategoriesCollectionInput
-}
-
-input NavigationDataLinksCategoriesCollectionInput {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-input NavigationDataLinksCategoriesCategoriesInputUnion {
-  navigationDataLinksCategoriesCategories: NavigationDataLinksCategoriesCategoriesInput
-}
-
-input NavigationDataLinksCategoriesCategoriesInput {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-input NavigationDataLinksCategoriesBrandsInputUnion {
-  navigationDataLinksCategoriesBrands: NavigationDataLinksCategoriesBrandsInput
-}
-
-input NavigationDataLinksCategoriesBrandsInput {
-  """"""
-  name: String
-
-  """"""
-  href: String
-}
-
-input NavigationDataLinksPagesInputUnion {
-  navigationDataLinksPages: NavigationDataLinksPagesInput
-}
-
-input NavigationDataLinksPagesInput {
-  """"""
-  name: String
-
-  """"""
-  href: String
 }
 
 type UpdateFooterResult {
@@ -21161,6 +20861,9 @@ input UpdatePageInput {
 
   """"""
   title: String
+
+  """"""
+  slug: String
   sections: [PageSectionMdxPageSectionTitleInputUnion]
   _shapeId: String
   _version: Int
@@ -21201,7 +20904,10 @@ type CreatePageResult {
 """create Page input"""
 input CreatePageInput {
   """"""
-  title: String
+  title: String!
+
+  """"""
+  slug: String!
   sections: [PageSectionMdxPageSectionTitleInputUnion]
   _shapeId: String
   _id: ID
@@ -21230,6 +20936,9 @@ input DuplicatePageInput {
 
   """"""
   title: String
+
+  """"""
+  slug: String
   sections: [PageSectionMdxPageSectionTitleInputUnion]
   _shapeId: String
   _version: Int
