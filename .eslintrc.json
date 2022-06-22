@@ -4,9 +4,7 @@
   ],
   "extends": [
     "next/core-web-vitals",
-    "plugin:prettier/recommended",
-    "plugin:mdx/recommended",
-    "plugin:storybook/recommended"
+    "plugin:prettier/recommended"
   ],
   "rules": {
     "no-unreachable": "error",
@@ -28,13 +26,29 @@
       "rules": {
         "no-console": "off"
       }
+    },
+    {
+      "extends": [
+        "plugin:mdx/recommended"
+      ],
+      "files": [
+        "**/*.{mdx,md}"
+      ],
+      "settings": {
+        "mdx/code-blocks": true,
+        "mdx/language-mapper": {}
+      }
+    },
+    {
+      "extends": [
+        "plugin:storybook/recommended"
+      ],
+      "files": [
+        "**/*.stories.*"
+      ]
     }
   ],
   "parserOptions": {
     "ecmaVersion": 12
-  },
-  "settings": {
-    "mdx/code-blocks": true,
-    "mdx/language-mapper": {}
   }
 }
