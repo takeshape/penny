@@ -3,6 +3,7 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
+import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
@@ -142,6 +143,8 @@ export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProp
                 Sign up
               </Button>
             </div>
+
+            <RecaptchaBranding />
           </form>
 
           <div className="mt-6">
