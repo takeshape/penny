@@ -111,11 +111,11 @@ export const collectionsPageSize = 12;
 /* Product Options - LUTs to decorate options */
 export const productOptions = {
   color: {
-    white: { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },
-    gray: { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400' },
-    black: { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900' },
-    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300' },
-    'heather gray': { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400' }
+    white: { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400', colorBg: '#ffffff' },
+    gray: { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400', colorBg: '#333333' },
+    black: { name: 'Black', class: 'bg-gray-900', selectedClass: 'ring-gray-900', colorBg: '#111827' },
+    red: { name: 'Red', class: 'bg-red-500', selectedClass: 'ring-red-300', colorBg: 'red' },
+    'heather gray': { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400', colorBg: '#777777' }
   },
   size: {
     xxs: { name: 'XXS', description: 'The very smallest size' },

@@ -54,15 +54,18 @@ const CollectionPage: NextPage = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }) => {
-  const [collectionId, cursor, page] = params.collection;
+  const [collectionId, ...rest] = params.collection;
   const idOrSlug = getCollectionPageIdOrSlug(collectionId);
 
   const { navigation, footer } = await getLayoutData();
 
   let query;
   let variables: ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs;
+  let cursor;
+  let page;
 
   if (idOrSlug.slug) {
+    [cursor, page] = rest;
     query = ProductCategoryShopifyCollectionBySlugQuery;
     variables = {
       slug: idOrSlug.slug,
@@ -70,6 +73,8 @@ export const getStaticProps = async ({ params }) => {
       after: cursor
     };
   } else {
+    // With an id, path segment 2 is expected to be the slug
+    [, cursor, page] = rest;
     query = ProductCategoryShopifyCollectionByIdQuery;
     variables = {
       id: idOrSlug.id,

@@ -1,12 +1,8 @@
 import { gql } from '@apollo/client';
+import { QueryShopify_ProductsArgs } from 'types/takeshape';
 import { ProductCategoryShopifyCollection } from './types';
 
-export type ProductCategoryShopifyPaginationArgs = {
-  first?: number;
-  last?: number;
-  after?: string;
-  before?: string;
-};
+export type ProductCategoryShopifyPaginationArgs = QueryShopify_ProductsArgs;
 
 export type ProductCategoryShopifyCollectionIdsResponse = {
   collections: {
@@ -30,7 +26,7 @@ export const ProductCategoryShopifyCollectionIdsQuery = gql`
   }
 `;
 
-const ProductCategoryProductFragment = gql`
+const ProductCategoryFragments = gql`
   fragment ProductCategoryCollection on Shopify_Collection {
     id
     handle
@@ -99,7 +95,7 @@ export type ProductCategoryShopifyCollectionByIdArgs = {
 } & ProductCategoryShopifyPaginationArgs;
 
 export const ProductCategoryShopifyCollectionByIdQuery = gql`
-  ${ProductCategoryProductFragment}
+  ${ProductCategoryFragments}
   query ProductPageShopifyProductByIdQuery($id: String!, $first: Int, $last: Int, $after: String, $before: String) {
     collectionList: getCollectionListWithTtl(size: 1, where: { shopifyCollectionId: { eq: $id } }) {
       items {
@@ -130,7 +126,7 @@ export type ProductCategoryShopifyCollectionBySlugArgs = {
 } & ProductCategoryShopifyPaginationArgs;
 
 export const ProductCategoryShopifyCollectionBySlugQuery = gql`
-  ${ProductCategoryProductFragment}
+  ${ProductCategoryFragments}
   query ProductPageShopifyProductByIdQuery($slug: String!, $first: Int, $last: Int, $after: String, $before: String) {
     collectionList: getCollectionListWithTtl(size: 1, where: { slug: { eq: $slug } }) {
       items {
@@ -149,37 +145,6 @@ export const ProductCategoryShopifyCollectionBySlugQuery = gql`
                 ...ProductCategoryProduct
               }
             }
-          }
-        }
-      }
-    }
-  }
-`;
-
-export type ProductCategoryShopifyCollectionByHandleResponse = {
-  collection: ProductCategoryShopifyCollection;
-};
-
-export type ProductCategoryShopifyCollectionByHandleArgs = {
-  handle: string;
-} & ProductCategoryShopifyPaginationArgs;
-
-export const ProductCategoryShopifyCollectionByHandleQuery = gql`
-  ${ProductCategoryProductFragment}
-  query ProductPageShopifyProductByIdQuery($handle: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collection: collectionByHandleWithTtl(handle: $handle) {
-      ...ProductCategoryCollection
-      products(first: $first, last: $last, after: $after, before: $before) {
-        pageInfo {
-          endCursor
-          startCursor
-          hasNextPage
-          hasPreviousPage
-        }
-        edges {
-          cursor
-          node {
-            ...ProductCategoryProduct
           }
         }
       }

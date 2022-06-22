@@ -16,13 +16,16 @@ export const Collections = ({ collections }: CollectionsComponent) => {
           <div className="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6">
             {collections.map(({ description, href, name, image }) => (
               <div key={name} className="group relative">
-                <div className="relative w-full h-80 bg-white rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
-                  <NextImage
-                    layout="fill"
-                    alt={image.description}
-                    src={getImageUrl(image)}
-                    className="w-full h-full object-center object-cover"
-                  />
+                <div className="w-full h-80 bg-white rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
+                  <div className="relative w-full h-full">
+                    <NextImage
+                      layout="fill"
+                      alt={image.description ?? ''}
+                      src={getImageUrl(image)}
+                      objectFit="cover"
+                      objectPosition="center"
+                    />
+                  </div>
                 </div>
                 <h3 className="mt-6 text-sm text-gray-500">
                   <NextLink href={href}>
