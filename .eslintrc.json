@@ -5,7 +5,6 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:prettier/recommended",
-    "plugin:mdx/recommended",
     "plugin:storybook/recommended"
   ],
   "rules": {
@@ -28,13 +27,21 @@
       "rules": {
         "no-console": "off"
       }
+    },
+    {
+      "extends": [
+        "plugin:mdx/recommended"
+      ],
+      "files": [
+        "**/*.{mdx,md}"
+      ],
+      "settings": {
+        "mdx/code-blocks": true,
+        "mdx/language-mapper": {}
+      }
     }
   ],
   "parserOptions": {
     "ecmaVersion": 12
-  },
-  "settings": {
-    "mdx/code-blocks": true,
-    "mdx/language-mapper": {}
   }
 }
