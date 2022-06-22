@@ -14,8 +14,6 @@ import {
 
 function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollectionItemProduct {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-  const options = getProductOptions(shopifyProduct.options);
-  const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
 
   return {
     id: shopifyProduct.id,
@@ -30,8 +28,7 @@ function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollect
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options,
-    availableColors: colors ?? null
+    options: getProductOptions(shopifyProduct.options)
   };
 }
 

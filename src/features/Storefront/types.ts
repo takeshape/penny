@@ -1,4 +1,4 @@
-import { ProductBase, ProductOption } from 'types/product';
+import { ProductBase } from 'types/product';
 import { Shopify_Collection, Shopify_PageInfo, Shopify_Product } from 'types/takeshape';
 
 export type StorefrontShopifyProduct = Pick<
@@ -56,20 +56,7 @@ export type AvailableColor = {
   colorBg: string;
 };
 
-export type StorefrontCollectionItemProduct = ProductBase & {
-  availableColors: ProductOption;
-};
-
-// export type StorefrontCollectionItemProduct = {
-//   id: string;
-//   href: string;
-//   name: string;
-//   color: string;
-//   price: string;
-//   imageSrc: string;
-//   imageAlt: string;
-//   availableColors: AvailableColor[];
-// };
+export type StorefrontCollectionItemProduct = ProductBase;
 
 export type StorefrontCollectionItem = {
   cursor: string;

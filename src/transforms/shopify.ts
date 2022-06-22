@@ -214,7 +214,7 @@ export function getProductVariants(
 export function getPrice(price: Shopify_MoneyV2): ProductPrice {
   return {
     amount: Number(price.amount) * 100,
-    currencyCode: price.currencyCode.toLowerCase() as ProductPriceCurrencyCode
+    currencyCode: price.currencyCode.toUpperCase() as ProductPriceCurrencyCode
   };
 }
 
