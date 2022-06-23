@@ -30,5 +30,5 @@ export type QuickAddProduct = SetRequired<ProductBase, 'variants'>;
 export type QuickAddReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
 
 export type QuickAdd = {
-  productId: string;
+  productHandle: string;
 };

@@ -21,6 +21,7 @@ export interface LineItem {
   name: string;
   product: {
     id: string;
+    url: string;
   };
   image: {
     url: string;
