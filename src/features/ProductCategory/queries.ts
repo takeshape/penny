@@ -35,6 +35,17 @@ const ProductCategoryFragments = gql`
     title
     description
     descriptionHtml
+    takeshape {
+      breadcrumbTitle
+      parent {
+        breadcrumbTitle
+        shopifyCollection {
+          id
+          handle
+          title
+        }
+      }
+    }
   }
 
   fragment ProductCategoryProduct on Shopify_Product {

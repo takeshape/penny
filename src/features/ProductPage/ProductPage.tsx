@@ -1,4 +1,6 @@
 import Wrapper from 'components/Wrapper/Content';
+import { productPageBreadcrumbsAtom } from 'features/ProductPage/store';
+import { useAtomValue } from 'jotai';
 import { Details, DetailsProps } from './Details/Details';
 import { Policies, PoliciesProps } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
@@ -25,6 +27,7 @@ export const ProductPage = ({
   breadcrumbs
 }: ProductPageProps) => {
   const { showDetails, showPolicies, showReviews, showRelatedProducts } = options;
+  const clientBreadcrumbs = useAtomValue(productPageBreadcrumbsAtom);
 
   return (
     <div className="bg-gray-50">
@@ -34,7 +37,7 @@ export const ProductPage = ({
             component={component}
             product={product}
             reviewHighlights={reviewHighlights}
-            breadcrumbs={breadcrumbs}
+            breadcrumbs={clientBreadcrumbs ?? breadcrumbs}
           />
         </Wrapper>
       </div>

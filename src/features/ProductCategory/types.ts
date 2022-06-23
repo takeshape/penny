@@ -1,3 +1,4 @@
+import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import { ProductBase } from 'types/product';
 import { ReviewStats } from 'types/review';
 import {
@@ -37,7 +38,7 @@ export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsR
 
 export type ProductCategoryShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'takeshape'
 > & {
   products: {
     pageInfo: Shopify_PageInfo;
@@ -56,6 +57,12 @@ export type ProductCategoryProductListItem = {
   reviews: ProductCategoryReviewStats;
 };
 
+export type ProductCategoryCollectionParent = {
+  id: string;
+  url: string;
+  name: string;
+};
+
 export type ProductCategoryCollection = {
   id: string;
   url: string;
@@ -66,4 +73,8 @@ export type ProductCategoryCollection = {
   items: ProductCategoryProductListItem[];
   pageInfo: Shopify_PageInfo;
   anchor?: string;
+  parent?: ProductCategoryCollectionParent;
+  breadcrumbTitle?: string;
 };
+
+export type ProductCategoryBreadcrumbs = Breadcrumb[];
