@@ -1,6 +1,6 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Shopify_LineItem } from 'types/takeshape';
-import { shopifyLineItemToLineItem } from '../../transforms';
+import { getLineItem } from '../../transforms';
 import { LineItem } from './LineItem';
 import fixture from './LineItem.fixtures.json';
 
@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof LineItem> = (args) => <LineItem {...args} 
 
 export const _LineItem = Template.bind({});
 _LineItem.args = {
-  lineItem: shopifyLineItemToLineItem(fixture as Shopify_LineItem)
+  lineItem: getLineItem(fixture as Shopify_LineItem)
 };
 
 export default Meta;

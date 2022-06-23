@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { productResponse, reviewsResponse } from '../queries.fixtures';
-import { getProduct, getReviewHighlights } from '../transforms';
+import { productPageProduct, productPageReviewHighlights } from '../fixtures';
 import { Product } from './Product';
 
 const breadcrumbs = [
@@ -22,8 +21,8 @@ export const WithImageGrid = Template.bind({});
 WithImageGrid.args = {
   component: 'withImageGrid',
   breadcrumbs,
-  product: getProduct(productResponse),
-  reviewHighlights: getReviewHighlights(reviewsResponse),
+  product: productPageProduct,
+  reviewHighlights: productPageReviewHighlights,
   showFeaturedReviews: true
 };
 
@@ -31,8 +30,8 @@ export const WithImage = Template.bind({});
 WithImage.args = {
   component: 'withImage',
   breadcrumbs,
-  product: getProduct(productResponse),
-  reviewHighlights: getReviewHighlights(reviewsResponse),
+  product: productPageProduct,
+  reviewHighlights: productPageReviewHighlights,
   showFeaturedReviews: true
 };
 

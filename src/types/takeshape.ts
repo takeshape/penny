@@ -49,7 +49,9 @@ export type Query = {
   getFooter?: Maybe<Footer>;
   Shopify_productVariants?: Maybe<Shopify_ProductVariantConnection>;
   Shopify_products?: Maybe<Shopify_ProductConnection>;
+  productsWithTtl?: Maybe<Shopify_ProductConnection>;
   Shopify_product?: Maybe<Shopify_Product>;
+  productWithTtl?: Maybe<Shopify_Product>;
   Shopify_customer?: Maybe<Shopify_Customer>;
   Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
@@ -60,6 +62,7 @@ export type Query = {
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
   collectionByHandleWithTtl?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
+  collectionsWithTtl?: Maybe<Shopify_CollectionConnection>;
   /** Get a ProductPageDetails by ID */
   getProductPageDetails?: Maybe<ProductPageDetails>;
   /** Returns a list ProductPageDetails in natural order. */
@@ -88,6 +91,7 @@ export type Query = {
   /** Returns a list Page in natural order. */
   getPageList?: Maybe<PagePaginatedList>;
   Shopify_productByHandle?: Maybe<Shopify_Product>;
+  productByHandleWithTtl?: Maybe<Shopify_Product>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
@@ -229,7 +233,26 @@ export type QueryShopify_ProductsArgs = {
 
 
 /** Root of the Schema */
+export type QueryProductsWithTtlArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_ProductSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Root of the Schema */
 export type QueryShopify_ProductArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** Root of the Schema */
+export type QueryProductWithTtlArgs = {
   id: Scalars['ID'];
 };
 
@@ -274,6 +297,19 @@ export type QueryCollectionByHandleWithTtlArgs = {
 
 /** Root of the Schema */
 export type QueryShopify_CollectionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_CollectionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** Root of the Schema */
+export type QueryCollectionsWithTtlArgs = {
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -438,6 +474,12 @@ export type QueryGetPageListArgs = {
 
 /** Root of the Schema */
 export type QueryShopify_ProductByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** Root of the Schema */
+export type QueryProductByHandleWithTtlArgs = {
   handle: Scalars['String'];
 };
 
@@ -15091,7 +15133,9 @@ export type WithContext = {
   getFooter?: Maybe<Footer>;
   Shopify_productVariants?: Maybe<Shopify_ProductVariantConnection>;
   Shopify_products?: Maybe<Shopify_ProductConnection>;
+  productsWithTtl?: Maybe<Shopify_ProductConnection>;
   Shopify_product?: Maybe<Shopify_Product>;
+  productWithTtl?: Maybe<Shopify_Product>;
   Shopify_customer?: Maybe<Shopify_Customer>;
   Shopify_customerPaymentMethod?: Maybe<Shopify_CustomerPaymentMethod>;
   ShopifyStorefront_customer?: Maybe<ShopifyStorefront_Customer>;
@@ -15102,6 +15146,7 @@ export type WithContext = {
   Shopify_collectionByHandle?: Maybe<Shopify_Collection>;
   collectionByHandleWithTtl?: Maybe<Shopify_Collection>;
   Shopify_collections?: Maybe<Shopify_CollectionConnection>;
+  collectionsWithTtl?: Maybe<Shopify_CollectionConnection>;
   /** Get a ProductPageDetails by ID */
   getProductPageDetails?: Maybe<ProductPageDetails>;
   /** Returns a list ProductPageDetails in natural order. */
@@ -15130,6 +15175,7 @@ export type WithContext = {
   /** Returns a list Page in natural order. */
   getPageList?: Maybe<PagePaginatedList>;
   Shopify_productByHandle?: Maybe<Shopify_Product>;
+  productByHandleWithTtl?: Maybe<Shopify_Product>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
@@ -15270,7 +15316,26 @@ export type WithContextShopify_ProductsArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextProductsWithTtlArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_ProductSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextShopify_ProductArgs = {
+  id: Scalars['ID'];
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextProductWithTtlArgs = {
   id: Scalars['ID'];
 };
 
@@ -15315,6 +15380,19 @@ export type WithContextCollectionByHandleWithTtlArgs = {
 
 /** This query allow you to pass context to your queries */
 export type WithContextShopify_CollectionsArgs = {
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
+  reverse?: InputMaybe<Scalars['Boolean']>;
+  sortKey?: InputMaybe<Shopify_CollectionSortKeys>;
+  query?: InputMaybe<Scalars['String']>;
+  savedSearchId?: InputMaybe<Scalars['ID']>;
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextCollectionsWithTtlArgs = {
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
   last?: InputMaybe<Scalars['Int']>;
@@ -15479,6 +15557,12 @@ export type WithContextGetPageListArgs = {
 
 /** This query allow you to pass context to your queries */
 export type WithContextShopify_ProductByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** This query allow you to pass context to your queries */
+export type WithContextProductByHandleWithTtlArgs = {
   handle: Scalars['String'];
 };
 
