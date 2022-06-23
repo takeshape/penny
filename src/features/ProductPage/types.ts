@@ -1,3 +1,4 @@
+import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
@@ -95,3 +96,5 @@ export type ProductPageReviewsReview = Review;
 export type ProductPageReviewHighlights = ReviewHighlights;
 export type ProductPageReviewsRollup = ReviewRollup;
 export type ProductPageReviewsStats = ReviewStats;
+
+export type ProductPageBreadcrumbs = Breadcrumb[];
