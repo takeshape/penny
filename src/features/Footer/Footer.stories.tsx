@@ -19,7 +19,7 @@ _Footer.parameters = {
           return res(ctx.data(GetFooterQueryData));
         }),
         graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
-          return res(ctx.data({ Klaviyo_addMembers: { items: [{ id: 'foo' }] } }));
+          return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
         })
       ]
     }
