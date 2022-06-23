@@ -8,15 +8,6 @@
       "Statement": [
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.ReviewsIo_listProductReviews"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionByHandleWithTtl"
           ],
           "Effect": "Allow",
@@ -26,16 +17,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getCollectionList"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getCollectionListWithTtl"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionsWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -62,7 +44,16 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProductListWithTtl"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productsWithTtl"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productByHandleWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -179,15 +170,6 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.ReviewsIo_listProductReviews"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.ShopifyStorefront_customer"
           ],
           "Effect": "Allow",
@@ -206,16 +188,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getCollectionList"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getCollectionListWithTtl"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionsWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -278,7 +251,16 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProductListWithTtl"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productsWithTtl"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productByHandleWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
