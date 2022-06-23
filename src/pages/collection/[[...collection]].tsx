@@ -44,7 +44,7 @@ const CollectionPage: NextPage = ({
     <Layout
       navigation={navigation}
       footer={footer}
-      seo={{ title: collection.name, description: collection.description }}
+      seo={{ title: collection.seo.name, description: collection.seo.description }}
     >
       <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} page={page} />
     </Layout>

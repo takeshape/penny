@@ -5,6 +5,7 @@ import {
   getPrice,
   getProductOptions,
   getProductUrl,
+  getSeo,
   shopifyCollectionIdToGid,
   shopifyGidToId
 } from 'transforms/shopify';
@@ -81,6 +82,7 @@ export function getCollection(
   return {
     id: collection.id,
     url: getCollectionUrl(collection.id, collection.takeshape),
+    seo: getSeo(collection),
     handle: collection.handle,
     name: collection.title,
     description: collection.description,

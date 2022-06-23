@@ -34,6 +34,10 @@ const ProductCategoryFragments = gql`
     description
     descriptionHtml
     productsCount
+    seo {
+      title
+      description
+    }
     takeshape {
       _id
       name

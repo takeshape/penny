@@ -1,3 +1,4 @@
+import { CollectionBase } from 'types/collection';
 import { ProductBase } from 'types/product';
 import { Shopify_Collection, Shopify_PageInfo, Shopify_Product } from 'types/takeshape';
 
@@ -40,15 +41,4 @@ export type StorefrontCollectionItem = {
   product: StorefrontCollectionItemProduct;
 };
 
-export type StorefrontCollection = {
-  id: string;
-  url: string;
-  handle: string;
-  name: string;
-  description: string;
-  descriptionHtml: string;
-  productsCount: number;
-  items: StorefrontCollectionItem[];
-  pageInfo: Shopify_PageInfo;
-  anchor?: string;
-};
+export type StorefrontCollection = CollectionBase<StorefrontCollectionItem>;

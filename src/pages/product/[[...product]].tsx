@@ -63,7 +63,11 @@ const ProductPage: NextPage = ({
   }
 
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: product.name, description: product.description }}>
+    <Layout
+      navigation={navigation}
+      footer={footer}
+      seo={{ title: product.seo.name, description: product.seo.description }}
+    >
       <ProductPageComponent
         component={options.component}
         options={options}
