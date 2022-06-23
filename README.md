@@ -29,7 +29,7 @@
 
 A full-featured e-commerce experience using the best services out there:
 
-- Next Auth for user authentication
+- NextAuth for user authentication
 - OpenID for greater identity management
 - Gorgias for customer support
 - Shopify Admin and Storefront for customer data, product info and payment processing
@@ -71,6 +71,11 @@ graph TD
 TKTK
 
 ## Instructions
+
+### NextAuth
+
+This project uses NextAuth in combination with the `@takeshape/next-auth-all-access` package for user authentication and
+identity management.
 
 ### Shopify
 
