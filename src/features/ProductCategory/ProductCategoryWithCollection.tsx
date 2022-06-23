@@ -27,6 +27,7 @@ export interface ProductCategoryWithCollectionProps {
 }
 
 export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
+  // @ts-expect-error No clue
   const setProductPageBreadcrumbs = useSetAtom(productPageBreadcrumbsAtom);
   setProductPageBreadcrumbs(getBreadcrumbs(collection));
 
