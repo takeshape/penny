@@ -7,7 +7,7 @@ function getProduct(shopifyProduct: SearchShopifyProduct): SearchItemProduct {
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
+    url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     featuredImage: getImage(shopifyProduct.featuredImage)

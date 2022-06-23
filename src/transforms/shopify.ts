@@ -260,11 +260,19 @@ export function getUrl(id: string, item: { name?: string; slug?: string }, base:
   return `/${base}/${shopifyGidToId(id)}/${slug(item.name)}`;
 }
 
-export function getProductUrl(id: string, item: { name?: string; slug?: string }) {
+export function getProductUrl(handle: string) {
+  return `/product/${handle}`;
+}
+
+export function getCollectionUrl(handle: string) {
+  return `/collection/${handle}`;
+}
+
+export function getProductUrlLegacy(id: string, item: { name?: string; slug?: string }) {
   return getUrl(id, item, 'product');
 }
 
-export function getCollectionUrl(id: string, item: { name?: string; slug?: string }) {
+export function getCollectionUrlLegacy(id: string, item: { name?: string; slug?: string }) {
   return getUrl(id, item, 'collection');
 }
 

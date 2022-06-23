@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { pushState } from 'utils/history';
 import { ProductCategory } from './ProductCategory';
 import {
-  ProductCategoryShopifyCollectionByIdArgs,
-  ProductCategoryShopifyCollectionByIdQuery,
+  ProductCategoryShopifyCollectionArgs,
+  ProductCategoryShopifyCollectionQuery,
   ProductCategoryShopifyCollectionResponse
 } from './queries';
 import { getCollectionPageInfo, getCollectionWithOverfetch, getCurrentTitle, getCurrentUrl } from './transforms';
@@ -33,8 +33,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
 
   const [loadCollection, { data, error, loading, variables }] = useLazyQuery<
     ProductCategoryShopifyCollectionResponse,
-    ProductCategoryShopifyCollectionByIdArgs
-  >(ProductCategoryShopifyCollectionByIdQuery);
+    ProductCategoryShopifyCollectionArgs
+  >(ProductCategoryShopifyCollectionQuery);
 
   // Pre-fetch the next page
   useEffect(() => {
@@ -51,7 +51,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
       if (requestPage > currentPage && currentCollection.pageInfo.hasNextPage) {
         loadCollection({
           variables: {
-            id: currentCollection.id,
+            handle: currentCollection.handle,
             // Always overfetch to get the real startCursor (the one that anchors this list)
             first: pageSize,
             after: currentCollection.pageInfo.endCursor
@@ -64,7 +64,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
       if (requestPage < currentPage && currentCollection.pageInfo.hasPreviousPage) {
         loadCollection({
           variables: {
-            id: currentCollection.id,
+            handle: currentCollection.handle,
             // Always overfetch to get the real startCursor (the one that anchors this list)
             last: pageSize + 1,
             before: currentCollection.pageInfo.startCursor
@@ -77,7 +77,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
       setRequestPage(null);
     }
   }, [
-    currentCollection.id,
+    currentCollection.handle,
     currentCollection.pageInfo.endCursor,
     currentCollection.pageInfo.hasNextPage,
     currentCollection.pageInfo.hasPreviousPage,

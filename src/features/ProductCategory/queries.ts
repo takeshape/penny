@@ -1,26 +1,28 @@
 import { gql } from '@apollo/client';
 import { QueryShopify_ProductsArgs } from 'types/takeshape';
-import { ProductCategoryShopifyCollection } from './types';
+import { ProductCategoryShopifyCollection, ProductCategoryShopifyCollectionHandleConnection } from './types';
 
 export type ProductCategoryShopifyPaginationArgs = QueryShopify_ProductsArgs;
 
-export type ProductCategoryShopifyCollectionIdsResponse = {
-  collections: {
-    items: Array<{
-      name: string;
-      slug: string;
-      shopifyCollectionId: string;
-    }>;
-  };
+export type ProductCategoryShopifyCollectionHandlesResponse = {
+  collections: ProductCategoryShopifyCollectionHandleConnection;
 };
 
-export const ProductCategoryShopifyCollectionIdsQuery = gql`
-  query ProductCategoryShopifyCollectionIdsQuery {
-    collections: getCollectionList(size: 100, sort: { field: "_createdAt", order: "asc" }) {
-      items {
-        name
-        slug
-        shopifyCollectionId
+export type ProductCategoryShopifyCollectionHandlesArgs = {
+  first: number;
+  after: string;
+};
+
+export const ProductCategoryShopifyCollectionHandles = gql`
+  query ProductCategoryShopifyCollectionHandles($first: Int!, $after: String) {
+    collections: Shopify_collections(first: $first, after: $after, sortKey: ID) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        id
+        handle
       }
     }
   }
@@ -33,24 +35,14 @@ const ProductCategoryFragments = gql`
     title
     description
     descriptionHtml
-    productsCount
-    takeshape {
-      _id
-      name
-      slug
-    }
   }
 
   fragment ProductCategoryProduct on Shopify_Product {
     id
+    handle
     title
     description
     descriptionHtml
-    takeshape {
-      _id
-      name
-      slug
-    }
     requiresSellingPlan
     featuredImage {
       id
@@ -83,72 +75,27 @@ const ProductCategoryFragments = gql`
 `;
 
 export type ProductCategoryShopifyCollectionResponse = {
-  collectionList: {
-    items: Array<{
-      shopifyCollection: ProductCategoryShopifyCollection;
-    }>;
-  };
+  collection: ProductCategoryShopifyCollection;
 };
 
-export type ProductCategoryShopifyCollectionByIdArgs = {
-  id: string;
+export type ProductCategoryShopifyCollectionArgs = {
+  handle: string;
 } & ProductCategoryShopifyPaginationArgs;
 
-export const ProductCategoryShopifyCollectionByIdQuery = gql`
+export const ProductCategoryShopifyCollectionQuery = gql`
   ${ProductCategoryFragments}
-  query ProductPageShopifyProductByIdQuery($id: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: getCollectionListWithTtl(
-      size: 1
-      where: { shopifyCollectionId: { eq: $id }, _status: { eq: "enabled" } }
-    ) {
-      items {
-        shopifyCollection {
-          ...ProductCategoryCollection
-          products(first: $first, last: $last, after: $after, before: $before) {
-            pageInfo {
-              endCursor
-              startCursor
-              hasNextPage
-              hasPreviousPage
-            }
-            edges {
-              cursor
-              node {
-                ...ProductCategoryProduct
-              }
-            }
-          }
+  query ProductPageShopifyProductQuery($handle: String!, $first: Int, $last: Int, $after: String, $before: String) {
+    collection: collectionByHandleWithTtl(handle: $handle) {
+      ...ProductCategoryCollection
+      products(first: $first, last: $last, after: $after, before: $before) {
+        pageInfo {
+          endCursor
+          startCursor
+          hasNextPage
+          hasPreviousPage
         }
-      }
-    }
-  }
-`;
-
-export type ProductCategoryShopifyCollectionBySlugArgs = {
-  slug: string;
-} & ProductCategoryShopifyPaginationArgs;
-
-export const ProductCategoryShopifyCollectionBySlugQuery = gql`
-  ${ProductCategoryFragments}
-  query ProductPageShopifyProductByIdQuery($slug: String!, $first: Int, $last: Int, $after: String, $before: String) {
-    collectionList: getCollectionListWithTtl(size: 1, where: { slug: { eq: $slug }, _status: { eq: "enabled" } }) {
-      items {
-        shopifyCollection {
-          ...ProductCategoryCollection
-          products(first: $first, last: $last, after: $after, before: $before) {
-            pageInfo {
-              endCursor
-              startCursor
-              hasNextPage
-              hasPreviousPage
-            }
-            edges {
-              cursor
-              node {
-                ...ProductCategoryProduct
-              }
-            }
-          }
+        nodes {
+          ...ProductCategoryProduct
         }
       }
     }

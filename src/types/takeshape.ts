@@ -87,6 +87,7 @@ export type Query = {
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
   getPageList?: Maybe<PagePaginatedList>;
+  Shopify_productByHandle?: Maybe<Shopify_Product>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
@@ -432,6 +433,12 @@ export type QueryGetPageListArgs = {
   enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
   onlyEnabled?: InputMaybe<Scalars['Boolean']>;
   where?: InputMaybe<TsWherePageInput>;
+};
+
+
+/** Root of the Schema */
+export type QueryShopify_ProductByHandleArgs = {
+  handle: Scalars['String'];
 };
 
 
@@ -4179,6 +4186,7 @@ export type Collection = TsSearchable & {
   /** Initialized with title from shopify */
   name?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
+  parent?: Maybe<Collection>;
   shopifyCollectionId?: Maybe<Scalars['String']>;
   shopifyCollection?: Maybe<Shopify_Collection>;
   _shapeId?: Maybe<Scalars['String']>;
@@ -4198,6 +4206,12 @@ export type Collection = TsSearchable & {
   _contentTypeId?: Maybe<Scalars['String']>;
   _contentTypeName?: Maybe<Scalars['String']>;
   searchSummary?: Maybe<Scalars['String']>;
+};
+
+
+export type CollectionParentArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
 };
 
 export enum Shopify_CollectionSortKeys {
@@ -13249,6 +13263,7 @@ export type CollectionPaginatedList = {
 export type TsWhereCollectionInput = {
   name?: InputMaybe<TsWhereStringInput>;
   slug?: InputMaybe<TsWhereStringInput>;
+  parent?: InputMaybe<TsWhereCollectionRelationshipInput>;
   shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
   _shapeId?: InputMaybe<TsWhereIdInput>;
   _id?: InputMaybe<TsWhereIdInput>;
@@ -13265,11 +13280,28 @@ export type TsWhereCollectionInput = {
   NOT?: InputMaybe<TsWhereCollectionInput>;
 };
 
+export type TsWhereCollectionRelationshipInput = {
+  name?: InputMaybe<TsWhereStringInput>;
+  slug?: InputMaybe<TsWhereStringInput>;
+  shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
+  _shapeId?: InputMaybe<TsWhereIdInput>;
+  _id?: InputMaybe<TsWhereIdInput>;
+  _version?: InputMaybe<TsWhereIntegerInput>;
+  _shapeName?: InputMaybe<TsWhereStringInput>;
+  _createdAt?: InputMaybe<TsWhereDateInput>;
+  _updatedAt?: InputMaybe<TsWhereDateInput>;
+  _schemaVersion?: InputMaybe<TsWhereNumberInput>;
+  _status?: InputMaybe<TsWhereWorkflowInput>;
+  _contentTypeId?: InputMaybe<TsWhereIdInput>;
+  _contentTypeName?: InputMaybe<TsWhereStringInput>;
+};
+
 export type Page = TsSearchable & {
   __typename?: 'Page';
   title: Scalars['String'];
   slug: Scalars['String'];
   sections?: Maybe<Array<Maybe<PageSectionsProperty>>>;
+  relationship?: Maybe<Array<Maybe<Collection>>>;
   _shapeId?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ID']>;
   _version?: Maybe<Scalars['Int']>;
@@ -13287,6 +13319,12 @@ export type Page = TsSearchable & {
   _contentTypeId?: Maybe<Scalars['String']>;
   _contentTypeName?: Maybe<Scalars['String']>;
   searchSummary?: Maybe<Scalars['String']>;
+};
+
+
+export type PageRelationshipArgs = {
+  enableLocaleFallback?: InputMaybe<Scalars['Boolean']>;
+  locale?: InputMaybe<Scalars['String']>;
 };
 
 export type PageSectionsProperty = PageSectionTitle | PageSectionMdx;
@@ -13327,6 +13365,7 @@ export type TsWherePageInput = {
   title?: InputMaybe<TsWhereStringInput>;
   slug?: InputMaybe<TsWhereStringInput>;
   sections?: InputMaybe<TsWherePageSectionsInput>;
+  relationship?: InputMaybe<TsWhereCollectionRelationshipInput>;
   _shapeId?: InputMaybe<TsWhereIdInput>;
   _id?: InputMaybe<TsWhereIdInput>;
   _version?: InputMaybe<TsWhereIntegerInput>;
@@ -13512,8 +13551,10 @@ export type TsWhereInput = {
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
   message?: InputMaybe<TsWhereDraftjsInput>;
   links?: InputMaybe<TsWhereNavigationLinksInput>;
+  parent?: InputMaybe<TsWhereCollectionRelationshipInput>;
   shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
   sections?: InputMaybe<TsWherePageSectionsInput>;
+  relationship?: InputMaybe<TsWhereCollectionRelationshipInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   OR?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
   NOT?: InputMaybe<TsWhereInput>;
@@ -15088,6 +15129,7 @@ export type WithContext = {
   getPage?: Maybe<Page>;
   /** Returns a list Page in natural order. */
   getPageList?: Maybe<PagePaginatedList>;
+  Shopify_productByHandle?: Maybe<Shopify_Product>;
   searchAssetIndex?: Maybe<AssetSearchResults>;
   searchTsStaticSiteIndex?: Maybe<TsStaticSiteSearchResults>;
   searchProductPageDetailsIndex?: Maybe<ProductPageDetailsSearchResults>;
@@ -15436,6 +15478,12 @@ export type WithContextGetPageListArgs = {
 
 
 /** This query allow you to pass context to your queries */
+export type WithContextShopify_ProductByHandleArgs = {
+  handle: Scalars['String'];
+};
+
+
+/** This query allow you to pass context to your queries */
 export type WithContextSearchAssetIndexArgs = {
   terms?: InputMaybe<Scalars['String']>;
   from?: InputMaybe<Scalars['Int']>;
@@ -15572,7 +15620,7 @@ export type Mutation = {
   unsubscribeMyEmailFromNewsletter?: Maybe<Klaviyo_200Ok>;
   /** Create an order in Voucherify */
   Voucherify_createOrder?: Maybe<Voucherify_Order>;
-  Klaviyo_addMembers?: Maybe<Klaviyo_AddMembersResponse>;
+  addMembers?: Maybe<Klaviyo_AddMembersResponse>;
   Klaviyo_removeMembers?: Maybe<Klaviyo_200Ok>;
   ReviewsIo_createInvitation?: Maybe<ReviewsIo_CreateInvitationResponse>;
   /** Update Footer */
@@ -15583,12 +15631,12 @@ export type Mutation = {
   ShopifyStorefront_customerAccessTokenCreate?: Maybe<ShopifyStorefront_CustomerAccessTokenCreatePayload>;
   ShopifyStorefront_customerCreate?: Maybe<ShopifyStorefront_CustomerCreatePayload>;
   createCustomer?: Maybe<CreateCustomerPayload>;
-  ShopifyStorefront_customerRecover?: Maybe<ShopifyStorefront_CustomerRecoverPayload>;
+  recoverCustomerAccount?: Maybe<ShopifyStorefront_CustomerRecoverPayload>;
   ShopifyStorefront_customerUpdate?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   ShopifyStorefront_customerAddressUpdate?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
   updateMyCustomer?: Maybe<ShopifyStorefront_CustomerUpdatePayload>;
   updateMyCustomerAddress?: Maybe<ShopifyStorefront_CustomerAddressUpdatePayload>;
-  Gorgias_createTicket?: Maybe<Gorgias_CreateTicketResponse>;
+  createTicket?: Maybe<CreateTicketResponse>;
   /** Update Storefront */
   updateStorefront?: Maybe<UpdateStorefrontResult>;
   /** Update ProductPageDetails */
@@ -15743,7 +15791,7 @@ export type MutationVoucherify_CreateOrderArgs = {
 };
 
 
-export type MutationKlaviyo_AddMembersArgs = {
+export type MutationAddMembersArgs = {
   input?: InputMaybe<AddListMembersInput>;
   list_id: Scalars['String'];
   recaptchaToken: Scalars['String'];
@@ -15800,7 +15848,7 @@ export type MutationCreateCustomerArgs = {
 };
 
 
-export type MutationShopifyStorefront_CustomerRecoverArgs = {
+export type MutationRecoverCustomerAccountArgs = {
   email: Scalars['String'];
   recaptchaToken: Scalars['String'];
 };
@@ -15832,7 +15880,7 @@ export type MutationUpdateMyCustomerAddressArgs = {
 };
 
 
-export type MutationGorgias_CreateTicketArgs = {
+export type MutationCreateTicketArgs = {
   email: Scalars['String'];
   message: Scalars['String'];
   recaptchaToken: Scalars['String'];
@@ -16429,10 +16477,10 @@ export type Voucherify_OrderItemInput = {
 };
 
 export type AddListMembersInput = {
-  profiles: Array<Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput>;
+  profiles: Array<AddMembersPropertiesPropertiesProfilesItemsPropertyInput>;
 };
 
-export type Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput = {
+export type AddMembersPropertiesPropertiesProfilesItemsPropertyInput = {
   email?: InputMaybe<Scalars['String']>;
 };
 
@@ -16864,8 +16912,8 @@ export type ShopifyStorefront_MailingAddressInput = {
   zip?: InputMaybe<Scalars['String']>;
 };
 
-export type Gorgias_CreateTicketResponse = {
-  __typename?: 'Gorgias_CreateTicketResponse';
+export type CreateTicketResponse = {
+  __typename?: 'CreateTicketResponse';
   id: Scalars['Int'];
 };
 
@@ -17578,6 +17626,7 @@ export type UpdateCollectionInterfaceInput = {
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  parent?: InputMaybe<TsRelationshipInput>;
   shopifyCollectionId?: InputMaybe<Scalars['String']>;
   shopifyCollection?: InputMaybe<Shopify_CollectionInput>;
 };
@@ -17651,6 +17700,7 @@ export type CreateCollectionInterfaceInput = {
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  parent?: InputMaybe<TsRelationshipInput>;
   shopifyCollectionId?: InputMaybe<Scalars['String']>;
   shopifyCollection?: InputMaybe<Shopify_CollectionInput>;
 };
@@ -17667,6 +17717,7 @@ export type DuplicateCollectionInput = {
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
+  parent?: InputMaybe<TsRelationshipInput>;
   shopifyCollectionId?: InputMaybe<Scalars['String']>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
@@ -17706,6 +17757,7 @@ export type UpdatePageInput = {
   title?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
   sections?: InputMaybe<Array<InputMaybe<PageSectionMdxPageSectionTitleInputUnion>>>;
+  relationship?: InputMaybe<Array<InputMaybe<TsRelationshipInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
   _shapeName?: InputMaybe<Scalars['String']>;
@@ -17747,6 +17799,7 @@ export type CreatePageInput = {
   title: Scalars['String'];
   slug: Scalars['String'];
   sections?: InputMaybe<Array<InputMaybe<PageSectionMdxPageSectionTitleInputUnion>>>;
+  relationship?: InputMaybe<Array<InputMaybe<TsRelationshipInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _id?: InputMaybe<Scalars['ID']>;
   _version?: InputMaybe<Scalars['Int']>;
@@ -17775,6 +17828,7 @@ export type DuplicatePageInput = {
   title?: InputMaybe<Scalars['String']>;
   slug?: InputMaybe<Scalars['String']>;
   sections?: InputMaybe<Array<InputMaybe<PageSectionMdxPageSectionTitleInputUnion>>>;
+  relationship?: InputMaybe<Array<InputMaybe<TsRelationshipInput>>>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _version?: InputMaybe<Scalars['Int']>;
   _shapeName?: InputMaybe<Scalars['String']>;

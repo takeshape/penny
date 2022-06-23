@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { collectionResponse } from '../queries.fixtures';
-import { getCollectionFromTakeshape } from '../transforms';
+import { getCollectionBasic } from '../transforms';
 import { ProductGrid } from './ProductGrid';
 
-const collection = getCollectionFromTakeshape(collectionResponse, {});
+const collection = getCollectionBasic(collectionResponse, {});
 
 const Meta: ComponentMeta<typeof ProductGrid> = {
   title: 'Features / Product Category / Components / Product Grid',

@@ -1,5 +1,4 @@
 import { getImageUrl } from '@takeshape/routing';
-import slug from 'slug';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import {
   createImageGetter,
@@ -7,16 +6,11 @@ import {
   getProductOptions,
   getProductUrl,
   getProductVariants,
-  getSeo,
-  shopifyGidToId,
-  shopifyProductIdToGid
+  getSeo
 } from 'transforms/shopify';
-import { isNumericString } from 'utils/types';
 import {
-  ProductPageReviewsIoReviewsResponse,
-  ProductPageShopifyProductIdListResponse,
+  ProductPageShopifyProductHandlesResponse,
   ProductPageShopifyProductResponse,
-  ProductPageTakeshapeProductResponse,
   RelatedProductsShopifyCollectionResponse
 } from './queries';
 import {
@@ -33,7 +27,7 @@ import {
 } from './types';
 
 export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct {
-  const shopifyProduct = response?.productList?.items?.[0]?.shopifyProduct;
+  const shopifyProduct = response?.product;
 
   if (!shopifyProduct) {
     return null;
@@ -44,7 +38,7 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
+    url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -62,8 +56,8 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
   };
 }
 
-export function getReviewList(response: ProductPageReviewsIoReviewsResponse): ProductPageReviewsReviewList {
-  const { stats, reviews } = response?.reviews ?? {};
+export function getReviewList(response: ProductPageShopifyProductResponse): ProductPageReviewsReviewList {
+  const { stats, reviews } = response?.product?.reviews ?? {};
 
   return {
     stats: getStats(stats),
@@ -74,8 +68,8 @@ export function getReviewList(response: ProductPageReviewsIoReviewsResponse): Pr
   };
 }
 
-export function getReviewHighlights(response: ProductPageReviewsIoReviewsResponse): ProductPageReviewHighlights {
-  const { stats, reviews } = response?.reviews ?? {};
+export function getReviewHighlights(response: ProductPageShopifyProductResponse): ProductPageReviewHighlights {
+  const { stats, reviews } = response?.product?.reviews ?? {};
 
   return {
     stats: getStats(stats),
@@ -83,8 +77,8 @@ export function getReviewHighlights(response: ProductPageReviewsIoReviewsRespons
   };
 }
 
-export function getPolicies(response: ProductPageTakeshapeProductResponse): ProductPagePolicies {
-  const policies = response?.productList?.items?.[0]?.policies;
+export function getPolicies(response: ProductPageShopifyProductResponse): ProductPagePolicies {
+  const policies = response?.product?.takeshape?.policies;
 
   if (!policies) {
     return null;
@@ -102,8 +96,8 @@ export function getPolicies(response: ProductPageTakeshapeProductResponse): Prod
   };
 }
 
-export function getDetails(response: ProductPageTakeshapeProductResponse): ProductPageDetails {
-  const details = response?.productList?.items?.[0]?.details;
+export function getDetails(response: ProductPageShopifyProductResponse): ProductPageDetails {
+  const details = response?.product?.takeshape?.details;
 
   if (!details) {
     return null;
@@ -135,8 +129,8 @@ function getProductComponent(productComponent?: string): ProductPageProductCompo
   }
 }
 
-export function getPageOptions(response: ProductPageTakeshapeProductResponse): ProductPageOptions {
-  const takeshapeProduct = response?.productList?.items?.[0];
+export function getPageOptions(response: ProductPageShopifyProductResponse): ProductPageOptions {
+  const takeshapeProduct = response?.product?.takeshape;
 
   if (!takeshapeProduct) {
     return null;
@@ -151,29 +145,18 @@ export function getPageOptions(response: ProductPageTakeshapeProductResponse): P
   };
 }
 
-export function getProductPageIdOrSlug(idOrSlug: string) {
-  // This is a product id, 9 is arbitrary, but Shopify Product Ids shouldn't be shorter.
-  if (idOrSlug.length > 9 && isNumericString(idOrSlug)) {
-    return {
-      id: shopifyProductIdToGid(idOrSlug),
-      slug: ''
-    };
+export function getProductPageParams(response: ProductPageShopifyProductHandlesResponse) {
+  const nodes = response?.products?.nodes;
+
+  if (!nodes) {
+    return null;
   }
 
-  return {
-    id: '',
-    slug: idOrSlug
-  };
-}
-
-export function getProductPageParams(item: ProductPageShopifyProductIdListResponse['products']['items'][0]) {
-  const product = item.slug ? [item.slug] : [shopifyGidToId(item.shopifyProductId), slug(item.name)];
-
-  return {
+  return nodes.map((node) => ({
     params: {
-      product
+      product: [node.handle]
     }
-  };
+  }));
 }
 
 function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
@@ -181,7 +164,7 @@ function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): Relat
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
+    url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,

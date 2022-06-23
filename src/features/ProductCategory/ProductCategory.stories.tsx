@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { ProductCategory } from './ProductCategory';
 import { collectionResponse } from './queries.fixtures';
-import { getCollectionFromTakeshape } from './transforms';
+import { getCollectionBasic } from './transforms';
 
-const collection = getCollectionFromTakeshape(collectionResponse, {});
+const collection = getCollectionBasic(collectionResponse, {});
 
 const Meta: ComponentMeta<typeof ProductCategory> = {
   title: 'Features / Product Category',

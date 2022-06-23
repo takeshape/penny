@@ -3,7 +3,7 @@ import { Shopify_Product } from 'types/takeshape';
 
 export type SearchShopifyProduct = Pick<
   Shopify_Product,
-  'id' | 'title' | 'description' | 'descriptionHtml' | 'featuredImage' | 'takeshape'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'featuredImage'
 >;
 
 export type SearchItemProduct = ProductCore;

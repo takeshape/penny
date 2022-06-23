@@ -3,7 +3,7 @@ import { QuickAddResponse } from './queries';
 import { QuickAddProduct } from './types';
 
 export function getProduct(response: QuickAddResponse): QuickAddProduct {
-  const shopifyProduct = response?.productList?.items?.[0]?.shopifyProduct;
+  const shopifyProduct = response?.product;
 
   if (!shopifyProduct) {
     return null;
@@ -14,7 +14,7 @@ export function getProduct(response: QuickAddResponse): QuickAddProduct {
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
+    url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
