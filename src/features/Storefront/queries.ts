@@ -72,7 +72,6 @@ const StorefrontFragments = gql`
     title
     description
     descriptionHtml
-    productsCount
   }
 
   fragment StorefrontProduct on Shopify_Product {

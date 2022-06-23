@@ -7,7 +7,6 @@ export const storefrontCollection: StorefrontCollection = {
   name: 'Home page',
   description: '',
   descriptionHtml: '',
-  productsCount: 4,
   items: [
     {
       product: {

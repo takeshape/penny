@@ -35,7 +35,6 @@ const ProductCategoryFragments = gql`
     title
     description
     descriptionHtml
-    productsCount
     seo {
       title
       description

@@ -23,7 +23,7 @@ export type StorefrontShopifyProduct = Pick<
 
 export type StorefrontShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'productsCount'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml'
 > & {
   products: {
     pageInfo: Shopify_PageInfo;
