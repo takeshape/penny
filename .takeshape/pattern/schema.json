@@ -498,9 +498,6 @@
           "name": {
             "widget": "singleLineText"
           },
-          "slug": {
-            "widget": "slug"
-          },
           "shopifyCollection": {
             "properties": {
               "descriptionHtml": {
@@ -560,7 +557,6 @@
         },
         "order": [
           "name",
-          "slug",
           "shopifyCollectionId",
           "shopifyCollection"
         ]
@@ -4648,15 +4644,6 @@
             "description": "Initialized with title from shopify",
             "title": "Name",
             "@mapping": "takeshape:local:Collection.sZuVCwK3h7"
-          },
-          "slug": {
-            "@derivedFrom": "name",
-            "pattern": "^[\\w-]*$",
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "Slug",
-            "@mapping": "takeshape:local:Collection.WMx9SpOPY"
           },
           "shopifyCollectionId": {
             "type": "string",
