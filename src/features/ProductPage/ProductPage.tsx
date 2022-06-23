@@ -14,11 +14,6 @@ export type ProductPageProps = ProductProps &
     options: ProductPageOptions;
   };
 
-const breadcrumbs = [
-  { id: 1, name: 'Men', href: '#' },
-  { id: 2, name: 'Clothing', href: '#' }
-];
-
 export const ProductPage = ({
   product,
   reviewHighlights,
@@ -26,7 +21,8 @@ export const ProductPage = ({
   options,
   details,
   policies,
-  reviewList
+  reviewList,
+  breadcrumbs
 }: ProductPageProps) => {
   const { showDetails, showPolicies, showReviews, showRelatedProducts } = options;
 

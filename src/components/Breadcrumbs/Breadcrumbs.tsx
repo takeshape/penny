@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export interface Breadcrumb {
-  id: number;
+  id: string;
   href: string;
   name: string;
 }

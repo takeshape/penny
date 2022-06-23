@@ -1,3 +1,4 @@
+import { cloneDeep } from '@apollo/client/utilities';
 import { getStats } from 'transforms/reviewsIo';
 import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
 import {
@@ -103,7 +104,7 @@ export function getCollectionWithOverfetch(
     return null;
   }
 
-  const collection = structuredClone(shopifyCollection);
+  const collection = cloneDeep(shopifyCollection);
 
   // This was an overfetch to get the start anchor for backwards pagination
   if (variables.last > pageSize && collection.products.nodes.length > pageSize) {

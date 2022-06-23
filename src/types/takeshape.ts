@@ -4227,7 +4227,8 @@ export type Collection = TsSearchable & {
   __typename?: 'Collection';
   /** Initialized with title from shopify */
   name?: Maybe<Scalars['String']>;
-  slug?: Maybe<Scalars['String']>;
+  /** An alternate title to use in breadcrumbs */
+  breadcrumbTitle?: Maybe<Scalars['String']>;
   parent?: Maybe<Collection>;
   shopifyCollectionId?: Maybe<Scalars['String']>;
   shopifyCollection?: Maybe<Shopify_Collection>;
@@ -4806,7 +4807,6 @@ export type Product = TsSearchable & {
   __typename?: 'Product';
   /** Initialized with title from shopify */
   name?: Maybe<Scalars['String']>;
-  slug?: Maybe<Scalars['String']>;
   productComponent?: Maybe<Scalars['String']>;
   hideRelatedProducts?: Maybe<Scalars['Boolean']>;
   hideReviews?: Maybe<Scalars['Boolean']>;
@@ -13150,7 +13150,6 @@ export type ProductPaginatedList = {
 
 export type TsWhereProductInput = {
   name?: InputMaybe<TsWhereStringInput>;
-  slug?: InputMaybe<TsWhereStringInput>;
   productComponent?: InputMaybe<TsWhereStringInput>;
   hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
   hideReviews?: InputMaybe<TsWhereBooleanInput>;
@@ -13304,7 +13303,7 @@ export type CollectionPaginatedList = {
 
 export type TsWhereCollectionInput = {
   name?: InputMaybe<TsWhereStringInput>;
-  slug?: InputMaybe<TsWhereStringInput>;
+  breadcrumbTitle?: InputMaybe<TsWhereStringInput>;
   parent?: InputMaybe<TsWhereCollectionRelationshipInput>;
   shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
   _shapeId?: InputMaybe<TsWhereIdInput>;
@@ -13324,7 +13323,7 @@ export type TsWhereCollectionInput = {
 
 export type TsWhereCollectionRelationshipInput = {
   name?: InputMaybe<TsWhereStringInput>;
-  slug?: InputMaybe<TsWhereStringInput>;
+  breadcrumbTitle?: InputMaybe<TsWhereStringInput>;
   shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
   _shapeId?: InputMaybe<TsWhereIdInput>;
   _id?: InputMaybe<TsWhereIdInput>;
@@ -13582,7 +13581,6 @@ export type TsWhereInput = {
   text?: InputMaybe<TsWhereProductPageDetailsTextInput>;
   ProductPageDetails_details?: InputMaybe<TsWhereProductPageDetailsDetailsInput>;
   ProductPagePolicies_policies?: InputMaybe<TsWhereProductPagePoliciesPoliciesInput>;
-  slug?: InputMaybe<TsWhereStringInput>;
   productComponent?: InputMaybe<TsWhereStringInput>;
   hideRelatedProducts?: InputMaybe<TsWhereBooleanInput>;
   hideReviews?: InputMaybe<TsWhereBooleanInput>;
@@ -13593,8 +13591,10 @@ export type TsWhereInput = {
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
   message?: InputMaybe<TsWhereDraftjsInput>;
   links?: InputMaybe<TsWhereNavigationLinksInput>;
+  breadcrumbTitle?: InputMaybe<TsWhereStringInput>;
   parent?: InputMaybe<TsWhereCollectionRelationshipInput>;
   shopifyCollectionId?: InputMaybe<TsWhereStringInput>;
+  slug?: InputMaybe<TsWhereStringInput>;
   sections?: InputMaybe<TsWherePageSectionsInput>;
   relationship?: InputMaybe<TsWhereCollectionRelationshipInput>;
   AND?: InputMaybe<Array<InputMaybe<TsWhereInput>>>;
@@ -17314,11 +17314,10 @@ export type UpdateProductResult = {
 /** update ProductInterface input */
 export type UpdateProductInterfaceInput = {
   _id: Scalars['ID'];
-  _version?: InputMaybe<Scalars['Int']>;
+  _version?: InputMaybe<Scalars['Float']>;
   _status?: InputMaybe<DefaultWorkflow>;
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
   productComponent?: InputMaybe<Scalars['String']>;
   hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
   hideReviews?: InputMaybe<Scalars['Boolean']>;
@@ -17328,17 +17327,6 @@ export type UpdateProductInterfaceInput = {
   details?: InputMaybe<TsRelationshipInput>;
   shopifyProductId?: InputMaybe<Scalars['String']>;
   shopifyProduct?: InputMaybe<Shopify_ProductInput>;
-  _shapeId?: InputMaybe<Scalars['String']>;
-  _shapeName?: InputMaybe<Scalars['String']>;
-  _createdAt?: InputMaybe<Scalars['String']>;
-  _createdBy?: InputMaybe<Scalars['String']>;
-  _updatedAt?: InputMaybe<Scalars['String']>;
-  _updatedBy?: InputMaybe<Scalars['String']>;
-  _schemaVersion?: InputMaybe<Scalars['Float']>;
-  _enabled?: InputMaybe<Scalars['Boolean']>;
-  _enabledAt?: InputMaybe<Scalars['String']>;
-  _contentTypeId?: InputMaybe<Scalars['String']>;
-  _contentTypeName?: InputMaybe<Scalars['String']>;
 };
 
 /** Specifies the input fields required to create a product. */
@@ -17559,11 +17547,10 @@ export type CreateProductResult = {
 /** create ProductInterface input */
 export type CreateProductInterfaceInput = {
   _id?: InputMaybe<Scalars['ID']>;
-  _version?: InputMaybe<Scalars['Int']>;
+  _version?: InputMaybe<Scalars['Float']>;
   _status?: InputMaybe<DefaultWorkflow>;
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
   productComponent?: InputMaybe<Scalars['String']>;
   hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
   hideReviews?: InputMaybe<Scalars['Boolean']>;
@@ -17573,17 +17560,6 @@ export type CreateProductInterfaceInput = {
   details?: InputMaybe<TsRelationshipInput>;
   shopifyProductId?: InputMaybe<Scalars['String']>;
   shopifyProduct?: InputMaybe<Shopify_ProductInput>;
-  _shapeId?: InputMaybe<Scalars['String']>;
-  _shapeName?: InputMaybe<Scalars['String']>;
-  _createdAt?: InputMaybe<Scalars['String']>;
-  _createdBy?: InputMaybe<Scalars['String']>;
-  _updatedAt?: InputMaybe<Scalars['String']>;
-  _updatedBy?: InputMaybe<Scalars['String']>;
-  _schemaVersion?: InputMaybe<Scalars['Float']>;
-  _enabled?: InputMaybe<Scalars['Boolean']>;
-  _enabledAt?: InputMaybe<Scalars['String']>;
-  _contentTypeId?: InputMaybe<Scalars['String']>;
-  _contentTypeName?: InputMaybe<Scalars['String']>;
 };
 
 export type DuplicateProductResult = {
@@ -17597,7 +17573,6 @@ export type DuplicateProductInput = {
   _id: Scalars['ID'];
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
   productComponent?: InputMaybe<Scalars['String']>;
   hideRelatedProducts?: InputMaybe<Scalars['Boolean']>;
   hideReviews?: InputMaybe<Scalars['Boolean']>;
@@ -17709,7 +17684,8 @@ export type UpdateCollectionInterfaceInput = {
   _status?: InputMaybe<DefaultWorkflow>;
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  /** An optional title to override the regular title in breadcrumbs */
+  breadcrumbTitle?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<TsRelationshipInput>;
   shopifyCollectionId?: InputMaybe<Scalars['String']>;
   shopifyCollection?: InputMaybe<Shopify_CollectionInput>;
@@ -17783,7 +17759,8 @@ export type CreateCollectionInterfaceInput = {
   _status?: InputMaybe<DefaultWorkflow>;
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  /** An optional title to override the regular title in breadcrumbs */
+  breadcrumbTitle?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<TsRelationshipInput>;
   shopifyCollectionId?: InputMaybe<Scalars['String']>;
   shopifyCollection?: InputMaybe<Shopify_CollectionInput>;
@@ -17800,7 +17777,8 @@ export type DuplicateCollectionInput = {
   _id: Scalars['ID'];
   /** Initialized with title from shopify */
   name?: InputMaybe<Scalars['String']>;
-  slug?: InputMaybe<Scalars['String']>;
+  /** An alternate title to use in breadcrumbs */
+  breadcrumbTitle?: InputMaybe<Scalars['String']>;
   parent?: InputMaybe<TsRelationshipInput>;
   shopifyCollectionId?: InputMaybe<Scalars['String']>;
   _shapeId?: InputMaybe<Scalars['String']>;

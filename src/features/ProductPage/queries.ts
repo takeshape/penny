@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 import {
+  ProductPageRelatedProductsShopifyProduct,
   ProductPageShopifyProduct,
-  ProductPageShopifyProductHandleConnection,
-  RelatedProductsShopifyProduct
+  ProductPageShopifyProductHandleConnection
 } from './types';
 
 export type ProductPageShopifyProductHandlesResponse = {
@@ -67,6 +67,37 @@ const ProductPageProductFragment = gql`
             description
           }
           descriptionHtml
+        }
+      }
+    }
+    standardizedProductType {
+      productTaxonomyNode {
+        name
+      }
+    }
+    collections(first: 25) {
+      nodes {
+        id
+        handle
+        title
+        productsCount
+        ruleSet {
+          rules {
+            column
+            condition
+            relation
+          }
+        }
+        takeshape {
+          breadcrumbTitle
+          parent {
+            breadcrumbTitle
+            shopifyCollection {
+              id
+              handle
+              title
+            }
+          }
         }
       }
     }
@@ -242,7 +273,7 @@ export type RelatedProductsShopifyCollectionResponse = {
   collection: {
     products: {
       edges: {
-        node: RelatedProductsShopifyProduct;
+        node: ProductPageRelatedProductsShopifyProduct;
       }[];
     };
   };
@@ -259,11 +290,6 @@ export const RelatedProductsShopifyCollectionQuery = gql`
             title
             description
             descriptionHtml
-            takeshape {
-              _id
-              name
-              slug
-            }
             requiresSellingPlan
             featuredImage {
               id

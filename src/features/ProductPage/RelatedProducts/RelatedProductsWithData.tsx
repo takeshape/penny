@@ -5,14 +5,14 @@ import {
   RelatedProductsShopifyCollectionResponse
 } from '../queries';
 import { getRelatedProductList } from '../transforms';
-import { RelatedProductsProduct } from '../types';
+import { ProductPageRelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
 
 export interface RelatedProductsWithDataProps {
   collection?: string;
 }
 
-const loadingProducts = Array(4).fill(undefined) as RelatedProductsProduct[];
+const loadingProducts = Array(4).fill(undefined) as ProductPageRelatedProductsProduct[];
 
 export const RelatedProductsWithData = ({ collection }: RelatedProductsWithDataProps) => {
   const handle = collection ?? 'related-products';

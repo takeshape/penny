@@ -1,13 +1,16 @@
+import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import {
   createImageGetter,
+  getCollectionUrl,
   getPrice,
   getProductOptions,
   getProductUrl,
   getProductVariants,
   getSeo
 } from 'transforms/shopify';
+import { Shopify_Collection } from 'types/takeshape';
 import {
   ProductPageShopifyProductHandlesResponse,
   ProductPageShopifyProductResponse,
@@ -21,11 +24,10 @@ import {
   ProductPagePolicy,
   ProductPageProduct,
   ProductPageProductComponent,
+  ProductPageRelatedProductsProduct,
+  ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
-  ProductPageReviewsReviewList,
-  ProductPageShopifyProduct,
-  RelatedProductsProduct,
-  RelatedProductsShopifyProduct
+  ProductPageReviewsReviewList
 } from './types';
 
 export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct {
@@ -162,7 +164,9 @@ export function getProductPageParams(response: ProductPageShopifyProductHandlesR
   }));
 }
 
-function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): RelatedProductsProduct {
+function getRelatedProduct(
+  shopifyProduct: ProductPageRelatedProductsShopifyProduct
+): ProductPageRelatedProductsProduct {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
   return {
@@ -183,7 +187,9 @@ function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): Relat
   };
 }
 
-export function getRelatedProductList(response: RelatedProductsShopifyCollectionResponse): RelatedProductsProduct[] {
+export function getRelatedProductList(
+  response: RelatedProductsShopifyCollectionResponse
+): ProductPageRelatedProductsProduct[] {
   const productEdges = response?.collection?.products?.edges;
 
   if (!productEdges) {
@@ -193,4 +199,86 @@ export function getRelatedProductList(response: RelatedProductsShopifyCollection
   return productEdges.map(({ node }) => getRelatedProduct(node));
 }
 
-export function getBreadcrumbs(shopifyProduct: ProductPageShopifyProduct): ProductPageBreadcrumbs {}
+function collectionHasParent(collection: Shopify_Collection) {
+  return Boolean(collection.takeshape?.parent);
+}
+
+function collectionHasTypeEquals(collection: Shopify_Collection) {
+  return Boolean(collection.ruleSet?.rules?.findIndex((rule) => rule.column === 'TYPE' && rule.relation === 'EQUALS'));
+}
+
+function collectionHasRules(collection: Shopify_Collection) {
+  return Boolean(collection.ruleSet?.rules);
+}
+
+export function getBreadcrumbs(response: ProductPageShopifyProductResponse): ProductPageBreadcrumbs {
+  const collections = response?.product?.collections;
+
+  if (!collections) {
+    return null;
+  }
+
+  const collectionNodes = cloneDeep(collections.nodes);
+  const sortedCollections = collectionNodes.sort((a, b) => a.productsCount - b.productsCount);
+
+  // 1. (BEST) HAS PARENT & HAS RULES & HAS TYPE EQUALS & HAS HIGHEST PRODUCT COUNT
+  let match = sortedCollections.find((collection) => {
+    return collectionHasParent(collection) && collectionHasTypeEquals(collection);
+  });
+
+  if (!match) {
+    // 2. HAS PARENT & HAS RULES & HAS HIGHEST PRODUCT COUNT
+    match = sortedCollections.find((collection) => {
+      return collectionHasParent(collection) && collectionHasRules(collection);
+    });
+  }
+
+  if (!match) {
+    // 3. HAS PARENT & HAS HIGHEST PRODUCT COUNT
+    match = sortedCollections.find((collection) => {
+      return collectionHasParent(collection);
+    });
+  }
+
+  if (!match) {
+    // 4. HAS TYPE EQUALS & HAS HIGHEST PRODUCT COUNT
+    match = sortedCollections.find((collection) => {
+      return collectionHasTypeEquals(collection);
+    });
+  }
+
+  if (!match) {
+    // 5. HAS RULES & HAS HIGHEST PRODUCT COUNT
+    match = sortedCollections.find((collection) => {
+      return collectionHasRules(collection);
+    });
+  }
+
+  if (!match) {
+    // 6. HAS HIGHEST PRODUCT COUNT
+    match = sortedCollections[0];
+  }
+
+  if (!match) {
+    return null;
+  }
+
+  const breadcrumbs: ProductPageBreadcrumbs = [];
+
+  if (collectionHasParent(match)) {
+    breadcrumbs.push({
+      id: match.takeshape.parent.shopifyCollection.id,
+      name: match.takeshape.parent.breadcrumbTitle ?? match.takeshape.parent.shopifyCollection.title,
+      href: getCollectionUrl(match.takeshape.parent.shopifyCollection.handle)
+    });
+  }
+
+  breadcrumbs.push({
+    id: match.id,
+    // TODO Allow override in TakeShape data
+    name: match.takeshape.breadcrumbTitle ?? match.title,
+    href: getCollectionUrl(match.handle)
+  });
+
+  return breadcrumbs;
+}

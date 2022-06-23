@@ -5247,8 +5247,8 @@ type Collection implements TSSearchable {
   """Initialized with title from shopify"""
   name: String
 
-  """"""
-  slug: String
+  """An alternate title to use in breadcrumbs"""
+  breadcrumbTitle: String
 
   """"""
   parent(enableLocaleFallback: Boolean = true, locale: String): Collection
@@ -5888,9 +5888,6 @@ enum Shopify_ProductVariantSortKeys {
 type Product implements TSSearchable {
   """Initialized with title from shopify"""
   name: String
-
-  """"""
-  slug: String
 
   """"""
   productComponent: String
@@ -16111,7 +16108,6 @@ type ProductPaginatedList {
 
 input TSWhereProductInput {
   name: TSWhereStringInput
-  slug: TSWhereStringInput
   productComponent: TSWhereStringInput
   hideRelatedProducts: TSWhereBooleanInput
   hideReviews: TSWhereBooleanInput
@@ -16286,7 +16282,7 @@ type CollectionPaginatedList {
 
 input TSWhereCollectionInput {
   name: TSWhereStringInput
-  slug: TSWhereStringInput
+  breadcrumbTitle: TSWhereStringInput
   parent: TSWhereCollectionRelationshipInput
   shopifyCollectionId: TSWhereStringInput
   _shapeId: TSWhereIDInput
@@ -16306,7 +16302,7 @@ input TSWhereCollectionInput {
 
 input TSWhereCollectionRelationshipInput {
   name: TSWhereStringInput
-  slug: TSWhereStringInput
+  breadcrumbTitle: TSWhereStringInput
   shopifyCollectionId: TSWhereStringInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
@@ -16553,7 +16549,6 @@ input TSWhereInput {
   text: TSWhereProductPageDetailsTextInput
   ProductPageDetails_details: TSWhereProductPageDetailsDetailsInput
   ProductPagePolicies_policies: TSWhereProductPagePoliciesPoliciesInput
-  slug: TSWhereStringInput
   productComponent: TSWhereStringInput
   hideRelatedProducts: TSWhereBooleanInput
   hideReviews: TSWhereBooleanInput
@@ -16564,8 +16559,10 @@ input TSWhereInput {
   shopifyProductId: TSWhereStringInput
   message: TSWhereDraftjsInput
   links: TSWhereNavigationLinksInput
+  breadcrumbTitle: TSWhereStringInput
   parent: TSWhereCollectionRelationshipInput
   shopifyCollectionId: TSWhereStringInput
+  slug: TSWhereStringInput
   sections: TSWherePageSectionsInput
   relationship: TSWhereCollectionRelationshipInput
   AND: [TSWhereInput]
@@ -20396,12 +20393,11 @@ type UpdateProductResult {
 """update ProductInterface input"""
 input UpdateProductInterfaceInput {
   _id: ID!
-  _version: Int
+  _version: Float
   _status: DefaultWorkflow
 
   """Initialized with title from shopify"""
   name: String
-  slug: String
   productComponent: String
   hideRelatedProducts: Boolean
   hideReviews: Boolean
@@ -20411,17 +20407,6 @@ input UpdateProductInterfaceInput {
   details: TSRelationshipInput
   shopifyProductId: String
   shopifyProduct: Shopify_ProductInput
-  _shapeId: String
-  _shapeName: String
-  _createdAt: String
-  _createdBy: String
-  _updatedAt: String
-  _updatedBy: String
-  _schemaVersion: Float
-  _enabled: Boolean
-  _enabledAt: String
-  _contentTypeId: String
-  _contentTypeName: String
 }
 
 """Specifies the input fields required to create a product."""
@@ -20756,12 +20741,11 @@ type CreateProductResult {
 """create ProductInterface input"""
 input CreateProductInterfaceInput {
   _id: ID
-  _version: Int
+  _version: Float
   _status: DefaultWorkflow
 
   """Initialized with title from shopify"""
   name: String
-  slug: String
   productComponent: String
   hideRelatedProducts: Boolean = false
   hideReviews: Boolean = false
@@ -20771,17 +20755,6 @@ input CreateProductInterfaceInput {
   details: TSRelationshipInput
   shopifyProductId: String
   shopifyProduct: Shopify_ProductInput
-  _shapeId: String
-  _shapeName: String
-  _createdAt: String
-  _createdBy: String
-  _updatedAt: String
-  _updatedBy: String
-  _schemaVersion: Float
-  _enabled: Boolean
-  _enabledAt: String
-  _contentTypeId: String
-  _contentTypeName: String
 }
 
 type DuplicateProductResult {
@@ -20795,9 +20768,6 @@ input DuplicateProductInput {
 
   """Initialized with title from shopify"""
   name: String
-
-  """"""
-  slug: String
 
   """"""
   productComponent: String
@@ -20947,7 +20917,9 @@ input UpdateCollectionInterfaceInput {
 
   """Initialized with title from shopify"""
   name: String
-  slug: String
+
+  """An optional title to override the regular title in breadcrumbs"""
+  breadcrumbTitle: String
   parent: TSRelationshipInput
   shopifyCollectionId: String
   shopifyCollection: Shopify_CollectionInput
@@ -21046,7 +21018,9 @@ input CreateCollectionInterfaceInput {
 
   """Initialized with title from shopify"""
   name: String
-  slug: String
+
+  """An optional title to override the regular title in breadcrumbs"""
+  breadcrumbTitle: String
   parent: TSRelationshipInput
   shopifyCollectionId: String
   shopifyCollection: Shopify_CollectionInput
@@ -21064,8 +21038,8 @@ input DuplicateCollectionInput {
   """Initialized with title from shopify"""
   name: String
 
-  """"""
-  slug: String
+  """An alternate title to use in breadcrumbs"""
+  breadcrumbTitle: String
   parent: TSRelationshipInput
   shopifyCollectionId: String
   _shapeId: String
