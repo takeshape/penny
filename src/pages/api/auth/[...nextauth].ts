@@ -1,5 +1,5 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
-import { takeshapeApiUrl, takeshapeWebhookApiKey } from 'config';
+import { takeshapeApiUrl, takeshapeAuthAudience, takeshapeAuthIssuer, takeshapeWebhookApiKey } from 'config';
 import {
   CreateCustomerAccessTokenMutation,
   CreateCustomerAccessTokenResponse,
@@ -22,12 +22,12 @@ import { createStaticClient } from 'utils/apollo/client';
 const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
 
 const withAllAccess = createNextAuthAllAccess({
-  issuer: 'https://deluxe-sample-project.vercel.app/',
+  issuer: takeshapeAuthIssuer,
   jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
   clients: [
     {
       id: 'takeshape',
-      audience: 'https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id',
+      audience: takeshapeAuthAudience,
       expiration: '6h',
       allowedClaims: ['email', 'sub', 'shopifyCustomerAccessToken'],
       renameClaims: {

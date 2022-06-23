@@ -8,6 +8,10 @@ export const shopifyShop = process.env.SHOPIFY_SHOP;
 export const shopifyToken = process.env.SHOPIFY_TOKEN;
 export const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ?? '';
 
+/* Auth */
+export const takeshapeAuthIssuer = process.env.NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER;
+export const takeshapeAuthAudience = process.env.NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE;
+
 /* Nerd Stuff */
 export const vercelEnv = process.env.VERCEL_ENV ?? 'development';
 export const isProduction = vercelEnv === 'production';
