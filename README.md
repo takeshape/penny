@@ -72,10 +72,91 @@ TKTK
 
 ## Instructions
 
-### NextAuth
+To get started with this project, there are two basic steps:
+
+1. Create a TakeShape project using the pattern in this repo. This button will deploy the project for you:
+
+   - <a href="https://app.takeshape.io/add-to-takeshape?repo=https://github.com/takeshape/takeshape-deluxe-sample-project/tree/main/.takeshape/pattern"><img alt="Deploy To TakeShape" src="https://camo.githubusercontent.com/1b580e3ce353d235bde0f376ca35b0fb26d685f3750a3013ae4b225dd3aaf344/68747470733a2f2f696d616765732e74616b6573686170652e696f2f32636363633832352d373062652d343331632d396261302d3130616233386563643361372f6465762f38653266376264612d306530382d346564652d613534362d3664663539626536613862622f4465706c6f79253230746f25323054616b65536861706525343032782e706e673f6175746f3d666f726d6174253243636f6d7072657373" width="205" height="38" data-canonical-src="https://images.takeshape.io/2cccc825-70be-431c-9ba0-10ab38ecd3a7/dev/8e2f7bda-0e08-4ede-a546-6df59be6a8bb/Deploy%20to%20TakeShape%402x.png?auto=format%2Ccompress" style="max-width:100%;"></a>
+
+2. Clone this repo:
+
+```bash
+git clone https://github.com/takeshape/takeshape-deluxe-sample-project
+```
+
+3. Navigate to the project directory in your local terminal and run the `npm install` command to install all
+   dependencies.
+
+The following instructions will help you configure all of the services this project uses.
+
+### NextAuth and OpenID
 
 This project uses NextAuth in combination with the `@takeshape/next-auth-all-access` package for user authentication and
-identity management.
+identity management. The following instructions will walk you through setting up OpenID as a service provider in your
+TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-access`.
+
+#### Setting up OpenID
+
+1. In the **Home** tab of your TakeShape project, select **OpenID** from the list of services. You will be taken to the
+   **OpenID** service configuration page.
+   ![A screenshot of the Home tab in the deluxe sample project on TakeShape](/readme-images/home-tab-open-id-readme-images.png)
+
+2. Add your store's URL to the **Issuer URL** field, and enter the same URL with
+   `/api/auth/all-access/.well-known/openid-configuration` appended to the end of it in the **OpenID Configuration
+   URL**.
+
+   > Note: Your store URL should be the public-facing URL of your website, not necessarily your myshopify.com URL.
+
+3. Copy the generated url in the **Audience** field and save it somewhere secure. You'll need it for your NextJS
+   project's `.env` file.
+4. Select the **Save** button at the top-right of the OpenID service page.
+
+5. Now set up your `.env` variables in your NextJS project.
+   - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable to the generated **Audience** URL from your OpenID provider.
+   - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable to the same URL you provided for the **Issuer URL** field on
+     your OpenID provider. This should be your store's URL.
+
+#### Setting up NextAuth
+
+To set up NextAuth, use our `@takeshape/next-auth-all-access` package to generate private keys:
+
+```bash
+npx @takeshape/next-auth-all-access generate-keys
+```
+
+You'll see three messages:
+
+- "Add the following line to your .env file, this is your private key:"
+- The generated private key. It should look like this:
+
+```
+NEXTAUTHOIDC_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----\nYOUR PRIVATE KEY HERE\n-----END
+PRIVATE KEY-----\n'
+```
+
+- "Writing your JWKS file to `'./keys/jwks.json'`"
+
+Paste the line containing your private key into your `.env.local` file. If you're deploying with Vercel or another
+platform, add the `NEXTAUTHOIDC_PRIVATE_KEY` variable to your environment variables, and set the value to the generated
+private key.
+
+You should also have a new `keys` directory with a `jwks.json` file with generated properties. It should look similar to
+this:
+
+```json
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "n": "-V6bHaN66DSn7BYh97tmr0hnmXoASpGrZokQ",
+      "e": "ABGA",
+      "use": "sig",
+      "alg": "RS256",
+      "kid": "abcbf2c1ee7a6b2dc6564b783d334e32"
+    }
+  ]
+}
+```
 
 ### Shopify
 
