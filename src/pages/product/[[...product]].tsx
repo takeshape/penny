@@ -92,6 +92,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
+  console.log(JSON.stringify(product));
+
+  console.log('--------------------');
+
+  console.log(JSON.stringify(getPageOptions(productData)));
+
+  console.log('--------------------');
+
+  console.log(JSON.stringify(getReviewHighlights(productData)));
+
+  console.log('--------------------');
+
+  console.log(JSON.stringify(getReviewList(productData)));
+
+  console.log('--------------------');
+
+  console.log(JSON.stringify(getDetails(productData)));
+
+  console.log('--------------------');
+
+  console.log(JSON.stringify(getPolicies(productData)));
+
   return {
     props: {
       navigation,

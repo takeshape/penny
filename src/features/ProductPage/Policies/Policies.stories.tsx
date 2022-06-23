@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { takeshapeProductResponse } from '../queries.fixtures';
-import { getPolicies } from '../transforms';
+import { productPagePolicies } from '../fixtures';
 import { Policies } from './Policies';
 
 const Meta: ComponentMeta<typeof Policies> = {
@@ -15,7 +14,7 @@ const Template: ComponentStory<typeof Policies> = (args) => <Policies {...args} 
 
 export const _Policies = Template.bind({});
 _Policies.args = {
-  policies: getPolicies(takeshapeProductResponse)
+  policies: productPagePolicies
 };
 
 export default Meta;
