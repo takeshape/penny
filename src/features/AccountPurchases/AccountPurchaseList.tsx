@@ -22,6 +22,7 @@ const Header = () => (
 
 export const AccountPurchaseList = () => {
   const { data, loading, networkStatus } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
+
   const orders = getOrders(data?.customer);
 
   if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {

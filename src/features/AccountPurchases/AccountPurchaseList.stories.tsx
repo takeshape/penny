@@ -1,7 +1,7 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountPurchaseList } from './AccountPurchaseList';
-import purchaseListJson from './AccountPurchaseList.fixtures.json';
+import { myPurchasesResponse } from './queries.fixtures';
 
 const Meta: ComponentMeta<typeof AccountPurchaseList> = {
   title: 'Features / Account Purchases',
@@ -45,7 +45,7 @@ WithOrders.parameters = {
     handlers: {
       newsletter: [
         graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
-          return res(ctx.data(purchaseListJson.data));
+          return res(ctx.data(myPurchasesResponse));
         })
       ]
     }
