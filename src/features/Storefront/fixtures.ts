@@ -392,7 +392,6 @@ export const storefrontCollection: StorefrontCollection = {
     }
   ],
   pageInfo: {
-    __typename: 'Shopify_PageInfo',
     endCursor: 'eyJsYXN0X2lkIjo2ODYwNDYzNzM0ODg0LCJsYXN0X3ZhbHVlIjoiMCJ9',
     startCursor: 'eyJsYXN0X2lkIjo2ODI3MDY4ODUwMjc2LCJsYXN0X3ZhbHVlIjoiNSJ9',
     hasNextPage: false,

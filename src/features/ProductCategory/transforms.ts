@@ -7,7 +7,11 @@ import {
   getProductUrl,
   getSeo
 } from 'transforms/shopify';
-import { ProductCategoryShopifyCollectionResponse, ProductCategoryShopifyPaginationArgs } from './queries';
+import {
+  ProductCategoryShopifyCollectionHandlesResponse,
+  ProductCategoryShopifyCollectionResponse,
+  ProductCategoryShopifyPaginationArgs
+} from './queries';
 import {
   ProductCategoryCollection,
   ProductCategoryProduct,
