@@ -30,8 +30,8 @@ _ProductPage.args = {
   product: productPageProduct,
   reviewHighlights: productPageReviewHighlights,
   reviewList: productPageReviewList,
-  details: productPagePolicies,
-  policies: productPageDetails
+  details: productPageDetails,
+  policies: productPagePolicies
 };
 
 _ProductPage.parameters = {
