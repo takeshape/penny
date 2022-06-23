@@ -52,3 +52,6 @@ yarn-error.log*
 # sitemap
 /public/robots.txt
 /public/sitemap*.xml
+
+# Sentry
+.sentryclirc

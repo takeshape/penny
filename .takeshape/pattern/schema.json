@@ -604,12 +604,16 @@
           "title": {
             "widget": "singleLineText"
           },
+          "slug": {
+            "widget": "slug"
+          },
           "sections": {
             "widget": "shapeArray"
           }
         },
         "order": [
           "title",
+          "slug",
           "sections"
         ]
       }
@@ -4591,11 +4595,20 @@
         "type": "object",
         "properties": {
           "title": {
-            "minLength": 0,
+            "minLength": 1,
             "type": "string",
             "description": "",
             "title": "Title",
             "@mapping": "takeshape:local:Page.Zy4z602Ci"
+          },
+          "slug": {
+            "@derivedFrom": "title",
+            "pattern": "^[\\w-]*$",
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Slug",
+            "@mapping": "takeshape:local:Page.GJu5JWCZS"
           },
           "sections": {
             "items": {
@@ -4612,7 +4625,11 @@
             "title": "Sections",
             "@mapping": "takeshape:local:Page.Mlup98oFX"
           }
-        }
+        },
+        "required": [
+          "title",
+          "slug"
+        ]
       }
     },
     "Collection": {

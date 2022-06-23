@@ -1,13 +1,13 @@
 import Wrapper from 'components/Wrapper/Content';
 import { ContentBody } from 'features/Content/ContentBody';
 import { ContentHeader } from 'features/Content/ContentHeader';
-import { Page } from 'types/takeshape';
+import { Page as TPage } from 'types/takeshape';
 
 export interface PageProps {
-  page: Page;
+  page: TPage;
 }
 
-export const PageComponent = ({ page }: PageProps) => {
+export const Page = ({ page }: PageProps) => {
   return (
     <Wrapper>
       <div className="relative px-4 sm:px-6 lg:px-8">
@@ -34,4 +34,4 @@ export const PageComponent = ({ page }: PageProps) => {
   );
 };
 
-export default PageComponent;
+export default Page;
