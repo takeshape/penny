@@ -2,58 +2,13 @@
   {
     "projectId": "06ccc3dc-a9da-4f5b-9142-5a104db52ee3",
     "conditions": {},
-    "updated": 1655928873386,
+    "updated": 1656001468015,
     "permissions": {
       "Version": "2012-10-17",
       "Statement": [
         {
           "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.ReviewsIo_listProductReviews"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Shopify_collection"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Shopify_collectionByHandle"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Shopify_collections"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Shopify_product"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Shopify_products"
           ],
           "Effect": "Allow",
           "Action": [
@@ -107,42 +62,6 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getPage"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getPageList"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProduct"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProductList"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProductListWithTtl"
           ],
           "Effect": "Allow",
@@ -170,7 +89,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Klaviyo_addMembers"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.addMembers"
           ],
           "Effect": "Allow",
           "Action": [
@@ -197,7 +116,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.ShopifyStorefront_customerRecover"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.recoverCustomerAccount"
           ],
           "Effect": "Allow",
           "Action": [
@@ -206,7 +125,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Gorgias_createTicket"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createTicket"
           ],
           "Effect": "Allow",
           "Action": [
@@ -232,12 +151,11 @@
     "conditions": {
       "ForAllValues:StringEquals": {
         "claims:provider": [
-          "auth0",
           "oidc"
         ]
       }
     },
-    "updated": 1655932640020,
+    "updated": 1656001408266,
     "permissions": {
       "Version": "2012-10-17",
       "Statement": [
@@ -360,7 +278,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getPage"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProductListWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -369,7 +287,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getProductListWithTtl"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getStorefront"
           ],
           "Effect": "Allow",
           "Action": [
@@ -405,7 +323,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Klaviyo_addMembers"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.addMembers"
           ],
           "Effect": "Allow",
           "Action": [
@@ -441,7 +359,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Gorgias_createTicket"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createTicket"
           ],
           "Effect": "Allow",
           "Action": [

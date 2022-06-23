@@ -1514,7 +1514,7 @@
         }
       }
     },
-    "Klaviyo_addMembers": {
+    "addMembers": {
       "shape": "Klaviyo_AddMembersResponse",
       "resolver": {
         "compose": [
@@ -1807,7 +1807,7 @@
           "list_id"
         ]
       },
-      "Gorgias_createTicket": {
+      "createTicket": {
         "resolver": {
           "compose": [
             {
@@ -1893,7 +1893,7 @@
             "recaptchaToken"
           ]
         },
-        "shape": "Gorgias_CreateTicketResponse"
+        "shape": "CreateTicketResponse"
       }
     },
     "Shopify_products": {
@@ -2122,7 +2122,7 @@
       },
       "shape": "CreateCustomerPayload"
     },
-    "ShopifyStorefront_customerRecover": {
+    "recoverCustomerAccount": {
       "resolver": {
         "compose": [
           {
@@ -3353,10 +3353,10 @@
         ]
       }
     },
-    "Gorgias_CreateTicketResponse": {
-      "id": "Gorgias_CreateTicketResponse",
-      "name": "Gorgias_CreateTicketResponse",
-      "title": "Gorgias_CreateTicketResponse",
+    "CreateTicketResponse": {
+      "id": "CreateTicketResponse",
+      "name": "CreateTicketResponse",
+      "title": "CreateTicketResponse",
       "schema": {
         "type": "object",
         "properties": {
