@@ -27,7 +27,7 @@ export const FormCardPanelActions = ({
         {isSubmitting && !error && (
           <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-gray-500">Saving...</div>
         )}
-        {error && !isSubmitting && !isSubmitSuccessful && (
+        {error && !isSubmitting && (
           <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-red-800">[Error] {error}</div>
         )}
         <Button disabled={!isReady || isSubmitting || !isValid} color="primary" type="submit" size="medium">
