@@ -2,7 +2,7 @@ import { NetworkStatus, useQuery } from '@apollo/client';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
 import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from './queries';
-import { shopifyCustomerToOrders } from './transforms';
+import { getOrders } from './transforms';
 
 const Empty = () => (
   <div className="p-4 sm:p-6 flex flex-col items-center gap-2 text-neutral-500">
@@ -22,7 +22,8 @@ const Header = () => (
 
 export const AccountPurchaseList = () => {
   const { data, loading, networkStatus } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
-  const orders = shopifyCustomerToOrders(data?.customer);
+
+  const orders = getOrders(data?.customer);
 
   if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
     return (

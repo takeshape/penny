@@ -16,7 +16,7 @@ export const ListItem = ({ product }: ListItemProps) => {
   const handleAddToCart = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
-      quickAdd({ productId: product.id });
+      quickAdd({ productHandle: product.handle });
     },
     [quickAdd, product]
   );

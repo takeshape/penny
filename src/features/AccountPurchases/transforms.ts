@@ -1,4 +1,4 @@
-import { shopifyGidToId } from 'transforms/shopify';
+import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
 import {
   Shopify_Customer,
   Shopify_Fulfillment,
@@ -8,7 +8,7 @@ import {
 } from 'types/takeshape';
 import { Fulfillment, FulfillmentStatus, LineItem, Order } from './types';
 
-function shopifyFulfillmentToFulfillmentStatus(
+function getFulfillmentStatus(
   status: Shopify_FulfillmentDisplayStatus,
   deliveredAt: string,
   estimatedDeliveryAt: string,
@@ -74,9 +74,9 @@ export function getTrackingUrl(carrier, trackingNumber = 'XXXXXXXXXXXXXXX'): str
   }
 }
 
-export function shopifyFulfillmentToFulfillment(fulfillment: Shopify_Fulfillment): Fulfillment {
+export function getFulfillment(fulfillment: Shopify_Fulfillment): Fulfillment {
   return {
-    status: shopifyFulfillmentToFulfillmentStatus(
+    status: getFulfillmentStatus(
       fulfillment.displayStatus,
       fulfillment.deliveredAt,
       fulfillment.estimatedDeliveryAt,
@@ -90,12 +90,13 @@ export function shopifyFulfillmentToFulfillment(fulfillment: Shopify_Fulfillment
   };
 }
 
-export function shopifyLineItemToLineItem(lineItem: Shopify_LineItem): LineItem {
+export function getLineItem(lineItem: Shopify_LineItem): LineItem {
   return {
     id: lineItem.id,
     name: lineItem.name,
     product: {
-      id: shopifyGidToId(lineItem.product.id)
+      url: getProductUrl(lineItem.product.handle),
+      id: lineItem.product.id
     },
     image: lineItem.image,
     price: lineItem.originalTotalSet.shopMoney,
@@ -103,21 +104,21 @@ export function shopifyLineItemToLineItem(lineItem: Shopify_LineItem): LineItem 
   };
 }
 
-export function shopifyOrderToOrder(order?: Shopify_Order): Order {
+export function getOrder(order?: Shopify_Order): Order {
   return {
     id: shopifyGidToId(order.id),
     status: order.displayFulfillmentStatus,
     createdAt: order.createdAt,
     totalPrice: order.totalPriceSet.shopMoney,
-    lineItems: order.lineItems.edges.map((edge) => shopifyLineItemToLineItem(edge.node)),
-    fulfillments: order.fulfillments.map(shopifyFulfillmentToFulfillment)
+    lineItems: order.lineItems.edges.map((edge) => getLineItem(edge.node)),
+    fulfillments: order.fulfillments.map(getFulfillment)
   };
 }
 
-export function shopifyOrderToLineItems(order?: Shopify_Order): LineItem[] {
-  return order?.lineItems?.edges.map((edge) => shopifyLineItemToLineItem(edge.node));
+export function getLineItems(order?: Shopify_Order): LineItem[] {
+  return order?.lineItems?.edges.map((edge) => getLineItem(edge.node));
 }
 
-export function shopifyCustomerToOrders(customer?: Shopify_Customer): Order[] {
-  return customer?.orders.edges.map(({ node }) => shopifyOrderToOrder(node));
+export function getOrders(customer?: Shopify_Customer): Order[] {
+  return customer?.orders.edges.map(({ node }) => getOrder(node));
 }

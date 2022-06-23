@@ -4,13 +4,20 @@ import { ReviewStats } from 'types/review';
 import {
   ReviewsIo_ListProductReviewsResponse,
   Shopify_Collection,
+  Shopify_CollectionConnection,
   Shopify_PageInfo,
   Shopify_Product
 } from 'types/takeshape';
 
+export type ProductCategoryShopifyCollectionHandleNode = Pick<Shopify_Collection, 'id' | 'handle'>;
+export type ProductCategoryShopifyCollectionHandleConnection = Pick<Shopify_CollectionConnection, 'pageInfo'> & {
+  nodes: ProductCategoryShopifyCollectionHandleNode[];
+};
+
 export type ProductCategoryShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
+  | 'handle'
   | 'title'
   | 'description'
   | 'descriptionHtml'
@@ -31,14 +38,11 @@ export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsR
 
 export type ProductCategoryShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'productsCount' | 'takeshape' | 'seo'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'seo'
 > & {
   products: {
     pageInfo: Shopify_PageInfo;
-    edges: Array<{
-      cursor: string;
-      node: ProductCategoryShopifyProduct;
-    }>;
+    nodes: ProductCategoryShopifyProduct[];
   };
 };
 
@@ -49,7 +53,6 @@ export type ProductCategoryReviewStats = {
 };
 
 export type ProductCategoryProductListItem = {
-  cursor: string;
   product: ProductCategoryProduct;
   reviews: ProductCategoryReviewStats;
 };

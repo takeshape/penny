@@ -1,5 +1,4 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
-import slug from 'slug';
 import {
   ProductImage,
   ProductPrice,
@@ -21,7 +20,6 @@ import {
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
-import { capitalize } from 'utils/text';
 
 function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
   switch (adjustmentType) {
@@ -257,34 +255,14 @@ export function getProductOptions(options: Shopify_ProductOption[], variants?: P
   );
 }
 
-export function getUrl(id: string, item: { name?: string; slug?: string }, base: string) {
-  if (item.slug) {
-    return `/${base}/${item.slug}`;
-  }
-
-  return `/${base}/${shopifyGidToId(id)}/${slug(item.name)}`;
+export function getProductUrl(handle: string) {
+  return `/product/${handle}`;
 }
 
-export function getProductUrl(id: string, item: { name?: string; slug?: string }) {
-  return getUrl(id, item, 'product');
-}
-
-export function getCollectionUrl(id: string, item: { name?: string; slug?: string }) {
-  return getUrl(id, item, 'collection');
+export function getCollectionUrl(handle: string) {
+  return `/collection/${handle}`;
 }
 
 export function shopifyGidToId(gid: string): string {
   return gid.replace(/gid:\/\/shopify\/\w+\//, '');
-}
-
-export function shopifyIdToGid(type: string, id: string): string {
-  return `gid://shopify/${capitalize(type)}/${id}`;
-}
-
-export function shopifyProductIdToGid(id: string): string {
-  return shopifyIdToGid('Product', id);
-}
-
-export function shopifyCollectionIdToGid(id: string): string {
-  return shopifyIdToGid('Collection', id);
 }

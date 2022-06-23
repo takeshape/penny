@@ -17,7 +17,6 @@ export type CollectionBase<T> = {
   name: string;
   description: string;
   descriptionHtml: string;
-  productsCount: number;
   items?: T[];
   pageInfo?: CollectionPageInfo;
   anchor?: string;

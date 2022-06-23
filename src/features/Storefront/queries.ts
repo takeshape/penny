@@ -73,23 +73,14 @@ const StorefrontFragments = gql`
     description
     descriptionHtml
     productsCount
-    takeshape {
-      _id
-      name
-      slug
-    }
   }
 
   fragment StorefrontProduct on Shopify_Product {
     id
+    handle
     title
     description
     descriptionHtml
-    takeshape {
-      _id
-      name
-      slug
-    }
     requiresSellingPlan
     featuredImage {
       id
@@ -147,11 +138,8 @@ export const StorefrontShopifyCollectionByHandleQuery = gql`
           hasNextPage
           hasPreviousPage
         }
-        edges {
-          cursor
-          node {
-            ...StorefrontProduct
-          }
+        nodes {
+          ...StorefrontProduct
         }
       }
     }

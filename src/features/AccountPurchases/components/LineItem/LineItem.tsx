@@ -1,6 +1,5 @@
 import Image from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import { shopifyGidToId } from 'transforms/shopify';
 import { formatPrice } from 'utils/text';
 import { LineItem as LineItemType } from '../../types';
 
@@ -8,7 +7,7 @@ export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineI
   return (
     <tr>
       <td className="py-6 pr-8">
-        <NextLink href={`/product/${shopifyGidToId(lineItem.product.id)}`} className="flex items-center">
+        <NextLink href={lineItem.product.url} className="flex items-center">
           <div className="flex items-center w-16 h-16 mr-6">
             <Image
               src={lineItem.image.url}

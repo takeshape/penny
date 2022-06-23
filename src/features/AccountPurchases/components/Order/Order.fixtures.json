@@ -26,6 +26,7 @@
             "quantity": 2,
             "product": {
               "id": "gid://shopify/Product/6827068850276",
+              "handle": "foo",
               "__typename": "Shopify_Product"
             },
             "originalTotalSet": {
@@ -74,6 +75,7 @@
                   "quantity": 2,
                   "product": {
                     "id": "gid://shopify/Product/6827068850276",
+                    "handle": "foo",
                     "__typename": "Shopify_Product"
                   },
                   "originalTotalSet": {
@@ -125,6 +127,7 @@
             "quantity": 1,
             "product": {
               "id": "gid://shopify/Product/6857243132004",
+              "handle": "foo",
               "__typename": "Shopify_Product"
             },
             "originalTotalSet": {

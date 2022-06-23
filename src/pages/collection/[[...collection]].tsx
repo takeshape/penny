@@ -3,19 +3,14 @@ import { collectionsPageSize } from 'config';
 import { getLayoutData } from 'data/getLayoutData';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
-  ProductCategoryShopifyCollectionByIdArgs,
-  ProductCategoryShopifyCollectionByIdQuery,
-  ProductCategoryShopifyCollectionBySlugArgs,
-  ProductCategoryShopifyCollectionBySlugQuery,
-  ProductCategoryShopifyCollectionIdsQuery,
-  ProductCategoryShopifyCollectionIdsResponse,
+  ProductCategoryShopifyCollectionArgs,
+  ProductCategoryShopifyCollectionHandles,
+  ProductCategoryShopifyCollectionHandlesArgs,
+  ProductCategoryShopifyCollectionHandlesResponse,
+  ProductCategoryShopifyCollectionQuery,
   ProductCategoryShopifyCollectionResponse
 } from 'features/ProductCategory/queries';
-import {
-  getCollectionFromTakeshape,
-  getCollectionPageIdOrSlug,
-  getCollectionPageParams
-} from 'features/ProductCategory/transforms';
+import { getCollectionBasic, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -54,46 +49,24 @@ const CollectionPage: NextPage = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const [collectionId, ...rest] = params.collection;
-  const idOrSlug = getCollectionPageIdOrSlug(collectionId);
-
   const { navigation, footer } = await getLayoutData();
 
-  let query;
-  let variables: ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs;
-  let cursor;
-  let page;
+  const [handle, cursor, page] = params.collection;
 
-  if (idOrSlug.slug) {
-    [cursor, page] = rest;
-    query = ProductCategoryShopifyCollectionBySlugQuery;
-    variables = {
-      slug: idOrSlug.slug,
-      first: collectionsPageSize,
-      after: cursor
-    };
-  } else {
-    // With an id, path segment 2 is expected to be the slug
-    [, cursor, page] = rest;
-    query = ProductCategoryShopifyCollectionByIdQuery;
-    variables = {
-      id: idOrSlug.id,
-      first: collectionsPageSize,
-      after: cursor
-    };
-  }
+  const variables = {
+    handle,
+    first: collectionsPageSize,
+    after: cursor
+  };
 
   const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
-    return apolloClient.query<
-      ProductCategoryShopifyCollectionResponse,
-      ProductCategoryShopifyCollectionBySlugArgs | ProductCategoryShopifyCollectionByIdArgs
-    >({
-      query,
+    return apolloClient.query<ProductCategoryShopifyCollectionResponse, ProductCategoryShopifyCollectionArgs>({
+      query: ProductCategoryShopifyCollectionQuery,
       variables
     });
   });
 
-  const collection = getCollectionFromTakeshape(data, variables);
+  const collection = getCollectionBasic(data, variables);
 
   if (!collection) {
     return {
@@ -112,16 +85,30 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await retryGraphqlThrottle(async () => {
-    return await apolloClient.query<ProductCategoryShopifyCollectionIdsResponse>({
-      query: ProductCategoryShopifyCollectionIdsQuery
-    });
-  });
+  let paths: ReturnType<typeof getCollectionPageParams> = [];
 
-  const params = getCollectionPageParams(data, collectionsPageSize);
+  let hasNextPage = true;
+  let endCursor: string;
+
+  while (hasNextPage) {
+    const { data } = await apolloClient.query<
+      ProductCategoryShopifyCollectionHandlesResponse,
+      ProductCategoryShopifyCollectionHandlesArgs
+    >({
+      query: ProductCategoryShopifyCollectionHandles,
+      variables: {
+        first: 50,
+        after: endCursor
+      }
+    });
+
+    paths = [...paths, ...getCollectionPageParams(data)];
+    hasNextPage = data.collections.pageInfo.hasNextPage;
+    endCursor = data.collections.pageInfo.endCursor;
+  }
 
   return {
-    paths: params,
+    paths,
     fallback: true
   };
 };

@@ -206,7 +206,67 @@ type Query {
     """
     savedSearchId: ID
   ): Shopify_ProductConnection
+  productsWithTtl(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `barcode`
+     - `created_at`
+     - `delivery_profile_id`
+     - `error_feedback`
+     - `gift_card`
+     - `has_only_composites`
+     - `has_only_default_variant`
+     - `id`
+     - `inventory_total`
+     - `is_price_reduced`
+     - `out_of_stock_somewhere`
+     - `price`
+     - `product_type`
+     - `publishable_status`
+     - `published_status`
+     - `sku`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `title`
+     - `updated_at`
+     - `vendor`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_ProductConnection
   Shopify_product(
+    """The ID of the Product to return."""
+    id: ID!
+  ): Shopify_Product
+  productWithTtl(
     """The ID of the Product to return."""
     id: ID!
   ): Shopify_Product
@@ -239,6 +299,45 @@ type Query {
     handle: String!
   ): Shopify_Collection
   Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
+  collectionsWithTtl(
     """Returns up to the first `n` elements from the list."""
     first: Int
 
@@ -489,6 +588,10 @@ type Query {
     where: TSWherePageInput
   ): PagePaginatedList
   Shopify_productByHandle(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product
+  productByHandleWithTtl(
     """The handle of the product."""
     handle: String!
   ): Shopify_Product
@@ -18215,7 +18318,67 @@ type WithContext {
     """
     savedSearchId: ID
   ): Shopify_ProductConnection
+  productsWithTtl(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `barcode`
+     - `created_at`
+     - `delivery_profile_id`
+     - `error_feedback`
+     - `gift_card`
+     - `has_only_composites`
+     - `has_only_default_variant`
+     - `id`
+     - `inventory_total`
+     - `is_price_reduced`
+     - `out_of_stock_somewhere`
+     - `price`
+     - `product_type`
+     - `publishable_status`
+     - `published_status`
+     - `sku`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `title`
+     - `updated_at`
+     - `vendor`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_ProductConnection
   Shopify_product(
+    """The ID of the Product to return."""
+    id: ID!
+  ): Shopify_Product
+  productWithTtl(
     """The ID of the Product to return."""
     id: ID!
   ): Shopify_Product
@@ -18248,6 +18411,45 @@ type WithContext {
     handle: String!
   ): Shopify_Collection
   Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
+  collectionsWithTtl(
     """Returns up to the first `n` elements from the list."""
     first: Int
 
@@ -18498,6 +18700,10 @@ type WithContext {
     where: TSWherePageInput
   ): PagePaginatedList
   Shopify_productByHandle(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product
+  productByHandleWithTtl(
     """The handle of the product."""
     handle: String!
   ): Shopify_Product
