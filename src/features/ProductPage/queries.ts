@@ -16,7 +16,7 @@ export type ProductPageShopifyProductHandlesArgs = {
 
 export const ProductPageShopifyProductHandlesQuery = gql`
   query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
-    products: Shopify_products(first: $first, after: $after, sortKey: ID) {
+    products: productsWithTtl(first: $first, after: $after, sortKey: ID) {
       pageInfo {
         hasNextPage
         endCursor
@@ -228,7 +228,7 @@ export type ProductPageShopifyProductArgs = {
 export const ProductPageShopifyProductQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProduct($handle: String!) {
-    product: Shopify_productByHandle(handle: $handle) {
+    product: productByHandleWithTtl(handle: $handle) {
       ...ProductPageProduct
     }
   }

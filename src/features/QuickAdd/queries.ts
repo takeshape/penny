@@ -11,7 +11,7 @@ export type QuickAddResponse = {
 
 export const QuickAddQuery = gql`
   query QuickAddQuery($handle: String!) {
-    product: Shopify_productByHandle(handle: $handle) {
+    product: productByHandleWithTtl(handle: $handle) {
       id
       handle
       title

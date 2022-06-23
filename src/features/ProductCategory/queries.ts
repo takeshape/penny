@@ -15,7 +15,7 @@ export type ProductCategoryShopifyCollectionHandlesArgs = {
 
 export const ProductCategoryShopifyCollectionHandles = gql`
   query ProductCategoryShopifyCollectionHandles($first: Int!, $after: String) {
-    collections: Shopify_collections(first: $first, after: $after, sortKey: ID) {
+    collections: collectionsWithTtl(first: $first, after: $after, sortKey: ID) {
       pageInfo {
         hasNextPage
         endCursor
