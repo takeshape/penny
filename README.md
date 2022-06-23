@@ -158,106 +158,119 @@ this:
 }
 ```
 
-### Shopify
+### Setting up Shopify Admin and Shopify Storefront
 
-> For the purposes of this starter it's assumed you are using Shopify in Test Mode, and using appropriately scoped API
-> keys. Please do not run the demo on a live account as you may incur unexpected charges from Shopify.
+> Warning! Connecting this project to a live Shopify store **WILL** enable real purchases. If you just want to play
+> around without risking real charges,
+> [set your store's payments to Test Mode](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments)
+> and use appropriately scoped API keys. When testing purchases, always use
+> [Shopify's accepted fake credit card information](https://help.shopify.com/en/partners/dashboard/managing-stores/test-orders-in-dev-stores).
+
+This project uses Shopify for e-commerce functionality. This README assumes you already have a Shopify store set up. You
+don't need to have Shopify Plus to use any of the features described here.
+
+Follow these instructions to connect your Shopify store's Admin and Storefront APIs to your TakeShape project, and the
+frontend NextJS project.
 
 1. [Create a Shopify store if you don't already have one](https://www.shopify.com/).
 
-2. Navigate to your store's admin site by visiting `https://your-store.myshopify.com/admin`
+2. Navigate to your store's admin site by visiting `https://your-store.myshopify.com/admin`, substituting "your-store"
+   with the name of your store.
 
-3. Get your API keys.
+3. Get your Storefront API keys.
 
-   - Go to Apps → Develop Apps as shown in the image below
+   - In the navigation on the left side of your store's admin page, select **Apps**. A dropdown window should appear.
+     Select **⚙ App and Sales Channel Settings** as shown in the image below.
 
-   ![The admin apps page in shopify](./readme_images/apps-page.jpg)
+   ![The admin page in shopify](/readme-images/store-admin-page-readme-images.png)
 
-   - Select the "Create an App" button, then name it whatever you'd like in the popup modal that you'll see next.
-     "NextJS Example" would be fine.
+   - Select the **Develop apps for your store** button. On the next page, titled "App Development," select **Create an
+     app** and name the app whatever you'd like. "Next.js App" for example.
 
-   - You'll be taken to your app's settings page. Under the Overview tab, you'll see "Select your app scopes to get
-     started." Select "Configure Storefront API scopes".
+     ![The Apps and Sales Channels page. Select Develop apps for your store.](/readme-images/admin-settings-page-readme-images.png)
 
-![App settings page](./readme_images/configure-storefront.jpg)
+     ![Select the Create an app button on the App development page.](/readme-images/create-app-button-readme-images.png)
 
-- Enable the following:
+   - You'll be taken to your app's settings page. Under the Overview tab, you'll see "Select your scopes to get
+     started." Select **Configure Storefront API scopes**.
+
+     ![A screenshot of the app development page where you can select the Configure Storefront API scopes button.](/readme-images/configure-storefront-scopes-readme-images.png)
+
+- Enable the following scopes:
+
   - `unauthenticated_write_checkouts`
   - `unauthenticated_read_checkouts`
-  - `unauthenticated_read_customers`
   - `unauthenticated_write_customers`
+  - `unauthenticated_read_customers`
   - `unauthenticated_read_product_listings`
   - `unauthenticated_read_selling_plans`
 
-Then hit Save in the top right.
+  ![A screenshot of the storefront access scopes page](/readme-images/storefront-scopes-page-readme-images.png)
 
-- Now select the API credentials tab. You'll see an "Install app" button. Select it and select the "Install app" above
-  button it, and "Install" on the modal that pops up.
+Then select **Save** at the top right of the page.
 
-- You'll be returned to your app's settings page, where you can select the "API Credentials" tab. You will now have a
-  "Storefront API access token". Copy it and save it. You'll need it to configure Shopify Storefront in your TakeShape
-  project.
+- Now select the API credentials tab. You'll see a section titled **Access tokens**. Select the **Install app** button
+  within this section (not the button at the top-right).
+  ![A screenshot of the API credentials tab, where you can select the Install app button to install your app and enable the Storefront API.](/readme-images/access-tokens-install-app-readme-images.png)
+- You'll be returned to your app's settings page, where you can select the "API Credentials" tab again. You will now see
+  a **Storefront API access token**. Copy it and save it. You'll need it to configure Shopify Storefront in your
+  TakeShape project.
 
-![The access token page](./readme_images/access-token.png)
+![A screenshot of the Storefront APi access token section](/readme-images/storefront-api-access-token-readme-images.png)
 
-4. Setup test payments in your store.
+> If you want to test this app without enabling real payments, it's best to set up test payments while you're in
+> Shopify's admin UI.
+> [Follow our section below on setting up test shopify payments to learn more](#Setting-up-test-payments-in-Shopify).
 
-##### Setting up test payments
+#### Connecting the Shopify service to TakeShape
 
-- Select "Settings" at the bottom-left of your store's admin page. On the new page that appears, select "Payments" in
-  the navigation on the left.
+To use Shopify with this project, you'll need to connect your Shopify Admin API and Shopify Storefront API.
 
-- In the Shopify Payments section, you'll see Shopify Payments. Complete the steps to activate it, then select "Manage".
+##### Connecting Shopify Admin
 
-![The Payments page](./readme_images/manage-payments.png)
+Navigate to your TakeShape project's dashboard and select the **Home** tab. Select the **Shopify** service and add your
+store's myshopify.com URL to the **myshopify.com URL** field. The format of the URL is your store's name +
+myshopify.com. `https://example-shop.myshopify.com`
 
-- Scroll to the bottom of the next page and check the "Enable test mode" checkbox.
+Select **Save** and complete the setup flow in the Shopify browser tab that opens up. If you've already connected
+TakeShape to this shop before, you may not have to do anything on Shopify. After you complete the Shopify setup flow,
+you'll be taken to the API Indexing setup flow in TakeShape. Skip it. No further configuration is needed for Shopify
+Admin.
 
-- Select "Save" at the bottom-right of the page.
+##### Connecting Shopify Storefront
 
-5. Configure your store's checkout. All of the following instructions require you to navigate to the settings of your
-   store's admin page. In the navbar on the left, select Checkout.
+Back in the **Home** tab of your project, select the Shopify Storefront service. It will be a generic GraphQL service,
+with the GraphQL logo.
 
-   - Enable optional customer accounts for checkouts.
+In the **Endpoint** field, enter your store's Shopify Storefront endpoint. It will be of the format
+`https://store-name.myshopify.com/api/[version-number]/graphql.json`.
 
-     - Under the "Customer accounts" section of the Checkout page, select "Accounts are optional".
+Here's what ours looked like when we set up this project in June of 2022:
 
-     ![Customer accounts section of the Checkout page](./readme_images/customer-accounts.png)
+```
+https://deluxe-store.myshopify.com/api/2022-01/graphql.json
+```
 
-   - Set up your store to redirect users to `http://localhost:3000/purchases` after they finish a checkout.
+For **Authentication Type**, select **Bearer Token**.
 
-     - In the Checkout page of your store's settings, scroll down to the section labeled "Order status page scripts".
+- In the **Header** field, enter `X-Shopify-Storefront-Access-Token`.
+- In the **Token** field, enter the Storefront API access token you copied from your store's myshopify.com/admin page.
 
-     - Enter `<script> window.location = "http://localhost:3000/?shopify_checkout_action=success"; </script>` into the
-       "Scripts" textbox.
+Now your Shopify store is configured for this project. The next section is about setting up test payments if you don't
+want to enable real payments.
 
-     ![The Order status page scripts section](./readme_images/checkout-script.png)
+Not interested? [Skip to our Recharge section below to set up subscriptions in your store](#recharge).
 
-6. Configure your store in TakeShape
+#### Setting up test payments in Shopify
 
-   - Set up your Shopify Storefront service.
-     - Select **Shopify Storefront** from the list of services in the `API` tab, in the `Patterns & Services` pane.
-     - Under **Endpoint**, enter your storefront api endpoint. It should look like
-       `https://your-store.myshopify.com/api/2022-01/graphql.json`
-     - Under **Authentication**, Enter `X-Shopify-Storefront-Access-Token` into the Header field, and your Storefront
-       access token into the Token field.
-     - **Save** the service.
-   - Set up your Shopify Admin service.
-     - Select **Shopify Admin** from the list of services on the `API` tab, in the `Patterns & Services` pane.
-     - Under **myshopify.com URL**, Enter your store's myshopify.com domain, which will look like
-       `https://your-store.myshopify.com`
-     - **Save** the service.
-     - Select the "Update Schema" button at the bottom-right of the next dialog that appears.
-     - Select the "Skip" button at the bottom-right of the dialog that appears asking you to import data, queries and
-       mutations.
+### Setting up Recharge
 
-### Recharge
+> NOTE: To add Recharge to your store, you must have payments enabled in your store settings. Just testing things out?
+> Set up payments in test mode by following
+> [our instructions from earlier in this readme](#setting-up-test-payments-in-shopify).
 
-> NOTE: To add Recharge to your store, you must have payments properly configured in your settings. We encourage you to
-> use Shopify Payments in test mode. Follow [the instructions from earlier in this readme](#setting-up-test-payments) to
-> do so now.
-
-Now add Recharge your Shopify store, then configure the Recharge service in your TakeShape project.
+This section walks you through adding Recharge to your Shopify store, and configuring the Recharge service in your
+TakeShape project.
 
 1. To add Recharge to your shop, navigate to Recharge Subscriptions in the shopify app store:
    https://apps.shopify.com/subscription-payments
@@ -320,6 +333,53 @@ Now add Recharge your Shopify store, then configure the Recharge service in your
      - Under **Authentication**, Enter `X-Recharge-Access-Token` into the Header field, and your Recharge access token
        into the Token field.
      - **Save** the service.
+
+- Select "Settings" at the bottom-left of your store's admin page. On the new page that appears, select "Payments" in
+  the navigation on the left.
+
+- In the Shopify Payments section, you'll see Shopify Payments. Complete the steps to activate it, then select "Manage".
+
+![The Payments page](./readme_images/manage-payments.png)
+
+- Scroll to the bottom of the next page and check the "Enable test mode" checkbox.
+
+- Select "Save" at the bottom-right of the page.
+
+5. Configure your store's checkout. All of the following instructions require you to navigate to the settings of your
+   store's admin page. In the navbar on the left, select Checkout.
+
+   - Enable optional customer accounts for checkouts.
+
+     - Under the "Customer accounts" section of the Checkout page, select "Accounts are optional".
+
+     ![Customer accounts section of the Checkout page](./readme_images/customer-accounts.png)
+
+   - Set up your store to redirect users to `http://localhost:3000/purchases` after they finish a checkout.
+
+     - In the Checkout page of your store's settings, scroll down to the section labeled "Order status page scripts".
+
+     - Enter `<script> window.location = "http://localhost:3000/?shopify_checkout_action=success"; </script>` into the
+       "Scripts" textbox.
+
+     ![The Order status page scripts section](./readme_images/checkout-script.png)
+
+6. Configure your store in TakeShape
+
+   - Set up your Shopify Storefront service.
+     - Select **Shopify Storefront** from the list of services in the `API` tab, in the `Patterns & Services` pane.
+     - Under **Endpoint**, enter your storefront api endpoint. It should look like
+       `https://your-store.myshopify.com/api/2022-01/graphql.json`
+     - Under **Authentication**, Enter `X-Shopify-Storefront-Access-Token` into the Header field, and your Storefront
+       access token into the Token field.
+     - **Save** the service.
+   - Set up your Shopify Admin service.
+     - Select **Shopify Admin** from the list of services on the `API` tab, in the `Patterns & Services` pane.
+     - Under **myshopify.com URL**, Enter your store's myshopify.com domain, which will look like
+       `https://your-store.myshopify.com`
+     - **Save** the service.
+     - Select the "Update Schema" button at the bottom-right of the next dialog that appears.
+     - Select the "Skip" button at the bottom-right of the dialog that appears asking you to import data, queries and
+       mutations.
 
 ### Running the Starter
 
