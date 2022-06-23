@@ -38,6 +38,7 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
 
   return {
     id: shopifyProduct.id,
+    handle: shopifyProduct.handle,
     url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
@@ -164,6 +165,7 @@ function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): Relat
 
   return {
     id: shopifyProduct.id,
+    handle: shopifyProduct.handle,
     url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,

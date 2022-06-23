@@ -17,6 +17,7 @@ function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollect
 
   return {
     id: shopifyProduct.id,
+    handle: shopifyProduct.handle,
     url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,

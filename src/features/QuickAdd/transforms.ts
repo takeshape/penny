@@ -14,6 +14,7 @@ export function getProduct(response: QuickAddResponse): QuickAddProduct {
 
   return {
     id: shopifyProduct.id,
+    handle: shopifyProduct.handle,
     url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,

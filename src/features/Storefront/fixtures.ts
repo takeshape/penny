@@ -12,6 +12,7 @@ export const storefrontCollection: StorefrontCollection = {
     {
       product: {
         id: 'gid://shopify/Product/6827068850276',
+        handle: 'elegant-blouse',
         url: '/product/elegant-blouse',
         name: 'Elegant Blouse',
         description: 'A blouse for people on the go.',
@@ -89,6 +90,7 @@ export const storefrontCollection: StorefrontCollection = {
     {
       product: {
         id: 'gid://shopify/Product/6857243132004',
+        handle: 'basic-tee-6-pack',
         url: '/product/basic-tee-6-pack',
         name: 'Basic Tee 6-Pack',
         description:
@@ -206,6 +208,7 @@ export const storefrontCollection: StorefrontCollection = {
     {
       product: {
         id: 'gid://shopify/Product/6827069505636',
+        handle: 'mesh-gym-shorts',
         url: '/product/mesh-gym-shorts',
         name: 'Mesh Gym Shorts',
         description:
@@ -293,6 +296,7 @@ export const storefrontCollection: StorefrontCollection = {
     {
       product: {
         id: 'gid://shopify/Product/6860463734884',
+        handle: 'basic-tee',
         url: '/product/basic-tee',
         name: 'Basic Tee',
         description:
