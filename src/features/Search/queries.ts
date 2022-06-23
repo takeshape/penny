@@ -15,6 +15,7 @@ export const SearchShopifyProducts = gql`
         __typename
         ... on Shopify_Product {
           id
+          handle
           title
           description
           featuredImage {
@@ -22,10 +23,6 @@ export const SearchShopifyProducts = gql`
             altText
             height
             width
-          }
-          takeshape {
-            name
-            slug
           }
         }
       }

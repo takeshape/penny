@@ -8,7 +8,7 @@ export interface EmailSubmissionMutationArgs {
 
 export const EmailSubmissionMutation = gql`
   mutation NewsletterEmailSubmission($listId: String!, $email: String!, $recaptchaToken: String!) {
-    Klaviyo_addMembers(list_id: $listId, input: { profiles: [{ email: $email }] }, recaptchaToken: $recaptchaToken) {
+    addMembers(list_id: $listId, input: { profiles: [{ email: $email }] }, recaptchaToken: $recaptchaToken) {
       items {
         id
       }

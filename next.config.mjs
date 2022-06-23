@@ -106,7 +106,8 @@ const config = {
   },
   publicRuntimeConfig: {
     vercelEnv: process.env.VERCEL_ENV ?? 'development'
-  }
+  },
+  swcMinify: true
 };
 
 export default withPlugins([withBundleAnalyzer, SENTRY_DSN ? withSentryConfig : {}], config);

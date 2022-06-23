@@ -81,6 +81,7 @@ export type ProductOption = {
 
 export type ProductCore = {
   id: string;
+  handle: string;
   name: string;
   url: string;
   description: string;

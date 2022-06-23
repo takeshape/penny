@@ -17,7 +17,8 @@ function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollect
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
+    handle: shopifyProduct.handle,
+    url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -32,9 +33,8 @@ function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollect
   };
 }
 
-function getCollectionItem(shopifyProduct: StorefrontShopifyProduct, cursor: string): StorefrontCollectionItem {
+function getCollectionItem(shopifyProduct: StorefrontShopifyProduct): StorefrontCollectionItem {
   return {
-    cursor,
     product: getProduct(shopifyProduct)
   };
 }
@@ -53,13 +53,13 @@ export function getCollection(
 
   return {
     id: collection.id,
-    url: getCollectionUrl(collection.id, collection.takeshape),
+    url: getCollectionUrl(collection.handle),
     handle: collection.handle,
     name: collection.title,
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     productsCount: collection.productsCount,
-    items: collection.products.edges.map(({ node, cursor }) => getCollectionItem(node, cursor)),
+    items: collection.products.nodes.map((node) => getCollectionItem(node)),
     pageInfo: collection.products.pageInfo,
     anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null
   };

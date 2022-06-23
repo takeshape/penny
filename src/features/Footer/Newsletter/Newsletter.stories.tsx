@@ -25,7 +25,7 @@ Success.parameters = {
     handlers: {
       newsletter: [
         graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
-          return res(ctx.data({ Klaviyo_addMembers: { items: [{ id: 'foo' }] } }));
+          return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
         })
       ]
     }

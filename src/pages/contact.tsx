@@ -1,18 +1,17 @@
 import { useMutation } from '@apollo/client';
 import { getLayoutData } from 'data/getLayoutData';
 import { Contact, ContactForm } from 'features/Contact/Contact';
-import { GorgiasCreateTicketMutation, GorgiasCreateTicketResponse } from 'features/Contact/queries';
+import { CreateTicketMutation, CreateTicketResponse } from 'features/Contact/queries';
 import Layout from 'layouts/Default';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useCallback, useState } from 'react';
-import { MutationGorgias_CreateTicketArgs } from 'types/takeshape';
+import { MutationCreateTicketArgs } from 'types/takeshape';
 
 const ContactPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [success, setSuccess] = useState<string>();
-  const [createTicket, { error }] = useMutation<
-    { Gorgias_createTicket: GorgiasCreateTicketResponse },
-    MutationGorgias_CreateTicketArgs
-  >(GorgiasCreateTicketMutation);
+  const [createTicket, { error }] = useMutation<{ createTicket: CreateTicketResponse }, MutationCreateTicketArgs>(
+    CreateTicketMutation
+  );
 
   const onSubmit = useCallback(
     async (formValues: ContactForm, recaptchaToken: string) => {
@@ -28,7 +27,7 @@ ${message}`,
           recaptchaToken
         }
       });
-      const { id } = result.data.Gorgias_createTicket;
+      const { id } = result.data.createTicket;
       if (id) {
         setSuccess(`Thank you for reaching out! Created ticket #${id}.`);
       }

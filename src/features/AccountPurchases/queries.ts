@@ -18,6 +18,7 @@ export const GetMyAdminCustomerOrdersQuery = gql`
     quantity
     product {
       id
+      handle
     }
     originalTotalSet {
       shopMoney {

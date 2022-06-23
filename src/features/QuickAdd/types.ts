@@ -9,6 +9,7 @@ import {
 export type QuickAddShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
+  | 'handle'
   | 'title'
   | 'description'
   | 'descriptionHtml'
@@ -21,7 +22,6 @@ export type QuickAddShopifyProduct = Pick<
   | 'options'
   | 'sellingPlanGroupCount'
   | 'sellingPlanGroups'
-  | 'takeshape'
 > & {
   variants: Shopify_ProductVariantConnection;
 };
@@ -30,5 +30,5 @@ export type QuickAddProduct = SetRequired<ProductBase, 'variants'>;
 export type QuickAddReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
 
 export type QuickAdd = {
-  productId: string;
+  productHandle: string;
 };

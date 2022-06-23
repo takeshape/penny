@@ -498,9 +498,6 @@
           "name": {
             "widget": "singleLineText"
           },
-          "slug": {
-            "widget": "slug"
-          },
           "shopifyCollection": {
             "properties": {
               "descriptionHtml": {
@@ -560,7 +557,6 @@
         },
         "order": [
           "name",
-          "slug",
           "shopifyCollectionId",
           "shopifyCollection"
         ]
@@ -1208,25 +1204,56 @@
       "description": "Returns a list ProductPagePolicies in natural order.",
       "args": "TSListArgs<ProductPagePolicies>"
     },
-    "Shopify_collectionByHandle": {
+    "collectionsWithTtl": {
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "collectionByHandle"
+        "fieldName": "collections",
+        "options": {
+          "ttl": 60
+        }
       },
       "args": {
         "type": "object",
         "properties": {
-          "handle": {
+          "first": {
+            "type": "integer",
+            "description": "Returns up to the first `n` elements from the list."
+          },
+          "after": {
             "type": "string",
-            "description": "The handle of the collection."
+            "description": "Returns the elements that come after the specified cursor."
+          },
+          "last": {
+            "type": "integer",
+            "description": "Returns up to the last `n` elements from the list."
+          },
+          "before": {
+            "type": "string",
+            "description": "Returns the elements that come before the specified cursor."
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "Reverse the order of the underlying list.",
+            "default": false
+          },
+          "sortKey": {
+            "@ref": "shopify:CollectionSortKeys",
+            "description": "Sort the underlying list by the given key.",
+            "default": "ID"
+          },
+          "query": {
+            "type": "string",
+            "description": "Supported filter parameters:\n - `collection_type`\n - `publishable_status`\n - `published_status`\n - `title`\n - `updated_at`\n\nSee the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)\nfor more information about using filters."
+          },
+          "savedSearchId": {
+            "type": "string",
+            "@tag": "id",
+            "description": "The ID of an existing saved search.\nThe search’s query string is used as the query argument.\nRefer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch)."
           }
-        },
-        "required": [
-          "handle"
-        ]
+        }
       },
-      "shape": "Shopify_Collection"
+      "shape": "Shopify_CollectionConnection"
     },
     "collectionByHandleWithTtl": {
       "resolver": {
@@ -1299,23 +1326,76 @@
       },
       "shape": "Shopify_ProductConnection"
     },
-    "Shopify_product": {
+    "productsWithTtl": {
       "resolver": {
         "name": "graphql:query",
         "service": "shopify",
-        "fieldName": "product"
+        "fieldName": "products",
+        "options": {
+          "ttl": 60
+        }
       },
       "args": {
         "type": "object",
         "properties": {
-          "id": {
+          "first": {
+            "type": "integer",
+            "description": "Returns up to the first `n` elements from the list."
+          },
+          "after": {
+            "type": "string",
+            "description": "Returns the elements that come after the specified cursor."
+          },
+          "last": {
+            "type": "integer",
+            "description": "Returns up to the last `n` elements from the list."
+          },
+          "before": {
+            "type": "string",
+            "description": "Returns the elements that come before the specified cursor."
+          },
+          "reverse": {
+            "type": "boolean",
+            "description": "Reverse the order of the underlying list.",
+            "default": false
+          },
+          "sortKey": {
+            "@ref": "shopify:ProductSortKeys",
+            "description": "Sort the underlying list by the given key.",
+            "default": "ID"
+          },
+          "query": {
+            "type": "string",
+            "description": "Supported filter parameters:\n - `barcode`\n - `created_at`\n - `delivery_profile_id`\n - `error_feedback`\n - `gift_card`\n - `has_only_composites`\n - `has_only_default_variant`\n - `id`\n - `inventory_total`\n - `is_price_reduced`\n - `out_of_stock_somewhere`\n - `price`\n - `product_type`\n - `publishable_status`\n - `published_status`\n - `sku`\n - `status`\n - `tag`\n - `tag_not`\n - `title`\n - `updated_at`\n - `vendor`\n\nSee the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)\nfor more information about using filters."
+          },
+          "savedSearchId": {
             "type": "string",
             "@tag": "id",
-            "description": "The ID of the Product to return."
+            "description": "The ID of an existing saved search.\nThe search’s query string is used as the query argument.\nRefer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch)."
+          }
+        }
+      },
+      "shape": "Shopify_ProductConnection"
+    },
+    "productByHandleWithTtl": {
+      "resolver": {
+        "name": "graphql:query",
+        "service": "shopify",
+        "fieldName": "productByHandle",
+        "options": {
+          "ttl": 60
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "handle": {
+            "type": "string",
+            "description": "The handle of the product."
           }
         },
         "required": [
-          "id"
+          "handle"
         ]
       },
       "shape": "Shopify_Product"
@@ -1514,7 +1594,7 @@
         }
       }
     },
-    "Klaviyo_addMembers": {
+    "addMembers": {
       "shape": "Klaviyo_AddMembersResponse",
       "resolver": {
         "compose": [
@@ -1807,7 +1887,7 @@
           "list_id"
         ]
       },
-      "Gorgias_createTicket": {
+      "createTicket": {
         "resolver": {
           "compose": [
             {
@@ -1893,7 +1973,7 @@
             "recaptchaToken"
           ]
         },
-        "shape": "Gorgias_CreateTicketResponse"
+        "shape": "CreateTicketResponse"
       }
     },
     "Shopify_products": {
@@ -2122,7 +2202,7 @@
       },
       "shape": "CreateCustomerPayload"
     },
-    "ShopifyStorefront_customerRecover": {
+    "recoverCustomerAccount": {
       "resolver": {
         "compose": [
           {
@@ -3353,10 +3433,10 @@
         ]
       }
     },
-    "Gorgias_CreateTicketResponse": {
-      "id": "Gorgias_CreateTicketResponse",
-      "name": "Gorgias_CreateTicketResponse",
-      "title": "Gorgias_CreateTicketResponse",
+    "CreateTicketResponse": {
+      "id": "CreateTicketResponse",
+      "name": "CreateTicketResponse",
+      "title": "CreateTicketResponse",
       "schema": {
         "type": "object",
         "properties": {
@@ -4648,15 +4728,6 @@
             "description": "Initialized with title from shopify",
             "title": "Name",
             "@mapping": "takeshape:local:Collection.sZuVCwK3h7"
-          },
-          "slug": {
-            "@derivedFrom": "name",
-            "pattern": "^[\\w-]*$",
-            "minLength": 0,
-            "type": "string",
-            "description": "",
-            "title": "Slug",
-            "@mapping": "takeshape:local:Collection.WMx9SpOPY"
           },
           "shopifyCollectionId": {
             "type": "string",
