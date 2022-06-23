@@ -20,6 +20,7 @@ import {
   RelatedProductsShopifyCollectionResponse
 } from './queries';
 import {
+  ProductPageBreadcrumbs,
   ProductPageDetails,
   ProductPageOptions,
   ProductPagePolicies,
@@ -28,6 +29,7 @@ import {
   ProductPageProductComponent,
   ProductPageReviewHighlights,
   ProductPageReviewsReviewList,
+  ProductPageShopifyProduct,
   RelatedProductsProduct,
   RelatedProductsShopifyProduct
 } from './types';
@@ -205,3 +207,5 @@ export function getRelatedProductList(response: RelatedProductsShopifyCollection
 
   return productEdges.map(({ node }) => getRelatedProduct(node));
 }
+
+export function getBreadcrumbs(shopifyProduct: ProductPageShopifyProduct): ProductPageBreadcrumbs {}
