@@ -12,7 +12,7 @@ This project has two major elements:
 - The TakeShape project that composes the e-commerce services on the backend.
 
 TakeShape's API Mesh functionality empowers e-commerce brands to manage their favorite API services in a single
-interface, then generate a single GraphQL API that combines functionality from those connected services. This generated
+interface, then generate a GraphQL API that combines all the functionality from those connected services. This generated
 API can be consumed by any frontend to build any ecommerce experience for any sales channel.
 
 This project will demonstrate how you can use TakeShape to build a modern e-commerce experience.
@@ -65,15 +65,51 @@ graph TD
     Shopify --> |Subscriptions| Recharge
 ```
 
-### The Next.js frontend
+### The frontend stack
 
 The frontend codebase was built with many features that are important for modern composable e-commerce storefronts,
 including:
 
-- Next.js to build the pages and bundle the frontend up
-- NextAuth for user authentication
-- Tailwind UI for easily-customizable styling
-- Vercel to host it
+#### Frameworks, language and styling
+
+To demonstrate TakeShape in the most popular use-case, here are the frameworks, language and styling options we went
+with for this build:
+
+- [Next.js](https://nextjs.org/) to build the pages and bundle the frontend up
+- [NextAuth](https://next-auth.js.org/) for user authentication
+- [Tailwind UI](https://tailwindui.com/) for plug-and-play components that are easy to customize
+- [TypeScript](https://www.typescriptlang.org/) for type safety
+- [Apollo Client](https://www.apollographql.com/docs/react/) for state management when querying the TakeShape project's
+  API
+- [Jotai](https://jotai.org/) for optimized component state management
+- [Storybook](https://storybook.js.org/) for rapid UI prototyping
+
+#### Testing
+
+Testing is a crucial part of modern web development, and our suite of testing tools matches many of the most popular
+stacks in the industry:
+
+- [Cypress](https://www.cypress.io/) for frontend end-to-end testing and API service mocking
+- [Sentry](https://sentry.io/welcome/) for error reporting and health monitoring
+  [with their Next.js-specific SDK](https://docs.sentry.io/platforms/javascript/guides/nextjs/).
+- [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) for error checking and code formatting
+- [Jest](https://jestjs.io/) for React component testing.
+- [Lighthouse](https://web.dev/lighthouse-seo/) for SEO and browser performance metrics
+- [Chromatic](https://www.chromatic.com/) for automated testing in github PRs
+
+#### TakeShape's tools
+
+We also used a few tools from TakeShape's ecosystem to simplify our workflow and improve the development process:
+
+- [Next-Auth-All-Access](https://github.com/takeshape/next-auth-all-access#nextauthallaccess) — Our NextAuth wrapper
+  that provides JWKS-verifiable access tokens for third-party APIs.
+- [@takeshape/cli](https://app.takeshape.io/docs/cli) — Our CLI that makes linking a frontend project with a TakeShape
+  project easy. The CLI empowers frontend developers to make updates to their TakeShape project schema, validate changes
+  to the schema from the terminal, and generate graphql types from their schema for frontend frameworks like Apollo.
+- [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — Our GraphQL query
+  validation module that supports all graphql-cli options and makes writing queries from the frontend much less painful.
+
+In the next section, you'll find screenshots of the finished store.
 
 ## Screenshots
 
@@ -83,7 +119,7 @@ To get started with this project, there are two basic steps:
 
 1. Create a TakeShape project using the pattern in this repo. This button will deploy the project for you:
 
-   - <a href="https://app.takeshape.io/add-to-takeshape?repo=https://github.com/takeshape/takeshape-deluxe-sample-project/tree/main/.takeshape/pattern"><img alt="Deploy To TakeShape" src="https://camo.githubusercontent.com/1b580e3ce353d235bde0f376ca35b0fb26d685f3750a3013ae4b225dd3aaf344/68747470733a2f2f696d616765732e74616b6573686170652e696f2f32636363633832352d373062652d343331632d396261302d3130616233386563643361372f6465762f38653266376264612d306530382d346564652d613534362d3664663539626536613862622f4465706c6f79253230746f25323054616b65536861706525343032782e706e673f6175746f3d666f726d6174253243636f6d7072657373" width="205" height="38" data-canonical-src="https://images.takeshape.io/2cccc825-70be-431c-9ba0-10ab38ecd3a7/dev/8e2f7bda-0e08-4ede-a546-6df59be6a8bb/Deploy%20to%20TakeShape%402x.png?auto=format%2Ccompress" style="max-width:100%;"></a>
+<a href="https://app.takeshape.io/add-to-takeshape?repo=https://github.com/takeshape/takeshape-deluxe-sample-project/tree/main/.takeshape/pattern"><img alt="Deploy To TakeShape" src="https://camo.githubusercontent.com/1b580e3ce353d235bde0f376ca35b0fb26d685f3750a3013ae4b225dd3aaf344/68747470733a2f2f696d616765732e74616b6573686170652e696f2f32636363633832352d373062652d343331632d396261302d3130616233386563643361372f6465762f38653266376264612d306530382d346564652d613534362d3664663539626536613862622f4465706c6f79253230746f25323054616b65536861706525343032782e706e673f6175746f3d666f726d6174253243636f6d7072657373" width="205" height="38" data-canonical-src="https://images.takeshape.io/2cccc825-70be-431c-9ba0-10ab38ecd3a7/dev/8e2f7bda-0e08-4ede-a546-6df59be6a8bb/Deploy%20to%20TakeShape%402x.png?auto=format%2Ccompress" style="max-width:100%;"></a>
 
 2. Clone this repo:
 
@@ -346,8 +382,6 @@ to connect Klaviyo to any TakeShape project,
 
 3. In the **Authentication** field, add your Klaviyo API key, and select the **Save** button at the top-right of the
    page.
-
-![A screenshot of Klaviyo in the list of TakeShape services](./readme-images/klaviyo/select-klaviyo.png)
 
 ![A screenshot of the Klaviyo service page](./readme-images/klaviyo/add-authentication-klaviyo.png)
 
