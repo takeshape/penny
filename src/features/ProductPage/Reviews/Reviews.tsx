@@ -1,16 +1,64 @@
+import { useQuery } from '@apollo/client';
+import Button from 'components/Button/Button';
+import Loader from 'components/Loader/Loader';
 import { Stars } from 'components/Stars/Stars';
+import {
+  ProductPageReviewPageArgs,
+  ProductPageReviewPageQuery,
+  ProductPageReviewPageResponse
+} from 'features/ProductPage/queries';
+import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
+import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
+import { useCallback, useMemo, useState } from 'react';
+import { getReview } from 'transforms/reviewsIo';
 import { ProductPageReviewsReviewList } from '../types';
-import { ReviewsListItem } from './ReviewsListItem';
-import { ReviewsListItemLoading } from './ReviewsListItemLoading';
 import { ReviewsRollup } from './ReviewsRollup';
 
 export interface ReviewsProps {
+  sku: string;
   reviewList: ProductPageReviewsReviewList;
   showRollup?: boolean;
 }
 
-export const Reviews = ({ reviewList, showRollup }: ReviewsProps) => {
-  const { stats, rollup, data } = reviewList;
+export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
+  const { stats, rollup, data, currentPage: initialPage, totalPages, perPage } = reviewList;
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
+  const {
+    data: pageData,
+    loading,
+    error
+  } = useQuery<ProductPageReviewPageResponse, ProductPageReviewPageArgs>(ProductPageReviewPageQuery, {
+    variables: {
+      sku,
+      page: String(currentPage),
+      perPage: '2'
+    },
+    skip: currentPage === 1
+  });
+
+  // Our product query has the first page of reviews, so use that if we're on page 1.
+  // Otherwise we query for the requested page.
+  const currentPageData = useMemo(() => {
+    if (currentPage === 1) {
+      return data;
+    } else {
+      return pageData && pageData.reviewData.reviews.data.map(getReview);
+    }
+  }, [currentPage, data, pageData]);
+
+  const handleNext = useCallback(() => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  }, [currentPage, setCurrentPage, totalPages]);
+
+  const handlePrevious = useCallback(() => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [currentPage, setCurrentPage]);
 
   return (
     <section aria-labelledby="reviews-heading" className="bg-white">
@@ -49,6 +97,17 @@ export const Reviews = ({ reviewList, showRollup }: ReviewsProps) => {
               Write a review
             </a>
           </div>
+          <div className="mt-10">
+            <div className="mb-2">
+              Page {currentPage} of {totalPages}
+            </div>
+            <Button disabled={currentPage === 1} onClick={handlePrevious} className="mr-2">
+              Previous
+            </Button>
+            <Button disabled={currentPage === totalPages} onClick={handleNext}>
+              Next
+            </Button>
+          </div>
         </div>
 
         <div className="mt-16 lg:mt-0 lg:col-start-6 lg:col-span-7">
@@ -56,11 +115,19 @@ export const Reviews = ({ reviewList, showRollup }: ReviewsProps) => {
 
           <div className="flow-root">
             <div className="-my-12 divide-y divide-gray-200">
-              {data.map((review, idx) => (
-                <div key={review?.id ?? idx} className="py-12">
-                  {review ? <ReviewsListItem review={review} /> : <ReviewsListItemLoading />}
+              {error && 'There was an error loading more reviews.'}
+              {!error && loading && (
+                <div className="p-16 flex items-center justify-center">
+                  <Loader />
                 </div>
-              ))}
+              )}
+              {!error &&
+                currentPageData &&
+                currentPageData.map((review, idx) => (
+                  <div key={review?.id ?? idx} className="py-12">
+                    {review ? <ReviewsListItem review={review} /> : <ReviewsListItemLoading />}
+                  </div>
+                ))}
             </div>
           </div>
         </div>
