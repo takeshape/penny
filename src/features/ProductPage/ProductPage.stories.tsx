@@ -1,6 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import {
+  productPageBreadcrumbs,
   productPageDetails,
   productPagePolicies,
   productPageProduct,
@@ -25,13 +26,15 @@ _ProductPage.args = {
     showDetails: true,
     showReviews: true,
     showRelatedProducts: true,
-    showPolicies: true
+    showPolicies: true,
+    showBreadcrumbs: true
   },
   product: productPageProduct,
   reviewHighlights: productPageReviewHighlights,
   reviewList: productPageReviewList,
   details: productPageDetails,
-  policies: productPagePolicies
+  policies: productPagePolicies,
+  breadcrumbs: productPageBreadcrumbs
 };
 
 _ProductPage.parameters = {

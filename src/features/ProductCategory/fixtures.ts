@@ -7,6 +7,10 @@ export const productCategoryCollection: ProductCategoryCollection = {
   name: 'Men',
   description: 'Stuff for dudes and stuff.',
   descriptionHtml: 'Stuff for dudes and stuff.',
+  seo: {
+    title: 'Men',
+    description: 'Stuff for dudes and stuff.'
+  },
   items: [
     {
       product: {
@@ -320,7 +324,6 @@ export const productCategoryCollection: ProductCategoryCollection = {
     }
   ],
   pageInfo: {
-    __typename: 'Shopify_PageInfo',
     endCursor: 'eyJsYXN0X2lkIjo2ODYzMzk4OTI4NDg0LCJsYXN0X3ZhbHVlIjoiMCJ9',
     startCursor: 'eyJsYXN0X2lkIjo2ODI3MDY5NTA1NjM2LCJsYXN0X3ZhbHVlIjoiNCJ9',
     hasNextPage: true,

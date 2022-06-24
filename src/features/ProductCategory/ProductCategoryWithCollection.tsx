@@ -21,7 +21,7 @@ export interface ProductCategoryWithCollectionProps {
 export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
   pageSize = pageSize ?? 5;
 
-  const { pathname } = useRouter();
+  const router = useRouter();
 
   const [currentPage, setCurrentPage] = useState(page ?? 1);
   const [requestPage, setRequestPage] = useState(null);

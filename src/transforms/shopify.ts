@@ -8,6 +8,7 @@ import {
   ProductVariant
 } from 'types/product';
 import {
+  Shopify_Collection,
   Shopify_Image,
   Shopify_MoneyV2,
   Shopify_Product,
@@ -216,7 +217,11 @@ export function getPrice(price: Shopify_MoneyV2): ProductPrice {
   };
 }
 
-export function getSeo(shopifyProduct: Pick<Shopify_Product, 'seo' | 'title' | 'description'>): ProductSeo {
+export function getSeo(
+  shopifyProduct:
+    | Pick<Shopify_Product, 'seo' | 'title' | 'description'>
+    | Pick<Shopify_Collection, 'seo' | 'title' | 'description'>
+): ProductSeo {
   return {
     title: shopifyProduct.seo?.title ?? shopifyProduct.title,
     description: shopifyProduct.seo?.description ?? shopifyProduct.description

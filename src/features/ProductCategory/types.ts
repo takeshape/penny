@@ -1,3 +1,6 @@
+import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
+import { SetRequired } from 'type-fest';
+import { CollectionBase } from 'types/collection';
 import { ProductBase } from 'types/product';
 import { ReviewStats } from 'types/review';
 import {
@@ -37,7 +40,7 @@ export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsR
 
 export type ProductCategoryShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'takeshape' | 'seo'
 > & {
   products: {
     pageInfo: Shopify_PageInfo;
@@ -56,14 +59,12 @@ export type ProductCategoryProductListItem = {
   reviews: ProductCategoryReviewStats;
 };
 
-export type ProductCategoryCollection = {
+export type ProductCategoryCollectionParent = {
   id: string;
   url: string;
-  handle: string;
   name: string;
-  description: string;
-  descriptionHtml: string;
-  items: ProductCategoryProductListItem[];
-  pageInfo: Shopify_PageInfo;
-  anchor?: string;
 };
+
+export type ProductCategoryCollection = SetRequired<CollectionBase<ProductCategoryProductListItem>, 'seo' | 'pageInfo'>;
+
+export type ProductCategoryBreadcrumbs = Breadcrumb[];
