@@ -1,8 +1,8 @@
 import { ErrorMessage } from 'components/Error/ErrorMessage';
 import NextLink from 'components/NextLink';
 import Wrapper from 'components/Wrapper/Content';
-import { getLayoutData } from 'data/getLayoutData';
 import Layout from 'layouts/Default';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
 const NotFoundPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -26,9 +26,9 @@ const NotFoundPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
   return { props: { navigation, footer } };
-}
+};
 
 export default NotFoundPage;

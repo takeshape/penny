@@ -1,5 +1,4 @@
 import PageLoader from 'components/PageLoader';
-import { getLayoutData } from 'data/getLayoutData';
 import Page from 'features/Page/Page';
 import {
   PageGetPage,
@@ -10,7 +9,8 @@ import {
 } from 'features/Page/queries';
 import { getPage, getPageParams } from 'features/Page/transforms';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import { getLayoutData } from 'layouts/getLayoutData';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
@@ -35,7 +35,7 @@ const PagePage: NextPage = ({ navigation, footer, page }: InferGetStaticPropsTyp
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const slug = getSingle(params.page);
 
   const { navigation, footer } = await getLayoutData();
@@ -49,13 +49,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const page = getPage(data);
 
-  if (!page) {
-    return {
-      notFound: true
-    };
-  }
-
   return {
+    notFound: !Boolean(page),
     props: {
       navigation,
       footer,

@@ -1,6 +1,5 @@
 import PageLoader from 'components/PageLoader';
 import { collectionsPageSize } from 'config';
-import { getLayoutData } from 'data/getLayoutData';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -12,7 +11,8 @@ import {
 } from 'features/ProductCategory/queries';
 import { getCollectionBasic, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import { getLayoutData } from 'layouts/getLayoutData';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -37,7 +37,7 @@ const CollectionPage: NextPage = ({
     <Layout
       navigation={navigation}
       footer={footer}
-      seo={{ title: collection.name, description: collection.description }}
+      seo={{ title: collection.seo.title, description: collection.seo.description }}
     >
       <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} page={page} />
     </Layout>
@@ -46,7 +46,7 @@ const CollectionPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
   const [handle, cursor, page] = params.collection;
@@ -66,13 +66,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const collection = getCollectionBasic(data, variables);
 
-  if (!collection) {
-    return {
-      notFound: true
-    };
-  }
-
   return {
+    notFound: !Boolean(collection),
     props: {
       page: Number(page ?? 1),
       navigation,

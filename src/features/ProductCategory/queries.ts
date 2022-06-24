@@ -46,6 +46,10 @@ const ProductCategoryFragments = gql`
         }
       }
     }
+    seo {
+      title
+      description
+    }
   }
 
   fragment ProductCategoryProduct on Shopify_Product {

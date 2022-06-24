@@ -1,6 +1,6 @@
-import { getLayoutData } from 'data/getLayoutData';
 import { AccountFormPassword } from 'features/AccountForm/AccountFormPassword';
 import Layout from 'layouts/Account';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
 const AccountPasswordPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -11,9 +11,9 @@ const AccountPasswordPage: NextPage = ({ navigation, footer }: InferGetStaticPro
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
   return { props: { navigation, footer } };
-}
+};
 
 export default AccountPasswordPage;

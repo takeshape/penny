@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
-import { getLayoutData } from 'data/getLayoutData';
 import { Contact, ContactForm } from 'features/Contact/Contact';
 import { CreateTicketMutation, CreateTicketResponse } from 'features/Contact/queries';
 import Layout from 'layouts/Default';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useCallback, useState } from 'react';
 import { MutationCreateTicketArgs } from 'types/takeshape';
@@ -51,9 +51,9 @@ ${message}`,
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
   return { props: { navigation, footer } };
-}
+};
 
 export default ContactPage;

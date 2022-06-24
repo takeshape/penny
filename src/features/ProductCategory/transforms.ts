@@ -1,6 +1,13 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getStats } from 'transforms/reviewsIo';
-import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getCollectionUrl,
+  getPrice,
+  getProductOptions,
+  getProductUrl,
+  getSeo
+} from 'transforms/shopify';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionResponse,
@@ -86,6 +93,7 @@ export function getCollection(
   return {
     id: collection.id,
     url: getCollectionUrl(collection.handle),
+    seo: getSeo(collection),
     handle: collection.handle,
     name: collection.title,
     description: collection.description,
