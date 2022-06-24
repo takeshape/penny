@@ -390,6 +390,9 @@
           "message": {
             "widget": "wysiwygSingleLineText"
           },
+          "showCurrencySelect": {
+            "widget": "toggleSwitch"
+          },
           "links": {
             "widget": "object",
             "properties": {
@@ -492,6 +495,7 @@
         },
         "order": [
           "message",
+          "showCurrencySelect",
           "links"
         ]
       }
@@ -4637,6 +4641,14 @@
             "description": "",
             "title": "Message",
             "@mapping": "takeshape:local:Navigation.PL-G7Y5Vx"
+          },
+          "showCurrencySelect": {
+            "type": "boolean",
+            "default": false,
+            "@l10n": false,
+            "description": "",
+            "title": "Show Currency Select",
+            "@mapping": "takeshape:local:Navigation.4bJEYLxFw"
           },
           "links": {
             "title": "Links",

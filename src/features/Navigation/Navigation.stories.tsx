@@ -41,7 +41,8 @@ export const _Navigation = Template.bind({});
 _Navigation.args = {
   message: navigation.message,
   links: navigation.links,
-  currencies: navigation.currencies
+  currencies: navigation.currencies,
+  showCurrencySelect: true
 };
 
 export default Meta;

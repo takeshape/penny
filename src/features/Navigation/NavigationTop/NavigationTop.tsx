@@ -12,7 +12,7 @@ import { TopMessage } from './components/TopMessage';
 
 export interface NavigationTopProps extends Navigation {}
 
-export const NavigationTop = ({ message, links, currencies }: NavigationTopProps) => {
+export const NavigationTop = ({ message, links, currencies, showCurrencySelect }: NavigationTopProps) => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);
   const setIsSearchOpen = useSetAtom(isSearchOpenAtom);
 
@@ -28,31 +28,33 @@ export const NavigationTop = ({ message, links, currencies }: NavigationTopProps
           <div className="max-w-7xl mx-auto h-10 px-4 flex items-center justify-between sm:px-6 lg:px-8">
             {/* Currency selector */}
             <form className="hidden lg:block lg:flex-1">
-              <div className="flex">
-                <label htmlFor="desktop-currency" className="sr-only">
-                  Currency
-                </label>
-                <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
-                  <TopCurrencySelect currencies={currencies} />
-                  <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
-                    <svg
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 20"
-                      className="w-5 h-5 text-gray-300"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="1.5"
-                        d="M6 8l4 4 4-4"
-                      />
-                    </svg>
+              {showCurrencySelect && (
+                <div className="flex">
+                  <label htmlFor="desktop-currency" className="sr-only">
+                    Currency
+                  </label>
+                  <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
+                    <TopCurrencySelect currencies={currencies} />
+                    <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
+                      <svg
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 20"
+                        className="w-5 h-5 text-gray-300"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
+                          d="M6 8l4 4 4-4"
+                        />
+                      </svg>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </form>
 
             <TopMessage message={message} />

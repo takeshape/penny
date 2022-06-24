@@ -12,6 +12,7 @@ export function getNavigation(response: NavigationResponse): Navigation {
   return {
     message: navigation.messageHtml.replace(/<\/?p>/g, ''),
     links: navigation.links,
-    currencies: [...currencyList]
+    currencies: [...currencyList],
+    showCurrencySelect: navigation.showCurrencySelect
   };
 }

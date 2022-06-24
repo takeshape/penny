@@ -27,4 +27,5 @@ export type Navigation = {
   message: NavigationMessage;
   links: NavigationLinks;
   currencies: NavigationCurrency[];
+  showCurrencySelect: boolean;
 };

@@ -13331,6 +13331,7 @@ export type Navigation = TsSearchable & {
   __typename?: 'Navigation';
   message?: Maybe<Scalars['JSON']>;
   messageHtml?: Maybe<Scalars['String']>;
+  showCurrencySelect?: Maybe<Scalars['Boolean']>;
   links?: Maybe<NavigationLinks>;
   _shapeId?: Maybe<Scalars['String']>;
   _id?: Maybe<Scalars['ID']>;
@@ -16545,6 +16546,7 @@ export type TsWhereInput = {
   Product_details?: InputMaybe<TsWhereProductPageDetailsRelationshipInput>;
   shopifyProductId?: InputMaybe<TsWhereStringInput>;
   message?: InputMaybe<TsWhereDraftjsInput>;
+  showCurrencySelect?: InputMaybe<TsWhereBooleanInput>;
   links?: InputMaybe<TsWhereNavigationLinksInput>;
   breadcrumbTitle?: InputMaybe<TsWhereStringInput>;
   parent?: InputMaybe<TsWhereCollectionRelationshipInput>;
@@ -20669,6 +20671,7 @@ export type UpdateNavigationResult = {
 /** update Navigation input */
 export type UpdateNavigationInput = {
   message?: InputMaybe<Scalars['JSON']>;
+  showCurrencySelect?: InputMaybe<Scalars['Boolean']>;
   links?: InputMaybe<NavigationLinksInput>;
   _shapeId?: InputMaybe<Scalars['String']>;
   _id?: InputMaybe<Scalars['ID']>;

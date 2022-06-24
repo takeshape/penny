@@ -5,6 +5,7 @@ import { navigationResponse } from '../queries.fixtures';
 import { getNavigation } from '../transforms';
 import { NavigationTop } from './NavigationTop';
 
+export default { component: NavigationTop };
 const navigation = getNavigation(navigationResponse);
 
 const Meta: ComponentMeta<typeof NavigationTop> = {
@@ -41,7 +42,8 @@ export const _Mobile = Template.bind({});
 _Mobile.args = {
   message: navigation.message,
   links: navigation.links,
-  currencies: navigation.currencies
+  currencies: navigation.currencies,
+  showCurrencySelect: true
 };
 _Mobile.parameters = {
   viewport: {
@@ -53,7 +55,8 @@ export const _Tablet = Template.bind({});
 _Tablet.args = {
   message: navigation.message,
   links: navigation.links,
-  currencies: navigation.currencies
+  currencies: navigation.currencies,
+  showCurrencySelect: true
 };
 _Tablet.parameters = {
   viewport: {
@@ -65,8 +68,7 @@ export const _Desktop = Template.bind({});
 _Desktop.args = {
   message: navigation.message,
   links: navigation.links,
-  currencies: navigation.currencies
+  currencies: navigation.currencies,
+  showCurrencySelect: true
 };
 _Desktop.parameters = {};
-
-export default Meta;

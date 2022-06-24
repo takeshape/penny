@@ -16333,6 +16333,9 @@ type Navigation implements TSSearchable {
   ): String
 
   """"""
+  showCurrencySelect: Boolean
+
+  """"""
   links: NavigationLinks
   _shapeId: String
   _id: ID
@@ -20537,6 +20540,7 @@ input TSWhereInput {
   Product_details: TSWhereProductPageDetailsRelationshipInput
   shopifyProductId: TSWhereStringInput
   message: TSWhereDraftjsInput
+  showCurrencySelect: TSWhereBooleanInput
   links: TSWhereNavigationLinksInput
   breadcrumbTitle: TSWhereStringInput
   parent: TSWhereCollectionRelationshipInput
@@ -24916,6 +24920,9 @@ type UpdateNavigationResult {
 input UpdateNavigationInput {
   """"""
   message: JSON
+
+  """"""
+  showCurrencySelect: Boolean
 
   """"""
   links: NavigationLinksInput

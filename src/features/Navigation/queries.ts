@@ -35,6 +35,7 @@ export const NavigationQuery = gql`
         }
       }
       messageHtml
+      showCurrencySelect
     }
   }
 `;
