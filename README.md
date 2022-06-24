@@ -1,29 +1,54 @@
-# Deluxe ™️ Sample Project
+# Deluxe ™️ sample project
 
-A full-featured e-commerce experience using the best services out there:
+The easiest way to know if a tool is right for you is to see it in action.
 
-- NextAuth for user authentication
-- OpenID for greater identity management
+That's why we built the Deluxe sample project—a production-ready composable e-commerce experience that uses the most
+popular modern API services and frontend technologies. Check out the store now at
+https://deluxe-sample-project.vercel.app/.
+
+This project has two major elements:
+
+- The Next.js frontend
+- The TakeShape project that composes the e-commerce services on the backend.
+
+TakeShape's API Mesh functionality empowers e-commerce brands to manage their favorite API services in a single
+interface, then generate a single GraphQL API that combines functionality from those connected services. This generated
+API can be consumed by any frontend to build any ecommerce experience for any sales channel.
+
+This project will demonstrate how you can use TakeShape to build a modern e-commerce experience.
+
+You can clone this repo with git to run the Next.js frontend locally
+(`git clone https://github.com/takeshape/takeshape-deluxe-sample-project`). To connect it to the unified e-commerce
+backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern` directory.
+[The instructions section of this README will teach you how to do that](#instructions).
+
+## How it works
+
+### The TakeShape project pattern
+
+This starter's TakeShape project composes the following services into a unified GraphQL API:
+
+- OpenID for identity management
 - ReCAPTCHA for security
 - Gorgias for customer support
 - Shopify Admin and Storefront for customer data, product info and payment processing
-- Recharge for subscriptions
+- Recharge for product subscriptions
 - Klaviyo for newsletter subscriptions
 - REVIEWS.io for product reviews
-- Voucherify for customer loyalty
-- Ship Engine for shipping
-- Tailwind UI for styling
-- Next.js to build the pages and bundle it all up
-- Vercel to host it
-- **TakeShape's [ShapeDB](https://app.takeshape.io/docs/data/modeling) to host custom content**
-- **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) to speed up queries over 50%,
-  enable product search, and cache Shopify data**
-- **TakeShape's [API Mesh](https://app.takeshape.io/docs/major-concepts) to bring all these features and services
-  together in one unified GraphQL API**
+- Voucherify for customer loyalty rewards
+- Ship Engine for shipping management
+
+But TakeShape isn't just the composition layer for the services—it also enables functionality that can take most
+headless e-commerce deployments to the next level:
+
+- **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) speeds up product queries by
+  over 50%—from 400ms to under 200ms—and enables product search on the frontend**
+- **TakeShape's [ShapeDB](https://app.takeshape.io/docs/data/modeling) hosts some of the custom content used in this
+  build.**
 
 ```mermaid
 graph TD
-    A[Frontend NextJS Client] --> |Unified GraphQL API| Mesh{TakeShape's API Mesh}
+    A[Frontend Next.js Client] --> |Unified GraphQL API| Mesh{TakeShape's API Mesh}
     Mesh --> |User Authentication| OpenID
     Mesh --> |DDoS prevention| reCAPTCHA
     Mesh --> P{Products}
@@ -39,6 +64,16 @@ graph TD
     UP --> |Customer Support| Gorgias
     Shopify --> |Subscriptions| Recharge
 ```
+
+### The Next.js frontend
+
+The frontend codebase was built with many features that are important for modern composable e-commerce storefronts,
+including:
+
+- Next.js to build the pages and bundle the frontend up
+- NextAuth for user authentication
+- Tailwind UI for easily-customizable styling
+- Vercel to host it
 
 ## Screenshots
 
@@ -79,11 +114,11 @@ TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-acces
 
    > Note: Your store URL should be the public-facing URL of your website, not necessarily your myshopify.com URL.
 
-3. Copy the generated url in the **Audience** field and save it somewhere secure. You'll need it for your NextJS
+3. Copy the generated url in the **Audience** field and save it somewhere secure. You'll need it for your Next.js
    project's `.env` file.
 4. Select the **Save** button at the top-right of the OpenID service page.
 
-5. Now set up your `.env` variables in your NextJS project.
+5. Now set up your `.env` variables in your Next.js project.
    - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable to the generated **Audience** URL from your OpenID provider.
    - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable to the same URL you provided for the **Issuer URL** field on
      your OpenID provider. This should be your store's URL.
@@ -142,7 +177,7 @@ This project uses Shopify for e-commerce functionality. This README assumes you 
 don't need to have Shopify Plus to use any of the features described here.
 
 Follow these instructions to connect your Shopify store's Admin and Storefront APIs to your TakeShape project, and the
-frontend NextJS project.
+frontend Next.js project.
 
 1. [Create a Shopify store if you don't already have one](https://www.shopify.com/).
 
