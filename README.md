@@ -54,7 +54,6 @@ graph TD
     Mesh --> P{Products}
     P --> Shopify[Shopify Admin and Storefront]
     Mesh --> UP{User Profile}
-    UP --> |Referrals| RC(Referral Candy)
     UP --> |Orders, Subscriptions, and Customer Data| Shopify
     UP --> |Newsletter| Klaviyo
     P --> |Product Reviews| REVIEWS.io
