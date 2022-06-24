@@ -146,6 +146,7 @@ export function getPageOptions(response: ProductPageShopifyProductResponse): Pro
     showPolicies: takeshapeProduct.showPolicies ?? false,
     showReviews: takeshapeProduct.hideReviews === true ? false : true,
     showRelatedProducts: takeshapeProduct.hideRelatedProducts === true ? false : true,
+    showBreadcrumbs: takeshapeProduct.hideBreadcrumbs === true ? false : true,
     component: getProductComponent(takeshapeProduct.productComponent)
   };
 }

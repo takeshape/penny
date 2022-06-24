@@ -92,6 +92,7 @@ export type ProductPageOptions = {
   showRelatedProducts: boolean;
   showDetails: boolean;
   showPolicies: boolean;
+  showBreadcrumbs: boolean;
 };
 
 export type ProductPageProduct = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;

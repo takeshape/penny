@@ -595,6 +595,11 @@ type Query {
     """The handle of the product."""
     handle: String!
   ): Shopify_Product
+  Shopify_shop: Shopify_Shop
+  ShopifyStorefront_productTypes(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): ShopifyStorefront_StringConnection
   searchAssetIndex(
     terms: String
 
@@ -5891,6 +5896,9 @@ type Product implements TSSearchable {
 
   """"""
   productComponent: String
+
+  """"""
+  hideBreadcrumbs: Boolean
 
   """"""
   hideRelatedProducts: Boolean
@@ -12656,16 +12664,16 @@ type ShopifyStorefront_Customer {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -12682,7 +12690,7 @@ type ShopifyStorefront_Customer {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """The orders associated with the customer."""
   orders(
@@ -12733,6 +12741,9 @@ An auto-generated type for paginating through multiple MailingAddresses.
 type ShopifyStorefront_MailingAddressConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_MailingAddressEdge!]!
+
+  """A list of the nodes contained in MailingAddressEdge."""
+  nodes: [ShopifyStorefront_MailingAddress!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -13090,11 +13101,17 @@ Returns information about pagination in a connection, in accordance with the
 [Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).
 """
 type ShopifyStorefront_PageInfo {
+  """The cursor corresponding to the last node in edges."""
+  endCursor: String
+
   """Whether there are more pages to fetch following the current page."""
   hasNextPage: Boolean!
 
   """Whether there are any pages prior to the current page."""
   hasPreviousPage: Boolean!
+
+  """The cursor corresponding to the first node in edges."""
+  startCursor: String
 }
 
 """
@@ -13404,7 +13421,6 @@ enum ShopifyStorefront_CurrencyCode {
   RWF
   WST
   SAR
-  STD
   RSD
   SCR
   SGD
@@ -13450,6 +13466,7 @@ enum ShopifyStorefront_CurrencyCode {
   SLL
   SHP
   SOS
+  STD
   TJS
   TOP
   VEF
@@ -13506,6 +13523,9 @@ An auto-generated type for paginating through multiple DiscountApplications.
 type ShopifyStorefront_DiscountApplicationConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_DiscountApplicationEdge!]!
+
+  """A list of the nodes contained in DiscountApplicationEdge."""
+  nodes: [ShopifyStorefront_DiscountApplication!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -13574,6 +13594,9 @@ An auto-generated type for paginating through multiple CheckoutLineItems.
 type ShopifyStorefront_CheckoutLineItemConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_CheckoutLineItemEdge!]!
+
+  """A list of the nodes contained in CheckoutLineItemEdge."""
+  nodes: [ShopifyStorefront_CheckoutLineItem!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -13664,16 +13687,16 @@ type ShopifyStorefront_ProductVariant {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -13690,7 +13713,7 @@ type ShopifyStorefront_ProductVariant {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """The product variant’s price."""
   price: Money! @deprecated(reason: "Use `priceV2` instead")
@@ -13863,7 +13886,13 @@ The available options for transforming an image.
 All transformation options are considered "best-effort". Any transformation that the original image type doesn't support will be ignored.
 """
 input ShopifyStorefront_ImageTransformInput {
-  """Crop the image according to the specified region."""
+  """
+  Region of the image to remain after cropping.
+  Must be used in conjunction with maxWidth and/or maxHeight fields where the maxWidth / maxHeight are not equal.
+  The crop parameter should coincide with the smaller value (i.e. smaller maxWidth indicates a LEFT / RIGHT crop, while
+  smaller maxHeight indicates a TOP / BOTTOM crop). For example, { maxWidth: 5, maxHeight: 10, crop: LEFT } will result
+  in an image with width 5 and height 10, where the right side of the image is removed.
+  """
   crop: ShopifyStorefront_CropRegion
 
   """Image width in pixels between 1 and 5760."""
@@ -13988,16 +14017,16 @@ type ShopifyStorefront_Article {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -14014,7 +14043,7 @@ type ShopifyStorefront_Article {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel.
@@ -14108,16 +14137,16 @@ type ShopifyStorefront_Blog {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -14134,7 +14163,7 @@ type ShopifyStorefront_Blog {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel.
@@ -14152,6 +14181,9 @@ type ShopifyStorefront_Blog {
 type ShopifyStorefront_ArticleConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_ArticleEdge!]!
+
+  """A list of the nodes contained in ArticleEdge."""
+  nodes: [ShopifyStorefront_Article!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -14183,6 +14215,9 @@ type ShopifyStorefront_MetafieldConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_MetafieldEdge!]!
 
+  """A list of the nodes contained in MetafieldEdge."""
+  nodes: [ShopifyStorefront_Metafield!]!
+
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
 }
@@ -14211,6 +14246,9 @@ type ShopifyStorefront_SEO {
 type ShopifyStorefront_CommentConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_CommentEdge!]!
+
+  """A list of the nodes contained in CommentEdge."""
+  nodes: [ShopifyStorefront_Comment!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -14283,16 +14321,16 @@ type ShopifyStorefront_Collection {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -14309,7 +14347,7 @@ type ShopifyStorefront_Collection {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel.
@@ -14340,6 +14378,9 @@ type ShopifyStorefront_Collection {
     filters: [ShopifyStorefront_ProductFilterInput]
   ): ShopifyStorefront_ProductConnection!
 
+  """The collection's SEO information."""
+  seo: ShopifyStorefront_SEO!
+
   """The collection’s name. Limit of 255 characters."""
   title: String!
 
@@ -14354,6 +14395,9 @@ type ShopifyStorefront_ProductConnection {
 
   """A list of available filters."""
   filters: [ShopifyStorefront_Filter!]!
+
+  """A list of the nodes contained in ProductEdge."""
+  nodes: [ShopifyStorefront_Product!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -14473,16 +14517,16 @@ type ShopifyStorefront_Product {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -14499,7 +14543,7 @@ type ShopifyStorefront_Product {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel.
@@ -14609,6 +14653,9 @@ type ShopifyStorefront_CollectionConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_CollectionEdge!]!
 
+  """A list of the nodes contained in CollectionEdge."""
+  nodes: [ShopifyStorefront_Collection!]!
+
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
 }
@@ -14638,6 +14685,9 @@ type ShopifyStorefront_ImageConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_ImageEdge!]!
 
+  """A list of the nodes contained in ImageEdge."""
+  nodes: [ShopifyStorefront_Image!]!
+
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
 }
@@ -14664,6 +14714,9 @@ enum ShopifyStorefront_ProductImageSortKeys {
 type ShopifyStorefront_MediaConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_MediaEdge!]!
+
+  """A list of the nodes contained in MediaEdge."""
+  nodes: [ShopifyStorefront_Media!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -14727,6 +14780,9 @@ An auto-generated type for paginating through multiple SellingPlanGroups.
 type ShopifyStorefront_SellingPlanGroupConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_SellingPlanGroupEdge!]!
+
+  """A list of the nodes contained in SellingPlanGroupEdge."""
+  nodes: [ShopifyStorefront_SellingPlanGroup!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -14798,6 +14854,9 @@ type ShopifyStorefront_SellingPlanGroupOption {
 type ShopifyStorefront_SellingPlanConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_SellingPlanEdge!]!
+
+  """A list of the nodes contained in SellingPlanEdge."""
+  nodes: [ShopifyStorefront_SellingPlan!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -14912,6 +14971,9 @@ type ShopifyStorefront_ProductVariantConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_ProductVariantEdge!]!
 
+  """A list of the nodes contained in ProductVariantEdge."""
+  nodes: [ShopifyStorefront_ProductVariant!]!
+
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
 }
@@ -14953,6 +15015,7 @@ type ShopifyStorefront_Filter {
 enum ShopifyStorefront_FilterType {
   LIST
   PRICE_RANGE
+  BOOLEAN
 }
 
 """A selectable value within a filter."""
@@ -15145,16 +15208,16 @@ type ShopifyStorefront_Order {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -15171,7 +15234,7 @@ type ShopifyStorefront_Order {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   Unique identifier for the order that appears on the order.
@@ -15287,6 +15350,9 @@ type ShopifyStorefront_OrderLineItemConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_OrderLineItemEdge!]!
 
+  """A list of the nodes contained in OrderLineItemEdge."""
+  nodes: [ShopifyStorefront_OrderLineItem!]!
+
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
 }
@@ -15379,6 +15445,9 @@ type ShopifyStorefront_FulfillmentLineItemConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_FulfillmentLineItemEdge!]!
 
+  """A list of the nodes contained in FulfillmentLineItemEdge."""
+  nodes: [ShopifyStorefront_FulfillmentLineItem!]!
+
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
 }
@@ -15437,16 +15506,16 @@ type ShopifyStorefront_Page {
 
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -15463,7 +15532,7 @@ type ShopifyStorefront_Page {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   The URL used for viewing the resource on the shop's Online Store. Returns `null` if the resource is currently not published to the Online Store sales channel.
@@ -15487,18 +15556,21 @@ type ShopifyStorefront_Shop {
   """A description of the shop."""
   description: String
 
+  """A globally-unique identifier."""
+  id: ID!
+
   """Returns a metafield found by namespace and key."""
   metafield(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """A container for a set of metafields."""
     namespace: String!
 
-    """Identifier for the metafield (maximum of 30 characters)."""
+    """The identifier for the metafield."""
     key: String!
   ): ShopifyStorefront_Metafield
 
   """A paginated list of metafields associated with the resource."""
   metafields(
-    """Container for a set of metafields (maximum of 20 characters)."""
+    """Container for a set of metafields."""
     namespace: String
 
     """Returns up to the first `n` elements from the list."""
@@ -15515,7 +15587,7 @@ type ShopifyStorefront_Shop {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "The `metafields` field will be removed in the future in favor of using [aliases](https://graphql.org/learn/queries/#aliases) with the `metafield` field.\n")
+  ): ShopifyStorefront_MetafieldConnection! @deprecated(reason: "As of 2022-07, the paginated `metafields` field has been repurposed to require a list of metafield identifiers.\n")
 
   """
   A string representing the way currency is formatted when the currency isn’t specified.
@@ -15649,7 +15721,30 @@ type ShopifyStorefront_ShopPolicyWithDefault {
 }
 
 """Returns the resource which is being referred to by a metafield."""
-union ShopifyStorefront_MetafieldReference = ShopifyStorefront_MediaImage | ShopifyStorefront_Page | ShopifyStorefront_Product | ShopifyStorefront_ProductVariant
+union ShopifyStorefront_MetafieldReference = ShopifyStorefront_GenericFile | ShopifyStorefront_MediaImage | ShopifyStorefront_Page | ShopifyStorefront_Product | ShopifyStorefront_ProductVariant | ShopifyStorefront_Video
+
+"""
+The generic file resource lets you manage files in a merchant’s store. Generic files include any file that doesn’t fit into a designated type such as image or video. Example: PDF, JSON.
+"""
+type ShopifyStorefront_GenericFile {
+  """A word or phrase to indicate the contents of a file."""
+  alt: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The MIME type of the file."""
+  mimeType: String
+
+  """The size of the original file in bytes."""
+  originalFileSize: Int
+
+  """The preview image for the file."""
+  previewImage: ShopifyStorefront_Image
+
+  """The URL of the file."""
+  url: Url
+}
 
 """Represents a Shopify hosted image."""
 type ShopifyStorefront_MediaImage {
@@ -15667,6 +15762,42 @@ type ShopifyStorefront_MediaImage {
 
   """The preview image for the media."""
   previewImage: ShopifyStorefront_Image
+}
+
+"""Represents a Shopify hosted video."""
+type ShopifyStorefront_Video {
+  """A word or phrase to share the nature or contents of a media."""
+  alt: String
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The media content type."""
+  mediaContentType: ShopifyStorefront_MediaContentType!
+
+  """The preview image for the media."""
+  previewImage: ShopifyStorefront_Image
+
+  """The sources for a video."""
+  sources: [ShopifyStorefront_VideoSource!]!
+}
+
+"""Represents a source for a Shopify hosted video."""
+type ShopifyStorefront_VideoSource {
+  """The format of the video source."""
+  format: String!
+
+  """The height of the video."""
+  height: Int!
+
+  """The video MIME type."""
+  mimeType: String!
+
+  """The URL of the video."""
+  url: String!
+
+  """The width of the video."""
+  width: Int!
 }
 
 """
@@ -15687,6 +15818,9 @@ An auto-generated type for paginating through multiple SellingPlanAllocations.
 type ShopifyStorefront_SellingPlanAllocationConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_SellingPlanAllocationEdge!]!
+
+  """A list of the nodes contained in SellingPlanAllocationEdge."""
+  nodes: [ShopifyStorefront_SellingPlanAllocation!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -15749,6 +15883,9 @@ An auto-generated type for paginating through multiple StoreAvailabilities.
 type ShopifyStorefront_StoreAvailabilityConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_StoreAvailabilityEdge!]!
+
+  """A list of the nodes contained in StoreAvailabilityEdge."""
+  nodes: [ShopifyStorefront_StoreAvailability!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -15887,6 +16024,9 @@ enum ShopifyStorefront_WeightUnit {
 type ShopifyStorefront_OrderConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_OrderEdge!]!
+
+  """A list of the nodes contained in OrderEdge."""
+  nodes: [ShopifyStorefront_Order!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -16109,6 +16249,7 @@ type ProductPaginatedList {
 input TSWhereProductInput {
   name: TSWhereStringInput
   productComponent: TSWhereStringInput
+  hideBreadcrumbs: TSWhereBooleanInput
   hideRelatedProducts: TSWhereBooleanInput
   hideReviews: TSWhereBooleanInput
   showPolicies: TSWhereBooleanInput
@@ -16410,6 +16551,3843 @@ input TSWhereMdxInput {
   match: String
 }
 
+"""
+Represents a collection of the general settings and information about the shop.
+"""
+type Shopify_Shop {
+  """
+  A list of the shop's active alert messages that appear in the Shopify admin.
+  """
+  alerts: [Shopify_ShopAlert!]!
+
+  """The token required to query the shop's reports or dashboards."""
+  analyticsToken: String! @deprecated(reason: "Not supported anymore.")
+
+  """
+  The paginated list of fulfillment orders assigned to fulfillment services.
+  """
+  assignedFulfillmentOrders(
+    """
+    The assigment status of the fulfillment orders that should be returned.
+    """
+    assignmentStatus: Shopify_FulfillmentOrderAssignmentStatus
+
+    """
+    Returns fulfillment orders only for certain locations, specified by a list of location IDs.
+    """
+    locationIds: [ID]
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_FulfillmentOrderSortKeys = ID
+  ): Shopify_FulfillmentOrderConnection!
+
+  """The list of sales channels not currently installed on the shop."""
+  availableChannelApps(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_AppConnection!
+
+  """The shop's billing address information."""
+  billingAddress: Shopify_MailingAddress!
+
+  """Exposes the number of channels."""
+  channelCount: Int! @deprecated(reason: "Use `publicationCount` instead")
+
+  """List of all channel definitions associated with a shop."""
+  channelDefinitionsForInstalledChannels: [Shopify_AvailableChannelDefinitionsByChannel!]!
+
+  """List of the shop's active sales channels."""
+  channels(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ChannelConnection! @deprecated(reason: "Use `QueryRoot.channels` instead.")
+
+  """Specifies whether the shop supports checkouts via Checkout API."""
+  checkoutApiSupported: Boolean!
+
+  """Return a collection by its handle."""
+  collectionByHandle(
+    """The handle of the collection."""
+    handle: String!
+  ): Shopify_Collection @deprecated(reason: "Use `QueryRoot.collectionByHandle` instead.")
+
+  """List of the shop's collection saved searches."""
+  collectionSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SavedSearchConnection! @deprecated(reason: "Use `QueryRoot.collectionSavedSearches` instead.")
+
+  """List of the shop's collections."""
+  collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection! @deprecated(reason: "Use `QueryRoot.collections` instead.")
+
+  """
+  The public-facing contact email address for the shop.
+  Customers will use this email to communicate with the shop owner.
+  """
+  contactEmail: String!
+
+  """Countries that have been defined in shipping zones for the shop."""
+  countriesInShippingZones: Shopify_CountriesInShippingZones!
+
+  """The three letter code for the shop's currency."""
+  currencyCode: Shopify_CurrencyCode!
+
+  """How currencies are displayed on your store."""
+  currencyFormats: Shopify_CurrencyFormats!
+
+  """
+  The presentment currency settings for the shop excluding the shop's own currency.
+  """
+  currencySettings(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CurrencySettingConnection!
+
+  """
+  Whether customer accounts are required, optional, or disabled for the shop.
+  """
+  customerAccounts: Shopify_ShopCustomerAccountsSetting!
+
+  """List of the shop's customer saved searches."""
+  customerSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CustomerSavedSearchSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `name`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_SavedSearchConnection! @deprecated(reason: "Use `QueryRoot.customerSavedSearches` instead.")
+
+  """A list of tags that have been added to customer accounts."""
+  customerTags(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): Shopify_StringConnection!
+
+  """Customer accounts associated to the shop."""
+  customers(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CustomerSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `accepts_marketing`
+     - `country`
+     - `customer_date`
+     - `email`
+     - `last_abandoned_order_date`
+     - `order_date`
+     - `orders_count`
+     - `phone`
+     - `state`
+     - `tag`
+     - `tag_not`
+     - `total_spent`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_CustomerConnection! @deprecated(reason: "Use `QueryRoot.customers` instead.")
+
+  """The shop's meta description used in search engine results."""
+  description: String
+
+  """The domains configured for the shop."""
+  domains: [Shopify_Domain!]!
+
+  """List of the shop's draft order saved searches."""
+  draftOrderSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SavedSearchConnection! @deprecated(reason: "Use `QueryRoot.draftOrderSavedSearches` instead.")
+
+  """A list of tags that have been added to draft orders."""
+  draftOrderTags(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): Shopify_StringConnection!
+
+  """List of saved draft orders on the shop."""
+  draftOrders(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_DraftOrderSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `created_at`
+     - `customer_id`
+     - `source`
+     - `status`
+     - `tag`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_DraftOrderConnection! @deprecated(reason: "Use `QueryRoot.draftOrders` instead.")
+
+  """
+  The shop owner's email address.
+  Shopify will use this email address to communicate with the shop owner.
+  """
+  email: String!
+
+  """The presentment currencies enabled for the shop."""
+  enabledPresentmentCurrencies: [Shopify_CurrencyCode!]!
+
+  """The set of features enabled for the shop."""
+  features: Shopify_ShopFeatures!
+
+  """
+  The paginated list of merchant-managed and third-party fulfillment orders.
+  """
+  fulfillmentOrders(
+    """Whether to include closed fulfillment orders."""
+    includeClosed: Boolean = false
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_FulfillmentOrderSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `assigned_location_id`
+     - `status`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_FulfillmentOrderConnection!
+
+  """List of the shop's installed fulfillment services."""
+  fulfillmentServices: [Shopify_FulfillmentService!]!
+
+  """The shop's time zone as defined by the IANA."""
+  ianaTimezone: String!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """List of the shop's inventory items."""
+  inventoryItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """
+    Supported filter parameters:
+     - `created_at`
+     - `id`
+     - `sku`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_InventoryItemConnection! @deprecated(reason: "Use `QueryRoot.inventoryItems` instead.")
+
+  """
+  The number of pendings orders on the shop.
+  Limited to a maximum of 10000.
+  """
+  limitedPendingOrderCount: Shopify_LimitedPendingOrderCount!
+
+  """List of active locations of the shop."""
+  locations(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_LocationSortKeys = NAME
+
+    """
+    Supported filter parameters:
+     - `active`
+     - `address1`
+     - `address2`
+     - `city`
+     - `country`
+     - `legacy`
+     - `name`
+     - `province`
+     - `zip`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """If true, also include the legacy locations of fulfillment services."""
+    includeLegacy: Boolean = false
+
+    """If true, also include the locations that are deactivated."""
+    includeInactive: Boolean = false
+  ): Shopify_LocationConnection! @deprecated(reason: "Use `QueryRoot.locations` instead.")
+
+  """List of a shop's marketing events."""
+  marketingEvents(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_MarketingEventSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `app_id`
+     - `description`
+     - `started_at`
+     - `type`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_MarketingEventConnection! @deprecated(reason: "Use `QueryRoot.marketingEvents` instead.")
+
+  """The approval signals for a shop to support onboarding to channel apps."""
+  merchantApprovalSignals: Shopify_MerchantApprovalSignals
+
+  """Returns a metafield by namespace and key that belongs to the resource."""
+  metafield(
+    """The namespace for the metafield."""
+    namespace: String!
+
+    """The key for the metafield."""
+    key: String!
+  ): Shopify_Metafield
+
+  """List of metafields that belong to the resource."""
+  metafields(
+    """The metafield namespace to filter by."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_MetafieldConnection!
+
+  """The shop's .myshopify.com domain name."""
+  myshopifyDomain: String!
+
+  """The shop's name."""
+  name: String!
+
+  """The shop's settings related to navigation."""
+  navigationSettings: [Shopify_NavigationItem!]!
+
+  """The prefix that appears before order numbers."""
+  orderNumberFormatPrefix: String!
+
+  """The suffix that appears after order numbers."""
+  orderNumberFormatSuffix: String!
+
+  """List of the shop's order saved searches."""
+  orderSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SavedSearchConnection! @deprecated(reason: "Use `QueryRoot.orderSavedSearches` instead.")
+
+  """A list of tags that have been added to orders."""
+  orderTags(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+
+    """Sort type."""
+    sort: Shopify_ShopTagSort = ALPHABETICAL
+  ): Shopify_StringConnection!
+
+  """A list of the shop's orders."""
+  orders(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_OrderSortKeys = PROCESSED_AT
+
+    """
+    Supported filter parameters:
+     - `cart_token`
+     - `channel`
+     - `channel_id`
+     - `chargeback_status`
+     - `checkout_token`
+     - `created_at`
+     - `credit_card_last4`
+     - `customer_id`
+     - `delivery_method`
+     - `discount_code`
+     - `earliest_fulfill_by`
+     - `email`
+     - `financial_status`
+     - `fraud_protection_level`
+     - `fulfillment_location_id`
+     - `fulfillment_status`
+     - `gateway`
+     - `location_id`
+     - `name`
+     - `payment_provider_id`
+     - `processed_at`
+     - `reference_location_id`
+     - `return_status`
+     - `risk_level`
+     - `sales_channel`
+     - `source_identifier`
+     - `source_name`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `test`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_OrderConnection! @deprecated(reason: "Use `QueryRoot.orders` instead.")
+
+  """The shop's settings related to payments."""
+  paymentSettings: Shopify_PaymentSettings!
+
+  """Number of pending orders on the shop."""
+  pendingOrderCount: Int! @deprecated(reason: "Use `limitedPendingOrderCount` instead")
+
+  """The shop's billing plan."""
+  plan: Shopify_ShopPlan!
+
+  """List of the shop's price rule saved searches."""
+  priceRuleSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SavedSearchConnection! @deprecated(reason: "Use `QueryRoot.priceRuleSavedSearches` instead.")
+
+  """List of the shop’s price rules."""
+  priceRules(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_PriceRuleSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `created_at`
+     - `discount_type`
+     - `ends_at`
+     - `starts_at`
+     - `status`
+     - `times_used`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_PriceRuleConnection! @deprecated(reason: "Use `QueryRoot.priceRules` instead.")
+
+  """The shop's primary domain name."""
+  primaryDomain: Shopify_Domain!
+
+  """
+  Returns a private metafield by namespace and key that belongs to the resource.
+  """
+  privateMetafield(
+    """The namespace for the private metafield."""
+    namespace: String!
+
+    """The key for the private metafield."""
+    key: String!
+  ): Shopify_PrivateMetafield
+
+  """List of private metafields that belong to the resource."""
+  privateMetafields(
+    """Filter the private metafields by namespace."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PrivateMetafieldConnection!
+
+  """Return a product by its handle."""
+  productByHandle(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product @deprecated(reason: "Use `QueryRoot.productByHandle` instead.")
+
+  """The list of all images of all products for the shop."""
+  productImages(
+    """
+    Image width in pixels between 1 and 2048. This argument is deprecated: Use `maxWidth` on `Image.transformedSrc` instead.
+    """
+    maxWidth: Int
+
+    """
+    Image height in pixels between 1 and 2048. This argument is deprecated: Use `maxHeight` on `Image.transformedSrc` instead.
+    """
+    maxHeight: Int
+
+    """
+    Crops the image according to the specified region. This argument is deprecated: Use `crop` on `Image.transformedSrc` instead.
+    """
+    crop: Shopify_CropRegion
+
+    """
+    Image size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use `scale` on `Image.transformedSrc` instead.
+    """
+    scale: Int = 1
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductImageSortKeys = CREATED_AT
+  ): Shopify_ImageConnection!
+
+  """List of the shop's product saved searches."""
+  productSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_SavedSearchConnection! @deprecated(reason: "Use `QueryRoot.productSavedSearches` instead.")
+
+  """A list of tags that have been added to products."""
+  productTags(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): Shopify_StringConnection!
+
+  """The list of types added to products."""
+  productTypes(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): Shopify_StringConnection!
+
+  """List of the shop's product variants."""
+  productVariants(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductVariantSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `barcode`
+     - `collection`
+     - `delivery_profile_id`
+     - `exclude_composite`
+     - `gift_card`
+     - `inventory_quantity`
+     - `location_id`
+     - `managed`
+     - `managed_by`
+     - `product_id`
+     - `product_status`
+     - `product_type`
+     - `publishable_status`
+     - `published_status`
+     - `sku`
+     - `tag`
+     - `tag_not`
+     - `taxable`
+     - `title`
+     - `updated_at`
+     - `vendor`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_ProductVariantConnection! @deprecated(reason: "Use `QueryRoot.productVariants` instead.")
+
+  """The list of vendors added to products."""
+  productVendors(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): Shopify_StringConnection!
+
+  """List of the shop's products."""
+  products(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `barcode`
+     - `created_at`
+     - `delivery_profile_id`
+     - `error_feedback`
+     - `gift_card`
+     - `has_only_composites`
+     - `has_only_default_variant`
+     - `id`
+     - `inventory_total`
+     - `is_price_reduced`
+     - `out_of_stock_somewhere`
+     - `price`
+     - `product_type`
+     - `publishable_status`
+     - `published_status`
+     - `sku`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `title`
+     - `updated_at`
+     - `vendor`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_ProductConnection! @deprecated(reason: "Use `QueryRoot.products`.")
+
+  """
+  The shop's limits for specific resources. For example, the maximum number ofvariants allowed per product, or the maximum number of locations allowed.
+  """
+  resourceLimits: Shopify_ShopResourceLimits!
+
+  """The URL of the rich text editor that can be used for mobile devices."""
+  richTextEditorUrl: Url!
+
+  """Fetches a list of admin search results by a specified query."""
+  search(
+    """The search query to filter by."""
+    query: String!
+
+    """The search result types to filter by."""
+    types: [Shopify_SearchResultType]
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+  ): Shopify_SearchResultConnection!
+
+  """
+  The list of search filter options for the shop. These can be used to filter productvisibility for the shop.
+  """
+  searchFilters: Shopify_SearchFilterOptions!
+
+  """Whether the shop has outstanding setup steps."""
+  setupRequired: Boolean!
+
+  """The list of countries that the shop ships to."""
+  shipsToCountries: [Shopify_CountryCode!]!
+
+  """The list of all legal policies associated with a shop."""
+  shopPolicies: [Shopify_ShopPolicy!]!
+
+  """Shopify Payments account information, including balances and payouts."""
+  shopifyPaymentsAccount: Shopify_ShopifyPaymentsAccount @deprecated(reason: "Use `QueryRoot.shopifyPaymentsAccount` instead.")
+
+  """The paginated list of the shop's staff members."""
+  staffMembers(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_StaffMemberConnection!
+
+  """
+  The storefront access token of a private application. These are scoped per-application.
+  """
+  storefrontAccessTokens(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_StorefrontAccessTokenConnection!
+
+  """The URL of the shop's storefront."""
+  storefrontUrl: Url! @deprecated(reason: "Use `url` instead")
+
+  """Whether the shop charges taxes for shipping."""
+  taxShipping: Boolean!
+
+  """Whether applicable taxes are included in the shop's product prices."""
+  taxesIncluded: Boolean!
+
+  """The shop's time zone abbreviation."""
+  timezoneAbbreviation: String!
+
+  """The shop's time zone offset."""
+  timezoneOffset: String!
+
+  """The shop's time zone offset expressed as a number of minutes."""
+  timezoneOffsetMinutes: Int!
+
+  """The translations associated with the resource."""
+  translations(
+    """Filters translations locale."""
+    locale: String!
+  ): [Shopify_PublishedTranslation!]!
+
+  """The shop's unit system for weights and measures."""
+  unitSystem: Shopify_UnitSystem!
+
+  """Fetches a list of images uploaded to the shop by their IDs."""
+  uploadedImagesByIds(
+    """The IDs of the uploaded images."""
+    imageIds: [ID!]!
+  ): [Shopify_Image!]!
+
+  """The URL of the shop's online store."""
+  url: Url!
+
+  """The shop's primary unit of weight for products and shipping."""
+  weightUnit: Shopify_WeightUnit!
+}
+
+"""
+An alert message that appears in the Shopify admin about a problem with a store setting, with an action to take. For example, you could show an alert to ask the merchant to enter their billing information to activate Shopify Plus.
+"""
+type Shopify_ShopAlert {
+  """
+  The text for the button in the alert that links to related information. For example, _Add credit card_.
+  """
+  action: Shopify_ShopAlertAction!
+
+  """
+  A description of the alert and further information, such as whether the merchant will be charged.
+  """
+  description: String!
+}
+
+"""An action associated to a shop alert, such as adding a credit card."""
+type Shopify_ShopAlertAction {
+  """The text for the button in the alert. For example, _Add credit card_."""
+  title: String!
+
+  """The target URL that the button links to."""
+  url: Url!
+}
+
+enum Shopify_FulfillmentOrderAssignmentStatus {
+  CANCELLATION_REQUESTED
+  FULFILLMENT_REQUESTED
+  FULFILLMENT_ACCEPTED
+}
+
+enum Shopify_FulfillmentOrderSortKeys {
+  ID
+  RELEVANCE
+}
+
+"""An auto-generated type for paginating through multiple Apps."""
+type Shopify_AppConnection {
+  """A list of edges."""
+  edges: [Shopify_AppEdge!]!
+
+  """A list of the nodes contained in AppEdge."""
+  nodes: [Shopify_App!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one App and a cursor during pagination.
+"""
+type Shopify_AppEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of AppEdge."""
+  node: Shopify_App!
+}
+
+"""
+Represents an object containing all information for channels available to a shop.
+"""
+type Shopify_AvailableChannelDefinitionsByChannel {
+  """The channel definitions for channels installed on a shop."""
+  channelDefinitions: [Shopify_ChannelDefinition!]!
+
+  """The name of the channel."""
+  channelName: String!
+}
+
+"""An auto-generated type for paginating through multiple Channels."""
+type Shopify_ChannelConnection {
+  """A list of edges."""
+  edges: [Shopify_ChannelEdge!]!
+
+  """A list of the nodes contained in ChannelEdge."""
+  nodes: [Shopify_Channel!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Channel and a cursor during pagination.
+"""
+type Shopify_ChannelEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ChannelEdge."""
+  node: Shopify_Channel!
+}
+
+"""An auto-generated type for paginating through multiple SavedSearches."""
+type Shopify_SavedSearchConnection {
+  """A list of edges."""
+  edges: [Shopify_SavedSearchEdge!]!
+
+  """A list of the nodes contained in SavedSearchEdge."""
+  nodes: [Shopify_SavedSearch!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one SavedSearch and a cursor during pagination.
+"""
+type Shopify_SavedSearchEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SavedSearchEdge."""
+  node: Shopify_SavedSearch!
+}
+
+"""
+A saved search is a representation of a search query saved in the admin.
+"""
+type Shopify_SavedSearch {
+  """The filters of a saved search."""
+  filters: [Shopify_SearchFilter!]!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """The name of a saved search."""
+  name: String!
+
+  """
+  The query string of a saved search. This includes search terms and filters.
+  """
+  query: String!
+
+  """The type of resource this saved search is searching in."""
+  resourceType: Shopify_SearchResultType!
+
+  """The search terms of a saved search."""
+  searchTerms: String!
+}
+
+"""A filter in a search query represented by a key value pair."""
+type Shopify_SearchFilter {
+  """The key of the search filter."""
+  key: String!
+
+  """The value of the search filter."""
+  value: String!
+}
+
+enum Shopify_SearchResultType {
+  ORDER
+  CUSTOMER
+  PRODUCT
+  ONLINE_STORE_PAGE
+  ONLINE_STORE_BLOG
+  ONLINE_STORE_ARTICLE
+  COLLECTION
+  DRAFT_ORDER
+  PRICE_RULE
+  DISCOUNT_REDEEM_CODE
+  FILE
+  URL_REDIRECT
+}
+
+"""
+The list of all the countries from the combined shipping zones for the shop.
+"""
+type Shopify_CountriesInShippingZones {
+  """The list of all the countries from all the combined shipping zones."""
+  countryCodes: [Shopify_CountryCode!]!
+
+  """Whether 'Rest of World' has been defined in any of the shipping zones."""
+  includeRestOfWorld: Boolean!
+}
+
+"""
+Currency formats configured for the merchant. These formats are available to use within Liquid.
+"""
+type Shopify_CurrencyFormats {
+  """Money without currency in HTML."""
+  moneyFormat: FormattedString!
+
+  """Money without currency in emails."""
+  moneyInEmailsFormat: String!
+
+  """Money with currency in HTML."""
+  moneyWithCurrencyFormat: FormattedString!
+
+  """Money with currency in emails."""
+  moneyWithCurrencyInEmailsFormat: String!
+}
+
+"""
+An auto-generated type for paginating through multiple CurrencySettings.
+"""
+type Shopify_CurrencySettingConnection {
+  """A list of edges."""
+  edges: [Shopify_CurrencySettingEdge!]!
+
+  """A list of the nodes contained in CurrencySettingEdge."""
+  nodes: [Shopify_CurrencySetting!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one CurrencySetting and a cursor during pagination.
+"""
+type Shopify_CurrencySettingEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of CurrencySettingEdge."""
+  node: Shopify_CurrencySetting!
+}
+
+"""A setting for a presentment currency."""
+type Shopify_CurrencySetting {
+  """The currency's ISO code."""
+  currencyCode: Shopify_CurrencyCode!
+
+  """The full name of the currency."""
+  currencyName: String!
+
+  """
+  Whether the currency is enabled or not. An enabled currency setting is visible to buyers and allows orders to be generated with that currency as presentment.
+  """
+  enabled: Boolean!
+
+  """
+  The date and time when the active exchange rate for the currency was last modified. It can be the automatic rate's creation date, or the manual rate's last updated at date if active.
+  """
+  rateUpdatedAt: DateTime
+}
+
+enum Shopify_ShopCustomerAccountsSetting {
+  REQUIRED
+  OPTIONAL
+  DISABLED
+}
+
+enum Shopify_CustomerSavedSearchSortKeys {
+  NAME
+  ID
+  RELEVANCE
+}
+
+"""An auto-generated type for paginating through a list of Strings."""
+type Shopify_StringConnection {
+  """A list of edges."""
+  edges: [Shopify_StringEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one String and a cursor during pagination.
+"""
+type Shopify_StringEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of StringEdge."""
+  node: String!
+}
+
+"""An auto-generated type for paginating through multiple Customers."""
+type Shopify_CustomerConnection {
+  """A list of edges."""
+  edges: [Shopify_CustomerEdge!]!
+
+  """A list of the nodes contained in CustomerEdge."""
+  nodes: [Shopify_Customer!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Customer and a cursor during pagination.
+"""
+type Shopify_CustomerEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of CustomerEdge."""
+  node: Shopify_Customer!
+}
+
+enum Shopify_CustomerSortKeys {
+  CREATED_AT
+  NAME
+  LOCATION
+  ORDERS_COUNT
+  LAST_ORDER_DATE
+  TOTAL_SPENT
+  UPDATED_AT
+  ID
+  RELEVANCE
+}
+
+"""
+A unique string that represents the address of a Shopify store on the Internet.
+"""
+type Shopify_Domain {
+  """The host name of the domain (eg: `example.com`)."""
+  host: String!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The localization of the domain, if it does not redirect."""
+  localization: Shopify_DomainLocalization
+
+  """The web presence of the domain."""
+  marketWebPresence: Shopify_MarketWebPresence
+
+  """Whether SSL is enabled or not."""
+  sslEnabled: Boolean!
+
+  """The URL of the domain (eg: `https://example.com`)."""
+  url: Url!
+}
+
+"""The country and language settings assigned to a domain."""
+type Shopify_DomainLocalization {
+  """The ISO codes for the domain’s alternate locales."""
+  alternateLocales: [String!]!
+
+  """
+  The ISO code for the country assigned to the domain, or "*" for a domain set to "Rest of world".
+  """
+  country: String
+
+  """The ISO code for the domain’s default locale."""
+  defaultLocale: String!
+}
+
+"""
+The market’s web presence, which defines its SEO strategy. This can be a different domain
+(e.g. `example.ca`), subdomain (e.g. `ca.example.com`), or subfolders of the primary
+domain (e.g. `example.com/en-ca`). Each web presence comprises one or more language
+variants. If a market does not have its own web presence, it is accessible on the shop’s
+primary domain via [country
+selectors](https://shopify.dev/themes/internationalization/multiple-currencies-languages#the-country-selector).
+
+Note: while the domain/subfolders defined by a market’s web presence are not applicable to
+custom storefronts, which must manage their own domains and routing, the languages chosen
+here do govern [the languages available on the Storefront
+API](https://shopify.dev/api/examples/multiple-languages) for the countries in
+this market.
+"""
+type Shopify_MarketWebPresence {
+  """
+  The ISO codes for the alternate locales. When a domain is used, these locales will be
+  available as language-specific subfolders. For example, if English is an
+  alternate locale, and `example.ca` is the market’s domain, then
+  `example.ca/en` will load in English.
+  """
+  alternateLocales: [String!]!
+
+  """
+  The ISO code for the default locale. When a domain is used, this is the locale that will
+  be used when the domain root is accessed. For example, if French is the default locale,
+  and `example.ca` is the market’s domian, then `example.ca` will load in French.
+  """
+  defaultLocale: String!
+
+  """
+  The web presence’s domain.
+  This field will be null if `subfolderSuffix` isn't null.
+  """
+  domain: Shopify_Domain
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The associated market."""
+  market: Shopify_Market!
+
+  """The list of root URLs for each of the web presence’s locales."""
+  rootUrls: [Shopify_MarketWebPresenceRootUrl!]!
+
+  """
+  The market-specific suffix of the subfolders defined by the web presence. Example: in `/en-us` the subfolder suffix is `us`. This field will be null if `domain` isn't null.
+  """
+  subfolderSuffix: String
+}
+
+"""
+A market is a group of one or more regions that you want to target for international sales.
+By creating a market, you can configure a distinct, localized shopping experience for
+customers from a specific area of the world. For example, you can
+[change currency](https://shopify.dev/api/admin-graphql/current/mutations/marketCurrencySettingsUpdate),
+[configure international pricing](https://shopify.dev/api/examples/product-price-lists),
+or [add market-specific domains or subfolders](https://shopify.dev/api/admin-graphql/current/objects/MarketWebPresence).
+"""
+type Shopify_Market {
+  """The market’s currency settings."""
+  currencySettings: Shopify_MarketCurrencySettings!
+
+  """
+  Whether the market is enabled to receive visitors and sales. **Note**: Regions in inactive
+  markets cannot be selected on the storefront or in checkout.
+  """
+  enabled: Boolean!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The name of the market. Not shown to customers."""
+  name: String!
+
+  """
+  The market’s price list, which specifies a percentage-based price adjustment as well as
+  fixed price overrides for specific variants.
+  """
+  priceList: Shopify_PriceList
+
+  """Whether the market is the shop’s primary market."""
+  primary: Boolean!
+
+  """The regions that comprise the market."""
+  regions(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_MarketRegionConnection!
+
+  """
+  The market’s web presence, which defines its SEO strategy. This can be a different domain,
+  subdomain, or subfolders of the primary domain. Each web presence comprises one or more
+  language variants. If a market doesn't have its own web presence, then the market is accessible on the
+  shop’s primary domain using [country
+  selectors](https://shopify.dev/themes/internationalization/multiple-currencies-languages#the-country-selector).
+  """
+  webPresence: Shopify_MarketWebPresence
+}
+
+"""A market's currency settings."""
+type Shopify_MarketCurrencySettings {
+  """
+  The currency which this market's prices are defined in, and the
+  currency which its customers must use if local currencies are disabled.
+  """
+  baseCurrency: Shopify_CurrencySetting!
+
+  """
+  Whether or not local currencies are enabled. If enabled, then prices will
+  be converted to give each customer the best experience based on their
+  region. If disabled, then all customers in this market will see prices
+  in the market's base currency.
+  """
+  localCurrencies: Boolean!
+}
+
+"""
+Represents a price list, including information about related prices and eligibility rules.
+You can use price lists to specify either fixed prices or adjusted relative prices that
+override initial product variant prices. Price lists are applied to customers
+using context rules, which determine price list eligibility.
+
+  For more information on price lists, refer to
+  [*Support different pricing models using the price list API*](https://shopify.dev/api/examples/product-price-lists#update-an-existing-price-list).
+"""
+type Shopify_PriceList {
+  """
+  A set of facts about the customer, used to determine price list eligibility.
+  """
+  contextRule: Shopify_PriceListContextRule
+
+  """The currency for fixed prices associated with this price list."""
+  currency: Shopify_CurrencyCode!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """
+  The unique name of the price list, used as a human-readable identifier.
+  """
+  name: String!
+
+  """Relative adjustments to other prices."""
+  parent: Shopify_PriceListParent
+
+  """A list of prices associated with the price list."""
+  prices(
+    """
+    The origin of this price, either fixed (defined on the price list)
+                   or relative (calculated using an adjustment via a price list parent configuration).
+    """
+    originType: Shopify_PriceListPriceOriginType
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PriceListPriceConnection!
+}
+
+"""
+Facts about the customer that was used to determine the price list eligibility.
+For example, if the `PriceListContextRule` is for a US market, then the price list will be eligible to all customers in the US.
+For more information on price lists, refer to
+[Support different pricing models using the price list API](https://shopify.dev/api/examples/product-price-lists#price-lists).
+"""
+type Shopify_PriceListContextRule {
+  """
+  A list of two letter country codes that determines price list eligibility.
+  """
+  countries: [Shopify_CountryCode!]!
+
+  """The associated market."""
+  market: Shopify_Market
+}
+
+"""
+Represents relative adjustments from one price list to other prices.
+  You can use a `PriceListParent` to specify an adjusted relative price using a percentage-based
+  adjustment. Adjusted prices work in conjunction with exchange rules and rounding.
+
+  [Adjustment types](https://shopify.dev/api/admin-graphql/latest/enums/pricelistadjustmenttype)
+  support both percentage increases and decreases.
+"""
+type Shopify_PriceListParent {
+  """A price list adjustment."""
+  adjustment: Shopify_PriceListAdjustment!
+}
+
+"""
+The type and value of a price list adjustment.
+
+For more information on price lists, refer to
+[Support different pricing models using the price list API](https://shopify.dev/api/examples/product-price-lists#price-lists).
+"""
+type Shopify_PriceListAdjustment {
+  """The type of price adjustment, such as percentage increase or decrease."""
+  type: Shopify_PriceListAdjustmentType!
+
+  """
+  The value of price adjustment, where positive numbers reduce the prices and negative numbers
+  increase them.
+  """
+  value: Float!
+}
+
+enum Shopify_PriceListAdjustmentType {
+  PERCENTAGE_DECREASE
+  PERCENTAGE_INCREASE
+}
+
+"""
+An auto-generated type for paginating through multiple PriceListPrices.
+"""
+type Shopify_PriceListPriceConnection {
+  """A list of edges."""
+  edges: [Shopify_PriceListPriceEdge!]!
+
+  """A list of the nodes contained in PriceListPriceEdge."""
+  nodes: [Shopify_PriceListPrice!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one PriceListPrice and a cursor during pagination.
+"""
+type Shopify_PriceListPriceEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of PriceListPriceEdge."""
+  node: Shopify_PriceListPrice!
+}
+
+"""
+Represents information about pricing for a product variant
+        as defined on a price list, such as the price, compare at price, and origin type. You can use a PriceListPrice to specify a fixed price for a specific product variant.
+"""
+type Shopify_PriceListPrice {
+  """The compare-at price of the product variant on this price list."""
+  compareAtPrice: Shopify_MoneyV2
+
+  """
+  The origin of this price, either fixed (defined on the price list)
+            or relative (calculated using an adjustment via a price list parent configuration).
+  """
+  originType: Shopify_PriceListPriceOriginType!
+
+  """The price of the product variant on this price list."""
+  price: Shopify_MoneyV2!
+
+  """The product variant associated with this price."""
+  variant: Shopify_ProductVariant!
+}
+
+enum Shopify_PriceListPriceOriginType {
+  FIXED
+  RELATIVE
+}
+
+"""An auto-generated type for paginating through multiple MarketRegions."""
+type Shopify_MarketRegionConnection {
+  """A list of edges."""
+  edges: [Shopify_MarketRegionEdge!]!
+
+  """A list of the nodes contained in MarketRegionEdge."""
+  nodes: [Shopify_MarketRegion!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one MarketRegion and a cursor during pagination.
+"""
+type Shopify_MarketRegionEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of MarketRegionEdge."""
+  node: Shopify_MarketRegion!
+}
+
+"""A geographic region which comprises a market."""
+type Shopify_MarketRegion {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The name of the region."""
+  name: String!
+}
+
+"""
+The URL for the homepage of the online store in the context of a particular market and a
+particular locale.
+"""
+type Shopify_MarketWebPresenceRootUrl {
+  """The locale that the storefront loads in."""
+  locale: String!
+
+  """The URL."""
+  url: Url!
+}
+
+"""An auto-generated type for paginating through multiple DraftOrders."""
+type Shopify_DraftOrderConnection {
+  """A list of edges."""
+  edges: [Shopify_DraftOrderEdge!]!
+
+  """A list of the nodes contained in DraftOrderEdge."""
+  nodes: [Shopify_DraftOrder!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one DraftOrder and a cursor during pagination.
+"""
+type Shopify_DraftOrderEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of DraftOrderEdge."""
+  node: Shopify_DraftOrder!
+}
+
+"""
+Represents a draft order. Merchants can use draft orders to create orders on behalf of their customers.
+
+***Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
+"""
+type Shopify_DraftOrder {
+  """Order-level discount applied to the draft order."""
+  appliedDiscount: Shopify_DraftOrderAppliedDiscount
+
+  """The billing address of the customer."""
+  billingAddress: Shopify_MailingAddress
+
+  """
+  Date and time when the draft order converted to a new order,
+  and the draft order's status changed to **Completed**.
+  """
+  completedAt: DateTime
+
+  """Date and time when the draft order was created in Shopify."""
+  createdAt: DateTime!
+
+  """
+  Three letter code for the currency of the store at the time that the invoice is sent.
+  """
+  currencyCode: Shopify_CurrencyCode!
+
+  """
+  Custom information added to the draft order on behalf of your customer.
+  """
+  customAttributes: [Shopify_Attribute!]!
+
+  """
+  Customer who will be sent an invoice for the draft order, if there is one.
+  """
+  customer: Shopify_Customer
+
+  """Email address of the customer, which is used to send notifications to."""
+  email: String
+
+  """List of events associated with the draft order."""
+  events(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_EventSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `comments`
+     - `created_at`
+     - `subject_type`
+     - `verb`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_EventConnection!
+
+  """Whether the merchant has added timeline comments to the draft order."""
+  hasTimelineComment: Boolean!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Date and time when the invoice was last emailed to the customer."""
+  invoiceSentAt: DateTime
+
+  """
+  Link to the checkout, which is sent to your customer in the invoice email.
+  """
+  invoiceUrl: Url
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """List of the line items in the draft order."""
+  lineItems(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_DraftOrderLineItemConnection!
+
+  """List of localization extensions for the resource."""
+  localizationExtensions(
+    """The country codes of the extensions."""
+    countryCodes: [Shopify_CountryCode]
+
+    """The purpose of the extensions."""
+    purposes: [Shopify_LocalizationExtensionPurpose]
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_LocalizationExtensionConnection!
+
+  """Returns a metafield by namespace and key that belongs to the resource."""
+  metafield(
+    """The namespace for the metafield."""
+    namespace: String!
+
+    """The key for the metafield."""
+    key: String!
+  ): Shopify_Metafield
+
+  """List of metafields that belong to the resource."""
+  metafields(
+    """The metafield namespace to filter by."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_MetafieldConnection!
+
+  """
+  Unique identifier for the draft order, which is unique within the store. For example, _#D1223_.
+  """
+  name: String!
+
+  """Text from an optional note attached to the draft order."""
+  note2: String
+
+  """Order that was created from this draft order."""
+  order: Shopify_Order
+
+  """The associated payment term for this draft order."""
+  paymentTerms: Shopify_PaymentTerms
+
+  """
+  Returns a private metafield by namespace and key that belongs to the resource.
+  """
+  privateMetafield(
+    """The namespace for the private metafield."""
+    namespace: String!
+
+    """The key for the private metafield."""
+    key: String!
+  ): Shopify_PrivateMetafield
+
+  """List of private metafields that belong to the resource."""
+  privateMetafields(
+    """Filter the private metafields by namespace."""
+    namespace: String
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PrivateMetafieldConnection!
+
+  """
+  Whether or not the Draft Order is ready and can be completed. Draft Orders
+          may have asynchronous operations that can take time to finish.
+  """
+  ready: Boolean!
+
+  """The shipping address of the customer."""
+  shippingAddress: Shopify_MailingAddress
+
+  """Line item that contains the shipping costs."""
+  shippingLine: Shopify_ShippingLine
+
+  """Status of the draft order."""
+  status: Shopify_DraftOrderStatus!
+
+  """
+  Subtotal of the line items and their discounts (does not contain shipping charges or shipping discounts, or taxes).
+  """
+  subtotalPrice: Money!
+
+  """
+  A comma separated list of tags associated with the draft order. Updating `tags` overwrites
+  any existing tags that were previously added to the draft order. To add new tags without overwriting
+  existing tags, use the [tagsAdd](https://shopify.dev/api/admin-graphql/latest/mutations/tagsadd)
+  mutation.
+  """
+  tags: [String!]!
+
+  """Whether the draft order is tax exempt."""
+  taxExempt: Boolean!
+
+  """Total amount of taxes charged for each line item and shipping line."""
+  taxLines: [Shopify_TaxLine!]!
+
+  """Whether the line item prices include taxes."""
+  taxesIncluded: Boolean!
+
+  """
+  Total amount of the draft order (includes taxes, shipping charges, and discounts).
+  """
+  totalPrice: Money!
+
+  """Total shipping charge for the draft order."""
+  totalShippingPrice: Money!
+
+  """Total amount of taxes for the draft order."""
+  totalTax: Money!
+
+  """Total weight (grams) of the draft order."""
+  totalWeight: UnsignedInt64!
+
+  """
+  Date and time when the draft order was last changed.
+  The format is YYYY-MM-DD HH:mm:ss (for example, 2016-02-05 17:04:01).
+  """
+  updatedAt: DateTime!
+}
+
+"""The order-level discount applied to a draft order."""
+type Shopify_DraftOrderAppliedDiscount {
+  """Amount of the order-level discount that is applied to the draft order."""
+  amount: Money! @deprecated(reason: "Use `amountV2` instead")
+
+  """Amount of money discounted."""
+  amountV2: Shopify_MoneyV2!
+
+  """Description of the order-level discount."""
+  description: String!
+
+  """Name of the order-level discount."""
+  title: String
+
+  """
+  Amount of the order level discount (when value_type is percentage,
+  the value in this field is the percentage discount).
+  """
+  value: Float!
+
+  """Type of the order-level discount."""
+  valueType: Shopify_DraftOrderAppliedDiscountType!
+}
+
+enum Shopify_DraftOrderAppliedDiscountType {
+  FIXED_AMOUNT
+  PERCENTAGE
+}
+
+"""
+An auto-generated type for paginating through multiple DraftOrderLineItems.
+"""
+type Shopify_DraftOrderLineItemConnection {
+  """A list of edges."""
+  edges: [Shopify_DraftOrderLineItemEdge!]!
+
+  """A list of the nodes contained in DraftOrderLineItemEdge."""
+  nodes: [Shopify_DraftOrderLineItem!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one DraftOrderLineItem and a cursor during pagination.
+"""
+type Shopify_DraftOrderLineItemEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of DraftOrderLineItemEdge."""
+  node: Shopify_DraftOrderLineItem!
+}
+
+"""A line item included in a draft order."""
+type Shopify_DraftOrderLineItem {
+  """
+  The discount that will be applied to the line item or the overall order.
+  """
+  appliedDiscount: Shopify_DraftOrderAppliedDiscount
+
+  """
+  Whether the line item is a custom line item (`true`) or a product variant line item (`false`).
+  """
+  custom: Boolean!
+
+  """
+  List of additional information, often representing custom features or special requests.
+  """
+  customAttributes: [Shopify_Attribute!]!
+
+  """The line item price after discounts are applied."""
+  discountedTotal: Money!
+
+  """
+  The `discountedTotal` divided by `quantity`, resulting in the value of the discount per unit.
+  """
+  discountedUnitPrice: Money!
+
+  """
+  Name of the service provider who fulfilled the order.
+  
+  Valid values are either **manual** or the name of the provider.
+  For example, **amazon**, **shipwire**.
+  
+  Deleted fulfillment services will return null.
+  """
+  fulfillmentService: Shopify_FulfillmentService
+
+  """
+  The weight of the line item in grams. The weight can only be specified if the line item is a custom
+  line item.
+  """
+  grams: Int @deprecated(reason: "Use `weight` instead")
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The image associated with the draft order line item."""
+  image(
+    """
+    Image width in pixels between 1 and 2048. This argument is deprecated: Use `maxWidth` on `Image.transformedSrc` instead.
+    """
+    maxWidth: Int
+
+    """
+    Image height in pixels between 1 and 2048. This argument is deprecated: Use `maxHeight` on `Image.transformedSrc` instead.
+    """
+    maxHeight: Int
+
+    """
+    Crops the image according to the specified region. This argument is deprecated: Use `crop` on `Image.transformedSrc` instead.
+    """
+    crop: Shopify_CropRegion
+
+    """
+    Image size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use `scale` on `Image.transformedSrc` instead.
+    """
+    scale: Int = 1
+  ): Shopify_Image
+
+  """Whether the line item is a gift card."""
+  isGiftCard: Boolean!
+
+  """Name of the product."""
+  name: String!
+
+  """
+  The total price (without discounts) of the line item, based on the original unit price of the variant x quantity.
+  """
+  originalTotal: Money!
+
+  """The variant price without any discounts applied."""
+  originalUnitPrice: Money!
+
+  """The product corresponding to the line item’s product variant."""
+  product: Shopify_Product
+
+  """The number of product variants that are requested in the draft order."""
+  quantity: Int!
+
+  """Whether physical shipping is required for the variant."""
+  requiresShipping: Boolean!
+
+  """Variant SKU number."""
+  sku: String
+
+  """
+  A list of tax line objects, each of which details the total taxes applicable to the order.
+  """
+  taxLines: [Shopify_TaxLine!]!
+
+  """Whether the variant is taxable."""
+  taxable: Boolean!
+
+  """
+  Title of the product or variant (this field only applies to custom line items).
+  """
+  title: String!
+
+  """The total value of the discount that is applied to the line item."""
+  totalDiscount: Money!
+
+  """The associated variant for the line item."""
+  variant: Shopify_ProductVariant
+
+  """Name of the variant."""
+  variantTitle: String
+
+  """Name of the vendor who made the variant."""
+  vendor: String
+
+  """The weight unit and value for a draft order line item."""
+  weight: Shopify_Weight
+}
+
+enum Shopify_DraftOrderStatus {
+  COMPLETED
+  INVOICE_SENT
+  OPEN
+}
+
+enum Shopify_DraftOrderSortKeys {
+  NUMBER
+  UPDATED_AT
+  STATUS
+  TOTAL_PRICE
+  CUSTOMER_NAME
+  ID
+  RELEVANCE
+}
+
+"""
+Represents the feature set available to the shop.
+Most fields specify whether a feature is enabled for a shop, and some fields return information
+related to specific features.
+"""
+type Shopify_ShopFeatures {
+  """Whether a shop has access to Avalara AvaTax."""
+  avalaraAvatax: Boolean!
+
+  """
+  The branding of the shop, which influences its look and feel in the Shopify admin.
+  """
+  branding: Shopify_ShopBranding!
+
+  """Whether a shop's online store can have CAPTCHA protection."""
+  captcha: Boolean!
+
+  """
+  Whether a shop's online store can have CAPTCHA protection for domains not managed by Shopify.
+  """
+  captchaExternalDomains: Boolean!
+
+  """Whether the delivery profiles functionality is enabled for this shop."""
+  deliveryProfiles: Boolean! @deprecated(reason: "Delivery profiles are now 100% enabled across Shopify.")
+
+  """
+  Whether a shop has access to the Google Analytics dynamic remarketing feature.
+  """
+  dynamicRemarketing: Boolean!
+
+  """Whether a shop can be migrated to use Shopify subscriptions."""
+  eligibleForSubscriptionMigration: Boolean!
+
+  """Whether a shop is configured properly to sell subscriptions."""
+  eligibleForSubscriptions: Boolean!
+
+  """Whether a shop can create gift cards."""
+  giftCards: Boolean!
+
+  """
+  Whether a shop displays Harmonized System codes on products. This is used for customs when shipping
+  internationally.
+  """
+  harmonizedSystemCode: Boolean!
+
+  """Whether a shop can enable international domains."""
+  internationalDomains: Boolean!
+
+  """Whether a shop can enable international price overrides."""
+  internationalPriceOverrides: Boolean!
+
+  """Whether a shop can enable international price rules."""
+  internationalPriceRules: Boolean!
+
+  """
+  Whether a shop has enabled a legacy subscription gateway to handle older subscriptions.
+  """
+  legacySubscriptionGatewayEnabled: Boolean!
+
+  """
+  Whether to show the Live View metrics in the Shopify admin. Live view is hidden from merchants that are on a trial
+  or don't have a storefront.
+  """
+  liveView: Boolean!
+
+  """Whether a shop has multi-location functionality."""
+  multiLocation: Boolean! @deprecated(reason: "All shops support multi-location inventory. Use `QueryRoot.locations` to determine whether shop has more than one location.\n")
+
+  """Whether a shop has access to the onboarding visual."""
+  onboardingVisual: Boolean!
+
+  """
+  Whether a shop is configured to sell subscriptions with PayPal Express.
+  """
+  paypalExpressSubscriptionGatewayStatus: Shopify_PaypalExpressSubscriptionsGatewayStatus!
+
+  """Whether a shop has access to all reporting features."""
+  reports: Boolean!
+
+  """Whether a shop has ever had subscription products."""
+  sellsSubscriptions: Boolean!
+
+  """Whether the shop has a Shopify Plus subscription."""
+  shopifyPlus: Boolean! @deprecated(reason: "Use Shop.plan.shopifyPlus instead.")
+
+  """
+  Whether to show metrics in the Shopify admin. Metrics are hidden for new merchants until they become meaningful.
+  """
+  showMetrics: Boolean!
+
+  """Whether a shop has an online store."""
+  storefront: Boolean!
+
+  """Whether a shop is using Shopify Balance."""
+  usingShopifyBalance: Boolean!
+}
+
+enum Shopify_ShopBranding {
+  SHOPIFY_GOLD
+  SHOPIFY_PLUS
+  ROGERS
+  SHOPIFY
+}
+
+enum Shopify_PaypalExpressSubscriptionsGatewayStatus {
+  ENABLED
+  DISABLED
+  PENDING
+}
+
+"""An auto-generated type for paginating through multiple InventoryItems."""
+type Shopify_InventoryItemConnection {
+  """A list of edges."""
+  edges: [Shopify_InventoryItemEdge!]!
+
+  """A list of the nodes contained in InventoryItemEdge."""
+  nodes: [Shopify_InventoryItem!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one InventoryItem and a cursor during pagination.
+"""
+type Shopify_InventoryItemEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of InventoryItemEdge."""
+  node: Shopify_InventoryItem!
+}
+
+"""
+The total number of pending orders on a shop if less then a maximum, or that maximum.
+The atMax field indicates when this maximum has been reached.
+"""
+type Shopify_LimitedPendingOrderCount {
+  """This is set when the number of pending orders has reached the maximum."""
+  atMax: Boolean!
+
+  """
+  The number of pendings orders on the shop.
+  Limited to a maximum of 10000.
+  """
+  count: Int!
+}
+
+"""
+An auto-generated type for paginating through multiple MarketingEvents.
+"""
+type Shopify_MarketingEventConnection {
+  """A list of edges."""
+  edges: [Shopify_MarketingEventEdge!]!
+
+  """A list of the nodes contained in MarketingEventEdge."""
+  nodes: [Shopify_MarketingEvent!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one MarketingEvent and a cursor during pagination.
+"""
+type Shopify_MarketingEventEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of MarketingEventEdge."""
+  node: Shopify_MarketingEvent!
+}
+
+enum Shopify_MarketingEventSortKeys {
+  STARTED_AT
+  ID
+  RELEVANCE
+}
+
+"""
+Merchant approval for accelerated onboarding to channel integration apps.
+"""
+type Shopify_MerchantApprovalSignals {
+  """
+  Whether the shop's Shopify Payments account identity is verified. Returns `false` if the identity is unverified or if the shop doesn't have a Shopify Payments account.
+  """
+  identityVerified: Boolean!
+
+  """
+  Whether Shopify has pre-verified the merchant's business for onboarding to channel integration apps. Returns `false` if the shop is not marked for verification.
+  """
+  verifiedByShopify: Boolean!
+}
+
+enum Shopify_ShopTagSort {
+  ALPHABETICAL
+  POPULAR
+}
+
+"""Settings related to payments."""
+type Shopify_PaymentSettings {
+  """List of the digital wallets which the shop supports."""
+  supportedDigitalWallets: [Shopify_DigitalWallet!]!
+}
+
+enum Shopify_DigitalWallet {
+  APPLE_PAY
+  ANDROID_PAY
+  GOOGLE_PAY
+  SHOPIFY_PAY
+}
+
+"""Represents the billing plan of the shop."""
+type Shopify_ShopPlan {
+  """The name of the shop's billing plan."""
+  displayName: String!
+
+  """Whether the shop is a partner development shop for testing purposes."""
+  partnerDevelopment: Boolean!
+
+  """Whether the shop has a Shopify Plus subscription."""
+  shopifyPlus: Boolean!
+}
+
+"""An auto-generated type for paginating through multiple PriceRules."""
+type Shopify_PriceRuleConnection {
+  """A list of edges."""
+  edges: [Shopify_PriceRuleEdge!]!
+
+  """A list of the nodes contained in PriceRuleEdge."""
+  nodes: [Shopify_PriceRule!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one PriceRule and a cursor during pagination.
+"""
+type Shopify_PriceRuleEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of PriceRuleEdge."""
+  node: Shopify_PriceRule!
+}
+
+"""
+Price rules are a set of conditions, including entitlements and prerequisites, that must be met in order for a discount code to apply. We recommend using the [Discount types](https://shopify.dev/api/examples/discounts) available in the GraphQL Admin API, which are intended to replace the GraphQL `PriceRule` object and REST Admin `PriceRule` and `DiscountCode` resources.
+"""
+type Shopify_PriceRule {
+  """
+  The maximum number of times that the price rule can be allocated onto an order.
+  """
+  allocationLimit: Int
+
+  """
+  The method by which the price rule's value is allocated to its entitled items.
+  """
+  allocationMethod: Shopify_PriceRuleAllocationMethod!
+
+  """The application that created the price rule."""
+  app: Shopify_App
+
+  """The date and time when the price rule was created."""
+  createdAt: DateTime!
+
+  """The customers that can use this price rule."""
+  customerSelection: Shopify_PriceRuleCustomerSelection!
+
+  """List of the price rule's discount codes."""
+  discountCodes(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_DiscountCodeSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `times_used`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_PriceRuleDiscountCodeConnection!
+
+  """How many discount codes associated with the price rule."""
+  discountCodesCount: Int!
+
+  """
+  The date and time when the price rule ends. For open-ended price rules, use `null`.
+  """
+  endsAt: DateTime
+
+  """
+  Quantity of prerequisite items required for the price rule to be applicable,  compared to quantity of entitled items.
+  """
+  entitlementToPrerequisiteQuantityRatio: Shopify_PriceRuleEntitlementToPrerequisiteQuantityRatio @deprecated(reason: "Use `prerequisiteToEntitlementQuantityRatio` instead")
+
+  """The paginated list of events associated with the price rule."""
+  events(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_EventSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `comments`
+     - `created_at`
+     - `subject_type`
+     - `verb`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_EventConnection!
+
+  """A list of the price rule's features."""
+  features: [Shopify_PriceRuleFeature!]!
+
+  """Indicates whether there are any timeline comments on the price rule."""
+  hasTimelineComment: Boolean!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The items to which the price rule applies."""
+  itemEntitlements: Shopify_PriceRuleItemEntitlements!
+
+  """The items required for the price rule to be applicable."""
+  itemPrerequisites: Shopify_PriceRuleLineItemPrerequisites!
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """Whether the price rule can be applied only once per customer."""
+  oncePerCustomer: Boolean!
+
+  """
+  The number of the entitled items must fall within this range for the price rule to be applicable.
+  """
+  prerequisiteQuantityRange: Shopify_PriceRuleQuantityRange
+
+  """
+  The shipping cost must fall within this range for the price rule to be applicable.
+  """
+  prerequisiteShippingPriceRange: Shopify_PriceRuleMoneyRange
+
+  """
+  The sum of the entitled items subtotal prices must fall within this range for the price rule to be applicable.
+  """
+  prerequisiteSubtotalRange: Shopify_PriceRuleMoneyRange
+
+  """
+  Quantity of prerequisite items required for the price rule to be applicable,  compared to quantity of entitled items.
+  """
+  prerequisiteToEntitlementQuantityRatio: Shopify_PriceRulePrerequisiteToEntitlementQuantityRatio
+
+  """URLs that can be used to share the discount."""
+  shareableUrls: [Shopify_PriceRuleShareableUrl!]!
+
+  """The shipping lines to which the price rule applies."""
+  shippingEntitlements: Shopify_PriceRuleShippingLineEntitlements!
+
+  """The date and time when the price rule starts."""
+  startsAt: DateTime!
+
+  """The status of the price rule."""
+  status: Shopify_PriceRuleStatus!
+
+  """A detailed summary of the price rule."""
+  summary: String
+
+  """
+  The type of lines (line_item or shipping_line) to which the price rule applies.
+  """
+  target: Shopify_PriceRuleTarget!
+
+  """The title of the price rule."""
+  title: String!
+
+  """The total sales from orders where the price rule was used."""
+  totalSales: Shopify_MoneyV2
+
+  """A list of the price rule's features."""
+  traits: [Shopify_PriceRuleTrait!]! @deprecated(reason: "Use `features` instead")
+
+  """
+  The number of times that the price rule has been used. This value is updated asynchronously and can be different than the actual usage count.
+  """
+  usageCount: Int!
+
+  """The maximum number of times that the price rule can be used in total."""
+  usageLimit: Int
+
+  """A time period during which a price rule is applicable."""
+  validityPeriod: Shopify_PriceRuleValidityPeriod!
+
+  """The value of the price rule."""
+  value: Shopify_PriceRuleValue! @deprecated(reason: "Use `valueV2` instead")
+
+  """The value of the price rule."""
+  valueV2: Shopify_PricingValue!
+}
+
+enum Shopify_PriceRuleAllocationMethod {
+  EACH
+  ACROSS
+}
+
+"""A selection of customers for whom the price rule applies."""
+type Shopify_PriceRuleCustomerSelection {
+  """List of customers to whom the price rule applies."""
+  customers(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CustomerSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `accepts_marketing`
+     - `country`
+     - `customer_date`
+     - `email`
+     - `last_abandoned_order_date`
+     - `order_date`
+     - `orders_count`
+     - `phone`
+     - `state`
+     - `tag`
+     - `tag_not`
+     - `total_spent`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CustomerConnection!
+
+  """Whether the price rule applies to all customers."""
+  forAllCustomers: Boolean!
+
+  """
+  A list of customer segments that contain the customers who can use the price rule.
+  """
+  segments: [Shopify_Segment!]!
+}
+
+"""A dynamic collection of customers based on specific criteria."""
+type Shopify_Segment {
+  """The date and time when the segment was added to the store."""
+  creationDate: DateTime!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The date and time when the segment was last updated."""
+  lastEditDate: DateTime!
+
+  """The name of the segment."""
+  name: String!
+
+  """
+  A precise definition of the segment. The definition is composed of a combination of conditions on facts about customers.
+  """
+  query: String!
+}
+
+"""
+An auto-generated type for paginating through multiple PriceRuleDiscountCodes.
+"""
+type Shopify_PriceRuleDiscountCodeConnection {
+  """A list of edges."""
+  edges: [Shopify_PriceRuleDiscountCodeEdge!]!
+
+  """A list of the nodes contained in PriceRuleDiscountCodeEdge."""
+  nodes: [Shopify_PriceRuleDiscountCode!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one PriceRuleDiscountCode and a cursor during pagination.
+"""
+type Shopify_PriceRuleDiscountCodeEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of PriceRuleDiscountCodeEdge."""
+  node: Shopify_PriceRuleDiscountCode!
+}
+
+"""A discount code of a price rule."""
+type Shopify_PriceRuleDiscountCode {
+  """The application that created the discount code."""
+  app: Shopify_App
+
+  """The code to apply the discount."""
+  code: String!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """
+  The number of times that the price rule has been used. This value is updated asynchronously and can be different than the actual usage count.
+  """
+  usageCount: Int!
+}
+
+enum Shopify_DiscountCodeSortKeys {
+  CODE
+  CREATED_AT
+  ID
+  RELEVANCE
+}
+
+"""
+Quantity of prerequisite items required for the price rule to be applicable, compared to quantity of entitled items.
+"""
+type Shopify_PriceRuleEntitlementToPrerequisiteQuantityRatio {
+  """The quantity of entitled items in the ratio."""
+  entitlementQuantity: Int!
+
+  """The quantity of prerequisite items in the ratio."""
+  prerequisiteQuantity: Int!
+}
+
+enum Shopify_PriceRuleFeature {
+  BUY_ONE_GET_ONE
+  BUY_ONE_GET_ONE_WITH_ALLOCATION_LIMIT
+  BULK
+  SPECIFIC_CUSTOMERS
+  QUANTITY_DISCOUNTS
+}
+
+"""
+The items to which this price rule applies. This may be multiple products, product variants, collections or combinations of the aforementioned.
+"""
+type Shopify_PriceRuleItemEntitlements {
+  """The collections to which the price rule applies."""
+  collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CollectionConnection!
+
+  """The product variants to which the price rule applies."""
+  productVariants(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductVariantConnection!
+
+  """The products to which the price rule applies."""
+  products(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductConnection!
+
+  """Whether the price rule applies to all line items."""
+  targetAllLineItems: Boolean!
+}
+
+"""
+Single or multiple line item products, product variants or collections required for the price rule to be applicable, can also be provided in combination.
+"""
+type Shopify_PriceRuleLineItemPrerequisites {
+  """The collections required for the price rule to be applicable."""
+  collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CollectionConnection!
+
+  """The product variants required for the price rule to be applicable."""
+  productVariants(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductVariantConnection!
+
+  """The products required for the price rule to be applicable."""
+  products(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductConnection!
+}
+
+"""A quantity range within which the price rule is applicable."""
+type Shopify_PriceRuleQuantityRange {
+  """The lower bound of the quantity range."""
+  greaterThan: Int
+
+  """The lower bound or equal of the quantity range."""
+  greaterThanOrEqualTo: Int
+
+  """The upper bound of the quantity range."""
+  lessThan: Int
+
+  """The upper bound or equal of the quantity range."""
+  lessThanOrEqualTo: Int
+}
+
+"""A money range within which the price rule is applicable."""
+type Shopify_PriceRuleMoneyRange {
+  """The lower bound of the money range."""
+  greaterThan: Money
+
+  """The lower bound or equal of the money range."""
+  greaterThanOrEqualTo: Money
+
+  """The upper bound of the money range."""
+  lessThan: Money
+
+  """The upper bound or equal of the money range."""
+  lessThanOrEqualTo: Money
+}
+
+"""
+Quantity of prerequisite items required for the price rule to be applicable, compared to quantity of entitled items.
+"""
+type Shopify_PriceRulePrerequisiteToEntitlementQuantityRatio {
+  """The quantity of entitled items in the ratio."""
+  entitlementQuantity: Int!
+
+  """The quantity of prerequisite items in the ratio."""
+  prerequisiteQuantity: Int!
+}
+
+"""Shareable URL for the discount code associated with the price rule."""
+type Shopify_PriceRuleShareableUrl {
+  """
+  The image URL of the item (product or collection) to which the discount applies.
+  """
+  targetItemImage: Shopify_Image
+
+  """The type of page that's associated with the URL."""
+  targetType: Shopify_PriceRuleShareableUrlTargetType!
+
+  """The title of the page that's associated with the URL."""
+  title: String!
+
+  """The URL for the discount code."""
+  url: Url!
+}
+
+enum Shopify_PriceRuleShareableUrlTargetType {
+  HOME
+  PRODUCT
+  COLLECTION
+}
+
+"""The shipping lines to which the price rule applies to."""
+type Shopify_PriceRuleShippingLineEntitlements {
+  """The codes for the countries to which the price rule applies to."""
+  countryCodes: [Shopify_CountryCode!]!
+
+  """
+  Whether the price rule is applicable to countries that have not been defined in the shop's shipping zones.
+  """
+  includeRestOfWorld: Boolean!
+
+  """Whether the price rule applies to all shipping lines."""
+  targetAllShippingLines: Boolean!
+}
+
+enum Shopify_PriceRuleStatus {
+  ACTIVE
+  EXPIRED
+  SCHEDULED
+}
+
+enum Shopify_PriceRuleTarget {
+  LINE_ITEM
+  SHIPPING_LINE
+}
+
+enum Shopify_PriceRuleTrait {
+  BUY_ONE_GET_ONE
+  BUY_ONE_GET_ONE_WITH_ALLOCATION_LIMIT
+  BULK
+  SPECIFIC_CUSTOMERS
+  QUANTITY_DISCOUNTS
+}
+
+"""A time period during which a price rule is applicable."""
+type Shopify_PriceRuleValidityPeriod {
+  """The time after which the price rule becomes invalid."""
+  end: DateTime
+
+  """The time after which the price rule is valid."""
+  start: DateTime!
+}
+
+"""
+The type of the price rule value. The price rule value might be a percentage value, or a fixed amount.
+"""
+union Shopify_PriceRuleValue = Shopify_PriceRuleFixedAmountValue | Shopify_PriceRulePercentValue
+
+"""The value of a fixed amount price rule."""
+type Shopify_PriceRuleFixedAmountValue {
+  """The monetary value of the price rule."""
+  amount: Money!
+}
+
+"""The value of a percent price rule."""
+type Shopify_PriceRulePercentValue {
+  """The percent value of the price rule."""
+  percentage: Float!
+}
+
+enum Shopify_PriceRuleSortKeys {
+  STARTS_AT
+  ENDS_AT
+  TITLE
+  CREATED_AT
+  UPDATED_AT
+  ID
+  RELEVANCE
+}
+
+"""Resource limits of a shop."""
+type Shopify_ShopResourceLimits {
+  """Maximum number of locations allowed."""
+  locationLimit: Int!
+
+  """Maximum number of product options allowed."""
+  maxProductOptions: Int!
+
+  """The maximum number of variants allowed per product."""
+  maxProductVariants: Int!
+
+  """
+  Whether the shop has reached the limit of the number of URL redirects it can make for resources.
+  """
+  redirectLimitReached: Boolean!
+
+  """
+  The maximum number of variants allowed per shop. If the shop has unlimited SKUs, then the quantity used cannot be retrieved.
+  """
+  skuResourceLimits: Shopify_ResourceLimit!
+}
+
+"""A resource limit represents the limits that the resource has."""
+type Shopify_ResourceLimit {
+  """Whether or not the resource is available."""
+  available: Boolean!
+
+  """Quantity available. If null the quantity available is unlimited."""
+  quantityAvailable: Int
+
+  """Quantity limit of the resource. If null the quantity is unlimited."""
+  quantityLimit: Int
+
+  """
+  Quantity used of the resource. If null the quantity used cannot be retrieved.
+  """
+  quantityUsed: Int
+}
+
+"""The connection type for SearchResult."""
+type Shopify_SearchResultConnection {
+  """A list of edges."""
+  edges: [Shopify_SearchResultEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+
+  """Information to aid in pagination."""
+  resultsAfterCount: Int! @deprecated(reason: "The provided information is not accurate.")
+}
+
+"""
+An auto-generated type which holds one SearchResult and a cursor during pagination.
+"""
+type Shopify_SearchResultEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SearchResultEdge."""
+  node: Shopify_SearchResult!
+}
+
+"""Represents an individual result returned from a search."""
+type Shopify_SearchResult {
+  """Returns the search result description text."""
+  description: String
+
+  """Returns the Image resource presented to accompany a search result."""
+  image: Shopify_Image
+
+  """Returns the ID of the resource returned in the search result."""
+  reference: Shopify_Node!
+
+  """Returns the resource title."""
+  title: String!
+
+  """Returns the absolute URL to the resource in the search result."""
+  url: Url!
+}
+
+"""
+An object with an ID field to support global identification, in accordance with the
+[Relay specification](https://relay.dev/graphql/objectidentification.htm#sec-Node-Interface).
+This interface is used by the [node](https://shopify.dev/api/admin-graphql/unstable/queries/node)
+and [nodes](https://shopify.dev/api/admin-graphql/unstable/queries/nodes) queries.
+"""
+type Shopify_Node {
+  """A globally-unique identifier."""
+  id: ID!
+}
+
+"""
+A list of search filters along with their specific options in value and label pair for filtering.
+"""
+type Shopify_SearchFilterOptions {
+  """A list of options that can be use to filter product availability."""
+  productAvailability: [Shopify_FilterOption!]!
+}
+
+"""A filter option is one possible value in a search filter."""
+type Shopify_FilterOption {
+  """The filter option's label for display purposes."""
+  label: String!
+
+  """The filter option's value."""
+  value: String!
+}
+
+"""
+Policy that a merchant has configured for their store, such as their refund or privacy policy.
+"""
+type Shopify_ShopPolicy {
+  """The text of the policy. The maximum size is 512kb."""
+  body: Html!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The translations associated with the resource."""
+  translations(
+    """Filters translations locale."""
+    locale: String!
+  ): [Shopify_PublishedTranslation!]!
+
+  """The shop policy type."""
+  type: Shopify_ShopPolicyType!
+
+  """The public URL of the policy."""
+  url: Url!
+}
+
+enum Shopify_ShopPolicyType {
+  REFUND_POLICY
+  SHIPPING_POLICY
+  PRIVACY_POLICY
+  TERMS_OF_SERVICE
+  TERMS_OF_SALE
+  LEGAL_NOTICE
+  SUBSCRIPTION_POLICY
+}
+
+"""
+Balance and payout information for a
+[Shopify Payments](https://help.shopify.com/manual/payments/shopify-payments/getting-paid-with-shopify-payments)
+account. Balance includes all balances for the currencies supported by the shop.
+You can also query for a list of payouts, where each payout includes the corresponding currencyCode field.
+"""
+type Shopify_ShopifyPaymentsAccount {
+  """Whether the Shopify Payments setup is completed."""
+  activated: Boolean!
+
+  """Current balances in all currencies for the account."""
+  balance: [Shopify_MoneyV2!]!
+
+  """All bank accounts configured for the Shopify Payments account."""
+  bankAccounts(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ShopifyPaymentsBankAccountConnection!
+
+  """
+  Statement descriptor used for charges.
+  
+  This is what buyers will see on their credit card or bank statements when making a purchase.
+  """
+  chargeStatementDescriptor: String @deprecated(reason: "Use `chargeStatementDescriptors` instead")
+
+  """
+  Statement descriptors used for charges.
+  
+  This is what buyers will see on their credit card or bank statements when making a purchase.
+  """
+  chargeStatementDescriptors: Shopify_ShopifyPaymentsChargeStatementDescriptor
+
+  """The Shopify Payments account country."""
+  country: String!
+
+  """The default payout currency for the Shopify Payments account."""
+  defaultCurrency: Shopify_CurrencyCode!
+
+  """All disputes related to the Shopify Payments account."""
+  disputes(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """
+    Supported filter parameters:
+     - `id`
+     - `initiated_at`
+     - `status`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+  ): Shopify_ShopifyPaymentsDisputeConnection!
+
+  """The fraud settings of the Shopify Payments account."""
+  fraudSettings: Shopify_ShopifyPaymentsFraudSettings!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The notifications settings for the account."""
+  notificationSettings: Shopify_ShopifyPaymentsNotificationSettings!
+
+  """Whether the Shopify Payments account can be onboarded."""
+  onboardable: Boolean!
+
+  """Payout schedule for the account."""
+  payoutSchedule: Shopify_ShopifyPaymentsPayoutSchedule!
+
+  """
+  Descriptor used for payouts.
+  
+  This is what merchants will see on their bank statement when receiving a payout.
+  """
+  payoutStatementDescriptor: String
+
+  """
+  All current and previous payouts made between the account and the bank account.
+  """
+  payouts(
+    """Filter the direction of the payout."""
+    transactionType: Shopify_ShopifyPaymentsPayoutTransactionType
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ShopifyPaymentsPayoutConnection!
+
+  """The permitted documents for identity verification."""
+  permittedVerificationDocuments: [Shopify_ShopifyPaymentsVerificationDocument!]!
+
+  """The verifications necessary for this account."""
+  verifications: [Shopify_ShopifyPaymentsVerification!]!
+}
+
+"""
+An auto-generated type for paginating through multiple ShopifyPaymentsBankAccounts.
+"""
+type Shopify_ShopifyPaymentsBankAccountConnection {
+  """A list of edges."""
+  edges: [Shopify_ShopifyPaymentsBankAccountEdge!]!
+
+  """A list of the nodes contained in ShopifyPaymentsBankAccountEdge."""
+  nodes: [Shopify_ShopifyPaymentsBankAccount!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ShopifyPaymentsBankAccount and a cursor during pagination.
+"""
+type Shopify_ShopifyPaymentsBankAccountEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ShopifyPaymentsBankAccountEdge."""
+  node: Shopify_ShopifyPaymentsBankAccount!
+}
+
+"""A bank account that can receive payouts."""
+type Shopify_ShopifyPaymentsBankAccount {
+  """The account number of the bank account."""
+  accountNumber: String!
+
+  """The last digits of the account number (the rest is redacted)."""
+  accountNumberLastDigits: String!
+
+  """The name of the bank."""
+  bankName: String
+
+  """The country of the bank."""
+  country: Shopify_CountryCode!
+
+  """The date that the bank account was created."""
+  createdAt: DateTime!
+
+  """The currency of the bank account."""
+  currency: Shopify_CurrencyCode!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """
+  All current and previous payouts made between the account and the bank account.
+  """
+  payouts(
+    """Filter the direction of the payout."""
+    transactionType: Shopify_ShopifyPaymentsPayoutTransactionType
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ShopifyPaymentsPayoutConnection!
+
+  """The routing number of the bank account."""
+  routingNumber: String!
+
+  """The status of the bank account."""
+  status: Shopify_ShopifyPaymentsBankAccountStatus!
+}
+
+"""
+An auto-generated type for paginating through multiple ShopifyPaymentsPayouts.
+"""
+type Shopify_ShopifyPaymentsPayoutConnection {
+  """A list of edges."""
+  edges: [Shopify_ShopifyPaymentsPayoutEdge!]!
+
+  """A list of the nodes contained in ShopifyPaymentsPayoutEdge."""
+  nodes: [Shopify_ShopifyPaymentsPayout!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ShopifyPaymentsPayout and a cursor during pagination.
+"""
+type Shopify_ShopifyPaymentsPayoutEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ShopifyPaymentsPayoutEdge."""
+  node: Shopify_ShopifyPaymentsPayout!
+}
+
+"""
+Payouts represent the movement of money between a merchant's Shopify
+Payments balance and their bank account.
+"""
+type Shopify_ShopifyPaymentsPayout {
+  """The bank account for the payout."""
+  bankAccount: Shopify_ShopifyPaymentsBankAccount
+
+  """The total amount and currency of the payout."""
+  gross: Shopify_MoneyV2! @deprecated(reason: "Use `net` instead")
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """
+  The exact time when the payout was issued. The payout only contains
+  balance transactions that were available at this time.
+  """
+  issuedAt: DateTime!
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """The total amount and currency of the payout."""
+  net: Shopify_MoneyV2!
+
+  """The transfer status of the payout."""
+  status: Shopify_ShopifyPaymentsPayoutStatus!
+
+  """The summary of the payout."""
+  summary: Shopify_ShopifyPaymentsPayoutSummary!
+
+  """The direction of the payout."""
+  transactionType: Shopify_ShopifyPaymentsPayoutTransactionType!
+}
+
+enum Shopify_ShopifyPaymentsPayoutStatus {
+  SCHEDULED
+  IN_TRANSIT
+  PAID
+  FAILED
+  CANCELED
+}
+
+"""
+Breakdown of the total fees and gross of each of the different types of transactions associated
+with the payout.
+"""
+type Shopify_ShopifyPaymentsPayoutSummary {
+  """Total fees for all adjustments including disputes."""
+  adjustmentsFee: Shopify_MoneyV2!
+
+  """Total gross amount for all adjustments including disputes."""
+  adjustmentsGross: Shopify_MoneyV2!
+
+  """Total fees for all charges."""
+  chargesFee: Shopify_MoneyV2!
+
+  """Total gross amount for all charges."""
+  chargesGross: Shopify_MoneyV2!
+
+  """Total fees for all refunds."""
+  refundsFee: Shopify_MoneyV2!
+
+  """Total gross amount for all refunds."""
+  refundsFeeGross: Shopify_MoneyV2!
+
+  """Total fees for all reserved funds."""
+  reservedFundsFee: Shopify_MoneyV2!
+
+  """Total gross amount for all reserved funds."""
+  reservedFundsGross: Shopify_MoneyV2!
+
+  """Total fees for all retried payouts."""
+  retriedPayoutsFee: Shopify_MoneyV2!
+
+  """Total gross amount for all retried payouts."""
+  retriedPayoutsGross: Shopify_MoneyV2!
+}
+
+enum Shopify_ShopifyPaymentsPayoutTransactionType {
+  DEPOSIT
+  WITHDRAWAL
+}
+
+enum Shopify_ShopifyPaymentsBankAccountStatus {
+  NEW
+  VALIDATED
+  VERIFIED
+  ERRORED
+}
+
+"""The charge descriptors for a payments account."""
+type Shopify_ShopifyPaymentsChargeStatementDescriptor {
+  """The default charge statement descriptor."""
+  default: String
+
+  """The prefix of the statement descriptor."""
+  prefix: String!
+}
+
+"""
+An auto-generated type for paginating through multiple ShopifyPaymentsDisputes.
+"""
+type Shopify_ShopifyPaymentsDisputeConnection {
+  """A list of edges."""
+  edges: [Shopify_ShopifyPaymentsDisputeEdge!]!
+
+  """A list of the nodes contained in ShopifyPaymentsDisputeEdge."""
+  nodes: [Shopify_ShopifyPaymentsDispute!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ShopifyPaymentsDispute and a cursor during pagination.
+"""
+type Shopify_ShopifyPaymentsDisputeEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ShopifyPaymentsDisputeEdge."""
+  node: Shopify_ShopifyPaymentsDispute!
+}
+
+"""
+A dispute occurs when a buyer questions the legitimacy of a charge with their financial institution.
+"""
+type Shopify_ShopifyPaymentsDispute {
+  """The total amount disputed by the cardholder."""
+  amount: Shopify_MoneyV2!
+
+  """The deadline for evidence submission."""
+  evidenceDueBy: Date
+
+  """
+  The date when evidence was sent. Returns null if evidence has not yet been sent.
+  """
+  evidenceSentOn: Date
+
+  """
+  The date when this dispute was resolved. Returns null if the dispute is not yet resolved.
+  """
+  finalizedOn: Date
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The date when this dispute was initiated."""
+  initiatedAt: DateTime!
+
+  """The ID of the corresponding resource in the REST Admin API."""
+  legacyResourceId: UnsignedInt64!
+
+  """The order that contains the charge that is under dispute."""
+  order: Shopify_Order
+
+  """The reason of the dispute."""
+  reasonDetails: Shopify_ShopifyPaymentsDisputeReasonDetails!
+
+  """The current state of the dispute."""
+  status: Shopify_DisputeStatus!
+
+  """
+  Indicates if this dispute is still in the inquiry phase or has turned into a chargeback.
+  """
+  type: Shopify_DisputeType!
+}
+
+scalar Date
+
+"""Details regarding a dispute reason."""
+type Shopify_ShopifyPaymentsDisputeReasonDetails {
+  """The raw code provided by the payment network."""
+  networkReasonCode: String
+
+  """The reason for the dispute provided by the cardholder's banks."""
+  reason: Shopify_ShopifyPaymentsDisputeReason!
+}
+
+enum Shopify_ShopifyPaymentsDisputeReason {
+  FRAUDULENT
+  GENERAL
+  UNRECOGNIZED
+  DUPLICATE
+  SUBSCRIPTION_CANCELLED
+  PRODUCT_UNACCEPTABLE
+  PRODUCT_NOT_RECEIVED
+  CREDIT_NOT_PROCESSED
+  INCORRECT_ACCOUNT_DETAILS
+  INSUFFICIENT_FUNDS
+  BANK_CANNOT_PROCESS
+  DEBIT_NOT_AUTHORIZED
+  CUSTOMER_INITIATED
+}
+
+"""The fraud settings of a payments account."""
+type Shopify_ShopifyPaymentsFraudSettings {
+  """Decline a charge if there is an AVS failure."""
+  declineChargeOnAvsFailure: Boolean!
+
+  """Decline a charge if there is an CVC failure."""
+  declineChargeOnCvcFailure: Boolean!
+}
+
+"""The notification settings for the account."""
+type Shopify_ShopifyPaymentsNotificationSettings {
+  """Receive email notifications when new payouts are sent or payouts fail."""
+  payouts: Boolean!
+}
+
+"""The payment schedule for a payments account."""
+type Shopify_ShopifyPaymentsPayoutSchedule {
+  """The interval at which payouts are sent to the connected bank account."""
+  interval: Shopify_ShopifyPaymentsPayoutInterval!
+
+  """
+  The day of the month funds will be paid out.
+  
+  The value can be any day of the month from the 1st to the 31st.
+  If the payment interval is set to monthly, this value will be used.
+  Payouts scheduled between 29-31st of the month are sent on the last day of shorter months.
+  """
+  monthlyAnchor: Int
+
+  """
+  The day of the week funds will be paid out.
+  
+  The value can be any weekday from Monday to Friday.
+  If the payment interval is set to weekly, this value will be used.
+  """
+  weeklyAnchor: Shopify_DayOfTheWeek
+}
+
+enum Shopify_ShopifyPaymentsPayoutInterval {
+  DAILY
+  WEEKLY
+  MONTHLY
+  MANUAL
+}
+
+enum Shopify_DayOfTheWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+"""A document which can be used to verify an individual."""
+type Shopify_ShopifyPaymentsVerificationDocument {
+  """True if the back side of the document is required."""
+  backRequired: Boolean!
+
+  """True if the front side of the document is required."""
+  frontRequired: Boolean!
+
+  """The type of the document which can be used for verification."""
+  type: Shopify_ShopifyPaymentsVerificationDocumentType!
+}
+
+enum Shopify_ShopifyPaymentsVerificationDocumentType {
+  DRIVERS_LICENSE
+  GOVERNMENT_IDENTIFICATION
+  PASSPORT
+}
+
+"""
+Each subject (individual) of an account has a verification object giving
+ information about the verification state.
+"""
+type Shopify_ShopifyPaymentsVerification {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The status of the verification."""
+  status: Shopify_ShopifyPaymentsVerificationStatus!
+
+  """The subject/individual who has to be verified."""
+  subject: Shopify_ShopifyPaymentsVerificationSubject!
+}
+
+enum Shopify_ShopifyPaymentsVerificationStatus {
+  VERIFIED
+  UNVERIFIED
+  PENDING
+}
+
+"""
+The verification subject represents an individual that has to be verified.
+"""
+type Shopify_ShopifyPaymentsVerificationSubject {
+  """The family name of the individual to verify."""
+  familyName: String!
+
+  """The given name of the individual to verify."""
+  givenName: String!
+}
+
+"""An auto-generated type for paginating through multiple StaffMembers."""
+type Shopify_StaffMemberConnection {
+  """A list of edges."""
+  edges: [Shopify_StaffMemberEdge!]!
+
+  """A list of the nodes contained in StaffMemberEdge."""
+  nodes: [Shopify_StaffMember!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one StaffMember and a cursor during pagination.
+"""
+type Shopify_StaffMemberEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of StaffMemberEdge."""
+  node: Shopify_StaffMember!
+}
+
+"""
+An auto-generated type for paginating through multiple StorefrontAccessTokens.
+"""
+type Shopify_StorefrontAccessTokenConnection {
+  """A list of edges."""
+  edges: [Shopify_StorefrontAccessTokenEdge!]!
+
+  """A list of the nodes contained in StorefrontAccessTokenEdge."""
+  nodes: [Shopify_StorefrontAccessToken!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one StorefrontAccessToken and a cursor during pagination.
+"""
+type Shopify_StorefrontAccessTokenEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of StorefrontAccessTokenEdge."""
+  node: Shopify_StorefrontAccessToken!
+}
+
+"""
+Token used to delegate unauthenticated access scopes to clients that need to access the unautheticated Storefront API.
+"""
+type Shopify_StorefrontAccessToken {
+  """List of permissions associated with the token."""
+  accessScopes: [Shopify_AccessScope!]!
+
+  """The issued public access token."""
+  accessToken: String!
+
+  """The date and time when the public access token was created."""
+  createdAt: DateTime!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """
+  An arbitrary title for each token determined by the developer, used for reference         purposes.
+  """
+  title: String!
+
+  """The date and time when the storefront access token was updated."""
+  updatedAt: DateTime!
+}
+
+enum Shopify_UnitSystem {
+  IMPERIAL_SYSTEM
+  METRIC_SYSTEM
+}
+
+"""An auto-generated type for paginating through a list of Strings."""
+type ShopifyStorefront_StringConnection {
+  """A list of edges."""
+  edges: [ShopifyStorefront_StringEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: ShopifyStorefront_PageInfo!
+}
+
+"""
+An auto-generated type which holds one String and a cursor during pagination.
+"""
+type ShopifyStorefront_StringEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of StringEdge."""
+  node: String!
+}
+
 """Asset search results"""
 type AssetSearchResults {
   results: [Asset!]!
@@ -16550,6 +20528,7 @@ input TSWhereInput {
   ProductPageDetails_details: TSWhereProductPageDetailsDetailsInput
   ProductPagePolicies_policies: TSWhereProductPagePoliciesPoliciesInput
   productComponent: TSWhereStringInput
+  hideBreadcrumbs: TSWhereBooleanInput
   hideRelatedProducts: TSWhereBooleanInput
   hideReviews: TSWhereBooleanInput
   showPolicies: TSWhereBooleanInput
@@ -18704,6 +22683,11 @@ type WithContext {
     """The handle of the product."""
     handle: String!
   ): Shopify_Product
+  Shopify_shop: Shopify_Shop
+  ShopifyStorefront_productTypes(
+    """Returns up to the first `n` elements from the list."""
+    first: Int!
+  ): ShopifyStorefront_StringConnection
   searchAssetIndex(
     terms: String
 
@@ -19345,6 +23329,26 @@ type ShopifyStorefront_Cart {
   createdAt: DateTime!
 
   """
+  The delivery groups available for the cart, based on the default address of the logged-in customer.
+  """
+  deliveryGroups(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): ShopifyStorefront_CartDeliveryGroupConnection!
+
+  """
   The case-insensitive discount codes that the customer added at checkout.
   """
   discountCodes: [ShopifyStorefront_CartDiscountCode!]!
@@ -19352,7 +23356,7 @@ type ShopifyStorefront_Cart {
   """
   The estimated costs that the buyer will pay at checkout. The estimated costs are subject to change and changes will be reflected at checkout. The `estimatedCost` field uses the `buyerIdentity` field to determine [international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
   """
-  estimatedCost: ShopifyStorefront_CartEstimatedCost!
+  estimatedCost: ShopifyStorefront_CartEstimatedCost! @deprecated(reason: "Use `cost` instead")
 
   """A globally-unique identifier."""
   id: ID!
@@ -19403,42 +23407,70 @@ type ShopifyStorefront_CartBuyerIdentity {
   phone: String
 }
 
-"""The discount codes applied to the cart."""
-type ShopifyStorefront_CartDiscountCode {
-  """
-  Whether the discount code is applicable to the cart's current contents.
-  """
-  applicable: Boolean!
+"""
+An auto-generated type for paginating through multiple CartDeliveryGroups.
+"""
+type ShopifyStorefront_CartDeliveryGroupConnection {
+  """A list of edges."""
+  edges: [ShopifyStorefront_CartDeliveryGroupEdge!]!
 
-  """The code for the discount."""
-  code: String!
+  """A list of the nodes contained in CartDeliveryGroupEdge."""
+  nodes: [ShopifyStorefront_CartDeliveryGroup!]!
+
+  """Information to aid in pagination."""
+  pageInfo: ShopifyStorefront_PageInfo!
 }
 
 """
-The estimated costs that the buyer will pay at checkout.
-It uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
-[international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+An auto-generated type which holds one CartDeliveryGroup and a cursor during pagination.
 """
-type ShopifyStorefront_CartEstimatedCost {
-  """
-  The estimated amount, before taxes and discounts, for the customer to pay.
-  """
-  subtotalAmount: ShopifyStorefront_MoneyV2!
+type ShopifyStorefront_CartDeliveryGroupEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
 
-  """The estimated total amount for the customer to pay."""
-  totalAmount: ShopifyStorefront_MoneyV2!
+  """The item at the end of CartDeliveryGroupEdge."""
+  node: ShopifyStorefront_CartDeliveryGroup!
+}
 
-  """The estimated duty amount for the customer to pay at checkout."""
-  totalDutyAmount: ShopifyStorefront_MoneyV2
+"""
+Information about the options available for one or more line items to be delivered to a specific address.
+"""
+type ShopifyStorefront_CartDeliveryGroup {
+  """A list of cart lines for the delivery group."""
+  cartLines(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
 
-  """The estimated tax amount for the customer to pay at checkout."""
-  totalTaxAmount: ShopifyStorefront_MoneyV2
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): ShopifyStorefront_CartLineConnection!
+
+  """The destination address for the delivery group."""
+  deliveryAddress: ShopifyStorefront_MailingAddress!
+
+  """The delivery options available for the delivery group."""
+  deliveryOptions: [ShopifyStorefront_CartDeliveryOption!]!
+
+  """The ID for the delivery group."""
+  id: ID!
 }
 
 """An auto-generated type for paginating through multiple CartLines."""
 type ShopifyStorefront_CartLineConnection {
   """A list of edges."""
   edges: [ShopifyStorefront_CartLineEdge!]!
+
+  """A list of the nodes contained in CartLineEdge."""
+  nodes: [ShopifyStorefront_CartLine!]!
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
@@ -19468,7 +23500,7 @@ type ShopifyStorefront_CartLine {
   """
   The estimated cost of the merchandise that the buyer will pay for at checkout. The estimated costs are subject to change and changes will be reflected at checkout.
   """
-  estimatedCost: ShopifyStorefront_CartLineEstimatedCost!
+  estimatedCost: ShopifyStorefront_CartLineEstimatedCost! @deprecated(reason: "Use `cost` instead")
 
   """A globally-unique identifier."""
   id: ID!
@@ -19504,6 +23536,65 @@ type ShopifyStorefront_CartLineEstimatedCost {
 
 """The merchandise to be purchased at checkout."""
 union ShopifyStorefront_Merchandise = ShopifyStorefront_ProductVariant
+
+"""Information about a delivery option."""
+type ShopifyStorefront_CartDeliveryOption {
+  """The code of the delivery option."""
+  code: String
+
+  """The method for the delivery option."""
+  deliveryMethodType: ShopifyStorefront_DeliveryMethodType!
+
+  """The description of the delivery option."""
+  description: String
+
+  """The estimated cost for the delivery option."""
+  estimatedCost: ShopifyStorefront_MoneyV2!
+
+  """The title of the delivery option."""
+  title: String
+}
+
+enum ShopifyStorefront_DeliveryMethodType {
+  SHIPPING
+  PICK_UP
+  RETAIL
+  LOCAL
+  PICKUP_POINT
+  NONE
+}
+
+"""The discount codes applied to the cart."""
+type ShopifyStorefront_CartDiscountCode {
+  """
+  Whether the discount code is applicable to the cart's current contents.
+  """
+  applicable: Boolean!
+
+  """The code for the discount."""
+  code: String!
+}
+
+"""
+The estimated costs that the buyer will pay at checkout.
+It uses [`CartBuyerIdentity`](https://shopify.dev/api/storefront/reference/cart/cartbuyeridentity) to determine
+[international pricing](https://shopify.dev/api/examples/international-pricing#create-a-cart).
+"""
+type ShopifyStorefront_CartEstimatedCost {
+  """
+  The estimated amount, before taxes and discounts, for the customer to pay.
+  """
+  subtotalAmount: ShopifyStorefront_MoneyV2!
+
+  """The estimated total amount for the customer to pay."""
+  totalAmount: ShopifyStorefront_MoneyV2!
+
+  """The estimated duty amount for the customer to pay at checkout."""
+  totalDutyAmount: ShopifyStorefront_MoneyV2
+
+  """The estimated tax amount for the customer to pay at checkout."""
+  totalTaxAmount: ShopifyStorefront_MoneyV2
+}
 
 input CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput {
   quantity: Int!
@@ -20399,6 +24490,7 @@ input UpdateProductInterfaceInput {
   """Initialized with title from shopify"""
   name: String
   productComponent: String
+  hideBreadcrumbs: Boolean
   hideRelatedProducts: Boolean
   hideReviews: Boolean
   showPolicies: Boolean
@@ -20747,6 +24839,7 @@ input CreateProductInterfaceInput {
   """Initialized with title from shopify"""
   name: String
   productComponent: String
+  hideBreadcrumbs: Boolean = false
   hideRelatedProducts: Boolean = false
   hideReviews: Boolean = false
   showPolicies: Boolean = false
@@ -20771,6 +24864,9 @@ input DuplicateProductInput {
 
   """"""
   productComponent: String
+
+  """"""
+  hideBreadcrumbs: Boolean
 
   """"""
   hideRelatedProducts: Boolean

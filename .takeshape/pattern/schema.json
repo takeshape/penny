@@ -85,6 +85,9 @@
           "productComponent": {
             "widget": "dropdown"
           },
+          "hideBreadcrumbs": {
+            "widget": "toggleSwitch"
+          },
           "hideReviews": {
             "widget": "toggleSwitch"
           },
@@ -193,6 +196,7 @@
         "order": [
           "name",
           "productComponent",
+          "hideBreadcrumbs",
           "hideReviews",
           "hideRelatedProducts",
           "showDetails",
@@ -3532,6 +3536,12 @@
             ],
             "title": "Product Component"
           },
+          "hideBreadcrumbs": {
+            "type": "boolean",
+            "default": false,
+            "@l10n": false,
+            "title": "Hide Breadcrumbs"
+          },
           "hideReviews": {
             "default": false,
             "@l10n": false,
@@ -3642,6 +3652,14 @@
             ],
             "title": "Product Component",
             "@mapping": "takeshape:local:Product.ViTuUtNE_"
+          },
+          "hideBreadcrumbs": {
+            "type": "boolean",
+            "default": false,
+            "@l10n": false,
+            "description": "",
+            "title": "Hide Breadcrumbs",
+            "@mapping": "takeshape:local:Product.SNVU8G6B8"
           },
           "hideReviews": {
             "default": false,

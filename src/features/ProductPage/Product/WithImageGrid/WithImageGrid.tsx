@@ -17,14 +17,16 @@ export interface ProductWithImageGridProps {
   product: ProductType;
   reviewHighlights?: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
-  showFeaturedReviews?: boolean;
+  showFeaturedReviews: boolean;
+  showBreadcrumbs: boolean;
 }
 
 export const ProductWithImageGrid = ({
   product,
   reviewHighlights,
   breadcrumbs,
-  showFeaturedReviews
+  showFeaturedReviews,
+  showBreadcrumbs
 }: PropsWithChildren<ProductWithImageGridProps>) => {
   const { name, descriptionHtml, images, options, hasStock } = product;
 
@@ -82,7 +84,7 @@ export const ProductWithImageGrid = ({
 
   return (
     <>
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      {showBreadcrumbs && breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
       <ImageGallery images={images} />
 
       {/* Product info */}

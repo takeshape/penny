@@ -1,7 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
 import Seo from 'components/Seo';
-import { productPageBreadcrumbsAtom } from 'features/ProductPage/store';
-import { useSetAtom } from 'jotai';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { pushState } from 'utils/history';
 import { ProductCategory } from './ProductCategory';
@@ -10,13 +8,7 @@ import {
   ProductCategoryShopifyCollectionQuery,
   ProductCategoryShopifyCollectionResponse
 } from './queries';
-import {
-  getBreadcrumbs,
-  getCollectionPageInfo,
-  getCollectionWithOverfetch,
-  getCurrentTitle,
-  getCurrentUrl
-} from './transforms';
+import { getCollectionPageInfo, getCollectionWithOverfetch, getCurrentTitle, getCurrentUrl } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
 
 export interface ProductCategoryWithCollectionProps {
@@ -27,10 +19,6 @@ export interface ProductCategoryWithCollectionProps {
 }
 
 export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
-  // @ts-expect-error No clue
-  const setProductPageBreadcrumbs = useSetAtom(productPageBreadcrumbsAtom);
-  setProductPageBreadcrumbs(getBreadcrumbs(collection));
-
   pageSize = pageSize ?? 5;
 
   const [currentPage, setCurrentPage] = useState(page ?? 1);
