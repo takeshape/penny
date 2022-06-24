@@ -1,6 +1,6 @@
-import { getLayoutData } from 'data/getLayoutData';
 import { AccountSubscriptions } from 'features/AccountSubscriptions/AccountSubscriptions';
 import Layout from 'layouts/Account';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
 const AccountPurchasesPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -11,9 +11,9 @@ const AccountPurchasesPage: NextPage = ({ navigation, footer }: InferGetStaticPr
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
   return { props: { navigation, footer } };
-}
+};
 
 export default AccountPurchasesPage;

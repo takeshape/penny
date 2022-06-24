@@ -1,6 +1,5 @@
 import PageLoader from 'components/PageLoader';
 import { collectionsPageSize } from 'config';
-import { getLayoutData } from 'data/getLayoutData';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -12,6 +11,7 @@ import {
 } from 'features/ProductCategory/queries';
 import { getCollectionBasic, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';

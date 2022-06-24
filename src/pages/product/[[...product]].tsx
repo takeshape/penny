@@ -1,5 +1,4 @@
 import PageLoader from 'components/PageLoader';
-import { getLayoutData } from 'data/getLayoutData';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageShopifyProductArgs,
@@ -19,6 +18,7 @@ import {
   getReviewList
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';

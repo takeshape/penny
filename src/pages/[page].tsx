@@ -1,5 +1,4 @@
 import PageLoader from 'components/PageLoader';
-import { getLayoutData } from 'data/getLayoutData';
 import Page from 'features/Page/Page';
 import {
   PageGetPage,
@@ -10,6 +9,7 @@ import {
 } from 'features/Page/queries';
 import { getPage, getPageParams } from 'features/Page/transforms';
 import Layout from 'layouts/Default';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';

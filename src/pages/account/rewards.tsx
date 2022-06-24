@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
-import { getLayoutData } from 'data/getLayoutData';
 import { AccountLoyaltyCard } from 'features/AccountLoyaltyCard/AccountLoyaltyCard';
 import { GetMyLoyaltyCardQuery, GetMyLoyaltyCardResponse } from 'features/AccountLoyaltyCard/queries';
 import { AccountReferrals } from 'features/AccountReferrals/AccountReferrals';
 import Layout from 'layouts/Account';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
 const AccountRewardsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -25,9 +25,9 @@ const AccountRewardsPage: NextPage = ({ navigation, footer }: InferGetStaticProp
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
   return { props: { navigation, footer } };
-}
+};
 
 export default AccountRewardsPage;
