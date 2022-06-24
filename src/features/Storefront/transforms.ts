@@ -58,7 +58,6 @@ export function getCollection(
     name: collection.title,
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
-    productsCount: collection.productsCount,
     items: collection.products.nodes.map((node) => getCollectionItem(node)),
     pageInfo: collection.products.pageInfo,
     anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null

@@ -1,3 +1,4 @@
+import { CollectionBase, CollectionPageInfo } from 'types/collection';
 import { ProductBase } from 'types/product';
 import { ReviewStats } from 'types/review';
 import {
@@ -37,7 +38,7 @@ export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsR
 
 export type ProductCategoryShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'seo'
 > & {
   products: {
     pageInfo: Shopify_PageInfo;
@@ -56,14 +57,7 @@ export type ProductCategoryProductListItem = {
   reviews: ProductCategoryReviewStats;
 };
 
-export type ProductCategoryCollection = {
-  id: string;
-  url: string;
-  handle: string;
-  name: string;
-  description: string;
-  descriptionHtml: string;
-  items: ProductCategoryProductListItem[];
-  pageInfo: Shopify_PageInfo;
-  anchor?: string;
+export type ProductCategoryCollection = CollectionBase<ProductCategoryProductListItem> & {
+  seo: {};
+  pageInfo: CollectionPageInfo;
 };
