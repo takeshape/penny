@@ -10,6 +10,12 @@ export type CollectionSeo = {
   description: string;
 };
 
+export type CollectionParent = {
+  id: string;
+  url: string;
+  name: string;
+};
+
 export type CollectionBase<T> = {
   id: string;
   url: string;
@@ -21,4 +27,6 @@ export type CollectionBase<T> = {
   pageInfo?: CollectionPageInfo;
   anchor?: string;
   seo?: CollectionSeo;
+  parent?: CollectionParent;
+  breadcrumbTitle?: string;
 };

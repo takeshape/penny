@@ -1,4 +1,5 @@
 import {
+  ProductPageBreadcrumbs,
   ProductPageDetails,
   ProductPageOptions,
   ProductPagePolicies,
@@ -148,6 +149,7 @@ export const productPageOptions: ProductPageOptions = {
   showPolicies: true,
   showReviews: true,
   showRelatedProducts: true,
+  showBreadcrumbs: true,
   component: 'withImageGrid'
 };
 
@@ -1358,3 +1360,16 @@ export const productPageProduct: ProductPageProduct = {
     }
   ]
 };
+
+export const productPageBreadcrumbs: ProductPageBreadcrumbs = [
+  {
+    id: 'gid://shopify/Collection/270097776740',
+    name: 'Men',
+    href: '/collection/men'
+  },
+  {
+    id: 'gid://shopify/Collection/270340980836',
+    name: 'Basic Tees',
+    href: '/collection/mens-basic-tees'
+  }
+];

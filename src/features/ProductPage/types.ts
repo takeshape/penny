@@ -1,12 +1,8 @@
+import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
-import {
-  Product,
-  ReviewsIo_ListProductReviewsResponse,
-  Shopify_Product,
-  Shopify_ProductConnection
-} from 'types/takeshape';
+import { ReviewsIo_ListProductReviewsResponse, Shopify_Product, Shopify_ProductConnection } from 'types/takeshape';
 
 export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
 export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConnection, 'pageInfo'> & {
@@ -34,9 +30,11 @@ export type ProductPageShopifyProduct = Pick<
   | 'variants'
   | 'takeshape'
   | 'reviews'
+  | 'collections'
+  | 'standardizedProductType'
 >;
 
-export type RelatedProductsShopifyProduct = Pick<
+export type ProductPageRelatedProductsShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
   | 'handle'
@@ -55,12 +53,7 @@ export type RelatedProductsShopifyProduct = Pick<
   | 'takeshape'
 >;
 
-export type RelatedProductsProduct = ProductBase;
-
-export type ProductPageTakeshapeProduct = Pick<
-  Product,
-  'details' | 'policies' | 'hideRelatedProducts' | 'hideReviews' | 'showPolicies' | 'showDetails' | 'productComponent'
->;
+export type ProductPageRelatedProductsProduct = ProductBase;
 
 export type ProductPageDetail = {
   image: {
@@ -99,6 +92,7 @@ export type ProductPageOptions = {
   showRelatedProducts: boolean;
   showDetails: boolean;
   showPolicies: boolean;
+  showBreadcrumbs: boolean;
 };
 
 export type ProductPageProduct = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;
@@ -108,3 +102,5 @@ export type ProductPageReviewsReview = Review;
 export type ProductPageReviewHighlights = ReviewHighlights;
 export type ProductPageReviewsRollup = ReviewRollup;
 export type ProductPageReviewsStats = ReviewStats;
+
+export type ProductPageBreadcrumbs = Breadcrumb[];
