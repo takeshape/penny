@@ -1,4 +1,3 @@
-import { getLayoutData } from 'data/getLayoutData';
 import {
   GetStorefrontQuery,
   GetStorefrontResponse,
@@ -9,6 +8,7 @@ import {
 import { Storefront } from 'features/Storefront/Storefront';
 import { getCollection, getStorefront } from 'features/Storefront/transforms';
 import Layout from 'layouts/Default';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
@@ -28,7 +28,7 @@ const IndexPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
 
   const { data: storefrontData } = await apolloClient.query<GetStorefrontResponse>({
@@ -53,6 +53,6 @@ export async function getStaticProps() {
   const collection = getCollection(collectionData, collectionVariables);
 
   return { props: { navigation, footer, collection, storefront } };
-}
+};
 
 export default IndexPage;

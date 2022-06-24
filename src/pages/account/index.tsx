@@ -1,8 +1,8 @@
-import { getLayoutData } from 'data/getLayoutData';
 import { AccountFormAddress } from 'features/AccountForm/AccountFormAddress';
 import { AccountFormMarketing } from 'features/AccountForm/AccountFormMarketing';
 import { AccountFormProfile } from 'features/AccountForm/AccountFormProfile';
 import Layout from 'layouts/Account';
+import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
 const AccountPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -15,9 +15,9 @@ const AccountPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<t
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
   return { props: { navigation, footer } };
-}
+};
 
 export default AccountPage;

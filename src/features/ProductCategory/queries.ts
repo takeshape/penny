@@ -35,6 +35,10 @@ const ProductCategoryFragments = gql`
     title
     description
     descriptionHtml
+    seo {
+      title
+      description
+    }
   }
 
   fragment ProductCategoryProduct on Shopify_Product {
