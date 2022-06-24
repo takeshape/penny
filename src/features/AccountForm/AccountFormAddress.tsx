@@ -3,16 +3,16 @@ import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { MutationUpdateMyCustomerAddressArgs, QueryShopifyStorefront_CustomerArgs } from 'types/takeshape';
+import {
+  GetCustomerQueryResponse,
+  GetCustomerQueryVariables,
+  UpdateCustomerAddressMutationResponse,
+  UpdateCustomerAddressMutationVariables
+} from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
 import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
-import {
-  GetCustomerQuery,
-  GetCustomerResponse,
-  UpdateCustomerAddressMutation,
-  UpdateCustomerAddressResponse
-} from './queries';
+import { GetCustomerQuery, UpdateCustomerAddressMutation } from './queries';
 
 interface AccountFormAddressForm {
   firstName: string;
@@ -34,14 +34,13 @@ export const AccountFormAddress = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<AccountFormAddressForm>();
 
-  const { data: customerData, error: customerError } = useQuery<
-    GetCustomerResponse,
-    QueryShopifyStorefront_CustomerArgs
-  >(GetCustomerQuery);
+  const { data: customerData, error: customerError } = useQuery<GetCustomerQueryResponse, GetCustomerQueryVariables>(
+    GetCustomerQuery
+  );
 
   const [setCustomerAddressPayload, { data: customerAddressResponse }] = useMutation<
-    UpdateCustomerAddressResponse,
-    MutationUpdateMyCustomerAddressArgs
+    UpdateCustomerAddressMutationResponse,
+    UpdateCustomerAddressMutationVariables
   >(UpdateCustomerAddressMutation);
 
   const timer = useRef<NodeJS.Timer>(null);

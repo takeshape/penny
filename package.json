@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit --pretty ",
-    "typegen": "takeshape schema && takeshape types --to src/types/takeshape.ts"
+    "typegen": "takeshape schema && graphql-codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
@@ -53,6 +53,9 @@
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@babel/runtime": "^7.18.3",
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.5.1",
+    "@graphql-codegen/typescript-operations": "^2.4.2",
     "@storybook/addon-actions": "^6.5.9",
     "@storybook/addon-essentials": "^6.5.9",
     "@storybook/addon-interactions": "^6.5.9",

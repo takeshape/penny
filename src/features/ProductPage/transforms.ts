@@ -9,10 +9,10 @@ import {
   getSeo
 } from 'transforms/shopify';
 import {
-  ProductPageShopifyProductHandlesResponse,
+  ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
-  RelatedProductsShopifyCollectionResponse
-} from './queries';
+  RelatedProductsShopifyCollectionQueryResponse
+} from 'types/takeshape';
 import {
   ProductPageDetails,
   ProductPageOptions,
@@ -146,7 +146,7 @@ export function getPageOptions(response: ProductPageShopifyProductResponse): Pro
   };
 }
 
-export function getProductPageParams(response: ProductPageShopifyProductHandlesResponse) {
+export function getProductPageParams(response: ProductPageShopifyProductHandlesQueryResponse) {
   const nodes = response?.products?.nodes;
 
   if (!nodes) {
@@ -177,11 +177,13 @@ function getRelatedProduct(shopifyProduct: RelatedProductsShopifyProduct): Relat
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options)
+    options: []
   };
 }
 
-export function getRelatedProductList(response: RelatedProductsShopifyCollectionResponse): RelatedProductsProduct[] {
+export function getRelatedProductList(
+  response: RelatedProductsShopifyCollectionQueryResponse
+): RelatedProductsProduct[] {
   const productEdges = response?.collection?.products?.edges;
 
   if (!productEdges) {

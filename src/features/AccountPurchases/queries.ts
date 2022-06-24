@@ -1,9 +1,4 @@
 import { gql } from '@apollo/client';
-import { Shopify_Customer, Voucherify_LoyaltyCard } from 'types/takeshape';
-
-export interface GetMyAdminCustomerOrdersResponse {
-  customer: Shopify_Customer;
-}
 
 export const GetMyAdminCustomerOrdersQuery = gql`
   fragment LineItem on Shopify_LineItem {
@@ -71,30 +66,6 @@ export const GetMyAdminCustomerOrdersQuery = gql`
               }
             }
           }
-        }
-      }
-    }
-  }
-`;
-
-export interface GetMyLoyaltyCardResponse {
-  loyaltyCard: Voucherify_LoyaltyCard;
-}
-
-export const GetMyLoyaltyCardQuery = gql`
-  query GetMyLoyaltyCardQuery {
-    loyaltyCard: getMyLoyaltyCard {
-      id
-      code
-      campaign
-      loyalty_card {
-        points
-        balance
-      }
-      assets {
-        qr {
-          id
-          url
         }
       }
     }

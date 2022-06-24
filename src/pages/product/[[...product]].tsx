@@ -1,13 +1,6 @@
 import PageLoader from 'components/PageLoader';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
-import {
-  ProductPageShopifyProductArgs,
-  ProductPageShopifyProductHandlesArgs,
-  ProductPageShopifyProductHandlesQuery,
-  ProductPageShopifyProductHandlesResponse,
-  ProductPageShopifyProductQuery,
-  ProductPageShopifyProductResponse
-} from 'features/ProductPage/queries';
+import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
   getDetails,
   getPageOptions,
@@ -21,6 +14,12 @@ import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import {
+  ProductPageShopifyProductHandlesQueryResponse,
+  ProductPageShopifyProductHandlesQueryVariables,
+  ProductPageShopifyProductResponse,
+  ProductPageShopifyProductVariables
+} from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 import { retryGraphqlThrottle } from '../../utils/apollo/retryGraphqlThrottle';
@@ -80,7 +79,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const handle = getSingle(params.product);
 
   const { data: productData } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
-    return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductArgs>({
+    return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
       query: ProductPageShopifyProductQuery,
       variables: {
         handle
@@ -113,8 +112,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   while (hasNextPage) {
     const { data } = await apolloClient.query<
-      ProductPageShopifyProductHandlesResponse,
-      ProductPageShopifyProductHandlesArgs
+      ProductPageShopifyProductHandlesQueryResponse,
+      ProductPageShopifyProductHandlesQueryVariables
     >({
       query: ProductPageShopifyProductHandlesQuery,
       variables: {

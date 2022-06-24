@@ -1,18 +1,4 @@
 import { gql } from '@apollo/client';
-import {
-  ProductPageShopifyProduct,
-  ProductPageShopifyProductHandleConnection,
-  RelatedProductsShopifyProduct
-} from './types';
-
-export type ProductPageShopifyProductHandlesResponse = {
-  products: ProductPageShopifyProductHandleConnection;
-};
-
-export type ProductPageShopifyProductHandlesArgs = {
-  first: number;
-  after: string;
-};
 
 export const ProductPageShopifyProductHandlesQuery = gql`
   query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
@@ -217,14 +203,6 @@ const ProductPageProductFragment = gql`
   }
 `;
 
-export type ProductPageShopifyProductResponse = {
-  product: ProductPageShopifyProduct;
-};
-
-export type ProductPageShopifyProductArgs = {
-  handle: string;
-};
-
 export const ProductPageShopifyProductQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProduct($handle: String!) {
@@ -233,20 +211,6 @@ export const ProductPageShopifyProductQuery = gql`
     }
   }
 `;
-
-export type RelatedProductsShopifyCollectionArgs = {
-  handle: string;
-};
-
-export type RelatedProductsShopifyCollectionResponse = {
-  collection: {
-    products: {
-      edges: {
-        node: RelatedProductsShopifyProduct;
-      }[];
-    };
-  };
-};
 
 export const RelatedProductsShopifyCollectionQuery = gql`
   query RelatedProductsShopifyCollectionQuery($handle: String!) {

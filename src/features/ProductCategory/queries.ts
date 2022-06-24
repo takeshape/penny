@@ -1,17 +1,4 @@
 import { gql } from '@apollo/client';
-import { QueryShopify_ProductsArgs } from 'types/takeshape';
-import { ProductCategoryShopifyCollection, ProductCategoryShopifyCollectionHandleConnection } from './types';
-
-export type ProductCategoryShopifyPaginationArgs = QueryShopify_ProductsArgs;
-
-export type ProductCategoryShopifyCollectionHandlesResponse = {
-  collections: ProductCategoryShopifyCollectionHandleConnection;
-};
-
-export type ProductCategoryShopifyCollectionHandlesArgs = {
-  first: number;
-  after: string;
-};
 
 export const ProductCategoryShopifyCollectionHandles = gql`
   query ProductCategoryShopifyCollectionHandles($first: Int!, $after: String) {
@@ -78,17 +65,15 @@ const ProductCategoryFragments = gql`
   }
 `;
 
-export type ProductCategoryShopifyCollectionResponse = {
-  collection: ProductCategoryShopifyCollection;
-};
-
-export type ProductCategoryShopifyCollectionArgs = {
-  handle: string;
-} & ProductCategoryShopifyPaginationArgs;
-
 export const ProductCategoryShopifyCollectionQuery = gql`
   ${ProductCategoryFragments}
-  query ProductPageShopifyProductQuery($handle: String!, $first: Int, $last: Int, $after: String, $before: String) {
+  query ProductCategoryShopifyCollectionQuery(
+    $handle: String!
+    $first: Int
+    $last: Int
+    $after: String
+    $before: String
+  ) {
     collection: collectionByHandleWithTtl(handle: $handle) {
       ...ProductCategoryCollection
       products(first: $first, last: $last, after: $after, before: $before) {

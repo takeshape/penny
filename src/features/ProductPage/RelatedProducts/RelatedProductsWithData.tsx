@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import {
-  RelatedProductsShopifyCollectionArgs,
-  RelatedProductsShopifyCollectionQuery,
-  RelatedProductsShopifyCollectionResponse
-} from '../queries';
+  RelatedProductsShopifyCollectionQueryResponse,
+  RelatedProductsShopifyCollectionQueryVariables
+} from 'types/takeshape';
+import { RelatedProductsShopifyCollectionQuery } from '../queries';
 import { getRelatedProductList } from '../transforms';
 import { RelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
@@ -16,10 +16,10 @@ const loadingProducts = Array(4).fill(undefined) as RelatedProductsProduct[];
 
 export const RelatedProductsWithData = ({ collection }: RelatedProductsWithDataProps) => {
   const handle = collection ?? 'related-products';
-  const { data, error } = useQuery<RelatedProductsShopifyCollectionResponse, RelatedProductsShopifyCollectionArgs>(
-    RelatedProductsShopifyCollectionQuery,
-    { variables: { handle } }
-  );
+  const { data, error } = useQuery<
+    RelatedProductsShopifyCollectionQueryResponse,
+    RelatedProductsShopifyCollectionQueryVariables
+  >(RelatedProductsShopifyCollectionQuery, { variables: { handle } });
 
   if (error) {
     return null;

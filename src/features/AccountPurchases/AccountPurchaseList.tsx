@@ -1,7 +1,8 @@
 import { NetworkStatus, useQuery } from '@apollo/client';
+import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
-import { GetMyAdminCustomerOrdersQuery, GetMyAdminCustomerOrdersResponse } from './queries';
+import { GetMyAdminCustomerOrdersQuery } from './queries';
 import { getOrders } from './transforms';
 
 const Empty = () => (
@@ -21,7 +22,8 @@ const Header = () => (
 );
 
 export const AccountPurchaseList = () => {
-  const { data, loading, networkStatus } = useQuery<GetMyAdminCustomerOrdersResponse>(GetMyAdminCustomerOrdersQuery);
+  const { data, loading, networkStatus } =
+    useQuery<GetMyAdminCustomerOrdersQueryResponse>(GetMyAdminCustomerOrdersQuery);
 
   const orders = getOrders(data?.customer);
 

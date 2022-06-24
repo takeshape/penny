@@ -1,35 +1,10 @@
 import { CollectionBase } from 'types/collection';
 import { ProductBase } from 'types/product';
-import { Shopify_Collection, Shopify_PageInfo, Shopify_Product } from 'types/takeshape';
+import { GetStorefrontQueryResponse, StorefrontShopifyCollectionByHandleQueryResponse } from 'types/takeshape';
 
-export type StorefrontShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'handle'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'reviews'
->;
+export type StorefrontShopifyCollection = StorefrontShopifyCollectionByHandleQueryResponse['collection'];
 
-export type StorefrontShopifyCollection = Pick<
-  Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml'
-> & {
-  products: {
-    pageInfo: Shopify_PageInfo;
-    nodes: StorefrontShopifyProduct[];
-  };
-};
+export type StorefrontShopifyProduct = StorefrontShopifyCollection['products']['nodes'][0];
 
 export type StorefrontCollectionItemProduct = ProductBase;
 
@@ -38,3 +13,9 @@ export type StorefrontCollectionItem = {
 };
 
 export type StorefrontCollection = CollectionBase<StorefrontCollectionItem>;
+
+type Storefront = GetStorefrontQueryResponse['storefront'];
+export type StorefrontChild = Storefront['components'][0];
+export type BackgroundImageChild = (StorefrontChild & {
+  __typename: 'BackgroundImageComponent';
+})['components'][0];

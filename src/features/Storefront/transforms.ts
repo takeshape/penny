@@ -1,10 +1,9 @@
 import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
-import { Storefront } from 'types/takeshape';
 import {
-  GetStorefrontResponse,
-  StorefrontShopifyCollectionByHandleResponse,
-  StorefrontShopifyPaginationArgs
-} from './queries';
+  GetStorefrontQueryResponse,
+  StorefrontShopifyCollectionByHandleQueryResponse,
+  StorefrontShopifyCollectionByHandleQueryVariables
+} from 'types/takeshape';
 import {
   StorefrontCollection,
   StorefrontCollectionItem,
@@ -40,8 +39,8 @@ function getCollectionItem(shopifyProduct: StorefrontShopifyProduct): Storefront
 }
 
 export function getCollection(
-  response: StorefrontShopifyCollectionByHandleResponse,
-  { before, after }: Partial<Pick<StorefrontShopifyPaginationArgs, 'before' | 'after'>>
+  response: StorefrontShopifyCollectionByHandleQueryResponse,
+  { before, after }: StorefrontShopifyCollectionByHandleQueryVariables
 ): StorefrontCollection {
   const collection = response?.collection;
 
@@ -64,7 +63,7 @@ export function getCollection(
   };
 }
 
-export function getStorefront(response: GetStorefrontResponse): Storefront {
+export function getStorefront(response: GetStorefrontQueryResponse) {
   const storefront = response?.storefront;
 
   if (!storefront) {

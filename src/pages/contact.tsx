@@ -1,15 +1,15 @@
 import { useMutation } from '@apollo/client';
 import { Contact, ContactForm } from 'features/Contact/Contact';
-import { CreateTicketMutation, CreateTicketResponse } from 'features/Contact/queries';
+import { CreateTicketMutation } from 'features/Contact/queries';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { useCallback, useState } from 'react';
-import { MutationCreateTicketArgs } from 'types/takeshape';
+import { CreateTicketMutationResponse, CreateTicketMutationVariables } from 'types/takeshape';
 
 const ContactPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [success, setSuccess] = useState<string>();
-  const [createTicket, { error }] = useMutation<{ createTicket: CreateTicketResponse }, MutationCreateTicketArgs>(
+  const [createTicket, { error }] = useMutation<CreateTicketMutationResponse, CreateTicketMutationVariables>(
     CreateTicketMutation
   );
 

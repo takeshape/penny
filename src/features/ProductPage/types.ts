@@ -3,57 +3,12 @@ import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
 import {
   Product,
-  ReviewsIo_ListProductReviewsResponse,
-  Shopify_Product,
-  Shopify_ProductConnection
+  RelatedProductsShopifyCollectionQueryResponse,
+  ReviewsIo_ListProductReviewsResponse
 } from 'types/takeshape';
 
-export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
-export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConnection, 'pageInfo'> & {
-  nodes: ProductPageShopifyProductHandleNode[];
-};
-
-export type ProductPageShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'handle'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'seo'
-  | 'images'
-  | 'variants'
-  | 'takeshape'
-  | 'reviews'
->;
-
-export type RelatedProductsShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'handle'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'takeshape'
->;
+export type RelatedProductsShopifyProduct =
+  RelatedProductsShopifyCollectionQueryResponse['collection']['products']['edges'][0]['node'];
 
 export type RelatedProductsProduct = ProductBase;
 

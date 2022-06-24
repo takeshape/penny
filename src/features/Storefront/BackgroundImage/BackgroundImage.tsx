@@ -1,9 +1,11 @@
 import { getImageUrl } from '@takeshape/routing';
 import NextImage from 'components/NextImage';
+import { StorefrontChild } from 'features/Storefront/types';
 import { PropsWithChildren } from 'react';
-import { BackgroundImageComponent } from 'types/takeshape';
 
-export const BackgroundImage = ({ image, children }: PropsWithChildren<BackgroundImageComponent>) => {
+type BackgroundImageProps = StorefrontChild & { __typename: 'BackgroundImageComponent' };
+
+export const BackgroundImage = ({ image, children }: PropsWithChildren<BackgroundImageProps>) => {
   return (
     <div className="relative overflow-hidden">
       {/* Decorative background image and gradient */}

@@ -1,13 +1,14 @@
 import { useQuery } from '@apollo/client';
 import { AccountLoyaltyCard } from 'features/AccountLoyaltyCard/AccountLoyaltyCard';
-import { GetMyLoyaltyCardQuery, GetMyLoyaltyCardResponse } from 'features/AccountLoyaltyCard/queries';
+import { GetMyLoyaltyCardQuery } from 'features/AccountLoyaltyCard/queries';
 import { AccountReferrals } from 'features/AccountReferrals/AccountReferrals';
 import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
+import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
 
 const AccountRewardsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { data } = useQuery<GetMyLoyaltyCardResponse>(GetMyLoyaltyCardQuery);
+  const { data } = useQuery<GetMyLoyaltyCardQueryResponse>(GetMyLoyaltyCardQuery);
 
   if (!data) {
     return null;
