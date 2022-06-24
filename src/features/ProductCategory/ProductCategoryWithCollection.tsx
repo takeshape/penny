@@ -19,9 +19,9 @@ export interface ProductCategoryWithCollectionProps {
 }
 
 export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
-  const router = useRouter();
-
   pageSize = pageSize ?? 5;
+
+  const { pathname } = useRouter();
 
   const [currentPage, setCurrentPage] = useState(page ?? 1);
   const [requestPage, setRequestPage] = useState(null);
@@ -117,31 +117,31 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
   useEffect(() => {
     const pageCollection = loadedPages.current.get(currentPage);
     if (pageCollection) {
-      setCurrentCollection(pageCollection);
-      setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
-      // pushState(getCurrentUrl(pageCollection, currentPage));
-      // router.push(getCurrentUrl(pageCollection, currentPage), undefined, { shallow: true });
-      window.scrollTo(0, 0);
+      const routerPath = router.asPath;
+      const currentUrl = getCurrentUrl(pageCollection, currentPage);
+      if (routerPath !== currentUrl) {
+        setCurrentCollection(pageCollection);
+        setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
+        router.push(currentUrl);
+        window.scrollTo(0, 0);
+      }
     }
-  }, [currentPage]);
+  }, [currentPage, router]);
 
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
     (toPage) => {
-      router.push(getCurrentUrl(pageCollection, currentPage), undefined, { shallow: true });
-      // const nextPage = currentPage + toPage;
-      // const pageCollection = loadedPages.current.get(currentPage);
-      // if (pageCollection) {
-      //   // setCurrentPage(nextPage);
-      //   router.push(getCurrentUrl(pageCollection, currentPage), undefined, { shallow: true });
-      //   return;
-      // }
-      // if (!fetchingPage) {
-      //   setRequestPage(nextPage);
-      // }
-      // setIsLoading(true);
+      const nextPage = currentPage + toPage;
+      if (loadedPages.current.has(nextPage)) {
+        setCurrentPage(nextPage);
+        return;
+      }
+      if (!fetchingPage) {
+        setRequestPage(nextPage);
+      }
+      setIsLoading(true);
     },
-    [router]
+    [currentPage, fetchingPage]
   );
 
   if (error) {
