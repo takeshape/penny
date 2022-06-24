@@ -108,6 +108,9 @@ We also used a few tools from TakeShape's ecosystem to simplify our workflow and
   to the schema from the terminal, and generate graphql types from their schema for frontend frameworks like Apollo.
 - [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — Our GraphQL query
   validation module that supports all graphql-cli options and makes writing queries from the frontend much less painful.
+- [@takeshape/routing](https://app.takeshape.io/docs/routing/#:~:text=Routing%E2%80%8B,dynamic%20search%20or%20taxonomy%20pages)
+  — Our module for optimized routing in frontend projects that use TakeShape. In this project, we used it to generate
+  URLs for image assets stored in TakeShape.
 
 In the next section, you'll find a screenshot of the finished store's homepage.
 
@@ -123,13 +126,39 @@ To get started with this project, there are two basic steps:
 
 <a href="https://app.takeshape.io/add-to-takeshape?repo=https://github.com/takeshape/takeshape-deluxe-sample-project/tree/main/.takeshape/pattern"><img alt="Deploy To TakeShape" src="https://camo.githubusercontent.com/1b580e3ce353d235bde0f376ca35b0fb26d685f3750a3013ae4b225dd3aaf344/68747470733a2f2f696d616765732e74616b6573686170652e696f2f32636363633832352d373062652d343331632d396261302d3130616233386563643361372f6465762f38653266376264612d306530382d346564652d613534362d3664663539626536613862622f4465706c6f79253230746f25323054616b65536861706525343032782e706e673f6175746f3d666f726d6174253243636f6d7072657373" width="205" height="38" data-canonical-src="https://images.takeshape.io/2cccc825-70be-431c-9ba0-10ab38ecd3a7/dev/8e2f7bda-0e08-4ede-a546-6df59be6a8bb/Deploy%20to%20TakeShape%402x.png?auto=format%2Ccompress" style="max-width:100%;"></a>
 
-2. Clone this repo:
+2. Generate an `anonymous` and a `webhook` TakeShape API key. You need these two API keys, and they must have different
+   permissions scopes.
+
+- Navigate to the **Settings** tab in your TakeShape project's dashboard.
+
+- Select the **API Keys** option in the left sidebar.
+
+- Select the **New API Key** button at the top-right of the page.
+
+- Name the first API Key anything you want; just be sure to grant it `anonymous` permissions.
+
+- Save the key somewhere. Later, you must either set it as the value of the `NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY`
+  environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
+  hosting provider's UI.
+
+- Do the same process, but this time create a key with `webhook` permissions. The environment variable for this key will
+  be `TAKESHAPE_WEBHOOK_API_KEY`.
+
+3. Save your TakeShape project's API Endpoint.
+
+- Navigate to the **Home** tab of your TakeShape project's dashboard in the web client. Scroll down to the **Useful
+  Snippets** section, and copy the **API Endpoint** there.
+- Save the endpoint somewhere. Later, you must either set it as the value of the `NEXT_PUBLIC_TAKESHAPE_API_URL`
+  environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
+  hosting provider's UI.
+
+4. Clone this repo:
 
 ```bash
 git clone https://github.com/takeshape/takeshape-deluxe-sample-project
 ```
 
-3. Navigate to the project directory in your local terminal and run the `npm install` command to install all
+4. Navigate to the project directory in your local terminal and run the `npm install` command to install all
    dependencies.
 
 The following instructions will help you configure all of the services this project uses.
@@ -385,6 +414,10 @@ to connect Klaviyo to any TakeShape project,
 3. In the **Authentication** field, add your Klaviyo API key, and select the **Save** button at the top-right of the
    page.
 
+4. Be sure to set the `NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID` to
+   [the ID of your preferred Klaviyo newsletter](https://help.klaviyo.com/hc/en-us/articles/115005078647-Find-your-List-ID),
+   either in a `.env` file or in your hosting provider's UI.
+
 ![A screenshot of the Klaviyo service page](./readme-images/klaviyo/add-authentication-klaviyo.png)
 
 ### reCAPTCHA
@@ -396,24 +429,27 @@ generic REST provider. To learn how to connect ReCAPTCHA to any TakeShape projec
 1. First, get your **Site Secret** from reCAPTCHA. If you need to create an account,
    [you can visit Google's ReCAPTCHA site registration page here](https://www.google.com/recaptcha/admin/create).
 
-   - [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and select your site. Select the
-     **Settings** gear icon at the top-right of the page ⚙.
+- [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and select your site. Select the
+  **Settings** gear icon at the top-right of the page ⚙.
 
-   ![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/select-site-recaptcha.png)
+![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/select-site-recaptcha.png)
 
-   - On the **Settings** page, select the **reCAPTCHA keys** dropdown to reveal your **Site Key**. Copy it somewhere
-     secure, or leave this tab open. You'll need it to connect reCAPTCHA to your TakeShape project.
+- On the **Settings** page, select the **reCAPTCHA keys** dropdown to reveal your **Site Key** and **Secret Key**. Copy
+  them somewhere secure, or leave this tab open. You'll need them to connect reCAPTCHA to your TakeShape project.
 
-   ![A screenshot of the Settings page in reCAPTCHA, where you can copy your site key for TakeShape.](/readme-images/reCAPTCHA/site-key-secret-key-recaptcha.png)
+![A screenshot of the Settings page in reCAPTCHA, where you can copy your site key for TakeShape.](/readme-images/reCAPTCHA/site-key-secret-key-recaptcha.png)
 
-2. Navigate to your TakeShape project's dashboard, select the **Home** tab and select **ReCAPTCHA** from the list of
+2. Create a `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` environment variable in your hosting provider or in your `.env`, and set
+   the value to your **Site Key** from the reCAPTCHA settings.
+
+3. Navigate to your TakeShape project's dashboard, select the **Home** tab and select **ReCAPTCHA** from the list of
    services. You'll be taken to the **ReCAPTCHA** service page.
 
 - In the **Endpoint** field, enter `https://www.google.com/recaptcha/api`.
 
 - In the **Authentication Type** field, ensure **Query Parameter** is selected.
 
-- Under **Authentication**, enter `secret` as the value for the **Query Param** field. Enter your site secret as the
+- Under **Authentication**, enter `secret` as the value for the **Query Param** field. Enter your **Site Secret** as the
   value for the **Token** field.
 
 - Select the **Save** button at the top-right of the page.
@@ -458,6 +494,45 @@ provider, you can connect most arbitrary REST APIs, including Gorgias.
   field.
 
 - Select the **Save** button at the top-right of the page.
+
+## Sentry
+
+To use Sentry with this project, you need your project's
+[Data Source Name](https://docs.sentry.io/product/sentry-basics/dsn-explainer/), as well as your sentry org slug and
+project name.
+
+1. Find your Sentry DSN.
+
+- Log into Sentry, and select your project. If you don't have a sentry project ready, create a Next.js project.
+
+- Select **Settings** in the sidebar on the left, and scroll down to select **Client Keys (DSN)**. You will see the
+  **Client Keys** panel.
+
+![A screenshot of the sentry settings page with the Client Keys (DSN) panel open](/readme-images/sentry/dsn-sentry.png)
+
+- Save your DSN. You can set it in your `.env.local` or your hosting provider's UI as the `NEXT_PUBLIC_SENTRY_DSN`
+  variable.
+
+2. Find your sentry org slug.
+
+- Head to **Settings**, then **General Settings**. At the top of the page you should see **Organization Slug**. Copy the
+  value there.
+
+- Set this value in your `.env.local` or your hosting provider's UI as the `SENTRY_ORG` variable.
+
+3. Find your sentry project name.
+
+- Head to **Settings**, then **Projects**. You'll see a list of projects. Select the Next.js project you want to use.
+
+- Under the **Project Details** section on the next page, you'll see a **Name** field. Copy that value.
+
+- Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your `.env.local` or your hosting provider's
+  UI.
+
+### Other environment variables
+
+Follow the instructions in the `.env.local-example` file included at the root of this repo to fill out all necessary
+environment variables. Then rename the file to `.env.local` to use them.
 
 ## Running the starter
 
