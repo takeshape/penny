@@ -21,7 +21,7 @@ export interface ReviewsProps {
 }
 
 export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
-  const { stats, rollup, data, currentPage: initialPage, totalPages, perPage } = reviewList;
+  const { stats, rollup, data, currentPage: initialPage, totalPages } = reviewList;
 
   const [currentPage, setCurrentPage] = useState(initialPage);
 
@@ -97,17 +97,6 @@ export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
               Write a review
             </a>
           </div>
-          <div className="mt-10">
-            <div className="mb-2">
-              Page {currentPage} of {totalPages}
-            </div>
-            <Button disabled={currentPage === 1} onClick={handlePrevious} className="mr-2">
-              Previous
-            </Button>
-            <Button disabled={currentPage === totalPages} onClick={handleNext}>
-              Next
-            </Button>
-          </div>
         </div>
 
         <div className="mt-16 lg:mt-0 lg:col-start-6 lg:col-span-7">
@@ -131,6 +120,20 @@ export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
             </div>
           </div>
         </div>
+
+        {totalPages && (
+          <div className="mt-12 flex items-center lg:col-start-6 lg:col-span-7">
+            <div className="mr-2">
+              Page {currentPage} of {totalPages}
+            </div>
+            <Button className="h-8 px-4 text-sm mr-2" disabled={currentPage === 1} onClick={handlePrevious}>
+              Previous
+            </Button>
+            <Button className="h-8 px-4 text-sm" disabled={currentPage === totalPages} onClick={handleNext}>
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );
