@@ -1,11 +1,22 @@
 import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
-import { Product, ReviewsIo_ListProductReviewsResponse, Shopify_Product } from 'types/takeshape';
+import {
+  Product,
+  ReviewsIo_ListProductReviewsResponse,
+  Shopify_Product,
+  Shopify_ProductConnection
+} from 'types/takeshape';
+
+export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
+export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConnection, 'pageInfo'> & {
+  nodes: ProductPageShopifyProductHandleNode[];
+};
 
 export type ProductPageShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
+  | 'handle'
   | 'title'
   | 'description'
   | 'descriptionHtml'
@@ -22,11 +33,13 @@ export type ProductPageShopifyProduct = Pick<
   | 'images'
   | 'variants'
   | 'takeshape'
+  | 'reviews'
 >;
 
 export type RelatedProductsShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
+  | 'handle'
   | 'title'
   | 'description'
   | 'descriptionHtml'

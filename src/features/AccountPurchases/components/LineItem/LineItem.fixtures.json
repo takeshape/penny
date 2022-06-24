@@ -10,6 +10,7 @@
   "quantity": 1,
   "product": {
     "id": "gid://shopify/Product/6857243132004",
+    "handle": "foo",
     "__typename": "Shopify_Product"
   },
   "originalTotalSet": {

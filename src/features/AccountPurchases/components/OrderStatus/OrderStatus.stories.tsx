@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Shopify_Fulfillment } from 'types/takeshape';
-import { shopifyFulfillmentToFulfillment } from '../../transforms';
+import { getFulfillment } from '../../transforms';
 import { PurchaseItemOrderStatus } from './OrderStatus';
 import OrderStatusFixtures from './OrderStatus.fixtures.json';
 
@@ -18,7 +18,7 @@ Processing.args = {
 
 export const Fulfilled = Template.bind({});
 Fulfilled.args = {
-  ...shopifyFulfillmentToFulfillment(OrderStatusFixtures.FULFILLED as Shopify_Fulfillment)
+  ...getFulfillment(OrderStatusFixtures.FULFILLED as Shopify_Fulfillment)
 };
 
 export default Meta;

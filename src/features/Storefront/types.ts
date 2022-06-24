@@ -4,6 +4,7 @@ import { Shopify_Collection, Shopify_PageInfo, Shopify_Product } from 'types/tak
 export type StorefrontShopifyProduct = Pick<
   Shopify_Product,
   | 'id'
+  | 'handle'
   | 'title'
   | 'description'
   | 'descriptionHtml'
@@ -17,26 +18,21 @@ export type StorefrontShopifyProduct = Pick<
   | 'sellingPlanGroupCount'
   | 'sellingPlanGroups'
   | 'reviews'
-  | 'takeshape'
 >;
 
 export type StorefrontShopifyCollection = Pick<
   Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'productsCount' | 'takeshape'
+  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'productsCount'
 > & {
   products: {
     pageInfo: Shopify_PageInfo;
-    edges: Array<{
-      cursor: string;
-      node: StorefrontShopifyProduct;
-    }>;
+    nodes: StorefrontShopifyProduct[];
   };
 };
 
 export type StorefrontCollectionItemProduct = ProductBase;
 
 export type StorefrontCollectionItem = {
-  cursor: string;
   product: StorefrontCollectionItemProduct;
 };
 

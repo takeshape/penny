@@ -10,10 +10,10 @@ export const storefrontCollection: StorefrontCollection = {
   productsCount: 4,
   items: [
     {
-      cursor: 'eyJsYXN0X2lkIjo2ODI3MDY4ODUwMjc2LCJsYXN0X3ZhbHVlIjoiNSJ9',
       product: {
         id: 'gid://shopify/Product/6827068850276',
-        url: '/product/6827068850276/elegant-blouse',
+        handle: 'elegant-blouse',
+        url: '/product/elegant-blouse',
         name: 'Elegant Blouse',
         description: 'A blouse for people on the go.',
         descriptionHtml: 'A blouse for people on the go.',
@@ -88,9 +88,9 @@ export const storefrontCollection: StorefrontCollection = {
       }
     },
     {
-      cursor: 'eyJsYXN0X2lkIjo2ODU3MjQzMTMyMDA0LCJsYXN0X3ZhbHVlIjoiNCJ9',
       product: {
         id: 'gid://shopify/Product/6857243132004',
+        handle: 'basic-tee-6-pack',
         url: '/product/basic-tee-6-pack',
         name: 'Basic Tee 6-Pack',
         description:
@@ -206,10 +206,10 @@ export const storefrontCollection: StorefrontCollection = {
       }
     },
     {
-      cursor: 'eyJsYXN0X2lkIjo2ODI3MDY5NTA1NjM2LCJsYXN0X3ZhbHVlIjoiNCJ9',
       product: {
         id: 'gid://shopify/Product/6827069505636',
-        url: '/product/6827069505636/mesh-gym-shorts',
+        handle: 'mesh-gym-shorts',
+        url: '/product/mesh-gym-shorts',
         name: 'Mesh Gym Shorts',
         description:
           "Don't compromise on snack-carrying capacity with this lightweight and spacious bag. The drawstring top keeps all your favorite chips, crisps, fries, biscuits, crackers, and cookies secure.",
@@ -294,10 +294,10 @@ export const storefrontCollection: StorefrontCollection = {
       }
     },
     {
-      cursor: 'eyJsYXN0X2lkIjo2ODYwNDYzNzM0ODg0LCJsYXN0X3ZhbHVlIjoiMCJ9',
       product: {
         id: 'gid://shopify/Product/6860463734884',
-        url: '/product/6860463734884/basic-tee',
+        handle: 'basic-tee',
+        url: '/product/basic-tee',
         name: 'Basic Tee',
         description:
           'The Basic tee is an honest new take on a classic. The tee uses super soft, pre-shrunk cotton for true comfort and a dependable fit. They are hand cut and sewn locally, with a special dye technique that gives each tee its own look. Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.',

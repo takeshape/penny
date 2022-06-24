@@ -1,14 +1,14 @@
 [
   {
-    "projectId": "79b5254d-5bc3-4034-8b05-e9c2f097de5a",
+    "projectId": "06ccc3dc-a9da-4f5b-9142-5a104db52ee3",
     "conditions": {},
-    "updated": 1649714917705,
+    "updated": 1656001468015,
     "permissions": {
       "Version": "2012-10-17",
       "Statement": [
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.ReviewsIo_listProductReviews"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionByHandleWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -17,7 +17,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Stripe_getProduct"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionsWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -26,7 +26,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Stripe_listProducts"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getFooter"
           ],
           "Effect": "Allow",
           "Action": [
@@ -35,7 +35,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getIndexedProductList"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getNavigation"
           ],
           "Effect": "Allow",
           "Action": [
@@ -44,7 +44,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.search"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productsWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -53,7 +53,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getStorefront"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productByHandleWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -62,7 +62,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Gorgias_createTicket"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getStorefront"
           ],
           "Effect": "Allow",
           "Action": [
@@ -71,7 +71,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.createCustomer"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.search"
           ],
           "Effect": "Allow",
           "Action": [
@@ -80,7 +80,52 @@
         },
         {
           "Resource": [
-            "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.addMembers"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createCart"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createCustomer"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.recoverCustomerAccount"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createTicket"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:shape:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
           ],
           "Effect": "Allow",
           "Action": [
@@ -89,32 +134,25 @@
         }
       ]
     },
-    "created": 1648659084834,
+    "created": 1650556805898,
     "name": "anonymous"
   },
   {
-    "projectId": "79b5254d-5bc3-4034-8b05-e9c2f097de5a",
+    "projectId": "06ccc3dc-a9da-4f5b-9142-5a104db52ee3",
     "conditions": {
       "ForAllValues:StringEquals": {
-        "claims:provider": "auth0"
+        "claims:provider": [
+          "oidc"
+        ]
       }
     },
-    "updated": 1648776843207,
+    "updated": 1656001408266,
     "permissions": {
       "Version": "2012-10-17",
       "Statement": [
         {
           "Resource": [
-            "ts:workflow-step:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "workflow-step:*"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:workflow:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+            "ts:workflow:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
           ],
           "Effect": "Allow",
           "Action": [
@@ -123,7 +161,16 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Klaviyo_getLists"
+            "ts:workflow-step:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "workflow-step:*"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.ShopifyStorefront_customer"
           ],
           "Effect": "Allow",
           "Action": [
@@ -132,7 +179,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.Stripe_getProduct"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionByHandleWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -141,7 +188,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getIndexedProductList"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionsWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -150,7 +197,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyInvoices"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getFooter"
           ],
           "Effect": "Allow",
           "Action": [
@@ -159,7 +206,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyLoyaltyCard"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyAdminCustomer"
           ],
           "Effect": "Allow",
           "Action": [
@@ -168,7 +215,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyNewsletterSubscriptions"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyCustomer"
           ],
           "Effect": "Allow",
           "Action": [
@@ -177,7 +224,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyPayments"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyLoyaltyCard"
           ],
           "Effect": "Allow",
           "Action": [
@@ -186,7 +233,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMyProfile"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyNewsletterSubscriptions"
           ],
           "Effect": "Allow",
           "Action": [
@@ -195,7 +242,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getMySubscriptions"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getNavigation"
           ],
           "Effect": "Allow",
           "Action": [
@@ -204,7 +251,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.getProductReviews"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productsWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -213,7 +260,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.search"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productByHandleWithTtl"
           ],
           "Effect": "Allow",
           "Action": [
@@ -222,7 +269,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.upsertMyProfile"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getStorefront"
           ],
           "Effect": "Allow",
           "Action": [
@@ -231,7 +278,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.upsertMyCustomer"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.search"
           ],
           "Effect": "Allow",
           "Action": [
@@ -240,7 +287,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.deleteMySubscription"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.subscribeMyEmailToNewsletter"
           ],
           "Effect": "Allow",
           "Action": [
@@ -249,7 +296,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.createMyCheckoutSession"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.unsubscribeMyEmailFromNewsletter"
           ],
           "Effect": "Allow",
           "Action": [
@@ -258,7 +305,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Klaviyo_getListMembers"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.addMembers"
           ],
           "Effect": "Allow",
           "Action": [
@@ -267,7 +314,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Klaviyo_addMembers"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createCart"
           ],
           "Effect": "Allow",
           "Action": [
@@ -276,7 +323,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.Klaviyo_removeMembers"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.updateMyCustomer"
           ],
           "Effect": "Allow",
           "Action": [
@@ -285,7 +332,25 @@
         },
         {
           "Resource": [
-            "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.updateMyCustomerAddress"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createTicket"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:shape:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
           ],
           "Effect": "Allow",
           "Action": [
@@ -294,19 +359,37 @@
         }
       ]
     },
-    "created": 1627050588449,
+    "created": 1650556913648,
     "name": "authenticated"
   },
   {
-    "projectId": "79b5254d-5bc3-4034-8b05-e9c2f097de5a",
+    "projectId": "06ccc3dc-a9da-4f5b-9142-5a104db52ee3",
     "conditions": {},
-    "updated": 1648573243098,
+    "updated": 1652374767855,
     "permissions": {
       "Version": "2012-10-17",
       "Statement": [
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Query.*"
+            "ts:workflow:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "workflow:*"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:workflow-step:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "workflow-step:*"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.*"
           ],
           "Effect": "Allow",
           "Action": [
@@ -315,7 +398,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:79b5254d-5bc3-4034-8b05-e9c2f097de5a:Mutation.*"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.*"
           ],
           "Effect": "Allow",
           "Action": [
@@ -324,7 +407,7 @@
         },
         {
           "Resource": [
-            "ts:shape:79b5254d-5bc3-4034-8b05-e9c2f097de5a:*"
+            "ts:shape:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
           ],
           "Effect": "Allow",
           "Action": [
@@ -333,7 +416,7 @@
         }
       ]
     },
-    "created": 1648573243098,
+    "created": 1650556947908,
     "name": "webhook"
   }
 ]

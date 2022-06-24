@@ -14,14 +14,14 @@ export const QuickAddWithData = () => {
   const [loadProduct, { data, loading, error }] = useLazyQuery<QuickAddResponse, QuickAddArgs>(QuickAddQuery);
 
   useEffect(() => {
-    if (quickAdd?.productId && !loading && !error) {
+    if (quickAdd?.productHandle && !loading && !error) {
       loadProduct({
         variables: {
-          id: quickAdd.productId
+          handle: quickAdd.productHandle
         }
       });
     }
-  }, [loading, loadProduct, quickAdd?.productId, error]);
+  }, [loading, loadProduct, quickAdd?.productHandle, error]);
 
   const product = data && getProduct(data);
 

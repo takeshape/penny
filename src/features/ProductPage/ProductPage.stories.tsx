@@ -1,19 +1,14 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import {
-  getDetails,
-  getPolicies,
-  getProduct,
-  getReviewHighlights,
-  getReviewList
-} from 'features/ProductPage/transforms';
 import { graphql } from 'msw';
-import { ProductPage } from './ProductPage';
 import {
-  productResponse,
-  relatedProductsResponse,
-  reviewsResponse,
-  takeshapeProductResponse
-} from './queries.fixtures';
+  productPageDetails,
+  productPagePolicies,
+  productPageProduct,
+  productPageReviewHighlights,
+  productPageReviewList
+} from './fixtures';
+import { ProductPage } from './ProductPage';
+import { relatedProductsResponse } from './queries.fixtures';
 
 const Meta: ComponentMeta<typeof ProductPage> = {
   title: 'Features / Product Page',
@@ -32,11 +27,11 @@ _ProductPage.args = {
     showRelatedProducts: true,
     showPolicies: true
   },
-  product: getProduct(productResponse),
-  reviewHighlights: getReviewHighlights(reviewsResponse),
-  reviewList: getReviewList(reviewsResponse),
-  details: getDetails(takeshapeProductResponse),
-  policies: getPolicies(takeshapeProductResponse)
+  product: productPageProduct,
+  reviewHighlights: productPageReviewHighlights,
+  reviewList: productPageReviewList,
+  details: productPageDetails,
+  policies: productPagePolicies
 };
 
 _ProductPage.parameters = {

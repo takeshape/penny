@@ -1,12 +1,12 @@
 import { gql } from '@apollo/client';
 
-export type GorgiasCreateTicketResponse = {
+export type CreateTicketResponse = {
   id: number;
 };
 
-export const GorgiasCreateTicketMutation = gql`
+export const CreateTicketMutation = gql`
   mutation ($email: String!, $message: String!, $recaptchaToken: String!) {
-    Gorgias_createTicket(email: $email, message: $message, recaptchaToken: $recaptchaToken) {
+    createTicket(email: $email, message: $message, recaptchaToken: $recaptchaToken) {
       id
     }
   }

@@ -1,16 +1,7 @@
 import { getStats } from 'transforms/reviewsIo';
+import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
 import {
-  createImageGetter,
-  getCollectionUrl,
-  getPrice,
-  getProductOptions,
-  getProductUrl,
-  shopifyCollectionIdToGid,
-  shopifyGidToId
-} from 'transforms/shopify';
-import { isNumericString } from 'utils/types';
-import {
-  ProductCategoryShopifyCollectionIdsResponse,
+  ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionResponse,
   ProductCategoryShopifyPaginationArgs
 } from './queries';
@@ -34,7 +25,8 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
 
   return {
     id: shopifyProduct.id,
-    url: getProductUrl(shopifyProduct.id, shopifyProduct.takeshape),
+    handle: shopifyProduct.handle,
+    url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
@@ -49,12 +41,8 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
   };
 }
 
-function getProductListItem(
-  shopifyProduct: ProductCategoryShopifyProduct,
-  cursor: string
-): ProductCategoryProductListItem {
+function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): ProductCategoryProductListItem {
   return {
-    cursor,
     product: getProduct(shopifyProduct),
     reviews: getReviews(shopifyProduct.reviews)
   };
@@ -63,7 +51,7 @@ function getProductListItem(
 export function getCollectionPageInfo(
   response: ProductCategoryShopifyCollectionResponse
 ): ProductCategoryCollection['pageInfo'] {
-  const collection = response?.collectionList?.items?.[0]?.shopifyCollection;
+  const collection = response?.collection;
 
   if (!collection) {
     return null;
@@ -80,23 +68,22 @@ export function getCollection(
 
   return {
     id: collection.id,
-    url: getCollectionUrl(collection.id, collection.takeshape),
+    url: getCollectionUrl(collection.handle),
     handle: collection.handle,
     name: collection.title,
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
-    productsCount: collection.productsCount,
-    items: collection.products.edges.map(({ node, cursor }) => getProductListItem(node, cursor)),
+    items: collection.products.nodes.map((node) => getProductListItem(node)),
     pageInfo: collection.products.pageInfo,
     anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null
   };
 }
 
-export function getCollectionFromTakeshape(
+export function getCollectionBasic(
   response: ProductCategoryShopifyCollectionResponse,
   variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
 ): ProductCategoryCollection {
-  const collection = response?.collectionList?.items?.[0]?.shopifyCollection;
+  const collection = response?.collection;
 
   if (!collection) {
     return null;
@@ -110,7 +97,7 @@ export function getCollectionWithOverfetch(
   response: ProductCategoryShopifyCollectionResponse,
   variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after' | 'last'>
 ): ProductCategoryCollection {
-  const shopifyCollection = response?.collectionList?.items?.[0]?.shopifyCollection;
+  const shopifyCollection = response?.collection;
 
   if (!shopifyCollection) {
     return null;
@@ -119,55 +106,26 @@ export function getCollectionWithOverfetch(
   const collection = structuredClone(shopifyCollection);
 
   // This was an overfetch to get the start anchor for backwards pagination
-  if (variables.last > pageSize && collection.products.edges.length > pageSize) {
-    const [, ...edges] = collection.products.edges;
-    collection.products.edges = edges;
+  if (variables.last > pageSize && collection.products.nodes.length > pageSize) {
+    const [, ...nodes] = collection.products.nodes;
+    collection.products.nodes = nodes;
   }
 
   return getCollection(collection, variables);
 }
 
-export function getCollectionPageParams(response: ProductCategoryShopifyCollectionIdsResponse, pageSize: number) {
-  const collections = response?.collections?.items;
+export function getCollectionPageParams(response: ProductCategoryShopifyCollectionHandlesResponse) {
+  const nodes = response?.collections?.nodes;
 
-  if (!collections) {
+  if (!nodes) {
     return null;
   }
 
-  return collections.map((item) => {
-    let collection;
-
-    if (item.slug) {
-      collection = [item.slug];
-    } else {
-      collection = [shopifyGidToId(item.shopifyCollectionId)];
+  return nodes.map((node) => ({
+    params: {
+      collection: [node.handle]
     }
-
-    return {
-      params: {
-        collection
-      }
-    };
-  });
-}
-
-export function getCollectionPageIdOrSlug(idOrSlug: string) {
-  // This is a product id, 9 is arbitrary, but Shopify Collection Ids shouldn't be shorter.
-  if (idOrSlug.length > 9 && isNumericString(idOrSlug)) {
-    return {
-      id: shopifyCollectionIdToGid(idOrSlug),
-      slug: ''
-    };
-  }
-
-  return {
-    id: '',
-    slug: idOrSlug
-  };
-}
-
-export function getCurrentCursor(collection: ProductCategoryCollection) {
-  return collection.items[collection.items.length - 1].cursor;
+  }));
 }
 
 export function getCurrentUrl(collection: ProductCategoryCollection, page: number) {

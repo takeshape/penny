@@ -206,7 +206,67 @@ type Query {
     """
     savedSearchId: ID
   ): Shopify_ProductConnection
+  productsWithTtl(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `barcode`
+     - `created_at`
+     - `delivery_profile_id`
+     - `error_feedback`
+     - `gift_card`
+     - `has_only_composites`
+     - `has_only_default_variant`
+     - `id`
+     - `inventory_total`
+     - `is_price_reduced`
+     - `out_of_stock_somewhere`
+     - `price`
+     - `product_type`
+     - `publishable_status`
+     - `published_status`
+     - `sku`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `title`
+     - `updated_at`
+     - `vendor`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_ProductConnection
   Shopify_product(
+    """The ID of the Product to return."""
+    id: ID!
+  ): Shopify_Product
+  productWithTtl(
     """The ID of the Product to return."""
     id: ID!
   ): Shopify_Product
@@ -239,6 +299,45 @@ type Query {
     handle: String!
   ): Shopify_Collection
   Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
+  collectionsWithTtl(
     """Returns up to the first `n` elements from the list."""
     first: Int
 
@@ -488,6 +587,14 @@ type Query {
     """
     where: TSWherePageInput
   ): PagePaginatedList
+  Shopify_productByHandle(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product
+  productByHandleWithTtl(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product
   searchAssetIndex(
     terms: String
 
@@ -5142,6 +5249,9 @@ type Collection implements TSSearchable {
 
   """"""
   slug: String
+
+  """"""
+  parent(enableLocaleFallback: Boolean = true, locale: String): Collection
   shopifyCollectionId: String
   shopifyCollection: Shopify_Collection
   _shapeId: String
@@ -16177,6 +16287,7 @@ type CollectionPaginatedList {
 input TSWhereCollectionInput {
   name: TSWhereStringInput
   slug: TSWhereStringInput
+  parent: TSWhereCollectionRelationshipInput
   shopifyCollectionId: TSWhereStringInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
@@ -16193,6 +16304,22 @@ input TSWhereCollectionInput {
   NOT: TSWhereCollectionInput
 }
 
+input TSWhereCollectionRelationshipInput {
+  name: TSWhereStringInput
+  slug: TSWhereStringInput
+  shopifyCollectionId: TSWhereStringInput
+  _shapeId: TSWhereIDInput
+  _id: TSWhereIDInput
+  _version: TSWhereIntegerInput
+  _shapeName: TSWhereStringInput
+  _createdAt: TSWhereDateInput
+  _updatedAt: TSWhereDateInput
+  _schemaVersion: TSWhereNumberInput
+  _status: TSWhereWorkflowInput
+  _contentTypeId: TSWhereIDInput
+  _contentTypeName: TSWhereStringInput
+}
+
 type Page implements TSSearchable {
   """"""
   title: String!
@@ -16200,6 +16327,9 @@ type Page implements TSSearchable {
   """"""
   slug: String!
   sections: [PageSectionsProperty]
+
+  """"""
+  relationship(enableLocaleFallback: Boolean = true, locale: String): [Collection]
   _shapeId: String
   _id: ID
   _version: Int
@@ -16256,6 +16386,7 @@ input TSWherePageInput {
   title: TSWhereStringInput
   slug: TSWhereStringInput
   sections: TSWherePageSectionsInput
+  relationship: TSWhereCollectionRelationshipInput
   _shapeId: TSWhereIDInput
   _id: TSWhereIDInput
   _version: TSWhereIntegerInput
@@ -16433,8 +16564,10 @@ input TSWhereInput {
   shopifyProductId: TSWhereStringInput
   message: TSWhereDraftjsInput
   links: TSWhereNavigationLinksInput
+  parent: TSWhereCollectionRelationshipInput
   shopifyCollectionId: TSWhereStringInput
   sections: TSWherePageSectionsInput
+  relationship: TSWhereCollectionRelationshipInput
   AND: [TSWhereInput]
   OR: [TSWhereInput]
   NOT: TSWhereInput
@@ -18185,7 +18318,67 @@ type WithContext {
     """
     savedSearchId: ID
   ): Shopify_ProductConnection
+  productsWithTtl(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_ProductSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `barcode`
+     - `created_at`
+     - `delivery_profile_id`
+     - `error_feedback`
+     - `gift_card`
+     - `has_only_composites`
+     - `has_only_default_variant`
+     - `id`
+     - `inventory_total`
+     - `is_price_reduced`
+     - `out_of_stock_somewhere`
+     - `price`
+     - `product_type`
+     - `publishable_status`
+     - `published_status`
+     - `sku`
+     - `status`
+     - `tag`
+     - `tag_not`
+     - `title`
+     - `updated_at`
+     - `vendor`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_ProductConnection
   Shopify_product(
+    """The ID of the Product to return."""
+    id: ID!
+  ): Shopify_Product
+  productWithTtl(
     """The ID of the Product to return."""
     id: ID!
   ): Shopify_Product
@@ -18218,6 +18411,45 @@ type WithContext {
     handle: String!
   ): Shopify_Collection
   Shopify_collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: Shopify_CollectionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `collection_type`
+     - `publishable_status`
+     - `published_status`
+     - `title`
+     - `updated_at`
+    
+    See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
+    for more information about using filters.
+    """
+    query: String
+
+    """
+    The ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    Refer to [SavedSearch](https://shopify.dev/api/admin-graphql/latest/objects/savedsearch).
+    """
+    savedSearchId: ID
+  ): Shopify_CollectionConnection
+  collectionsWithTtl(
     """Returns up to the first `n` elements from the list."""
     first: Int
 
@@ -18467,6 +18699,14 @@ type WithContext {
     """
     where: TSWherePageInput
   ): PagePaginatedList
+  Shopify_productByHandle(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product
+  productByHandleWithTtl(
+    """The handle of the product."""
+    handle: String!
+  ): Shopify_Product
   searchAssetIndex(
     terms: String
 
@@ -18690,7 +18930,7 @@ type Mutation {
 
   """Create an order in Voucherify"""
   Voucherify_createOrder(email: String, amount: Float, status: String, items: [Voucherify_OrderItemInput]): Voucherify_Order
-  Klaviyo_addMembers(input: AddListMembersInput, list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
+  addMembers(input: AddListMembersInput, list_id: String!, recaptchaToken: String!): Klaviyo_AddMembersResponse
   Klaviyo_removeMembers(
     "\nThe profiles that you would like to remove from the list. \n\nExample:\n\n{\n  \"emails\":[\"george.washington@klaviyo.com\",\"abraham.lincoln@klaviyo.com\"],\n  \"phone_numbers\":[\"+13239169023\"],\n  \"push_tokens\":[\"03df25c845d460bcdad7802d2vf6fc1dfde97283bf75cc993eb6dca835ea2e2r\"]\n}\n"
     input: Klaviyo_RemoveMembersPropertiesPropertyInput
@@ -18721,7 +18961,7 @@ type Mutation {
     input: ShopifyStorefront_CustomerCreateInput!
   ): ShopifyStorefront_CustomerCreatePayload
   createCustomer(input: CreateCustomerPropertiesPropertyInput!): CreateCustomerPayload
-  ShopifyStorefront_customerRecover(
+  recoverCustomerAccount(
     """The email address of the customer to recover."""
     email: String!
     recaptchaToken: String!
@@ -18760,7 +19000,7 @@ type Mutation {
     """The customer’s mailing address."""
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
-  Gorgias_createTicket(email: String!, message: String!, recaptchaToken: String!): Gorgias_CreateTicketResponse
+  createTicket(email: String!, message: String!, recaptchaToken: String!): CreateTicketResponse
 
   """Update Storefront"""
   updateStorefront(input: UpdateStorefrontInput!, clientMutationId: String, structure: [ContentStructureInput], locale: String, enableLocaleFallback: Boolean = true): UpdateStorefrontResult
@@ -19306,10 +19546,10 @@ input Voucherify_OrderItemInput {
 }
 
 input AddListMembersInput {
-  profiles: [Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput!]!
+  profiles: [AddMembersPropertiesPropertiesProfilesItemsPropertyInput!]!
 }
 
-input Klaviyo_AddMembersPropertiesPropertiesProfilesItemsPropertyInput {
+input AddMembersPropertiesPropertiesProfilesItemsPropertyInput {
   email: String
 }
 
@@ -19793,7 +20033,7 @@ input ShopifyStorefront_MailingAddressInput {
   zip: String
 }
 
-type Gorgias_CreateTicketResponse {
+type CreateTicketResponse {
   id: Int!
 }
 
@@ -20708,6 +20948,7 @@ input UpdateCollectionInterfaceInput {
   """Initialized with title from shopify"""
   name: String
   slug: String
+  parent: TSRelationshipInput
   shopifyCollectionId: String
   shopifyCollection: Shopify_CollectionInput
 }
@@ -20806,6 +21047,7 @@ input CreateCollectionInterfaceInput {
   """Initialized with title from shopify"""
   name: String
   slug: String
+  parent: TSRelationshipInput
   shopifyCollectionId: String
   shopifyCollection: Shopify_CollectionInput
 }
@@ -20824,6 +21066,7 @@ input DuplicateCollectionInput {
 
   """"""
   slug: String
+  parent: TSRelationshipInput
   shopifyCollectionId: String
   _shapeId: String
   _version: Int
@@ -20865,6 +21108,7 @@ input UpdatePageInput {
   """"""
   slug: String
   sections: [PageSectionMdxPageSectionTitleInputUnion]
+  relationship: [TSRelationshipInput]
   _shapeId: String
   _version: Int
   _shapeName: String
@@ -20909,6 +21153,7 @@ input CreatePageInput {
   """"""
   slug: String!
   sections: [PageSectionMdxPageSectionTitleInputUnion]
+  relationship: [TSRelationshipInput]
   _shapeId: String
   _id: ID
   _version: Int
@@ -20940,6 +21185,7 @@ input DuplicatePageInput {
   """"""
   slug: String
   sections: [PageSectionMdxPageSectionTitleInputUnion]
+  relationship: [TSRelationshipInput]
   _shapeId: String
   _version: Int
   _shapeName: String
