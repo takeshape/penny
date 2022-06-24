@@ -60,12 +60,7 @@ export function getCollectionPageInfo(
   return collection.products.pageInfo;
 }
 
-export function getCollection(
-  collection: ProductCategoryShopifyCollection,
-  { before, after }: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
-): ProductCategoryCollection {
-  const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
-
+export function getCollection(collection: ProductCategoryShopifyCollection): ProductCategoryCollection {
   return {
     id: collection.id,
     url: getCollectionUrl(collection.handle),
@@ -74,22 +69,18 @@ export function getCollection(
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getProductListItem(node)),
-    pageInfo: collection.products.pageInfo,
-    anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null
+    pageInfo: collection.products.pageInfo
   };
 }
 
-export function getCollectionBasic(
-  response: ProductCategoryShopifyCollectionResponse,
-  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
-): ProductCategoryCollection {
+export function getCollectionBasic(response: ProductCategoryShopifyCollectionResponse): ProductCategoryCollection {
   const collection = response?.collection;
 
   if (!collection) {
     return null;
   }
 
-  return getCollection(collection, variables);
+  return getCollection(collection);
 }
 
 export function getCollectionWithOverfetch(
@@ -111,7 +102,7 @@ export function getCollectionWithOverfetch(
     collection.products.nodes = nodes;
   }
 
-  return getCollection(collection, variables);
+  return getCollection(collection);
 }
 
 export function getCollectionPageParams(response: ProductCategoryShopifyCollectionHandlesResponse) {
@@ -128,14 +119,16 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
   }));
 }
 
-export function getCurrentUrl(collection: ProductCategoryCollection, direction: 'next' | 'back') {
+export function getCurrentUrl(collection: ProductCategoryCollection, isPrevious?: boolean) {
   if (!collection.pageInfo.hasPreviousPage) {
     return collection.url;
   }
 
-  if ()
+  if (isPrevious) {
+    return `${collection.url}/${collection.pageInfo.startCursor}/before`;
+  }
 
-  return collection.pageInfo.hasPreviousPage ? collection.url : `${collection.url}/${collection.anchor}/${page}`;
+  return `${collection.url}/${collection.pageInfo.endCursor}`;
 }
 
 export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {

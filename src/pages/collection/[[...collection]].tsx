@@ -20,8 +20,7 @@ import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 const CollectionPage: NextPage = ({
   navigation,
   footer,
-  collection,
-  page
+  collection
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
@@ -41,7 +40,7 @@ const CollectionPage: NextPage = ({
       footer={footer}
       seo={{ title: collection.name, description: collection.description }}
     >
-      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} page={page} />
+      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
     </Layout>
   );
 };
@@ -51,13 +50,20 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { navigation, footer } = await getLayoutData();
 
-  const [handle, cursor, page] = params.collection;
+  const [handle, cursor, direction] = params.collection;
 
-  const variables = {
-    handle,
-    first: collectionsPageSize,
-    after: cursor
-  };
+  const variables =
+    direction === 'before'
+      ? {
+          handle,
+          first: collectionsPageSize,
+          after: cursor
+        }
+      : {
+          handle,
+          last: collectionsPageSize,
+          before: cursor
+        };
 
   const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
     return apolloClient.query<ProductCategoryShopifyCollectionResponse, ProductCategoryShopifyCollectionArgs>({
@@ -66,7 +72,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     });
   });
 
-  const collection = getCollectionBasic(data, variables);
+  const collection = getCollectionBasic(data);
 
   if (!collection) {
     return {
@@ -76,7 +82,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      page: Number(page ?? 1),
       navigation,
       footer,
       collection
