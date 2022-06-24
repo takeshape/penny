@@ -109,9 +109,11 @@ We also used a few tools from TakeShape's ecosystem to simplify our workflow and
 - [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — Our GraphQL query
   validation module that supports all graphql-cli options and makes writing queries from the frontend much less painful.
 
-In the next section, you'll find screenshots of the finished store.
+In the next section, you'll find a screenshot of the finished store's homepage.
 
-## Screenshots
+## Screenshot
+
+![A screenshot of the store's homepage.](/readme-images/store/homepage.png)
 
 ## Instructions
 
