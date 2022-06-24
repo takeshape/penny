@@ -83,7 +83,7 @@ export const ProductWithImageGrid = ({
   }, [product.variants, selectedColor, selectedSize]);
 
   return (
-    <>
+    <div className="pt-10 pb-18 sm:pt-16 sm:pb-24">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         {showBreadcrumbs && breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
       </div>
@@ -169,6 +169,6 @@ export const ProductWithImageGrid = ({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
