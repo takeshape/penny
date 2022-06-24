@@ -53,16 +53,18 @@ const ProductPage: NextPage = ({
       footer={footer}
       seo={{ title: product.seo.title, description: product.seo.description }}
     >
-      <ProductPageComponent
-        component={options.component}
-        options={options}
-        breadcrumbs={breadcrumbs}
-        product={product}
-        reviewHighlights={reviewHighlights}
-        reviewList={reviewList}
-        details={details}
-        policies={policies}
-      />
+      <div className="pt-10 sm:pt-16">
+        <ProductPageComponent
+          component={options.component}
+          options={options}
+          breadcrumbs={breadcrumbs}
+          product={product}
+          reviewHighlights={reviewHighlights}
+          reviewList={reviewList}
+          details={details}
+          policies={policies}
+        />
+      </div>
     </Layout>
   );
 };

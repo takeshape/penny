@@ -84,7 +84,10 @@ export const ProductWithImageGrid = ({
 
   return (
     <>
-      {showBreadcrumbs && breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        {showBreadcrumbs && breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
+      </div>
+
       <ImageGallery images={images} />
 
       {/* Product info */}

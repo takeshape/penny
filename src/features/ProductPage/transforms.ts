@@ -213,7 +213,8 @@ function collectionHasRules(collection: Shopify_Collection) {
 }
 
 export function getBreadcrumbs(response: ProductPageShopifyProductResponse): ProductPageBreadcrumbs {
-  const collections = response?.product?.collections;
+  const product = response?.product;
+  const collections = product?.collections;
 
   if (!collections) {
     return null;
@@ -274,12 +275,17 @@ export function getBreadcrumbs(response: ProductPageShopifyProductResponse): Pro
     });
   }
 
-  breadcrumbs.push({
-    id: match.id,
-    // TODO Allow override in TakeShape data
-    name: match.takeshape.breadcrumbTitle ?? match.title,
-    href: getCollectionUrl(match.handle)
-  });
-
-  return breadcrumbs;
+  return [
+    ...breadcrumbs,
+    {
+      id: match.id,
+      name: match.takeshape.breadcrumbTitle ?? match.title,
+      href: getCollectionUrl(match.handle)
+    },
+    {
+      id: product.id,
+      name: product.title,
+      href: getProductUrl(product.handle)
+    }
+  ];
 }

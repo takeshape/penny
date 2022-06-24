@@ -27,31 +27,29 @@ export const ProductPage = ({
   const { showDetails, showPolicies, showReviews, showRelatedProducts, showBreadcrumbs } = options;
 
   return (
-    <div className="bg-gray-50">
+    <>
       <div className="bg-white">
-        <Wrapper>
-          <Product
-            component={component}
-            product={product}
-            reviewHighlights={reviewHighlights}
-            showFeaturedReviews={!showReviews}
-            breadcrumbs={breadcrumbs}
-            showBreadcrumbs={showBreadcrumbs}
-          />
-        </Wrapper>
+        <Product
+          component={component}
+          product={product}
+          reviewHighlights={reviewHighlights}
+          showFeaturedReviews={!showReviews}
+          breadcrumbs={breadcrumbs}
+          showBreadcrumbs={showBreadcrumbs}
+        />
       </div>
-
-      <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8 bg-gray-50">
-        {details && showDetails && <Details details={details} />}
-        {policies && showPolicies && <Policies policies={policies} />}
+      <div className="bg-gray-50">
+        <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
+          {details && showDetails && <Details details={details} />}
+          {policies && showPolicies && <Policies policies={policies} />}
+        </div>
       </div>
-
       <div className="bg-white">
         <Wrapper>
           {showReviews && <Reviews reviewList={reviewList} />}
           {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
         </Wrapper>
       </div>
-    </div>
+    </>
   );
 };
