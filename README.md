@@ -186,9 +186,10 @@ TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-acces
 4. Select the **Save** button at the top-right of the OpenID service page.
 
 5. Now set up your `.env` variables in your Next.js project.
-   - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable to the generated **Audience** URL from your OpenID provider.
-   - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable to the same URL you provided for the **Issuer URL** field on
-     your OpenID provider. This should be your store's URL.
+
+- Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable to the generated **Audience** URL from your OpenID provider.
+- Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable to the same URL you provided for the **Issuer URL** field on your
+  OpenID provider. This should be your store's URL.
 
 #### Setting up NextAuth
 
@@ -253,22 +254,22 @@ frontend Next.js project.
 
 3. Get your Storefront API keys.
 
-   - In the navigation on the left side of your store's admin page, select **Apps**. A dropdown window should appear.
-     Select **⚙ App and Sales Channel Settings** as shown in the image below.
+- In the navigation on the left side of your store's admin page, select **Apps**. A dropdown window should appear.
+  Select **⚙ App and Sales Channel Settings** as shown in the image below.
 
-   ![The admin page in shopify](/readme-images/store-admin-page-readme-images.png)
+![The admin page in shopify](/readme-images/store-admin-page-readme-images.png)
 
-   - Select the **Develop apps for your store** button. On the next page, titled "App Development," select **Create an
-     app** and name the app whatever you'd like. "Next.js App" for example.
+- Select the **Develop apps for your store** button. On the next page, titled "App Development," select **Create an
+  app** and name the app whatever you'd like. "Next.js App" for example.
 
-     ![The Apps and Sales Channels page. Select Develop apps for your store.](/readme-images/admin-settings-page-readme-images.png)
+  ![The Apps and Sales Channels page. Select Develop apps for your store.](/readme-images/admin-settings-page-readme-images.png)
 
-     ![Select the Create an app button on the App development page.](/readme-images/create-app-button-readme-images.png)
+  ![Select the Create an app button on the App development page.](/readme-images/create-app-button-readme-images.png)
 
-   - You'll be taken to your app's settings page. Under the Overview tab, you'll see "Select your scopes to get
-     started." Select **Configure Storefront API scopes**.
+- You'll be taken to your app's settings page. Under the Overview tab, you'll see "Select your scopes to get started."
+  Select **Configure Storefront API scopes**.
 
-     ![A screenshot of the app development page where you can select the Configure Storefront API scopes button.](/readme-images/configure-storefront-scopes-readme-images.png)
+  ![A screenshot of the app development page where you can select the Configure Storefront API scopes button.](/readme-images/configure-storefront-scopes-readme-images.png)
 
 - Enable the following scopes:
 
@@ -346,11 +347,12 @@ how to connect REVIEWS.io to any TakeShape project,
 [check out our docs](https://app.takeshape.io/docs/services/providers/reviews-io).
 
 1. First, you'll need your Store ID and API Key from REVIEWS.io
-   - [Navigate to API integrations by clicking here](https://dash.reviews.io/integration/api), or follow the below
-     instructions.
-   - On your REVIEWS.io dashboard, select **Integrations** in the navigation on the left. Select **API** in the list of
-     integrations.
-   - Under **API Credentials**, copy and save the `Store ID` and `API Key`
+
+- [Navigate to API integrations by clicking here](https://dash.reviews.io/integration/api), or follow the below
+  instructions.
+- On your REVIEWS.io dashboard, select **Integrations** in the navigation on the left. Select **API** in the list of
+  integrations.
+- Under **API Credentials**, copy and save the `Store ID` and `API Key`
 
 ![A screenshot of the API page in Reviews.io](./readme-images/reviewsio/api-keys-reviewsio.png)
 
@@ -367,11 +369,12 @@ how to connect ShipEngine to any TakeShape project,
 [check out our docs](https://app.takeshape.io/docs/services/providers/ship-engine).
 
 1. First, get your API Key from ShipEngine.
-   - [Navigate to your ShipEngine API Dashboard by clicking here](https://app.shipengine.com/). Select the **Sandbox**
-     tab on the left.
-   - There should already be an API Key generated, but you can generate a new one instantly by selecting **Create New
-     Key** on this page.
-   - Copy this key to put into your TakeShape project.
+
+- [Navigate to your ShipEngine API Dashboard by clicking here](https://app.shipengine.com/). Select the **Sandbox** tab
+  on the left.
+- There should already be an API Key generated, but you can generate a new one instantly by selecting **Create New Key**
+  on this page.
+- Copy this key to put into your TakeShape project.
 
 ![A screenshot of Ship Engine's API Dashboard](./readme-images/shipengine/api-dashboard-shipengine.png)
 
@@ -388,8 +391,9 @@ how to connect Voucherify to any TakeShape project,
 provider, you can connect most arbitrary REST APIs, including Voucherify.
 
 1. Get your `Application ID` from Voucherify.
-   - From your Voucherify dashboard, select **Project Settings → Application Keys**. Create your keys. You will be given
-     an `Application ID` and a `Secret Key`.
+
+- From your Voucherify dashboard, select **Project Settings → Application Keys**. Create your keys. You will be given an
+  `Application ID` and a `Secret Key`.
 
 ![A screenshot of the Voucherify dropdown menu](./readme-images/voucherify/project-settings-voucherify.png)
 
@@ -407,7 +411,7 @@ to connect Klaviyo to any TakeShape project,
 
 1. First, get your api key for Klaviyo.
 
-   - Log into your Klaviyo account and navigate to **Account → Settings → API Keys**.
+- Log into your Klaviyo account and navigate to **Account → Settings → API Keys**.
 
 2. On your TakeShape project's dashboard, navigate to the **Home** tab and select **Klaviyo** from the list of services.
 
@@ -538,10 +542,10 @@ environment variables. Then rename the file to `.env.local` to use them.
 
 1. Head over to your trusty terminal or tool of choice.
 
-   - Clone this repo with `git clone https://github.com/takeshape/takeshape-starter-deluxe-sample-project.git`.
-   - `cd` into the folder that the cloning created.
-   - Run `cp .env.local-example .env.local` to rename the environment variables file.
-   - Run `npm install`.
+- Clone this repo with `git clone https://github.com/takeshape/takeshape-starter-deluxe-sample-project.git`.
+- `cd` into the folder that the cloning created.
+- Run `cp .env.local-example .env.local` to rename the environment variables file.
+- Run `npm install`.
 
 2. Follow the instructions in `.env.local`.
 
