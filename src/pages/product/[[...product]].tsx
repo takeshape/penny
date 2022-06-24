@@ -19,7 +19,7 @@ import {
   getReviewList
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
@@ -56,7 +56,7 @@ const ProductPage: NextPage = ({
     <Layout
       navigation={navigation}
       footer={footer}
-      seo={{ title: product.seo.name, description: product.seo.description }}
+      seo={{ title: product.seo.title, description: product.seo.description }}
     >
       <ProductPageComponent
         component={options.component}
@@ -74,7 +74,7 @@ const ProductPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
   const handle = getSingle(params.product);
@@ -90,13 +90,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const product = getProduct(productData);
 
-  if (!product) {
-    return {
-      notFound: true
-    };
-  }
-
   return {
+    notFound: !Boolean(product),
     props: {
       navigation,
       footer,

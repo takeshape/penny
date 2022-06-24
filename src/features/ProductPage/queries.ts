@@ -259,11 +259,6 @@ export const RelatedProductsShopifyCollectionQuery = gql`
             title
             description
             descriptionHtml
-            takeshape {
-              _id
-              name
-              slug
-            }
             requiresSellingPlan
             featuredImage {
               id
