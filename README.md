@@ -1,30 +1,3 @@
-## Development Notes
-
-- `storybook-addon-jotai` necessitates the graphql overrides
-- `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
-- Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
-  component. This prevents rendering mismatches and stale / incorrect info.
-- Navigation data is loaded into an Apollo cache variable via `addApolloQueryCache`. Files in the `src/data` folder
-  should define queries to get data that need to be fetched and cached during `getStaticProps` in order to prevent a
-  flash of unloaded data in common high visibility components, like the navigation, footer, etc... Add to the file
-  `src/services/apollo/addApolloQueryCache.ts` following the pattern there to get other common data.
-- The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
-  [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
-  the order status page and uses the `redirect_origin` attribute set at cart creation:
-- Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
-  will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
-  removed from the relevant mutations in the project schema.
-- Shopify **must** use the `2022-04` endpoint, like this:
-  `https://deluxe-sample-project.myshopify.com/admin/api/2022-04/graphql.json`
-
-```erb
-{% if checkout.attributes.redirect_origin %}
-<script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
-{% else %}
-<script> window.location = "https://deluxe-sample-project.vercel.app/?shopify_checkout_action=success"; </script>
-{% endif %}
-```
-
 # Deluxe ™️ Sample Project
 
 A full-featured e-commerce experience using the best services out there:
@@ -66,9 +39,7 @@ graph TD
     Shopify --> |Subscriptions| Recharge
 ```
 
-## Screenshot
-
-TKTK
+## Screenshots
 
 ## Instructions
 
@@ -158,7 +129,7 @@ this:
 }
 ```
 
-### Setting up Shopify Admin and Shopify Storefront
+### Shopify Admin and Shopify Storefront
 
 > Warning! Connecting this project to a live Shopify store **WILL** enable real purchases. If you just want to play
 > around without risking real charges,
@@ -224,7 +195,9 @@ Then select **Save** at the top right of the page.
 
 #### Connecting the Shopify service to TakeShape
 
-To use Shopify with this project, you'll need to connect your Shopify Admin API and Shopify Storefront API.
+To use Shopify with this project, you'll need to connect your Shopify Admin API and Shopify Storefront API. The
+following instructions will help you connect your Shopify APIs to the deluxe sample project pattern, but you can
+[connect Shopify to any TakeShape project by following the Shopify guide in our docs](https://app.takeshape.io/docs/services/providers/shopify/).
 
 ##### Connecting Shopify Admin
 
@@ -259,177 +232,131 @@ For **Authentication Type**, select **Bearer Token**.
 Now your Shopify store is configured for this project. The next section is about setting up test payments if you don't
 want to enable real payments.
 
-Not interested? [Skip to our Recharge section below to set up subscriptions in your store](#recharge).
+Not interested? [Skip to our REVIEWS.io section below to set up reviews in your store](#setting-up-reviewsio).
 
 #### Setting up test payments in Shopify
 
-### Setting up Recharge
+### REVIEWS.io
 
-> NOTE: To add Recharge to your store, you must have payments enabled in your store settings. Just testing things out?
-> Set up payments in test mode by following
-> [our instructions from earlier in this readme](#setting-up-test-payments-in-shopify).
+The following section describes how to connect REVIEWS.io to your Deluxe Sample Project pattern in TakeShape. To learn
+how to connect REVIEWS.io to any TakeShape project,
+[check out our docs](https://app.takeshape.io/docs/services/providers/reviews-io).
 
-This section walks you through adding Recharge to your Shopify store, and configuring the Recharge service in your
-TakeShape project.
+1. First, you'll need your Store ID and API Key from REVIEWS.io
+   - [Navigate to API integrations by clicking here](https://dash.reviews.io/integration/api), or follow the below
+     instructions.
+   - On your REVIEWS.io dashboard, select **Integrations** in the navigation on the left. Select **API** in the list of
+     integrations.
+   - Under **API Credentials**, copy and save the `Store ID` and `API Key`
 
-1. To add Recharge to your shop, navigate to Recharge Subscriptions in the shopify app store:
-   https://apps.shopify.com/subscription-payments
+![A screenshot of the API page in Reviews.io](./readme-images/reviewsio/api-keys-reviewsio.png)
 
-   - Select the "Add app" button to install it to your shopify store.
+2. Navigate to your TakeShape project's dashboard and select **REVIEWS.io** under the Services list in the **Home** tab.
 
-2. Configure your products to offer subscriptions through Recharge.
+3. Under **Store ID**, paste your Store ID, and under **API Key**, paste your API Key. **Save** your service.
 
-   - Navigate to your store's admin page by visiting your store's myshopify domain and adding /admin to the end of the
-     url. It should look like this: `https://your-store.myshopify.com/admin`.
+![A screenshot of the REVIEWS.io service page](./readme-images/reviewsio/service-page-reviewsio.png)
 
-   - Select "Apps" in the navbar on the left, then click on Recharge in the installed apps list.
+### ShipEngine
 
-   ![The installed apps list in your shopify admin page](./readme_images/recharge-installed.png)
+The following section describes how to connect ShipEngine to your Deluxe Sample Project pattern in TakeShape. To learn
+how to connect ShipEngine to any TakeShape project,
+[check out our docs](https://app.takeshape.io/docs/services/providers/ship-engine).
 
-   - If Recharge sends you to an error page with the message "Sorry, Shopify says your store is ineligible for
-     subscriptions", that means you haven't configured shopify payments for your store yet. Do so by following
-     [the instructions above](#setting-up-test-payments). You can also follow
-     [Recharge's instructions here](https://support.rechargepayments.com/hc/en-us/articles/360056542474-Shopify-Checkout-Integration-FAQ#h_01EV7H6EQQBTFM78E63RA03R13).
+1. First, get your API Key from ShipEngine.
+   - [Navigate to your ShipEngine API Dashboard by clicking here](https://app.shipengine.com/). Select the **Sandbox**
+     tab on the left.
+   - There should already be an API Key generated, but you can generate a new one instantly by selecting **Create New
+     Key** on this page.
+   - Copy this key to put into your TakeShape project.
 
-   - If you were redirected to Recharge, navigate to "Products" by selecting "Products" in the navbar at the top, then
-     selecting "Products" in the dropdown.
+![A screenshot of Ship Engine's API Dashboard](./readme-images/shipengine/api-dashboard-shipengine.png)
 
-   - Select "Add products" on the top-right of the products page.
+2. Navigate to your TakeShape project's dashboard and select **Ship Engine** under the services list.
 
-   ![The products page](./readme_images/add-products.png)
+3. Under **Authentication**, set the **Header** field to `API-Key` and the **Token** field to your API Key. **Save**
+   your service.
 
-   - Select the products you would like to add subscriptions for, then configure the subscription type as "One-time and
-     subscription". Configure the rest of the product as you'd like, then hit Save.
-     - For the purposes of this starter, DO NOT set the product to "Subscription only" or "Pre-paid subscription only".
+### Voucherify
 
-   ![Product configuration page in recharge](./readme_images/save-product-recharge.jpg)
+The following section describes how to connect Voucherify to your Deluxe Sample Project pattern in TakeShape. To learn
+how to connect Voucherify to any TakeShape project,
+[check out our REST provider docs](https://app.takeshape.io/docs/services/providers/rest). Using our generic REST
+provider, you can connect most arbitrary REST APIs, including Voucherify.
 
-3. Configure your Recharge account's permissions to enable API access.
+1. Get your `Application ID` from Voucherify.
+   - From your Voucherify dashboard, select **Project Settings → Application Keys**. Create your keys. You will be given
+     an `Application ID` and a `Secret Key`.
 
-   - In your Recharge dashboard, navigate to the Accounts page in the Settings by hovering over the wrench icon and
-     selecting "Accounts".
+![A screenshot of the Voucherify dropdown menu](./readme-images/voucherify/project-settings-voucherify.png)
 
-   ![Accounts in settings in recharge](./readme_images/wrench.PNG)
+![A screenshot of the Voucherify application keys page](./readme-images/voucherify/application-keys-voucherify.png)
 
-   - On this page, select "Edit store defaults" and check all boxes on the Store default permissions page. When done,
-     select "Update store default permissions".
+2. Navigate to your TakeShape project's dashboard and select **Voucherify** under your services list.
 
-   - Navigate to "Integrations" in the navbar at the top, then select "API Tokens" at the top-right.
+3. Under **Authentication**, set the Header to `X-App-Id` and the Token to your App ID. **Save** your service.
 
-   ![API Tokens in recharge](./readme_images/api-tokens.png)
+### Klaviyo
 
-   - Select "Create an API Token", then configure the token with an appropriate name and email. Grant "Read and Write
-     access" to all permissions.
+The following section describes how to connect Klaviyo to your Deluxe Sample Project pattern in TakeShape. To learn how
+to connect Klaviyo to any TakeShape project,
+[check out our docs](https://app.takeshape.io/docs/services/providers/klaviyo).
 
-   ![Permissions in recharge](./readme_images/recharge-access.PNG)
+1. First, get your api key for Klaviyo.
 
-   - You’ll be taken back to the API tokens page where you’ll see your API key. Save it. It should look like:
-     `sk_1x1_abcd123357e5d85ab72250e3116d8a4b1c429ba3cde9a872c827c8ad1f71901d`
+   - Log into your Klaviyo account and navigate to **Account → Settings → API Keys**.
 
-4. Configure Recharge in your TakeShape Project.
+2. On your TakeShape project's dashboard, navigate to the Home tab and select **Klaviyo** from the list of services.
 
-   - Set up your Recharge service.
-     - Select **Recharge** from the list of services in the `API` tab, in the `Patterns & Services` pane.
-     - Under **Authentication**, Enter `X-Recharge-Access-Token` into the Header field, and your Recharge access token
-       into the Token field.
-     - **Save** the service.
+3. In the **Authentication** field, add your Klaviyo API key, and select the **Save** button at the top-right of the
+   page.
 
-- Select "Settings" at the bottom-left of your store's admin page. On the new page that appears, select "Payments" in
-  the navigation on the left.
+![A screenshot of Klaviyo in the list of TakeShape services](./readme-images/klaviyo/select-klaviyo.png)
 
-- In the Shopify Payments section, you'll see Shopify Payments. Complete the steps to activate it, then select "Manage".
+![A screenshot of the Klaviyo service page](./readme-images/klaviyo/add-authentication-klaviyo.png)
 
-![The Payments page](./readme_images/manage-payments.png)
+### Gorgias
 
-- Scroll to the bottom of the next page and check the "Enable test mode" checkbox.
+The following section describes how to connect Gorgias to your Deluxe Sample Project pattern in TakeShape. To learn how
+to connect Gorgias to any TakeShape project,
+[check out our REST provider docs](https://app.takeshape.io/docs/services/providers/rest). Using our generic REST
+provider, you can connect most arbitrary REST APIs, including Gorgias.
 
-- Select "Save" at the bottom-right of the page.
+1. You'll need your Gorgias API Endpoint, email address, and a Password API Key. Gorgias uses **Basic Auth**, which
+   takes a username and password. Your username will be your Gorgias account email address, and your password will be a
+   generated key from Gorgias.
 
-5. Configure your store's checkout. All of the following instructions require you to navigate to the settings of your
-   store's admin page. In the navbar on the left, select Checkout.
+- Navigate to your Gorgias dashboard and select the three dots at the top-left. The button will be labeled **Ticket** if
+  you're in the Ticket view of the dashboard, but will change its label based on which view you're in. In the drop-down
+  menu that appears, select **Settings**. You should be taken to the Settings view.
 
-   - Enable optional customer accounts for checkouts.
+  ![A screenshot of the dropdown that appears when you select the **Ticket** button.](/readme-images/gorgias/tickets-settings-gorgias.png)
 
-     - Under the "Customer accounts" section of the Checkout page, select "Accounts are optional".
+- In the Settings view, select the **REST API** option in the menu on the left. You'll see the **REST API** panel. Note
+  the **Base API URL**. You'll need that to connect Gorgias to TakeShape.
 
-     ![Customer accounts section of the Checkout page](./readme_images/customer-accounts.png)
+- Select the **Create API Key** button under the **Password (API Key)** heading.
 
-   - Set up your store to redirect users to `http://localhost:3000/purchases` after they finish a checkout.
+  ![A screenshot of the REST API panel](/readme-images/gorgias/create-api-key-gorgias.png)
 
-     - In the Checkout page of your store's settings, scroll down to the section labeled "Order status page scripts".
+  ![A screenshot of the Base API URL, Username (your email address) and Password (API Key) fields in the REST API panel.](/readme-images/gorgias/api-info-gorgias.png)
 
-     - Enter `<script> window.location = "http://localhost:3000/?shopify_checkout_action=success"; </script>` into the
-       "Scripts" textbox.
+- Leave this tab open, or copy your **Base API URL, Username, and Password** over to a secure location. It's time to set
+  up Gorgias in TakeShape.
 
-     ![The Order status page scripts section](./readme_images/checkout-script.png)
+2. On your TakeShape project's dashboard, navigate to the Home tab and select **Gorgias** from the list of services.
+   You'll be taken to the **Generic REST** service page for **Gorgias**.
 
-6. Configure your store in TakeShape
+- In the **Endpoint** field, add your Base API URL.
 
-   - Set up your Shopify Storefront service.
-     - Select **Shopify Storefront** from the list of services in the `API` tab, in the `Patterns & Services` pane.
-     - Under **Endpoint**, enter your storefront api endpoint. It should look like
-       `https://your-store.myshopify.com/api/2022-01/graphql.json`
-     - Under **Authentication**, Enter `X-Shopify-Storefront-Access-Token` into the Header field, and your Storefront
-       access token into the Token field.
-     - **Save** the service.
-   - Set up your Shopify Admin service.
-     - Select **Shopify Admin** from the list of services on the `API` tab, in the `Patterns & Services` pane.
-     - Under **myshopify.com URL**, Enter your store's myshopify.com domain, which will look like
-       `https://your-store.myshopify.com`
-     - **Save** the service.
-     - Select the "Update Schema" button at the bottom-right of the next dialog that appears.
-     - Select the "Skip" button at the bottom-right of the dialog that appears asking you to import data, queries and
-       mutations.
+- In the **Authentication Type** field, ensure **Basic Auth** is selected.
 
-### Running the Starter
+- Under **Authentication**, add your email address in the **Username** field, and your API Key in the **Password**
+  field.
 
-1. Head over to your trusty terminal or tool of choice.
+- Select the **Save** button at the top-right of the page.
 
-   - Clone this repo with `git clone https://github.com/takeshape/takeshape-starter-auth0-shopify`.
-   - `cd` into the folder that the cloning created.
-   - Run `mv .env.local-example .env.local` to rename the environment variables file.
-   - Run `npm install`.
-
-2. Follow the instructions in `.env.local`.
-
-   - Some of the data you enter will be from Auth0, some will be from your TakeShape project
-
-3. Run `npm run dev` to start the application and open [http://localhost:3000](http://localhost:3000) with your browser
-   to play around!
-
-4. First, login using a valid Auth0 or third-party account. You can also sign up for a new account.
-
-5. Go to the homepage, select a product and payment terms then add it to your cart.
-
-6. Click the Cart icon in the top nav. Review your cart, then click `Checkout Now`.
-
-7. On the Shopify Checkout page, use one of the
-   [Shopify test credit card numbers](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments#simulate-successful-transactions).
-   `4242 4242 4242 4242` is commonly used, and will allow you to complete a successful purchase with no secondary
-   authentication.
-
-8. Upon a successful purchase you should be directed back to your dev site.
-
-9. Try canceling a subscription from your **Purchases** page.
-
-10. Play around, update your profile, create more users, more purchases. Try products with multiple prices...
-
-### Known Limitations
-
-- Due to limitations in the way Recharge interacts with Shopify, products configured for "Subscription only" in Recharge
-  may not be rendered on the product page of this starter. We will address this in future updates to this codebase.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
-are welcome!
-
-## Running the Starter
+## Running the starter
 
 1. Head over to your trusty terminal or tool of choice.
 
@@ -443,17 +370,46 @@ are welcome!
 3. Run `npm run dev` to start the application and open [http://localhost:3000](http://localhost:3000) with your browser
    to play around!
 
-## Known Limitations
-
-TKTK
-
-## Deploying to Production
+## Deploying to production
 
 1. Replace all public placeholder assets
 2. Update `robots.txt`
 
-## Learn More
+### Known limitations
 
-TKTK
+## Learn more
 
-TEST TEST TEST
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
+are welcome!
+
+## Development notes
+
+- `storybook-addon-jotai` necessitates the graphql overrides
+- `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
+- Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
+  component. This prevents rendering mismatches and stale / incorrect info.
+- Navigation data is loaded into an Apollo cache variable via `addApolloQueryCache`. Files in the `src/data` folder
+  should define queries to get data that need to be fetched and cached during `getStaticProps` in order to prevent a
+  flash of unloaded data in common high visibility components, like the navigation, footer, etc... Add to the file
+  `src/services/apollo/addApolloQueryCache.ts` following the pattern there to get other common data.
+- The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
+  [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
+  the order status page and uses the `redirect_origin` attribute set at cart creation:
+- Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
+  will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
+  removed from the relevant mutations in the project schema.
+- Shopify **must** use the `2022-04` endpoint, like this:
+  `https://deluxe-sample-project.myshopify.com/admin/api/2022-04/graphql.json`
+
+```erb
+{% if checkout.attributes.redirect_origin %}
+<script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
+{% else %}
+<script> window.location = "https://deluxe-sample-project.vercel.app/?shopify_checkout_action=success"; </script>
+{% endif %}
+```
