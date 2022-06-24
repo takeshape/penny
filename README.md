@@ -16,6 +16,7 @@
   removed from the relevant mutations in the project schema.
 - Shopify **must** use the `2022-04` endpoint, like this:
   `https://deluxe-sample-project.myshopify.com/admin/api/2022-04/graphql.json`
+- Page size for reviews is set in `Shopify_Product` shape and `Reviews.tsx`
 
 ```erb
 {% if checkout.attributes.redirect_origin %}

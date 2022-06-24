@@ -8,11 +8,15 @@ import { ProductPageOptions } from './types';
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs'> &
   PoliciesProps &
-  ReviewsProps &
+  Omit<ReviewsProps, 'sku'> &
   DetailsProps &
   RelatedProductsWithDataProps & {
     options: ProductPageOptions;
   };
+
+const getSku = (productId: string): string => {
+  return productId.substring(productId.lastIndexOf('/') + 1);
+};
 
 export const ProductPage = ({
   product,
@@ -46,7 +50,7 @@ export const ProductPage = ({
       </div>
       <div className="bg-white">
         <Wrapper>
-          {showReviews && <Reviews reviewList={reviewList} />}
+          {showReviews && <Reviews sku={getSku(product.id)} reviewList={reviewList} />}
           {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
         </Wrapper>
       </div>
