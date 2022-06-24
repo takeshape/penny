@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client';
 import Seo from 'components/Seo';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { pushState } from 'utils/history';
 import { ProductCategory } from './ProductCategory';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -19,6 +19,8 @@ export interface ProductCategoryWithCollectionProps {
 }
 
 export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
+  const router = useRouter();
+
   pageSize = pageSize ?? 5;
 
   const [currentPage, setCurrentPage] = useState(page ?? 1);
@@ -117,7 +119,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
     if (pageCollection) {
       setCurrentCollection(pageCollection);
       setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
-      pushState(getCurrentUrl(pageCollection, currentPage));
+      // pushState(getCurrentUrl(pageCollection, currentPage));
+      // router.push(getCurrentUrl(pageCollection, currentPage), undefined, { shallow: true });
       window.scrollTo(0, 0);
     }
   }, [currentPage]);
@@ -125,17 +128,20 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
     (toPage) => {
-      const nextPage = currentPage + toPage;
-      if (loadedPages.current.has(nextPage)) {
-        setCurrentPage(nextPage);
-        return;
-      }
-      if (!fetchingPage) {
-        setRequestPage(nextPage);
-      }
-      setIsLoading(true);
+      router.push(getCurrentUrl(pageCollection, currentPage), undefined, { shallow: true });
+      // const nextPage = currentPage + toPage;
+      // const pageCollection = loadedPages.current.get(currentPage);
+      // if (pageCollection) {
+      //   // setCurrentPage(nextPage);
+      //   router.push(getCurrentUrl(pageCollection, currentPage), undefined, { shallow: true });
+      //   return;
+      // }
+      // if (!fetchingPage) {
+      //   setRequestPage(nextPage);
+      // }
+      // setIsLoading(true);
     },
-    [currentPage, fetchingPage]
+    [router]
   );
 
   if (error) {

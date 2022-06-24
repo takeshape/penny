@@ -128,8 +128,14 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
   }));
 }
 
-export function getCurrentUrl(collection: ProductCategoryCollection, page: number) {
-  return collection.anchor ? `${collection.url}/${collection.anchor}/${page}` : collection.url;
+export function getCurrentUrl(collection: ProductCategoryCollection, direction: 'next' | 'back') {
+  if (!collection.pageInfo.hasPreviousPage) {
+    return collection.url;
+  }
+
+  if ()
+
+  return collection.pageInfo.hasPreviousPage ? collection.url : `${collection.url}/${collection.anchor}/${page}`;
 }
 
 export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {
