@@ -9,6 +9,7 @@ import {
   ProductPageShopifyProductResponse
 } from 'features/ProductPage/queries';
 import {
+  getBreadcrumbs,
   getDetails,
   getPageOptions,
   getPolicies,
@@ -25,11 +26,6 @@ import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 import { retryGraphqlThrottle } from '../../utils/apollo/retryGraphqlThrottle';
 
-const breadcrumbs = [
-  { id: 1, name: 'Men', href: '#' },
-  { id: 2, name: 'Clothing', href: '#' }
-];
-
 const ProductPage: NextPage = ({
   options,
   navigation,
@@ -38,13 +34,12 @@ const ProductPage: NextPage = ({
   reviewHighlights,
   reviewList,
   details,
-  policies
+  policies,
+  breadcrumbs
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const router = useRouter();
+  const { isFallback } = useRouter();
 
-  // If the page is not yet generated, this will be displayed
-  // initially until getStaticProps() finishes running
-  if (router.isFallback) {
+  if (isFallback) {
     return (
       <Layout navigation={navigation} footer={footer} seo={{ title: 'Product is loading...' }}>
         <PageLoader />
@@ -100,7 +95,8 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       reviewHighlights: getReviewHighlights(productData),
       reviewList: getReviewList(productData),
       details: getDetails(productData),
-      policies: getPolicies(productData)
+      policies: getPolicies(productData),
+      breadcrumbs: getBreadcrumbs(productData)
     }
   };
 };
