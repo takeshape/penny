@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client';
 import Seo from 'components/Seo';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { pushState } from 'utils/history';
 import { ProductCategory } from './ProductCategory';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -20,6 +20,8 @@ export interface ProductCategoryWithCollectionProps {
 
 export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
   pageSize = pageSize ?? 5;
+
+  const router = useRouter();
 
   const [currentPage, setCurrentPage] = useState(page ?? 1);
   const [requestPage, setRequestPage] = useState(null);
@@ -115,12 +117,16 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
   useEffect(() => {
     const pageCollection = loadedPages.current.get(currentPage);
     if (pageCollection) {
-      setCurrentCollection(pageCollection);
-      setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
-      pushState(getCurrentUrl(pageCollection, currentPage));
-      window.scrollTo(0, 0);
+      const routerPath = router.asPath;
+      const currentUrl = getCurrentUrl(pageCollection, currentPage);
+      if (routerPath !== currentUrl) {
+        setCurrentCollection(pageCollection);
+        setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
+        router.push(currentUrl);
+        window.scrollTo(0, 0);
+      }
     }
-  }, [currentPage]);
+  }, [currentPage, router]);
 
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
