@@ -4,6 +4,7 @@ A full-featured e-commerce experience using the best services out there:
 
 - NextAuth for user authentication
 - OpenID for greater identity management
+- ReCAPTCHA for security
 - Gorgias for customer support
 - Shopify Admin and Storefront for customer data, product info and payment processing
 - Recharge for subscriptions
@@ -306,7 +307,7 @@ to connect Klaviyo to any TakeShape project,
 
    - Log into your Klaviyo account and navigate to **Account → Settings → API Keys**.
 
-2. On your TakeShape project's dashboard, navigate to the Home tab and select **Klaviyo** from the list of services.
+2. On your TakeShape project's dashboard, navigate to the **Home** tab and select **Klaviyo** from the list of services.
 
 3. In the **Authentication** field, add your Klaviyo API key, and select the **Save** button at the top-right of the
    page.
@@ -314,6 +315,37 @@ to connect Klaviyo to any TakeShape project,
 ![A screenshot of Klaviyo in the list of TakeShape services](./readme-images/klaviyo/select-klaviyo.png)
 
 ![A screenshot of the Klaviyo service page](./readme-images/klaviyo/add-authentication-klaviyo.png)
+
+### reCAPTCHA
+
+The following section describes how to connect ReCAPTCHA to your Deluxe Sample Project pattern in TakeShape using a
+generic REST provider. To learn how to connect ReCAPTCHA to any TakeShape project,
+[check out our docs on using a generic REST service](https://app.takeshape.io/docs/services/providers/rest).
+
+1. First, get your **Site Secret** from reCAPTCHA. If you need to create an account,
+   [you can visit Google's ReCAPTCHA site registration page here](https://www.google.com/recaptcha/admin/create).
+
+   - [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and select your site. Select the
+     **Settings** gear icon at the top-right of the page ⚙.
+
+   ![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/select-site-recaptcha.png)
+
+   - On the **Settings** page, select the **reCAPTCHA keys** dropdown to reveal your **Site Key**. Copy it somewhere
+     secure, or leave this tab open. You'll need it to connect reCAPTCHA to your TakeShape project.
+
+   ![A screenshot of the Settings page in reCAPTCHA, where you can copy your site key for TakeShape.](/readme-images/reCAPTCHA/site-key-secret-key-recaptcha.png)
+
+2. Navigate to your TakeShape project's dashboard, select the **Home** tab and select **ReCAPTCHA** from the list of
+   services. You'll be taken to the **ReCAPTCHA** service page.
+
+- In the **Endpoint** field, enter `https://www.google.com/recaptcha/api`.
+
+- In the **Authentication Type** field, ensure **Query Parameter** is selected.
+
+- Under **Authentication**, enter `secret` as the value for the **Query Param** field. Enter your site secret as the
+  value for the **Token** field.
+
+- Select the **Save** button at the top-right of the page.
 
 ### Gorgias
 
@@ -344,7 +376,7 @@ provider, you can connect most arbitrary REST APIs, including Gorgias.
 - Leave this tab open, or copy your **Base API URL, Username, and Password** over to a secure location. It's time to set
   up Gorgias in TakeShape.
 
-2. On your TakeShape project's dashboard, navigate to the Home tab and select **Gorgias** from the list of services.
+2. On your TakeShape project's dashboard, navigate to the **Home** tab and select **Gorgias** from the list of services.
    You'll be taken to the **Generic REST** service page for **Gorgias**.
 
 - In the **Endpoint** field, add your Base API URL.
