@@ -556,7 +556,6 @@ environment variables. Then rename the file to `.env.local` to use them.
 1. Replace all public placeholder assets
 2. Update `robots.txt`
 
-### Known limitations
 
 ## Learn more
 
