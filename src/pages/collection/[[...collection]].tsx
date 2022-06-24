@@ -25,11 +25,9 @@ const CollectionPage: NextPage = ({
   collection,
   page
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const router = useRouter();
+  const { isFallback } = useRouter();
 
-  // If the page is not yet generated, this will be displayed
-  // initially until getStaticProps() finishes running
-  if (router.isFallback) {
+  if (isFallback) {
     return (
       <Layout navigation={navigation} footer={footer} seo={{ title: 'Collection is loading...' }}>
         <PageLoader />

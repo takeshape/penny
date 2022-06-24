@@ -1,9 +1,9 @@
-import { RelatedProductsProduct } from '../types';
+import { ProductPageRelatedProductsProduct } from '../types';
 import { ListItem } from './components/ListItem';
 import { ListItemLoading } from './components/ListItemLoading';
 
 export interface RelatedProductsProps {
-  products: RelatedProductsProduct[];
+  products: ProductPageRelatedProductsProduct[];
 }
 
 export const RelatedProducts = ({ products }: RelatedProductsProps) => {

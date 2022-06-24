@@ -85,6 +85,9 @@
           "productComponent": {
             "widget": "dropdown"
           },
+          "hideBreadcrumbs": {
+            "widget": "toggleSwitch"
+          },
           "hideReviews": {
             "widget": "toggleSwitch"
           },
@@ -193,6 +196,7 @@
         "order": [
           "name",
           "productComponent",
+          "hideBreadcrumbs",
           "hideReviews",
           "hideRelatedProducts",
           "showDetails",
@@ -498,6 +502,12 @@
           "name": {
             "widget": "singleLineText"
           },
+          "breadcrumbTitle": {
+            "widget": "singleLineText"
+          },
+          "parent": {
+            "widget": "relationship"
+          },
           "shopifyCollection": {
             "properties": {
               "descriptionHtml": {
@@ -557,6 +567,8 @@
         },
         "order": [
           "name",
+          "breadcrumbTitle",
+          "parent",
           "shopifyCollectionId",
           "shopifyCollection"
         ]
@@ -3524,6 +3536,12 @@
             ],
             "title": "Product Component"
           },
+          "hideBreadcrumbs": {
+            "type": "boolean",
+            "default": false,
+            "@l10n": false,
+            "title": "Hide Breadcrumbs"
+          },
           "hideReviews": {
             "default": false,
             "@l10n": false,
@@ -3634,6 +3652,14 @@
             ],
             "title": "Product Component",
             "@mapping": "takeshape:local:Product.ViTuUtNE_"
+          },
+          "hideBreadcrumbs": {
+            "type": "boolean",
+            "default": false,
+            "@l10n": false,
+            "description": "",
+            "title": "Hide Breadcrumbs",
+            "@mapping": "takeshape:local:Product.SNVU8G6B8"
           },
           "hideReviews": {
             "default": false,
@@ -4712,6 +4738,64 @@
         ]
       }
     },
+    "CollectionInterface": {
+      "id": "CollectionInterface",
+      "name": "CollectionInterface",
+      "title": "CollectionInterface",
+      "description": "CollectionInterface",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "_version": {
+            "type": "number"
+          },
+          "_status": {
+            "type": "string",
+            "@workflow": "default"
+          },
+          "name": {
+            "type": "string",
+            "description": "Initialized with title from shopify",
+            "title": "Name"
+          },
+          "breadcrumbTitle": {
+            "type": "string",
+            "description": "An optional title to override the regular title in breadcrumbs",
+            "title": "Breadcrumb Title"
+          },
+          "parent": {
+            "@ref": "local:TSRelationship",
+            "title": "Parent",
+            "@output": {
+              "description": "",
+              "@args": "TSRelationshipArgs",
+              "@resolver": {
+                "name": "takeshape:getRelated",
+                "service": "takeshape:local",
+                "options": {
+                  "nullable": true
+                }
+              },
+              "@ref": "local:Collection",
+              "@backreference": {
+                "enabled": false
+              }
+            }
+          },
+          "shopifyCollectionId": {
+            "title": "Service ID",
+            "type": "string"
+          },
+          "shopifyCollection": {
+            "@ref": "shopify:CollectionInput"
+          }
+        },
+        "required": []
+      }
+    },
     "Collection": {
       "id": "wsEbSG-yV",
       "name": "Collection",
@@ -4728,6 +4812,31 @@
             "description": "Initialized with title from shopify",
             "title": "Name",
             "@mapping": "takeshape:local:Collection.sZuVCwK3h7"
+          },
+          "breadcrumbTitle": {
+            "type": "string",
+            "description": "An alternate title to use in breadcrumbs",
+            "title": "Breadcrumb Title"
+          },
+          "parent": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Collection",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Parent",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:Collection.BGIKvV5Mk"
           },
           "shopifyCollectionId": {
             "type": "string",

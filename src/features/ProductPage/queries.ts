@@ -26,6 +26,7 @@ const ProductPageProductFragment = gql`
     takeshape {
       _id
       productComponent
+      hideBreadcrumbs
       hideReviews
       hideRelatedProducts
       showDetails
@@ -53,6 +54,37 @@ const ProductPageProductFragment = gql`
             description
           }
           descriptionHtml
+        }
+      }
+    }
+    standardizedProductType {
+      productTaxonomyNode {
+        name
+      }
+    }
+    collections(first: 25) {
+      nodes {
+        id
+        handle
+        title
+        productsCount
+        ruleSet {
+          rules {
+            column
+            condition
+            relation
+          }
+        }
+        takeshape {
+          breadcrumbTitle
+          parent {
+            breadcrumbTitle
+            shopifyCollection {
+              id
+              handle
+              title
+            }
+          }
         }
       }
     }

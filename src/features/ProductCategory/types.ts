@@ -1,4 +1,6 @@
-import { CollectionBase, CollectionPageInfo } from 'types/collection';
+import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
+import { SetRequired } from 'type-fest';
+import { CollectionBase } from 'types/collection';
 import { ProductBase } from 'types/product';
 import { ReviewStats } from 'types/review';
 import {
@@ -30,7 +32,12 @@ export type ProductCategoryProductListItem = {
   reviews: ProductCategoryReviewStats;
 };
 
-export type ProductCategoryCollection = CollectionBase<ProductCategoryProductListItem> & {
-  seo: {};
-  pageInfo: CollectionPageInfo;
+export type ProductCategoryCollectionParent = {
+  id: string;
+  url: string;
+  name: string;
 };
+
+export type ProductCategoryCollection = SetRequired<CollectionBase<ProductCategoryProductListItem>, 'seo' | 'pageInfo'>;
+
+export type ProductCategoryBreadcrumbs = Breadcrumb[];
