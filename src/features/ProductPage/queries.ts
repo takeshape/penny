@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { ReviewsIo_ListProductReviewsResponse } from 'types/takeshape';
 import {
   ProductPageRelatedProductsShopifyProduct,
   ProductPageShopifyProduct,
@@ -261,6 +262,39 @@ export const ProductPageShopifyProductQuery = gql`
   query ProductPageShopifyProduct($handle: String!) {
     product: productByHandleWithTtl(handle: $handle) {
       ...ProductPageProduct
+    }
+  }
+`;
+
+export type ProductPageReviewPageArgs = {
+  sku: string;
+  page: string;
+  perPage: string;
+};
+
+export type ProductPageReviewPageResponse = {
+  reviewData: ReviewsIo_ListProductReviewsResponse;
+};
+
+export const ProductPageReviewPageQuery = gql`
+  query ($sku: String!, $page: String!, $perPage: String!) {
+    reviewData: ReviewsIo_listProductReviews(sku: $sku, page: $page, per_page: $perPage) {
+      ratings
+      reviews {
+        data {
+          reviewer {
+            profile_picture
+            gravatar
+            first_name
+            last_name
+            verified_buyer
+          }
+          title
+          rating
+          review
+          date_created
+        }
+      }
     }
   }
 `;
