@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/client';
 import Seo from 'components/Seo';
 import logger from 'logger';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ProductCategory } from './ProductCategory';
 import {
   ProductCategoryShopifyCollectionArgs,
@@ -27,11 +27,12 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
   const apolloClient = useApolloClient();
 
   const { push, asPath } = useRouter();
-  const currentPath = parsePathname(collection, asPath);
+  const currentPath = useMemo(() => parsePathname(collection, asPath), [asPath, collection]);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
   const [isLoadingNextPage, setIsLoadingNextPage] = useState(false);
   const [currentPage, setCurrentPage] = useState(collection);
   const [currentTitle, setCurrentTitle] = useState(getCurrentTitle(collection, currentPath.page));
+
   const cachedPages = useRef<Map<number, ProductCategoryCollection>>(new Map([[currentPath.page, collection]]));
 
   const setPage = useCallback((page, pageCollection) => {
