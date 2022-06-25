@@ -59,8 +59,7 @@ export function getCollection(
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getCollectionItem(node)),
-    pageInfo: collection.products.pageInfo,
-    anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null
+    pageInfo: collection.products.pageInfo
   };
 }
 
