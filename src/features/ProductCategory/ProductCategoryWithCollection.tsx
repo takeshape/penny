@@ -1,5 +1,6 @@
-import { useLazyQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import Seo from 'components/Seo';
+import logger from 'logger';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ProductCategory } from './ProductCategory';
@@ -8,152 +9,149 @@ import {
   ProductCategoryShopifyCollectionQuery,
   ProductCategoryShopifyCollectionResponse
 } from './queries';
-import { getCollectionPageInfo, getCollectionWithOverfetch, getCurrentTitle, getCurrentUrl } from './transforms';
+import { getCollection, getCurrentTitle, getNextUrl, parsePathname } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
+
+function isSameCollection(collA: ProductCategoryCollection, collB: ProductCategoryCollection) {
+  return (
+    collA.pageInfo.startCursor === collB.pageInfo.startCursor && collA.pageInfo.endCursor === collB.pageInfo.endCursor
+  );
+}
 
 export interface ProductCategoryWithCollectionProps {
   collection: ProductCategoryCollection;
-  pageSize?: number;
-  page?: number;
-  cursor?: string;
+  pageSize: number;
 }
 
-export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
-  pageSize = pageSize ?? 5;
+export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
+  const apolloClient = useApolloClient();
 
-  const router = useRouter();
+  const { push, asPath } = useRouter();
+  const currentPath = parsePathname(collection, asPath);
+  const [isLoadingPage, setIsLoadingPage] = useState(false);
+  const [isLoadingNextPage, setIsLoadingNextPage] = useState(false);
+  const [currentPage, setCurrentPage] = useState(collection);
+  const [currentTitle, setCurrentTitle] = useState(getCurrentTitle(collection, currentPath.page));
+  const cachedPages = useRef<Map<number, ProductCategoryCollection>>(new Map([[currentPath.page, collection]]));
 
-  const [currentPage, setCurrentPage] = useState(page ?? 1);
-  const [requestPage, setRequestPage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [fetchingPage, setFetchingPage] = useState(null);
-  const [currentCollection, setCurrentCollection] = useState(collection);
-  const [currentTitle, setCurrentTitle] = useState(getCurrentTitle(collection, page));
+  const setPage = useCallback((page, pageCollection) => {
+    setCurrentPage(pageCollection);
+    setCurrentTitle(getCurrentTitle(pageCollection, page));
+    window.scrollTo(0, 0);
+  }, []);
 
-  const loadedPages = useRef<Map<number, ProductCategoryCollection>>(new Map([[page, collection]]));
-  const loadedCollections = useRef<Set<string>>(new Set([collection.pageInfo.startCursor]));
+  const loadPage = useCallback(
+    async (page, cursor, direction = 'after') => {
+      const variables =
+        direction === 'before'
+          ? {
+              handle: collection.handle,
+              last: pageSize,
+              before: cursor
+            }
+          : {
+              handle: collection.handle,
+              first: pageSize,
+              after: cursor
+            };
 
-  const [loadCollection, { data, error, loading, variables }] = useLazyQuery<
-    ProductCategoryShopifyCollectionResponse,
-    ProductCategoryShopifyCollectionArgs
-  >(ProductCategoryShopifyCollectionQuery);
+      const { data, error } = await apolloClient.query<
+        ProductCategoryShopifyCollectionResponse,
+        ProductCategoryShopifyCollectionArgs
+      >({
+        query: ProductCategoryShopifyCollectionQuery,
+        variables
+      });
 
-  // Pre-fetch the next page
-  useEffect(() => {
-    const nextPage = currentPage + 1;
-    if (!loadedPages.current.has(nextPage)) {
-      setRequestPage(nextPage);
-    }
-  }, [currentPage]);
-
-  // Handle page requests
-  useEffect(() => {
-    if (requestPage && !fetchingPage) {
-      // Need to fetch next page
-      if (requestPage > currentPage && currentCollection.pageInfo.hasNextPage) {
-        loadCollection({
-          variables: {
-            handle: currentCollection.handle,
-            // Always overfetch to get the real startCursor (the one that anchors this list)
-            first: pageSize,
-            after: currentCollection.pageInfo.endCursor
-          }
-        });
-        setFetchingPage(requestPage);
+      if (error) {
+        throw error;
       }
 
-      // Need to fetch prev page
-      if (requestPage < currentPage && currentCollection.pageInfo.hasPreviousPage) {
-        loadCollection({
-          variables: {
-            handle: currentCollection.handle,
-            // Always overfetch to get the real startCursor (the one that anchors this list)
-            last: pageSize + 1,
-            before: currentCollection.pageInfo.startCursor
-          }
-        });
-        setFetchingPage(requestPage);
+      const loadedCollection = getCollection(data);
+
+      cachedPages.current.set(page, loadedCollection);
+
+      return loadedCollection;
+    },
+    [apolloClient, collection.handle, pageSize]
+  );
+
+  const loadAndSetCurrentPage = useCallback(async () => {
+    const { page, cursor, direction } = currentPath;
+    setIsLoadingPage(true);
+
+    // An error loading the current page is critical, don't capture
+    const loadedPage = await loadPage(page, cursor, direction);
+
+    setPage(loadedPage, page);
+    setIsLoadingPage(false);
+  }, [loadPage, setPage, currentPath]);
+
+  const loadNextPage = useCallback(
+    async (cursor) => {
+      const page = currentPath.page + 1;
+      setIsLoadingNextPage(true);
+
+      try {
+        await loadPage(page, cursor);
+      } catch (e) {
+        // Loading the next page is not critical
+        logger.error(e);
       }
 
-      // Clear the request
-      setRequestPage(null);
-    }
-  }, [
-    currentCollection.handle,
-    currentCollection.pageInfo.endCursor,
-    currentCollection.pageInfo.hasNextPage,
-    currentCollection.pageInfo.hasPreviousPage,
-    currentCollection.pageInfo.startCursor,
-    currentPage,
-    fetchingPage,
-    loadCollection,
-    pageSize,
-    requestPage
-  ]);
+      setIsLoadingNextPage(false);
+    },
+    [currentPath.page, loadPage]
+  );
 
-  // Handle page data
-  useEffect(() => {
+  const setOrLoadPage = useCallback(async () => {
+    const cachedPage = cachedPages.current.get(currentPath.page);
+
+    // Set the cached page immediately
+    if (cachedPage && !isSameCollection(currentPage, cachedPage)) {
+      setPage(cachedPage, currentPath.page);
+    }
+
+    // Load the needed page, then set it
+    if (!cachedPage) {
+      loadAndSetCurrentPage();
+    }
+
+    // Just load the next page, pre-fetch
+    const nextPage = currentPath.page + 1;
     if (
-      fetchingPage &&
-      data &&
-      !loadedCollections.current.has(getCollectionPageInfo(data).startCursor) &&
-      !error &&
-      !loading
+      cachedPage?.pageInfo?.hasNextPage &&
+      !cachedPages.current.has(nextPage) &&
+      isSameCollection(currentPage, cachedPage) &&
+      !isLoadingNextPage
     ) {
-      const newCollection = getCollectionWithOverfetch({ pageSize }, data, variables);
-      loadedCollections.current.add(newCollection.pageInfo.startCursor);
-      loadedPages.current.set(fetchingPage, newCollection);
-      setFetchingPage(null);
-
-      // If we were waiting and this wasn't a pre-fetch
-      if (isLoading) {
-        setCurrentPage(fetchingPage);
-        setIsLoading(false);
-      }
+      loadNextPage(cachedPage.pageInfo.endCursor);
     }
-  }, [fetchingPage, data, error, loading, isLoading, pageSize, variables]);
+  }, [currentPath.page, currentPage, isLoadingNextPage, setPage, loadAndSetCurrentPage, loadNextPage]);
 
-  // Handle page change
+  // On load, we'll either be pre-fetching the next page or loading the current
+  // page if this is a client update
   useEffect(() => {
-    const pageCollection = loadedPages.current.get(currentPage);
-    if (pageCollection) {
-      const routerPath = router.asPath;
-      const currentUrl = getCurrentUrl(pageCollection, currentPage);
-      if (routerPath !== currentUrl) {
-        setCurrentCollection(pageCollection);
-        setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
-        router.push(currentUrl);
-        window.scrollTo(0, 0);
-      }
-    }
-  }, [currentPage, router]);
+    setOrLoadPage();
+  }, [setOrLoadPage]);
 
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
     (toPage) => {
-      const nextPage = currentPage + toPage;
-      if (loadedPages.current.has(nextPage)) {
-        setCurrentPage(nextPage);
-        return;
-      }
-      if (!fetchingPage) {
-        setRequestPage(nextPage);
-      }
-      setIsLoading(true);
+      const nextPage = currentPath.page + toPage;
+      const nextPageIsBefore = toPage < 0;
+      const nextUrl = getNextUrl(currentPage, nextPage, nextPageIsBefore);
+      push(nextUrl, undefined, { shallow: true });
     },
-    [currentPage, fetchingPage]
+    [currentPage, currentPath.page, push]
   );
-
-  if (error) {
-    throw error;
-  }
 
   let items: ProductCategoryProductListItem[];
 
-  if (isLoading) {
+  if (isLoadingPage) {
     items = Array(pageSize).fill(undefined) as unknown as ProductCategoryProductListItem[];
   } else {
-    items = currentCollection.items;
+    items = currentPage.items;
   }
 
   return (
@@ -163,8 +161,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
         header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
         items={items}
         pagination={{
-          hasNextPage: isLoading ? false : currentCollection.pageInfo.hasNextPage,
-          hasPreviousPage: isLoading ? false : currentCollection.pageInfo.hasPreviousPage,
+          hasNextPage: isLoadingPage ? false : currentPage.pageInfo.hasNextPage,
+          hasPreviousPage: isLoadingPage ? false : currentPage.pageInfo.hasPreviousPage,
           setCurrentPage: handleSetCurrentPage
         }}
       />

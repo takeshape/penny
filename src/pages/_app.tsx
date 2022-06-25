@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 import { AppContext, AppInitialProps } from 'next/app';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import 'styles/globals.css';
 import PageLoader from '../components/PageLoader';
 
@@ -13,25 +13,25 @@ export default function App({ Component, pageProps }: AppContext & AppInitialPro
   const router = useRouter();
   const [loadingRouteChange, setLoadingRouteChange] = useState(false);
 
-  useEffect(() => {
-    const handleRouteChangeStart = () => {
-      setLoadingRouteChange(true);
-    };
+  // useEffect(() => {
+  //   const handleRouteChangeStart = () => {
+  //     setLoadingRouteChange(true);
+  //   };
 
-    const handleRouteChangeEnd = () => {
-      setLoadingRouteChange(false);
-    };
+  //   const handleRouteChangeEnd = () => {
+  //     setLoadingRouteChange(false);
+  //   };
 
-    router.events.on('routeChangeStart', handleRouteChangeStart);
-    router.events.on('routeChangeError', handleRouteChangeEnd);
-    router.events.on('routeChangeComplete', handleRouteChangeEnd);
+  //   router.events.on('routeChangeStart', handleRouteChangeStart);
+  //   router.events.on('routeChangeError', handleRouteChangeEnd);
+  //   router.events.on('routeChangeComplete', handleRouteChangeEnd);
 
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChangeStart);
-      router.events.off('routeChangeError', handleRouteChangeEnd);
-      router.events.off('routeChangeComplete', handleRouteChangeEnd);
-    };
-  }, [router, setLoadingRouteChange]);
+  //   return () => {
+  //     router.events.off('routeChangeStart', handleRouteChangeStart);
+  //     router.events.off('routeChangeError', handleRouteChangeEnd);
+  //     router.events.off('routeChangeComplete', handleRouteChangeEnd);
+  //   };
+  // }, [router, setLoadingRouteChange]);
 
   return (
     <ErrorBoundary>

@@ -9,7 +9,7 @@ import {
   ProductCategoryShopifyCollectionQuery,
   ProductCategoryShopifyCollectionResponse
 } from 'features/ProductCategory/queries';
-import { getCollectionBasic, getCollectionPageParams } from 'features/ProductCategory/transforms';
+import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
@@ -48,19 +48,19 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
-  const [handle, cursor, direction] = params.collection;
+  const [handle, _page, cursor, direction] = params.collection;
 
   const variables =
     direction === 'before'
       ? {
           handle,
-          first: collectionsPageSize,
-          after: cursor
+          last: collectionsPageSize,
+          before: cursor
         }
       : {
           handle,
-          last: collectionsPageSize,
-          before: cursor
+          first: collectionsPageSize,
+          after: cursor
         };
 
   const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
@@ -70,7 +70,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     });
   });
 
-  const collection = getCollectionBasic(data);
+  const collection = getCollection(data);
 
   return {
     notFound: !Boolean(collection),
