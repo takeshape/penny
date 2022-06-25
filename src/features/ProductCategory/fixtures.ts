@@ -328,6 +328,5 @@ export const productCategoryCollection: ProductCategoryCollection = {
     startCursor: 'eyJsYXN0X2lkIjo2ODI3MDY5NTA1NjM2LCJsYXN0X3ZhbHVlIjoiNCJ9',
     hasNextPage: true,
     hasPreviousPage: false
-  },
-  anchor: null
+  }
 };
