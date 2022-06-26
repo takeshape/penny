@@ -1,14 +1,9 @@
-import { useApolloClient } from '@apollo/client';
 import Seo from 'components/Seo';
-import logger from 'logger';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
+import { PaginationDataHookParsedPath, usePaginationData } from 'utils/hooks/usePaginationData';
 import { ProductCategory } from './ProductCategory';
-import {
-  ProductCategoryShopifyCollectionArgs,
-  ProductCategoryShopifyCollectionQuery,
-  ProductCategoryShopifyCollectionResponse
-} from './queries';
+import { ProductCategoryShopifyCollectionQuery } from './queries';
 import { getCollection, getCurrentTitle, getNextUrl, parsePathname } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
 
@@ -24,111 +19,45 @@ export interface ProductCategoryWithCollectionProps {
 }
 
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
-  const apolloClient = useApolloClient();
+  const { push } = useRouter();
 
-  const { push, asPath } = useRouter();
-  const currentPath = useMemo(() => parsePathname(collection, asPath), [asPath, collection]);
-  const [isLoadingPage, setIsLoadingPage] = useState(false);
-  const [isLoadingNextPage, setIsLoadingNextPage] = useState(false);
-  const [currentPage, setCurrentPage] = useState(collection);
-  const [currentTitle, setCurrentTitle] = useState(getCurrentTitle(collection, currentPath.page));
-
-  const cachedPages = useRef<Map<number, ProductCategoryCollection>>(new Map([[currentPath.page, collection]]));
-
-  const setPage = useCallback((page, pageCollection) => {
-    setCurrentPage(pageCollection);
-    setCurrentTitle(getCurrentTitle(pageCollection, page));
-    window.scrollTo(0, 0);
-  }, []);
-
-  const loadPage = useCallback(
-    async (page, cursor, direction = 'after') => {
+  const parsePath = useCallback((asPath) => parsePathname(collection, asPath), [collection]);
+  const getVariables = useCallback(
+    (parsedPath: PaginationDataHookParsedPath) => {
       const variables =
-        direction === 'before'
+        parsedPath.direction === 'before'
           ? {
               handle: collection.handle,
               last: pageSize,
-              before: cursor
+              before: parsedPath.cursor
             }
           : {
               handle: collection.handle,
               first: pageSize,
-              after: cursor
+              after: parsedPath.cursor
             };
 
-      const { data, error } = await apolloClient.query<
-        ProductCategoryShopifyCollectionResponse,
-        ProductCategoryShopifyCollectionArgs
-      >({
-        query: ProductCategoryShopifyCollectionQuery,
-        variables
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      const loadedCollection = getCollection(data);
-
-      cachedPages.current.set(page, loadedCollection);
-
-      return loadedCollection;
+      return variables;
     },
-    [apolloClient, collection.handle, pageSize]
+    [collection, pageSize]
   );
+  const getPageData = useCallback((data: any) => getCollection(data), []);
 
-  const loadAndSetCurrentPage = useCallback(async () => {
-    const { page, cursor, direction } = currentPath;
-    setIsLoadingPage(true);
+  const [setOrLoadPage, { currentPath, isLoadingPage, isLoadingNextPage, currentPage, currentPageData }] =
+    usePaginationData<ProductCategoryCollection>({
+      parsePath,
+      query: ProductCategoryShopifyCollectionQuery,
+      getVariables,
+      initialPageData: collection,
+      getPageData,
+      isSamePageData: isSameCollection
+    });
 
-    // An error loading the current page is critical, don't capture
-    const loadedPage = await loadPage(page, cursor, direction);
+  const currentTitle = useMemo(() => getCurrentTitle(currentPageData, currentPage), [currentPageData, currentPage]);
 
-    setPage(loadedPage, page);
-    setIsLoadingPage(false);
-  }, [loadPage, setPage, currentPath]);
-
-  const loadNextPage = useCallback(
-    async (cursor) => {
-      const page = currentPath.page + 1;
-      setIsLoadingNextPage(true);
-
-      try {
-        await loadPage(page, cursor);
-      } catch (e) {
-        // Loading the next page is not critical
-        logger.error(e);
-      }
-
-      setIsLoadingNextPage(false);
-    },
-    [currentPath.page, loadPage]
-  );
-
-  const setOrLoadPage = useCallback(async () => {
-    const cachedPage = cachedPages.current.get(currentPath.page);
-
-    // Set the cached page immediately
-    if (cachedPage && !isSameCollection(currentPage, cachedPage)) {
-      setPage(cachedPage, currentPath.page);
-    }
-
-    // Load the needed page, then set it
-    if (!cachedPage) {
-      loadAndSetCurrentPage();
-    }
-
-    // Just load the next page, pre-fetch
-    const nextPage = currentPath.page + 1;
-    if (
-      cachedPage?.pageInfo?.hasNextPage &&
-      !cachedPages.current.has(nextPage) &&
-      isSameCollection(currentPage, cachedPage) &&
-      !isLoadingNextPage
-    ) {
-      loadNextPage(cachedPage.pageInfo.endCursor);
-    }
-  }, [currentPath.page, currentPage, isLoadingNextPage, setPage, loadAndSetCurrentPage, loadNextPage]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   // On load, we'll either be pre-fetching the next page or loading the current
   // page if this is a client update
@@ -141,10 +70,10 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
     (toPage) => {
       const nextPage = currentPath.page + toPage;
       const nextPageIsBefore = toPage < 0;
-      const nextUrl = getNextUrl(currentPage, nextPage, nextPageIsBefore);
+      const nextUrl = getNextUrl(currentPageData, nextPage, nextPageIsBefore);
       push(nextUrl, undefined, { shallow: true });
     },
-    [currentPage, currentPath.page, push]
+    [currentPageData, currentPath.page, push]
   );
 
   let items: ProductCategoryProductListItem[];
@@ -152,7 +81,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
   if (isLoadingPage) {
     items = Array(pageSize).fill(undefined) as unknown as ProductCategoryProductListItem[];
   } else {
-    items = currentPage.items;
+    items = currentPageData.items;
   }
 
   return (
@@ -162,8 +91,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
         header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
         items={items}
         pagination={{
-          hasNextPage: isLoadingPage ? false : currentPage.pageInfo.hasNextPage,
-          hasPreviousPage: isLoadingPage ? false : currentPage.pageInfo.hasPreviousPage,
+          hasNextPage: isLoadingPage || isLoadingNextPage ? false : currentPageData.pageInfo.hasNextPage,
+          hasPreviousPage: isLoadingPage ? false : currentPageData.pageInfo.hasPreviousPage,
           setCurrentPage: handleSetCurrentPage
         }}
       />

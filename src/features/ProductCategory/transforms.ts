@@ -7,6 +7,7 @@ import {
   getProductUrl,
   getSeo
 } from 'transforms/shopify';
+import { PaginationDataHookParsedPath } from '../../utils/hooks/usePaginationData';
 import { ProductCategoryShopifyCollectionHandlesResponse, ProductCategoryShopifyCollectionResponse } from './queries';
 import {
   ProductCategoryBreadcrumbs,
@@ -127,13 +128,13 @@ export function getNextUrl(collection: ProductCategoryCollection, page: number, 
   return `${collection.url}/${page}/${collection.pageInfo.endCursor}`;
 }
 
-export function parsePathname(collection: ProductCategoryCollection, pathname: string) {
+export function parsePathname(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
   const paginationPath = pathname.replace(collection.url, '').replace(/^\//, '');
   const [page, cursor, direction] = paginationPath.split('/');
   return {
     page: page ? Number(page) : 1,
     cursor: cursor !== '' ? cursor : null,
-    direction: direction ?? 'after'
+    direction: direction === 'before' ? 'before' : 'after'
   };
 }
 
