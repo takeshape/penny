@@ -1,4 +1,4 @@
-# Deluxe ™️ sample project
+# TakeShape Deluxe ™️ Ecommerce Sample Project
 
 The easiest way to know if a tool is right for you is to see it in action.
 
@@ -24,21 +24,30 @@ backend that TakeShape provides, just deploy the pattern in the `.takeshape/patt
 
 ## How it works
 
+This repo contains two major elements:
+
+- The TakeShape project that powers the composable e-commerce backend.
+- The Next.js project that powers the headless storefront.
+
+To get full use out of the Deluxe sample project, you'll have to configure both the TakeShape project and the Next.js
+project.
+
+Here's a deep-dive into both:
+
 ### The TakeShape project pattern
 
 This starter's TakeShape project composes the following services into a unified GraphQL API:
 
+- Shopify Admin and Storefront for customer data, product info and payment processing
 - OpenID for identity management
 - ReCAPTCHA for security
 - Gorgias for customer support
-- Shopify Admin and Storefront for customer data, product info and payment processing
-- Recharge for product subscriptions
 - Klaviyo for newsletter subscriptions
 - REVIEWS.io for product reviews
 - Voucherify for customer loyalty rewards
 - Ship Engine for shipping management
 
-But TakeShape isn't just the composition layer for the services—it also enables functionality that can take most
+But TakeShape isn't just the composition layer for these services—it also enables functionality that can take most
 headless e-commerce deployments to the next level:
 
 - **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) speeds up product queries by
@@ -61,7 +70,6 @@ graph TD
     UP --> |Shipping info| ShipEngine
     UP --> |Loyalty Points| Voucherify
     UP --> |Customer Support| Gorgias
-    Shopify --> |Subscriptions| Recharge
 ```
 
 ### The frontend stack
@@ -108,14 +116,13 @@ We also used a few tools from TakeShape's ecosystem to simplify our workflow and
 - [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — Our GraphQL query
   validation module that supports all graphql-cli options and makes writing queries from the frontend much less painful.
 - [@takeshape/routing](https://app.takeshape.io/docs/routing/#:~:text=Routing%E2%80%8B,dynamic%20search%20or%20taxonomy%20pages)
-  — Our module for optimized routing in frontend projects that use TakeShape. In this project, we used it to generate
-  URLs for image assets stored in TakeShape.
+  — Our routing module, which has methods for generating URLs for image assets stored in TakeShape.
 
 In the next section, you'll find a screenshot of the finished store's homepage.
 
 ## Screenshot
 
-![A screenshot of the store's homepage.](/readme-images/store/homepage.png)
+![A screenshot of the store's homepage.](/readme-images/store/homepage-in-browser.png)
 
 ## Instructions
 
@@ -126,7 +133,7 @@ Here are the steps for getting started with this project:
 <a href="https://app.takeshape.io/add-to-takeshape?repo=https://github.com/takeshape/takeshape-deluxe-sample-project/tree/main/.takeshape/pattern"><img alt="Deploy To TakeShape" src="https://camo.githubusercontent.com/1b580e3ce353d235bde0f376ca35b0fb26d685f3750a3013ae4b225dd3aaf344/68747470733a2f2f696d616765732e74616b6573686170652e696f2f32636363633832352d373062652d343331632d396261302d3130616233386563643361372f6465762f38653266376264612d306530382d346564652d613534362d3664663539626536613862622f4465706c6f79253230746f25323054616b65536861706525343032782e706e673f6175746f3d666f726d6174253243636f6d7072657373" width="205" height="38" data-canonical-src="https://images.takeshape.io/2cccc825-70be-431c-9ba0-10ab38ecd3a7/dev/8e2f7bda-0e08-4ede-a546-6df59be6a8bb/Deploy%20to%20TakeShape%402x.png?auto=format%2Ccompress" style="max-width:100%;"></a>
 
 2. Generate an `anonymous` and a `webhook` TakeShape API key. You need these two API keys, and they must have different
-   permissions scopes.
+   permissions scopes. Here's how to create them:
 
 - Navigate to the **Settings** tab in your TakeShape project's dashboard.
 
@@ -143,7 +150,7 @@ Here are the steps for getting started with this project:
 - Do the same process, but this time create a key with `webhook` permissions. The environment variable for this key will
   be `TAKESHAPE_WEBHOOK_API_KEY`.
 
-3. Save your TakeShape project's API Endpoint.
+3. Get your TakeShape project's API Endpoint. Here's how:
 
 - Navigate to the **Home** tab of your TakeShape project's dashboard in the web client. Scroll down to the **Useful
   Snippets** section, and copy the **API Endpoint** there.
@@ -166,9 +173,9 @@ The following instructions will help you configure all of the services this proj
 
 ### NextAuth and OpenID
 
-This project uses NextAuth in combination with the `@takeshape/next-auth-all-access` package for user authentication and
-identity management. The following instructions will walk you through setting up OpenID as a service provider in your
-TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-access`.
+This project uses NextAuth in combination with the `@takeshape/next-auth-all-access` package for user authentication. It
+also uses OpenID for identity management. The following instructions will walk you through setting up OpenID as a
+service provider in your TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-access`.
 
 #### Setting up OpenID
 
@@ -182,11 +189,12 @@ TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-acces
 
    > Note: Your store URL should be the public-facing URL of your website, not necessarily your myshopify.com URL.
 
-3. Copy the generated url in the **Audience** field and save it somewhere secure. You'll need it for your Next.js
-   project's `.env` file.
+3. Copy the generated url in the **Audience** field and save it somewhere secure. You'll need it for your one of your
+   project's environment variables.
 4. Select the **Save** button at the top-right of the OpenID service page.
 
-5. Now set up your `.env` variables in your Next.js project.
+5. Now set up your environment variables. You can either do this in the `.env` file in your Next.js project's directory,
+   or [in your hosting provider's UI](https://vercel.com/docs/concepts/projects/environment-variables).
 
 - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable to the generated **Audience** URL from your OpenID provider.
 - Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable to the same URL you provided for the **Issuer URL** field on your
@@ -195,6 +203,10 @@ TakeShape project, and configuring NextAuth with `@takeshape/next-auth-all-acces
 #### Setting up NextAuth
 
 To set up NextAuth, use our `@takeshape/next-auth-all-access` package to generate private keys:
+
+```bash
+npm i @takeshape/next-auth-all-access
+```
 
 ```bash
 npx @takeshape/next-auth-all-access generate-keys
@@ -206,15 +218,14 @@ You'll see three messages:
 - The generated private key. It should look like this:
 
 ```
-NEXTAUTHOIDC_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----\nYOUR PRIVATE KEY HERE\n-----END
+NEXTAUTHOIDC_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----\nMLP7\nvSyOjVf9pfEAntyYVUyjPq/af+IyHC090TK8gtmCZkkJ8xN80kVcQnIzGxGg+YTO\njqBzGTEX0k+FaR911cQ2lVuX9Nx86DtmuvCUXbl/u+PAndXsInvbutFozu/Yr5Bk\nsKi3bJBMA+AY4oyPAG/hoIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDxxpLhDLp6MdQ4\n5jn0Z4qMFSckU4UBVMEcUSkS1jzaQQAb1Ue6rqBihSSJx19wKxyZwNJAPZQObtuC\nmgYk53B8vxMUMbQVCCYxRrogTVmjYMnbQ/NmkC+K4iWHO/37Qk9P4AgDSkgf8yYKwEaL/sYTCkc1xX0cLgFBlDN3kiRa+NU+AxmgRTk8\n2K/iXt3bAgMBAAECggEACzngKgjwQ6o6o2W1PS7tlPGKfrpOC7DGwqzWDmTaMHwi\nKCiwCu/+zHRILQmP2eJ2koEMgiUZ0c297YN/U4lXhMNOfHqOVQeq1lDlZYiR5+8f\nkEnIbHOTGPy2WxN44S90IDtEfTe9mxqKf09VIZkRtsYaKG\nXx8ebJZzMSWUSQXCaSM0EoAuyNdRTW34cSdHpMUQeQKBgQD57gIAbhnzcyvzD4w5\nORTrCuuz48cnTgGMfU6IpboSzq/O3cWhsu6nCcj8y9Y9+b8CsNqdzg/XVsszHUCS7Wv8FWSFkzJOlkKytcQwc\nxxhJRe3Rxv8bBgdsa/xVVWzAivbmNe9uMjmwQPUWyOLTKmNyl1xF4at8iHjCbeiD\nzG03tBP5wk/XAYXM43dlfx4r0hriju7\nphMd4iDkJJzjpZrbdQnhAdUSYKt+iov37bZmwHwKEtSbh9aEVE9ynsjb3GlxtwKBgQD3pd3NwX0HpE/JY8aiyke3Nv/tMVdZjfji\nY5mQeYdi/lG52swvoAl6PFaJf2kvT42omt\nLPS49YfDYkHFRjnZq1UsRX2vmES3zHkAtQ7MVoiGe1qAK8Twd76XTiCyXUrT40hQ\n1BhXmDJk/QKBgGEW75ohK12iiRk0GgIExbaFGIlaW/xN1lYwO3jkAH/yD584G8MZ\nj8MmAZF2qsMsQUGSH+VwxElKAGUeXxQHcPez55kZDAV3SNAmCD9ric1I1nYC\nv1bDuUJbsEyscgbdtaFXNbDK9zaZLCM+hpz9Z6G+G9Hz0UmI0kedPf09k32rCdJk\nOmRGCxWZ2bExKHUJSmQTxXWu7zAKR8oxPQHfof0CgYADcJ+BZWtKpaIWsZtgcqwX\nNdEs0CFtGhzhT9Sajgr3CXvuwpUClG03j4rxKcUPQgJA8pW9CblgjcTtB0SGsuLf\nA0EGo7/VYpPtPz1tO7mn/qp3uWfU55x41Y3FL6hW24nO0qMbCEaLbAuloW46juqX\nPRDdoC8Y5XGOd0J+9zOt5g==\n-----END
 PRIVATE KEY-----\n'
 ```
 
 - "Writing your JWKS file to `'./keys/jwks.json'`"
 
 Paste the line containing your private key into your `.env.local` file. If you're deploying with Vercel or another
-platform, add the `NEXTAUTHOIDC_PRIVATE_KEY` variable to your environment variables, and set the value to the generated
-private key.
+platform, add `NEXTAUTHOIDC_PRIVATE_KEY` to your environment variables, and set the value to the generated private key.
 
 You should also have a new `keys` directory with a `jwks.json` file with generated properties. It should look similar to
 this:
@@ -239,29 +250,32 @@ this:
 > Warning! Connecting this project to a live Shopify store **WILL** enable real purchases. If you just want to play
 > around without risking real charges,
 > [set your store's payments to Test Mode](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments)
-> and use appropriately scoped API keys. When testing purchases, always use
+> and use [appropriately scoped Shopify API keys](https://shopify.dev/api/usage/access-scopes). When testing purchases,
+> always use
 > [Shopify's accepted fake credit card information](https://help.shopify.com/en/partners/dashboard/managing-stores/test-orders-in-dev-stores).
 
-This project uses Shopify for e-commerce functionality. This README assumes you already have a Shopify store set up. You
-don't need to have Shopify Plus to use any of the features described here.
+This project uses Shopify for e-commerce functionality. These instructions assume you've already
+[created a Shopify store](https://www.shopify.com/). You don't need to have Shopify Plus to use any of the features
+described here.
 
-Follow these instructions to connect your Shopify store's Admin and Storefront APIs to your TakeShape project, and the
-frontend Next.js project.
+Follow these instructions to connect your Shopify store's Admin and Storefront APIs to both your TakeShape project and
+the frontend Next.js project.
 
 1. [Create a Shopify store if you don't already have one](https://www.shopify.com/).
 
 2. Navigate to your store's admin site by visiting `https://your-store.myshopify.com/admin`, substituting "your-store"
    with the name of your store.
 
-3. Configure Shopify checkout experience.
+3. Configure your Shopify checkout experience.
 
-This project uses Shopify's checkout experience. That means when a customer is ready to purchase, they are re-directed
-to a checkout flow that Shopify generates. The only downside is, shopify's checkout flow will send users to your shopify
+This project uses Shopify's checkout experience. That means when a customer is ready to purchase, they are redirected to
+a checkout flow that Shopify generates. The only downside is, shopify's checkout flow will send users to your shopify
 store, not your headless store, when they're done. To force Shopify's checkout experience to redirect to your headless
 storefront, you must use [their Liquid templating language](https://shopify.github.io/liquid/). These instructions show
-you how.
+you how:
 
-- In your store's admin UI, select **Settings**. A settings menu will appear. Select **Checkout** on the left.
+- In your store's admin UI, select the **⚙ Settings** button. A settings menu will appear. Select **Checkout** on the
+  left.
   ![A screenshot of the Settings menu with Checkout selected.](/readme-images/checkout-settings-nav-readmie-images.png)
 
 - Scroll down to the **Order status page** settings. In the **Additional Scripts** text area, add the following script.
@@ -275,6 +289,8 @@ you how.
     <script> window.location = "https://your-shopify-store.com/?shopify_checkout_action=success"; </script>
     {% endif %}
   ```
+
+- **Save** your changes.
 
 The following instructions will show you how to configure your checkout process to work with this headless store. To
 configure these settings, stay in the **Checkout** section of the **Settings** menu in your store's admin UI.
@@ -295,6 +311,10 @@ configure these settings, stay in the **Checkout** section of the **Settings** m
 
 - **Save** your changes.
 
+> If you want to test this app without enabling real payments, it's best to set up test payments while you're in
+> Shopify's admin UI.
+> [Follow Shopify's instructions for setting up test payments in your store](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments).
+
 4. Get your Storefront API keys.
 
 - In the navigation on the left side of your store's admin page, select **Apps**. A dropdown window should appear.
@@ -303,7 +323,7 @@ configure these settings, stay in the **Checkout** section of the **Settings** m
 ![The admin page in shopify](/readme-images/store-admin-page-readme-images.png)
 
 - Select the **Develop apps for your store** button. On the next page, titled "App Development," select **Create an
-  app** and name the app whatever you'd like. "Next.js App" for example.
+  app** and name the app whatever you'd like.
 
   ![The Apps and Sales Channels page. Select Develop apps for your store.](/readme-images/admin-settings-page-readme-images.png)
 
@@ -336,50 +356,50 @@ Then select **Save** at the top right of the page.
 
 ![A screenshot of the Storefront APi access token section](/readme-images/storefront-api-access-token-readme-images.png)
 
-> If you want to test this app without enabling real payments, it's best to set up test payments while you're in
-> Shopify's admin UI.
-> [Follow Shopify's instructions for setting up test payments in your store](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments).
+#### Connecting the Shopify services to TakeShape
 
-#### Connecting the Shopify service to TakeShape
-
-To use Shopify with this project, you'll need to connect your Shopify Admin API and Shopify Storefront API. The
-following instructions will help you connect your Shopify APIs to the deluxe sample project pattern, but you can
+To use Shopify with this project, you'll need to connect your Shopify Admin API and Shopify Storefront API as two
+separate services. The following instructions will help you connect your Shopify APIs to the deluxe sample project
+pattern, but you can
 [connect Shopify to any TakeShape project by following the Shopify guide in our docs](https://app.takeshape.io/docs/services/providers/shopify/).
 
 ##### Connecting Shopify Admin
 
-Navigate to your TakeShape project's dashboard and select the **Home** tab. Select the **Shopify** service and add your
-store's myshopify.com URL to the **myshopify.com URL** field. The format of the URL is your store's name +
-myshopify.com. `https://example-shop.myshopify.com`
+- Navigate to your TakeShape project's dashboard and select the **Home** tab. Select the **Shopify** service.
+- Add your store's myshopify.com URL to the **myshopify.com URL** field. The format of the URL is your store's name +
+  myshopify.com. `https://your-shop.myshopify.com`
 
-Select **Save** and complete the setup flow in the Shopify browser tab that opens up. If you've already connected
-TakeShape to this shop before, you may not have to do anything on Shopify. After you complete the Shopify setup flow,
-you'll be taken to the API Indexing setup flow in TakeShape. Skip it. No further configuration is needed for Shopify
-Admin.
+- Select **Save** and complete the setup flow in the Shopify browser tab that opens up. If you've already connected
+  TakeShape to this shop before, you may not have to do anything on Shopify.
+
+- After you complete the Shopify setup flow, you'll be taken to the API Indexing setup flow in TakeShape. Skip it. No
+  further configuration is needed for Shopify Admin.
 
 ##### Connecting Shopify Storefront
 
-Back in the **Home** tab of your project, select the Shopify Storefront service. It will be a generic GraphQL service,
-with the GraphQL logo.
+- Navigate to the **Home** tab of your TakeShape project.
 
-In the **Endpoint** field, enter your store's Shopify Storefront endpoint. It will be of the format
-`https://store-name.myshopify.com/api/[version-number]/graphql.json`.
+- Select the Shopify Storefront service. It will be a generic GraphQL service, with the GraphQL logo.
+
+- In the **Endpoint** field, enter your store's Shopify Storefront endpoint. It will be of this format:
+
+```
+https://store-name.myshopify.com/api/2022-04/graphql.json
+```
 
 Here's what ours looked like when we set up this project in June of 2022:
 
 ```
-https://deluxe-store.myshopify.com/api/2022-01/graphql.json
+https://deluxe-store.myshopify.com/api/2022-04/graphql.json
 ```
 
-For **Authentication Type**, select **Bearer Token**.
+- For **Authentication Type**, select **Bearer Token**.
 
 - In the **Header** field, enter `X-Shopify-Storefront-Access-Token`.
 - In the **Token** field, enter the Storefront API access token you copied from your store's myshopify.com/admin page.
 
-Now your Shopify store is configured for this project. The next section is about setting up test payments if you don't
-want to enable real payments.
-
-Not interested? [Skip to our REVIEWS.io section below to set up reviews in your store](#setting-up-reviewsio).
+Now your Shopify store is configured for this project. The next section is about setting up reviews in your store with
+REVIEWS.io.
 
 ### REVIEWS.io
 
@@ -418,6 +438,8 @@ how to connect ShipEngine to any TakeShape project,
 - Copy this key to put into your TakeShape project.
 
 ![A screenshot of Ship Engine's API Dashboard](./readme-images/shipengine/api-dashboard-shipengine.png)
+
+> If you're on a free tier Ship Engine account, your API keys will have `TEST_` appended to the front.
 
 2. Navigate to your TakeShape project's dashboard and select **Ship Engine** under the services list.
 
@@ -467,7 +489,7 @@ to connect Klaviyo to any TakeShape project,
 
 ### reCAPTCHA
 
-The following section describes how to connect ReCAPTCHA to your Deluxe Sample Project pattern in TakeShape using a
+The following section describes how to connect reCAPTCHA to your Deluxe Sample Project pattern in TakeShape using a
 generic REST provider. To learn how to connect ReCAPTCHA to any TakeShape project,
 [check out our docs on using a generic REST service](https://app.takeshape.io/docs/services/providers/rest).
 
@@ -605,9 +627,10 @@ environment variables. Then rename the file to `.env.local` to use them.
 ### Choosing a hosting platform
 
 When building this project, we chose [Vercel](https://vercel.com/) to host the frontend.
+
 [Vercel is the company that created Next.js](https://nextjs.org/), and they have useful github workflow tools for
 projects like this. We integrated
-[Vercel's deploy preview functionality](https://vercel.com/docs/concepts/git/vercel-for-github) into our workflow, which
+[their deploy preview functionality](https://vercel.com/docs/concepts/git/vercel-for-github) into our workflow, which
 allowed Vercel to generate a preview build of the site for every pull request we created. That allowd us to see what the
 PR's changes would look like in production before we merged them to our main branch.
 
