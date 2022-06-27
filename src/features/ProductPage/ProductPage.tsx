@@ -48,7 +48,9 @@ export const ProductPage = ({
       </div>
       <div className="bg-white">
         <Wrapper>
-          {showReviews && <Reviews sku={shopifyGidToId(product.id)} reviewList={reviewList} />}
+          {showReviews && (
+            <Reviews productName={product.name} sku={shopifyGidToId(product.id)} reviewList={reviewList} />
+          )}
           {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
         </Wrapper>
       </div>
