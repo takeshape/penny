@@ -631,8 +631,8 @@ When building this project, we chose [Vercel](https://vercel.com/) to host the f
 [Vercel is the company that created Next.js](https://nextjs.org/), and they have useful github workflow tools for
 projects like this. We integrated
 [their deploy preview functionality](https://vercel.com/docs/concepts/git/vercel-for-github) into our workflow, which
-allowed Vercel to generate a preview build of the site for every pull request we created. That allowd us to see what the
-PR's changes would look like in production before we merged them to our main branch.
+allowed Vercel to generate a preview build of the site for every pull request we created. That allowed us to see what
+the PR's changes would look like in production before we merged them to our main branch.
 
 To learn more about deploying with Vercel, [check out their comprehensive guide](https://nextjs.org/docs/deployment).
 
