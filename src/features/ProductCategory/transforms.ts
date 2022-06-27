@@ -76,7 +76,13 @@ function getCollectionParent(collection: ProductCategoryShopifyCollection): Prod
   };
 }
 
-export function getCollection(collection: ProductCategoryShopifyCollection): ProductCategoryCollection {
+export function getCollection(response: ProductCategoryShopifyCollectionQueryResponse): ProductCategoryCollection {
+  const collection = response?.collection;
+
+  if (!collection) {
+    return null;
+  }
+
   return {
     id: collection.id,
     url: getCollectionUrl(collection.handle),
