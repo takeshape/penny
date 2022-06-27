@@ -585,8 +585,7 @@ are welcome!
 ## Development notes
 
 - Be sure to follow the instructions in the `.env` and `.env.local-example` files included in this repo. Rename
-  `.env.local-example` to `.env.local`. Don't forget to add `.env` to your `.gitignore` file so it won't be committed to
-  your repo.
+  `.env.local-example` to `.env.local`.
 - `storybook-addon-jotai` necessitates the graphql overrides
 - `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
