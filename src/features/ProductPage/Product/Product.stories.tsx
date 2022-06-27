@@ -23,7 +23,8 @@ WithImageGrid.args = {
   breadcrumbs,
   product: productPageProduct,
   reviewHighlights: productPageReviewHighlights,
-  showFeaturedReviews: true
+  showFeaturedReviews: true,
+  showReviewsLink: true
 };
 
 export const WithImage = Template.bind({});
@@ -32,7 +33,8 @@ WithImage.args = {
   breadcrumbs,
   product: productPageProduct,
   reviewHighlights: productPageReviewHighlights,
-  showFeaturedReviews: true
+  showFeaturedReviews: true,
+  showReviewsLink: true
 };
 
 export default Meta;
