@@ -553,8 +553,24 @@ environment variables. Then rename the file to `.env.local` to use them.
 
 ## Deploying to production
 
-When deploying this project to production, be sure to replace all public placeholder assets.
+> When deploying this project to production, be sure to replace all public placeholder assets.
 
+### Choosing a hosting platform
+
+When building this project, we chose [Vercel](https://vercel.com/) to host the frontend.
+[Vercel is the company that created Next.js](https://nextjs.org/), and they have useful github workflow tools for
+projects like this. We integrated
+[Vercel's deploy preview functionality](https://vercel.com/docs/concepts/git/vercel-for-github) into our workflow, which
+allowed Vercel to generate a preview build of the site for every pull request we created. That allowd us to see what the
+PR's changes would look like in production before we merged them to our main branch.
+
+To learn more about deploying with Vercel, [check out their comprehensive guide](https://nextjs.org/docs/deployment).
+
+[Netlify](https://www.netlify.com/for/web-applications/) is a popular alternative that you can also check out. They
+offer [a similar deploy preview tool](https://docs.netlify.com/site-deploys/deploy-previews/).
+
+To learn more about deploying with Netlify,
+[check out their comprehensive guide](https://docs.netlify.com/integrations/frameworks/next-js/).
 
 ## Learn more
 
@@ -568,6 +584,9 @@ are welcome!
 
 ## Development notes
 
+- Be sure to follow the instructions in the `.env` and `.env.local-example` files included in this repo. Rename
+  `.env.local-example` to `.env.local`. Don't forget to add `.env` to your `.gitignore` file so it won't be committed to
+  your repo.
 - `storybook-addon-jotai` necessitates the graphql overrides
 - `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
@@ -583,12 +602,12 @@ are welcome!
   will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
   removed from the relevant mutations in the project schema.
 - Shopify **must** use the `2022-04` endpoint, like this:
-  `https://<shopify-shop-name>.myshopify.com/admin/api/2022-04/graphql.json`
+  `https://shopify-shop-name.myshopify.com/admin/api/2022-04/graphql.json`
 
 ```erb
 {% if checkout.attributes.redirect_origin %}
 <script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
 {% else %}
-<script> window.location = "https://deluxe-sample-project.vercel.app/?shopify_checkout_action=success"; </script>
+<script> window.location = "https://your-shopify-store.com?shopify_checkout_action=success"; </script>
 {% endif %}
 ```
