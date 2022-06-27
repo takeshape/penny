@@ -6,8 +6,11 @@ import { ProductPageReviewPageQuery } from 'features/ProductPage/queries';
 import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
 import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
 import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { useCallback, useMemo, useState } from 'react';
 import { getReview } from 'transforms/reviewsIo';
+import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
 import { ReviewsRollup } from './ReviewsRollup';
 
@@ -21,6 +24,9 @@ export interface ReviewsProps {
 
 export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPage }: ReviewsProps) => {
   const { stats, rollup, data, currentPage: initialPage, totalPages } = reviewList;
+
+  const router = useRouter();
+  const { status } = useSession();
 
   const [currentPage, setCurrentPage] = useState(initialPage);
 
@@ -91,13 +97,22 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
               If you&rsquo;ve used this product, share your thoughts with other customers
             </p>
 
-            <a
-              href="#"
-              className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
-              onClick={() => setIsCreateReviewOpen(true)}
-            >
-              Write a review
-            </a>
+            {status === 'authenticated' ? (
+              <a
+                href="#"
+                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                onClick={() => setIsCreateReviewOpen(true)}
+              >
+                Write a review
+              </a>
+            ) : (
+              <a
+                href={`/api/auth/signin?callbackUrl=${encodeURIComponent(router.asPath)}`}
+                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+              >
+                Sign in to write a review
+              </a>
+            )}
           </div>
         </div>
 

@@ -4,10 +4,10 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Textarea from 'components/Form/Textarea/Textarea';
 import { Star } from 'components/Stars/Stars';
-import { CreateMyProductReviewMutation, CreateMyProductReviewResult } from 'features/AccountForm/queries';
-import { Fragment, useCallback } from 'react';
+import { CreateMyProductReviewMutation } from 'features/AccountForm/queries';
+import { Fragment, useCallback, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { MutationCreateMyProductReviewArgs } from 'types/takeshape';
+import { MutationCreateMyProductReviewArgs, Unnamed_1_Response } from 'types/takeshape';
 
 interface CreateReviewForm {
   review: string;
@@ -34,8 +34,8 @@ export const CreateReview = (props: ReviewsProps) => {
     formState: { isSubmitting, errors }
   } = useForm<CreateReviewForm>();
 
-  const [createProductReview, { data: createProductReviewResponse, error }] = useMutation<
-    CreateMyProductReviewResult,
+  const [createProductReview, { data: createProductReviewResponse, error: mutationError }] = useMutation<
+    Unnamed_1_Response,
     MutationCreateMyProductReviewArgs
   >(CreateMyProductReviewMutation);
 
@@ -57,6 +57,10 @@ export const CreateReview = (props: ReviewsProps) => {
   );
 
   const success = createProductReviewResponse?.result.success ?? false;
+
+  const error = useMemo(() => {
+    return mutationError ?? createProductReviewResponse?.result.success === false;
+  }, [createProductReviewResponse?.result.success, mutationError]);
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
