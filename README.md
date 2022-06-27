@@ -251,7 +251,45 @@ frontend Next.js project.
 2. Navigate to your store's admin site by visiting `https://your-store.myshopify.com/admin`, substituting "your-store"
    with the name of your store.
 
-3. Get your Storefront API keys.
+3. Configure Shopify to redirect back to your store after a purchase is complete.
+
+- This project uses Shopify's checkout experience. However, every headless Shopify store also has a Shopify storefront.
+  In order to stop Shopify's checkout experience from redirecting to that storefront, you must use their Liquid
+  scripting language. These instructions show you how.
+
+  - In your store's admin UI, select **Settings**. A settings menu will appear. Select **Checkout** on the left.
+
+  ![A screenshot of the Settings menu with Checkout selected.](/readme-images/checkout-settings-nav-readmie-images.png)
+
+  - Under **Customer Accounts**, select **Accounts are optional**. This allows customers to create checkouts as guests.
+
+  - Under **Customer Contact Method**, select **Phone number or email**.
+
+  - The **Customer information** settings can be changed to suit your needs. This is how we have it configured in our
+    build:
+
+    - Full name: **Only require last name**
+    - Company name: **Don't Include**
+    - Address line 2 (apartment, unit, etc.): **Optional**
+    - Shipping address phone number: **Don't include**
+
+    ![A screenshot of our customer information settings](/readme-images/customer-information-readme-images.png)
+
+  - Scroll down to the **Order status page** settings. In the **Additional Scripts** text area, add the following
+    script. There are two URLs the order can possibly be redirected to. Be sure to add your store's root URL to the
+    second one, under the `{% else %}`:
+
+    ```
+      {% if checkout.attributes.redirect_origin %}
+      <script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
+      {% else %}
+      <script> window.location = "https://your-shopify-store.com/?shopify_checkout_action=success"; </script>
+      {% endif %}
+    ```
+
+  - **Save** your changes.
+
+4. Get your Storefront API keys.
 
 - In the navigation on the left side of your store's admin page, select **Apps**. A dropdown window should appear.
   Select **⚙ App and Sales Channel Settings** as shown in the image below.
@@ -294,7 +332,7 @@ Then select **Save** at the top right of the page.
 
 > If you want to test this app without enabling real payments, it's best to set up test payments while you're in
 > Shopify's admin UI.
-> [Follow our section below on setting up test shopify payments to learn more](#Setting-up-test-payments-in-Shopify).
+> [Follow Shopify's instructions for setting up test payments in your store](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments).
 
 #### Connecting the Shopify service to TakeShape
 
@@ -336,8 +374,6 @@ Now your Shopify store is configured for this project. The next section is about
 want to enable real payments.
 
 Not interested? [Skip to our REVIEWS.io section below to set up reviews in your store](#setting-up-reviewsio).
-
-#### Setting up test payments in Shopify
 
 ### REVIEWS.io
 
@@ -597,9 +633,6 @@ are welcome!
 - The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
-- Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
-  will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
-  removed from the relevant mutations in the project schema.
 - Shopify **must** use the `2022-04` endpoint, like this:
   `https://shopify-shop-name.myshopify.com/admin/api/2022-04/graphql.json`
 
@@ -610,3 +643,7 @@ are welcome!
 <script> window.location = "https://your-shopify-store.com?shopify_checkout_action=success"; </script>
 {% endif %}
 ```
+
+- Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
+  will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
+  removed from the relevant mutations in the project schema.
