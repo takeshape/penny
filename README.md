@@ -251,43 +251,47 @@ frontend Next.js project.
 2. Navigate to your store's admin site by visiting `https://your-store.myshopify.com/admin`, substituting "your-store"
    with the name of your store.
 
-3. Configure Shopify to redirect back to your store after a purchase is complete.
+3. Configure Shopify checkout experience.
 
-- This project uses Shopify's checkout experience. However, every headless Shopify store also has a Shopify storefront.
-  In order to stop Shopify's checkout experience from redirecting to that storefront, you must use their Liquid
-  scripting language. These instructions show you how.
+This project uses Shopify's checkout experience. That means when a customer is ready to purchase, they are re-directed
+to a checkout flow that Shopify generates. The only downside is, shopify's checkout flow will send users to your shopify
+store, not your headless store, when they're done. To force Shopify's checkout experience to redirect to your headless
+storefront, you must use [their Liquid templating language](https://shopify.github.io/liquid/). These instructions show
+you how.
 
-  - In your store's admin UI, select **Settings**. A settings menu will appear. Select **Checkout** on the left.
-
+- In your store's admin UI, select **Settings**. A settings menu will appear. Select **Checkout** on the left.
   ![A screenshot of the Settings menu with Checkout selected.](/readme-images/checkout-settings-nav-readmie-images.png)
 
-  - Under **Customer Accounts**, select **Accounts are optional**. This allows customers to create checkouts as guests.
+- Scroll down to the **Order status page** settings. In the **Additional Scripts** text area, add the following script.
+  There are two URLs the order can possibly be redirected to. Be sure to add your store's root URL to the second one,
+  under the `{% else %}`:
 
-  - Under **Customer Contact Method**, select **Phone number or email**.
+  ```
+    {% if checkout.attributes.redirect_origin %}
+    <script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
+    {% else %}
+    <script> window.location = "https://your-shopify-store.com/?shopify_checkout_action=success"; </script>
+    {% endif %}
+  ```
 
-  - The **Customer information** settings can be changed to suit your needs. This is how we have it configured in our
-    build:
+The following instructions will show you how to configure your checkout process to work with this headless store. To
+configure these settings, stay in the **Checkout** section of the **Settings** menu in your store's admin UI.
 
-    - Full name: **Only require last name**
-    - Company name: **Don't Include**
-    - Address line 2 (apartment, unit, etc.): **Optional**
-    - Shipping address phone number: **Don't include**
+- Under **Customer Accounts**, select **Accounts are optional**. This allows customers to create checkouts as guests.
 
-    ![A screenshot of our customer information settings](/readme-images/customer-information-readme-images.png)
+- Under **Customer Contact Method**, select **Phone number or email**.
 
-  - Scroll down to the **Order status page** settings. In the **Additional Scripts** text area, add the following
-    script. There are two URLs the order can possibly be redirected to. Be sure to add your store's root URL to the
-    second one, under the `{% else %}`:
+- The **Customer information** settings can be changed to suit your needs. This is how we have it configured in our
+  build:
 
-    ```
-      {% if checkout.attributes.redirect_origin %}
-      <script> window.location = "{{ checkout.attributes.redirect_origin }}/?shopify_checkout_action=success"; </script>
-      {% else %}
-      <script> window.location = "https://your-shopify-store.com/?shopify_checkout_action=success"; </script>
-      {% endif %}
-    ```
+  - Full name: **Only require last name**
+  - Company name: **Don't Include**
+  - Address line 2 (apartment, unit, etc.): **Optional**
+  - Shipping address phone number: **Don't include**
 
-  - **Save** your changes.
+  ![A screenshot of our customer information settings](/readme-images/customer-information-readme-images.png)
+
+- **Save** your changes.
 
 4. Get your Storefront API keys.
 
