@@ -30,6 +30,9 @@ jobs:
       - name: Install modules
         run: npm ci
 
+      - name: Run graphql:typegen
+        run: npm run graphql:typegen
+
       - name: Run typecheck
         run: npm run typecheck
 
