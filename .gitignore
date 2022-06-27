@@ -56,6 +56,5 @@ yarn-error.log*
 # Sentry
 .sentryclirc
 
-# GraphQL validation and code generation
-takeshape-project.graphql
+# Generated types
 src/types/takeshape.ts

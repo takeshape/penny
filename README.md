@@ -78,7 +78,9 @@ TKTK
 
 2. Follow the instructions in `.env.local`.
 
-3. Run `npm run dev` to start the application and open [http://localhost:3000](http://localhost:3000) with your browser
+3. Run `npm run typegen` to generate type definitions from the GraphQL schema
+
+4. Run `npm run dev` to start the application and open [http://localhost:3000](http://localhost:3000) with your browser
    to play around!
 
 ## Known Limitations

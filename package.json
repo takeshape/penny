@@ -10,7 +10,7 @@
     "cypress:run": "cypress run",
     "dev": "next dev",
     "export": "next build && next export",
-    "graphql:validate": "graphql-validate",
+    "graphql:validate": "dotenv graphql-validate",
     "lint": "next lint",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit --pretty ",
-    "typegen": "takeshape schema && graphql-codegen"
+    "typegen": "dotenv graphql-codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
@@ -83,6 +83,7 @@
     "babel-jest": "^28.1.1",
     "babel-loader": "^8.2.5",
     "cypress": "^10.2.0",
+    "dotenv-cli": "^5.1.0",
     "eslint": "^8.18.0",
     "eslint-config-next": "^12.1.6",
     "eslint-config-prettier": "^8.5.0",
