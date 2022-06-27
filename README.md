@@ -553,8 +553,7 @@ environment variables. Then rename the file to `.env.local` to use them.
 
 ## Deploying to production
 
-1. Replace all public placeholder assets
-2. Update `robots.txt`
+When deploying this project to production, be sure to replace all public placeholder assets.
 
 ### Known limitations
 
