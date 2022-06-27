@@ -1,13 +1,4 @@
 import { gql } from '@apollo/client';
-import { QuickAddShopifyProduct } from './types';
-
-export type QuickAddArgs = {
-  handle: string;
-};
-
-export type QuickAddResponse = {
-  product: QuickAddShopifyProduct;
-};
 
 export const QuickAddQuery = gql`
   query QuickAddQuery($handle: String!) {

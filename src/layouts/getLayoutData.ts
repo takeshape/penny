@@ -1,13 +1,13 @@
 import { FooterQuery } from 'features/Footer/Footer.queries';
 import { getFooter } from 'features/Footer/transforms';
-import { Footer } from 'features/Footer/types';
 import { NavigationQuery } from 'features/Navigation/queries';
 import { getNavigation } from 'features/Navigation/transforms';
 import { Navigation } from 'features/Navigation/types';
+import { FooterResponse } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 interface Cache {
-  footer?: Footer;
+  footer?: FooterResponse['footer'];
   navigation?: Navigation;
 }
 

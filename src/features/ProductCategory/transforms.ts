@@ -1,14 +1,10 @@
 import { getStats } from 'transforms/reviewsIo';
+import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getSeo } from 'transforms/shopify';
 import {
-  createImageGetter,
-  getCollectionUrl,
-  getPrice,
-  getProductOptions,
-  getProductUrl,
-  getSeo
-} from 'transforms/shopify';
+  ProductCategoryShopifyCollectionHandlesResponse,
+  ProductCategoryShopifyCollectionQueryResponse
+} from 'types/takeshape';
 import { PaginationDataHookParsedPath } from '../../utils/hooks/usePaginationData';
-import { ProductCategoryShopifyCollectionHandlesResponse, ProductCategoryShopifyCollectionResponse } from './queries';
 import {
   ProductCategoryBreadcrumbs,
   ProductCategoryCollection,
@@ -43,7 +39,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options)
+    options: []
   };
 }
 
@@ -55,7 +51,7 @@ function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): Prod
 }
 
 export function getCollectionPageInfo(
-  response: ProductCategoryShopifyCollectionResponse
+  response: ProductCategoryShopifyCollectionQueryResponse
 ): ProductCategoryCollection['pageInfo'] {
   const collection = response?.collection;
 
@@ -80,13 +76,7 @@ function getCollectionParent(collection: ProductCategoryShopifyCollection): Prod
   };
 }
 
-export function getCollection(response: ProductCategoryShopifyCollectionResponse): ProductCategoryCollection {
-  const collection = response?.collection;
-
-  if (!collection) {
-    return null;
-  }
-
+export function getCollection(collection: ProductCategoryShopifyCollection): ProductCategoryCollection {
   return {
     id: collection.id,
     url: getCollectionUrl(collection.handle),
@@ -128,7 +118,7 @@ export function getNextUrl(collection: ProductCategoryCollection, page: number, 
   return `${collection.url}/${page}/${collection.pageInfo.endCursor}`;
 }
 
-export function parsePathname(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
+export function parsePath(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
   const paginationPath = pathname.replace(collection.url, '').replace(/^\//, '');
   const [page, cursor, direction] = paginationPath.split('/');
   return {

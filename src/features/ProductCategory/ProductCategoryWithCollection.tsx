@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { PaginationDataHookParsedPath, usePaginationData } from 'utils/hooks/usePaginationData';
 import { ProductCategory } from './ProductCategory';
 import { ProductCategoryShopifyCollectionQuery } from './queries';
-import { getCollection, getCurrentTitle, getNextUrl, parsePathname } from './transforms';
+import { getCollection, getCurrentTitle, getNextUrl, parseRouterPath } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
 
 function isSameCollection(collA: ProductCategoryCollection, collB: ProductCategoryCollection) {
@@ -21,7 +21,7 @@ export interface ProductCategoryWithCollectionProps {
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
   const { push } = useRouter();
 
-  const parsePath = useCallback((asPath) => parsePathname(collection, asPath), [collection]);
+  const parsePath = useCallback((asPath) => parseRouterPath(collection, asPath), [collection]);
   const getVariables = useCallback(
     (parsedPath: PaginationDataHookParsedPath) => {
       const variables =

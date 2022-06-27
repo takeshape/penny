@@ -1,6 +1,8 @@
-import { TestimonialsComponent } from 'types/takeshape';
+import { BackgroundImageChild } from 'features/Storefront/types';
 
-export const Testimonials = ({ testimonials }: TestimonialsComponent) => {
+type TestimonialsProps = BackgroundImageChild & { __typename: 'TestimonialsComponent' };
+
+export const Testimonials = ({ testimonials }: TestimonialsProps) => {
   if (!testimonials || !testimonials.length) return null;
   return (
     <section

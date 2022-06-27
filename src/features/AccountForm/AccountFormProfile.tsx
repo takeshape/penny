@@ -3,10 +3,14 @@ import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { MutationUpdateMyCustomerArgs } from 'types/takeshape';
+import {
+  GetCustomerQueryResponse,
+  UpdateCustomerMutationResponse,
+  UpdateCustomerMutationVariables
+} from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
-import { GetCustomerQuery, GetCustomerResponse, UpdateCustomerMutation, UpdateCustomerResponse } from './queries';
+import { GetCustomerQuery, UpdateCustomerMutation } from './queries';
 
 interface AccountFormProfileForm {
   firstName: string;
@@ -23,11 +27,11 @@ export const AccountFormProfile = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<AccountFormProfileForm>();
 
-  const { data: customerData, error: customerDataError } = useQuery<GetCustomerResponse>(GetCustomerQuery);
+  const { data: customerData, error: customerDataError } = useQuery<GetCustomerQueryResponse>(GetCustomerQuery);
 
   const [updateCustomer, { data: customerResponse }] = useMutation<
-    UpdateCustomerResponse,
-    MutationUpdateMyCustomerArgs
+    UpdateCustomerMutationResponse,
+    UpdateCustomerMutationVariables
   >(UpdateCustomerMutation);
 
   const timer = useRef<NodeJS.Timer>(null);

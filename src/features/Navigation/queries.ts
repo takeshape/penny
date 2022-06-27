@@ -1,9 +1,4 @@
 import { gql } from '@apollo/client';
-import { Navigation } from 'types/takeshape';
-
-export interface NavigationResponse {
-  navigation: Navigation;
-}
 
 export const NavigationQuery = gql`
   query NavigationQuery {

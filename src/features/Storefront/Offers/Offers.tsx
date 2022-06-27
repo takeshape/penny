@@ -1,6 +1,8 @@
-import { OffersComponent } from 'types/takeshape';
+import { StorefrontChild } from 'features/Storefront/types';
 
-export const Offers = ({ offers }: OffersComponent) => {
+type OffersProps = StorefrontChild & { __typename: 'OffersComponent' };
+
+export const Offers = ({ offers }: OffersProps) => {
   if (!offers) return null;
   return (
     <nav aria-label="Offers" className="order-last lg:order-first">

@@ -5,8 +5,8 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
-import { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
-import { CreateCartMutation, CreateCartResponse } from '../queries';
+import { CreateCartMutationResponse, CreateCartMutationVariables } from 'types/takeshape';
+import { CreateCartMutation } from '../queries';
 import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
 import { getCartVariables } from '../utils';
 
@@ -18,7 +18,7 @@ export const CartCheckout = () => {
   const quantity = useAtomValue(cartQuantityAtom);
   const items = useAtomValue(cartItemsAtom);
 
-  const [setCartMutation, { data }] = useMutation<CreateCartResponse, MutationShopifyStorefront_CartCreateArgs>(
+  const [setCartMutation, { data }] = useMutation<CreateCartMutationResponse, CreateCartMutationVariables>(
     CreateCartMutation
   );
 

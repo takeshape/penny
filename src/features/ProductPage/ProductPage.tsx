@@ -1,4 +1,5 @@
 import Wrapper from 'components/Wrapper/Content';
+import { shopifyGidToId } from 'transforms/shopify';
 import { Details, DetailsProps } from './Details/Details';
 import { Policies, PoliciesProps } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
@@ -6,17 +7,13 @@ import { RelatedProductsWithData, RelatedProductsWithDataProps } from './Related
 import { Reviews, ReviewsProps } from './Reviews/Reviews';
 import { ProductPageOptions } from './types';
 
-export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs'> &
+export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
   PoliciesProps &
   Omit<ReviewsProps, 'sku'> &
   DetailsProps &
   RelatedProductsWithDataProps & {
     options: ProductPageOptions;
   };
-
-const getSku = (productId: string): string => {
-  return productId.substring(productId.lastIndexOf('/') + 1);
-};
 
 export const ProductPage = ({
   product,
@@ -40,6 +37,7 @@ export const ProductPage = ({
           showFeaturedReviews={!showReviews}
           breadcrumbs={breadcrumbs}
           showBreadcrumbs={showBreadcrumbs}
+          showReviewsLink={showReviews}
         />
       </div>
       <div className="bg-gray-50">
@@ -50,7 +48,7 @@ export const ProductPage = ({
       </div>
       <div className="bg-white">
         <Wrapper>
-          {showReviews && <Reviews sku={getSku(product.id)} reviewList={reviewList} />}
+          {showReviews && <Reviews sku={shopifyGidToId(product.id)} reviewList={reviewList} />}
           {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
         </Wrapper>
       </div>

@@ -1,8 +1,8 @@
 import { createImageGetter, getPrice, getProductOptions, getProductUrl, getProductVariants } from 'transforms/shopify';
-import { QuickAddResponse } from './queries';
+import { QuickAddQueryResponse } from 'types/takeshape';
 import { QuickAddProduct } from './types';
 
-export function getProduct(response: QuickAddResponse): QuickAddProduct {
+export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
   const shopifyProduct = response?.product;
 
   if (!shopifyProduct) {
