@@ -118,7 +118,7 @@ export function getNextUrl(collection: ProductCategoryCollection, page: number, 
   return `${collection.url}/${page}/${collection.pageInfo.endCursor}`;
 }
 
-export function parsePath(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
+export function parseRouterPath(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
   const paginationPath = pathname.replace(collection.url, '').replace(/^\//, '');
   const [page, cursor, direction] = paginationPath.split('/');
   return {
