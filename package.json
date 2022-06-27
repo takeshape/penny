@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "npm run typegen && npm run graphql:validate && next build",
     "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
