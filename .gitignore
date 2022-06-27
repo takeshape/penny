@@ -55,3 +55,6 @@ yarn-error.log*
 
 # Sentry
 .sentryclirc
+
+# Generated types
+src/types/takeshape.ts

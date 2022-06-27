@@ -1,0 +1,15 @@
+schema:
+  - ${NEXT_PUBLIC_TAKESHAPE_API_URL}:
+      headers:
+        Authorization: Bearer ${NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY}
+documents: src/**/*.{graphql,js,ts,jsx,tsx}
+extensions:
+  codegen:
+    generates:
+      ./src/types/takeshape.ts:
+        plugins:
+          - typescript
+          - typescript-operations
+        config:
+          omitOperationSuffix: true
+          operationResultSuffix: Response
