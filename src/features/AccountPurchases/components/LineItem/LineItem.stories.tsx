@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Shopify_LineItem } from 'types/takeshape';
-import { getLineItem } from '../../transforms';
+import { getLineItem, Shopify_LineItem } from '../../transforms';
 import { LineItem } from './LineItem';
 import fixture from './LineItem.fixtures.json';
 

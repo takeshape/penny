@@ -15,9 +15,15 @@ export interface ProductWithImageProps {
   product: ProductType;
   reviewHighlights: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
+  showReviewsLink: boolean;
 }
 
-export const ProductWithImage = ({ product, reviewHighlights, breadcrumbs }: ProductWithImageProps) => {
+export const ProductWithImage = ({
+  product,
+  reviewHighlights,
+  breadcrumbs,
+  showReviewsLink
+}: ProductWithImageProps) => {
   const { priceMin, name, descriptionHtml, featuredImage, options } = product;
 
   const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
@@ -85,7 +91,13 @@ export const ProductWithImage = ({ product, reviewHighlights, breadcrumbs }: Pro
                   <Stars rating={reviewHighlights.stats.average} />
                   <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
                 </div>
-                <p className="ml-2 text-sm text-gray-500">{reviewHighlights.stats.count} reviews</p>
+                {showReviewsLink ? (
+                  <a href="#reviews" className="ml-2 text-sm text-indigo-600 hover:text-indigo-500">
+                    {reviewHighlights.stats.count} reviews
+                  </a>
+                ) : (
+                  <p className="ml-2 text-sm text-gray-500">{reviewHighlights.stats.count} reviews</p>
+                )}
               </div>
             </div>
           </div>

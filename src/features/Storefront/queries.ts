@@ -1,12 +1,4 @@
 import { gql } from '@apollo/client';
-import { QueryShopify_ProductsArgs, Storefront } from 'types/takeshape';
-import { StorefrontShopifyCollection } from './types';
-
-export type StorefrontShopifyPaginationArgs = QueryShopify_ProductsArgs;
-
-export interface GetStorefrontResponse {
-  storefront: Storefront;
-}
 
 export const GetStorefrontQuery = gql`
   query GetStorefrontQuery {
@@ -110,14 +102,6 @@ const StorefrontFragments = gql`
     }
   }
 `;
-
-export type StorefrontShopifyCollectionByHandleResponse = {
-  collection: StorefrontShopifyCollection;
-};
-
-export type StorefrontShopifyCollectionByHandleArgs = {
-  handle: string;
-} & StorefrontShopifyPaginationArgs;
 
 export const StorefrontShopifyCollectionByHandleQuery = gql`
   ${StorefrontFragments}

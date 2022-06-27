@@ -1,9 +1,4 @@
 import { gql } from '@apollo/client';
-import { Voucherify_LoyaltyCard } from 'types/takeshape';
-
-export interface GetMyLoyaltyCardResponse {
-  loyaltyCard: Voucherify_LoyaltyCard;
-}
 
 export const GetMyLoyaltyCardQuery = gql`
   query GetMyLoyaltyCardQuery {

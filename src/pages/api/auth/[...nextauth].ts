@@ -1,11 +1,6 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeApiUrl, takeshapeAuthAudience, takeshapeAuthIssuer, takeshapeWebhookApiKey } from 'config';
-import {
-  CreateCustomerAccessTokenMutation,
-  CreateCustomerAccessTokenResponse,
-  GetCustomerTokenDataQuery,
-  GetCustomerTokenDataResponse
-} from 'features/Auth/queries';
+import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery } from 'features/Auth/queries';
 import logger from 'logger';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
@@ -13,8 +8,10 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
 import {
-  MutationShopifyStorefront_CustomerAccessTokenCreateArgs,
-  QueryShopifyStorefront_CustomerArgs
+  CreateCustomerAccessTokenMutationResponse,
+  CreateCustomerAccessTokenMutationVariables,
+  GetCustomerTokenDataQueryResponse,
+  GetCustomerTokenDataQueryVariables
 } from 'types/takeshape';
 import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
@@ -60,8 +57,8 @@ const nextAuthConfig = {
       },
       async authorize({ email, password }) {
         const { data: accessTokenData } = await apolloClient.mutate<
-          CreateCustomerAccessTokenResponse,
-          MutationShopifyStorefront_CustomerAccessTokenCreateArgs
+          CreateCustomerAccessTokenMutationResponse,
+          CreateCustomerAccessTokenMutationVariables
         >({
           mutation: CreateCustomerAccessTokenMutation,
           variables: {
@@ -84,8 +81,8 @@ const nextAuthConfig = {
         const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
         const { data: customerData } = await apolloClient.query<
-          GetCustomerTokenDataResponse,
-          QueryShopifyStorefront_CustomerArgs
+          GetCustomerTokenDataQueryResponse,
+          GetCustomerTokenDataQueryVariables
         >({
           query: GetCustomerTokenDataQuery,
           variables: {

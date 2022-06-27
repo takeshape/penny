@@ -1,4 +1,5 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
+import { ProductCategoryShopifyCollection } from 'features/ProductCategory/types';
 import {
   ProductImage,
   ProductPrice,
@@ -8,18 +9,29 @@ import {
   ProductVariant
 } from 'types/product';
 import {
-  Shopify_Collection,
-  Shopify_Image,
+  ProductCategoryShopifyCollectionQueryResponse,
+  ProductPageShopifyProductResponse,
+  QuickAddQueryResponse,
   Shopify_MoneyV2,
-  Shopify_Product,
-  Shopify_ProductOption,
-  Shopify_ProductVariant,
   Shopify_SellingPlanInterval,
-  Shopify_SellingPlanPricingPolicy,
   Shopify_SellingPlanPricingPolicyAdjustmentType,
-  Shopify_SellingPlanPricingPolicyPercentageValue,
-  Shopify_SellingPlanRecurringBillingPolicy
+  Shopify_SellingPlanPricingPolicyPercentageValue
 } from 'types/takeshape';
+
+type Shopify_Image =
+  ProductCategoryShopifyCollectionQueryResponse['collection']['products']['nodes'][0]['featuredImage'];
+
+type Shopify_SellingPlanPricingPolicy =
+  ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['pricingPolicies'][0];
+
+type Shopify_SellingPlanRecurringBillingPolicy =
+  ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['billingPolicy'];
+
+type Shopify_Product = ProductPageShopifyProductResponse['product'] | QuickAddQueryResponse['product'];
+
+type Shopify_ProductVariant = ProductPageShopifyProductResponse['product']['variants']['edges'][0]['node'];
+
+type Shopify_ProductOption = ProductPageShopifyProductResponse['product']['options'][0];
 
 function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
   switch (adjustmentType) {
@@ -114,14 +126,15 @@ export function createImageGetter(defaultAltText: string) {
 }
 
 export function getProductVariantPriceOptions(
-  shopifyProduct: Pick<Shopify_Product, 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'>,
+  shopifyProduct: Shopify_Product,
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
   // variant.contextualPricing would be better for a true multi-currency site
   const { id, price } = shopifyVariant;
   const amount = Number(price) * 100;
 
-  const { requiresSellingPlan, sellingPlanGroups, sellingPlanGroupCount } = shopifyProduct;
+  const { requiresSellingPlan, sellingPlanGroups, sellingPlanGroupCount } =
+    shopifyProduct as ProductPageShopifyProductResponse['product'];
 
   let prices: ProductPriceOption[] = [];
 
@@ -176,13 +189,7 @@ export function getProductVariantPriceOptions(
   return prices;
 }
 
-function getVariant(
-  shopifyProduct: Pick<
-    Shopify_Product,
-    'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
-  >,
-  shopifyVariant: Shopify_ProductVariant
-): ProductVariant {
+function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_ProductVariant): ProductVariant {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
   const { id, title, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
     shopifyVariant;
@@ -201,13 +208,10 @@ function getVariant(
   };
 }
 
-export function getProductVariants(
-  shopifyProduct: Pick<
-    Shopify_Product,
-    'variants' | 'title' | 'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount'
-  >
-): ProductVariant[] {
-  return shopifyProduct.variants.edges.map(({ node }) => getVariant(shopifyProduct, node));
+export function getProductVariants(shopifyProduct: Shopify_Product): ProductVariant[] {
+  return (shopifyProduct as ProductPageShopifyProductResponse['product']).variants.edges.map(({ node }) =>
+    getVariant(shopifyProduct, node)
+  );
 }
 
 export function getPrice(price: Shopify_MoneyV2): ProductPrice {
@@ -217,14 +221,11 @@ export function getPrice(price: Shopify_MoneyV2): ProductPrice {
   };
 }
 
-export function getSeo(
-  shopifyProduct:
-    | Pick<Shopify_Product, 'seo' | 'title' | 'description'>
-    | Pick<Shopify_Collection, 'seo' | 'title' | 'description'>
-): ProductSeo {
+export function getSeo(shopifyProduct: Shopify_Product | ProductCategoryShopifyCollection): ProductSeo {
   return {
-    title: shopifyProduct.seo?.title ?? shopifyProduct.title,
-    description: shopifyProduct.seo?.description ?? shopifyProduct.description
+    title: (shopifyProduct as ProductPageShopifyProductResponse['product']).seo?.title ?? shopifyProduct.title,
+    description:
+      (shopifyProduct as ProductPageShopifyProductResponse['product']).seo?.description ?? shopifyProduct.description
   };
 }
 

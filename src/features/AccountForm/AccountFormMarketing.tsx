@@ -3,23 +3,23 @@ import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  MutationSubscribeMyEmailToNewsletterArgs,
-  MutationUnsubscribeMyEmailFromNewsletterArgs,
-  MutationUpdateMyCustomerArgs
+  GetCustomerQueryResponse,
+  GetMyNewsletterSubscriptionsQueryResponse,
+  SubscribeMyEmailToNewsletterMutationResponse,
+  SubscribeMyEmailToNewsletterMutationVariables,
+  UnsubscribeMyEmailFromNewsletterMutationResponse,
+  UnsubscribeMyEmailFromNewsletterMutationVariables,
+  UpdateCustomerMutationResponse,
+  UpdateCustomerMutationVariables
 } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
 import {
   GetCustomerQuery,
-  GetCustomerResponse,
   GetMyNewsletterSubscriptionsQuery,
-  GetMyNewsletterSubscriptionsResponse,
   SubscribeMyEmailToNewsletterMutation,
-  SubscribeMyEmailToNewsletterResponse,
   UnsubscribeMyEmailFromNewsletterMutation,
-  UnsubscribeMyEmailFromNewsletterResponse,
-  UpdateCustomerMutation,
-  UpdateCustomerResponse
+  UpdateCustomerMutation
 } from './queries';
 
 interface AccountFormMarketingForm {
@@ -35,19 +35,22 @@ export const AccountFormMarketing = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors, dirtyFields }
   } = useForm<AccountFormMarketingForm>();
 
-  const { data: newsletterData } = useQuery<GetMyNewsletterSubscriptionsResponse>(GetMyNewsletterSubscriptionsQuery);
-  const { data: customerData } = useQuery<GetCustomerResponse>(GetCustomerQuery);
+  const { data: newsletterData } = useQuery<GetMyNewsletterSubscriptionsQueryResponse>(
+    GetMyNewsletterSubscriptionsQuery
+  );
+  const { data: customerData } = useQuery<GetCustomerQueryResponse>(GetCustomerQuery);
   const [updateCustomer, { data: customerResponse }] = useMutation<
-    UpdateCustomerResponse,
-    MutationUpdateMyCustomerArgs
+    UpdateCustomerMutationResponse,
+    UpdateCustomerMutationVariables
   >(UpdateCustomerMutation);
 
-  const [subscribe] = useMutation<SubscribeMyEmailToNewsletterResponse, MutationSubscribeMyEmailToNewsletterArgs>(
-    SubscribeMyEmailToNewsletterMutation
-  );
+  const [subscribe] = useMutation<
+    SubscribeMyEmailToNewsletterMutationResponse,
+    SubscribeMyEmailToNewsletterMutationVariables
+  >(SubscribeMyEmailToNewsletterMutation);
   const [unsubscribe] = useMutation<
-    UnsubscribeMyEmailFromNewsletterResponse,
-    MutationUnsubscribeMyEmailFromNewsletterArgs
+    UnsubscribeMyEmailFromNewsletterMutationResponse,
+    UnsubscribeMyEmailFromNewsletterMutationVariables
   >(UnsubscribeMyEmailFromNewsletterMutation);
 
   const timer = useRef<NodeJS.Timer>(null);

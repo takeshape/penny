@@ -4,11 +4,10 @@ import { CollectionBase } from 'types/collection';
 import { ProductBase } from 'types/product';
 import { ReviewStats } from 'types/review';
 import {
+  ProductCategoryShopifyCollectionQueryResponse,
   ReviewsIo_ListProductReviewsResponse,
   Shopify_Collection,
-  Shopify_CollectionConnection,
-  Shopify_PageInfo,
-  Shopify_Product
+  Shopify_CollectionConnection
 } from 'types/takeshape';
 
 export type ProductCategoryShopifyCollectionHandleNode = Pick<Shopify_Collection, 'id' | 'handle'>;
@@ -16,37 +15,11 @@ export type ProductCategoryShopifyCollectionHandleConnection = Pick<Shopify_Coll
   nodes: ProductCategoryShopifyCollectionHandleNode[];
 };
 
-export type ProductCategoryShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'handle'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'reviews'
-  | 'takeshape'
->;
+export type ProductCategoryShopifyCollection = ProductCategoryShopifyCollectionQueryResponse['collection'];
+
+export type ProductCategoryShopifyProduct = ProductCategoryShopifyCollection['products']['nodes'][0];
 
 export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
-
-export type ProductCategoryShopifyCollection = Pick<
-  Shopify_Collection,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'takeshape' | 'seo'
-> & {
-  products: {
-    pageInfo: Shopify_PageInfo;
-    nodes: ProductCategoryShopifyProduct[];
-  };
-};
 
 export type ProductCategoryProduct = ProductBase;
 

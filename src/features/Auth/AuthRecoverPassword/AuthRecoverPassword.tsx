@@ -7,9 +7,9 @@ import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { siteLogo } from 'config';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { MutationRecoverCustomerAccountArgs } from 'types/takeshape';
+import { RecoverCustomerPasswordMutationResponse, RecoverCustomerPasswordMutationVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
-import { RecoverCustomerPasswordMutation, RecoverCustomerPasswordResponse } from '../queries';
+import { RecoverCustomerPasswordMutation } from '../queries';
 
 export interface AuthRecoverPasswordForm {
   email: string;
@@ -23,8 +23,8 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   const { handleSubmit, formState, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
-    RecoverCustomerPasswordResponse,
-    MutationRecoverCustomerAccountArgs
+    RecoverCustomerPasswordMutationResponse,
+    RecoverCustomerPasswordMutationVariables
   >(RecoverCustomerPasswordMutation);
 
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();

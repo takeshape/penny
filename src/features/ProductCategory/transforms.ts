@@ -1,18 +1,11 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getStats } from 'transforms/reviewsIo';
-import {
-  createImageGetter,
-  getCollectionUrl,
-  getPrice,
-  getProductOptions,
-  getProductUrl,
-  getSeo
-} from 'transforms/shopify';
+import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getSeo } from 'transforms/shopify';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
-  ProductCategoryShopifyCollectionResponse,
-  ProductCategoryShopifyPaginationArgs
-} from './queries';
+  ProductCategoryShopifyCollectionQueryResponse,
+  ProductCategoryShopifyCollectionQueryVariables
+} from 'types/takeshape';
 import {
   ProductCategoryBreadcrumbs,
   ProductCategoryCollection,
@@ -47,7 +40,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options)
+    options: []
   };
 }
 
@@ -59,7 +52,7 @@ function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): Prod
 }
 
 export function getCollectionPageInfo(
-  response: ProductCategoryShopifyCollectionResponse
+  response: ProductCategoryShopifyCollectionQueryResponse
 ): ProductCategoryCollection['pageInfo'] {
   const collection = response?.collection;
 
@@ -86,7 +79,7 @@ function getCollectionParent(collection: ProductCategoryShopifyCollection): Prod
 
 export function getCollection(
   collection: ProductCategoryShopifyCollection,
-  { before, after }: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
+  { before, after }: ProductCategoryShopifyCollectionQueryVariables
 ): ProductCategoryCollection {
   const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
 
@@ -107,8 +100,8 @@ export function getCollection(
 }
 
 export function getCollectionBasic(
-  response: ProductCategoryShopifyCollectionResponse,
-  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after'>
+  response: ProductCategoryShopifyCollectionQueryResponse,
+  variables: ProductCategoryShopifyCollectionQueryVariables
 ): ProductCategoryCollection {
   const collection = response?.collection;
 
@@ -121,8 +114,8 @@ export function getCollectionBasic(
 
 export function getCollectionWithOverfetch(
   { pageSize }: { pageSize: number },
-  response: ProductCategoryShopifyCollectionResponse,
-  variables: Pick<ProductCategoryShopifyPaginationArgs, 'before' | 'after' | 'last'>
+  response: ProductCategoryShopifyCollectionQueryResponse,
+  variables: ProductCategoryShopifyCollectionQueryVariables
 ): ProductCategoryCollection {
   const shopifyCollection = response?.collection;
 

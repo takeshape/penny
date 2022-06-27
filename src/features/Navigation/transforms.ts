@@ -1,8 +1,8 @@
 import { currencyList } from 'config';
-import { NavigationResponse } from 'features/Navigation/queries';
+import { NavigationQueryResponse } from 'types/takeshape';
 import { Navigation } from './types';
 
-export function getNavigation(response: NavigationResponse): Navigation {
+export function getNavigation(response: NavigationQueryResponse): Navigation {
   const navigation = response?.navigation;
 
   if (!navigation) {

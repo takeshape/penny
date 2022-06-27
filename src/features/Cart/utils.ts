@@ -1,13 +1,10 @@
 import { CartItem } from 'features/Cart/types';
 import { Session } from 'next-auth';
 import { ProductPriceOption } from 'types/product';
-import {
-  CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput,
-  MutationShopifyStorefront_CartCreateArgs
-} from 'types/takeshape';
+import { CreateCartMutationVariables, CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput } from 'types/takeshape';
 
 export const getCartVariables = (items: CartItem[], session?: Session) => {
-  const createCartVariables: MutationShopifyStorefront_CartCreateArgs = {
+  const createCartVariables: CreateCartMutationVariables = {
     input: {
       attributes: [
         {
