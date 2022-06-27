@@ -119,7 +119,7 @@ In the next section, you'll find a screenshot of the finished store's homepage.
 
 ## Instructions
 
-To get started with this project, there are two basic steps:
+Here are the steps for getting started with this project:
 
 1. Create a TakeShape project using the pattern in this repo. This button will deploy the project for you:
 
@@ -159,6 +159,8 @@ git clone https://github.com/takeshape/takeshape-deluxe-sample-project
 
 4. Navigate to the project directory in your local terminal and run the `npm install` command to install all
    dependencies.
+
+If you want to run this project locally, follow the instructions in the `.env.test` file.
 
 The following instructions will help you configure all of the services this project uses.
 
@@ -629,8 +631,9 @@ are welcome!
 
 ## Development notes
 
-- Be sure to follow the instructions in the `.env` and `.env.local-example` files included in this repo. Rename
-  `.env.local-example` to `.env.local`.
+- Be sure to follow the instructions in the `.env` and `.env.local-example` files included in this repo. Use `.env.test`
+  to run the project locally on your machine. Rename `.env.local-example` to `.env.local` before pushing any changes to
+  it.
 - `storybook-addon-jotai` necessitates the graphql overrides
 - `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
