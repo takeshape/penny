@@ -1,9 +1,4 @@
 import { gql } from '@apollo/client';
-import { PagePaginatedList } from 'types/takeshape';
-
-export type PageGetPageSlugsResponse = {
-  pageList: PagePaginatedList;
-};
 
 export const PageGetPageSlugs = gql`
   query GetPageSlugs {
@@ -15,14 +10,6 @@ export const PageGetPageSlugs = gql`
     }
   }
 `;
-
-export type PageGetPageResponse = {
-  pageList: PagePaginatedList;
-};
-
-export type PageGetPageArgs = {
-  slug: string;
-};
 
 export const PageGetPage = gql`
   query PageGetPage($slug: String!) {

@@ -2,18 +2,20 @@ import PageLoader from 'components/PageLoader';
 import { collectionsPageSize } from 'config';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
-  ProductCategoryShopifyCollectionArgs,
   ProductCategoryShopifyCollectionHandles,
-  ProductCategoryShopifyCollectionHandlesArgs,
-  ProductCategoryShopifyCollectionHandlesResponse,
-  ProductCategoryShopifyCollectionQuery,
-  ProductCategoryShopifyCollectionResponse
+  ProductCategoryShopifyCollectionQuery
 } from 'features/ProductCategory/queries';
 import { getCollectionBasic, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import {
+  ProductCategoryShopifyCollectionHandlesResponse,
+  ProductCategoryShopifyCollectionHandlesVariables,
+  ProductCategoryShopifyCollectionQueryResponse,
+  ProductCategoryShopifyCollectionQueryVariables
+} from 'types/takeshape';
 import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
@@ -57,8 +59,11 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     after: cursor
   };
 
-  const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionResponse>(async () => {
-    return apolloClient.query<ProductCategoryShopifyCollectionResponse, ProductCategoryShopifyCollectionArgs>({
+  const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
+    return apolloClient.query<
+      ProductCategoryShopifyCollectionQueryResponse,
+      ProductCategoryShopifyCollectionQueryVariables
+    >({
       query: ProductCategoryShopifyCollectionQuery,
       variables
     });
@@ -86,7 +91,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   while (hasNextPage) {
     const { data } = await apolloClient.query<
       ProductCategoryShopifyCollectionHandlesResponse,
-      ProductCategoryShopifyCollectionHandlesArgs
+      ProductCategoryShopifyCollectionHandlesVariables
     >({
       query: ProductCategoryShopifyCollectionHandles,
       variables: {

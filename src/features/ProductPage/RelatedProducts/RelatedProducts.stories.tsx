@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { relatedProductsResponse } from '../queries.fixtures';
-import { getRelatedProductList } from '../transforms';
+import { productPageRelatedProducts } from '../fixtures';
 import { RelatedProducts } from './RelatedProducts';
 
 const Meta: ComponentMeta<typeof RelatedProducts> = {
@@ -12,7 +11,7 @@ const Template: ComponentStory<typeof RelatedProducts> = (args) => <RelatedProdu
 
 export const _RelatedProducts = Template.bind({});
 _RelatedProducts.args = {
-  products: getRelatedProductList(relatedProductsResponse)
+  products: productPageRelatedProducts
 };
 
 export default Meta;

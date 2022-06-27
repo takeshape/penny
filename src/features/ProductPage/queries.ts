@@ -1,19 +1,4 @@
 import { gql } from '@apollo/client';
-import { ReviewsIo_ListProductReviewsResponse } from 'types/takeshape';
-import {
-  ProductPageRelatedProductsShopifyProduct,
-  ProductPageShopifyProduct,
-  ProductPageShopifyProductHandleConnection
-} from './types';
-
-export type ProductPageShopifyProductHandlesResponse = {
-  products: ProductPageShopifyProductHandleConnection;
-};
-
-export type ProductPageShopifyProductHandlesArgs = {
-  first: number;
-  after: string;
-};
 
 export const ProductPageShopifyProductHandlesQuery = gql`
   query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
@@ -41,6 +26,7 @@ const ProductPageProductFragment = gql`
     takeshape {
       _id
       productComponent
+      hideBreadcrumbs
       hideReviews
       hideRelatedProducts
       showDetails
@@ -249,14 +235,6 @@ const ProductPageProductFragment = gql`
   }
 `;
 
-export type ProductPageShopifyProductResponse = {
-  product: ProductPageShopifyProduct;
-};
-
-export type ProductPageShopifyProductArgs = {
-  handle: string;
-};
-
 export const ProductPageShopifyProductQuery = gql`
   ${ProductPageProductFragment}
   query ProductPageShopifyProduct($handle: String!) {
@@ -266,18 +244,8 @@ export const ProductPageShopifyProductQuery = gql`
   }
 `;
 
-export type ProductPageReviewPageArgs = {
-  sku: string;
-  page: string;
-  perPage: string;
-};
-
-export type ProductPageReviewPageResponse = {
-  reviewData: ReviewsIo_ListProductReviewsResponse;
-};
-
 export const ProductPageReviewPageQuery = gql`
-  query ($sku: String!, $page: String!, $perPage: String!) {
+  query ProductPageReviewPageQuery($sku: String!, $page: String!, $perPage: String!) {
     reviewData: ReviewsIo_listProductReviews(sku: $sku, page: $page, per_page: $perPage) {
       ratings
       reviews {
@@ -299,53 +267,43 @@ export const ProductPageReviewPageQuery = gql`
   }
 `;
 
-export type RelatedProductsShopifyCollectionArgs = {
-  handle: string;
-};
-
-export type RelatedProductsShopifyCollectionResponse = {
-  collection: {
-    products: {
-      edges: {
-        node: ProductPageRelatedProductsShopifyProduct;
-      }[];
-    };
-  };
-};
-
 export const RelatedProductsShopifyCollectionQuery = gql`
   query RelatedProductsShopifyCollectionQuery($handle: String!) {
     collection: collectionByHandleWithTtl(handle: $handle) {
       products(first: 10) {
-        edges {
-          node {
+        nodes {
+          id
+          handle
+          title
+          description
+          descriptionHtml
+          requiresSellingPlan
+          featuredImage {
             id
-            handle
-            title
-            description
-            descriptionHtml
-            requiresSellingPlan
-            featuredImage {
-              id
-              width
-              height
-              url
-              altText
+            width
+            height
+            url
+            altText
+          }
+          priceRangeV2 {
+            maxVariantPrice {
+              currencyCode
+              amount
             }
-            priceRangeV2 {
-              maxVariantPrice {
-                currencyCode
-                amount
-              }
-              minVariantPrice {
-                currencyCode
-                amount
-              }
+            minVariantPrice {
+              currencyCode
+              amount
             }
-            publishedAt
-            totalVariants
-            totalInventory
-            sellingPlanGroupCount
+          }
+          publishedAt
+          totalVariants
+          totalInventory
+          sellingPlanGroupCount
+          options {
+            name
+            position
+            id
+            values
           }
         }
       }

@@ -10,12 +10,11 @@ import {
   getProductVariants,
   getSeo
 } from 'transforms/shopify';
-import { Shopify_Collection } from 'types/takeshape';
 import {
-  ProductPageShopifyProductHandlesResponse,
+  ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
-  RelatedProductsShopifyCollectionResponse
-} from './queries';
+  RelatedProductsShopifyCollectionQueryResponse
+} from 'types/takeshape';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -29,6 +28,8 @@ import {
   ProductPageReviewHighlights,
   ProductPageReviewsReviewList
 } from './types';
+
+type Shopify_Collection = ProductPageShopifyProductResponse['product']['collections']['nodes'][0];
 
 export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct {
   const shopifyProduct = response?.product;
@@ -151,7 +152,7 @@ export function getPageOptions(response: ProductPageShopifyProductResponse): Pro
   };
 }
 
-export function getProductPageParams(response: ProductPageShopifyProductHandlesResponse) {
+export function getProductPageParams(response: ProductPageShopifyProductHandlesQueryResponse) {
   const nodes = response?.products?.nodes;
 
   if (!nodes) {
@@ -189,15 +190,15 @@ function getRelatedProduct(
 }
 
 export function getRelatedProductList(
-  response: RelatedProductsShopifyCollectionResponse
+  response: RelatedProductsShopifyCollectionQueryResponse
 ): ProductPageRelatedProductsProduct[] {
-  const productEdges = response?.collection?.products?.edges;
+  const productNodes = response?.collection?.products?.nodes;
 
-  if (!productEdges) {
+  if (!productNodes) {
     return;
   }
 
-  return productEdges.map(({ node }) => getRelatedProduct(node));
+  return productNodes.map((node) => getRelatedProduct(node));
 }
 
 function collectionHasParent(collection: Shopify_Collection) {

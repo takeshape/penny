@@ -8,9 +8,9 @@ import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { MutationCreateCustomerArgs } from 'types/takeshape';
+import { CreateCustomerMutationResponse, CreateCustomerMutationVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
-import { CreateCustomerMutation, CreateCustomerResponse } from '../queries';
+import { CreateCustomerMutation } from '../queries';
 
 export interface AuthCreateAccountForm {
   email: string;
@@ -27,8 +27,8 @@ export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProp
   const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
 
   const [setCustomerPayload, { data: customerResponse, error }] = useMutation<
-    CreateCustomerResponse,
-    MutationCreateCustomerArgs
+    CreateCustomerMutationResponse,
+    CreateCustomerMutationVariables
   >(CreateCustomerMutation);
 
   const watched = useRef({ email: '', password: '' });

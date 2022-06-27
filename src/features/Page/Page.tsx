@@ -1,10 +1,10 @@
 import Wrapper from 'components/Wrapper/Content';
 import { ContentBody } from 'features/Content/ContentBody';
 import { ContentHeader } from 'features/Content/ContentHeader';
-import { Page as TPage } from 'types/takeshape';
+import { PageGetPageResponse } from 'types/takeshape';
 
 export interface PageProps {
-  page: TPage;
+  page: PageGetPageResponse['pageList']['items'][0];
 }
 
 export const Page = ({ page }: PageProps) => {

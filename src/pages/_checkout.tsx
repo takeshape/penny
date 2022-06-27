@@ -1,13 +1,13 @@
 import { useApolloClient } from '@apollo/client';
 import PageLoader from 'components/PageLoader';
-import { CreateCartMutation, CreateCartResponse } from 'features/Cart/queries';
+import { CreateCartMutation } from 'features/Cart/queries';
 import { cartItemsAtom } from 'features/Cart/store';
 import { getCartVariables } from 'features/Cart/utils';
 import { useAtomValue } from 'jotai';
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-import { MutationShopifyStorefront_CartCreateArgs } from 'types/takeshape';
+import { CreateCartMutationResponse, CreateCartMutationVariables } from 'types/takeshape';
 
 // After a successful login, redirect here to automatically checkout with the cart
 const _CheckoutPage: NextPage = () => {
@@ -17,7 +17,7 @@ const _CheckoutPage: NextPage = () => {
 
   useEffect(() => {
     const doCheckout = async () => {
-      const { data } = await client.mutate<CreateCartResponse, MutationShopifyStorefront_CartCreateArgs>({
+      const { data } = await client.mutate<CreateCartMutationResponse, CreateCartMutationVariables>({
         mutation: CreateCartMutation,
         variables: getCartVariables(cartItems, session)
       });
