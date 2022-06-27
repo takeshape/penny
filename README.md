@@ -584,7 +584,7 @@ are welcome!
   will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
   removed from the relevant mutations in the project schema.
 - Shopify **must** use the `2022-04` endpoint, like this:
-  `https://deluxe-sample-project.myshopify.com/admin/api/2022-04/graphql.json`
+  `https://<shopify-shop-name>.myshopify.com/admin/api/2022-04/graphql.json`
 
 ```erb
 {% if checkout.attributes.redirect_origin %}
