@@ -469,6 +469,11 @@ The following section describes how to connect ReCAPTCHA to your Deluxe Sample P
 generic REST provider. To learn how to connect ReCAPTCHA to any TakeShape project,
 [check out our docs on using a generic REST service](https://app.takeshape.io/docs/services/providers/rest).
 
+> Don't want to use captcha? Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the
+> env. The Takeshape API will still require Captcha unless the Captcha compose step and
+> `"if": "$resolvers.recaptcha.success == true"` is removed from the relevant mutations in the project schema.
+> [Check out our docs on editing a TakeShape project schema](https://app.takeshape.io/docs/schema/editing).
+
 1. First, get your **Site Secret** from reCAPTCHA. If you need to create an account,
    [you can visit Google's ReCAPTCHA site registration page here](https://www.google.com/recaptcha/admin/create).
 
