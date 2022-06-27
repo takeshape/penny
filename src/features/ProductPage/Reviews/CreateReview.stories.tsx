@@ -6,14 +6,17 @@ const Meta: ComponentMeta<typeof CreateReview> = {
   component: CreateReview,
   parameters: {
     layout: 'centered'
-  }
+  },
+  argTypes: { setIsOpen: { action: 'setIsOpen' } }
 };
 
 const Template: ComponentStory<typeof CreateReview> = (args) => <CreateReview {...args} />;
 
 export const _CreateReview = Template.bind({});
 _CreateReview.args = {
-  sku: 'sku'
+  productName: 'Product Name',
+  sku: 'sku',
+  isOpen: true
 };
 
 export default Meta;

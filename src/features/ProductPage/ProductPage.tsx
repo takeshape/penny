@@ -9,7 +9,7 @@ import { ProductPageOptions } from './types';
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
   PoliciesProps &
-  Omit<ReviewsProps, 'sku'> &
+  Omit<ReviewsProps, 'sku' | 'productName'> &
   DetailsProps &
   RelatedProductsWithDataProps & {
     options: ProductPageOptions;
