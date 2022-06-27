@@ -18,9 +18,10 @@ export interface ReviewsProps {
   sku: string;
   reviewList: ProductPageReviewsReviewList;
   showRollup?: boolean;
+  reviewsPerPage?: number;
 }
 
-export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
+export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: ReviewsProps) => {
   const { stats, rollup, data, currentPage: initialPage, totalPages } = reviewList;
 
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -33,7 +34,7 @@ export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
     variables: {
       sku,
       page: String(currentPage),
-      perPage: '2'
+      perPage: String(reviewsPerPage ?? 2)
     },
     skip: currentPage === 1
   });
@@ -61,7 +62,7 @@ export const Reviews = ({ sku, reviewList, showRollup }: ReviewsProps) => {
   }, [currentPage, setCurrentPage]);
 
   return (
-    <section aria-labelledby="reviews-heading" className="bg-white">
+    <section id="reviews" aria-labelledby="reviews-heading" className="bg-white">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div className="lg:col-span-4">
           <h2 id="reviews-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">

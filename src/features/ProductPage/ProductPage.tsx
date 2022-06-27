@@ -37,6 +37,7 @@ export const ProductPage = ({
           showFeaturedReviews={!showReviews}
           breadcrumbs={breadcrumbs}
           showBreadcrumbs={showBreadcrumbs}
+          showReviewsLink={showReviews}
         />
       </div>
       <div className="bg-gray-50">
