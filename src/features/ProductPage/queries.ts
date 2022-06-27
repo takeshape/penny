@@ -295,9 +295,7 @@ export type RelatedProductsShopifyCollectionArgs = {
 export type RelatedProductsShopifyCollectionResponse = {
   collection: {
     products: {
-      edges: {
-        node: ProductPageRelatedProductsShopifyProduct;
-      }[];
+      nodes: ProductPageRelatedProductsShopifyProduct[];
     };
   };
 };
@@ -306,35 +304,39 @@ export const RelatedProductsShopifyCollectionQuery = gql`
   query RelatedProductsShopifyCollectionQuery($handle: String!) {
     collection: collectionByHandleWithTtl(handle: $handle) {
       products(first: 10) {
-        edges {
-          node {
+        nodes {
+          id
+          handle
+          title
+          description
+          descriptionHtml
+          requiresSellingPlan
+          featuredImage {
             id
-            handle
-            title
-            description
-            descriptionHtml
-            requiresSellingPlan
-            featuredImage {
-              id
-              width
-              height
-              url
-              altText
+            width
+            height
+            url
+            altText
+          }
+          priceRangeV2 {
+            maxVariantPrice {
+              currencyCode
+              amount
             }
-            priceRangeV2 {
-              maxVariantPrice {
-                currencyCode
-                amount
-              }
-              minVariantPrice {
-                currencyCode
-                amount
-              }
+            minVariantPrice {
+              currencyCode
+              amount
             }
-            publishedAt
-            totalVariants
-            totalInventory
-            sellingPlanGroupCount
+          }
+          publishedAt
+          totalVariants
+          totalInventory
+          sellingPlanGroupCount
+          options {
+            name
+            position
+            id
+            values
           }
         }
       }

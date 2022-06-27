@@ -18,7 +18,7 @@ export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConn
 export type ProductPageShopifyProduct = ProductPageShopifyProductResponse['product'];
 
 export type ProductPageRelatedProductsShopifyProduct =
-  RelatedProductsShopifyCollectionQueryResponse['collection']['products']['edges'][0]['node'];
+  RelatedProductsShopifyCollectionQueryResponse['collection']['products']['nodes'][0];
 
 export type ProductPageRelatedProductsProduct = ProductBase;
 

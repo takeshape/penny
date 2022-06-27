@@ -185,20 +185,20 @@ function getRelatedProduct(
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: []
+    options: getProductOptions(shopifyProduct.options)
   };
 }
 
 export function getRelatedProductList(
   response: RelatedProductsShopifyCollectionQueryResponse
 ): ProductPageRelatedProductsProduct[] {
-  const productEdges = response?.collection?.products?.edges;
+  const productNodes = response?.collection?.products?.nodes;
 
-  if (!productEdges) {
+  if (!productNodes) {
     return;
   }
 
-  return productEdges.map(({ node }) => getRelatedProduct(node));
+  return productNodes.map((node) => getRelatedProduct(node));
 }
 
 function collectionHasParent(collection: Shopify_Collection) {
