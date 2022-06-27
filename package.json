@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run typegen && npm run graphql:validate && next build",
+    "build": "npm run graphql:typegen && next build",
     "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "dev": "next dev",
     "export": "next build && next export",
+    "graphql:typegen": "dotenv graphql-codegen",
     "graphql:validate": "dotenv graphql-validate",
     "lint": "next lint",
     "start": "next start",
@@ -18,8 +19,7 @@
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:watch": "jest --watch",
-    "typecheck": "tsc --noEmit --pretty ",
-    "typegen": "dotenv graphql-codegen"
+    "typecheck": "tsc --noEmit --pretty "
   },
   "dependencies": {
     "@apollo/client": "^3.6.8",
