@@ -7,7 +7,7 @@ import { RelatedProductsWithData, RelatedProductsWithDataProps } from './Related
 import { Reviews, ReviewsProps } from './Reviews/Reviews';
 import { ProductPageOptions } from './types';
 
-export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs'> &
+export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
   PoliciesProps &
   Omit<ReviewsProps, 'sku'> &
   DetailsProps &
