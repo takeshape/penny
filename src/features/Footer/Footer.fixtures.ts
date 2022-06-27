@@ -1,6 +1,6 @@
-import { Footer } from 'types/takeshape';
+import { FooterResponse } from 'types/takeshape';
 
-export const GetFooterQueryData: { footer: Footer } = {
+export const GetFooterQueryData: { footer: FooterResponse['footer'] } = {
   footer: {
     navigation: {
       sections: [

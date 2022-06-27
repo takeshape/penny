@@ -1,7 +1,9 @@
 import Button from 'components/Button/Button';
-import { SaleComponent } from 'types/takeshape';
+import { BackgroundImageChild } from 'features/Storefront/types';
 
-export const Sale = ({ buttonText, primaryText, secondaryText }: SaleComponent) => {
+type SaleProps = BackgroundImageChild & { __typename: 'SaleComponent' };
+
+export const Sale = ({ buttonText, primaryText, secondaryText }: SaleProps) => {
   return (
     <section
       aria-labelledby="sale-heading"

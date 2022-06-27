@@ -1,17 +1,12 @@
 import PageLoader from 'components/PageLoader';
 import Page from 'features/Page/Page';
-import {
-  PageGetPage,
-  PageGetPageArgs,
-  PageGetPageResponse,
-  PageGetPageSlugs,
-  PageGetPageSlugsResponse
-} from 'features/Page/queries';
+import { PageGetPage, PageGetPageSlugs } from 'features/Page/queries';
 import { getPage, getPageParams } from 'features/Page/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { GetPageSlugsResponse, PageGetPageResponse, PageGetPageVariables } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
@@ -40,7 +35,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   const { navigation, footer } = await getLayoutData();
 
-  const { data } = await apolloClient.query<PageGetPageResponse, PageGetPageArgs>({
+  const { data } = await apolloClient.query<PageGetPageResponse, PageGetPageVariables>({
     query: PageGetPage,
     variables: {
       slug
@@ -60,7 +55,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await apolloClient.query<PageGetPageSlugsResponse>({
+  const { data } = await apolloClient.query<GetPageSlugsResponse>({
     query: PageGetPageSlugs
   });
 

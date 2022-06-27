@@ -1,14 +1,4 @@
 import { gql } from '@apollo/client';
-import {
-  CreateCustomerPayload,
-  ShopifyStorefront_Customer,
-  ShopifyStorefront_CustomerAccessTokenCreatePayload,
-  ShopifyStorefront_CustomerRecoverPayload
-} from 'types/takeshape';
-
-export type CreateCustomerResponse = {
-  customerCreate: CreateCustomerPayload;
-};
 
 export const CreateCustomerMutation = gql`
   mutation CreateCustomerMutation($input: CreateCustomerPropertiesPropertyInput!) {
@@ -19,10 +9,6 @@ export const CreateCustomerMutation = gql`
     }
   }
 `;
-
-export type RecoverCustomerPasswordResponse = {
-  customerRecover: ShopifyStorefront_CustomerRecoverPayload;
-};
 
 export const RecoverCustomerPasswordMutation = gql`
   mutation RecoverCustomerPasswordMutation($email: String!, $recaptchaToken: String!) {
@@ -36,12 +22,8 @@ export const RecoverCustomerPasswordMutation = gql`
   }
 `;
 
-export type CreateCustomerAccessTokenResponse = {
-  accessTokenCreate: ShopifyStorefront_CustomerAccessTokenCreatePayload;
-};
-
 export const CreateCustomerAccessTokenMutation = gql`
-  mutation CrateCustomerAccesssToken($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
+  mutation CreateCustomerAccessTokenMutation($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
     accessTokenCreate: ShopifyStorefront_customerAccessTokenCreate(input: $input) {
       customerAccessToken {
         expiresAt
@@ -55,10 +37,6 @@ export const CreateCustomerAccessTokenMutation = gql`
     }
   }
 `;
-
-export type GetCustomerTokenDataResponse = {
-  customer: ShopifyStorefront_Customer;
-};
 
 export const GetCustomerTokenDataQuery = gql`
   query GetCustomerTokenDataQuery($customerAccessToken: String!) {

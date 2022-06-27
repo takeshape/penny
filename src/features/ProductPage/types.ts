@@ -2,56 +2,23 @@ import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
-import { ReviewsIo_ListProductReviewsResponse, Shopify_Product, Shopify_ProductConnection } from 'types/takeshape';
+import {
+  ProductPageShopifyProductResponse,
+  RelatedProductsShopifyCollectionQueryResponse,
+  ReviewsIo_ListProductReviewsResponse,
+  Shopify_Product,
+  Shopify_ProductConnection
+} from 'types/takeshape';
 
 export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
 export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConnection, 'pageInfo'> & {
   nodes: ProductPageShopifyProductHandleNode[];
 };
 
-export type ProductPageShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'handle'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'seo'
-  | 'images'
-  | 'variants'
-  | 'takeshape'
-  | 'reviews'
-  | 'collections'
-  | 'standardizedProductType'
->;
+export type ProductPageShopifyProduct = ProductPageShopifyProductResponse['product'];
 
-export type ProductPageRelatedProductsShopifyProduct = Pick<
-  Shopify_Product,
-  | 'id'
-  | 'handle'
-  | 'title'
-  | 'description'
-  | 'descriptionHtml'
-  | 'requiresSellingPlan'
-  | 'priceRangeV2'
-  | 'featuredImage'
-  | 'publishedAt'
-  | 'totalInventory'
-  | 'totalVariants'
-  | 'options'
-  | 'sellingPlanGroupCount'
-  | 'sellingPlanGroups'
-  | 'takeshape'
->;
+export type ProductPageRelatedProductsShopifyProduct =
+  RelatedProductsShopifyCollectionQueryResponse['collection']['products']['nodes'][0];
 
 export type ProductPageRelatedProductsProduct = ProductBase;
 

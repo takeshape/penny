@@ -1,12 +1,11 @@
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import {
-  Shopify_Customer,
-  Shopify_Fulfillment,
-  Shopify_FulfillmentDisplayStatus,
-  Shopify_LineItem,
-  Shopify_Order
-} from 'types/takeshape';
+import { GetMyAdminCustomerOrdersQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
 import { Fulfillment, FulfillmentStatus, LineItem, Order } from './types';
+
+type Shopify_Customer = GetMyAdminCustomerOrdersQueryResponse['customer'];
+export type Shopify_Order = Shopify_Customer['orders']['edges'][0]['node'];
+export type Shopify_LineItem = Shopify_Order['lineItems']['edges'][0]['node'];
+export type Shopify_Fulfillment = Shopify_Order['fulfillments'][0];
 
 function getFulfillmentStatus(
   status: Shopify_FulfillmentDisplayStatus,

@@ -2,12 +2,12 @@ import { useLazyQuery } from '@apollo/client';
 import Seo from 'components/Seo';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ProductCategory } from './ProductCategory';
 import {
-  ProductCategoryShopifyCollectionArgs,
-  ProductCategoryShopifyCollectionQuery,
-  ProductCategoryShopifyCollectionResponse
-} from './queries';
+  ProductCategoryShopifyCollectionQueryResponse,
+  ProductCategoryShopifyCollectionQueryVariables
+} from 'types/takeshape';
+import { ProductCategory } from './ProductCategory';
+import { ProductCategoryShopifyCollectionQuery } from './queries';
 import { getCollectionPageInfo, getCollectionWithOverfetch, getCurrentTitle, getCurrentUrl } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
 
@@ -34,8 +34,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
   const loadedCollections = useRef<Set<string>>(new Set([collection.pageInfo.startCursor]));
 
   const [loadCollection, { data, error, loading, variables }] = useLazyQuery<
-    ProductCategoryShopifyCollectionResponse,
-    ProductCategoryShopifyCollectionArgs
+    ProductCategoryShopifyCollectionQueryResponse,
+    ProductCategoryShopifyCollectionQueryVariables
   >(ProductCategoryShopifyCollectionQuery);
 
   // Pre-fetch the next page

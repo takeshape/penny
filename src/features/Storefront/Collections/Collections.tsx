@@ -1,9 +1,13 @@
 import { getImageUrl } from '@takeshape/routing';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import { CollectionsComponent } from 'types/takeshape';
+import { StorefrontChild } from 'features/Storefront/types';
 
-export const Collections = ({ collections }: CollectionsComponent) => {
+type CollectionsProps = StorefrontChild & {
+  __typename: 'CollectionsComponent';
+};
+
+export const Collections = ({ collections }: CollectionsProps) => {
   if (!collections || !collections.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-gray-100">

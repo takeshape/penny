@@ -5,9 +5,9 @@ import Captcha from 'components/Captcha';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { defaultKlaviyoListId } from 'config';
 import { useCallback, useState } from 'react';
-import { Klaviyo_AddMembersResponse } from 'types/takeshape';
+import { NewsletterEmailSubmissionResponse, NewsletterEmailSubmissionVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
-import { EmailSubmissionMutation, EmailSubmissionMutationArgs } from './Newsletter.queries';
+import { EmailSubmissionMutation } from './Newsletter.queries';
 
 export interface NewsletterProps {
   text?: {
@@ -30,10 +30,13 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     setLoading(false);
     setFeedback({ type: 'error', message: error.message });
   }, []);
-  const [mutateFn] = useMutation<Klaviyo_AddMembersResponse, EmailSubmissionMutationArgs>(EmailSubmissionMutation, {
-    onCompleted,
-    onError
-  });
+  const [mutateFn] = useMutation<NewsletterEmailSubmissionResponse, NewsletterEmailSubmissionVariables>(
+    EmailSubmissionMutation,
+    {
+      onCompleted,
+      onError
+    }
+  );
 
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 

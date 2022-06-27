@@ -1,0 +1,10 @@
+schema: takeshape-project.graphql
+documents: './src/**/*.{ts,tsx}'
+generates:
+  ./src/types/takeshape.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      omitOperationSuffix: true
+      operationResultSuffix: Response

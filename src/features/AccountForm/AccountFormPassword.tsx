@@ -4,9 +4,9 @@ import FormInput from 'components/Form/Input/Input';
 import { signOut } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { MutationUpdateMyCustomerArgs } from 'types/takeshape';
+import { UpdateCustomerMutationResponse, UpdateCustomerMutationVariables } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import { UpdateCustomerMutation, UpdateCustomerResponse } from './queries';
+import { UpdateCustomerMutation } from './queries';
 
 export interface AccountFormPasswordForm {
   password: string;
@@ -23,8 +23,8 @@ export const AccountFormPassword = () => {
   } = useForm<AccountFormPasswordForm>();
 
   const [updateCustomer, { data: customerResponse }] = useMutation<
-    UpdateCustomerResponse,
-    MutationUpdateMyCustomerArgs
+    UpdateCustomerMutationResponse,
+    UpdateCustomerMutationVariables
   >(UpdateCustomerMutation);
 
   const onSubmit = useCallback(

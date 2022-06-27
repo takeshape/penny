@@ -2,15 +2,12 @@ import { useQuery } from '@apollo/client';
 import Button from 'components/Button/Button';
 import Loader from 'components/Loader/Loader';
 import { Stars } from 'components/Stars/Stars';
-import {
-  ProductPageReviewPageArgs,
-  ProductPageReviewPageQuery,
-  ProductPageReviewPageResponse
-} from 'features/ProductPage/queries';
+import { ProductPageReviewPageQuery } from 'features/ProductPage/queries';
 import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
 import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
 import { useCallback, useMemo, useState } from 'react';
 import { getReview } from 'transforms/reviewsIo';
+import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
 import { ReviewsRollup } from './ReviewsRollup';
 
@@ -30,7 +27,7 @@ export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: Reviews
     data: pageData,
     loading,
     error
-  } = useQuery<ProductPageReviewPageResponse, ProductPageReviewPageArgs>(ProductPageReviewPageQuery, {
+  } = useQuery<ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables>(ProductPageReviewPageQuery, {
     variables: {
       sku,
       page: String(currentPage),

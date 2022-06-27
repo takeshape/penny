@@ -1,9 +1,8 @@
 import CardPanel from 'components/Card/Panel/Panel';
 import Image from 'components/NextImage';
-import { SetRequired } from 'type-fest';
-import { Voucherify_LoyaltyCard } from 'types/takeshape';
+import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
 
-export type AccountLoyaltyCardProps = SetRequired<Voucherify_LoyaltyCard, 'code' | 'loyalty_card' | 'assets'>;
+export type AccountLoyaltyCardProps = GetMyLoyaltyCardQueryResponse['loyaltyCard'];
 
 export const AccountLoyaltyCard = ({ code, loyalty_card, assets }: AccountLoyaltyCardProps) => {
   return (
