@@ -1,4 +1,15 @@
 import { gql } from '@apollo/client';
+import { ReviewsIo_ListProductReviewsResponse } from 'types/takeshape';
+import { ProductPageRelatedProductsShopifyProduct, ProductPageShopifyProductHandleConnection } from './types';
+
+export type ProductPageShopifyProductHandlesResponse = {
+  products: ProductPageShopifyProductHandleConnection;
+};
+
+export type ProductPageShopifyProductHandlesArgs = {
+  first: number;
+  after: string;
+};
 
 export const ProductPageShopifyProductHandlesQuery = gql`
   query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
@@ -243,6 +254,53 @@ export const ProductPageShopifyProductQuery = gql`
     }
   }
 `;
+
+export type ProductPageReviewPageArgs = {
+  sku: string;
+  page: string;
+  perPage: string;
+};
+
+export type ProductPageReviewPageResponse = {
+  reviewData: ReviewsIo_ListProductReviewsResponse;
+};
+
+export const ProductPageReviewPageQuery = gql`
+  query ($sku: String!, $page: String!, $perPage: String!) {
+    reviewData: ReviewsIo_listProductReviews(sku: $sku, page: $page, per_page: $perPage) {
+      ratings
+      reviews {
+        data {
+          reviewer {
+            profile_picture
+            gravatar
+            first_name
+            last_name
+            verified_buyer
+          }
+          title
+          rating
+          review
+          date_created
+        }
+      }
+    }
+  }
+`;
+
+export type RelatedProductsShopifyCollectionArgs = {
+  handle: string;
+};
+
+export type RelatedProductsShopifyCollectionResponse = {
+  collection: {
+    products: {
+      edges: {
+        node: ProductPageRelatedProductsShopifyProduct;
+      }[];
+    };
+  };
+};
 
 export const RelatedProductsShopifyCollectionQuery = gql`
   query RelatedProductsShopifyCollectionQuery($handle: String!) {

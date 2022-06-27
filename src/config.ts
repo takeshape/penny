@@ -95,6 +95,7 @@ export const seo: DefaultSeoProps = {
 
 /* Commerce */
 // Lowercase matches Stripe format
+export const showCurrencySelector = true;
 export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
 export const defaultCurrency = 'USD';
 

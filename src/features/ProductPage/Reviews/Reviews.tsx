@@ -1,19 +1,68 @@
+import { useQuery } from '@apollo/client';
+import Button from 'components/Button/Button';
+import Loader from 'components/Loader/Loader';
 import { Stars } from 'components/Stars/Stars';
+import {
+  ProductPageReviewPageArgs,
+  ProductPageReviewPageQuery,
+  ProductPageReviewPageResponse
+} from 'features/ProductPage/queries';
+import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
+import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
+import { useCallback, useMemo, useState } from 'react';
+import { getReview } from 'transforms/reviewsIo';
 import { ProductPageReviewsReviewList } from '../types';
-import { ReviewsListItem } from './ReviewsListItem';
-import { ReviewsListItemLoading } from './ReviewsListItemLoading';
 import { ReviewsRollup } from './ReviewsRollup';
 
 export interface ReviewsProps {
+  sku: string;
   reviewList: ProductPageReviewsReviewList;
   showRollup?: boolean;
+  reviewsPerPage?: number;
 }
 
-export const Reviews = ({ reviewList, showRollup }: ReviewsProps) => {
-  const { stats, rollup, data } = reviewList;
+export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: ReviewsProps) => {
+  const { stats, rollup, data, currentPage: initialPage, totalPages } = reviewList;
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
+  const {
+    data: pageData,
+    loading,
+    error
+  } = useQuery<ProductPageReviewPageResponse, ProductPageReviewPageArgs>(ProductPageReviewPageQuery, {
+    variables: {
+      sku,
+      page: String(currentPage),
+      perPage: String(reviewsPerPage ?? 2)
+    },
+    skip: currentPage === 1
+  });
+
+  // Our product query has the first page of reviews, so use that if we're on page 1.
+  // Otherwise we query for the requested page.
+  const currentPageData = useMemo(() => {
+    if (currentPage === 1) {
+      return data;
+    } else {
+      return pageData && pageData.reviewData.reviews.data.map(getReview);
+    }
+  }, [currentPage, data, pageData]);
+
+  const handleNext = useCallback(() => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  }, [currentPage, setCurrentPage, totalPages]);
+
+  const handlePrevious = useCallback(() => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [currentPage, setCurrentPage]);
 
   return (
-    <section aria-labelledby="reviews-heading" className="bg-white">
+    <section id="reviews" aria-labelledby="reviews-heading" className="bg-white">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div className="lg:col-span-4">
           <h2 id="reviews-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
@@ -56,14 +105,36 @@ export const Reviews = ({ reviewList, showRollup }: ReviewsProps) => {
 
           <div className="flow-root">
             <div className="-my-12 divide-y divide-gray-200">
-              {data.map((review, idx) => (
-                <div key={review?.id ?? idx} className="py-12">
-                  {review ? <ReviewsListItem review={review} /> : <ReviewsListItemLoading />}
+              {error && 'There was an error loading more reviews.'}
+              {!error && loading && (
+                <div className="p-16 flex items-center justify-center">
+                  <Loader />
                 </div>
-              ))}
+              )}
+              {!error &&
+                currentPageData &&
+                currentPageData.map((review, idx) => (
+                  <div key={review?.id ?? idx} className="py-12">
+                    {review ? <ReviewsListItem review={review} /> : <ReviewsListItemLoading />}
+                  </div>
+                ))}
             </div>
           </div>
         </div>
+
+        {totalPages && (
+          <div className="mt-12 flex items-center lg:col-start-6 lg:col-span-7">
+            <div className="mr-2">
+              Page {currentPage} of {totalPages}
+            </div>
+            <Button className="h-8 px-4 text-sm mr-2" disabled={currentPage === 1} onClick={handlePrevious}>
+              Previous
+            </Button>
+            <Button className="h-8 px-4 text-sm" disabled={currentPage === totalPages} onClick={handleNext}>
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   );

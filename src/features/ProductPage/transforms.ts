@@ -68,7 +68,7 @@ export function getReviewList(response: ProductPageShopifyProductResponse): Prod
   return {
     stats: getStats(stats),
     currentPage: reviews?.current_page ?? null,
-    totalPages: reviews?.total ?? null,
+    totalPages: reviews?.total && reviews?.per_page ? Math.ceil(reviews.total / reviews.per_page) : null,
     perPage: reviews?.per_page ?? null,
     data: reviews?.data?.map(getReview) ?? []
   };

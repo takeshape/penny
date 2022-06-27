@@ -19,6 +19,7 @@ export interface ProductWithImageGridProps {
   breadcrumbs: Breadcrumb[];
   showFeaturedReviews: boolean;
   showBreadcrumbs: boolean;
+  showReviewsLink: boolean;
 }
 
 export const ProductWithImageGrid = ({
@@ -26,7 +27,8 @@ export const ProductWithImageGrid = ({
   reviewHighlights,
   breadcrumbs,
   showFeaturedReviews,
-  showBreadcrumbs
+  showBreadcrumbs,
+  showReviewsLink
 }: PropsWithChildren<ProductWithImageGridProps>) => {
   const { name, descriptionHtml, images, options, hasStock } = product;
 
@@ -104,7 +106,7 @@ export const ProductWithImageGrid = ({
 
           {reviewHighlights && (
             <div className="mt-6">
-              <ReviewsCallout stats={reviewHighlights.stats} />
+              <ReviewsCallout stats={reviewHighlights.stats} showReviewsLink={showReviewsLink} />
             </div>
           )}
 
