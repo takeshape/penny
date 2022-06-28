@@ -20,6 +20,15 @@ export const isSsr = typeof window === 'undefined';
 export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
 export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
 
+/**
+ * Lighthouse
+ *
+ * These are handles to use when responding to the `__lighthouse` dynamic path.
+ */
+export const lighthouseHandle = '__lighthouse';
+export const lighthouseProductHandle = 'basic-tee-6-pack';
+export const lighthouseCollectionHandle = 'men';
+
 /* Site Config and SEO */
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
 export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Deluxe ™️ Store';

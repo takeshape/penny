@@ -26,10 +26,12 @@ jobs:
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
+            ${{ github.event.deployment_status.target_url }}/product/__lighthouse
+            ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
           configPath: ./.lighthouse/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
-          runs: 5
+          runs: 3
 
       - name: Format Lighthouse score
         if: always() && steps.pr.outputs.number != ''
