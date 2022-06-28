@@ -27,6 +27,11 @@ export const getStaticProps = async () => {
 
   const storefront = getStorefront(data);
 
+  // eslint-disable-next-line no-console
+  console.log('generating storefront...');
+  // eslint-disable-next-line no-console
+  console.log(JSON.stringify({ data, error }));
+
   if (error) {
     throw new Error(`Failed to get storefront, received message ${error.message}`);
   }
