@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { storefrontCollection } from '../fixtures';
+import { storefrontCollectionComponent } from '../fixtures';
 import { Collection } from './Collection';
 
 const Meta: ComponentMeta<typeof Collection> = {
@@ -10,8 +10,6 @@ const Meta: ComponentMeta<typeof Collection> = {
 const Template: ComponentStory<typeof Collection> = (args) => <Collection {...args} />;
 
 export const _Collection = Template.bind({});
-_Collection.args = {
-  collection: storefrontCollection
-};
+_Collection.args = storefrontCollectionComponent;
 
 export default Meta;

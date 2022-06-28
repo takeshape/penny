@@ -625,6 +625,18 @@
           "sections"
         ]
       }
+    },
+    "CollectionComponent": {
+      "default": {
+        "properties": {
+          "collection": {
+            "widget": "relationship"
+          }
+        },
+        "order": [
+          "collection"
+        ]
+      }
     }
   },
   "services": {
@@ -4344,6 +4356,7 @@
       "id": "u3-xM1Ynt",
       "name": "Storefront",
       "title": "Storefront",
+      "workflow": "default",
       "model": {
         "type": "single"
       },
@@ -4351,7 +4364,6 @@
         "type": "object",
         "properties": {
           "components": {
-            "type": "array",
             "items": {
               "oneOf": [
                 {
@@ -4373,17 +4385,15 @@
                   "@ref": "local:TestimonialsComponent"
                 },
                 {
-                  "@ref": "local:TrendingProductsComponent"
+                  "@ref": "local:CollectionComponent"
                 }
               ]
             },
+            "type": "array",
             "title": "Components",
             "@mapping": "takeshape:local:Storefront.nSsbsiM-3"
           }
-        },
-        "required": [
-          "components"
-        ]
+        }
       }
     },
     "NavigationLinksCategoriesFeatured": {
@@ -4865,6 +4875,36 @@
               }
             },
             "@tag": "pattern:service-object:1"
+          }
+        }
+      }
+    },
+    "CollectionComponent": {
+      "id": "DRtrH9XX-",
+      "name": "CollectionComponent",
+      "title": "Collection Component",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "collection": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "@ref": "local:Collection",
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Collection",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:CollectionComponent.v7nhbs4aM"
           }
         }
       }

@@ -1,17 +1,14 @@
 import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
-import {
-  GetStorefrontQueryResponse,
-  StorefrontShopifyCollectionByHandleQueryResponse,
-  StorefrontShopifyCollectionByHandleQueryVariables
-} from 'types/takeshape';
+import { GetStorefrontQueryResponse } from 'types/takeshape';
 import {
   StorefrontCollection,
+  StorefrontCollectionComponent,
+  StorefrontCollectionComponentProduct,
   StorefrontCollectionItem,
-  StorefrontCollectionItemProduct,
-  StorefrontShopifyProduct
+  StorefrontCollectionItemProduct
 } from './types';
 
-function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollectionItemProduct {
+function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): StorefrontCollectionItemProduct {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
   return {
@@ -32,23 +29,18 @@ function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollect
   };
 }
 
-function getCollectionItem(shopifyProduct: StorefrontShopifyProduct): StorefrontCollectionItem {
+function getCollectionItem(shopifyProduct: StorefrontCollectionComponentProduct): StorefrontCollectionItem {
   return {
     product: getProduct(shopifyProduct)
   };
 }
 
-export function getCollection(
-  response: StorefrontShopifyCollectionByHandleQueryResponse,
-  { before, after }: StorefrontShopifyCollectionByHandleQueryVariables
-): StorefrontCollection {
-  const collection = response?.collection;
+export function getCollection(component: StorefrontCollectionComponent): StorefrontCollection {
+  const collection = component?.collection?.shopifyCollection;
 
   if (!collection) {
     return null;
   }
-
-  const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
 
   return {
     id: collection.id,
