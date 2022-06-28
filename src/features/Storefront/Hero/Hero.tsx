@@ -23,16 +23,12 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroProp
           </div>
         </div>
         <div className="w-full h-48 sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:w-1/2 lg:h-full">
-          <div className="relative w-full h-full">
-            <NextImage
-              layout="fill"
-              src={getImageUrl(image)}
-              alt={image.description ?? ''}
-              objectFit="cover"
-              objectPosition="center"
-              priority
-            />
-          </div>
+          <NextImage
+            src={getImageUrl(image)}
+            alt={image.description ?? ''}
+            className="w-full h-full object-center object-cover"
+            priority
+          />
         </div>
       </div>
     </div>

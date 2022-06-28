@@ -20,7 +20,7 @@ export const TopAccountIcon = () => {
           href={`/api/auth/signin`}
           onClick={(e) => {
             e.preventDefault();
-            signIn();
+            signIn(undefined, { callbackUrl: '/account' });
           }}
           className="-m-2 p-2 text-gray-400 hover:text-gray-500 cursor-pointer"
         >

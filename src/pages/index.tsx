@@ -1,3 +1,4 @@
+import { homepageRevalidationTtl } from 'config';
 import { GetStorefrontQuery } from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
 import { getStorefront } from 'features/Storefront/transforms';
@@ -20,13 +21,24 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
 
-  const { data: storefrontData } = await apolloClient.query<GetStorefrontQueryResponse>({
+  const { data, error } = await apolloClient.query<GetStorefrontQueryResponse>({
     query: GetStorefrontQuery
   });
 
-  const storefront = getStorefront(storefrontData);
+  const storefront = getStorefront(data);
 
-  return { props: { navigation, footer, storefront } };
+  if (error) {
+    throw new Error(`Failed to get storefront, received message ${error.message}`);
+  }
+
+  return {
+    revalidate: homepageRevalidationTtl,
+    props: {
+      navigation,
+      footer,
+      storefront
+    }
+  };
 };
 
 export default IndexPage;

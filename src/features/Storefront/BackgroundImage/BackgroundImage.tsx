@@ -13,11 +13,9 @@ export const BackgroundImage = ({ image, children }: PropsWithChildren<Backgroun
         <div className="absolute inset-0 max-w-7xl mx-auto overflow-hidden xl:px-8">
           <div className="w-full h-full">
             <NextImage
-              layout="fill"
               src={getImageUrl(image)}
               alt={image.description ?? ''}
-              objectFit="cover"
-              objectPosition="center"
+              className="w-full h-full object-center object-cover"
             />
           </div>
         </div>

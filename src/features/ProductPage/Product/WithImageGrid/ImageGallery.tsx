@@ -1,4 +1,4 @@
-import Image from 'components/NextImage';
+import NextImage from 'components/NextImage';
 import { ProductImage } from 'types/product';
 import classNames from 'utils/classNames';
 
@@ -28,28 +28,45 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
   return (
     <div className={wrapperClass}>
       <div className={firstImageClass}>
-        <div className="w-full h-full">
-          <Image src={images[0].url} alt={images[0].altText} layout="fill" objectFit="cover" priority />
-        </div>
+        <NextImage
+          src={images[0].url}
+          alt={images[0].altText}
+          height={images[0].height}
+          width={images[0].width}
+          className="w-full h-full object-center object-cover"
+          priority
+        />
       </div>
       {images.length === 2 && (
         <div className="hidden aspect-w-3 aspect-h-3 rounded-lg overflow-hidden lg:block">
-          <div className="w-full h-full">
-            <Image src={images[1].url} alt={images[1].altText} layout="fill" objectFit="cover" />
-          </div>
+          <NextImage
+            src={images[1].url}
+            alt={images[1].altText}
+            height={images[1].height}
+            width={images[1].width}
+            className="w-full h-full object-center object-cover"
+          />
         </div>
       )}
       {images.length === 3 && (
         <>
           <div className="hidden aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4 lg:block">
-            <div className="w-full h-full">
-              <Image src={images[1].url} alt={images[1].altText} layout="fill" objectFit="cover" />
-            </div>
+            <NextImage
+              src={images[1].url}
+              alt={images[1].altText}
+              height={images[1].height}
+              width={images[1].width}
+              className="w-full h-full object-center object-cover"
+            />
           </div>
           <div className="hidden aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4 lg:block">
-            <div className="w-full h-full">
-              <Image src={images[2].url} alt={images[2].altText} layout="fill" objectFit="cover" />
-            </div>
+            <NextImage
+              src={images[2].url}
+              alt={images[2].altText}
+              height={images[2].height}
+              width={images[2].width}
+              className="w-full h-full object-center object-cover"
+            />
           </div>
         </>
       )}
@@ -58,23 +75,37 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
           <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               {images[1] && (
-                <div className="w-full h-full">
-                  <Image src={images[1].url} alt={images[1].altText} layout="fill" objectFit="cover" />
-                </div>
+                <NextImage
+                  src={images[1].url}
+                  alt={images[1].altText}
+                  height={images[1].height}
+                  width={images[1].width}
+                  className="w-full h-full object-center object-cover"
+                />
               )}
             </div>
             <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
               {images[2] && (
-                <div className="w-full h-full">
-                  <Image src={images[2].url} alt={images[2].altText} layout="fill" objectFit="cover" />
-                </div>
+                <NextImage
+                  src={images[2].url}
+                  alt={images[2].altText}
+                  height={images[2].height}
+                  width={images[2].width}
+                  className="w-full h-full object-center object-cover"
+                />
               )}
             </div>
           </div>
           <div className="hidden aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4 lg:block">
-            <div className="w-full h-full">
-              {images[3] && <Image src={images[3].url} alt={images[3].altText} layout="fill" objectFit="cover" />}
-            </div>
+            {images[3] && (
+              <NextImage
+                src={images[3].url}
+                alt={images[3].altText}
+                height={images[3].height}
+                width={images[3].width}
+                className="w-full h-full object-center object-cover"
+              />
+            )}
           </div>
         </>
       )}

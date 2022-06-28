@@ -12,7 +12,6 @@ export const GridItem = ({ product, reviews }: GridItemProps) => {
     <>
       <div className="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75">
         <NextImage
-          layout="fill"
           src={product.featuredImage.url}
           alt={`Picture of ${product.name}`}
           className="w-full h-full object-center object-cover"

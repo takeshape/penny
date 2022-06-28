@@ -96,9 +96,6 @@ const config = {
       }
     ];
   },
-  images: {
-    domains: ['tailwindui.com', 'cdn.shopify.com', 'us1.dl.voucherify.io', 'images.takeshape.io']
-  },
   poweredByHeader: false,
   reactStrictMode: true,
   eslint: {
@@ -107,7 +104,30 @@ const config = {
   publicRuntimeConfig: {
     vercelEnv: process.env.VERCEL_ENV ?? 'development'
   },
-  swcMinify: true
+  swcMinify: true,
+  experimental: {
+    images: {
+      allowFutureImage: true,
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: '**.tailwindui.com'
+        },
+        {
+          protocol: 'https',
+          hostname: '**.shopify.com'
+        },
+        {
+          protocol: 'https',
+          hostname: '**.voucherify.io'
+        },
+        {
+          protocol: 'https',
+          hostname: '**.takeshape.io'
+        }
+      ]
+    }
+  }
 };
 
 export default withPlugins([withBundleAnalyzer, SENTRY_DSN ? withSentryConfig : {}], config);

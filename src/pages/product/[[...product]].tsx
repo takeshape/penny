@@ -1,4 +1,5 @@
 import PageLoader from 'components/PageLoader';
+import { pageRevalidationTtl } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
@@ -13,7 +14,7 @@ import {
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
-import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
   ProductPageShopifyProductHandlesQueryResponse,
@@ -68,12 +69,12 @@ const ProductPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
   const handle = getSingle(params.product);
 
-  const { data: productData } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
+  const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
     return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
       query: ProductPageShopifyProductQuery,
       variables: {
@@ -82,20 +83,25 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     });
   });
 
-  const product = getProduct(productData);
+  if (error) {
+    throw new Error(`Failed to get product, received message ${error.message}`);
+  }
+
+  const product = getProduct(data);
 
   return {
     notFound: !Boolean(product),
+    revalidate: pageRevalidationTtl,
     props: {
       navigation,
       footer,
       product,
-      options: getPageOptions(productData),
-      reviewHighlights: getReviewHighlights(productData),
-      reviewList: getReviewList(productData),
-      details: getDetails(productData),
-      policies: getPolicies(productData),
-      breadcrumbs: getBreadcrumbs(productData)
+      options: getPageOptions(data),
+      reviewHighlights: getReviewHighlights(data),
+      reviewList: getReviewList(data),
+      details: getDetails(data),
+      policies: getPolicies(data),
+      breadcrumbs: getBreadcrumbs(data)
     }
   };
 };
