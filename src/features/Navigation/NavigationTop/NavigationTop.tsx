@@ -93,14 +93,14 @@ export const NavigationTop = ({ message, links, currencies }: NavigationTopProps
                   </button>
 
                   {/* Search */}
-                  <a onClick={() => setIsSearchOpen(true)} className="ml-2 p-2 text-gray-400 hover:text-gray-500">
+                  <div onClick={() => setIsSearchOpen(true)} className="ml-2 p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                  </a>
+                  </div>
                 </div>
 
                 {/* Logo (lg-) */}
-                <NextLink href="#" className="lg:hidden">
+                <NextLink href="/" className="lg:hidden">
                   <span className="sr-only">Workflow</span>
                   <div className="h-8 w-8 relative">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -112,10 +112,13 @@ export const NavigationTop = ({ message, links, currencies }: NavigationTopProps
                   <div className="flex items-center lg:ml-8">
                     <div className="flex space-x-8">
                       <div className="hidden lg:flex">
-                        <a onClick={() => setIsSearchOpen(true)} className="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                        <div
+                          onClick={() => setIsSearchOpen(true)}
+                          className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                        >
                           <span className="sr-only">Search</span>
                           <SearchIcon className="w-6 h-6" aria-hidden="true" />
-                        </a>
+                        </div>
                       </div>
 
                       <div className="flex">

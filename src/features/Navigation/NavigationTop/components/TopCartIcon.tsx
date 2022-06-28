@@ -9,7 +9,7 @@ export const TopCartIcon = () => {
 
   return (
     <div className="flow-root">
-      <a
+      <div
         onClick={() => (isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true))}
         className="group -m-2 p-2 flex items-center"
       >
@@ -21,7 +21,7 @@ export const TopCartIcon = () => {
           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartQuantity}</span>
         </ClientOnly>
         <span className="sr-only">items in cart, view cart</span>
-      </a>
+      </div>
     </div>
   );
 };
