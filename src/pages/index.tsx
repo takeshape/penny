@@ -1,3 +1,4 @@
+import { homepageRevalidationTtl } from 'config';
 import { GetStorefrontQuery } from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
 import { getStorefront } from 'features/Storefront/transforms';
@@ -7,15 +8,9 @@ import { InferGetStaticPropsType, NextPage } from 'next';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const IndexPage: NextPage = ({
-  navigation,
-  footer,
-  storefront,
-  time
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndexPage: NextPage = ({ navigation, footer, storefront }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout navigation={navigation} footer={footer}>
-      <div className="text-xl text-red-600">{time}</div>
       <Storefront storefront={storefront} />
     </Layout>
   );
@@ -32,28 +27,16 @@ export const getStaticProps = async () => {
 
   const storefront = getStorefront(data);
 
-  // eslint-disable-next-line no-console
-  // console.log('generating storefront...');
-  // eslint-disable-next-line no-console
-  // console.log(JSON.stringify({ data, error }));
-
-  // eslint-disable-next-line no-console
-  console.log('BEFORE FETCH');
-
   if (error) {
     throw new Error(`Failed to get storefront, received message ${error.message}`);
   }
 
-  // eslint-disable-next-line no-console
-  console.log('AFTER ERROR');
-
   return {
-    revalidate: 5,
+    revalidate: homepageRevalidationTtl,
     props: {
       navigation,
       footer,
-      storefront,
-      time: new Date().toISOString()
+      storefront
     }
   };
 };
