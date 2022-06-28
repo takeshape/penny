@@ -1,31 +1,32 @@
 const formatScore = (score) => Math.round(score * 100);
 const emojiScore = (score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
-const scoreRow = (label, score) => `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
+const formatPath = (testedUrl) => `[${new URL(testedUrl).pathname}](${testedUrl})`;
+const formatReport = (reportUrl) => `[📒](${reportUrl})`;
 
-function makeCommentLine(testedUrl, reportUrl, summary) {
-  return `
----
-[Report](${reportUrl}) for [${testedUrl}](${testedUrl})
+const scoreRow = (label, score, testedUrl, reportUrl) =>
+  `| ${formatPath(testedUrl)} | ${emojiScore(score)} ${label} | ${formatScore(score)} | ${formatReport(reportUrl)} |`;
 
-| Category | Score |
-| -------- | ----- |
-${scoreRow('Performance', summary.performance)}
-${scoreRow('Accessibility', summary.accessibility)}
-${scoreRow('Best practices', summary['best-practices'])}
-${scoreRow('SEO', summary.seo)}
-${scoreRow('PWA', summary.pwa)}
----
+function makeCommentForUrl(summary, testedUrl, reportUrl) {
+  return `${scoreRow('Performance', summary.performance, testedUrl, reportUrl)}
+${scoreRow('Accessibility', summary.accessibility, testedUrl, reportUrl)}
+${scoreRow('Best practices', summary['best-practices'], testedUrl, reportUrl)}
+${scoreRow('SEO', summary.seo, testedUrl, reportUrl)}
+${scoreRow('PWA', summary.pwa, testedUrl, reportUrl)}
 `;
 }
 
 function makeComment(lighthouseOutputs) {
   const { manifest, links } = lighthouseOutputs;
 
-  let comment = `## ⚡️🏠 Lighthouse report`;
+  let comment = `## ⚡️🏠 Lighthouse report
+
+| URL | Category | Score | Report |
+| --- | -------- | ----- | ------ |
+`;
 
   for (const [testedUrl, reportUrl] of Object.entries(links)) {
-    const summary = manifest.find((entry) => entry.url === testedUrl && entry.isRepresentativeRun);
-    comment = `${comment}${makeCommentLine(testedUrl, reportUrl, summary)}`;
+    const manifestEntry = manifest.find((entry) => entry.url === testedUrl && entry.isRepresentativeRun);
+    comment = `${comment}${makeCommentForUrl(manifestEntry.summary, testedUrl, reportUrl)}`;
   }
 
   return comment;
