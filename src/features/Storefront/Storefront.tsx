@@ -6,7 +6,7 @@ import { Hero } from './Hero/Hero';
 import { Offers } from './Offers/Offers';
 import { Sale } from './Sale/Sale';
 import { Testimonials } from './Testimonials/Testimonials';
-import { BackgroundImageChild, StorefrontChild, StorefrontCollection } from './types';
+import { BackgroundImageChild, StorefrontChild } from './types';
 
 function backgroundImageChildToComponent(component: BackgroundImageChild, index = 0) {
   switch (component.__typename) {
@@ -19,7 +19,7 @@ function backgroundImageChildToComponent(component: BackgroundImageChild, index 
   }
 }
 
-function storefrontChildToComponent(collection: StorefrontCollection) {
+function storefrontChildToComponent() {
   const StorefrontComponent = (component: StorefrontChild, index = 0) => {
     switch (component.__typename) {
       case 'BackgroundImageComponent':
@@ -34,8 +34,8 @@ function storefrontChildToComponent(collection: StorefrontCollection) {
         return <Hero key={index} {...component} />;
       case 'OffersComponent':
         return <Offers key={index} {...component} />;
-      case 'TrendingProductsComponent':
-        return <Collection key={index} collection={collection} {...component} />;
+      case 'CollectionComponent':
+        return <Collection key={index} {...component} />;
       default:
         return null;
     }
@@ -46,9 +46,8 @@ function storefrontChildToComponent(collection: StorefrontCollection) {
 
 export interface StorefrontProps {
   storefront: GetStorefrontQueryResponse['storefront'];
-  collection: StorefrontCollection;
 }
 
-export const Storefront = ({ collection, storefront }: StorefrontProps) => {
-  return <div className="bg-white">{storefront.components.map(storefrontChildToComponent(collection))}</div>;
+export const Storefront = ({ storefront }: StorefrontProps) => {
+  return <div className="bg-white">{storefront.components.map(storefrontChildToComponent())}</div>;
 };

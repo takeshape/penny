@@ -25,7 +25,6 @@ export type CollectionBase<T> = {
   descriptionHtml: string;
   items?: T[];
   pageInfo?: CollectionPageInfo;
-  anchor?: string;
   seo?: CollectionSeo;
   parent?: CollectionParent;
   breadcrumbTitle?: string;

@@ -1,11 +1,10 @@
-import { cloneDeep } from '@apollo/client/utilities';
 import { getStats } from 'transforms/reviewsIo';
 import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getSeo } from 'transforms/shopify';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
-  ProductCategoryShopifyCollectionQueryResponse,
-  ProductCategoryShopifyCollectionQueryVariables
+  ProductCategoryShopifyCollectionQueryResponse
 } from 'types/takeshape';
+import { PaginationDataHookParsedPath } from '../../utils/hooks/usePaginationData';
 import {
   ProductCategoryBreadcrumbs,
   ProductCategoryCollection,
@@ -77,11 +76,12 @@ function getCollectionParent(collection: ProductCategoryShopifyCollection): Prod
   };
 }
 
-export function getCollection(
-  collection: ProductCategoryShopifyCollection,
-  { before, after }: ProductCategoryShopifyCollectionQueryVariables
-): ProductCategoryCollection {
-  const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
+export function getCollection(response: ProductCategoryShopifyCollectionQueryResponse): ProductCategoryCollection {
+  const collection = response?.collection;
+
+  if (!collection) {
+    return null;
+  }
 
   return {
     id: collection.id,
@@ -93,45 +93,9 @@ export function getCollection(
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getProductListItem(node)),
     pageInfo: collection.products.pageInfo,
-    anchor: collection.products.pageInfo.hasPreviousPage ? anchor : null,
     breadcrumbTitle: collection.takeshape.breadcrumbTitle,
     parent: getCollectionParent(collection)
   };
-}
-
-export function getCollectionBasic(
-  response: ProductCategoryShopifyCollectionQueryResponse,
-  variables: ProductCategoryShopifyCollectionQueryVariables
-): ProductCategoryCollection {
-  const collection = response?.collection;
-
-  if (!collection) {
-    return null;
-  }
-
-  return getCollection(collection, variables);
-}
-
-export function getCollectionWithOverfetch(
-  { pageSize }: { pageSize: number },
-  response: ProductCategoryShopifyCollectionQueryResponse,
-  variables: ProductCategoryShopifyCollectionQueryVariables
-): ProductCategoryCollection {
-  const shopifyCollection = response?.collection;
-
-  if (!shopifyCollection) {
-    return null;
-  }
-
-  const collection = cloneDeep(shopifyCollection);
-
-  // This was an overfetch to get the start anchor for backwards pagination
-  if (variables.last > pageSize && collection.products.nodes.length > pageSize) {
-    const [, ...nodes] = collection.products.nodes;
-    collection.products.nodes = nodes;
-  }
-
-  return getCollection(collection, variables);
 }
 
 export function getCollectionPageParams(response: ProductCategoryShopifyCollectionHandlesResponse) {
@@ -148,8 +112,26 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
   }));
 }
 
-export function getCurrentUrl(collection: ProductCategoryCollection, page: number) {
-  return collection.anchor ? `${collection.url}/${collection.anchor}/${page}` : collection.url;
+export function getNextUrl(collection: ProductCategoryCollection, page: number, isBefore?: boolean) {
+  if (page === 1) {
+    return collection.url;
+  }
+
+  if (isBefore) {
+    return `${collection.url}/${page}/${collection.pageInfo.startCursor}/before`;
+  }
+
+  return `${collection.url}/${page}/${collection.pageInfo.endCursor}`;
+}
+
+export function parseRouterPath(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
+  const paginationPath = pathname.replace(collection.url, '').replace(/^\//, '');
+  const [page, cursor, direction] = paginationPath.split('/');
+  return {
+    page: page ? Number(page) : 1,
+    cursor: cursor !== '' ? cursor : null,
+    direction: direction === 'before' ? 'before' : 'after'
+  };
 }
 
 export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {
