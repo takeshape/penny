@@ -3,7 +3,7 @@ import { getCollection } from '../transforms';
 import { StorefrontChild } from '../types';
 import { CollectionItem } from './CollectionItem';
 
-type CollectionProps = StorefrontChild & { __typename?: 'CollectionComponent' };
+export type CollectionProps = StorefrontChild & { __typename?: 'CollectionComponent' };
 
 export const Collection = (props: CollectionProps) => {
   const collection = getCollection(props);
