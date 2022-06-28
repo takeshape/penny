@@ -83,11 +83,6 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
     });
   });
 
-  // eslint-disable-next-line no-console
-  console.log('generating product...');
-  // eslint-disable-next-line no-console
-  console.log(JSON.stringify({ data, error }));
-
   if (error) {
     throw new Error(`Failed to get product, received message ${error.message}`);
   }
