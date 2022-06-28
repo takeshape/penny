@@ -3,23 +3,30 @@ import Button from 'components/Button/Button';
 import Loader from 'components/Loader/Loader';
 import { Stars } from 'components/Stars/Stars';
 import { ProductPageReviewPageQuery } from 'features/ProductPage/queries';
+import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
 import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
 import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
-import { useCallback, useMemo, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getReview } from 'transforms/reviewsIo';
 import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
 import { ReviewsRollup } from './ReviewsRollup';
 
 export interface ReviewsProps {
+  productName: string;
   sku: string;
   reviewList: ProductPageReviewsReviewList;
   showRollup?: boolean;
   reviewsPerPage?: number;
 }
 
-export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: ReviewsProps) => {
+export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPage }: ReviewsProps) => {
   const { stats, rollup, data, currentPage: initialPage, totalPages } = reviewList;
+
+  const router = useRouter();
+  const { status } = useSession();
 
   const [currentPage, setCurrentPage] = useState(initialPage);
 
@@ -58,6 +65,14 @@ export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: Reviews
     }
   }, [currentPage, setCurrentPage]);
 
+  const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
+
+  useEffect(() => {
+    if (router.isReady && router.query.writeReview) {
+      setIsCreateReviewOpen(true);
+    }
+  }, [router.isReady, router.query.writeReview]);
+
   return (
     <section id="reviews" aria-labelledby="reviews-heading" className="bg-white">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
@@ -88,12 +103,21 @@ export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: Reviews
               If you&rsquo;ve used this product, share your thoughts with other customers
             </p>
 
-            <a
-              href="#"
-              className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
-            >
-              Write a review
-            </a>
+            {status === 'authenticated' ? (
+              <Button
+                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                onClick={() => setIsCreateReviewOpen(true)}
+              >
+                Write a review
+              </Button>
+            ) : (
+              <a
+                href={`/api/auth/signin?callbackUrl=${encodeURIComponent(`${router.asPath}?writeReview=true`)}`}
+                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+              >
+                Sign in to write a review
+              </a>
+            )}
           </div>
         </div>
 
@@ -133,6 +157,8 @@ export const Reviews = ({ sku, reviewList, showRollup, reviewsPerPage }: Reviews
           </div>
         )}
       </div>
+
+      <CreateReview productName={productName} sku={sku} isOpen={isCreateReviewOpen} setIsOpen={setIsCreateReviewOpen} />
     </section>
   );
 };
