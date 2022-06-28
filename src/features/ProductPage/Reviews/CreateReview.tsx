@@ -7,7 +7,7 @@ import { Star } from 'components/Stars/Stars';
 import { CreateMyProductReviewMutation } from 'features/AccountForm/queries';
 import { Fragment, useCallback, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { CreateMyProductReviewMutationResponse, MutationCreateMyProductReviewArgs } from 'types/takeshape';
+import { CreateMyProductReviewMutationResponse, CreateMyProductReviewMutationVariables } from 'types/takeshape';
 
 interface CreateReviewForm {
   review: string;
@@ -31,12 +31,13 @@ export const CreateReview = (props: ReviewsProps) => {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { isSubmitting, errors }
   } = useForm<CreateReviewForm>();
 
   const [createProductReview, { data: createProductReviewResponse, error: mutationError }] = useMutation<
     CreateMyProductReviewMutationResponse,
-    MutationCreateMyProductReviewArgs
+    CreateMyProductReviewMutationVariables
   >(CreateMyProductReviewMutation);
 
   const submitCallback = useCallback(
@@ -62,9 +63,21 @@ export const CreateReview = (props: ReviewsProps) => {
     return mutationError ?? createProductReviewResponse?.result.success === false;
   }, [createProductReviewResponse?.result.success, mutationError]);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
+  const handleCancel = useCallback(() => {
+    reset({
+      review: '',
+      rating: undefined
+    });
+    setIsOpen(false);
+  }, [reset, setIsOpen]);
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => setIsOpen(false)}>
+      <Dialog as="div" className="relative z-10" onClose={handleClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -141,7 +154,7 @@ export const CreateReview = (props: ReviewsProps) => {
                         type="button"
                         color="secondary"
                         className="h-8"
-                        onClick={() => setIsOpen(false)}
+                        onClick={handleCancel}
                       >
                         Cancel
                       </Button>
@@ -152,7 +165,7 @@ export const CreateReview = (props: ReviewsProps) => {
                 {!error && success && (
                   <>
                     <Alert status="success" primaryText="Review submitted successfully" />
-                    <Button type="button" color="secondary" className="h-8 mt-3" onClick={() => setIsOpen(false)}>
+                    <Button type="button" color="secondary" className="h-8 mt-3" onClick={handleClose}>
                       Done
                     </Button>
                   </>

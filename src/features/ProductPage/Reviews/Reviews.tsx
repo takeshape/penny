@@ -8,7 +8,7 @@ import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
 import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getReview } from 'transforms/reviewsIo';
 import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
@@ -67,6 +67,12 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
 
   const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
 
+  useEffect(() => {
+    if (router.isReady && router.query.writeReview) {
+      setIsCreateReviewOpen(true);
+    }
+  }, [router.isReady, router.query.writeReview]);
+
   return (
     <section id="reviews" aria-labelledby="reviews-heading" className="bg-white">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
@@ -98,13 +104,12 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
             </p>
 
             {status === 'authenticated' ? (
-              <a
-                href="#"
+              <Button
                 className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
                 onClick={() => setIsCreateReviewOpen(true)}
               >
                 Write a review
-              </a>
+              </Button>
             ) : (
               <a
                 href={`/api/auth/signin?callbackUrl=${encodeURIComponent(router.asPath)}`}
