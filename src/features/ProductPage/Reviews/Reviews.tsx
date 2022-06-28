@@ -112,7 +112,7 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
               </Button>
             ) : (
               <a
-                href={`/api/auth/signin?callbackUrl=${encodeURIComponent(router.asPath)}`}
+                href={`/api/auth/signin?callbackUrl=${encodeURIComponent(`${router.asPath}?writeReview=true`)}`}
                 className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
               >
                 Sign in to write a review
