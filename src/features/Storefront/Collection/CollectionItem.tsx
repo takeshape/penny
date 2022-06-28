@@ -12,13 +12,11 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
     <>
       <div className="group relative">
         <div className="w-full bg-gray-200 rounded-md overflow-hidden aspect-w-1 aspect-h-1">
-          <div className="w-full h-full group-hover:opacity-75">
+          <div className="group-hover:opacity-75">
             <NextImage
-              layout="fill"
               src={product.featuredImage.url}
               alt={product.featuredImage.altText}
-              objectFit="cover"
-              objectPosition="center"
+              className="w-full h-full object-center object-cover"
             />
           </div>
         </div>

@@ -117,14 +117,13 @@ export const ProductWithImage = ({
       </div>
       <div className="mt-10 lg:mt-0 lg:col-start-2 lg:row-span-2">
         <div className="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
-          <div className="w-full h-full">
-            <NextImage
-              src={featuredImage.url}
-              height={featuredImage.height}
-              width={featuredImage.width}
-              alt={`Picture of ${name}`}
-            />
-          </div>
+          <NextImage
+            src={featuredImage.url}
+            height={featuredImage.height}
+            width={featuredImage.width}
+            alt={`Picture of ${name}`}
+            className="w-full h-full object-center object-cover"
+          />
         </div>
       </div>
       <div className="mt-10 lg:max-w-lg lg:col-start-1 lg:row-start-2 lg:self-start">
