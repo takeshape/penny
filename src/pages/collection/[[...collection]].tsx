@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import { collectionsPageSize, lighthouseCollectionHandle, lighthouseHandle } from 'config';
+import { collectionsPageSize, lighthouseCollectionHandle, lighthouseHandle, pageRevalidationTtl } from 'config';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionHandles,
@@ -69,7 +69,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
           after: cursor
         };
 
-  const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
+  const { data, error } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
     return apolloClient.query<
       ProductCategoryShopifyCollectionQueryResponse,
       ProductCategoryShopifyCollectionQueryVariables
@@ -79,10 +79,15 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     });
   });
 
+  if (error) {
+    throw new Error(`Failed to get collection, received message ${error.message}`);
+  }
+
   const collection = getCollection(data);
 
   return {
     notFound: !Boolean(collection),
+    revalidate: pageRevalidationTtl,
     props: {
       navigation,
       footer,

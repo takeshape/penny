@@ -27,10 +27,9 @@ export const ListItem = ({ product }: ListItemProps) => {
         <div className="relative">
           <div className="relative w-full h-72 rounded-lg overflow-hidden">
             <NextImage
-              layout="fill"
               src={product.featuredImage.url}
               alt={product.featuredImage.altText}
-              objectFit="cover"
+              className="w-full h-full object-center object-cover"
             />
           </div>
           <div className="relative mt-4">

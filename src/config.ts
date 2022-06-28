@@ -15,10 +15,17 @@ export const takeshapeAuthAudience = process.env.NEXT_PUBLIC_TAKESHAPE_AUTH_AUDI
 /* Nerd Stuff */
 export const vercelEnv = process.env.VERCEL_ENV ?? 'development';
 export const isProduction = vercelEnv === 'production';
+export const isTest = process.env.NODE_ENV === 'test';
 export const isStorybook = Boolean(process.env.STORYBOOK);
 export const isSsr = typeof window === 'undefined';
 export const logLevel = process.env.NEXT_PUBLIC_LOG_LEVEL ?? 'info';
 export const commitSha = process.env.VERCEL_GITHUB_COMMIT_SHA ?? '';
+export const homepageRevalidationTtl = process.env.NEXT_PUBLIC_HOMEPAGE_REVALIDATION_TTL
+  ? Number(process.env.NEXT_PUBLIC_HOMEPAGE_REVALIDATION_TTL)
+  : 60; // 1 minute
+export const pageRevalidationTtl = process.env.NEXT_PUBLIC_PAGE_REVALIDATION_TTL
+  ? Number(process.env.NEXT_PUBLIC_PAGE_REVALIDATION_TTL)
+  : 300; // 5 minutes
 
 /**
  * Lighthouse

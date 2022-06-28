@@ -1,4 +1,5 @@
 import PageLoader from 'components/PageLoader';
+import { pageRevalidationTtl } from 'config';
 import Page from 'features/Page/Page';
 import { PageGetPage, PageGetPageSlugs } from 'features/Page/queries';
 import { getPage, getPageParams } from 'features/Page/transforms';
@@ -35,17 +36,22 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   const { navigation, footer } = await getLayoutData();
 
-  const { data } = await apolloClient.query<PageGetPageResponse, PageGetPageVariables>({
+  const { data, error } = await apolloClient.query<PageGetPageResponse, PageGetPageVariables>({
     query: PageGetPage,
     variables: {
       slug
     }
   });
 
+  if (error) {
+    throw new Error(`Failed to get page, received message ${error.message}`);
+  }
+
   const page = getPage(data);
 
   return {
     notFound: !Boolean(page),
+    revalidate: pageRevalidationTtl,
     props: {
       navigation,
       footer,

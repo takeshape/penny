@@ -23,7 +23,11 @@ export const Details = ({ details: { text, details } }: DetailsProps) => (
       {details.map((detail, detailIdx) => (
         <div key={`detail-${detailIdx}`}>
           <div className="w-full aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
-            <NextImage layout="fill" src={detail.image.url} alt={detail.image.altText} objectFit="cover" />
+            <NextImage
+              src={detail.image.url}
+              alt={detail.image.altText}
+              className="w-full h-full object-center object-cover"
+            />
           </div>
           <p
             className="mt-8 text-base text-gray-500 prose"

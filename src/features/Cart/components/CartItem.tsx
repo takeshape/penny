@@ -1,5 +1,5 @@
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/outline';
-import Image from 'components/NextImage';
+import NextImage from 'components/NextImage';
 import { PrimitiveAtom, useAtom } from 'jotai';
 import Link from 'next/link';
 import { Fragment } from 'react';
@@ -18,13 +18,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
   return (
     <Fragment>
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          layout="fill"
-          objectFit="cover"
-          className="h-full w-full object-cover object-center"
-        />
+        <NextImage src={imageSrc} alt={imageAlt} className="h-full w-full object-cover object-center" />
       </div>
 
       <div className="ml-4 flex flex-1 flex-col">

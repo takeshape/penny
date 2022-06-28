@@ -15,16 +15,12 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
       {({ active }) => (
         <>
           <div className="flex flex-none items-center justify-center overflow-hidden">
-            <div className="relative h-20 w-20">
-              <NextImage
-                width={100}
-                height={100}
-                src={product.featuredImage.url}
-                objectFit="cover"
-                objectPosition="center"
-                className="rounded-lg"
-              />
-            </div>
+            <NextImage
+              width={100}
+              height={100}
+              src={product.featuredImage.url}
+              className="h-20 w-20 object-center object-cover rounded-lg"
+            />
           </div>
           <div className="ml-4 flex-auto">
             <p className={classNames('text-sm font-medium', active ? 'text-gray-900' : 'text-gray-700')}>

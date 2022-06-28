@@ -67,8 +67,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
         <NextImage
           src={product.featuredImage.url}
           alt={product.featuredImage.altText}
-          layout="fill"
-          objectFit="cover"
+          className="w-full h-full object-center object-cover"
         />
       </div>
       <div className="sm:col-span-8 lg:col-span-7">
