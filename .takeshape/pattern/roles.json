@@ -356,6 +356,15 @@
           "Action": [
             "shape:query"
           ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createMyProductReview"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
         }
       ]
     },

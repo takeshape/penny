@@ -2949,6 +2949,88 @@
       },
       "description": "Delete Page",
       "args": "DeleteArgs<Page>"
+    },
+    "createMyProductReview": {
+      "shape": "ReviewsIo_CreateProductReviewNewResponse",
+      "resolver": {
+        "if": "!isEmpty($claims.sub)",
+        "name": "rest:post",
+        "service": "reviews-io",
+        "path": "/product/review/new",
+        "body": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$args.input"
+            },
+            {
+              "path": "name",
+              "mapping": "$claims.name"
+            },
+            {
+              "path": "email",
+              "mapping": "$claims.email"
+            }
+          ],
+          "serialize": {
+            "content": {
+              "contentType": "application/json"
+            }
+          }
+        },
+        "headers": {
+          "ops": [
+            {
+              "path": "content-type",
+              "value": "application/json"
+            }
+          ]
+        }
+      },
+      "summary": "Insert product review",
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "properties": {
+              "sku": {
+                "description": "Product unique ID",
+                "type": "string"
+              },
+              "review": {
+                "type": "string"
+              },
+              "rating": {
+                "type": "string"
+              },
+              "order_id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "address": {
+                "type": "string"
+              },
+              "ratings": {
+                "description": "Sub Ratings. JSON encoded string { \"Price\": 4, \"Quality\": 3, \"Fit\":\"Perfect\" }",
+                "type": "string"
+              },
+              "images": {
+                "description": "Images. JSON Encoded string [{\"url\": \"https://www.example.com/images/image.png\", status:\"inactive\"}]. Status is optional and defaults to \"inactive\".",
+                "type": "string"
+              }
+            },
+            "required": [
+              "sku",
+              "review",
+              "rating"
+            ],
+            "type": "object"
+          }
+        },
+        "required": []
+      }
     }
   },
   "shapes": {
@@ -4905,6 +4987,19 @@
               "enabled": false
             },
             "@mapping": "takeshape:local:CollectionComponent.v7nhbs4aM"
+          }
+        }
+      }
+    },
+    "CreateMyProductReviewResponse": {
+      "id": "CreateMyProductReviewResponse",
+      "name": "CreateMyProductReviewResponse",
+      "title": "CreateMyProductReviewResponse",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
           }
         }
       }
