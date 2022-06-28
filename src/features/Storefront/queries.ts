@@ -1,62 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const GetStorefrontQuery = gql`
-  query GetStorefrontQuery {
-    storefront: getStorefront {
-      components {
-        __typename
-        ... on OffersComponent {
-          offers {
-            href
-            name
-            description
-          }
-        }
-        ... on HeroComponent {
-          primaryText
-          secondaryText
-          buttonText
-          image {
-            path
-            description
-          }
-        }
-        ... on CollectionsComponent {
-          collections {
-            name
-            description
-            href
-            image {
-              path
-              description
-            }
-          }
-        }
-        ... on BackgroundImageComponent {
-          image {
-            path
-            description
-          }
-          components {
-            __typename
-            ... on SaleComponent {
-              primaryText
-              secondaryText
-              buttonText
-            }
-            ... on TestimonialsComponent {
-              testimonials {
-                quote
-                attribution
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const StorefrontFragments = gql`
   fragment StorefrontCollection on Shopify_Collection {
     id
@@ -99,6 +42,82 @@ const StorefrontFragments = gql`
       position
       id
       values
+    }
+  }
+`;
+
+export const GetStorefrontQuery = gql`
+  ${StorefrontFragments}
+  query GetStorefrontQuery {
+    storefront: getStorefront {
+      components {
+        __typename
+        ... on OffersComponent {
+          offers {
+            href
+            name
+            description
+          }
+        }
+        ... on HeroComponent {
+          primaryText
+          secondaryText
+          buttonText
+          image {
+            path
+            description
+          }
+        }
+        ... on CollectionsComponent {
+          collections {
+            name
+            description
+            href
+            image {
+              path
+              description
+            }
+          }
+        }
+        ... on CollectionComponent {
+          collection {
+            shopifyCollection {
+              ...StorefrontCollection
+              products(first: 4) {
+                pageInfo {
+                  endCursor
+                  startCursor
+                  hasNextPage
+                  hasPreviousPage
+                }
+                nodes {
+                  ...StorefrontProduct
+                }
+              }
+            }
+          }
+        }
+        ... on BackgroundImageComponent {
+          image {
+            path
+            description
+          }
+          components {
+            __typename
+            ... on SaleComponent {
+              primaryText
+              secondaryText
+              buttonText
+            }
+            ... on TestimonialsComponent {
+              testimonials {
+                quote
+                attribution
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;

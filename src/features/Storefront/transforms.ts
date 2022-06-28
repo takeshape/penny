@@ -1,10 +1,7 @@
 import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
+import { GetStorefrontQueryResponse } from 'types/takeshape';
 import {
-  GetStorefrontQueryResponse,
-  StorefrontShopifyCollectionByHandleQueryResponse,
-  StorefrontShopifyCollectionByHandleQueryVariables
-} from 'types/takeshape';
-import {
+  StorefrontChild,
   StorefrontCollection,
   StorefrontCollectionItem,
   StorefrontCollectionItemProduct,
@@ -39,16 +36,13 @@ function getCollectionItem(shopifyProduct: StorefrontShopifyProduct): Storefront
 }
 
 export function getCollection(
-  response: StorefrontShopifyCollectionByHandleQueryResponse,
-  { before, after }: StorefrontShopifyCollectionByHandleQueryVariables
+  component: StorefrontChild & { __typename?: 'CollectionComponent' }
 ): StorefrontCollection {
-  const collection = response?.collection;
+  const collection = component?.collection?.shopifyCollection;
 
   if (!collection) {
     return null;
   }
-
-  const anchor = before !== undefined ? collection.products.pageInfo.startCursor : after;
 
   return {
     id: collection.id,

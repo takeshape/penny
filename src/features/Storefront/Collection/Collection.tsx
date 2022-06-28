@@ -1,12 +1,13 @@
 import NextLink from 'components/NextLink';
-import { StorefrontCollection } from '../types';
+import { getCollection } from '../transforms';
+import { StorefrontChild } from '../types';
 import { CollectionItem } from './CollectionItem';
 
-export interface TrendingProductsProps {
-  collection?: StorefrontCollection;
-}
+type CollectionProps = StorefrontChild & { __typename?: 'CollectionComponent' };
 
-export const Collection = ({ collection }: TrendingProductsProps) => {
+export const Collection = (props: CollectionProps) => {
+  const collection = getCollection(props);
+
   if (!(collection.items ?? collection.items.length)) return null;
 
   return (
