@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client';
+import { pageRevalidationTtl } from 'config';
 import { Contact, ContactForm } from 'features/Contact/Contact';
 import { CreateTicketMutation } from 'features/Contact/queries';
 import Layout from 'layouts/Default';
@@ -53,7 +54,13 @@ ${message}`,
 
 export const getStaticProps = async () => {
   const { navigation, footer } = await getLayoutData();
-  return { props: { navigation, footer } };
+  return {
+    revalidate: pageRevalidationTtl,
+    props: {
+      navigation,
+      footer
+    }
+  };
 };
 
 export default ContactPage;

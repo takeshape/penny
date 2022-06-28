@@ -1,4 +1,5 @@
 import PageLoader from 'components/PageLoader';
+import { pageRevalidationTtl } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
@@ -73,7 +74,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   const handle = getSingle(params.product);
 
-  const { data: productData } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
+  const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
     return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
       query: ProductPageShopifyProductQuery,
       variables: {
@@ -82,20 +83,25 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     });
   });
 
-  const product = getProduct(productData);
+  if (error) {
+    throw new Error(`Failed to get product, received message ${error.message}`);
+  }
+
+  const product = getProduct(data);
 
   return {
     notFound: !Boolean(product),
+    revalidate: pageRevalidationTtl,
     props: {
       navigation,
       footer,
       product,
-      options: getPageOptions(productData),
-      reviewHighlights: getReviewHighlights(productData),
-      reviewList: getReviewList(productData),
-      details: getDetails(productData),
-      policies: getPolicies(productData),
-      breadcrumbs: getBreadcrumbs(productData)
+      options: getPageOptions(data),
+      reviewHighlights: getReviewHighlights(data),
+      reviewList: getReviewList(data),
+      details: getDetails(data),
+      policies: getPolicies(data),
+      breadcrumbs: getBreadcrumbs(data)
     }
   };
 };
