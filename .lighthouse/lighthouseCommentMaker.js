@@ -1,12 +1,11 @@
-const formatScore = (/** @type { number } */ score) => Math.round(score * 100);
-const emojiScore = (/** @type { number } */ score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
-
-const scoreRow = (/** @type { string } */ label, /** @type { number } */ score) =>
-  `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
+const formatScore = (score) => Math.round(score * 100);
+const emojiScore = (score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
+const scoreRow = (label, score) => `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
 
 function makeComment(lighthouseOutputs) {
-  const { summary } = lighthouseOutputs.manifest[0];
-  const [[testedUrl, reportUrl]] = Object.entries(lighthouseOutputs.links);
+  const { manifest, links } = lighthouseOutputs;
+  const { summary } = manifest.pop();
+  const [[testedUrl, reportUrl]] = Object.entries(links);
 
   const comment = `## ⚡️🏠 Lighthouse report
 
