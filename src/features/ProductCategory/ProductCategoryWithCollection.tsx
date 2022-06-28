@@ -43,15 +43,17 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
   );
   const getPageData = useCallback((data: any) => getCollection(data), []);
 
-  const [setOrLoadPage, { currentPath, isLoadingPage, isLoadingNextPage, currentPage, currentPageData }] =
-    usePaginationData<ProductCategoryCollection>({
-      parsePath,
-      query: ProductCategoryShopifyCollectionQuery,
-      getVariables,
-      initialPageData: collection,
-      getPageData,
-      isSamePageData: isSameCollection
-    });
+  const [
+    setOrLoadPage,
+    { currentPath, isLoadingPage, isLoadingNextPage, currentPage, currentPageData, cachedPageData }
+  ] = usePaginationData<ProductCategoryCollection>({
+    parsePath,
+    query: ProductCategoryShopifyCollectionQuery,
+    getVariables,
+    initialPageData: collection,
+    getPageData,
+    isSamePageData: isSameCollection
+  });
 
   const currentTitle = useMemo(() => getCurrentTitle(currentPageData, currentPage), [currentPageData, currentPage]);
 
@@ -68,12 +70,21 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
     (toPage) => {
+      let nextUrl;
+
       const nextPage = currentPath.page + toPage;
-      const nextPageIsBefore = toPage < 0;
-      const nextUrl = getNextUrl(currentPageData, nextPage, nextPageIsBefore);
+      const cachedNextPage = cachedPageData.current.get(nextPage);
+
+      if (cachedNextPage) {
+        // This allows us to preserve anchor-based (after) URLs for previous pages
+        nextUrl = getNextUrl(cachedNextPage, nextPage);
+      } else {
+        nextUrl = getNextUrl(currentPageData, nextPage, toPage < 0);
+      }
+
       push(nextUrl, undefined, { shallow: true });
     },
-    [currentPageData, currentPath.page, push]
+    [cachedPageData, currentPageData, currentPath.page, push]
   );
 
   let items: ProductCategoryProductListItem[];

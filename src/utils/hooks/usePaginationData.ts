@@ -1,7 +1,7 @@
 import { DocumentNode, useApolloClient } from '@apollo/client';
 import logger from 'logger';
 import { useRouter } from 'next/router';
-import { Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type PaginationDataHookParsedPath = { page: number; cursor: string; direction: 'before' | 'after' };
 
@@ -21,7 +21,7 @@ export type PaginationDataHookResultTuple<T> = [
     isLoadingPage: boolean;
     isLoadingNextPage: boolean;
     currentPage: number;
-    cachedPageData: Ref<Map<number, T>>;
+    cachedPageData: RefObject<Map<number, T>>;
     currentPageData: T;
   }
 ];
