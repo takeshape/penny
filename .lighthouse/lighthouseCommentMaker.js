@@ -26,7 +26,5 @@ ${scoreRow('PWA', summary.pwa)}
 }
 
 module.exports = ({ lighthouseOutputs }) => {
-  // eslint-disable-next-line no-console
-  console.log(JSON.stringify(lighthouseOutputs, null, 2));
   return makeComment(lighthouseOutputs);
 };
