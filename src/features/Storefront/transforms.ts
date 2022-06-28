@@ -1,14 +1,14 @@
 import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import {
-  StorefrontChild,
   StorefrontCollection,
+  StorefrontCollectionComponent,
+  StorefrontCollectionComponentProduct,
   StorefrontCollectionItem,
-  StorefrontCollectionItemProduct,
-  StorefrontShopifyProduct
+  StorefrontCollectionItemProduct
 } from './types';
 
-function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollectionItemProduct {
+function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): StorefrontCollectionItemProduct {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
   return {
@@ -29,15 +29,13 @@ function getProduct(shopifyProduct: StorefrontShopifyProduct): StorefrontCollect
   };
 }
 
-function getCollectionItem(shopifyProduct: StorefrontShopifyProduct): StorefrontCollectionItem {
+function getCollectionItem(shopifyProduct: StorefrontCollectionComponentProduct): StorefrontCollectionItem {
   return {
     product: getProduct(shopifyProduct)
   };
 }
 
-export function getCollection(
-  component: StorefrontChild & { __typename?: 'CollectionComponent' }
-): StorefrontCollection {
+export function getCollection(component: StorefrontCollectionComponent): StorefrontCollection {
   const collection = component?.collection?.shopifyCollection;
 
   if (!collection) {
