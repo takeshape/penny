@@ -19,7 +19,7 @@ export interface ReviewsProps {
   sku: string;
   reviewList: ProductPageReviewsReviewList;
   showRollup?: boolean;
-  reviewsPerPage?: number;
+  reviewsPerPage: number;
 }
 
 export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPage }: ReviewsProps) => {
@@ -37,8 +37,8 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
   } = useQuery<ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables>(ProductPageReviewPageQuery, {
     variables: {
       sku,
-      page: String(currentPage),
-      perPage: String(reviewsPerPage ?? 2)
+      page: currentPage,
+      perPage: reviewsPerPage
     },
     skip: currentPage === 1
   });
