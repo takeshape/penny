@@ -95,6 +95,11 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
     items = currentPageData.items;
   }
 
+  const nextPageUrl = currentPageData.pageInfo.hasNextPage ? getNextUrl(currentPageData, currentPage + 1) : null;
+  const previousPageUrl = currentPageData.pageInfo.hasPreviousPage
+    ? getNextUrl(currentPageData, currentPage - 1)
+    : null;
+
   return (
     <>
       <Seo title={currentTitle} />
@@ -102,8 +107,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
         header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
         items={items}
         pagination={{
-          hasNextPage: isLoadingPage || isLoadingNextPage ? false : currentPageData.pageInfo.hasNextPage,
-          hasPreviousPage: isLoadingPage ? false : currentPageData.pageInfo.hasPreviousPage,
+          nextPageUrl: isLoadingPage || isLoadingNextPage ? null : nextPageUrl,
+          previousPageUrl: isLoadingPage ? null : previousPageUrl,
           setCurrentPage: handleSetCurrentPage
         }}
       />
