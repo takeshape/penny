@@ -23,7 +23,7 @@ _Storefront.args = {
     components: [
       { __typename: 'OffersComponent', ..._Offers.args },
       { __typename: 'HeroComponent', ..._Hero.args },
-      { __typename: 'TrendingProductsComponent', ..._Collection.args },
+      { __typename: 'CollectionComponent', ..._Collection.args },
       { __typename: 'CollectionsComponent', ..._Collections.args },
       {
         __typename: 'BackgroundImageComponent',

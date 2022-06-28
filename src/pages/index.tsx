@@ -26,26 +26,6 @@ export const getStaticProps = async () => {
 
   const storefront = getStorefront(storefrontData);
 
-  // const collectionVariables: StorefrontShopifyCollectionByHandleQueryVariables = {
-  //   // Imagine this handle comes from the Storefront data
-  //   handle: 'frontpage',
-  //   first: 5
-  // };
-
-  // const { data: collectionData } = await retryGraphqlThrottle<StorefrontShopifyCollectionByHandleQueryResponse>(
-  //   async () => {
-  //     return apolloClient.query<
-  //       StorefrontShopifyCollectionByHandleQueryResponse,
-  //       StorefrontShopifyCollectionByHandleQueryVariables
-  //     >({
-  //       query: StorefrontShopifyCollectionByHandleQuery,
-  //       variables: collectionVariables
-  //     });
-  //   }
-  // );
-
-  // const collection = getCollection(collectionData);
-
   return { props: { navigation, footer, storefront } };
 };
 

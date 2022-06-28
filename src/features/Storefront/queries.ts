@@ -121,29 +121,3 @@ export const GetStorefrontQuery = gql`
     }
   }
 `;
-
-export const StorefrontShopifyCollectionByHandleQuery = gql`
-  ${StorefrontFragments}
-  query StorefrontShopifyCollectionByHandleQuery(
-    $handle: String!
-    $first: Int
-    $last: Int
-    $after: String
-    $before: String
-  ) {
-    collection: collectionByHandleWithTtl(handle: $handle) {
-      ...StorefrontCollection
-      products(first: $first, last: $last, after: $after, before: $before) {
-        pageInfo {
-          endCursor
-          startCursor
-          hasNextPage
-          hasPreviousPage
-        }
-        nodes {
-          ...StorefrontProduct
-        }
-      }
-    }
-  }
-`;
