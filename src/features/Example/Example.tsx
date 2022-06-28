@@ -1,4 +1,4 @@
-import Image from 'components/NextImage';
+import NextImage from 'components/NextImage';
 import classNames from 'utils/classNames';
 
 export interface RickAndMortyCharacter {
@@ -21,7 +21,7 @@ export const RickAndMortyListItem = ({ character }: RickAndMortyListItemProps) =
   return (
     <li className="py-4 flex">
       <div className="h-10 w-10 relative">
-        <Image src={character.image} alt={`${character.name}'s pic`} className="rounded-full object-cover" />
+        <NextImage src={character.image} alt={`${character.name}'s pic`} className="rounded-full object-cover" />
       </div>
       <div className="ml-3">
         <p className="text-sm font-medium text-gray-900">{character.name}</p>
