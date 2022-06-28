@@ -26,9 +26,10 @@ const withAllAccess = createNextAuthAllAccess({
       id: 'takeshape',
       audience: takeshapeAuthAudience,
       expiration: '6h',
-      allowedClaims: ['email', 'sub', 'shopifyCustomerAccessToken'],
+      allowedClaims: ['name', 'email', 'sub', 'shopifyCustomerAccessToken'],
       renameClaims: {
-        shopifyCustomerAccessToken: 'https://takeshape.io/customer_access_token'
+        shopifyCustomerAccessToken: 'https://takeshape.io/customer_access_token',
+        displayName: 'name'
       }
     }
   ]
