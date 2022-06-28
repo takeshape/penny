@@ -7,7 +7,7 @@ import { Star } from 'components/Stars/Stars';
 import { CreateMyProductReviewMutation } from 'features/AccountForm/queries';
 import { Fragment, useCallback, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { MutationCreateMyProductReviewArgs, Unnamed_1_Response } from 'types/takeshape';
+import { CreateMyProductReviewMutationResponse, MutationCreateMyProductReviewArgs } from 'types/takeshape';
 
 interface CreateReviewForm {
   review: string;
@@ -35,7 +35,7 @@ export const CreateReview = (props: ReviewsProps) => {
   } = useForm<CreateReviewForm>();
 
   const [createProductReview, { data: createProductReviewResponse, error: mutationError }] = useMutation<
-    Unnamed_1_Response,
+    CreateMyProductReviewMutationResponse,
     MutationCreateMyProductReviewArgs
   >(CreateMyProductReviewMutation);
 

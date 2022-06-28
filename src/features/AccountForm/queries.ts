@@ -86,7 +86,7 @@ export const UnsubscribeMyEmailFromNewsletterMutation = gql`
 `;
 
 export const CreateMyProductReviewMutation = gql`
-  mutation ($input: CreateMyProductReviewPropertiesPropertyInput!) {
+  mutation CreateMyProductReviewMutation($input: CreateMyProductReviewPropertiesPropertyInput!) {
     result: createMyProductReview(input: $input) {
       success
     }
