@@ -6,7 +6,7 @@ module.exports = {
     // https://github.com/GoogleChrome/lighthouse/blob/eba2a4d19c5786dc37e993858ff4b663181f81e5/lighthouse-core/config/default-config.js#L174
     skipAudits: [
       'canonical', // for preview, this will always be incorrect
-      'robots-txt', // for preview, always blocked
+      'is-crawlable', // for preview, always blocked
       'color-contrast', // doesn't work well with designs
       'maskable-icon',
       'valid-source-maps',
