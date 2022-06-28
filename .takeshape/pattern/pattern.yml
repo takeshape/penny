@@ -1,13 +1,26 @@
-name: E-commerce Kitchen Sink Starter
-description: "This project pattern demonstrates how to use TakeShape with a variety of service providers to create a full-featured e-commerce experience. Services include Auth0, Stripe, Klaviyo, Reviews.io, Voucherify, Ship Engine and Referral Candy."
+name: TakeShape Deluxe ™️ Ecommerce Sample Project
+description: "This pattern is for our Deluxe Sample Project starter. It composes 9 popular e-commerce services into a single GraphQL API. Services include Shopify, OpenID, Klaviyo, REVIEWS.io, Voucherify, ShipEngine, Gorgias, and reCAPTCHA."
 icon: dollar-sign
 color: "#95bf46"
 categories:
-  - authentication
-  - indexing
-  - reviews
-  - shipping
+  - user authentication
+  - api indexing
+  - customer reviews
+  - shipping management
   - referrals
-  - subscriptions
-  - ecommerce
-  - services
+  - newsletter management
+  - email marketing
+  - customer rewards
+  - loyalty points
+  - product subscriptions
+  - e-commerce
+  - next.js
+  - tailwind
+  - shopify admin
+  - shipengine
+  - gorgias
+  - reCAPTCHA
+  - voucherify
+  - REVIEWS.io
+  - klaviyo
+  - openid
