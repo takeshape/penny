@@ -2,14 +2,10 @@ const formatScore = (score) => Math.round(score * 100);
 const emojiScore = (score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
 const scoreRow = (label, score) => `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
 
-function makeComment(lighthouseOutputs) {
-  const { manifest, links } = lighthouseOutputs;
-  const { summary } = manifest.pop();
-  const [[testedUrl, reportUrl]] = Object.entries(links);
-
-  const comment = `## ⚡️🏠 Lighthouse report
-
-We ran Lighthouse against the changes and produced this [report](${reportUrl}). Here's the summary:
+function makeCommentLine(testedUrl, reportUrl, summary) {
+  return `
+---
+[Report](${reportUrl}) for [${testedUrl}](${testedUrl})
 
 | Category | Score |
 | -------- | ----- |
@@ -18,9 +14,19 @@ ${scoreRow('Accessibility', summary.accessibility)}
 ${scoreRow('Best practices', summary['best-practices'])}
 ${scoreRow('SEO', summary.seo)}
 ${scoreRow('PWA', summary.pwa)}
-
-*Lighthouse ran against [${testedUrl}](${testedUrl})*
+---
 `;
+}
+
+function makeComment(lighthouseOutputs) {
+  const { manifest, links } = lighthouseOutputs;
+
+  let comment = `## ⚡️🏠 Lighthouse report`;
+
+  for (const [testedUrl, reportUrl] of Object.entries(links)) {
+    const summary = manifest.find((entry) => entry.url === testedUrl && entry.isRepresentativeRun);
+    comment = `${comment}${makeCommentLine(testedUrl, reportUrl, summary)}`;
+  }
 
   return comment;
 }

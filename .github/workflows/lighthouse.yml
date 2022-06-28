@@ -31,7 +31,7 @@ jobs:
           configPath: ./.lighthouse/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
-          runs: 3
+          runs: 5
 
       - name: Format Lighthouse score
         if: always() && steps.pr.outputs.number != ''
