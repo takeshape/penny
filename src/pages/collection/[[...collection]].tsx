@@ -5,7 +5,7 @@ import {
   ProductCategoryShopifyCollectionHandles,
   ProductCategoryShopifyCollectionQuery
 } from 'features/ProductCategory/queries';
-import { getCollectionBasic, getCollectionPageParams } from 'features/ProductCategory/transforms';
+import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
@@ -22,8 +22,7 @@ import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 const CollectionPage: NextPage = ({
   navigation,
   footer,
-  collection,
-  page
+  collection
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
 
@@ -41,7 +40,7 @@ const CollectionPage: NextPage = ({
       footer={footer}
       seo={{ title: collection.seo.title, description: collection.seo.description }}
     >
-      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} page={page} />
+      <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
     </Layout>
   );
 };
@@ -51,13 +50,20 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
-  const [handle, cursor, page] = params.collection;
+  const [handle, _page, cursor, direction] = params.collection;
 
-  const variables = {
-    handle,
-    first: collectionsPageSize,
-    after: cursor
-  };
+  const variables =
+    direction === 'before'
+      ? {
+          handle,
+          last: collectionsPageSize,
+          before: cursor
+        }
+      : {
+          handle,
+          first: collectionsPageSize,
+          after: cursor
+        };
 
   const { data } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
     return apolloClient.query<
@@ -69,12 +75,11 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     });
   });
 
-  const collection = getCollectionBasic(data, variables);
+  const collection = getCollection(data);
 
   return {
     notFound: !Boolean(collection),
     props: {
-      page: Number(page ?? 1),
       navigation,
       footer,
       collection

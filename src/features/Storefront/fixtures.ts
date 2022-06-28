@@ -396,6 +396,5 @@ export const storefrontCollection: StorefrontCollection = {
     startCursor: 'eyJsYXN0X2lkIjo2ODI3MDY4ODUwMjc2LCJsYXN0X3ZhbHVlIjoiNSJ9',
     hasNextPage: false,
     hasPreviousPage: false
-  },
-  anchor: null
+  }
 };

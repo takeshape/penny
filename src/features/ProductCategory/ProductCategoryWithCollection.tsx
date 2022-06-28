@@ -1,159 +1,98 @@
-import { useLazyQuery } from '@apollo/client';
 import Seo from 'components/Seo';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  ProductCategoryShopifyCollectionQueryResponse,
-  ProductCategoryShopifyCollectionQueryVariables
-} from 'types/takeshape';
+import { useCallback, useEffect, useMemo } from 'react';
+import { PaginationDataHookParsedPath, usePaginationData } from 'utils/hooks/usePaginationData';
 import { ProductCategory } from './ProductCategory';
 import { ProductCategoryShopifyCollectionQuery } from './queries';
-import { getCollectionPageInfo, getCollectionWithOverfetch, getCurrentTitle, getCurrentUrl } from './transforms';
+import { getCollection, getCurrentTitle, getNextUrl, parseRouterPath } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
+
+function isSameCollection(collA: ProductCategoryCollection, collB: ProductCategoryCollection) {
+  return (
+    collA.pageInfo.startCursor === collB.pageInfo.startCursor && collA.pageInfo.endCursor === collB.pageInfo.endCursor
+  );
+}
 
 export interface ProductCategoryWithCollectionProps {
   collection: ProductCategoryCollection;
-  pageSize?: number;
-  page?: number;
-  cursor?: string;
+  pageSize: number;
 }
 
-export const ProductCategoryWithCollection = ({ collection, pageSize, page }: ProductCategoryWithCollectionProps) => {
-  pageSize = pageSize ?? 5;
+export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
+  const { push } = useRouter();
 
-  const router = useRouter();
+  const parsePath = useCallback((asPath) => parseRouterPath(collection, asPath), [collection]);
+  const getVariables = useCallback(
+    (parsedPath: PaginationDataHookParsedPath) => {
+      const variables =
+        parsedPath.direction === 'before'
+          ? {
+              handle: collection.handle,
+              last: pageSize,
+              before: parsedPath.cursor
+            }
+          : {
+              handle: collection.handle,
+              first: pageSize,
+              after: parsedPath.cursor
+            };
 
-  const [currentPage, setCurrentPage] = useState(page ?? 1);
-  const [requestPage, setRequestPage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [fetchingPage, setFetchingPage] = useState(null);
-  const [currentCollection, setCurrentCollection] = useState(collection);
-  const [currentTitle, setCurrentTitle] = useState(getCurrentTitle(collection, page));
+      return variables;
+    },
+    [collection, pageSize]
+  );
+  const getPageData = useCallback((data: any) => getCollection(data), []);
 
-  const loadedPages = useRef<Map<number, ProductCategoryCollection>>(new Map([[page, collection]]));
-  const loadedCollections = useRef<Set<string>>(new Set([collection.pageInfo.startCursor]));
+  const [
+    setOrLoadPage,
+    { currentPath, isLoadingPage, isLoadingNextPage, currentPage, currentPageData, cachedPageData }
+  ] = usePaginationData<ProductCategoryCollection>({
+    parsePath,
+    query: ProductCategoryShopifyCollectionQuery,
+    getVariables,
+    initialPageData: collection,
+    getPageData,
+    isSamePageData: isSameCollection
+  });
 
-  const [loadCollection, { data, error, loading, variables }] = useLazyQuery<
-    ProductCategoryShopifyCollectionQueryResponse,
-    ProductCategoryShopifyCollectionQueryVariables
-  >(ProductCategoryShopifyCollectionQuery);
+  const currentTitle = useMemo(() => getCurrentTitle(currentPageData, currentPage), [currentPageData, currentPage]);
 
-  // Pre-fetch the next page
   useEffect(() => {
-    const nextPage = currentPage + 1;
-    if (!loadedPages.current.has(nextPage)) {
-      setRequestPage(nextPage);
-    }
+    window.scrollTo(0, 0);
   }, [currentPage]);
 
-  // Handle page requests
+  // On load, we'll either be pre-fetching the next page or loading the current
+  // page if this is a client update
   useEffect(() => {
-    if (requestPage && !fetchingPage) {
-      // Need to fetch next page
-      if (requestPage > currentPage && currentCollection.pageInfo.hasNextPage) {
-        loadCollection({
-          variables: {
-            handle: currentCollection.handle,
-            // Always overfetch to get the real startCursor (the one that anchors this list)
-            first: pageSize,
-            after: currentCollection.pageInfo.endCursor
-          }
-        });
-        setFetchingPage(requestPage);
-      }
-
-      // Need to fetch prev page
-      if (requestPage < currentPage && currentCollection.pageInfo.hasPreviousPage) {
-        loadCollection({
-          variables: {
-            handle: currentCollection.handle,
-            // Always overfetch to get the real startCursor (the one that anchors this list)
-            last: pageSize + 1,
-            before: currentCollection.pageInfo.startCursor
-          }
-        });
-        setFetchingPage(requestPage);
-      }
-
-      // Clear the request
-      setRequestPage(null);
-    }
-  }, [
-    currentCollection.handle,
-    currentCollection.pageInfo.endCursor,
-    currentCollection.pageInfo.hasNextPage,
-    currentCollection.pageInfo.hasPreviousPage,
-    currentCollection.pageInfo.startCursor,
-    currentPage,
-    fetchingPage,
-    loadCollection,
-    pageSize,
-    requestPage
-  ]);
-
-  // Handle page data
-  useEffect(() => {
-    if (
-      fetchingPage &&
-      data &&
-      !loadedCollections.current.has(getCollectionPageInfo(data).startCursor) &&
-      !error &&
-      !loading
-    ) {
-      const newCollection = getCollectionWithOverfetch({ pageSize }, data, variables);
-      loadedCollections.current.add(newCollection.pageInfo.startCursor);
-      loadedPages.current.set(fetchingPage, newCollection);
-      setFetchingPage(null);
-
-      // If we were waiting and this wasn't a pre-fetch
-      if (isLoading) {
-        setCurrentPage(fetchingPage);
-        setIsLoading(false);
-      }
-    }
-  }, [fetchingPage, data, error, loading, isLoading, pageSize, variables]);
-
-  // Handle page change
-  useEffect(() => {
-    const pageCollection = loadedPages.current.get(currentPage);
-    if (pageCollection) {
-      const routerPath = router.asPath;
-      const currentUrl = getCurrentUrl(pageCollection, currentPage);
-      if (routerPath !== currentUrl) {
-        setCurrentCollection(pageCollection);
-        setCurrentTitle(getCurrentTitle(pageCollection, currentPage));
-        router.push(currentUrl);
-        window.scrollTo(0, 0);
-      }
-    }
-  }, [currentPage, router]);
+    setOrLoadPage();
+  }, [setOrLoadPage]);
 
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
     (toPage) => {
-      const nextPage = currentPage + toPage;
-      if (loadedPages.current.has(nextPage)) {
-        setCurrentPage(nextPage);
-        return;
-      }
-      if (!fetchingPage) {
-        setRequestPage(nextPage);
-      }
-      setIsLoading(true);
-    },
-    [currentPage, fetchingPage]
-  );
+      let nextUrl;
 
-  if (error) {
-    throw error;
-  }
+      const nextPage = currentPath.page + toPage;
+      const cachedNextPage = cachedPageData.current.get(nextPage);
+
+      if (cachedNextPage) {
+        // This allows us to preserve anchor-based (after) URLs for previous pages
+        nextUrl = getNextUrl(cachedNextPage, nextPage);
+      } else {
+        nextUrl = getNextUrl(currentPageData, nextPage, toPage < 0);
+      }
+
+      push(nextUrl, undefined, { shallow: true });
+    },
+    [cachedPageData, currentPageData, currentPath.page, push]
+  );
 
   let items: ProductCategoryProductListItem[];
 
-  if (isLoading) {
+  if (isLoadingPage) {
     items = Array(pageSize).fill(undefined) as unknown as ProductCategoryProductListItem[];
   } else {
-    items = currentCollection.items;
+    items = currentPageData.items;
   }
 
   return (
@@ -163,8 +102,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize, page }: Pr
         header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
         items={items}
         pagination={{
-          hasNextPage: isLoading ? false : currentCollection.pageInfo.hasNextPage,
-          hasPreviousPage: isLoading ? false : currentCollection.pageInfo.hasPreviousPage,
+          hasNextPage: isLoadingPage || isLoadingNextPage ? false : currentPageData.pageInfo.hasNextPage,
+          hasPreviousPage: isLoadingPage ? false : currentPageData.pageInfo.hasPreviousPage,
           setCurrentPage: handleSetCurrentPage
         }}
       />
