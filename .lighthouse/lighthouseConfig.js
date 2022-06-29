@@ -69,10 +69,8 @@ module.exports = {
       'canonical', // for preview, this will always be incorrect
       'is-crawlable', // for preview, always blocked
       'color-contrast', // doesn't work well with designs
-      'maskable-icon',
-      'valid-source-maps',
-      'unsized-images',
-      'offline-start-url'
+      'maskable-icon', // not helpful
+      'unsized-images' // not helpful
     ],
     onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa'],
     budgets: [
