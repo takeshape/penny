@@ -3,15 +3,14 @@ import { shopifyGidToId } from 'transforms/shopify';
 import { Details, DetailsProps } from './Details/Details';
 import { Policies, PoliciesProps } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
-import { RelatedProductsWithData, RelatedProductsWithDataProps } from './RelatedProducts/RelatedProductsWithData';
-import { Reviews, ReviewsProps } from './Reviews/Reviews';
+import { RelatedProductsWithData } from './RelatedProducts/RelatedProductsWithData';
+import { ReviewsWithData, ReviewsWithDataProps } from './Reviews/ReviewsWithData';
 import { ProductPageOptions } from './types';
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
   PoliciesProps &
-  Omit<ReviewsProps, 'sku' | 'productName'> &
-  DetailsProps &
-  RelatedProductsWithDataProps & {
+  Omit<ReviewsWithDataProps, 'sku' | 'productName'> &
+  DetailsProps & {
     options: ProductPageOptions;
   };
 
@@ -50,14 +49,16 @@ export const ProductPage = ({
       <div className="bg-white">
         <Wrapper>
           {showReviews && (
-            <Reviews
+            <ReviewsWithData
               productName={product.name}
               sku={shopifyGidToId(product.id)}
               reviewList={reviewList}
               reviewsPerPage={reviewsPerPage}
             />
           )}
-          {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
+          {showRelatedProducts && (
+            <RelatedProductsWithData count={4} productTags={product.tags} productId={product.id} />
+          )}
         </Wrapper>
       </div>
     </>

@@ -3,8 +3,8 @@ import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
 import {
+  ProductPageRelatedProductsShopifyQueryResponse,
   ProductPageShopifyProductResponse,
-  RelatedProductsShopifyCollectionQueryResponse,
   ReviewsIo_ListProductReviewsResponse,
   Shopify_Product,
   Shopify_ProductConnection
@@ -18,7 +18,7 @@ export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConn
 export type ProductPageShopifyProduct = ProductPageShopifyProductResponse['product'];
 
 export type ProductPageRelatedProductsShopifyProduct =
-  RelatedProductsShopifyCollectionQueryResponse['collection']['products']['nodes'][0];
+  ProductPageRelatedProductsShopifyQueryResponse['products']['nodes'][0];
 
 export type ProductPageRelatedProductsProduct = ProductBase;
 
@@ -62,7 +62,17 @@ export type ProductPageOptions = {
   showBreadcrumbs: boolean;
 };
 
-export type ProductPageProduct = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;
+export type ProductPageProduct = SetRequired<
+  ProductBase,
+  | 'images'
+  | 'variants'
+  | 'variantsCount'
+  | 'seo'
+  | 'tags'
+  | 'hasOneTimePurchaseOption'
+  | 'hasSubscriptionPurchaseOption'
+  | 'hasStock'
+>;
 export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
 export type ProductPageReviewsReviewList = ReviewList;
 export type ProductPageReviewsReview = Review;

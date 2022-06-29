@@ -11,10 +11,13 @@ import {
   getSeo
 } from 'transforms/shopify';
 import {
+  ProductPageRelatedProductsShopifyQueryResponse,
+  ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
-  RelatedProductsShopifyCollectionQueryResponse
+  Shopify_MoneyV2
 } from 'types/takeshape';
+import { unique } from 'utils/unique';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -26,6 +29,7 @@ import {
   ProductPageRelatedProductsProduct,
   ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
+  ProductPageReviewsIoReviews,
   ProductPageReviewsReviewList
 } from './types';
 
@@ -48,6 +52,7 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
+    tags: shopifyProduct.tags,
     featuredImage: getImage(shopifyProduct.featuredImage),
     images: shopifyProduct.images?.edges?.map(({ node }) => getImage(node)) ?? [getImage()],
     priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
@@ -62,16 +67,38 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
   };
 }
 
-export function getReviewList(response: ProductPageShopifyProductResponse): ProductPageReviewsReviewList {
-  const { stats, reviews } = response?.product?.reviews ?? {};
+export function getReviewList(
+  reviewsioReviews?: Pick<ProductPageReviewsIoReviews, 'stats' | 'reviews'>
+): ProductPageReviewsReviewList {
+  const { stats, reviews } = reviewsioReviews ?? {};
 
   return {
     stats: getStats(stats),
     currentPage: reviews?.current_page ?? null,
     totalPages: reviews?.total && reviews?.per_page ? Math.ceil(reviews.total / reviews.per_page) : null,
     perPage: reviews?.per_page ?? null,
-    data: reviews?.data?.map(getReview) ?? []
+    items: reviews?.data?.map(getReview) ?? []
   };
+}
+
+export function getProductReviewsPage(response: ProductPageReviewPageQueryResponse): ProductPageReviewsReviewList {
+  const reviews = response?.reviewData;
+
+  if (!reviews) {
+    return null;
+  }
+
+  return getReviewList(reviews);
+}
+
+export function getProductReviews(response: ProductPageShopifyProductResponse): ProductPageReviewsReviewList {
+  const reviews = response?.product?.reviews;
+
+  if (!reviews) {
+    return null;
+  }
+
+  return getReviewList(reviews);
 }
 
 export function getReviewHighlights(response: ProductPageShopifyProductResponse): ProductPageReviewHighlights {
@@ -179,26 +206,31 @@ function getRelatedProduct(
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
     featuredImage: getImage(shopifyProduct.featuredImage),
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
+    // The currencyCode enums incompatible across the two product types...
+    priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
+    priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
     options: getProductOptions(shopifyProduct.options)
   };
 }
 
 export function getRelatedProductList(
-  response: RelatedProductsShopifyCollectionQueryResponse
+  response: ProductPageRelatedProductsShopifyQueryResponse,
+  removeId: string
 ): ProductPageRelatedProductsProduct[] {
-  const productNodes = response?.collection?.products?.nodes;
+  let products = response?.products?.nodes;
 
-  if (!productNodes) {
-    return;
+  if (!products) {
+    return null;
   }
 
-  return productNodes.map((node) => getRelatedProduct(node));
+  // Backfill nodes provide enough products to fill out the list if there aren't enough matches.
+  const backfill = response.backfill?.nodes;
+
+  if (backfill) {
+    products = unique([...products, ...backfill], 'id').filter((product) => product.id !== removeId);
+  }
+
+  return products.map((node) => getRelatedProduct(node));
 }
 
 function collectionHasParent(collection: Shopify_Collection) {

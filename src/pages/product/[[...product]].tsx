@@ -1,5 +1,11 @@
 import PageLoader from 'components/PageLoader';
-import { lighthouseHandle, lighthouseProductHandle, pageRevalidationTtl, productReviewsPerPage } from 'config';
+import {
+  isProduction,
+  lighthouseHandle,
+  lighthouseProductHandle,
+  pageRevalidationTtl,
+  productReviewsPerPage
+} from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
@@ -9,12 +15,12 @@ import {
   getPolicies,
   getProduct,
   getProductPageParams,
-  getReviewHighlights,
-  getReviewList
+  getProductReviews,
+  getReviewHighlights
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
   ProductPageShopifyProductHandlesQueryResponse,
@@ -70,12 +76,12 @@ const ProductPage: NextPage = ({
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
   let handle = getSingle(params.product);
 
-  if (lighthouseProductHandle && handle === lighthouseHandle) {
+  if (!isProduction && lighthouseProductHandle && handle === lighthouseHandle) {
     handle = lighthouseProductHandle;
   }
 
@@ -104,7 +110,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
       product,
       options: getPageOptions(data),
       reviewHighlights: getReviewHighlights(data),
-      reviewList: getReviewList(data),
+      reviewList: getProductReviews(data),
       details: getDetails(data),
       policies: getPolicies(data),
       breadcrumbs: getBreadcrumbs(data)
@@ -136,7 +142,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   // Add the lighthouse testing path, if configured
-  if (lighthouseProductHandle) {
+  if (!isProduction && lighthouseProductHandle) {
     paths.push({ params: { product: [lighthouseHandle] } });
   }
 

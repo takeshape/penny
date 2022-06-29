@@ -23,6 +23,7 @@ export const ProductPageShopifyProductQuery = gql`
       title
       description
       descriptionHtml
+      tags
       requiresSellingPlan
       takeshape {
         _id
@@ -260,45 +261,47 @@ export const ProductPageReviewPageQuery = gql`
   }
 `;
 
-export const RelatedProductsShopifyCollectionQuery = gql`
-  query RelatedProductsShopifyCollectionQuery($handle: String!) {
-    collection: collectionByHandleWithTtl(handle: $handle) {
-      products(first: 10) {
-        nodes {
-          id
-          handle
-          title
-          description
-          descriptionHtml
-          requiresSellingPlan
-          featuredImage {
-            id
-            width
-            height
-            url
-            altText
-          }
-          priceRangeV2 {
-            maxVariantPrice {
-              currencyCode
-              amount
-            }
-            minVariantPrice {
-              currencyCode
-              amount
-            }
-          }
-          publishedAt
-          totalVariants
-          totalInventory
-          sellingPlanGroupCount
-          options {
-            name
-            position
-            id
-            values
-          }
-        }
+export const ProductPageRelatedProductsShopifyQuery = gql`
+  fragment RelatedProduct on ShopifyStorefront_Product {
+    id
+    handle
+    title
+    description
+    descriptionHtml
+    featuredImage {
+      id
+      width
+      height
+      url
+      altText
+    }
+    priceRange {
+      maxVariantPrice {
+        currencyCode
+        amount
+      }
+      minVariantPrice {
+        currencyCode
+        amount
+      }
+    }
+    publishedAt
+    options {
+      name
+      id
+      values
+    }
+  }
+
+  query ProductPageRelatedProductsShopifyQuery($relatedCount: Int!, $backfillCount: Int!, $query: String) {
+    products: ShopifyStorefront_products(first: $relatedCount, query: $query, sortKey: BEST_SELLING) {
+      nodes {
+        ...RelatedProduct
+      }
+    }
+    backfill: ShopifyStorefront_products(first: $backfillCount, sortKey: BEST_SELLING) {
+      nodes {
+        ...RelatedProduct
       }
     }
   }

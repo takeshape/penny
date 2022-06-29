@@ -114,7 +114,7 @@ function getSubscriptionInterval({
 }
 
 export function createImageGetter(defaultAltText: string) {
-  return (shopifyImage?: Shopify_Image): ProductImage => {
+  return (shopifyImage?: Pick<Shopify_Image, 'height' | 'width' | 'url' | 'altText'>): ProductImage => {
     const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
     return {
       height,
@@ -214,7 +214,7 @@ export function getProductVariants(shopifyProduct: Shopify_Product): ProductVari
   );
 }
 
-export function getPrice(price: Shopify_MoneyV2): ProductPrice {
+export function getPrice(price: Pick<Shopify_MoneyV2, 'amount' | 'currencyCode'>): ProductPrice {
   return {
     amount: Number(price.amount) * 100,
     currencyCode: price.currencyCode.toUpperCase() as ProductPriceCurrencyCode
@@ -229,12 +229,14 @@ export function getSeo(shopifyProduct: Shopify_Product | ProductCategoryShopifyC
   };
 }
 
-export function getProductOptions(options: Shopify_ProductOption[], variants?: ProductVariant[]) {
+export function getProductOptions(
+  options: Pick<Shopify_ProductOption, 'name' | 'id' | 'values'>[],
+  variants?: ProductVariant[]
+) {
   return (
-    options?.map(({ name, position, id, values }) => {
+    options?.map(({ name, id, values }) => {
       return {
         name,
-        position,
         id,
         values: values.map((value) => {
           const hasStock =

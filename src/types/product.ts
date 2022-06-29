@@ -75,7 +75,6 @@ export type ProductOptionValue = {
 export type ProductOption = {
   id: string;
   name: string;
-  position: number;
   values: ProductOptionValue[];
 };
 
@@ -94,14 +93,24 @@ export type ProductBase = ProductCore & {
   priceMin: ProductPrice;
   priceMax: ProductPrice;
   options: ProductOption[];
-  variantsCount: number;
+  variantsCount?: number;
   variants?: ProductVariant[];
-  hasOneTimePurchaseOption: boolean;
-  hasSubscriptionPurchaseOption: boolean;
-  hasStock: boolean;
+  hasOneTimePurchaseOption?: boolean;
+  hasSubscriptionPurchaseOption?: boolean;
+  hasStock?: boolean;
   seo?: ProductSeo;
+  tags?: string[];
 };
 
 export type ProductListItem = ProductBase;
 
-export type Product = SetRequired<ProductBase, 'images' | 'variants' | 'seo'>;
+export type Product = SetRequired<
+  ProductBase,
+  | 'images'
+  | 'variants'
+  | 'variantsCount'
+  | 'seo'
+  | 'hasOneTimePurchaseOption'
+  | 'hasSubscriptionPurchaseOption'
+  | 'hasStock'
+>;

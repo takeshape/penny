@@ -32,7 +32,7 @@ export type ReviewList = {
   perPage: number;
   currentPage: number;
   totalPages: number;
-  data: Review[];
+  items: Review[];
 };
 
 export type ReviewHighlights = {

@@ -13,8 +13,6 @@ const Meta: ComponentMeta<typeof Reviews> = {
 const Template: ComponentStory<typeof Reviews> = (args) => <Reviews {...args} />;
 
 export const _Reviews = Template.bind({});
-_Reviews.args = {
-  reviewList: productPageReviewList
-};
+_Reviews.args = productPageReviewList;
 
 export default Meta;
