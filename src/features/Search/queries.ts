@@ -19,7 +19,8 @@ export const SearchShopifyProducts = gql`
           title
           description
           featuredImage {
-            url
+            id
+            url(transform: { maxWidth: 300, maxHeight: 300, preferredContentType: WEBP })
             altText
             height
             width

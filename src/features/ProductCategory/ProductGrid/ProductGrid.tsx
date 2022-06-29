@@ -20,7 +20,7 @@ export const ProductGrid = ({ items }: PropsWithChildren<ProductGridProps>) => {
             key={item ? item.product.id : idx}
             className="group relative p-4 border-r border-b border-gray-200 sm:p-6"
           >
-            {item ? <GridItem {...item} /> : <GridItemLoading />}
+            {item ? <GridItem priority={[0, 1, 2, 3].includes(idx)} {...item} /> : <GridItemLoading />}
           </div>
         ))}
       </div>

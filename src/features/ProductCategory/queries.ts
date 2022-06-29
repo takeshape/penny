@@ -48,9 +48,9 @@ const ProductCategoryFragments = gql`
     requiresSellingPlan
     featuredImage {
       id
+      url(transform: { maxWidth: 500, maxHeight: 500, preferredContentType: WEBP })
       width
       height
-      url
       altText
     }
     priceRangeV2 {
