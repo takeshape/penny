@@ -1400,7 +1400,6 @@ export const quickAddProduct: QuickAddProduct = {
   options: [
     {
       name: 'Size',
-      position: 1,
       id: 'gid://shopify/ProductOption/8766172332132',
       values: [
         {
@@ -1455,7 +1454,6 @@ export const quickAddProduct: QuickAddProduct = {
     },
     {
       name: 'Color',
-      position: 2,
       id: 'gid://shopify/ProductOption/8766172364900',
       values: [
         {

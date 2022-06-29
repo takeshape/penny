@@ -139,7 +139,6 @@ export const CreateReview = (props: ReviewsProps) => {
                       name="review"
                       id="review"
                       label="Review"
-                      defaultValue=""
                       rules={{
                         required: 'This field is required'
                       }}
