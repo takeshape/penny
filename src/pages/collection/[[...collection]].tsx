@@ -1,5 +1,11 @@
 import PageLoader from 'components/PageLoader';
-import { collectionsPageSize, lighthouseCollectionHandle, lighthouseHandle, pageRevalidationTtl } from 'config';
+import {
+  collectionsPageSize,
+  isProduction,
+  lighthouseCollectionHandle,
+  lighthouseHandle,
+  pageRevalidationTtl
+} from 'config';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionHandles,
@@ -52,7 +58,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   let [handle, _page, cursor, direction] = params.collection;
 
-  if (lighthouseCollectionHandle && handle === lighthouseHandle) {
+  if (!isProduction && lighthouseCollectionHandle && handle === lighthouseHandle) {
     handle = lighthouseCollectionHandle;
   }
 
@@ -120,7 +126,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   // Add the lighthouse testing path, if configured
-  if (lighthouseCollectionHandle) {
+  if (!isProduction && lighthouseCollectionHandle) {
     paths.push({ params: { collection: [lighthouseHandle] } });
   }
 
