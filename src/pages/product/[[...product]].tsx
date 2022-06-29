@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import { lighthouseHandle, lighthouseProductHandle, pageRevalidationTtl } from 'config';
+import { lighthouseHandle, lighthouseProductHandle, pageRevalidationTtl, productReviewsPerPage } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
@@ -62,6 +62,7 @@ const ProductPage: NextPage = ({
         reviewList={reviewList}
         details={details}
         policies={policies}
+        reviewsPerPage={productReviewsPerPage}
       />
     </Layout>
   );
@@ -82,7 +83,8 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
     return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
       query: ProductPageShopifyProductQuery,
       variables: {
-        handle
+        handle,
+        reviewsPerPage: productReviewsPerPage
       }
     });
   });

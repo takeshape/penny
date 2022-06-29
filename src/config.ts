@@ -125,6 +125,7 @@ export const defaultProductImage = {
   width: 480,
   altText: 'Default product image'
 };
+export const productReviewsPerPage = 3;
 
 /* Collections */
 export const collectionsPageSize = 12;
