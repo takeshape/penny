@@ -119,7 +119,7 @@ export const ProductPageShopifyProductQuery = gql`
       }
       featuredImage {
         id
-        url(transform: { maxWidth: 800, maxHeight: 800 })
+        url(transform: { maxWidth: 800, maxHeight: 800, preferredContentType: WEBP })
         width
         height
         altText
@@ -128,7 +128,7 @@ export const ProductPageShopifyProductQuery = gql`
         edges {
           node {
             id
-            url(transform: { maxWidth: 800, maxHeight: 800 })
+            url(transform: { maxWidth: 800, maxHeight: 800, preferredContentType: WEBP })
             width
             height
             altText
@@ -271,7 +271,7 @@ export const ProductPageRelatedProductsShopifyQuery = gql`
     descriptionHtml
     featuredImage {
       id
-      url(transform: { maxWidth: 500, maxHeight: 500 })
+      url(transform: { maxWidth: 500, maxHeight: 500, preferredContentType: WEBP })
       width
       height
       altText
