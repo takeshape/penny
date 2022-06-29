@@ -53,9 +53,7 @@ export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }
       return items;
     }
 
-    if (currentPage > 1) {
-      return pageData && getProductReviewsPage(pageData).items;
-    }
+    return pageData ? getProductReviewsPage(pageData).items : loadingItems;
   }, [currentPage, items, loading, loadingItems, pageData]);
 
   const handleNext = useCallback(() => {
