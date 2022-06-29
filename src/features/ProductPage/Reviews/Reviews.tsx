@@ -67,15 +67,15 @@ export const Reviews = ({
 
             {session ? (
               <Button
-                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
                 onClick={onCreateReview}
+                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full cursor-pointer"
               >
                 Write a review
               </Button>
             ) : (
               <span
                 onClick={() => signIn(undefined, { callbackUrl: `${asPath}?writeReview=true` })}
-                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full"
+                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full cursor-pointer"
               >
                 Sign in to write a review
               </span>
