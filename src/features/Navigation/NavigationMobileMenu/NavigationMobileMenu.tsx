@@ -9,7 +9,7 @@ import { MobileMenuCreateOrSignIn } from './components/MobileMenuCreateOrSignIn'
 import { MobileMenuCurrencySelect } from './components/MobileMenuCurrencySelect';
 import { MobileMenuLinks } from './components/MobileMenuLinks';
 
-export const NavigationMobileMenu = ({ links, currencies }: Pick<Navigation, 'currencies' | 'links'>) => {
+export const NavigationMobileMenu = ({ sections, currencies }: Pick<Navigation, 'currencies' | 'sections'>) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
 
   return (
@@ -54,7 +54,7 @@ export const NavigationMobileMenu = ({ links, currencies }: Pick<Navigation, 'cu
               </button>
             </div>
 
-            <MobileMenuLinks links={links} />
+            <MobileMenuLinks sections={sections} />
 
             <MobileMenuCreateOrSignIn />
 
