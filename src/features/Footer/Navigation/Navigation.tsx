@@ -15,13 +15,14 @@ const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => 
 interface NavigationSectionProps {
   name?: string;
   items?: NavigationItemProps[];
+  links?: NavigationItemProps[];
 }
 
 const NavigationSection = (props: React.PropsWithChildren<NavigationSectionProps>) => (
   <>
     <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{props.name}</h3>
     <ul role="list" className="mt-4 space-y-4">
-      {props.items.map((item) => (
+      {props.links.map((item) => (
         <li key={item.name}>
           <NavigationItem {...item} />
         </li>

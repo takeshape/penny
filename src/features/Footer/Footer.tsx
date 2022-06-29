@@ -1,5 +1,4 @@
 import * as Icons from 'components/Icons/Icons';
-import { FooterResponse } from 'types/takeshape';
 import { Navigation } from './Navigation/Navigation';
 import { Newsletter } from './Newsletter/Newsletter';
 import { Social, SocialProps } from './Social/Social';
@@ -34,7 +33,13 @@ const social: SocialProps = {
   ]
 };
 
-export type FooterProps = FooterResponse['footer'];
+import { NavigationProps } from 'features/Footer/Navigation/Navigation';
+import { NewsletterProps } from 'features/Footer/Newsletter/Newsletter';
+
+export interface FooterProps {
+  navigation?: NavigationProps;
+  newsletter?: NewsletterProps;
+}
 
 export const Footer = ({ navigation, newsletter }: FooterProps) => {
   const currentYear = new Date().getFullYear();
