@@ -2,6 +2,7 @@
 module.exports = {
   extends: 'lighthouse:default',
   settings: {
+    formFactor: 'desktop',
     // audits can be found here:
     // https://github.com/GoogleChrome/lighthouse/blob/eba2a4d19c5786dc37e993858ff4b663181f81e5/lighthouse-core/config/default-config.js#L174
     skipAudits: [

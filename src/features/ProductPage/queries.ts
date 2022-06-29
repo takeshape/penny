@@ -119,17 +119,18 @@ export const ProductPageShopifyProductQuery = gql`
       }
       featuredImage {
         id
+        url(transform: { maxWidth: 800, maxHeight: 800 })
         width
         height
-        url
         altText
       }
       images(first: 4) {
         edges {
           node {
+            id
+            url(transform: { maxWidth: 800, maxHeight: 800 })
             width
             height
-            url
             altText
           }
         }
@@ -270,9 +271,9 @@ export const ProductPageRelatedProductsShopifyQuery = gql`
     descriptionHtml
     featuredImage {
       id
+      url(transform: { maxWidth: 500, maxHeight: 500 })
       width
       height
-      url
       altText
     }
     priceRange {
