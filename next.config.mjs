@@ -105,6 +105,9 @@ const config = {
     vercelEnv: process.env.VERCEL_ENV ?? 'development'
   },
   swcMinify: true,
+  images: {
+    formats: ['image/avif', 'image/webp']
+  },
   experimental: {
     images: {
       allowFutureImage: true,
