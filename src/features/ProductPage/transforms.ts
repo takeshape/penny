@@ -11,9 +11,10 @@ import {
   getSeo
 } from 'transforms/shopify';
 import {
+  ProductPageRelatedProductsShopifyQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
-  RelatedProductsShopifyCollectionQueryResponse
+  Shopify_MoneyV2
 } from 'types/takeshape';
 import {
   ProductPageBreadcrumbs,
@@ -48,6 +49,7 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
+    tags: shopifyProduct.tags,
     featuredImage: getImage(shopifyProduct.featuredImage),
     images: shopifyProduct.images?.edges?.map(({ node }) => getImage(node)) ?? [getImage()],
     priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
@@ -179,20 +181,17 @@ function getRelatedProduct(
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
     featuredImage: getImage(shopifyProduct.featuredImage),
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
-    hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
+    // The currencyCode enums incompatible across the two product types...
+    priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
+    priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
     options: getProductOptions(shopifyProduct.options)
   };
 }
 
 export function getRelatedProductList(
-  response: RelatedProductsShopifyCollectionQueryResponse
+  response: ProductPageRelatedProductsShopifyQueryResponse
 ): ProductPageRelatedProductsProduct[] {
-  const productNodes = response?.collection?.products?.nodes;
+  const productNodes = response?.products?.nodes;
 
   if (!productNodes) {
     return;

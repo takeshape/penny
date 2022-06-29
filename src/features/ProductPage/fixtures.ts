@@ -159,6 +159,7 @@ export const productPageProduct: ProductPageProduct = {
   handle: 'basic-tee-6-pack',
   url: '/product/basic-tee-6-pack',
   name: 'Basic Tee 6-Pack',
+  tags: ['Basic Tee', 'Men', 'T-Shirt Multipack'],
   description:
     'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered. Highlights Hand cut and sewn locally Dyed with our proprietary colors Pre-washed & pre-shrunk Ultra-soft 100% cotton Details The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
   descriptionHtml:
@@ -1315,7 +1316,6 @@ export const productPageProduct: ProductPageProduct = {
   options: [
     {
       name: 'Size',
-      position: 1,
       id: 'gid://shopify/ProductOption/8766172332132',
       values: [
         { value: 'XXS', name: 'XXS', hasStock: false, description: 'The very smallest size' },
@@ -1330,7 +1330,6 @@ export const productPageProduct: ProductPageProduct = {
     },
     {
       name: 'Color',
-      position: 2,
       id: 'gid://shopify/ProductOption/8766172364900',
       values: [
         {
@@ -1404,7 +1403,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     options: [
       {
         name: 'Size',
-        position: 1,
         id: 'gid://shopify/ProductOption/8728583471204',
         values: [
           {
@@ -1429,7 +1427,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
       },
       {
         name: 'Color',
-        position: 2,
         id: 'gid://shopify/ProductOption/8766561222756',
         values: [
           {
@@ -1482,7 +1479,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     options: [
       {
         name: 'Size',
-        position: 1,
         id: 'gid://shopify/ProductOption/8766172332132',
         values: [
           {
@@ -1537,7 +1533,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
       },
       {
         name: 'Color',
-        position: 2,
         id: 'gid://shopify/ProductOption/8766172364900',
         values: [
           {
@@ -1598,7 +1593,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     options: [
       {
         name: 'Color',
-        position: 1,
         id: 'gid://shopify/ProductOption/8728584126564',
         values: [
           {
@@ -1629,7 +1623,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
       },
       {
         name: 'Size',
-        position: 2,
         id: 'gid://shopify/ProductOption/8749149356132',
         values: [
           {
@@ -1684,7 +1677,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     options: [
       {
         name: 'Size',
-        position: 1,
         id: 'gid://shopify/ProductOption/8770971140196',
         values: [
           {
@@ -1727,7 +1719,6 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
       },
       {
         name: 'Color',
-        position: 2,
         id: 'gid://shopify/ProductOption/8770971172964',
         values: [
           {

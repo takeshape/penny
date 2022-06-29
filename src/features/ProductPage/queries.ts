@@ -23,6 +23,7 @@ export const ProductPageShopifyProductQuery = gql`
       title
       description
       descriptionHtml
+      tags
       requiresSellingPlan
       takeshape {
         _id
@@ -260,44 +261,37 @@ export const ProductPageReviewPageQuery = gql`
   }
 `;
 
-export const RelatedProductsShopifyCollectionQuery = gql`
-  query RelatedProductsShopifyCollectionQuery($handle: String!) {
-    collection: collectionByHandleWithTtl(handle: $handle) {
-      products(first: 10) {
-        nodes {
+export const ProductPageRelatedProductsShopifyQuery = gql`
+  query ProductPageRelatedProductsShopifyQuery($first: Int!, $query: String) {
+    products: ShopifyStorefront_products(first: $first, query: $query, sortKey: BEST_SELLING) {
+      nodes {
+        id
+        handle
+        title
+        description
+        descriptionHtml
+        featuredImage {
           id
-          handle
-          title
-          description
-          descriptionHtml
-          requiresSellingPlan
-          featuredImage {
-            id
-            width
-            height
-            url
-            altText
+          width
+          height
+          url
+          altText
+        }
+        priceRange {
+          maxVariantPrice {
+            currencyCode
+            amount
           }
-          priceRangeV2 {
-            maxVariantPrice {
-              currencyCode
-              amount
-            }
-            minVariantPrice {
-              currencyCode
-              amount
-            }
+          minVariantPrice {
+            currencyCode
+            amount
           }
-          publishedAt
-          totalVariants
-          totalInventory
-          sellingPlanGroupCount
-          options {
-            name
-            position
-            id
-            values
-          }
+        }
+        publishedAt
+        options {
+          name
+          id
+          values
         }
       }
     }

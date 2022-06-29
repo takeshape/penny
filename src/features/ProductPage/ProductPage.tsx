@@ -26,7 +26,9 @@ export const ProductPage = ({
   breadcrumbs,
   reviewsPerPage
 }: ProductPageProps) => {
-  const { showDetails, showPolicies, showReviews, showRelatedProducts, showBreadcrumbs } = options;
+  let { showDetails, showPolicies, showReviews, showRelatedProducts, showBreadcrumbs } = options;
+
+  showRelatedProducts = true;
 
   return (
     <>
@@ -57,7 +59,7 @@ export const ProductPage = ({
               reviewsPerPage={reviewsPerPage}
             />
           )}
-          {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
+          {showRelatedProducts && <RelatedProductsWithData tags={product.tags} />}
         </Wrapper>
       </div>
     </>
