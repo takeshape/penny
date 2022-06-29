@@ -1,6 +1,7 @@
 import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
+import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import { showCurrencySelector } from 'config';
+import { showCurrencySelector, siteLogo } from 'config';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from '../types';
@@ -73,8 +74,7 @@ export const NavigationTop = ({ message, links, currencies }: NavigationTopProps
                   <NextLink href="/">
                     <span className="sr-only">Workflow</span>
                     <div className="h-8 w-8 relative">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
+                      <NextImage src={siteLogo} alt="" className="w-auto h-8" priority />
                     </div>
                   </NextLink>
                 </div>
@@ -103,8 +103,7 @@ export const NavigationTop = ({ message, links, currencies }: NavigationTopProps
                 <NextLink href="/" className="lg:hidden">
                   <span className="sr-only">Workflow</span>
                   <div className="h-8 w-8 relative">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600" alt="" />
+                    <NextImage src={siteLogo} alt="" className="w-auto h-8" priority />
                   </div>
                 </NextLink>
 

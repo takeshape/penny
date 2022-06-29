@@ -48,6 +48,7 @@ module.exports = {
           }
         ]
       }
-    ]
+    ],
+    emulatedFormFactor: 'desktop'
   }
 };

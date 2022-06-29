@@ -31,8 +31,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
         <NextImage
           src={images[0].url}
           alt={images[0].altText}
-          height={images[0].height}
-          width={images[0].width}
+          height={800}
+          width={800}
           className="w-full h-full object-center object-cover"
           priority
         />
@@ -42,8 +42,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
           <NextImage
             src={images[1].url}
             alt={images[1].altText}
-            height={images[1].height}
-            width={images[1].width}
+            height={800}
+            width={800}
             className="w-full h-full object-center object-cover"
             priority
           />
@@ -55,8 +55,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
             <NextImage
               src={images[1].url}
               alt={images[1].altText}
-              height={images[1].height}
-              width={images[1].width}
+              height={800}
+              width={800}
               className="w-full h-full object-center object-cover"
               priority
             />
@@ -65,8 +65,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
             <NextImage
               src={images[2].url}
               alt={images[2].altText}
-              height={images[2].height}
-              width={images[2].width}
+              height={800}
+              width={800}
               className="w-full h-full object-center object-cover"
               priority
             />
@@ -81,8 +81,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
                 <NextImage
                   src={images[1].url}
                   alt={images[1].altText}
-                  height={images[1].height}
-                  width={images[1].width}
+                  height={800}
+                  width={800}
                   className="w-full h-full object-center object-cover"
                   priority
                 />
@@ -93,8 +93,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
                 <NextImage
                   src={images[2].url}
                   alt={images[2].altText}
-                  height={images[2].height}
-                  width={images[2].width}
+                  height={800}
+                  width={800}
                   className="w-full h-full object-center object-cover"
                   priority
                 />
@@ -106,8 +106,8 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
               <NextImage
                 src={images[3].url}
                 alt={images[3].altText}
-                height={images[3].height}
-                width={images[3].width}
+                height={800}
+                width={800}
                 className="w-full h-full object-center object-cover"
                 priority
               />
