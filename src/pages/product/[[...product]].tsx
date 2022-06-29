@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import { pageRevalidationTtl, productReviewsPerPage } from 'config';
+import { lighthouseHandle, lighthouseProductHandle, pageRevalidationTtl, productReviewsPerPage } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
@@ -73,7 +73,11 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
-  const handle = getSingle(params.product);
+  let handle = getSingle(params.product);
+
+  if (lighthouseProductHandle && handle === lighthouseHandle) {
+    handle = lighthouseProductHandle;
+  }
 
   const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
     return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
@@ -129,6 +133,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths = [...paths, ...getProductPageParams(data)];
     hasNextPage = data.products.pageInfo.hasNextPage;
     endCursor = data.products.pageInfo.endCursor;
+  }
+
+  // Add the lighthouse testing path, if configured
+  if (lighthouseProductHandle) {
+    paths.push({ params: { product: [lighthouseHandle] } });
   }
 
   return {

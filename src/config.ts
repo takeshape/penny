@@ -27,6 +27,15 @@ export const pageRevalidationTtl = process.env.NEXT_PUBLIC_PAGE_REVALIDATION_TTL
   ? Number(process.env.NEXT_PUBLIC_PAGE_REVALIDATION_TTL)
   : 300; // 5 minutes
 
+/**
+ * Lighthouse
+ *
+ * These are handles to use when responding to the `__lighthouse` dynamic path.
+ */
+export const lighthouseHandle = '__lighthouse';
+export const lighthouseProductHandle = 'basic-tee-6-pack';
+export const lighthouseCollectionHandle = 'men';
+
 /* Site Config and SEO */
 export const locale = process.env.NEXT_PUBLIC_LOCALE ?? 'en-US';
 export const siteName = process.env.NEXT_PUBLIC_SITE_NAME ?? 'Deluxe ™️ Store';

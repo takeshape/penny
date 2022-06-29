@@ -5,7 +5,9 @@ module.exports = {
     // audits can be found here:
     // https://github.com/GoogleChrome/lighthouse/blob/eba2a4d19c5786dc37e993858ff4b663181f81e5/lighthouse-core/config/default-config.js#L174
     skipAudits: [
-      'canonical', // for staging sites this will always be incorrect
+      'canonical', // for preview, this will always be incorrect
+      'is-crawlable', // for preview, always blocked
+      'color-contrast', // doesn't work well with designs
       'maskable-icon',
       'valid-source-maps',
       'unsized-images',

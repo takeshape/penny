@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import { collectionsPageSize, pageRevalidationTtl } from 'config';
+import { collectionsPageSize, lighthouseCollectionHandle, lighthouseHandle, pageRevalidationTtl } from 'config';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionHandles,
@@ -50,7 +50,11 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
-  const [handle, _page, cursor, direction] = params.collection;
+  let [handle, _page, cursor, direction] = params.collection;
+
+  if (lighthouseCollectionHandle && handle === lighthouseHandle) {
+    handle = lighthouseCollectionHandle;
+  }
 
   const variables =
     direction === 'before'
@@ -113,6 +117,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths = [...paths, ...getCollectionPageParams(data)];
     hasNextPage = data.collections.pageInfo.hasNextPage;
     endCursor = data.collections.pageInfo.endCursor;
+  }
+
+  // Add the lighthouse testing path, if configured
+  if (lighthouseCollectionHandle) {
+    paths.push({ params: { collection: [lighthouseHandle] } });
   }
 
   return {

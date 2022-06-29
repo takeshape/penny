@@ -41,7 +41,7 @@ export const Collection = (props: CollectionProps) => {
         </div>
 
         <div className="mt-12 px-4 sm:hidden">
-          <NextLink href="#" className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+          <NextLink href={collection.url} className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
             See everything<span aria-hidden="true"> &rarr;</span>
           </NextLink>
         </div>

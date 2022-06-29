@@ -1,56 +1,34 @@
-// @ts-check
+const formatScore = (score) => Math.round(score * 100);
+const emojiScore = (score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
+const formatPath = (testedUrl) => `[Path: ${new URL(testedUrl).pathname}](${testedUrl})`;
+const formatReport = (reportUrl) => `[Report](${reportUrl})`;
 
-/**
- * @typedef {Object} Summary
- * @prop {number} performance
- * @prop {number} accessibility
- * @prop {number} best-practices
- * @prop {number} seo
- * @prop {number} pwa
- */
+const scoreRow = (label, score) => `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
+const headerRow = (testedUrl, reportUrl) => `| ${formatPath(testedUrl)} | ${formatReport(reportUrl)} |`;
 
-/**
- * @typedef {Object} Manifest
- * @prop {string} url
- * @prop {boolean} isRepresentativeRun
- * @prop {string} htmlPath
- * @prop {string} jsonPath
- * @prop {Summary} summary
- */
-
-/**
- * @typedef {Object} LighthouseOutputs
- * @prop {Record<string, string>} links
- * @prop {Manifest[]} manifest
- */
-
-const formatScore = (/** @type { number } */ score) => Math.round(score * 100);
-const emojiScore = (/** @type { number } */ score) => (score >= 0.9 ? '🟢' : score >= 0.5 ? '🟠' : '🔴');
-
-const scoreRow = (/** @type { string } */ label, /** @type { number } */ score) =>
-  `| ${emojiScore(score)} ${label} | ${formatScore(score)} |`;
-
-/**
- * @param {LighthouseOutputs} lighthouseOutputs
- */
-function makeComment(lighthouseOutputs) {
-  const { summary } = lighthouseOutputs.manifest[0];
-  const [[testedUrl, reportUrl]] = Object.entries(lighthouseOutputs.links);
-
-  const comment = `## ⚡️🏠 Lighthouse report
-
-We ran Lighthouse against the changes and produced this [report](${reportUrl}). Here's the summary:
-
-| Category | Score |
-| -------- | ----- |
+function makeCommentForUrl(summary, testedUrl, reportUrl) {
+  return `${headerRow(testedUrl, reportUrl)}
 ${scoreRow('Performance', summary.performance)}
 ${scoreRow('Accessibility', summary.accessibility)}
 ${scoreRow('Best practices', summary['best-practices'])}
 ${scoreRow('SEO', summary.seo)}
 ${scoreRow('PWA', summary.pwa)}
-
-*Lighthouse ran against [${testedUrl}](${testedUrl})*
 `;
+}
+
+function makeComment(lighthouseOutputs) {
+  const { manifest, links } = lighthouseOutputs;
+
+  let comment = `## ⚡️🏠 Lighthouse report
+
+| Category | Score |
+| -------- | ----- |
+`;
+
+  for (const [testedUrl, reportUrl] of Object.entries(links)) {
+    const manifestEntry = manifest.find((entry) => entry.url === testedUrl && entry.isRepresentativeRun);
+    comment = `${comment}${makeCommentForUrl(manifestEntry.summary, testedUrl, reportUrl)}`;
+  }
 
   return comment;
 }
