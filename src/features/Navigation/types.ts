@@ -18,13 +18,19 @@ export type NavigationCategory = {
   brands: NavigationItem[];
 };
 
-export type NavigationLinks = {
-  categories: NavigationCategory[];
-  pages: NavigationItem[];
+export type NavigationSubsection = {
+  name: string;
+  links: NavigationItem[];
+};
+
+export type NavigationSection = {
+  name: string;
+  link: NavigationItem;
+  subsections: NavigationSubsection[];
 };
 
 export type Navigation = {
   message: NavigationMessage;
-  links: NavigationLinks;
+  sections: NavigationSection[];
   currencies: NavigationCurrency[];
 };
