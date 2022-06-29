@@ -4,6 +4,7 @@ import { quickAddAtom } from 'features/QuickAdd/store';
 import { useSetAtom } from 'jotai';
 import { MouseEvent, useCallback } from 'react';
 import { formatPrice } from 'utils/text';
+import { truncate } from 'utils/truncate';
 import { ProductPageRelatedProductsProduct } from '../../types';
 
 export interface ListItemProps {
@@ -33,7 +34,7 @@ export const ListItem = ({ product }: ListItemProps) => {
             />
           </div>
           <div className="relative mt-4">
-            <h3 className="text-sm font-medium text-gray-900">{product.name}</h3>
+            <h3 className="text-sm font-medium text-gray-900">{truncate(product.name, { length: 30 })}</h3>
           </div>
           <div className="absolute top-0 inset-x-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden">
             <div

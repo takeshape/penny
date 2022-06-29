@@ -262,37 +262,46 @@ export const ProductPageReviewPageQuery = gql`
 `;
 
 export const ProductPageRelatedProductsShopifyQuery = gql`
-  query ProductPageRelatedProductsShopifyQuery($first: Int!, $query: String) {
-    products: ShopifyStorefront_products(first: $first, query: $query, sortKey: BEST_SELLING) {
+  fragment RelatedProduct on ShopifyStorefront_Product {
+    id
+    handle
+    title
+    description
+    descriptionHtml
+    featuredImage {
+      id
+      width
+      height
+      url
+      altText
+    }
+    priceRange {
+      maxVariantPrice {
+        currencyCode
+        amount
+      }
+      minVariantPrice {
+        currencyCode
+        amount
+      }
+    }
+    publishedAt
+    options {
+      name
+      id
+      values
+    }
+  }
+
+  query ProductPageRelatedProductsShopifyQuery($relatedCount: Int!, $backfillCount: Int!, $query: String) {
+    products: ShopifyStorefront_products(first: $relatedCount, query: $query, sortKey: BEST_SELLING) {
       nodes {
-        id
-        handle
-        title
-        description
-        descriptionHtml
-        featuredImage {
-          id
-          width
-          height
-          url
-          altText
-        }
-        priceRange {
-          maxVariantPrice {
-            currencyCode
-            amount
-          }
-          minVariantPrice {
-            currencyCode
-            amount
-          }
-        }
-        publishedAt
-        options {
-          name
-          id
-          values
-        }
+        ...RelatedProduct
+      }
+    }
+    backfill: ShopifyStorefront_products(first: $backfillCount, sortKey: BEST_SELLING) {
+      nodes {
+        ...RelatedProduct
       }
     }
   }

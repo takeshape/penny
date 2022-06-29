@@ -1,6 +1,5 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import Button from 'components/Button/Button';
-import Loader from 'components/Loader/Loader';
 import { Stars } from 'components/Stars/Stars';
 import { ProductPageReviewPageQuery } from 'features/ProductPage/queries';
 import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
@@ -10,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getReview } from 'transforms/reviewsIo';
+import { Review } from 'types/review';
 import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
 import { ReviewsRollup } from './ReviewsRollup';
@@ -30,28 +30,40 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
 
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const {
-    data: pageData,
-    loading,
-    error
-  } = useQuery<ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables>(ProductPageReviewPageQuery, {
+  const [loadReviews, { data: pageData, loading, error }] = useLazyQuery<
+    ProductPageReviewPageQueryResponse,
+    ProductPageReviewPageQueryVariables
+  >(ProductPageReviewPageQuery, {
     variables: {
       sku,
       page: currentPage,
       perPage: reviewsPerPage
-    },
-    skip: currentPage === 1
+    }
   });
+
+  useEffect(() => {
+    if (currentPage !== 1) {
+      loadReviews();
+    }
+  }, [currentPage, loadReviews]);
+
+  const loadingReviews = useMemo(() => Array(reviewsPerPage).fill(undefined) as unknown as Review[], [reviewsPerPage]);
 
   // Our product query has the first page of reviews, so use that if we're on page 1.
   // Otherwise we query for the requested page.
   const currentPageData = useMemo(() => {
+    if (loading) {
+      return loadingReviews;
+    }
+
     if (currentPage === 1) {
       return data;
-    } else {
+    }
+
+    if (currentPage > 1) {
       return pageData && pageData.reviewData.reviews.data.map(getReview);
     }
-  }, [currentPage, data, pageData]);
+  }, [currentPage, data, loading, loadingReviews, pageData]);
 
   const handleNext = useCallback(() => {
     if (currentPage < totalPages) {
@@ -127,11 +139,6 @@ export const Reviews = ({ productName, sku, reviewList, showRollup, reviewsPerPa
           <div className="flow-root">
             <div className="-my-12 divide-y divide-gray-200">
               {error && 'There was an error loading more reviews.'}
-              {!error && loading && (
-                <div className="p-16 flex items-center justify-center">
-                  <Loader />
-                </div>
-              )}
               {!error &&
                 currentPageData &&
                 currentPageData.map((review, idx) => (

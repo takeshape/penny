@@ -1,4 +1,5 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
+import { useEffect, useMemo } from 'react';
 import {
   ProductPageRelatedProductsShopifyQueryResponse,
   ProductPageRelatedProductsShopifyQueryVariables
@@ -9,24 +10,41 @@ import { ProductPageRelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
 
 export interface RelatedProductsWithDataProps {
-  tags?: string[];
+  productId: string;
+  productTags?: string[];
+  count: number;
 }
 
 const loadingProducts = Array(4).fill(undefined) as ProductPageRelatedProductsProduct[];
 
-export const RelatedProductsWithData = ({ tags }: RelatedProductsWithDataProps) => {
-  const query = tags && tags.length ? tags.map((tag) => `tag:${tag}`).join(' OR ') : undefined;
+export const RelatedProductsWithData = ({ productTags, productId, count }: RelatedProductsWithDataProps) => {
+  const query = useMemo(
+    // Tags from Shopify are already escaped, if using other inputs you may need
+    // to escape yourself: https://shopify.dev/api/usage/search-syntax#special-characters
+    () => (productTags && productTags.length ? productTags.map((tag) => `tag:"${tag}"`).join(' OR ') : undefined),
+    [productTags]
+  );
 
-  const { data, error } = useQuery<
+  const [loadProducts, { data, error }] = useLazyQuery<
     ProductPageRelatedProductsShopifyQueryResponse,
     ProductPageRelatedProductsShopifyQueryVariables
-  >(ProductPageRelatedProductsShopifyQuery, { variables: { first: 4, query } });
+  >(ProductPageRelatedProductsShopifyQuery, {
+    variables: {
+      backfillCount: count + 1,
+      relatedCount: count,
+      query
+    }
+  });
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
+
+  const products = useMemo(() => !error && getRelatedProductList(data, productId), [data, error, productId]);
 
   if (error) {
     return null;
   }
-
-  const products = data && getRelatedProductList(data);
 
   return <RelatedProducts products={products ?? loadingProducts} />;
 };

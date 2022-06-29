@@ -16,6 +16,7 @@ import {
   ProductPageShopifyProductResponse,
   Shopify_MoneyV2
 } from 'types/takeshape';
+import { unique } from 'utils/unique';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -189,15 +190,23 @@ function getRelatedProduct(
 }
 
 export function getRelatedProductList(
-  response: ProductPageRelatedProductsShopifyQueryResponse
+  response: ProductPageRelatedProductsShopifyQueryResponse,
+  removeId: string
 ): ProductPageRelatedProductsProduct[] {
-  const productNodes = response?.products?.nodes;
+  let products = response?.products?.nodes;
 
-  if (!productNodes) {
-    return;
+  if (!products) {
+    return null;
   }
 
-  return productNodes.map((node) => getRelatedProduct(node));
+  // Backfill nodes provide enough products to fill out the list if there aren't enough matches.
+  const backfill = response.backfill?.nodes;
+
+  if (backfill) {
+    products = unique([...products, ...backfill], 'id').filter((product) => product.id !== removeId);
+  }
+
+  return products.map((node) => getRelatedProduct(node));
 }
 
 function collectionHasParent(collection: Shopify_Collection) {
