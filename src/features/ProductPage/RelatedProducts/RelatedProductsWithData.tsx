@@ -15,8 +15,6 @@ export interface RelatedProductsWithDataProps {
   count: number;
 }
 
-const loadingProducts = Array(4).fill(undefined) as ProductPageRelatedProductsProduct[];
-
 export const RelatedProductsWithData = ({ productTags, productId, count }: RelatedProductsWithDataProps) => {
   const query = useMemo(
     // Tags from Shopify are already escaped, if using other inputs you may need
@@ -40,6 +38,7 @@ export const RelatedProductsWithData = ({ productTags, productId, count }: Relat
     loadProducts();
   }, [loadProducts]);
 
+  const loadingProducts = useMemo(() => Array(count).fill(undefined) as ProductPageRelatedProductsProduct[], [count]);
   const products = useMemo(() => !error && getRelatedProductList(data, productId), [data, error, productId]);
 
   if (error) {
