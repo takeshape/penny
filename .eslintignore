@@ -5,3 +5,5 @@ package-lock.json
 !.storybook
 !.lighthouse
 !.jest
+public/sw.*
+public/workbox-*

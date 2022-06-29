@@ -135,12 +135,15 @@ const config = {
   }
 };
 
+console.log(process.env.NODE_ENV);
+
 export default withPlugins(
   [
     withBundleAnalyzer,
     withPwa({
       pwa: {
-        dest: 'public'
+        dest: 'public',
+        disable: process.env.NODE_ENV === 'development'
       }
     }),
     SENTRY_DSN ? withSentryConfig : {}
