@@ -5,8 +5,10 @@ import { siteLogo } from 'config';
 import { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { getSingle } from 'utils/types';
 
 export interface AuthSignInForm {
   email: string;
@@ -38,6 +40,8 @@ export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string
 export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
   const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
 
+  const router = useRouter();
+
   const onSubmit = useCallback(
     async ({ email, password, rememberMe }: AuthSignInForm) => {
       await signIn('shopify', { email, password, rememberMe, callbackUrl });
@@ -47,6 +51,14 @@ export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
 
   const hasErrors = Boolean(error);
   const errorMessage = error && (errors[error] ?? errors.default);
+
+  const signupLink = useMemo(() => {
+    let href = '/auth/create';
+    if (router.query.callbackUrl) {
+      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl))}`;
+    }
+    return href;
+  }, [router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -134,7 +146,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
           <div className="mt-6">
             <div className="relative">
               <div className="mt-2 border-t border-gray-200 text-gray-500 pt-6 text-center">
-                <Link href="/auth/create">
+                <Link href={signupLink}>
                   <a className="text-sm font-medium hover:text-gray-900 cursor-pointer">Sign up instead →</a>
                 </Link>
               </div>
