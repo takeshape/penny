@@ -12,6 +12,7 @@ import {
 } from 'transforms/shopify';
 import {
   ProductPageRelatedProductsShopifyQueryResponse,
+  ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
   Shopify_MoneyV2
@@ -28,6 +29,7 @@ import {
   ProductPageRelatedProductsProduct,
   ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
+  ProductPageReviewsIoReviews,
   ProductPageReviewsReviewList
 } from './types';
 
@@ -65,16 +67,38 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
   };
 }
 
-export function getReviewList(response: ProductPageShopifyProductResponse): ProductPageReviewsReviewList {
-  const { stats, reviews } = response?.product?.reviews ?? {};
+export function getReviewList(
+  reviewsioReviews?: Pick<ProductPageReviewsIoReviews, 'stats' | 'reviews'>
+): ProductPageReviewsReviewList {
+  const { stats, reviews } = reviewsioReviews ?? {};
 
   return {
     stats: getStats(stats),
     currentPage: reviews?.current_page ?? null,
     totalPages: reviews?.total && reviews?.per_page ? Math.ceil(reviews.total / reviews.per_page) : null,
     perPage: reviews?.per_page ?? null,
-    data: reviews?.data?.map(getReview) ?? []
+    items: reviews?.data?.map(getReview) ?? []
   };
+}
+
+export function getProductReviewsPage(response: ProductPageReviewPageQueryResponse): ProductPageReviewsReviewList {
+  const reviews = response?.reviewData;
+
+  if (!reviews) {
+    return null;
+  }
+
+  return getReviewList(reviews);
+}
+
+export function getProductReviews(response: ProductPageShopifyProductResponse): ProductPageReviewsReviewList {
+  const reviews = response?.product?.reviews;
+
+  if (!reviews) {
+    return null;
+  }
+
+  return getReviewList(reviews);
 }
 
 export function getReviewHighlights(response: ProductPageShopifyProductResponse): ProductPageReviewHighlights {

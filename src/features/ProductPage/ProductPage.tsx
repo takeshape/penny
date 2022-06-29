@@ -4,12 +4,12 @@ import { Details, DetailsProps } from './Details/Details';
 import { Policies, PoliciesProps } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
 import { RelatedProductsWithData } from './RelatedProducts/RelatedProductsWithData';
-import { Reviews, ReviewsProps } from './Reviews/Reviews';
+import { ReviewsWithData, ReviewsWithDataProps } from './Reviews/ReviewsWithData';
 import { ProductPageOptions } from './types';
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
   PoliciesProps &
-  Omit<ReviewsProps, 'sku' | 'productName'> &
+  Omit<ReviewsWithDataProps, 'sku' | 'productName'> &
   DetailsProps & {
     options: ProductPageOptions;
   };
@@ -49,7 +49,7 @@ export const ProductPage = ({
       <div className="bg-white">
         <Wrapper>
           {showReviews && (
-            <Reviews
+            <ReviewsWithData
               productName={product.name}
               sku={shopifyGidToId(product.id)}
               reviewList={reviewList}

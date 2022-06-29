@@ -62,7 +62,17 @@ export type ProductPageOptions = {
   showBreadcrumbs: boolean;
 };
 
-export type ProductPageProduct = SetRequired<ProductBase, 'images' | 'variants' | 'seo' | 'tags'>;
+export type ProductPageProduct = SetRequired<
+  ProductBase,
+  | 'images'
+  | 'variants'
+  | 'variantsCount'
+  | 'seo'
+  | 'tags'
+  | 'hasOneTimePurchaseOption'
+  | 'hasSubscriptionPurchaseOption'
+  | 'hasStock'
+>;
 export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
 export type ProductPageReviewsReviewList = ReviewList;
 export type ProductPageReviewsReview = Review;

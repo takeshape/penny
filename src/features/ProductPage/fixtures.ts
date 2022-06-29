@@ -81,7 +81,7 @@ export const productPageReviewList: ProductPageReviewsReviewList = {
   currentPage: 1,
   totalPages: 3,
   perPage: 15,
-  data: [
+  items: [
     {
       id: 12535824,
       rating: 5,
