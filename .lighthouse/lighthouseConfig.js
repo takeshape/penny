@@ -81,25 +81,25 @@ module.exports = {
         timings: [
           {
             metric: 'interactive',
-            budget: 1000
+            budget: 1000 // 1.0s
           },
           {
             metric: 'first-contentful-paint',
-            budget: 200
+            budget: 200 // 0.2s
           },
           {
             metric: 'speed-index',
-            budget: 300
+            budget: 300 // 0.3s
           }
         ],
         resourceSizes: [
           {
             resourceType: 'script',
-            budget: 300
+            budget: 300 // 300k
           },
           {
             resourceType: 'total',
-            budget: 1500
+            budget: 1500 // 1500k
           }
         ],
         resourceCounts: [
