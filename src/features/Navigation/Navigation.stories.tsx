@@ -40,7 +40,7 @@ const Template: ComponentStory<typeof Navigation> = (args) => <Navigation {...ar
 export const _Navigation = Template.bind({});
 _Navigation.args = {
   message: navigation.message,
-  links: navigation.links,
+  sections: navigation.sections,
   currencies: navigation.currencies
 };
 

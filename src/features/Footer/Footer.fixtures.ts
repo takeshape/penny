@@ -1,12 +1,12 @@
-import { FooterResponse } from 'types/takeshape';
+import { FooterProps } from 'features/Footer/Footer';
 
-export const GetFooterQueryData: { footer: FooterResponse['footer'] } = {
+export const GetFooterQueryData: { footer: FooterProps } = {
   footer: {
     navigation: {
       sections: [
         {
           name: 'Solutions',
-          items: [
+          links: [
             {
               name: 'Marketing',
               href: '#'
@@ -27,7 +27,7 @@ export const GetFooterQueryData: { footer: FooterResponse['footer'] } = {
         },
         {
           name: 'Support',
-          items: [
+          links: [
             {
               name: 'Contact',
               href: 'contact'
@@ -52,7 +52,7 @@ export const GetFooterQueryData: { footer: FooterResponse['footer'] } = {
         },
         {
           name: 'Company',
-          items: [
+          links: [
             {
               name: 'About',
               href: '#'
@@ -77,7 +77,7 @@ export const GetFooterQueryData: { footer: FooterResponse['footer'] } = {
         },
         {
           name: 'Legal',
-          items: [
+          links: [
             {
               name: 'Claim',
               href: '#'
