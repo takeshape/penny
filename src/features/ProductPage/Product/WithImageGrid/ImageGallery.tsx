@@ -45,7 +45,6 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
             height={800}
             width={800}
             className="w-full h-full object-center object-cover"
-            priority
           />
         </div>
       )}
@@ -58,7 +57,6 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
               height={800}
               width={800}
               className="w-full h-full object-center object-cover"
-              priority
             />
           </div>
           <div className="hidden aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4 lg:block">
@@ -68,7 +66,6 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
               height={800}
               width={800}
               className="w-full h-full object-center object-cover"
-              priority
             />
           </div>
         </>
@@ -84,7 +81,6 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
                   height={800}
                   width={800}
                   className="w-full h-full object-center object-cover"
-                  priority
                 />
               )}
             </div>
@@ -96,7 +92,6 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
                   height={800}
                   width={800}
                   className="w-full h-full object-center object-cover"
-                  priority
                 />
               )}
             </div>
@@ -109,7 +104,6 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
                 height={800}
                 width={800}
                 className="w-full h-full object-center object-cover"
-                priority
               />
             )}
           </div>
