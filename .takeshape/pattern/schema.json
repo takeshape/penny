@@ -1002,6 +1002,51 @@
             ]
           }
         }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string"
+          },
+          "mpn": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "per_page": {
+            "type": "integer"
+          },
+          "photos": {
+            "type": "integer"
+          },
+          "verified_only": {
+            "type": "integer"
+          },
+          "comments_only": {
+            "type": "integer"
+          },
+          "minRating": {
+            "type": "integer"
+          },
+          "include_unpublished_images": {
+            "type": "integer"
+          },
+          "include_moderated": {
+            "type": "integer"
+          },
+          "order_id": {
+            "type": "string"
+          },
+          "min_date": {
+            "type": "string"
+          },
+          "max_date": {
+            "type": "string"
+          }
+        },
+        "required": []
       }
     },
     "getMyCustomer": {
@@ -3447,13 +3492,49 @@
             "properties": {
               "reviews": {
                 "@ref": "reviews-io:ListProductReviewsResponse",
+                "@args": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "integer"
+                    },
+                    "per_page": {
+                      "type": "integer"
+                    },
+                    "photos": {
+                      "type": "integer"
+                    },
+                    "verified_only": {
+                      "type": "integer"
+                    },
+                    "comments_only": {
+                      "type": "integer"
+                    },
+                    "minRating": {
+                      "type": "integer"
+                    },
+                    "include_unpublished_images": {
+                      "type": "integer"
+                    },
+                    "include_moderated": {
+                      "type": "integer"
+                    },
+                    "min_date": {
+                      "type": "string"
+                    },
+                    "max_date": {
+                      "type": "string"
+                    }
+                  },
+                  "required": []
+                },
                 "@resolver": {
                   "name": "rest:get",
                   "service": "reviews-io",
                   "path": "/product/review",
                   "options": {
                     "ignoreErrors": true,
-                    "ttl": 300,
+                    "ttl": 3600,
                     "retry": {
                       "limit": 10,
                       "statusCode": [
@@ -3482,10 +3563,51 @@
                         ]
                       },
                       {
+                        "path": "page",
+                        "mapping": "$args.page"
+                      },
+                      {
                         "path": "per_page",
-                        "value": 2
+                        "mapping": "$args.per_page"
+                      },
+                      {
+                        "path": "photos",
+                        "mapping": "$args.photos"
+                      },
+                      {
+                        "path": "verified_only",
+                        "mapping": "$args.verified_only"
+                      },
+                      {
+                        "path": "comments_only",
+                        "mapping": "$args.comments_only"
+                      },
+                      {
+                        "path": "minRating",
+                        "mapping": "$args.minRating"
+                      },
+                      {
+                        "path": "include_unpublished_images",
+                        "mapping": "$args.include_unpublished_images"
+                      },
+                      {
+                        "path": "include_moderated",
+                        "mapping": "$args.include_moderated"
+                      },
+                      {
+                        "path": "min_date",
+                        "mapping": "$args.min_date"
+                      },
+                      {
+                        "path": "max_date",
+                        "mapping": "$args.max_date"
                       }
-                    ]
+                    ],
+                    "serialize": {
+                      "defaults": {
+                        "style": "form"
+                      }
+                    }
                   }
                 }
               },

@@ -23,7 +23,8 @@ export const ProductPage = ({
   details,
   policies,
   reviewList,
-  breadcrumbs
+  breadcrumbs,
+  reviewsPerPage
 }: ProductPageProps) => {
   const { showDetails, showPolicies, showReviews, showRelatedProducts, showBreadcrumbs } = options;
 
@@ -49,7 +50,12 @@ export const ProductPage = ({
       <div className="bg-white">
         <Wrapper>
           {showReviews && (
-            <Reviews productName={product.name} sku={shopifyGidToId(product.id)} reviewList={reviewList} />
+            <Reviews
+              productName={product.name}
+              sku={shopifyGidToId(product.id)}
+              reviewList={reviewList}
+              reviewsPerPage={reviewsPerPage}
+            />
           )}
           {showRelatedProducts && <RelatedProductsWithData collection="related-products" />}
         </Wrapper>
