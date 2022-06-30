@@ -1,6 +1,3 @@
-<!-- LIGHTHOUSE:START -->
-<!-- LIGHTHOUSE:END -->
-
 # TakeShape Deluxe ™️ Ecommerce Sample Project
 
 The easiest way to know if a tool is right for you is to see it in action.
@@ -24,6 +21,9 @@ You can clone this repo with git to run the Next.js frontend locally
 (`git clone https://github.com/takeshape/takeshape-deluxe-sample-project`). To connect it to the unified e-commerce
 backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern` directory.
 [The instructions section of this README will teach you how to do that](#instructions).
+
+<!-- LIGHTHOUSE:BEGIN -->
+<!-- LIGHTHOUSE:END -->
 
 ## How it works
 
