@@ -4,8 +4,8 @@ on:
   deployment_status:
 
 jobs:
-  lighthouse-run:
-    name: Audit
+  lighthouse-run-preview:
+    name: Audit Preview Site
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +28,7 @@ jobs:
             ${{ github.event.deployment_status.target_url }}
             ${{ github.event.deployment_status.target_url }}/product/__lighthouse
             ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
-          configPath: ./.lighthouse/lighthouserc.json
+          configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
           runs: 5
@@ -51,6 +51,50 @@ jobs:
 
       - name: Add Lighthouse stats as comment
         if: always() && steps.pr.outputs.number != ''
+        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.pr.outputs.number }}
+          header: lighthouse
+          message: ${{ steps.format_lighthouse_score.outputs.comment }}
+
+  lighthouse-run-production:
+    name: Audit Production Site
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Audit URLs using Lighthouse
+        id: lighthouse_audit
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            ${{ github.event.deployment_status.target_url }}
+            ${{ github.event.deployment_status.target_url }}/product/__lighthouse
+            ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
+          configPath: ./.lighthouse/lighthouserc.js
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          runs: 5
+
+      - name: Format Lighthouse score
+        id: format_lighthouse_score
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
+
+            const lighthouseOutputs = {
+              manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
+              links: ${{ steps.lighthouse_audit.outputs.links }}
+            };
+
+            const comment = lighthouseCommentMaker({ lighthouseOutputs });
+            core.setOutput("comment", comment);
+
+      - name: Add Lighthouse to README.md
+        if: always()
         uses: marocchino/sticky-pull-request-comment@v2.2.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
