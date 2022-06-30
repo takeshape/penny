@@ -28,19 +28,19 @@ backend that TakeShape provides, just deploy the pattern in the `.takeshape/patt
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://deluxe-sample-project-9x7x7b1py-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608102547-14181.report.html) |
+| [Path: /](https://deluxe-sample-project-9s2p8opyp-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608620106-19826.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 92 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://deluxe-sample-project-9x7x7b1py-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608103235-37519.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /product/__lighthouse](https://deluxe-sample-project-9s2p8opyp-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608620541-55663.report.html) |
+| 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 92 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://deluxe-sample-project-9x7x7b1py-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608103804-19256.report.html) |
+| [Path: /collection/__lighthouse](https://deluxe-sample-project-9s2p8opyp-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608620926-89969.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
