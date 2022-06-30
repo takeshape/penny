@@ -15,6 +15,7 @@ const ContentSecurityPolicy = `
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com/recaptcha/api.js https://www.gstatic.com;
   child-src 'self';
   style-src 'self' 'unsafe-inline';
+  object-src 'self' blob: data:;
   media-src 'none';
   img-src * blob: data:;
   connect-src *;

@@ -5,7 +5,7 @@ import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { getVariant } from 'utils/products';
@@ -32,24 +32,30 @@ export const ProductWithImageGrid = ({
 }: PropsWithChildren<ProductWithImageGridProps>) => {
   const { name, descriptionHtml, images, options, hasStock } = product;
 
-  const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
-  const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
-
+  const colors = useMemo(() => options.find((opt) => opt.name.toLowerCase() === 'color'), [options]);
   const initialColor = colors?.values.find((v) => v.hasStock) ?? colors?.values[0] ?? null;
   const [selectedColor, setSelectedColor] = useState(initialColor?.value ?? '');
+
+  const sizes = useMemo(() => options.find((opt) => opt.name.toLowerCase() === 'size'), [options]);
   const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
   const [selectedSize, setSelectedSize] = useState(initialSize?.value);
 
-  const initialVariant =
-    selectedColor && selectedSize
-      ? getVariant(product.variants, [
-          { name: 'Color', value: selectedColor },
-          { name: 'Size', value: selectedSize }
-        ])
-      : product.variants[0];
+  const selectedVariant = useMemo(() => {
+    if (selectedColor && selectedSize) {
+      return getVariant(product.variants, [
+        { name: 'Color', value: selectedColor },
+        { name: 'Size', value: selectedSize }
+      ]);
+    }
 
-  const [selectedVariant, setSelectedVariant] = useState(initialVariant);
-  const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
+    return product.variants[0];
+  }, [product, selectedColor, selectedSize]);
+
+  const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
+
+  useEffect(() => {
+    setSelectedPrice(selectedVariant.prices[0]);
+  }, [selectedVariant, selectedColor, selectedSize]);
 
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
@@ -68,21 +74,6 @@ export const ProductWithImageGrid = ({
     },
     [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen]
   );
-
-  useEffect(() => {
-    const variant =
-      selectedColor && selectedSize
-        ? getVariant(
-            product.variants,
-            [
-              selectedColor && { name: 'Color', value: selectedColor },
-              selectedSize && { name: 'Size', value: selectedSize }
-            ].filter((x) => x)
-          )
-        : product.variants[0];
-    setSelectedVariant(variant);
-    setSelectedPrice(variant.prices[0]);
-  }, [product.variants, selectedColor, selectedSize]);
 
   return (
     <div className="pt-10 pb-18 sm:pt-16 sm:pb-24">

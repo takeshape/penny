@@ -215,7 +215,8 @@ function getRelatedProduct(
 
 export function getRelatedProductList(
   response: ProductPageRelatedProductsShopifyQueryResponse,
-  removeId: string
+  removeId: string,
+  limit = 0
 ): ProductPageRelatedProductsProduct[] {
   let products = response?.products?.nodes;
 
@@ -227,7 +228,9 @@ export function getRelatedProductList(
   const backfill = response.backfill?.nodes;
 
   if (backfill) {
-    products = unique([...products, ...backfill], 'id').filter((product) => product.id !== removeId);
+    products = unique([...products, ...backfill], 'id')
+      .filter((product) => product.id !== removeId)
+      .slice(0, limit);
   }
 
   return products.map((node) => getRelatedProduct(node));
