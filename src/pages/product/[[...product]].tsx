@@ -27,6 +27,7 @@ import { getSingle } from 'utils/types';
 import { retryGraphqlThrottle } from '../../utils/apollo/retryGraphqlThrottle';
 
 const ProductPage: NextPage = ({
+  noindex,
   options,
   navigation,
   footer,
@@ -51,7 +52,7 @@ const ProductPage: NextPage = ({
     <Layout
       navigation={navigation}
       footer={footer}
-      seo={{ title: product.seo.title, description: product.seo.description }}
+      seo={{ title: product.seo.title, description: product.seo.description, noindex }}
     >
       <ProductPageComponent
         component={options.component}
@@ -101,6 +102,8 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
       key: product.id,
+      // Don't index lighthouse test urls
+      noindex: handle === lighthouseHandle,
       navigation,
       footer,
       product,

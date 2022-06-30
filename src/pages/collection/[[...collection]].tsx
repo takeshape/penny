@@ -20,6 +20,7 @@ import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const CollectionPage: NextPage = ({
+  noindex,
   navigation,
   footer,
   collection
@@ -38,7 +39,7 @@ const CollectionPage: NextPage = ({
     <Layout
       navigation={navigation}
       footer={footer}
-      seo={{ title: collection.seo.title, description: collection.seo.description }}
+      seo={{ title: collection.seo.title, description: collection.seo.description, noindex }}
     >
       <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
     </Layout>
@@ -91,6 +92,8 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
       key: collection.id,
+      // Don't index lighthouse test urls
+      noindex: handle === lighthouseHandle,
       navigation,
       footer,
       collection
