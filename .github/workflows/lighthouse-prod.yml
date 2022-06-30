@@ -22,8 +22,8 @@ jobs:
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
-          # configPath: ./.lighthouse/lighthouserc.json
-          configPath: ./.lighthouse/lighthouserc.js
+          configPath: ./.lighthouse/lighthouserc.json
+          # configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
           runs: 1
