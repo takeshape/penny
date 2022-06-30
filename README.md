@@ -1,4 +1,15 @@
 <!-- LIGHTHOUSE:START -->
+## ⚡️🏠 Lighthouse report
+
+| Category | Score |
+| -------- | ----- |
+| [Path: /](https://deluxe-sample-project-4vw1q8r6d-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656605612394-67350.report.html) |
+| 🟠 Performance | 67 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 100 |
+| 🟢 SEO | 100 |
+| 🟢 PWA | 100 |
+
 <!-- LIGHTHOUSE:END -->
 
 # TakeShape Deluxe ™️ Ecommerce Sample Project
