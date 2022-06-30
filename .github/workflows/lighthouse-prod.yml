@@ -61,6 +61,8 @@ jobs:
         with:
           commit_message: Lighthouse Score [skip ci]
           branch: main
+          skip_dirty_check: true
+          skip_fetch: true
           commit_user_name: lighthouse-action
           commit_user_email: actions@github.com
           commit_author: lighthouse-action <actions@github.com>
