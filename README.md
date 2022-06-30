@@ -23,6 +23,29 @@ backend that TakeShape provides, just deploy the pattern in the `.takeshape/patt
 [The instructions section of this README will teach you how to do that](#instructions).
 
 <!-- LIGHTHOUSE:BEGIN -->
+## ⚡️🏠 Lighthouse Report
+
+| Category | Score |
+| -------- | ----- |
+| [Path: /](https://deluxe-sample-project-9x7x7b1py-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608102547-14181.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 100 |
+| 🟢 SEO | 92 |
+| 🟢 PWA | 100 |
+| [Path: /product/__lighthouse](https://deluxe-sample-project-9x7x7b1py-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608103235-37519.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 100 |
+| 🟢 SEO | 92 |
+| 🟢 PWA | 100 |
+| [Path: /collection/__lighthouse](https://deluxe-sample-project-9x7x7b1py-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656608103804-19256.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 100 |
+| 🟢 SEO | 92 |
+| 🟢 PWA | 100 |
+
 <!-- LIGHTHOUSE:END -->
 
 ## How it works
