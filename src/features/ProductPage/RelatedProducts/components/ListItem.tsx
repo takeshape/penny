@@ -30,6 +30,8 @@ export const ListItem = ({ product }: ListItemProps) => {
             <NextImage
               src={product.featuredImage.url}
               alt={product.featuredImage.altText}
+              height={300}
+              width={300}
               className="w-full h-full object-center object-cover"
             />
           </div>

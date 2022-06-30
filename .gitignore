@@ -58,3 +58,8 @@ yarn-error.log*
 
 # Generated types
 src/types/takeshape.ts
+
+# PWA
+/public/sw.*
+/public/workbox-*
+/public/worker-*

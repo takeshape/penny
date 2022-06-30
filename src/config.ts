@@ -47,6 +47,40 @@ export const seo: DefaultSeoProps = {
   defaultTitle: siteName,
   description: siteDescription,
   canonical: siteUrl,
+  additionalMetaTags: [
+    {
+      name: 'apple-mobile-web-app-capable',
+      content: 'yes'
+    },
+    {
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: 'default'
+    },
+    {
+      name: 'apple-mobile-web-app-title',
+      content: siteName
+    },
+    {
+      name: 'mobile-web-app-capable',
+      content: 'yes'
+    },
+    {
+      name: 'msapplication-config',
+      content: '/icons/browserconfig.xml'
+    },
+    {
+      name: 'msapplication-TileColor',
+      content: '#2B5797'
+    },
+    {
+      name: 'msapplication-tap-highlight',
+      content: 'no'
+    },
+    {
+      name: 'theme-color',
+      content: '#000000'
+    }
+  ],
   additionalLinkTags: [
     {
       rel: 'icon',

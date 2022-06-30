@@ -1,6 +1,7 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import withPlugins from 'next-compose-plugins';
+import withPwa from 'next-pwa';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
@@ -12,7 +13,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com/recaptcha/api.js https://www.gstatic.com;
-  child-src 'none';
+  child-src 'self';
   style-src 'self' 'unsafe-inline';
   media-src 'none';
   img-src * blob: data:;
@@ -104,6 +105,12 @@ const config = {
   publicRuntimeConfig: {
     vercelEnv: process.env.VERCEL_ENV ?? 'development'
   },
+  images: {
+    minimumCacheTTL: 60,
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384]
+  },
   swcMinify: true,
   experimental: {
     images: {
@@ -130,4 +137,16 @@ const config = {
   }
 };
 
-export default withPlugins([withBundleAnalyzer, SENTRY_DSN ? withSentryConfig : {}], config);
+export default withPlugins(
+  [
+    withBundleAnalyzer,
+    withPwa({
+      pwa: {
+        dest: 'public',
+        disable: process.env.NODE_ENV === 'development'
+      }
+    }),
+    SENTRY_DSN ? withSentryConfig : {}
+  ],
+  config
+);

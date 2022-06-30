@@ -24,6 +24,8 @@ export const Collections = ({ collections }: CollectionsProps) => {
                   <NextImage
                     alt={image.description ?? ''}
                     src={getImageUrl(image)}
+                    height={500}
+                    width={500}
                     className="w-full h-full object-center object-cover"
                   />
                 </div>

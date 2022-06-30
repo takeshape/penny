@@ -26,6 +26,8 @@ export const Details = ({ details: { text, details } }: DetailsProps) => (
             <NextImage
               src={detail.image.url}
               alt={detail.image.altText}
+              height={600}
+              width={400}
               className="w-full h-full object-center object-cover"
             />
           </div>

@@ -5,9 +5,9 @@ import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
 import { ProductCategoryProductListItem } from '../../types';
 
-export type GridItemProps = Pick<ProductCategoryProductListItem, 'product' | 'reviews'>;
+export type GridItemProps = Pick<ProductCategoryProductListItem, 'product' | 'reviews'> & { priority?: boolean };
 
-export const GridItem = ({ product, reviews }: GridItemProps) => {
+export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
   return (
     <>
       <div className="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75">
@@ -15,6 +15,7 @@ export const GridItem = ({ product, reviews }: GridItemProps) => {
           src={product.featuredImage.url}
           alt={`Picture of ${product.name}`}
           className="w-full h-full object-center object-cover"
+          priority={priority ?? false}
         />
       </div>
       <div className="pt-10 pb-4 text-center">

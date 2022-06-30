@@ -18,9 +18,9 @@ const StorefrontFragments = gql`
     requiresSellingPlan
     featuredImage {
       id
+      url(transform: { maxWidth: 300, maxHeight: 300, preferredContentType: WEBP })
       width
       height
-      url
       altText
     }
     priceRangeV2 {
