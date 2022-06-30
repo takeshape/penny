@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          # token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
           ref: ${{ github.head_ref }}
 
       - name: Audit URLs using Lighthouse
@@ -60,7 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           commit_message: Lighthouse Score [skip ci]
-          branch: main
+          # branch: main
           skip_dirty_check: true
           skip_fetch: true
           commit_user_name: lighthouse-action
