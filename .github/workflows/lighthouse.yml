@@ -9,6 +9,7 @@ jobs:
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     env:
+      LIGHTHOUSE_CONFIG: 'preview'
       LIGHTHOUSE_URLS: |
         ${{ github.event.deployment_status.target_url }}
         ${{ github.event.deployment_status.target_url }}/product/__lighthouse
@@ -28,10 +29,8 @@ jobs:
         if: steps.pr.outputs.number != ''
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
-        env:
-          LIGHTHOUSE_CONFIG: 'preview'
         with:
-          urls: $LIGHTHOUSE_URLS
+          urls: ${{ env.LIGHTHOUSE_URLS }}
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
@@ -67,7 +66,8 @@ jobs:
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
     runs-on: ubuntu-latest
     env:
-      LIGHTHOUSE_BRANCH: main
+      LIGHTHOUSE_CONFIG: 'production'
+      LIGHTHOUSE_BRANCH: 'main'
       LIGHTHOUSE_FILE: 'README.md'
       LIGHTHOUSE_BEGIN_TOKEN: '<!-- LIGHTHOUSE:BEGIN -->'
       LIGHTHOUSE_END_TOKEN: '<!-- LIGHTHOUSE:END -->'
@@ -80,15 +80,13 @@ jobs:
         with:
           # Required due to branch protection rules - must be a repo admin
           token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
-          ref: $LIGHTHOUSE_BRANCH
+          ref: ${{ env.LIGHTHOUSE_BRANCH }}
 
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
-        env:
-          LIGHTHOUSE_CONFIG: 'production'
         with:
-          urls: $LIGHTHOUSE_URLS
+          urls: ${{ env.LIGHTHOUSE_URLS }}
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
