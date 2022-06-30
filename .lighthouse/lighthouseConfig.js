@@ -1,3 +1,5 @@
+// see https://github.com/GoogleChrome/lighthouse/blob/master/docs/configuration.md
+
 const constants = require('./constants');
 
 module.exports = {
@@ -7,7 +9,11 @@ module.exports = {
     throttling: constants.throttling.desktopFIOS,
     screenEmulation: constants.screenEmulationMetrics.desktop,
     emulatedUserAgent: constants.userAgents.desktop,
+    // audits can be found here:
+    // https://github.com/GoogleChrome/lighthouse/blob/eba2a4d19c5786dc37e993858ff4b663181f81e5/lighthouse-core/config/default-config.js#L174
     skipAudits: [
+      'canonical', // even when testing the production build, we still need to use the build url
+      'is-crawlable', // vercel will send a x-robots-txt header to avoid crawling the build (non-canonical) url
       'color-contrast', // doesn't work well with designs
       'maskable-icon', // not helpful
       'unsized-images' // not helpful

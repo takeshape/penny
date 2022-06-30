@@ -2,10 +2,7 @@ module.exports = {
   ci: {
     collect: {
       settings: {
-        configPath:
-          process.env.LIGHTHOUSE_CONFIG === 'production'
-            ? './.lighthouse/lighthouseConfigProduction.js'
-            : './.lighthouse/lighthouseConfigPreview.js'
+        configPath: './.lighthouse/lighthouseConfig.js'
       }
     }
     // TODO Make this work or remove
