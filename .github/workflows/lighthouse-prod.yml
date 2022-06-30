@@ -17,6 +17,7 @@ jobs:
         with:
           # token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
           ref: ${{ github.sha }}
+          fetch-depth: 0
 
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
