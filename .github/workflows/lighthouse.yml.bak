@@ -4,8 +4,8 @@ on:
   deployment_status:
 
 jobs:
-  lighthouse-run-preview:
-    name: Audit Preview Site
+  lighthouse-run:
+    name: Audit
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:

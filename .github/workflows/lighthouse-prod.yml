@@ -4,9 +4,9 @@ on:
   deployment_status:
 
 jobs:
-  lighthouse-run-production:
-    name: Audit Production Site
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
+  lighthouse-run:
+    name: Audit
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,6 +14,8 @@ jobs:
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
+        env:
+          LIGHTHOUSE_CONFIG: 'production'
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
@@ -41,9 +43,24 @@ jobs:
 
       - name: Add Lighthouse to README.md
         if: always()
-        uses: marocchino/sticky-pull-request-comment@v2.2.0
-        with:
+        run: |
+          begin="<!-- LIGHTHOUSE:START -->"
+          end="<!-- LIGHTHOUSE:END -->"
+          data="${{ steps.format_lighthouse_score.outputs.comment }}"
+          file="README.md"
+          awk -i inplace \
+            -v begin="$begin" \
+            -v end="$end" \
+            -v data="$data" '$0~end{f=0} !f{print} $0~begin{print data;f=1}' \
+            "$file"
+
+      - name: Commit to repo
+        uses: stefanzweifel/git-auto-commit-action@v4
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.pr.outputs.number }}
-          header: lighthouse
-          message: ${{ steps.format_lighthouse_score.outputs.comment }}
+        with:
+          commit_message: Lighthouse Score [skip ci]
+          branch: main
+          commit_user_name: lighthouse-action
+          commit_user_email: actions@github.com
+          commit_author: lighthouse-action <actions@github.com>
