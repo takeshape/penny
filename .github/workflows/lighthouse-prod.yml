@@ -1,30 +1,19 @@
-name: Lighthouse (Preview)
+name: Lighthouse (Production)
 
 on:
   deployment_status:
 
 jobs:
-  lighthouse-run-preview:
-    name: Audit Preview Site
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
+  lighthouse-run-production:
+    name: Audit Production Site
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get PR number
-        id: pr
-        run: |
-          number=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
-          echo "::set-output name=number::$number"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Audit URLs using Lighthouse
-        if: steps.pr.outputs.number != ''
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
-        env:
-          LIGHTHOUSE_CONFIG: 'preview'
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
@@ -36,7 +25,6 @@ jobs:
           runs: 5
 
       - name: Format Lighthouse score
-        if: always() && steps.pr.outputs.number != ''
         id: format_lighthouse_score
         uses: actions/github-script@v6
         with:
@@ -51,8 +39,8 @@ jobs:
             const comment = lighthouseCommentMaker({ lighthouseOutputs });
             core.setOutput("comment", comment);
 
-      - name: Add Lighthouse stats as comment
-        if: always() && steps.pr.outputs.number != ''
+      - name: Add Lighthouse to README.md
+        if: always()
         uses: marocchino/sticky-pull-request-comment@v2.2.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
