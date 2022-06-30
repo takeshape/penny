@@ -22,6 +22,7 @@ You can clone this repo with git to run the Next.js frontend locally
 backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern` directory.
 [The instructions section of this README will teach you how to do that](#instructions).
 
+<!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
 ## ⚡️🏠 Lighthouse Report
 
@@ -47,6 +48,7 @@ backend that TakeShape provides, just deploy the pattern in the `.takeshape/patt
 | 🟢 PWA | 100 |
 
 <!-- LIGHTHOUSE:END -->
+<!-- prettier-ignore-end -->
 
 ## How it works
 
