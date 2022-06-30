@@ -1,5 +1,3 @@
-// see https://github.com/GoogleChrome/lighthouse/blob/master/docs/configuration.md
-
 const DEVTOOLS_RTT_ADJUSTMENT_FACTOR = 3.75;
 const DEVTOOLS_THROUGHPUT_ADJUSTMENT_FACTOR = 0.9;
 
@@ -57,56 +55,7 @@ const userAgents = {
 };
 
 module.exports = {
-  extends: 'lighthouse:default',
-  settings: {
-    formFactor: 'desktop',
-    throttling: throttling.desktopFIOS,
-    screenEmulation: screenEmulationMetrics.desktop,
-    emulatedUserAgent: userAgents.desktop,
-    // audits can be found here:
-    // https://github.com/GoogleChrome/lighthouse/blob/eba2a4d19c5786dc37e993858ff4b663181f81e5/lighthouse-core/config/default-config.js#L174
-    skipAudits: [
-      'canonical', // for preview, this will always be incorrect
-      'is-crawlable', // for preview, always blocked
-      'color-contrast', // doesn't work well with designs
-      'maskable-icon', // not helpful
-      'unsized-images' // not helpful
-    ],
-    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa'],
-    budgets: [
-      {
-        path: '/*',
-        timings: [
-          {
-            metric: 'interactive',
-            budget: 1000 // 1.0s
-          },
-          {
-            metric: 'first-contentful-paint',
-            budget: 200 // 0.2s
-          },
-          {
-            metric: 'speed-index',
-            budget: 300 // 0.3s
-          }
-        ],
-        resourceSizes: [
-          {
-            resourceType: 'script',
-            budget: 300 // 300k
-          },
-          {
-            resourceType: 'total',
-            budget: 1500 // 1500k
-          }
-        ],
-        resourceCounts: [
-          {
-            resourceType: 'third-party',
-            budget: 10
-          }
-        ]
-      }
-    ]
-  }
+  throttling,
+  screenEmulationMetrics,
+  userAgents
 };

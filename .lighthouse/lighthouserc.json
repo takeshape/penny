@@ -1,9 +1,0 @@
-{
-  "ci": {
-    "collect": {
-      "settings": {
-        "configPath": "./.lighthouse/lighthouseConfig.js"
-      }
-    }
-  }
-}

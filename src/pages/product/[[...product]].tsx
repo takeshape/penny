@@ -1,11 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import {
-  isProduction,
-  lighthouseHandle,
-  lighthouseProductHandle,
-  pageRevalidationTtl,
-  productReviewsPerPage
-} from 'config';
+import { lighthouseHandle, lighthouseProductHandle, pageRevalidationTtl, productReviewsPerPage } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import { ProductPageShopifyProductHandlesQuery, ProductPageShopifyProductQuery } from 'features/ProductPage/queries';
 import {
@@ -81,7 +75,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   let handle = getSingle(params.product);
 
-  if (!isProduction && lighthouseProductHandle && handle === lighthouseHandle) {
+  if (lighthouseProductHandle && handle === lighthouseHandle) {
     handle = lighthouseProductHandle;
   }
 
@@ -144,7 +138,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 
   // Add the lighthouse testing path, if configured
-  if (!isProduction && lighthouseProductHandle) {
+  if (lighthouseProductHandle) {
     paths.push({ params: { product: [lighthouseHandle] } });
   }
 
