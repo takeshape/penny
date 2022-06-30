@@ -15,6 +15,7 @@ module.exports = {
       'canonical', // even when testing the production build, we still need to use the build url
       'is-crawlable', // vercel will send a x-robots-txt header to avoid crawling the build (non-canonical) url
       'color-contrast', // doesn't work well with designs
+      'maskable-icon', // not helpful
       'unsized-images' // not helpful
     ],
     onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa'],
