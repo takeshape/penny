@@ -118,6 +118,11 @@ export const seo: DefaultSeoProps = {
       sizes: '180x180'
     },
     {
+      rel: 'mask-icon',
+      type: 'image/svg+xml',
+      href: '/safari-mask-icon.svg'
+    },
+    {
       rel: 'manifest',
       href: '/manifest.json'
     },
@@ -144,7 +149,7 @@ export const seo: DefaultSeoProps = {
 };
 
 /* Commerce */
-export const showCurrencySelector = process.env.NEXT_PUBLIC_SHOW_CURRENCY_SELECTOR === 'false' ? false : true;
+export const showCurrencySelector = false;
 export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
 export const defaultCurrency = 'USD';
 
@@ -185,7 +190,7 @@ export const productOptions = {
 };
 
 /* Checkout */
-export const signedInCheckout = process.env.NEXT_PUBLIC_SIGNED_IN_CHECKOUT === 'true' ? true : false;
+export const signedInCheckout = false;
 
 /* Misc */
 export const defaultKlaviyoListId = process.env.NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID;
