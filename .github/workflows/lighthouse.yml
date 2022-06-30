@@ -10,17 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LIGHTHOUSE_CONFIG: 'preview'
-      LIGHTHOUSE_BRANCH: 'main'
       LIGHTHOUSE_URLS: |
         ${{ github.event.deployment_status.target_url }}
         ${{ github.event.deployment_status.target_url }}/product/__lighthouse
         ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
     steps:
       - uses: actions/checkout@v3
-        with:
-          # Required due to branch protection rules - must be a repo admin
-          token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
-          ref: ${{ env.LIGHTHOUSE_BRANCH }}
 
       - name: Get PR number
         id: pr
