@@ -9,61 +9,66 @@ jobs:
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          # token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
-          ref: ${{ github.head_ref }}
+      -
+        name: Dump context
+        uses: crazy-max/ghaction-dump-context@v1
 
-      - name: Audit URLs using Lighthouse
-        id: lighthouse_audit
-        uses: treosh/lighthouse-ci-action@v9
-        env:
-          LIGHTHOUSE_CONFIG: 'production'
-        with:
-          urls: |
-            ${{ github.event.deployment_status.target_url }}
-          configPath: ./.lighthouse/lighthouserc.js
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          runs: 1
+      # - uses: actions/checkout@v3
+      #   with:
+      #     # token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
+      #     ref: ${{ github.ref }}
 
-      - name: Format Lighthouse score
-        id: format_lighthouse_score
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
+      # - name: Audit URLs using Lighthouse
+      #   id: lighthouse_audit
+      #   uses: treosh/lighthouse-ci-action@v9
+      #   env:
+      #     LIGHTHOUSE_CONFIG: 'production'
+      #   with:
+      #     urls: |
+      #       ${{ github.event.deployment_status.target_url }}
+      #     configPath: ./.lighthouse/lighthouserc.js
+      #     uploadArtifacts: true
+      #     temporaryPublicStorage: true
+      #     runs: 1
 
-            const lighthouseOutputs = {
-              manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
-              links: ${{ steps.lighthouse_audit.outputs.links }}
-            };
+      # - name: Format Lighthouse score
+      #   id: format_lighthouse_score
+      #   uses: actions/github-script@v6
+      #   with:
+      #     script: |
+      #       const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
 
-            const comment = lighthouseCommentMaker({ lighthouseOutputs });
-            core.setOutput("comment", comment);
+      #       const lighthouseOutputs = {
+      #         manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
+      #         links: ${{ steps.lighthouse_audit.outputs.links }}
+      #       };
 
-      - name: Add Lighthouse to README.md
-        if: always()
-        run: |
-          begin="<!-- LIGHTHOUSE:START -->"
-          end="<!-- LIGHTHOUSE:END -->"
-          data="${{ steps.format_lighthouse_score.outputs.comment }}"
-          file="README.md"
-          awk -i inplace \
-            -v begin="$begin" \
-            -v end="$end" \
-            -v data="$data" '$0~end{f=0} !f{print} $0~begin{print data;f=1}' \
-            "$file"
+      #       const comment = lighthouseCommentMaker({ lighthouseOutputs });
+      #       core.setOutput("comment", comment);
 
-      - name: Commit to repo
-        uses: stefanzweifel/git-auto-commit-action@v4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          commit_message: Lighthouse Score [skip ci]
-          # branch: main
-          skip_dirty_check: true
-          skip_fetch: true
-          commit_user_name: lighthouse-action
-          commit_user_email: actions@github.com
-          commit_author: lighthouse-action <actions@github.com>
+      # - name: Add Lighthouse to README.md
+      #   if: always()
+      #   run: |
+      #     begin="<!-- LIGHTHOUSE:START -->"
+      #     end="<!-- LIGHTHOUSE:END -->"
+      #     data="${{ steps.format_lighthouse_score.outputs.comment }}"
+      #     file="README.md"
+      #     awk -i inplace \
+      #       -v begin="$begin" \
+      #       -v end="$end" \
+      #       -v data="$data" '$0~end{f=0} !f{print} $0~begin{print data;f=1}' \
+      #       "$file"
+
+      # - name: Commit to repo
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     commit_message: Lighthouse Score [skip ci]
+      #     # branch: main
+      #     skip_dirty_check: true
+      #     skip_fetch: true
+      #     file_pattern: README.md
+      #     commit_user_name: lighthouse-action
+      #     commit_user_email: actions@github.com
+      #     commit_author: lighthouse-action <actions@github.com>
