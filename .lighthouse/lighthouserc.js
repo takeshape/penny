@@ -8,6 +8,7 @@ module.exports = {
             : './.lighthouse/lighthouseConfigPreview.js'
       }
     }
+    // TODO Make this work or remove
     // assert: {
     //   preset: 'lighthouse:recommended',
     //   assertions: {
