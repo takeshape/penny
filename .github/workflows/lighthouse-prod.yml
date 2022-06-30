@@ -15,8 +15,8 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          # token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
-          ref: ${{ github.sha }}
+          token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
+          ref: main
           fetch-depth: 0
 
       - name: Audit URLs using Lighthouse
@@ -68,7 +68,7 @@ jobs:
           commit_message: Lighthouse Score [skip ci]
           # branch: main
           skip_dirty_check: true
-          skip_fetch: true
+          # skip_fetch: true
           file_pattern: README.md
           commit_user_name: lighthouse-action
           commit_user_email: actions@github.com
