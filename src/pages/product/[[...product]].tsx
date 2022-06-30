@@ -105,6 +105,8 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     notFound: !Boolean(product),
     revalidate: pageRevalidationTtl,
     props: {
+      // IMPORTANT This allows state to reset on NextLink route changes
+      key: product.id,
       navigation,
       footer,
       product,

@@ -12,10 +12,10 @@ import { RelatedProducts } from './RelatedProducts';
 export interface RelatedProductsWithDataProps {
   productId: string;
   productTags?: string[];
-  count: number;
+  limit: number;
 }
 
-export const RelatedProductsWithData = ({ productTags, productId, count }: RelatedProductsWithDataProps) => {
+export const RelatedProductsWithData = ({ productTags, productId, limit }: RelatedProductsWithDataProps) => {
   const query = useMemo(
     // Tags from Shopify are already escaped, if using other inputs you may need
     // to escape yourself: https://shopify.dev/api/usage/search-syntax#special-characters
@@ -28,8 +28,8 @@ export const RelatedProductsWithData = ({ productTags, productId, count }: Relat
     ProductPageRelatedProductsShopifyQueryVariables
   >(ProductPageRelatedProductsShopifyQuery, {
     variables: {
-      backfillCount: count + 1,
-      relatedCount: count,
+      backfillCount: limit + 1,
+      relatedCount: limit,
       query
     }
   });
@@ -38,8 +38,11 @@ export const RelatedProductsWithData = ({ productTags, productId, count }: Relat
     loadProducts();
   }, [loadProducts]);
 
-  const loadingProducts = useMemo(() => Array(count).fill(undefined) as ProductPageRelatedProductsProduct[], [count]);
-  const products = useMemo(() => !error && getRelatedProductList(data, productId), [data, error, productId]);
+  const loadingProducts = useMemo(() => Array(limit).fill(undefined) as ProductPageRelatedProductsProduct[], [limit]);
+  const products = useMemo(
+    () => !error && getRelatedProductList(data, productId, limit),
+    [data, error, limit, productId]
+  );
 
   if (error) {
     return null;

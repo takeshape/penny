@@ -57,7 +57,7 @@ export const ProductPage = ({
             />
           )}
           {showRelatedProducts && (
-            <RelatedProductsWithData count={4} productTags={product.tags} productId={product.id} />
+            <RelatedProductsWithData limit={4} productTags={product.tags} productId={product.id} />
           )}
         </Wrapper>
       </div>

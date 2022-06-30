@@ -144,8 +144,7 @@ export const seo: DefaultSeoProps = {
 };
 
 /* Commerce */
-// Lowercase matches Stripe format
-export const showCurrencySelector = true;
+export const showCurrencySelector = process.env.NEXT_PUBLIC_SHOW_CURRENCY_SELECTOR === 'false' ? false : true;
 export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
 export const defaultCurrency = 'USD';
 
