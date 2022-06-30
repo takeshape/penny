@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
@@ -19,8 +21,6 @@ jobs:
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
-            ${{ github.event.deployment_status.target_url }}/product/__lighthouse
-            ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
