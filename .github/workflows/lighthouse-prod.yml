@@ -24,7 +24,7 @@ jobs:
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
-          runs: 5
+          runs: 1
 
       - name: Format Lighthouse score
         id: format_lighthouse_score
