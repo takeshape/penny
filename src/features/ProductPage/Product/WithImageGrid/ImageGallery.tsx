@@ -19,10 +19,10 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
   );
 
   const firstImageClass = classNames(
-    images.length >= 3 && 'aspect-h-5 lg:aspect-h-4',
-    images.length === 2 && 'aspect-h-4 lg:aspect-h-3',
-    images.length === 1 && 'aspect-h-3 lg:aspect-h-2',
-    'aspect-w-4 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3'
+    images.length >= 3 && 'aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3',
+    images.length === 2 && 'aspect-h-4 aspect-w-4 lg:aspect-h-3 lg:aspect-w-3',
+    images.length === 1 && 'aspect-h-3 aspect-w-4 lg:aspect-h-2 lg:aspect-w-4',
+    'sm:rounded-lg sm:overflow-hidden'
   );
 
   return (
@@ -33,7 +33,7 @@ export const ImageGallery = ({ images }: ImageGalleryProps) => {
           alt={images[0].altText}
           height={800}
           width={800}
-          className="w-full h-full object-center object-cover"
+          className="w-full h-full object-center object-cover asp"
           priority
         />
       </div>
