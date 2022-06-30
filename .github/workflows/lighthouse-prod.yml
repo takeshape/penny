@@ -9,15 +9,10 @@ jobs:
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
     steps:
-      # -
-      #   name: Dump context
-      #   uses: crazy-max/ghaction-dump-context@v1
-
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
           ref: main
-          fetch-depth: 0
 
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
@@ -27,6 +22,7 @@ jobs:
         with:
           urls: |
             ${{ github.event.deployment_status.target_url }}
+          # configPath: ./.lighthouse/lighthouserc.json
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
