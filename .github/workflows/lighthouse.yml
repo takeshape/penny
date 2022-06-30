@@ -123,6 +123,7 @@ jobs:
             "$file"
 
       - name: Commit to repo
+        if: always()
         uses: stefanzweifel/git-auto-commit-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
