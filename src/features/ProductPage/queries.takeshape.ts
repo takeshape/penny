@@ -261,3 +261,11 @@ export const ProductPageReviewPageQuery = gql`
     }
   }
 `;
+
+export const CreateMyProductReviewMutation = gql`
+  mutation CreateMyProductReviewMutation($input: CreateMyProductReviewPropertiesPropertyInput!) {
+    result: createMyProductReview(input: $input) {
+      success
+    }
+  }
+`;

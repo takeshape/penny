@@ -17,10 +17,10 @@ Success.parameters = {
   msw: {
     handlers: {
       customer: [
-        graphql.query('GetCustomerQuery', (req, res, ctx) => {
+        graphql.query('CustomerQuery', (req, res, ctx) => {
           return res(ctx.data(fixtures.GetCustomerQuery.ok));
         }),
-        graphql.mutation('UpdateCustomerMutation', (req, res, ctx) => {
+        graphql.mutation('CustomerUpdateMutation', (req, res, ctx) => {
           return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerMutation.ok));
         })
       ]
@@ -33,10 +33,10 @@ Error.parameters = {
   msw: {
     handlers: {
       customer: [
-        graphql.query('GetCustomerQuery', (req, res, ctx) => {
+        graphql.query('CustomerQuery', (req, res, ctx) => {
           return res(ctx.data(fixtures.GetCustomerQuery.ok));
         }),
-        graphql.mutation('UpdateCustomerMutation', (req, res, ctx) => {
+        graphql.mutation('CustomerUpdateMutation', (req, res, ctx) => {
           return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerMutation.error));
         })
       ]

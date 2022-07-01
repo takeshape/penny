@@ -1,12 +1,12 @@
-import { useMutation } from '@apollo/client';
 import FormCardPanel from 'components/Form/CardPanel/CardPanel';
 import FormInput from 'components/Form/Input/Input';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { UpdateCustomerMutationResponse, UpdateCustomerMutationVariables } from 'types/takeshape';
+import { CustomerUpdateMutationResponse, CustomerUpdateMutationVariables } from 'types/storefront';
 import { formatError } from 'utils/errors';
-import { UpdateCustomerMutation } from './queries';
+import { useStorefrontMutation } from 'utils/storefront';
+import { CustomerUpdateMutation } from './queries.storefront';
 
 export interface AccountFormPasswordForm {
   password: string;
@@ -14,6 +14,8 @@ export interface AccountFormPasswordForm {
 }
 
 export const AccountFormPassword = () => {
+  const { data: session } = useSession({ required: true });
+
   const {
     handleSubmit,
     control,
@@ -22,20 +24,21 @@ export const AccountFormPassword = () => {
     watch
   } = useForm<AccountFormPasswordForm>();
 
-  const [updateCustomer, { data: customerResponse }] = useMutation<
-    UpdateCustomerMutationResponse,
-    UpdateCustomerMutationVariables
-  >(UpdateCustomerMutation);
+  const [updateCustomer, { data: customerResponse }] = useStorefrontMutation<
+    CustomerUpdateMutationResponse,
+    CustomerUpdateMutationVariables
+  >(CustomerUpdateMutation);
 
   const onSubmit = useCallback(
     async ({ password }: AccountFormPasswordForm) => {
       await updateCustomer({
         variables: {
+          customerAccessToken: session.shopifyCustomerAccessToken as string,
           customer: { password }
         }
       });
     },
-    [updateCustomer]
+    [updateCustomer, session]
   );
 
   const error =

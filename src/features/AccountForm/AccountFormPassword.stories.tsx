@@ -15,7 +15,7 @@ Success.parameters = {
   msw: {
     handlers: {
       customer: [
-        graphql.mutation('UpdateCustomerMutation', (req, res, ctx) => {
+        graphql.mutation('CustomerUpdateMutation', (req, res, ctx) => {
           return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerMutation.ok));
         })
       ]
@@ -28,7 +28,7 @@ Error.parameters = {
   msw: {
     handlers: {
       customer: [
-        graphql.mutation('UpdateCustomerMutation', (req, res, ctx) => {
+        graphql.mutation('CustomerUpdateMutation', (req, res, ctx) => {
           return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerMutation.error));
         })
       ]
