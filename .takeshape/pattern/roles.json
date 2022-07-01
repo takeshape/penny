@@ -152,70 +152,7 @@
       "Statement": [
         {
           "Resource": [
-            "ts:workflow:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "workflow:*"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:workflow-step:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "workflow-step:*"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.ShopifyStorefront_customer"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionByHandleWithTtl"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.collectionsWithTtl"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getFooter"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyAdminCustomer"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyCustomer"
           ],
           "Effect": "Allow",
           "Action": [
@@ -234,51 +171,6 @@
         {
           "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getMyNewsletterSubscriptions"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getNavigation"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productsWithTtl"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.productByHandleWithTtl"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.getStorefront"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.search"
           ],
           "Effect": "Allow",
           "Action": [
@@ -306,33 +198,6 @@
         {
           "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.addMembers"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createCart"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.updateMyCustomer"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.updateMyCustomerAddress"
           ],
           "Effect": "Allow",
           "Action": [
