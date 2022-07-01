@@ -1,4 +1,6 @@
-export const navigationResponse: any = {
+import { NavigationQueryResponse } from 'types/takeshape';
+
+export const navigationResponse: NavigationQueryResponse = {
   navigation: {
     messageHtml: 'Get free delivery on orders over $100',
     sections: [
@@ -117,7 +119,6 @@ export const navigationResponse: any = {
         },
         subsections: null
       }
-    ],
-    currencies: ['CAD', 'USD', 'AUD', 'EUR', 'GBP']
+    ]
   }
 };

@@ -1,5 +1,5 @@
 import NextLink from 'components/NextLink';
-import { useMemo } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 
 interface NavigationItemProps {
   name?: string;
@@ -18,7 +18,7 @@ interface NavigationSectionProps {
   links?: NavigationItemProps[];
 }
 
-const NavigationSection = (props: React.PropsWithChildren<NavigationSectionProps>) => (
+const NavigationSection = (props: PropsWithChildren<NavigationSectionProps>) => (
   <>
     <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{props.name}</h3>
     <ul role="list" className="mt-4 space-y-4">

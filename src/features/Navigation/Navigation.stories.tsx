@@ -1,4 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { currencyList } from 'config';
 import { rest } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from './Navigation';
@@ -41,7 +42,7 @@ export const _Navigation = Template.bind({});
 _Navigation.args = {
   message: navigation.message,
   sections: navigation.sections,
-  currencies: navigation.currencies
+  currencies: currencyList
 };
 
 export default Meta;
