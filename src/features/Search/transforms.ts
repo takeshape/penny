@@ -1,5 +1,5 @@
 import { createImageGetter, getProductUrl } from 'transforms/shopify';
-import { SearchShopifyProductsResults } from './queries';
+import { SearchShopifyProductsResponse } from 'types/takeshape';
 import { SearchItem, SearchItemProduct, SearchShopifyProduct } from './types';
 
 function getProduct(shopifyProduct: SearchShopifyProduct): SearchItemProduct {
@@ -11,7 +11,8 @@ function getProduct(shopifyProduct: SearchShopifyProduct): SearchItemProduct {
     url: getProductUrl(shopifyProduct.handle),
     name: shopifyProduct.title,
     description: shopifyProduct.description,
-    featuredImage: getImage(shopifyProduct.featuredImage)
+    featuredImage: getImage(shopifyProduct.featuredImage),
+    hasStock: shopifyProduct.totalInventory > 0
   };
 }
 
@@ -21,12 +22,12 @@ function getItem(shopifyProduct: SearchShopifyProduct): SearchItem {
   };
 }
 
-export function getSearchList(response: SearchShopifyProductsResults): SearchItem[] {
+export function getSearchList(response: SearchShopifyProductsResponse): SearchItem[] {
   const results = response?.search?.results;
 
   if (!results) {
     return null;
   }
 
-  return results.map((item) => getItem(item));
+  return results.map((item) => item.__typename === 'Shopify_Product' && getItem(item));
 }

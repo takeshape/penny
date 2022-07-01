@@ -12,7 +12,6 @@ import * as Storefront from 'types/storefront';
 import {
   ProductCategoryShopifyCollectionQueryResponse,
   ProductPageShopifyProductResponse,
-  QuickAddQueryResponse,
   Shopify_MoneyV2,
   Shopify_SellingPlanInterval,
   Shopify_SellingPlanPricingPolicyAdjustmentType,
@@ -28,7 +27,7 @@ type Shopify_SellingPlanPricingPolicy =
 type Shopify_SellingPlanRecurringBillingPolicy =
   ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['billingPolicy'];
 
-type Shopify_Product = ProductPageShopifyProductResponse['product'] | QuickAddQueryResponse['product'];
+type Shopify_Product = ProductPageShopifyProductResponse['product'];
 
 type Shopify_ProductVariant = ProductPageShopifyProductResponse['product']['variants']['edges'][0]['node'];
 

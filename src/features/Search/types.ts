@@ -1,10 +1,9 @@
 import { ProductCore } from 'types/product';
-import { Shopify_Product } from 'types/takeshape';
+import { SearchShopifyProductsResponse } from 'types/takeshape';
 
-export type SearchShopifyProduct = Pick<
-  Shopify_Product,
-  'id' | 'handle' | 'title' | 'description' | 'descriptionHtml' | 'featuredImage'
->;
+export type SearchShopifyProduct = SearchShopifyProductsResponse['search']['results'][0] & {
+  __typename: 'Shopify_Product';
+};
 
 export type SearchItemProduct = ProductCore;
 
