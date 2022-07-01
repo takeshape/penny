@@ -3,5 +3,15 @@ import { APOLLO_CACHE_PROP_NAME, createClient, InitializeApolloProps } from './c
 
 export function useApollo(pageProps: any, { accessToken, uri }: InitializeApolloProps) {
   const initialCache = pageProps[APOLLO_CACHE_PROP_NAME];
-  return useMemo(() => createClient({ initialCache, accessToken, uri }), [initialCache, accessToken, uri]);
+  return useMemo(
+    () =>
+      createClient({
+        initialCache,
+        accessToken,
+        accessTokenHeader: 'Authorization',
+        accessTokenPrefix: 'Bearer',
+        uri
+      }),
+    [initialCache, accessToken, uri]
+  );
 }

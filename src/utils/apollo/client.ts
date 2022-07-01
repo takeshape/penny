@@ -13,34 +13,30 @@ export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
 
 export interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
-  getAccessToken?: () => string | Promise<string>;
   accessToken?: string;
+  accessTokenHeader?: string;
+  accessTokenPrefix?: string;
   ssrMode?: boolean;
   rateLimit?: boolean;
   uri: string;
 }
 
 function createApolloClient({
-  getAccessToken,
   accessToken,
+  accessTokenHeader,
+  accessTokenPrefix,
   uri,
   ssrMode
-}: Pick<InitializeApolloProps, 'getAccessToken' | 'accessToken' | 'ssrMode' | 'uri'>) {
+}: Pick<InitializeApolloProps, 'accessToken' | 'accessTokenHeader' | 'accessTokenPrefix' | 'ssrMode' | 'uri'>) {
+  accessTokenHeader = accessTokenHeader ?? 'Authorization';
+  accessTokenPrefix = accessTokenPrefix ?? 'Bearer';
+
   const httpLink = createHttpLink({
     uri
   });
 
-  const withToken = setContext(async () => {
-    let token;
-
-    if (getAccessToken) {
-      token = await getAccessToken();
-    } else {
-      // Anonymous authentication is the default
-      token = accessToken;
-    }
-
-    return { token };
+  const withToken = setContext(() => {
+    return { token: accessToken };
   });
 
   const withError = onError(({ graphQLErrors, networkError }) => {
@@ -63,28 +59,16 @@ function createApolloClient({
   const authLink = new ApolloLink((operation, forward) => {
     const { token, headers } = operation.getContext();
 
-    if (!headers?.Authorization && token) {
+    if (!headers?.[accessTokenHeader] && token) {
       operation.setContext(() => ({
         headers: {
-          Authorization: token ? `Bearer ${token}` : ''
+          [accessTokenHeader]: `${accessTokenPrefix} ${token}`.trim()
         }
       }));
     }
 
     return forward(operation);
   });
-
-  // TODO This doesn't seem to be needed now, review...
-  //
-  // const cleanTypeName = new ApolloLink((operation, forward) => {
-  //   if (operation.variables) {
-  //     const omitTypename = (key, value) => (key === '__typename' ? undefined : value);
-  //     operation.variables = JSON.parse(JSON.stringify(operation.variables), omitTypename);
-  //   }
-  //   return forward(operation).map((data) => {
-  //     return data;
-  //   });
-  // });
 
   const retryLink = new RetryLink({
     attempts: {
@@ -125,8 +109,14 @@ export function createStaticClient({ accessToken, uri }: InitializeApolloProps):
  * Creates a client and  restores the cache. Always returns a new client. Suitable
  * for use inside useMemo.
  */
-export function createClient({ initialCache, accessToken, uri }: InitializeApolloProps) {
-  const client = createApolloClient({ accessToken, uri });
+export function createClient({
+  initialCache,
+  accessToken,
+  accessTokenHeader,
+  accessTokenPrefix,
+  uri
+}: InitializeApolloProps) {
+  const client = createApolloClient({ accessToken, accessTokenHeader, accessTokenPrefix, uri });
 
   if (initialCache) {
     client.cache.restore(initialCache);

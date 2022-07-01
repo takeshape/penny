@@ -1,10 +1,10 @@
-import { useLazyQuery } from '@apollo/client';
 import { useEffect, useMemo } from 'react';
 import {
   ProductPageRelatedProductsShopifyQueryResponse,
   ProductPageRelatedProductsShopifyQueryVariables
 } from 'types/takeshape';
-import { ProductPageRelatedProductsShopifyQuery } from '../queries';
+import { useStorefrontLazyQuery } from 'utils/storefront';
+import { ProductPageRelatedProductsShopifyQuery } from '../queries.storefront';
 import { getRelatedProductList } from '../transforms';
 import { ProductPageRelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
@@ -23,7 +23,7 @@ export const RelatedProductsWithData = ({ productTags, productId, limit }: Relat
     [productTags]
   );
 
-  const [loadProducts, { data, error }] = useLazyQuery<
+  const [loadProducts, { data, error }] = useStorefrontLazyQuery<
     ProductPageRelatedProductsShopifyQueryResponse,
     ProductPageRelatedProductsShopifyQueryVariables
   >(ProductPageRelatedProductsShopifyQuery, {

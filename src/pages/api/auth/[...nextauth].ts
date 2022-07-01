@@ -16,7 +16,12 @@ import {
 import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
 
-const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
+const apolloClient = createStaticClient({
+  uri: takeshapeApiUrl,
+  accessToken: takeshapeWebhookApiKey,
+  accessTokenHeader: 'Authorization',
+  accessTokenPrefix: 'Bearer'
+});
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
