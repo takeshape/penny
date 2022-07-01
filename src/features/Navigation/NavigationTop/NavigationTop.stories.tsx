@@ -40,7 +40,7 @@ const Template = (args) => <NavigationTop {...args} />;
 export const _Mobile = Template.bind({});
 _Mobile.args = {
   message: navigation.message,
-  links: navigation.links,
+  sections: navigation.sections,
   currencies: navigation.currencies
 };
 _Mobile.parameters = {
@@ -52,7 +52,7 @@ _Mobile.parameters = {
 export const _Tablet = Template.bind({});
 _Tablet.args = {
   message: navigation.message,
-  links: navigation.links,
+  sections: navigation.sections,
   currencies: navigation.currencies
 };
 _Tablet.parameters = {
@@ -64,7 +64,7 @@ _Tablet.parameters = {
 export const _Desktop = Template.bind({});
 _Desktop.args = {
   message: navigation.message,
-  links: navigation.links,
+  sections: navigation.sections,
   currencies: navigation.currencies
 };
 _Desktop.parameters = {};

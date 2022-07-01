@@ -3,33 +3,59 @@ import { gql } from '@apollo/client';
 export const NavigationQuery = gql`
   query NavigationQuery {
     navigation: getNavigation {
-      _id
-      links {
-        categories {
-          brands {
-            href
-            name
+      messageHtml
+      sections {
+        name
+        link {
+          __typename
+          ... on Collection {
+            shopifyCollection {
+              title
+              handle
+            }
           }
-          categories {
-            href
-            name
+          ... on Product {
+            shopifyProduct {
+              title
+              handle
+            }
           }
-          collection {
-            href
-            name
+          ... on Page {
+            title
+            slug
           }
-          featured {
-            href
+          ... on Link {
             name
+            href
           }
-          name
         }
-        pages {
-          href
+        subsections {
           name
+          links {
+            __typename
+            ... on Collection {
+              shopifyCollection {
+                title
+                handle
+              }
+            }
+            ... on Product {
+              shopifyProduct {
+                title
+                handle
+              }
+            }
+            ... on Page {
+              title
+              slug
+            }
+            ... on Link {
+              name
+              href
+            }
+          }
         }
       }
-      messageHtml
     }
   }
 `;

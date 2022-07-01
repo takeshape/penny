@@ -1,4 +1,5 @@
-import { FooterResponse } from 'types/takeshape';
+import { getNavigationLink } from 'features/Navigation/transforms';
+import { FooterResponse, NavigationSectionsLinkProperty } from 'types/takeshape';
 
 export function getFooter(response: FooterResponse) {
   const footer = response?.footer;
@@ -7,5 +8,14 @@ export function getFooter(response: FooterResponse) {
     return null;
   }
 
-  return footer;
+  return {
+    ...footer,
+    navigation: {
+      ...footer.navigation,
+      sections: footer.navigation.sections.map((section) => ({
+        ...section,
+        links: section.links.map((link) => getNavigationLink(link as NavigationSectionsLinkProperty))
+      }))
+    }
+  };
 }

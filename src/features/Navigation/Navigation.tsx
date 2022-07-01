@@ -5,12 +5,12 @@ import { Navigation as NavigationType } from './types';
 
 export interface NavigationProps extends NavigationType {}
 
-export const Navigation = ({ message, links, currencies }) => {
+export const Navigation = ({ message, sections, currencies }) => {
   return (
     <Fragment>
-      <NavigationMobileMenu links={links} currencies={currencies} />
+      <NavigationMobileMenu sections={sections} currencies={currencies} />
       <header className="relative z-10">
-        <NavigationTop message={message} links={links} currencies={currencies} />
+        <NavigationTop message={message} sections={sections} currencies={currencies} />
       </header>
     </Fragment>
   );
