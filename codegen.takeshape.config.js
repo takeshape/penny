@@ -5,7 +5,7 @@ const takeshapeAnonymousApiKey = process.env.NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API
 
 module.exports = {
   overwrite: true,
-  documents: 'src/**/queries.ts',
+  documents: ['src/**/queries.ts', 'src/**/queries.takeshape.ts'],
   schema: {
     [takeshapeApiUrl]: {
       headers: {

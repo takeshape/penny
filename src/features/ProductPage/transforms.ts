@@ -208,7 +208,8 @@ function getRelatedProduct(
     // The currencyCode enums incompatible across the two product types...
     priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
     priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
-    options: getProductOptions(shopifyProduct.options)
+    options: getProductOptions(shopifyProduct.options),
+    hasStock: shopifyProduct.totalInventory > 0
   };
 }
 
@@ -222,7 +223,10 @@ export function getRelatedProductList(
     return null;
   }
 
-  return products.map((node) => getRelatedProduct(node)).slice(0, limit);
+  return products
+    .map((node) => getRelatedProduct(node))
+    .filter((product) => product.hasStock)
+    .slice(0, limit);
 }
 
 function collectionHasParent(collection: Shopify_Collection) {

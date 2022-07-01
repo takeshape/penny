@@ -11,7 +11,7 @@ const client = createClient({
 
 export function useStorefrontLazyQuery<TData, TVariables>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: LazyQueryHookOptions<TData, TVariables>
+  options: LazyQueryHookOptions<TData, TVariables> = {}
 ) {
   return useLazyQuery(query, {
     ...options,
