@@ -1,6 +1,6 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import { takeshapeApiUrl, takeshapeAuthAudience, takeshapeAuthIssuer, takeshapeWebhookApiKey } from 'config';
-import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery } from 'features/Auth/queries';
+import { CustomerAccessTokenCreateMutation, CustomerQuery } from 'features/Auth/queries';
 import logger from 'logger';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
@@ -8,10 +8,10 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
 import {
-  CreateCustomerAccessTokenMutationResponse,
-  CreateCustomerAccessTokenMutationVariables,
-  GetCustomerTokenDataQueryResponse,
-  GetCustomerTokenDataQueryVariables
+  CustomerAccessTokenCreateMutationResponse,
+  CustomerAccessTokenCreateMutationVariables,
+  CustomerQueryResponse,
+  CustomerQueryVariables
 } from 'types/takeshape';
 import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
@@ -63,10 +63,10 @@ const nextAuthConfig = {
       },
       async authorize({ email, password }) {
         const { data: accessTokenData } = await apolloClient.mutate<
-          CreateCustomerAccessTokenMutationResponse,
-          CreateCustomerAccessTokenMutationVariables
+          CustomerAccessTokenCreateMutationResponse,
+          CustomerAccessTokenCreateMutationVariables
         >({
-          mutation: CreateCustomerAccessTokenMutation,
+          mutation: CustomerAccessTokenCreateMutation,
           variables: {
             input: {
               email,
@@ -86,11 +86,8 @@ const nextAuthConfig = {
 
         const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
-        const { data: customerData } = await apolloClient.query<
-          GetCustomerTokenDataQueryResponse,
-          GetCustomerTokenDataQueryVariables
-        >({
-          query: GetCustomerTokenDataQuery,
+        const { data: customerData } = await apolloClient.query<CustomerQueryResponse, CustomerQueryVariables>({
+          query: CustomerQuery,
           variables: {
             customerAccessToken: shopifyCustomerAccessToken
           }

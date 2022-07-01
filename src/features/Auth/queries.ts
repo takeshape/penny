@@ -22,8 +22,8 @@ export const RecoverCustomerPasswordMutation = gql`
   }
 `;
 
-export const CreateCustomerAccessTokenMutation = gql`
-  mutation CreateCustomerAccessTokenMutation($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
+export const CustomerAccessTokenCreateMutation = gql`
+  mutation CustomerAccessTokenCreateMutation($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
     accessTokenCreate: ShopifyStorefront_customerAccessTokenCreate(input: $input) {
       customerAccessToken {
         expiresAt
@@ -34,6 +34,19 @@ export const CreateCustomerAccessTokenMutation = gql`
         field
         message
       }
+    }
+  }
+`;
+
+export const CustomerQuery = gql`
+  query CustomerQuery($customerAccessToken: String!) {
+    customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
+      firstName
+      lastName
+      id
+      phone
+      email
+      displayName
     }
   }
 `;
