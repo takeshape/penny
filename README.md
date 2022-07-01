@@ -28,19 +28,19 @@ backend that TakeShape provides, just deploy the pattern in the `.takeshape/patt
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://deluxe-sample-project-2698nmvkd-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656710098906-16404.report.html) |
+| [Path: /](https://deluxe-sample-project-o0y4803j5-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656711401648-62883.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://deluxe-sample-project-2698nmvkd-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656710099441-48328.report.html) |
+| [Path: /product/__lighthouse](https://deluxe-sample-project-o0y4803j5-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656711402642-8068.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://deluxe-sample-project-2698nmvkd-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656710099897-717.report.html) |
+| [Path: /collection/__lighthouse](https://deluxe-sample-project-o0y4803j5-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1656711402972-36010.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
@@ -672,6 +672,26 @@ offer [a similar deploy preview tool](https://docs.netlify.com/site-deploys/depl
 To learn more about deploying with Netlify,
 [check out their comprehensive guide](https://docs.netlify.com/integrations/frameworks/next-js/).
 
+## GitHub Actions
+
+If you are using the included workflows you will get a great CI process, that includes:
+
+- Unit tests on every PR
+- Cypress E2E Testing on every PR
+- Storybook deploys and testing with Chromatic
+- Automated Lighthouse scores on every PR and on production deploys
+
+### IMPORTANT
+
+If you use the automated Lighthouse (Production) workflow, you must add the following to your
+Vercel `Ignored Build Step` settings, otherwise you'll end up with an infinite prod deploy loop:
+
+In `Project Settings > Git` add to `Ignored Build Strp` this command:
+
+```
+bash scripts/ignore-build.sh
+```
+
 ## Learn more
 
 To learn more about Next.js, take a look at the following resources:
@@ -687,14 +707,9 @@ are welcome!
 - Be sure to follow the instructions in the `.env` and `.env.local-example` files included in this repo. Use `.env.test`
   to run the project locally on your machine. Rename `.env.local-example` to `.env.local` before pushing any changes to
   it.
-- `storybook-addon-jotai` necessitates the graphql overrides
 - `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
   component. This prevents rendering mismatches and stale / incorrect info.
-- Navigation data is loaded into an Apollo cache variable via `addApolloQueryCache`. Files in the `src/data` folder
-  should define queries to get data that need to be fetched and cached during `getStaticProps` in order to prevent a
-  flash of unloaded data in common high visibility components, like the navigation, footer, etc... Add to the file
-  `src/services/apollo/addApolloQueryCache.ts` following the pattern there to get other common data.
 - The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
