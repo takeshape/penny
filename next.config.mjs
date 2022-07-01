@@ -147,7 +147,7 @@ export default withPlugins(
         disable: process.env.NODE_ENV === 'development'
       }
     }),
-    SENTRY_DSN ? withSentryConfig : {}
+    SENTRY_DSN ? (config) => withSentryConfig(config, { silent: true }) : {}
   ],
   config
 );
