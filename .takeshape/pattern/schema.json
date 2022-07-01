@@ -32,42 +32,75 @@
         ]
       }
     },
+    "NavigationLink": {
+      "default": {
+        "properties": {
+          "name": {
+            "widget": "singleLineText"
+          },
+          "href": {
+            "widget": "singleLineText"
+          }
+        },
+        "order": [
+          "name",
+          "href"
+        ]
+      }
+    },
+    "FooterNavigation": {
+      "default": {
+        "properties": {
+          "sections": {
+            "widget": "shapeArray"
+          }
+        },
+        "order": [
+          "sections"
+        ]
+      }
+    },
+    "FooterNavigationSections": {
+      "default": {
+        "properties": {
+          "name": {
+            "widget": "singleLineText"
+          },
+          "items": {
+            "widget": "shapeArray"
+          },
+          "links": {
+            "widget": "relationship"
+          }
+        },
+        "order": [
+          "name",
+          "items",
+          "links"
+        ]
+      }
+    },
+    "FooterNewsletter": {
+      "default": {
+        "widget": "shapeObject",
+        "properties": {
+          "text": {
+            "widget": "shapeObject"
+          }
+        },
+        "order": [
+          "text"
+        ]
+      }
+    },
     "Footer": {
       "default": {
         "properties": {
           "navigation": {
-            "widget": "object",
-            "properties": {
-              "sections": {
-                "widget": "repeater",
-                "properties": {
-                  "name": {
-                    "widget": "singleLineText"
-                  },
-                  "items": {
-                    "widget": "shapeArray"
-                  }
-                },
-                "order": [
-                  "name",
-                  "items"
-                ]
-              }
-            },
-            "order": [
-              "sections"
-            ]
+            "widget": "shapeObject"
           },
           "newsletter": {
-            "widget": "object",
-            "properties": {
-              "text": {
-                "widget": "shapeObject"
-              }
-            },
-            "order": [
-              "text"
-            ]
+            "widget": "shapeObject"
           }
         },
         "order": [
@@ -390,6 +423,37 @@
           "message": {
             "widget": "wysiwygSingleLineText"
           },
+          "sections": {
+            "widget": "repeater",
+            "properties": {
+              "name": {
+                "widget": "singleLineText"
+              },
+              "link": {
+                "widget": "relationship"
+              },
+              "subsections": {
+                "widget": "repeater",
+                "properties": {
+                  "links": {
+                    "widget": "relationship"
+                  },
+                  "name": {
+                    "widget": "singleLineText"
+                  }
+                },
+                "order": [
+                  "links",
+                  "name"
+                ]
+              }
+            },
+            "order": [
+              "name",
+              "link",
+              "subsections"
+            ]
+          },
           "links": {
             "widget": "object",
             "properties": {
@@ -492,6 +556,7 @@
         },
         "order": [
           "message",
+          "sections",
           "links"
         ]
       }
@@ -637,6 +702,22 @@
           "collection"
         ]
       }
+    },
+    "Link": {
+      "default": {
+        "properties": {
+          "name": {
+            "widget": "singleLineText"
+          },
+          "href": {
+            "widget": "singleLineText"
+          }
+        },
+        "order": [
+          "name",
+          "href"
+        ]
+      }
     }
   },
   "services": {
@@ -776,6 +857,26 @@
     }
   },
   "queries": {
+    "getLink": {
+      "shape": "Link",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "Link"
+      },
+      "description": "Get a Link by ID",
+      "args": "TSGetArgs<Link>"
+    },
+    "getLinkList": {
+      "shape": "PaginatedList<Link>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "Link"
+      },
+      "description": "Returns a list Link in natural order.",
+      "args": "TSListArgs<Link>"
+    },
     "getProduct": {
       "shape": "Product",
       "resolver": {
@@ -3076,6 +3177,46 @@
         },
         "required": []
       }
+    },
+    "updateLink": {
+      "shape": "UpdateResult<Link>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "Link"
+      },
+      "description": "Update Link",
+      "args": "UpdateArgs<Link>"
+    },
+    "createLink": {
+      "shape": "CreateResult<Link>",
+      "resolver": {
+        "name": "takeshape:create",
+        "service": "takeshape:local",
+        "shapeName": "Link"
+      },
+      "description": "Create Link",
+      "args": "CreateArgs<Link>"
+    },
+    "duplicateLink": {
+      "shape": "DuplicateResult<Link>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "Link"
+      },
+      "description": "Duplicate Link",
+      "args": "DuplicateArgs<Link>"
+    },
+    "deleteLink": {
+      "shape": "DeleteResult<Link>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "Link"
+      },
+      "description": "Delete Link",
+      "args": "DeleteArgs<Link>"
     }
   },
   "shapes": {
@@ -3392,8 +3533,8 @@
         "properties": {
           "name": {
             "type": "string",
-            "minLength": 0,
             "description": "",
+            "minLength": 0,
             "title": "Name",
             "@mapping": "takeshape:local:FooterNavigationSections.BeZ6ywWzG"
           },
@@ -3409,6 +3550,44 @@
             "description": "",
             "title": "Items",
             "@mapping": "takeshape:local:FooterNavigationSections.vwvZ3gpJ6"
+          },
+          "links": {
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:Collection"
+                },
+                {
+                  "@ref": "local:Product"
+                },
+                {
+                  "@ref": "local:Page"
+                },
+                {
+                  "@ref": "local:Link"
+                }
+              ]
+            },
+            "@input": {
+              "type": "array",
+              "items": {
+                "@ref": "local:TSRelationship"
+              }
+            },
+            "title": "Links",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:FooterNavigationSections.Qq5YbOX3g"
           }
         }
       }
@@ -3421,12 +3600,16 @@
         "type": "object",
         "properties": {
           "sections": {
-            "title": "Sections",
-            "description": "",
             "type": "array",
             "items": {
-              "@ref": "local:FooterNavigationSections"
+              "oneOf": [
+                {
+                  "@ref": "local:FooterNavigationSections"
+                }
+              ]
             },
+            "description": "",
+            "title": "Sections",
             "@mapping": "takeshape:local:FooterNavigation.RcAzYGCEA"
           }
         }
@@ -4856,6 +5039,15 @@
             "title": "Message",
             "@mapping": "takeshape:local:Navigation.PL-G7Y5Vx"
           },
+          "sections": {
+            "title": "Sections",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationSections"
+            },
+            "type": "array",
+            "@mapping": "takeshape:local:Navigation.yDgLbdGqy"
+          },
           "links": {
             "title": "Links",
             "description": "",
@@ -4863,6 +5055,154 @@
             "@mapping": "takeshape:local:Navigation.d1o5S0w1Y"
           }
         }
+      }
+    },
+    "NavigationSectionsSubsections": {
+      "id": "1Vg8Vxv0J",
+      "name": "NavigationSectionsSubsections",
+      "title": "Navigation Sections Subsections",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "@ref": "local:Link"
+                },
+                {
+                  "@ref": "local:Page"
+                },
+                {
+                  "@ref": "local:Collection"
+                },
+                {
+                  "@ref": "local:Product"
+                }
+              ]
+            },
+            "@input": {
+              "type": "array",
+              "items": {
+                "@ref": "local:TSRelationship"
+              }
+            },
+            "title": "Links",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:NavigationSectionsSubsections.EQ9Zhy0s8"
+          },
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationSectionsSubsections.7gt8oisHU"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "NavigationSections": {
+      "id": "yDgLbdGqy",
+      "name": "NavigationSections",
+      "title": "Navigation Sections",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationSections.epnGSC2k1"
+          },
+          "link": {
+            "description": "",
+            "@args": "TSRelationshipArgs",
+            "@resolver": {
+              "name": "takeshape:getRelated",
+              "service": "takeshape:local",
+              "options": {
+                "nullable": true
+              }
+            },
+            "oneOf": [
+              {
+                "@ref": "local:Link"
+              },
+              {
+                "@ref": "local:Product"
+              },
+              {
+                "@ref": "local:Collection"
+              },
+              {
+                "@ref": "local:Page"
+              }
+            ],
+            "@input": {
+              "@ref": "local:TSRelationship"
+            },
+            "title": "Link",
+            "@backreference": {
+              "enabled": false
+            },
+            "@mapping": "takeshape:local:NavigationSections.u2cRNa3wf"
+          },
+          "subsections": {
+            "title": "Subsections",
+            "description": "",
+            "items": {
+              "@ref": "local:NavigationSectionsSubsections"
+            },
+            "type": "array",
+            "@mapping": "takeshape:local:NavigationSections.1Vg8Vxv0J"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      }
+    },
+    "Link": {
+      "id": "Ce6MMM76G",
+      "name": "Link",
+      "title": "Link",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "@mapping": "takeshape:local:Link.xri0JcIxz"
+          },
+          "href": {
+            "type": "string",
+            "title": "Href",
+            "@mapping": "takeshape:local:Link.PsB6Lb6xt"
+          }
+        },
+        "required": [
+          "name",
+          "href"
+        ]
       }
     },
     "PageSectionMdx": {
