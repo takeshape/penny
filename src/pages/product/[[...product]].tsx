@@ -22,9 +22,9 @@ import {
   ProductPageShopifyProductResponse,
   ProductPageShopifyProductVariables
 } from 'types/takeshape';
+import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
-import { retryGraphqlThrottle } from '../../utils/apollo/retryGraphqlThrottle';
 
 const ProductPage: NextPage = ({
   noindex,

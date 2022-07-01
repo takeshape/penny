@@ -18,7 +18,7 @@ module.exports = {
       plugins: ['typescript', 'typescript-operations'],
       config: {
         omitOperationSuffix: true,
-        operationResultSuffix: Response
+        operationResultSuffix: 'Response'
       }
     }
   }
