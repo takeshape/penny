@@ -672,6 +672,26 @@ offer [a similar deploy preview tool](https://docs.netlify.com/site-deploys/depl
 To learn more about deploying with Netlify,
 [check out their comprehensive guide](https://docs.netlify.com/integrations/frameworks/next-js/).
 
+## GitHub Actions
+
+If you are using the included workflows you will get a great CI process, that includes:
+
+- Unit tests on every PR
+- Cypress E2E Testing on every PR
+- Storybook deploys and testing with Chromatic
+- Automated Lighthouse scores on every PR and on production deploys
+
+### IMPORTANT
+
+If you use the automated Lighthouse (Production) workflow, you must add the following to your
+Vercel `Ignored Build Step` settings, otherwise you'll end up with an infinite prod deploy loop:
+
+In `Project Settings > Git` add to `Ignored Build Strp` this command:
+
+```
+bash scripts/ignore-build.sh
+```
+
 ## Learn more
 
 To learn more about Next.js, take a look at the following resources:
