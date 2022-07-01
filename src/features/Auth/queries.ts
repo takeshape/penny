@@ -37,16 +37,3 @@ export const CreateCustomerAccessTokenMutation = gql`
     }
   }
 `;
-
-export const GetCustomerTokenDataQuery = gql`
-  query GetCustomerTokenDataQuery($customerAccessToken: String!) {
-    customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
-      firstName
-      lastName
-      id
-      phone
-      email
-      displayName
-    }
-  }
-`;

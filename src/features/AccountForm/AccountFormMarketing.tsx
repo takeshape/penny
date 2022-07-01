@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from '@apollo/client';
 import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
@@ -18,6 +17,7 @@ import {
 } from 'types/takeshape';
 import { formatError } from 'utils/errors';
 import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
+import { useAuthenticatedMutation, useAuthenticatedQuery } from 'utils/takeshape';
 import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
 import {
   GetMyNewsletterSubscriptionsQuery,
@@ -49,15 +49,16 @@ export const AccountFormMarketing = () => {
     CustomerUpdateMutationVariables
   >(CustomerUpdateMutation);
 
-  const { data: newsletterData } = useQuery<GetMyNewsletterSubscriptionsQueryResponse>(
+  const { data: newsletterData } = useAuthenticatedQuery<GetMyNewsletterSubscriptionsQueryResponse>(
     GetMyNewsletterSubscriptionsQuery
   );
 
-  const [subscribe] = useMutation<
+  const [subscribe] = useAuthenticatedMutation<
     SubscribeMyEmailToNewsletterMutationResponse,
     SubscribeMyEmailToNewsletterMutationVariables
   >(SubscribeMyEmailToNewsletterMutation);
-  const [unsubscribe] = useMutation<
+
+  const [unsubscribe] = useAuthenticatedMutation<
     UnsubscribeMyEmailFromNewsletterMutationResponse,
     UnsubscribeMyEmailFromNewsletterMutationVariables
   >(UnsubscribeMyEmailFromNewsletterMutation);

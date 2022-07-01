@@ -1595,6 +1595,26 @@
     }
   },
   "mutations": {
+    "ShopifyStorefront_customerAccessTokenCreate": {
+      "resolver": {
+        "name": "graphql:mutation",
+        "service": "shopify-storefront",
+        "fieldName": "customerAccessTokenCreate"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "@ref": "shopify-storefront:CustomerAccessTokenCreateInput",
+            "description": "The fields used to create a customer access token."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
+    },
     "updateFooter": {
       "shape": "UpdateResult<Footer>",
       "resolver": {
