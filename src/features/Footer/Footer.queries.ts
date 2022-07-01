@@ -6,9 +6,28 @@ export const FooterQuery = gql`
       navigation {
         sections {
           name
-          items {
-            name
-            href
+          links {
+            __typename
+            ... on Collection {
+              shopifyCollection {
+                title
+                handle
+              }
+            }
+            ... on Product {
+              shopifyProduct {
+                title
+                handle
+              }
+            }
+            ... on Link {
+              name
+              href
+            }
+            ... on Page {
+              title
+              slug
+            }
           }
         }
       }

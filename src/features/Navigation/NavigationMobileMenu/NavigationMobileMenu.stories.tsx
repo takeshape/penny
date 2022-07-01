@@ -42,7 +42,7 @@ _Open.parameters = {
 };
 _Open.args = {
   message: navigation.message,
-  links: navigation.links,
+  sections: navigation.sections,
   currencies: navigation.currencies
 };
 
