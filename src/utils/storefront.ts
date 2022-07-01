@@ -1,4 +1,11 @@
-import { DocumentNode, LazyQueryHookOptions, TypedDocumentNode, useLazyQuery } from '@apollo/client';
+import {
+  DocumentNode,
+  LazyQueryHookOptions,
+  MutationHookOptions,
+  TypedDocumentNode,
+  useLazyQuery,
+  useMutation
+} from '@apollo/client';
 import { shopifyStorefrontToken, shopifyStorefrontUrl } from 'config';
 import { createClient } from 'utils/apollo/client';
 
@@ -14,6 +21,16 @@ export function useStorefrontLazyQuery<TData, TVariables>(
   options: LazyQueryHookOptions<TData, TVariables> = {}
 ) {
   return useLazyQuery(query, {
+    ...options,
+    client
+  });
+}
+
+export function useStorefrontMutation<TData, TVariables>(
+  query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+  options: MutationHookOptions<TData, TVariables> = {}
+) {
+  return useMutation(query, {
     ...options,
     client
   });

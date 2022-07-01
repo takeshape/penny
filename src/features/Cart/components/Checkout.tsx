@@ -1,12 +1,13 @@
-import { useMutation } from '@apollo/client';
 import Button from 'components/Button/Button';
 import { signedInCheckout } from 'config';
+import { getCheckoutUrl } from 'features/Cart/transforms';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
-import { CreateCartMutationResponse, CreateCartMutationVariables } from 'types/takeshape';
-import { CreateCartMutation } from '../queries';
+import { CartCreateMutationResponse, CartCreateMutationVariables } from 'types/storefront';
+import { useStorefrontMutation } from 'utils/storefront';
+import { CartCreateMutation } from '../queries.storefront';
 import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
 import { getCartVariables } from '../utils';
 
@@ -18,8 +19,8 @@ export const CartCheckout = () => {
   const quantity = useAtomValue(cartQuantityAtom);
   const items = useAtomValue(cartItemsAtom);
 
-  const [setCartMutation, { data }] = useMutation<CreateCartMutationResponse, CreateCartMutationVariables>(
-    CreateCartMutation
+  const [setCartMutation, { data }] = useStorefrontMutation<CartCreateMutationResponse, CartCreateMutationVariables>(
+    CartCreateMutation
   );
 
   const handleCheckout = useCallback(() => {
@@ -35,8 +36,9 @@ export const CartCheckout = () => {
   }, [session, setIsCartCheckingOut, setCartMutation, items, push]);
 
   useEffect(() => {
-    if (data?.cart?.cart?.checkoutUrl) {
-      window.location.href = data.cart.cart.checkoutUrl;
+    const checkoutUrl = getCheckoutUrl(data);
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
     }
   }, [data]);
 

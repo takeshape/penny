@@ -1,10 +1,10 @@
 import { CartItem } from 'features/Cart/types';
 import { Session } from 'next-auth';
 import { ProductPriceOption } from 'types/product';
-import { CreateCartMutationVariables, CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput } from 'types/takeshape';
+import { CartCreateMutationVariables, CartLineInput } from 'types/storefront';
 
 export const getCartVariables = (items: CartItem[], session?: Session) => {
-  const createCartVariables: CreateCartMutationVariables = {
+  const createCartVariables: CartCreateMutationVariables = {
     input: {
       attributes: [
         {
@@ -13,7 +13,7 @@ export const getCartVariables = (items: CartItem[], session?: Session) => {
         }
       ],
       lines: items?.map(
-        (i): CreateMyCheckoutSessionPropertiesLinesItemsPropertyInput => ({
+        (i): CartLineInput => ({
           merchandiseId: (i.data.price as ProductPriceOption).merchandiseId,
           sellingPlanId: (i.data.price as ProductPriceOption).subscriptionId,
           quantity: i.quantity
