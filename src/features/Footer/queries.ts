@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const FooterQuery = gql`
-  query Footer {
+  query FooterQuery {
     footer: getFooter {
       navigation {
         sections {

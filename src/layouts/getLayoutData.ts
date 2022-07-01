@@ -1,5 +1,5 @@
 import { FooterProps } from 'features/Footer/Footer';
-import { FooterQuery } from 'features/Footer/Footer.queries';
+import { FooterQuery } from 'features/Footer/queries';
 import { getFooter } from 'features/Footer/transforms';
 import { NavigationQuery } from 'features/Navigation/queries';
 import { getNavigation } from 'features/Navigation/transforms';

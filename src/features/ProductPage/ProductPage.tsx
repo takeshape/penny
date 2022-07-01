@@ -56,9 +56,7 @@ export const ProductPage = ({
               reviewsPerPage={reviewsPerPage}
             />
           )}
-          {showRelatedProducts && (
-            <RelatedProductsWithData limit={4} productTags={product.tags} productId={product.id} />
-          )}
+          {showRelatedProducts && <RelatedProductsWithData limit={4} productId={product.id} />}
         </Wrapper>
       </div>
     </>

@@ -52,12 +52,11 @@ export type ProductVariant = {
   id: string;
   name: string;
   description: string;
-  image: ProductImage;
+  image?: ProductImage;
   prices: ProductPriceOption[];
   available: boolean;
   quantityAvailable: number;
   currentlyNotInStock: boolean;
-  // inventoryPolicy: 'CONTINUE' | 'DENY';
   sku: string;
   options: ProductVariantOption[];
 };

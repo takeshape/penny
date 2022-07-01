@@ -6,12 +6,12 @@ export const quickAddProduct: QuickAddProduct = {
   url: '/product/basic-tee-6-pack',
   name: 'Basic Tee 6-Pack',
   description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered. Highlights Hand cut and sewn locally Dyed with our proprietary colors Pre-washed & pre-shrunk Ultra-soft 100% cotton Details The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered... Highlights Hand cut and sewn locally Dyed with our proprietary colors Pre-washed & pre-shrunk Ultra-soft 100% cotton Details The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
   descriptionHtml:
-    '<p>The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.</p>\n<h3>Highlights<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Hand cut and sewn locally</li>\n<li>Dyed with our proprietary colors</li>\n<li>Pre-washed &amp; pre-shrunk</li>\n<li>Ultra-soft 100% cotton</li>\n</ul>\n<h3>Details<br data-mce-fragment="1">\n</h3>\n<p>The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.</p>',
+    '<p>The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered...</p>\n<h3>Highlights<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Hand cut and sewn locally</li>\n<li>Dyed with our proprietary colors</li>\n<li>Pre-washed &amp; pre-shrunk</li>\n<li>Ultra-soft 100% cotton</li>\n</ul>\n<h3>Details<br data-mce-fragment="1">\n</h3>\n<p>The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.</p>',
   featuredImage: {
     height: 1088,
-    url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530734',
+    url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot_500x500.jpg.webp?v=1654530734',
     width: 840,
     altText: 'A bunch of shirts.'
   },
@@ -28,7 +28,7 @@ export const quickAddProduct: QuickAddProduct = {
     {
       id: 'gid://shopify/ProductVariant/40234670162020',
       name: 'XXS / Black',
-      description: 'XXS / Black',
+      description: 'A very very tiny version.',
       prices: [
         {
           id: 'gid://shopify/ProductVariant/40234670162020_DAY_0',
@@ -53,23 +53,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670162020_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670162020',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: false,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 0,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 0,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -110,23 +115,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670194788_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670194788',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: false,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 0,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 0,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -167,23 +177,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670227556_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670227556',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: false,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 0,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 0,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -224,23 +239,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670260324_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670260324',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 2,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 2,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -281,23 +301,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670293092_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670293092',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -338,23 +363,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670325860_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670325860',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -395,23 +425,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670358628_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670358628',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -452,23 +487,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670391396_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670391396',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 4,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 4,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -509,23 +549,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670424164_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670424164',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -566,23 +611,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670456932_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670456932',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -623,23 +673,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670489700_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670489700',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -680,23 +735,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670555236_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670555236',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -737,23 +797,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670588004_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670588004',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -794,23 +859,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670620772_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670620772',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -851,23 +921,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670653540_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670653540',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -908,23 +983,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670686308_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670686308',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -965,23 +1045,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670719076_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670719076',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1022,23 +1107,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670751844_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670751844',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1079,23 +1169,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670784612_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670784612',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1136,23 +1231,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670817380_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670817380',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1193,23 +1293,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 19200,
+          amount: 17280,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670850148_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670850148',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1250,23 +1355,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 20000,
+          amount: 18000,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670882916_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670882916',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1307,23 +1417,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 20000,
+          amount: 18000,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670915684_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670915684',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
@@ -1364,23 +1479,28 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
-          intervalMaxCycles: null,
-          intervalMinCycles: null,
-          intervalAnchor: null,
+          amountBeforeDiscount: 20000,
+          amount: 18000,
+          currencyCode: 'USD'
+        },
+        {
+          id: 'gid://shopify/ProductVariant/40234670981220_DAY_90',
+          name: 'Subscribe & Save',
+          merchandiseId: 'gid://shopify/ProductVariant/40234670981220',
+          subscriptionId: 'gid://shopify/SellingPlan/3073048676',
+          hasDiscount: true,
+          discountType: 'PERCENTAGE',
+          discountAmount: 10,
+          interval: 'DAY',
+          intervalCount: 90,
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
         }
       ],
       available: true,
-      image: {
-        height: 480,
-        url: '/images/default-product-image.webp',
-        width: 480,
-        altText: 'Default product image'
-      },
-      inventory: 5,
-      inventoryPolicy: 'DENY',
+      quantityAvailable: 5,
+      currentlyNotInStock: false,
       sku: '',
       options: [
         {
