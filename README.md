@@ -1,25 +1,11 @@
 # TakeShape Deluxe ™️ Ecommerce Sample Project
 
-The easiest way to know if a tool is right for you is to see it in action.
-
-That's why we built the Deluxe sample project—a production-ready composable e-commerce experience that uses the most
-popular modern API services and frontend technologies. Check out the store now at
+The easiest way to know if a tool is right for you is to see it in action. Check out the store now at
 https://deluxe-sample-project.vercel.app/.
 
-This project has two major elements:
-
-- The Next.js frontend
-- The TakeShape project that composes the e-commerce services on the backend.
-
-TakeShape's API Mesh functionality empowers e-commerce brands to manage their favorite API services in a single
-interface, then generate a GraphQL API that combines all the functionality from those connected services. This generated
-API can be consumed by any frontend to build any ecommerce experience for any sales channel.
-
-This project will demonstrate how you can use TakeShape to build a modern e-commerce experience.
-
 You can clone this repo with git to run the Next.js frontend locally
-(`git clone https://github.com/takeshape/takeshape-deluxe-sample-project`). To connect it to the unified e-commerce
-backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern` directory.
+(`git clone https://github.com/takeshape/takeshape-deluxe-sample-project`). To connect it to a GraphQL backend that
+TakeShape provides, just deploy the pattern in the `.takeshape/pattern` directory.
 [The instructions section of this README will teach you how to do that](#instructions).
 
 <!-- prettier-ignore-start -->
@@ -50,21 +36,9 @@ backend that TakeShape provides, just deploy the pattern in the `.takeshape/patt
 <!-- LIGHTHOUSE:END -->
 <!-- prettier-ignore-end -->
 
-## How it works
-
-This repo contains two major elements:
-
-- The TakeShape project that powers the composable e-commerce backend.
-- The Next.js project that powers the headless storefront.
-
-To get full use out of the Deluxe sample project, you'll have to configure both the TakeShape project and the Next.js
-project.
-
-Here's a deep-dive into both:
-
 ### The TakeShape project pattern
 
-This starter's TakeShape project composes the following services into a unified GraphQL API:
+This starter project composes the following services into a unified GraphQL API:
 
 - Shopify Admin and Storefront for customer data, product info and payment processing
 - OpenID for identity management
@@ -75,11 +49,10 @@ This starter's TakeShape project composes the following services into a unified 
 - Voucherify for customer loyalty rewards
 - Ship Engine for shipping management
 
-But TakeShape isn't just the composition layer for these services—it also enables functionality that can take most
-headless e-commerce deployments to the next level:
+TakeShape is also providing performance and data services for the storefront:
 
 - **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) speeds up product queries by
-  over 50%—from 400ms to under 200ms—and enables product search on the frontend**
+  over 50% and enables lighting fast product search on the frontend**
 - **TakeShape's [ShapeDB](https://app.takeshape.io/docs/data/modeling) hosts some of the custom content used in this
   build.**
 
@@ -105,42 +78,55 @@ graph TD
 The frontend codebase was built with many features that are important for modern composable e-commerce storefronts,
 including:
 
-#### Frameworks, language and styling
+### Frameworks, language and styling
 
-To demonstrate TakeShape in the most popular use-case, here are the frameworks, language and styling options we went
-with for this build:
+Here are the frameworks, language and styling options we went with for this build:
 
-- [Next.js](https://nextjs.org/) to build the pages and bundle the frontend up
-- [NextAuth](https://next-auth.js.org/) for user authentication
-- [Tailwind UI](https://tailwindui.com/) for plug-and-play components that are easy to customize
-- [TypeScript](https://www.typescriptlang.org/) for type safety
-- [Apollo Client](https://www.apollographql.com/docs/react/) for state management when querying the TakeShape project's
-  API
+- [Next.js](https://nextjs.org/) to build the pages and bundle the frontend application
+- [NextAuth](https://next-auth.js.org/) for user authentication against TakeShape and Shopify
+- [Tailwind UI](https://tailwindui.com/) for attractive components that are easy to customize
+- [TypeScript](https://www.typescriptlang.org/) for type safety and documentation
+- [Apollo Client](https://www.apollographql.com/docs/react/) for efficient GraphQL queries against TakeShape
 - [Jotai](https://jotai.org/) for optimized component state management
-- [Storybook](https://storybook.js.org/) for rapid UI prototyping
+- [Storybook](https://storybook.js.org/) for rapid UI prototyping and review
 
-#### Testing
+### Continuous Integration
 
-Testing is a crucial part of modern web development, and our suite of testing tools matches many of the most popular
-stacks in the industry:
+Numerous CI tools have been configured with GitHub Actions. You'll have a starting point that is easy to test, and easy
+to keep error-free and performant.
+
+#### Unit Tests
+
+- [Jest](https://jestjs.io/) for React component testing.
+- [ESLint](https://eslint.org) for code style and quality.
+- [TypeScript](https://www.typescriptlang.org) ensures a type-safe codebase.
+- [GraphQL Codegen](https://www.graphql-code-generator.com) extend type-safety to all your GraphQL queries.
+
+#### E2E Tests
 
 - [Cypress](https://www.cypress.io/) for frontend end-to-end testing and API service mocking
+
+#### Performance Tests
+
+- [Lighthouse](https://web.dev/lighthouse-seo/) for SEO and browser performance metrics
+
+#### Snapshots
+
+- [Chromatic](https://www.chromatic.com/) hosts Storybook stories and provides visual snapshot comparisons
+
+### Runtime error reporting
+
 - [Sentry](https://sentry.io/welcome/) for error reporting and health monitoring
   [with their Next.js-specific SDK](https://docs.sentry.io/platforms/javascript/guides/nextjs/).
-- [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) for error checking and code formatting
-- [Jest](https://jestjs.io/) for React component testing.
-- [Lighthouse](https://web.dev/lighthouse-seo/) for SEO and browser performance metrics
-- [Chromatic](https://www.chromatic.com/) for automated testing in github PRs
 
-#### TakeShape's tools
+#### TakeShape specific-tools
 
 We also used a few tools from TakeShape's ecosystem to simplify our workflow and improve the development process:
 
 - [Next-Auth-All-Access](https://github.com/takeshape/next-auth-all-access#nextauthallaccess) — Our NextAuth wrapper
-  that provides JWKS-verifiable access tokens for third-party APIs.
-- [@takeshape/cli](https://app.takeshape.io/docs/cli) — Our CLI that makes linking a frontend project with a TakeShape
-  project easy. The CLI empowers frontend developers to make updates to their TakeShape project schema, validate changes
-  to the schema from the terminal, and generate graphql types from their schema for frontend frameworks like Apollo.
+  that provides secure, JWKS-verifiable access tokens for third-party APIs.
+- [@takeshape/cli](https://app.takeshape.io/docs/cli) — Our CLI provides schema validation for the pattern schema in the
+  repo.
 - [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — Our GraphQL query
   validation module that supports all graphql-cli options and makes writing queries from the frontend much less painful.
 - [@takeshape/routing](https://app.takeshape.io/docs/routing/#:~:text=Routing%E2%80%8B,dynamic%20search%20or%20taxonomy%20pages)
@@ -683,8 +669,8 @@ If you are using the included workflows you will get a great CI process, that in
 
 ### IMPORTANT
 
-If you use the automated Lighthouse (Production) workflow, you must add the following to your
-Vercel `Ignored Build Step` settings, otherwise you'll end up with an infinite prod deploy loop:
+If you use the automated Lighthouse (Production) workflow, you must add the following to your Vercel
+`Ignored Build Step` settings, otherwise you'll end up with an infinite prod deploy loop:
 
 In `Project Settings > Git` add to `Ignored Build Strp` this command:
 
