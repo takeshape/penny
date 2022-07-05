@@ -70,16 +70,17 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
     (toPage) => {
-      let nextUrl;
-
       const nextPage = currentPath.page + toPage;
+      const isPreviousPage = toPage < 0;
       const cachedNextPage = cachedPageData.current.get(nextPage);
 
-      if (cachedNextPage) {
-        // This allows us to preserve anchor-based (after) URLs for previous pages
+      let nextUrl;
+
+      // This allows us to preserve anchor-based (after) URLs for previous pages
+      if (cachedNextPage && isPreviousPage) {
         nextUrl = getNextUrl(cachedNextPage, nextPage);
       } else {
-        nextUrl = getNextUrl(currentPageData, nextPage, toPage < 0);
+        nextUrl = getNextUrl(currentPageData, nextPage, isPreviousPage);
       }
 
       push(nextUrl, undefined, { shallow: true });
