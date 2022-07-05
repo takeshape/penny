@@ -12,6 +12,12 @@ initialize({
   onUnhandledRequest: 'bypass'
 });
 
+const mockSession = {
+  expires: '2050-10-05T14:48:00.000Z',
+  user: { email: 'deluxe@fake.com', name: 'Deluxe Person' },
+  shopifyCustomerAccessToken: `${Math.random() * 1000}`
+};
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
@@ -27,18 +33,7 @@ export const parameters = {
     handlers: {
       auth: [
         rest.get('/api/auth/session', (req, res, ctx) => {
-          return res(
-            ctx.json({ expires: '2050-10-05T14:48:00.000Z', user: { email: 'deluxe@fake.com', name: 'Deluxe Person' } })
-          );
-        }),
-        rest.get('/api/auth/csrf', (req, res, ctx) => {
-          return res(ctx.json({ csrfToken: '1e42488ff4d1a6e584d71f06f457ebf3dffc1a873d9aed62c6914a6665dfd6b4' }));
-        }),
-        rest.get('/api/auth/signin', (req, res, ctx) => {
-          return res(ctx.json({}));
-        }),
-        rest.post('/api/auth/signout', (req, res, ctx) => {
-          return res(ctx.json({}));
+          return res(ctx.json(mockSession));
         })
       ]
     }
@@ -49,7 +44,7 @@ export const decorators = [
   withJotai,
   mswDecorator,
   (Story) => (
-    <SessionProvider refetchInterval={0}>
+    <SessionProvider refetchInterval={0} session={mockSession}>
       <ApolloProvider client={createClient({})}>
         <Story />
       </ApolloProvider>

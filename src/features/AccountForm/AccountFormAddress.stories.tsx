@@ -11,6 +11,17 @@ const Meta: ComponentMeta<typeof AccountFormAddress> = {
 const Template = (args) => <AccountFormAddress {...args} />;
 
 export const NotReady = Template.bind({});
+NotReady.parameters = {
+  msw: {
+    handlers: {
+      customer: [
+        graphql.query('CustomerQuery', (req, res, ctx) => {
+          return res(ctx.delay('infinite'));
+        })
+      ]
+    }
+  }
+};
 
 export const Success = Template.bind({});
 Success.parameters = {
