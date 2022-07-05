@@ -27,7 +27,7 @@ export function createAnonymousTakeshapeApolloClient() {
   });
 }
 
-export function useAuthenticatedClient() {
+function useAuthenticatedClient() {
   const { data: session } = useSession();
 
   const clientRef = useRef<ApolloClient<NormalizedCacheObject>>();
@@ -48,6 +48,11 @@ export function useAuthenticatedClient() {
   return clientRef.current;
 }
 
+/**
+ * A convenience hook, uses an authenticated Apollo Client.
+ *
+ * WARNING: You must guard the code path that uses this against un-authenticated access.
+ */
 export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: QueryHookOptions<TData, TVariables> = {}
@@ -59,6 +64,11 @@ export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
   });
 }
 
+/**
+ * A convenience hook, uses an authenticated Apollo Client.
+ *
+ * WARNING: You must guard the code path that uses this against un-authenticated access.
+ */
 export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: LazyQueryHookOptions<TData, TVariables> = {}
@@ -70,6 +80,11 @@ export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables
   });
 }
 
+/**
+ * A convenience hook, uses an authenticated Apollo Client.
+ *
+ * WARNING: You must guard the code path that uses this against un-authenticated access.
+ */
 export function useAuthenticatedMutation<TData, TVariables = OperationVariables>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: MutationHookOptions<TData, TVariables> = {}
