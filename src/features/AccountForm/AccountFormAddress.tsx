@@ -1,3 +1,4 @@
+import FormCardPanel from 'components/Form/CardPanel/CardPanel';
 import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
 import { useSession } from 'next-auth/react';
@@ -12,7 +13,6 @@ import {
 import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
 import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
-import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
 import { CustomerAddressUpdateMutation, CustomerQuery } from './queries.storefront';
 
 interface AccountFormAddressForm {

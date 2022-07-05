@@ -4,7 +4,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { SessionProvider } from 'next-auth/react';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { withJotai } from 'storybook-addon-jotai';
-import '../src/styles/globals.css';
+import 'styles/globals.css';
 import { createClient } from '../src/utils/apollo/client';
 
 // initialize MSW
@@ -27,10 +27,15 @@ export const parameters = {
     handlers: {
       auth: [
         rest.get('/api/auth/session', (req, res, ctx) => {
-          return res(ctx.json({ expires: '2050-10-05T14:48:00.000Z' }));
+          return res(
+            ctx.json({ expires: '2050-10-05T14:48:00.000Z', user: { email: 'deluxe@fake.com', name: 'Deluxe Person' } })
+          );
         }),
         rest.get('/api/auth/csrf', (req, res, ctx) => {
           return res(ctx.json({ csrfToken: '1e42488ff4d1a6e584d71f06f457ebf3dffc1a873d9aed62c6914a6665dfd6b4' }));
+        }),
+        rest.get('/api/auth/signin', (req, res, ctx) => {
+          return res(ctx.json({}));
         }),
         rest.post('/api/auth/signout', (req, res, ctx) => {
           return res(ctx.json({}));

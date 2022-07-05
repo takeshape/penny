@@ -38,7 +38,7 @@ export function useAuthenticatedClient() {
 
       clientRef.current = createClient({
         uri: takeshapeApiUrl,
-        accessToken: clientToken.accessToken,
+        accessToken: clientToken?.accessToken,
         accessTokenHeader: 'Authorization',
         accessTokenPrefix: 'Bearer'
       });
