@@ -1,33 +1,38 @@
-import { useMutation, useQuery } from '@apollo/client';
+import FormCardPanel from 'components/Form/CardPanel/CardPanel';
 import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
+import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  GetCustomerQueryResponse,
+  CustomerQueryResponse,
+  CustomerQueryVariables,
+  CustomerUpdateMutationResponse,
+  CustomerUpdateMutationVariables
+} from 'types/storefront';
+import {
   GetMyNewsletterSubscriptionsQueryResponse,
   SubscribeMyEmailToNewsletterMutationResponse,
   SubscribeMyEmailToNewsletterMutationVariables,
   UnsubscribeMyEmailFromNewsletterMutationResponse,
-  UnsubscribeMyEmailFromNewsletterMutationVariables,
-  UpdateCustomerMutationResponse,
-  UpdateCustomerMutationVariables
+  UnsubscribeMyEmailFromNewsletterMutationVariables
 } from 'types/takeshape';
 import { formatError } from 'utils/errors';
-import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
+import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
+import { useAuthenticatedMutation, useAuthenticatedQuery } from 'utils/takeshape';
 import {
-  GetCustomerQuery,
   GetMyNewsletterSubscriptionsQuery,
   SubscribeMyEmailToNewsletterMutation,
-  UnsubscribeMyEmailFromNewsletterMutation,
-  UpdateCustomerMutation
+  UnsubscribeMyEmailFromNewsletterMutation
 } from './queries';
-
+import { CustomerQuery, CustomerUpdateMutation } from './queries.storefront';
 interface AccountFormMarketingForm {
   newsletters: Record<string, boolean>;
   acceptsMarketing: boolean;
 }
 
 export const AccountFormMarketing = () => {
+  const { data: session } = useSession({ required: true });
+
   const {
     handleSubmit,
     control,
@@ -35,20 +40,25 @@ export const AccountFormMarketing = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors, dirtyFields }
   } = useForm<AccountFormMarketingForm>();
 
-  const { data: newsletterData } = useQuery<GetMyNewsletterSubscriptionsQueryResponse>(
+  const [loadCustomer, { data: customerData }] = useStorefrontLazyQuery<CustomerQueryResponse, CustomerQueryVariables>(
+    CustomerQuery
+  );
+
+  const [updateCustomer, { data: customerResponse }] = useStorefrontMutation<
+    CustomerUpdateMutationResponse,
+    CustomerUpdateMutationVariables
+  >(CustomerUpdateMutation);
+
+  const { data: newsletterData } = useAuthenticatedQuery<GetMyNewsletterSubscriptionsQueryResponse>(
     GetMyNewsletterSubscriptionsQuery
   );
-  const { data: customerData } = useQuery<GetCustomerQueryResponse>(GetCustomerQuery);
-  const [updateCustomer, { data: customerResponse }] = useMutation<
-    UpdateCustomerMutationResponse,
-    UpdateCustomerMutationVariables
-  >(UpdateCustomerMutation);
 
-  const [subscribe] = useMutation<
+  const [subscribe] = useAuthenticatedMutation<
     SubscribeMyEmailToNewsletterMutationResponse,
     SubscribeMyEmailToNewsletterMutationVariables
   >(SubscribeMyEmailToNewsletterMutation);
-  const [unsubscribe] = useMutation<
+
+  const [unsubscribe] = useAuthenticatedMutation<
     UnsubscribeMyEmailFromNewsletterMutationResponse,
     UnsubscribeMyEmailFromNewsletterMutationVariables
   >(UnsubscribeMyEmailFromNewsletterMutation);
@@ -63,7 +73,12 @@ export const AccountFormMarketing = () => {
       }
 
       if (dirtyFields.acceptsMarketing) {
-        await updateCustomer({ variables: { customer: { acceptsMarketing } } });
+        await updateCustomer({
+          variables: {
+            customerAccessToken: session.shopifyCustomerAccessToken as string,
+            customer: { acceptsMarketing }
+          }
+        });
       }
 
       if (dirtyFields.newsletters) {
@@ -82,8 +97,19 @@ export const AccountFormMarketing = () => {
         keepValues: true
       });
     },
-    [dirtyFields.acceptsMarketing, dirtyFields.newsletters, reset, updateCustomer, subscribe, unsubscribe]
+    [dirtyFields.acceptsMarketing, dirtyFields.newsletters, reset, updateCustomer, session, subscribe, unsubscribe]
   );
+
+  // Load the customer
+  useEffect(() => {
+    if (session?.shopifyCustomerAccessToken) {
+      loadCustomer({
+        variables: {
+          customerAccessToken: session.shopifyCustomerAccessToken as string
+        }
+      });
+    }
+  }, [loadCustomer, session]);
 
   // Set initial values
   useEffect(() => {

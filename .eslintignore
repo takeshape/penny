@@ -1,4 +1,5 @@
 src/types/takeshape.ts
+src/types/storefront.ts
 tsconfig.json
 package-lock.json
 !.takeshape

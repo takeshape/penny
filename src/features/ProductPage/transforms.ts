@@ -10,14 +10,13 @@ import {
   getProductVariants,
   getSeo
 } from 'transforms/shopify';
+import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
 import {
-  ProductPageRelatedProductsShopifyQueryResponse,
   ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
   Shopify_MoneyV2
 } from 'types/takeshape';
-import { unique } from 'utils/unique';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -209,31 +208,25 @@ function getRelatedProduct(
     // The currencyCode enums incompatible across the two product types...
     priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
     priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
-    options: getProductOptions(shopifyProduct.options)
+    options: getProductOptions(shopifyProduct.options),
+    hasStock: shopifyProduct.totalInventory > 0
   };
 }
 
 export function getRelatedProductList(
-  response: ProductPageRelatedProductsShopifyQueryResponse,
-  removeId: string,
+  response: ProductPageRelatedProductsQueryResponse,
   limit = 0
 ): ProductPageRelatedProductsProduct[] {
-  let products = response?.products?.nodes;
+  let products = response?.products;
 
   if (!products) {
     return null;
   }
 
-  // Backfill nodes provide enough products to fill out the list if there aren't enough matches.
-  const backfill = response.backfill?.nodes;
-
-  if (backfill) {
-    products = unique([...products, ...backfill], 'id')
-      .filter((product) => product.id !== removeId)
-      .slice(0, limit);
-  }
-
-  return products.map((node) => getRelatedProduct(node));
+  return products
+    .map((node) => getRelatedProduct(node))
+    .filter((product) => product.hasStock)
+    .slice(0, limit);
 }
 
 function collectionHasParent(collection: Shopify_Collection) {

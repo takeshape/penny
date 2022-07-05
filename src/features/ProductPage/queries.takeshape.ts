@@ -262,48 +262,10 @@ export const ProductPageReviewPageQuery = gql`
   }
 `;
 
-export const ProductPageRelatedProductsShopifyQuery = gql`
-  fragment RelatedProduct on ShopifyStorefront_Product {
-    id
-    handle
-    title
-    description
-    descriptionHtml
-    featuredImage {
-      id
-      url(transform: { maxWidth: 500, maxHeight: 500, preferredContentType: WEBP })
-      width
-      height
-      altText
-    }
-    priceRange {
-      maxVariantPrice {
-        currencyCode
-        amount
-      }
-      minVariantPrice {
-        currencyCode
-        amount
-      }
-    }
-    publishedAt
-    options {
-      name
-      id
-      values
-    }
-  }
-
-  query ProductPageRelatedProductsShopifyQuery($relatedCount: Int!, $backfillCount: Int!, $query: String) {
-    products: ShopifyStorefront_products(first: $relatedCount, query: $query, sortKey: BEST_SELLING) {
-      nodes {
-        ...RelatedProduct
-      }
-    }
-    backfill: ShopifyStorefront_products(first: $backfillCount, sortKey: BEST_SELLING) {
-      nodes {
-        ...RelatedProduct
-      }
+export const CreateMyProductReviewMutation = gql`
+  mutation CreateMyProductReviewMutation($input: CreateMyProductReviewPropertiesPropertyInput!) {
+    result: createMyProductReview(input: $input) {
+      success
     }
   }
 `;

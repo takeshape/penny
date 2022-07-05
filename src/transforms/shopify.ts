@@ -8,10 +8,10 @@ import {
   ProductSeo,
   ProductVariant
 } from 'types/product';
+import * as Storefront from 'types/storefront';
 import {
   ProductCategoryShopifyCollectionQueryResponse,
   ProductPageShopifyProductResponse,
-  QuickAddQueryResponse,
   Shopify_MoneyV2,
   Shopify_SellingPlanInterval,
   Shopify_SellingPlanPricingPolicyAdjustmentType,
@@ -27,7 +27,7 @@ type Shopify_SellingPlanPricingPolicy =
 type Shopify_SellingPlanRecurringBillingPolicy =
   ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['billingPolicy'];
 
-type Shopify_Product = ProductPageShopifyProductResponse['product'] | QuickAddQueryResponse['product'];
+type Shopify_Product = ProductPageShopifyProductResponse['product'];
 
 type Shopify_ProductVariant = ProductPageShopifyProductResponse['product']['variants']['edges'][0]['node'];
 
@@ -130,6 +130,7 @@ export function getProductVariantPriceOptions(
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
   // variant.contextualPricing would be better for a true multi-currency site
+  // TODO: storefront priceV2 - { amount, currencyCode }
   const { id, price } = shopifyVariant;
   const amount = Number(price) * 100;
 
@@ -154,6 +155,7 @@ export function getProductVariantPriceOptions(
     });
   }
 
+  // TODO Storefront version of this, parsing strings 30 Day(s)
   if (sellingPlanGroupCount > 0) {
     const sellingPlans = sellingPlanGroups.edges.flatMap(({ node }) => node.sellingPlans.edges.map(({ node }) => node));
     prices = prices
@@ -201,8 +203,8 @@ function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_Pro
     prices: getProductVariantPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
     image: getImage(image),
-    inventory: sellableOnlineQuantity,
-    inventoryPolicy,
+    quantityAvailable: sellableOnlineQuantity,
+    currentlyNotInStock: sellableOnlineQuantity === 0 && inventoryPolicy == 'CONTINUE',
     sku,
     options: selectedOptions
   };
@@ -268,4 +270,206 @@ export function getCollectionUrl(handle: string) {
 
 export function shopifyGidToId(gid: string): string {
   return gid.replace(/gid:\/\/shopify\/\w+\//, '');
+}
+
+/**
+ * Storefront Transforms
+ */
+type StorefrontProductVariant = Pick<
+  Storefront.ProductVariant,
+  | 'id'
+  | 'title'
+  | 'image'
+  | 'availableForSale'
+  | 'currentlyNotInStock'
+  | 'selectedOptions'
+  | 'sku'
+  | 'quantityAvailable'
+  | 'priceV2'
+> & {
+  description?: Pick<Storefront.Metafield, 'type' | 'value'>;
+  sellingPlanAllocations: {
+    nodes: {
+      sellingPlan: Pick<Storefront.SellingPlan, 'id' | 'options' | 'priceAdjustments'>;
+    }[];
+  };
+};
+
+type StorefrontProduct = Pick<Storefront.Product, 'requiresSellingPlan'> & {
+  variants: {
+    nodes: StorefrontProductVariant[];
+  };
+};
+
+function getStorefrontDiscount(amount: number, { adjustmentValue }: Storefront.SellingPlanPriceAdjustment) {
+  if ((adjustmentValue as Storefront.SellingPlanFixedAmountPriceAdjustment).adjustmentAmount) {
+    const { adjustmentAmount } = adjustmentValue as Storefront.SellingPlanFixedAmountPriceAdjustment;
+    const discountAmount = Number(adjustmentAmount.amount) * 100;
+    const amountAfterDiscount = amount - discountAmount;
+
+    return {
+      type: 'FIXED_AMOUNT' as const,
+      amountAfterDiscount,
+      amount: discountAmount,
+      hasDiscount: amount !== amountAfterDiscount
+    };
+  }
+
+  if ((adjustmentValue as Storefront.SellingPlanFixedPriceAdjustment).price) {
+    const { price } = adjustmentValue as Storefront.SellingPlanFixedPriceAdjustment;
+    const newAmount = Number(price.amount) * 100;
+
+    return {
+      type: 'PRICE' as const,
+      amountAfterDiscount: newAmount,
+      amount: newAmount,
+      hasDiscount: amount !== newAmount
+    };
+  }
+
+  const { adjustmentPercentage } = adjustmentValue as Storefront.SellingPlanPercentagePriceAdjustment;
+  const discountAmount = adjustmentPercentage ?? 0;
+  const discountAmountOff = Math.round(amount * (discountAmount / 100));
+  const amountAfterDiscount = amount - discountAmountOff;
+
+  return {
+    type: 'PERCENTAGE' as const,
+    amountAfterDiscount,
+    amount: discountAmount,
+    hasDiscount: amount !== amountAfterDiscount
+  };
+}
+
+function getStorefrontSubscriptionInterval({ value }: Storefront.SellingPlanOption) {
+  // Example: '30 Day(s)'
+  const [, intervalCount, interval] = value.match(/(\d+)\s(\w+)/);
+
+  const subscriptionInterval = {
+    intervalCount: Number(intervalCount)
+  };
+
+  switch (interval.toUpperCase()) {
+    case 'WEEK':
+      return {
+        ...subscriptionInterval,
+        interval: 'WEEK' as const
+      };
+    case 'MONTH':
+      return {
+        ...subscriptionInterval,
+        interval: 'MONTH' as const
+      };
+    case 'YEAR':
+      return {
+        ...subscriptionInterval,
+        interval: 'YEAR' as const
+      };
+    case 'DAY':
+    default:
+      return {
+        ...subscriptionInterval,
+        interval: 'DAY' as const
+      };
+  }
+}
+
+export function getStorefrontProductVariantPriceOptions(
+  shopifyProduct: StorefrontProduct,
+  shopifyVariant: StorefrontProductVariant
+): ProductPriceOption[] {
+  const { requiresSellingPlan } = shopifyProduct;
+  const { id, priceV2: price, sellingPlanAllocations } = shopifyVariant;
+
+  const amount = Number(price.amount) * 100;
+
+  let prices: ProductPriceOption[] = [];
+
+  if (!requiresSellingPlan) {
+    prices.push({
+      id: `${id}_DAY_0`,
+      name: 'One-time purchase',
+      merchandiseId: id,
+      hasDiscount: false,
+      discountAmount: 0,
+      discountType: 'PERCENTAGE',
+      interval: 'DAY',
+      intervalCount: 0,
+      amountBeforeDiscount: amount,
+      amount,
+      currencyCode: price.currencyCode as ProductPriceCurrencyCode
+    });
+  }
+
+  if (sellingPlanAllocations.nodes.length > 0) {
+    const sellingPlans = sellingPlanAllocations.nodes.flatMap((node) => node.sellingPlan);
+
+    prices = prices
+      .concat(
+        sellingPlans.map((plan) => {
+          const subscriptionInterval = getStorefrontSubscriptionInterval(plan.options[0]);
+          const discount = getStorefrontDiscount(amount, plan.priceAdjustments[0]);
+
+          return {
+            id: `${id}_${subscriptionInterval.interval}_${subscriptionInterval.intervalCount}`,
+            name: discount.hasDiscount ? 'Subscribe & Save' : 'Subscribe',
+            merchandiseId: id,
+            subscriptionId: plan.id,
+            hasDiscount: discount.hasDiscount,
+            discountType: discount.type,
+            discountAmount: discount.amount,
+            interval: subscriptionInterval.interval,
+            intervalCount: subscriptionInterval.intervalCount,
+            amountBeforeDiscount: amount,
+            amount: discount.amountAfterDiscount,
+            currencyCode: defaultCurrency
+          };
+        })
+      )
+      .sort((a, b) => a.intervalCount - b.intervalCount);
+  }
+
+  return prices;
+}
+
+function getStorefrontProductVariant(
+  shopifyProduct: StorefrontProduct,
+  shopifyVariant: StorefrontProductVariant
+): ProductVariant {
+  const getImage = createImageGetter(`Image of ${shopifyVariant.title}`);
+
+  const {
+    id,
+    title,
+    description,
+    image,
+    availableForSale,
+    currentlyNotInStock,
+    selectedOptions,
+    sku,
+    quantityAvailable
+  } = shopifyVariant;
+
+  return {
+    id,
+    name: title,
+    description: description?.value ?? title,
+    prices: getStorefrontProductVariantPriceOptions(shopifyProduct, shopifyVariant),
+    available: availableForSale || currentlyNotInStock,
+    image: shopifyVariant.image && getImage(image),
+    quantityAvailable,
+    currentlyNotInStock,
+    sku,
+    options: selectedOptions
+  };
+}
+
+export function getStorefrontProductVariants(shopifyProduct: StorefrontProduct): ProductVariant[] {
+  return shopifyProduct.variants.nodes.map((variant) => getStorefrontProductVariant(shopifyProduct, variant));
+}
+
+export function getStorefrontPrice(price: Pick<Storefront.MoneyV2, 'amount' | 'currencyCode'>): ProductPrice {
+  return {
+    amount: Number(price.amount) * 100,
+    currencyCode: price.currencyCode.toUpperCase() as ProductPriceCurrencyCode
+  };
 }

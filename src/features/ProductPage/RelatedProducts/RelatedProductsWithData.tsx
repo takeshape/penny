@@ -1,36 +1,23 @@
-import { useLazyQuery } from '@apollo/client';
 import { useEffect, useMemo } from 'react';
-import {
-  ProductPageRelatedProductsShopifyQueryResponse,
-  ProductPageRelatedProductsShopifyQueryVariables
-} from 'types/takeshape';
-import { ProductPageRelatedProductsShopifyQuery } from '../queries';
+import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from 'types/storefront';
+import { useStorefrontLazyQuery } from 'utils/storefront';
+import { ProductPageRelatedProductsQuery } from '../queries.storefront';
 import { getRelatedProductList } from '../transforms';
 import { ProductPageRelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
 
 export interface RelatedProductsWithDataProps {
   productId: string;
-  productTags?: string[];
   limit: number;
 }
 
-export const RelatedProductsWithData = ({ productTags, productId, limit }: RelatedProductsWithDataProps) => {
-  const query = useMemo(
-    // Tags from Shopify are already escaped, if using other inputs you may need
-    // to escape yourself: https://shopify.dev/api/usage/search-syntax#special-characters
-    () => (productTags && productTags.length ? productTags.map((tag) => `tag:"${tag}"`).join(' OR ') : undefined),
-    [productTags]
-  );
-
-  const [loadProducts, { data, error }] = useLazyQuery<
-    ProductPageRelatedProductsShopifyQueryResponse,
-    ProductPageRelatedProductsShopifyQueryVariables
-  >(ProductPageRelatedProductsShopifyQuery, {
+export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWithDataProps) => {
+  const [loadProducts, { data, error }] = useStorefrontLazyQuery<
+    ProductPageRelatedProductsQueryResponse,
+    ProductPageRelatedProductsQueryVariables
+  >(ProductPageRelatedProductsQuery, {
     variables: {
-      backfillCount: limit + 1,
-      relatedCount: limit,
-      query
+      productId
     }
   });
 
@@ -39,10 +26,7 @@ export const RelatedProductsWithData = ({ productTags, productId, limit }: Relat
   }, [loadProducts]);
 
   const loadingProducts = useMemo(() => Array(limit).fill(undefined) as ProductPageRelatedProductsProduct[], [limit]);
-  const products = useMemo(
-    () => !error && getRelatedProductList(data, productId, limit),
-    [data, error, limit, productId]
-  );
+  const products = useMemo(() => !error && getRelatedProductList(data, limit), [data, error, limit]);
 
   if (error) {
     return null;

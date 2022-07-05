@@ -1150,26 +1150,6 @@
         "required": []
       }
     },
-    "getMyCustomer": {
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "customer",
-        "args": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$args"
-            },
-            {
-              "path": "customerAccessToken",
-              "mapping": "$claims.custom.customer_access_token"
-            }
-          ]
-        }
-      },
-      "shape": "ShopifyStorefront_Customer"
-    },
     "getMyAdminCustomer": {
       "resolver": {
         "name": "graphql:query",
@@ -1313,26 +1293,6 @@
       },
       "description": "Get a Navigation by ID",
       "args": "TSGetSingletonArgs<Navigation>"
-    },
-    "ShopifyStorefront_customer": {
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "customer"
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "customerAccessToken": {
-            "type": "string",
-            "description": "The customer access token."
-          }
-        },
-        "required": [
-          "customerAccessToken"
-        ]
-      },
-      "shape": "ShopifyStorefront_Customer"
     },
     "getProductPageDetails": {
       "shape": "ProductPageDetails",
@@ -1635,6 +1595,26 @@
     }
   },
   "mutations": {
+    "ShopifyStorefront_customerAccessTokenCreate": {
+      "resolver": {
+        "name": "graphql:mutation",
+        "service": "shopify-storefront",
+        "fieldName": "customerAccessTokenCreate"
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "@ref": "shopify-storefront:CustomerAccessTokenCreateInput",
+            "description": "The fields used to create a customer access token."
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
+    },
     "updateFooter": {
       "shape": "UpdateResult<Footer>",
       "resolver": {
@@ -1654,23 +1634,6 @@
       },
       "description": "Update Navigation",
       "args": "UpdateArgs<Navigation>"
-    },
-    "createCart": {
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "cartCreate"
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "@ref": "shopify-storefront:CartInput",
-            "description": "The fields used to create a cart."
-          }
-        }
-      },
-      "shape": "ShopifyStorefront_CartCreatePayload"
     },
     "Voucherify_createOrder": {
       "description": "Create an order in Voucherify",
@@ -2214,46 +2177,6 @@
         ]
       },
       "shape": "Shopify_Product"
-    },
-    "ShopifyStorefront_customerAccessTokenCreate": {
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerAccessTokenCreate"
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "@ref": "shopify-storefront:CustomerAccessTokenCreateInput",
-            "description": "The fields used to create a customer access token."
-          }
-        },
-        "required": [
-          "input"
-        ]
-      },
-      "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
-    },
-    "ShopifyStorefront_customerCreate": {
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerCreate"
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "@ref": "shopify-storefront:CustomerCreateInput",
-            "description": "The fields used to create a new customer."
-          }
-        },
-        "required": [
-          "input"
-        ]
-      },
-      "shape": "ShopifyStorefront_CustomerCreatePayload"
     },
     "createCustomer": {
       "resolver": {

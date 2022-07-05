@@ -2,8 +2,8 @@ import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
+import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
 import {
-  ProductPageRelatedProductsShopifyQueryResponse,
   ProductPageShopifyProductResponse,
   ReviewsIo_ListProductReviewsResponse,
   Shopify_Product,
@@ -17,8 +17,7 @@ export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConn
 
 export type ProductPageShopifyProduct = ProductPageShopifyProductResponse['product'];
 
-export type ProductPageRelatedProductsShopifyProduct =
-  ProductPageRelatedProductsShopifyQueryResponse['products']['nodes'][0];
+export type ProductPageRelatedProductsShopifyProduct = ProductPageRelatedProductsQueryResponse['products'][0];
 
 export type ProductPageRelatedProductsProduct = ProductBase;
 

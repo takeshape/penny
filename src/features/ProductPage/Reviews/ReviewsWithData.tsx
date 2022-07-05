@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { ProductPageReviewPageQuery } from 'features/ProductPage/queries';
+import { ProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
 import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
 import { getProductReviewsPage, getReviewList } from 'features/ProductPage/transforms';
 import { useRouter } from 'next/router';

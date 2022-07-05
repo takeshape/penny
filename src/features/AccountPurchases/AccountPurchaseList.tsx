@@ -1,5 +1,6 @@
-import { NetworkStatus, useQuery } from '@apollo/client';
+import { NetworkStatus } from '@apollo/client';
 import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+import { useAuthenticatedQuery } from 'utils/takeshape';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
 import { GetMyAdminCustomerOrdersQuery } from './queries';
@@ -23,7 +24,7 @@ const Header = () => (
 
 export const AccountPurchaseList = () => {
   const { data, loading, networkStatus } =
-    useQuery<GetMyAdminCustomerOrdersQueryResponse>(GetMyAdminCustomerOrdersQuery);
+    useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse>(GetMyAdminCustomerOrdersQuery);
 
   const orders = getOrders(data?.customer);
 

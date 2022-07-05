@@ -1,5 +1,11 @@
-import { createImageGetter, getPrice, getProductOptions, getProductUrl, getProductVariants } from 'transforms/shopify';
-import { QuickAddQueryResponse } from 'types/takeshape';
+import {
+  createImageGetter,
+  getProductOptions,
+  getProductUrl,
+  getStorefrontPrice,
+  getStorefrontProductVariants
+} from 'transforms/shopify';
+import { QuickAddQueryResponse } from 'types/storefront';
 import { QuickAddProduct } from './types';
 
 export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
@@ -9,7 +15,7 @@ export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
     return null;
   }
 
-  const variants = getProductVariants(shopifyProduct);
+  const variants = getStorefrontProductVariants(shopifyProduct);
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
 
   return {
@@ -20,12 +26,12 @@ export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
     description: shopifyProduct.description,
     descriptionHtml: shopifyProduct.descriptionHtml,
     featuredImage: getImage(shopifyProduct.featuredImage),
-    priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
-    priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
+    priceMin: getStorefrontPrice(shopifyProduct.priceRange.minVariantPrice),
+    priceMax: getStorefrontPrice(shopifyProduct.priceRange.maxVariantPrice),
+    variantsCount: shopifyProduct.variants.nodes.length,
     variants,
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
-    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
+    hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroups.nodes.length > 0,
     hasStock: shopifyProduct.totalInventory > 0,
     options: getProductOptions(shopifyProduct.options, variants)
   };

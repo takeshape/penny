@@ -1,13 +1,13 @@
-import { useMutation } from '@apollo/client';
 import { Dialog, Transition } from '@headlessui/react';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Textarea from 'components/Form/Textarea/Textarea';
 import { Star } from 'components/Stars/Stars';
-import { CreateMyProductReviewMutation } from 'features/AccountForm/queries';
 import { Fragment, useCallback, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { CreateMyProductReviewMutationResponse, CreateMyProductReviewMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { CreateMyProductReviewMutation } from '../queries.takeshape';
 
 interface CreateReviewForm {
   review: string;
@@ -35,7 +35,7 @@ export const CreateReview = (props: ReviewsProps) => {
     formState: { isSubmitting, errors }
   } = useForm<CreateReviewForm>();
 
-  const [createProductReview, { data: createProductReviewResponse, error: mutationError }] = useMutation<
+  const [createProductReview, { data: createProductReviewResponse, error: mutationError }] = useAuthenticatedMutation<
     CreateMyProductReviewMutationResponse,
     CreateMyProductReviewMutationVariables
   >(CreateMyProductReviewMutation);

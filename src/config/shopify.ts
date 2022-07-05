@@ -1,2 +1,2 @@
-export const shopifyShop = process.env.SHOPIFY_SHOP;
-export const shopifyToken = process.env.SHOPIFY_TOKEN;
+export const shopifyStorefrontUrl = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_URL;
+export const shopifyStorefrontToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN;

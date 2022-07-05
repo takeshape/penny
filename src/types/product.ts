@@ -52,11 +52,11 @@ export type ProductVariant = {
   id: string;
   name: string;
   description: string;
-  image: ProductImage;
+  image?: ProductImage;
   prices: ProductPriceOption[];
   available: boolean;
-  inventory: number;
-  inventoryPolicy: 'CONTINUE' | 'DENY';
+  quantityAvailable: number;
+  currentlyNotInStock: boolean;
   sku: string;
   options: ProductVariantOption[];
 };
@@ -85,6 +85,7 @@ export type ProductCore = {
   url: string;
   description: string;
   featuredImage: ProductImage;
+  hasStock: boolean;
 };
 
 export type ProductBase = ProductCore & {
@@ -97,7 +98,6 @@ export type ProductBase = ProductCore & {
   variants?: ProductVariant[];
   hasOneTimePurchaseOption?: boolean;
   hasSubscriptionPurchaseOption?: boolean;
-  hasStock?: boolean;
   seo?: ProductSeo;
   tags?: string[];
 };

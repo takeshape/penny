@@ -1,6 +1,13 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
-import { takeshapeApiUrl, takeshapeAuthAudience, takeshapeAuthIssuer, takeshapeWebhookApiKey } from 'config';
-import { CreateCustomerAccessTokenMutation, GetCustomerTokenDataQuery } from 'features/Auth/queries';
+import {
+  sessionMaxAgeForgetMe,
+  sessionMaxAgeRememberMe,
+  takeshapeApiUrl,
+  takeshapeAuthAudience,
+  takeshapeAuthIssuer,
+  takeshapeWebhookApiKey
+} from 'config';
+import { CustomerAccessTokenCreateMutation, CustomerQuery } from 'features/Auth/queries';
 import logger from 'logger';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
@@ -8,15 +15,20 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
 import {
-  CreateCustomerAccessTokenMutationResponse,
-  CreateCustomerAccessTokenMutationVariables,
-  GetCustomerTokenDataQueryResponse,
-  GetCustomerTokenDataQueryVariables
+  CustomerAccessTokenCreateMutationResponse,
+  CustomerAccessTokenCreateMutationVariables,
+  CustomerQueryResponse,
+  CustomerQueryVariables
 } from 'types/takeshape';
 import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
 
-const apolloClient = createStaticClient({ uri: takeshapeApiUrl, accessToken: takeshapeWebhookApiKey });
+const apolloClient = createStaticClient({
+  uri: takeshapeApiUrl,
+  accessToken: takeshapeWebhookApiKey,
+  accessTokenHeader: 'Authorization',
+  accessTokenPrefix: 'Bearer'
+});
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
@@ -35,10 +47,6 @@ const withAllAccess = createNextAuthAllAccess({
   ]
 });
 
-// Must be shorter than the 60 day customer access token
-const maxAgeRememberMe = 30 * 24 * 60 * 60; // 30 days
-const maxAgeForgetMe = 60 * 60; // 1 hour
-
 const nextAuthConfig = {
   pages: {
     signIn: '/auth/signin',
@@ -46,7 +54,7 @@ const nextAuthConfig = {
     error: '/auth/signin'
   },
   session: {
-    maxAge: maxAgeRememberMe
+    maxAge: sessionMaxAgeRememberMe
   },
   providers: [
     CredentialsProvider({
@@ -58,10 +66,10 @@ const nextAuthConfig = {
       },
       async authorize({ email, password }) {
         const { data: accessTokenData } = await apolloClient.mutate<
-          CreateCustomerAccessTokenMutationResponse,
-          CreateCustomerAccessTokenMutationVariables
+          CustomerAccessTokenCreateMutationResponse,
+          CustomerAccessTokenCreateMutationVariables
         >({
-          mutation: CreateCustomerAccessTokenMutation,
+          mutation: CustomerAccessTokenCreateMutation,
           variables: {
             input: {
               email,
@@ -81,11 +89,8 @@ const nextAuthConfig = {
 
         const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
-        const { data: customerData } = await apolloClient.query<
-          GetCustomerTokenDataQueryResponse,
-          GetCustomerTokenDataQueryVariables
-        >({
-          query: GetCustomerTokenDataQuery,
+        const { data: customerData } = await apolloClient.query<CustomerQueryResponse, CustomerQueryVariables>({
+          query: CustomerQuery,
           variables: {
             customerAccessToken: shopifyCustomerAccessToken
           }
@@ -143,7 +148,7 @@ const nextAuthConfig = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookies = parseCookies({ req });
   const rememberMe = cookies['remember-me'] ?? req.body.rememberMe;
-  const maxAge = rememberMe === 'false' ? maxAgeForgetMe : maxAgeRememberMe;
+  const maxAge = rememberMe === 'false' ? sessionMaxAgeForgetMe : sessionMaxAgeRememberMe;
 
   if (req.body.rememberMe) {
     setCookie({ res }, 'remember-me', req.body.rememberMe, {

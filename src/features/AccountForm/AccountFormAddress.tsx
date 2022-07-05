@@ -1,18 +1,19 @@
-import { useMutation, useQuery } from '@apollo/client';
+import FormCardPanel from 'components/Form/CardPanel/CardPanel';
 import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
+import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  GetCustomerQueryResponse,
-  GetCustomerQueryVariables,
-  UpdateCustomerAddressMutationResponse,
-  UpdateCustomerAddressMutationVariables
-} from 'types/takeshape';
+  CustomerAddressUpdateMutationResponse,
+  CustomerAddressUpdateMutationVariables,
+  CustomerQueryResponse,
+  CustomerQueryVariables
+} from 'types/storefront';
 import { formatError } from 'utils/errors';
 import useCountries from 'utils/hooks/useCountries';
-import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
-import { GetCustomerQuery, UpdateCustomerAddressMutation } from './queries';
+import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
+import { CustomerAddressUpdateMutation, CustomerQuery } from './queries.storefront';
 
 interface AccountFormAddressForm {
   firstName: string;
@@ -26,6 +27,8 @@ interface AccountFormAddressForm {
 }
 
 export const AccountFormAddress = () => {
+  const { data: session } = useSession({ required: true });
+
   const {
     handleSubmit,
     control,
@@ -34,14 +37,14 @@ export const AccountFormAddress = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<AccountFormAddressForm>();
 
-  const { data: customerData, error: customerError } = useQuery<GetCustomerQueryResponse, GetCustomerQueryVariables>(
-    GetCustomerQuery
+  const [loadCustomer, { data: customerData }] = useStorefrontLazyQuery<CustomerQueryResponse, CustomerQueryVariables>(
+    CustomerQuery
   );
 
-  const [setCustomerAddressPayload, { data: customerAddressResponse }] = useMutation<
-    UpdateCustomerAddressMutationResponse,
-    UpdateCustomerAddressMutationVariables
-  >(UpdateCustomerAddressMutation);
+  const [setCustomerAddressPayload, { data: customerAddressResponse }] = useStorefrontMutation<
+    CustomerAddressUpdateMutationResponse,
+    CustomerAddressUpdateMutationVariables
+  >(CustomerAddressUpdateMutation);
 
   const timer = useRef<NodeJS.Timer>(null);
 
@@ -54,13 +57,25 @@ export const AccountFormAddress = () => {
 
       await setCustomerAddressPayload({
         variables: {
+          customerAccessToken: session.shopifyCustomerAccessToken as string,
           address: { firstName, lastName, address1, address2 },
           id: customerData.customer.defaultAddress.id
         }
       });
     },
-    [setCustomerAddressPayload, customerData]
+    [setCustomerAddressPayload, session, customerData]
   );
+
+  // Load the customer
+  useEffect(() => {
+    if (session?.shopifyCustomerAccessToken) {
+      loadCustomer({
+        variables: {
+          customerAccessToken: session.shopifyCustomerAccessToken as string
+        }
+      });
+    }
+  }, [loadCustomer, session]);
 
   // Set initial values
   useEffect(() => {

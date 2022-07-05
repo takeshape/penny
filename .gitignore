@@ -58,6 +58,7 @@ yarn-error.log*
 
 # Generated types
 src/types/takeshape.ts
+src/types/storefront.ts
 
 # PWA
 /public/sw.*

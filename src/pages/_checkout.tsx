@@ -1,36 +1,39 @@
-import { useApolloClient } from '@apollo/client';
 import PageLoader from 'components/PageLoader';
-import { CreateCartMutation } from 'features/Cart/queries';
+import { CartCreateMutation } from 'features/Cart/queries.storefront';
 import { cartItemsAtom } from 'features/Cart/store';
+import { getCheckoutUrl } from 'features/Cart/transforms';
 import { getCartVariables } from 'features/Cart/utils';
 import { useAtomValue } from 'jotai';
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-import { CreateCartMutationResponse, CreateCartMutationVariables } from 'types/takeshape';
+import { CartCreateMutationResponse, CartCreateMutationVariables } from 'types/storefront';
+import { useStorefrontMutation } from 'utils/storefront';
 
 // After a successful login, redirect here to automatically checkout with the cart
 const _CheckoutPage: NextPage = () => {
   const { data: session } = useSession();
-  const client = useApolloClient();
   const cartItems = useAtomValue(cartItemsAtom);
 
+  const [setCartMutation, { data }] = useStorefrontMutation<CartCreateMutationResponse, CartCreateMutationVariables>(
+    CartCreateMutation
+  );
+
   useEffect(() => {
-    const doCheckout = async () => {
-      const { data } = await client.mutate<CreateCartMutationResponse, CreateCartMutationVariables>({
-        mutation: CreateCartMutation,
+    if (session) {
+      setCartMutation({
+        mutation: CartCreateMutation,
         variables: getCartVariables(cartItems, session)
       });
-
-      if (data?.cart?.cart?.checkoutUrl) {
-        window.location.href = data.cart.cart.checkoutUrl;
-      }
-    };
-
-    if (session) {
-      doCheckout();
     }
-  }, [client, cartItems, session]);
+  }, [session, setCartMutation, cartItems]);
+
+  useEffect(() => {
+    const checkoutUrl = getCheckoutUrl(data);
+    if (checkoutUrl) {
+      window.location.href = checkoutUrl;
+    }
+  }, [data]);
 
   return <PageLoader />;
 };

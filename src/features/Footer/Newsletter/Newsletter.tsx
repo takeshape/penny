@@ -7,7 +7,7 @@ import { defaultKlaviyoListId } from 'config';
 import { useCallback, useState } from 'react';
 import { NewsletterEmailSubmissionResponse, NewsletterEmailSubmissionVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
-import { EmailSubmissionMutation } from './Newsletter.queries';
+import { EmailSubmissionMutation } from './queries';
 
 export interface NewsletterProps {
   text?: {

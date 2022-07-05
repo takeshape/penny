@@ -1,16 +1,18 @@
-import { useMutation, useQuery } from '@apollo/client';
+import FormCardPanel from 'components/Form/CardPanel/CardPanel';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
+import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  GetCustomerQueryResponse,
-  UpdateCustomerMutationResponse,
-  UpdateCustomerMutationVariables
-} from 'types/takeshape';
+  CustomerQueryResponse,
+  CustomerQueryVariables,
+  CustomerUpdateMutationResponse,
+  CustomerUpdateMutationVariables
+} from 'types/storefront';
 import { formatError } from 'utils/errors';
-import FormCardPanel from '../../components/Form/CardPanel/CardPanel';
-import { GetCustomerQuery, UpdateCustomerMutation } from './queries';
+import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
+import { CustomerQuery, CustomerUpdateMutation } from './queries.storefront';
 
 interface AccountFormProfileForm {
   firstName: string;
@@ -20,6 +22,8 @@ interface AccountFormProfileForm {
 }
 
 export const AccountFormProfile = () => {
+  const { data: session } = useSession({ required: true });
+
   const {
     handleSubmit,
     control,
@@ -27,12 +31,14 @@ export const AccountFormProfile = () => {
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<AccountFormProfileForm>();
 
-  const { data: customerData, error: customerDataError } = useQuery<GetCustomerQueryResponse>(GetCustomerQuery);
+  const [loadCustomer, { data: customerData }] = useStorefrontLazyQuery<CustomerQueryResponse, CustomerQueryVariables>(
+    CustomerQuery
+  );
 
-  const [updateCustomer, { data: customerResponse }] = useMutation<
-    UpdateCustomerMutationResponse,
-    UpdateCustomerMutationVariables
-  >(UpdateCustomerMutation);
+  const [updateCustomer, { data: customerResponse }] = useStorefrontMutation<
+    CustomerUpdateMutationResponse,
+    CustomerUpdateMutationVariables
+  >(CustomerUpdateMutation);
 
   const timer = useRef<NodeJS.Timer>(null);
 
@@ -45,12 +51,24 @@ export const AccountFormProfile = () => {
 
       await updateCustomer({
         variables: {
+          customerAccessToken: session.shopifyCustomerAccessToken as string,
           customer: { firstName, lastName, email, phone }
         }
       });
     },
-    [updateCustomer]
+    [session, updateCustomer]
   );
+
+  // Load the customer
+  useEffect(() => {
+    if (session?.shopifyCustomerAccessToken) {
+      loadCustomer({
+        variables: {
+          customerAccessToken: session.shopifyCustomerAccessToken as string
+        }
+      });
+    }
+  }, [loadCustomer, session]);
 
   // Set initial values
   useEffect(() => {
