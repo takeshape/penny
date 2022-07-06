@@ -42,8 +42,5 @@ jobs:
       - name: Run graphql:validate
         run: npm run graphql:validate
 
-      - name: Run takeshape:validate
-        run: npm run takeshape:validate
-
       - name: Run tests
         run: npm test
