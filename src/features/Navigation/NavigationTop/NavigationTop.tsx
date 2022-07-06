@@ -21,9 +21,9 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
   return (
     <>
       <nav aria-label="Top">
-        <NextLink href="#content" className="sr-only focus:not-sr-only">
+        <a href="#content" className="sr-only focus:not-sr-only">
           Skip to content
-        </NextLink>
+        </a>
 
         {/* Top navigation */}
         <div className="bg-gray-900">
