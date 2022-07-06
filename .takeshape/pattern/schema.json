@@ -66,16 +66,12 @@
           "name": {
             "widget": "singleLineText"
           },
-          "items": {
-            "widget": "shapeArray"
-          },
           "links": {
             "widget": "relationship"
           }
         },
         "order": [
           "name",
-          "items",
           "links"
         ]
       }
@@ -435,16 +431,16 @@
               "subsections": {
                 "widget": "repeater",
                 "properties": {
-                  "links": {
-                    "widget": "relationship"
-                  },
                   "name": {
                     "widget": "singleLineText"
+                  },
+                  "links": {
+                    "widget": "relationship"
                   }
                 },
                 "order": [
-                  "links",
-                  "name"
+                  "name",
+                  "links"
                 ]
               }
             },
@@ -453,111 +449,11 @@
               "link",
               "subsections"
             ]
-          },
-          "links": {
-            "widget": "object",
-            "properties": {
-              "categories": {
-                "widget": "repeater",
-                "properties": {
-                  "name": {
-                    "widget": "singleLineText"
-                  },
-                  "featured": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  },
-                  "collection": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  },
-                  "categories": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  },
-                  "brands": {
-                    "widget": "repeater",
-                    "properties": {
-                      "name": {
-                        "widget": "singleLineText"
-                      },
-                      "href": {
-                        "widget": "singleLineText"
-                      }
-                    },
-                    "order": [
-                      "name",
-                      "href"
-                    ]
-                  }
-                },
-                "order": [
-                  "name",
-                  "featured",
-                  "collection",
-                  "categories",
-                  "brands"
-                ]
-              },
-              "pages": {
-                "widget": "repeater",
-                "properties": {
-                  "name": {
-                    "widget": "singleLineText"
-                  },
-                  "href": {
-                    "widget": "singleLineText"
-                  }
-                },
-                "order": [
-                  "name",
-                  "href"
-                ]
-              }
-            },
-            "order": [
-              "categories",
-              "pages"
-            ]
           }
         },
         "order": [
           "message",
-          "sections",
-          "links"
+          "sections"
         ]
       }
     },
@@ -3427,26 +3323,6 @@
         }
       }
     },
-    "NavigationLink": {
-      "id": "ugCpxVXCO",
-      "name": "NavigationLink",
-      "title": "Navigation Link",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLink.cLCSz9EWu"
-          },
-          "href": {
-            "type": "string",
-            "title": "Href",
-            "@mapping": "takeshape:local:NavigationLink.J_fkfs7w7"
-          }
-        }
-      }
-    },
     "FooterNavigationSections": {
       "id": "RcAzYGCEA",
       "name": "FooterNavigationSections",
@@ -3460,19 +3336,6 @@
             "minLength": 0,
             "title": "Name",
             "@mapping": "takeshape:local:FooterNavigationSections.BeZ6ywWzG"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {
-                  "@ref": "local:NavigationLink"
-                }
-              ]
-            },
-            "description": "",
-            "title": "Items",
-            "@mapping": "takeshape:local:FooterNavigationSections.vwvZ3gpJ6"
           },
           "links": {
             "@args": "TSRelationshipArgs",
@@ -4706,244 +4569,6 @@
         }
       }
     },
-    "NavigationLinksCategoriesFeatured": {
-      "id": "dQHi8IKXY",
-      "name": "NavigationLinksCategoriesFeatured",
-      "title": "Navigation Links Categories Featured",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesFeatured.kBLyPeRMR"
-          },
-          "href": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Href",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesFeatured.HIUoSRzOK"
-          }
-        },
-        "required": [
-          "name",
-          "href"
-        ]
-      }
-    },
-    "NavigationLinksCategoriesCollection": {
-      "id": "hF0j28rBh",
-      "name": "NavigationLinksCategoriesCollection",
-      "title": "Navigation Links Categories Collection",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesCollection.qAMGs33f0"
-          },
-          "href": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Href",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesCollection.TIucx2vA5"
-          }
-        },
-        "required": [
-          "name",
-          "href"
-        ]
-      }
-    },
-    "NavigationLinksCategoriesCategories": {
-      "id": "YYp0_OCPe",
-      "name": "NavigationLinksCategoriesCategories",
-      "title": "Navigation Links Categories Categories",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesCategories.Eh7XAugnb"
-          },
-          "href": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Href",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesCategories.AFVv3BQRT"
-          }
-        },
-        "required": [
-          "name",
-          "href"
-        ]
-      }
-    },
-    "NavigationLinksCategoriesBrands": {
-      "id": "gPUjtRTzf",
-      "name": "NavigationLinksCategoriesBrands",
-      "title": "Navigation Links Categories Brands",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesBrands.fRRh9Eo4r"
-          },
-          "href": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Href",
-            "@mapping": "takeshape:local:NavigationLinksCategoriesBrands.GQVp2Zg3D"
-          }
-        },
-        "required": [
-          "name",
-          "href"
-        ]
-      }
-    },
-    "NavigationLinksCategories": {
-      "id": "zybdlWXQs",
-      "name": "NavigationLinksCategories",
-      "title": "Navigation Links Categories",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLinksCategories.gANzQp3eC"
-          },
-          "featured": {
-            "title": "Featured",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationLinksCategoriesFeatured"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationLinksCategories.dQHi8IKXY"
-          },
-          "collection": {
-            "title": "Collection",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationLinksCategoriesCollection"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationLinksCategories.hF0j28rBh"
-          },
-          "categories": {
-            "title": "Categories",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationLinksCategoriesCategories"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationLinksCategories.YYp0_OCPe"
-          },
-          "brands": {
-            "title": "Brands",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationLinksCategoriesBrands"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationLinksCategories.gPUjtRTzf"
-          }
-        },
-        "required": [
-          "name",
-          "featured",
-          "collection",
-          "categories",
-          "brands"
-        ]
-      }
-    },
-    "NavigationLinksPages": {
-      "id": "H2mxhkhX3",
-      "name": "NavigationLinksPages",
-      "title": "Navigation Links Pages",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationLinksPages.KOKj1Bj-Z"
-          },
-          "href": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Href",
-            "@mapping": "takeshape:local:NavigationLinksPages.y-ZspDXpz"
-          }
-        },
-        "required": [
-          "name",
-          "href"
-        ]
-      }
-    },
-    "NavigationLinks": {
-      "id": "d1o5S0w1Y",
-      "name": "NavigationLinks",
-      "title": "Navigation Links",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "categories": {
-            "title": "Categories",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationLinksCategories"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationLinks.zybdlWXQs"
-          },
-          "pages": {
-            "title": "Pages",
-            "description": "",
-            "items": {
-              "@ref": "local:NavigationLinksPages"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:NavigationLinks.H2mxhkhX3"
-          }
-        },
-        "required": [
-          "categories",
-          "pages"
-        ]
-      }
-    },
     "Navigation": {
       "id": "Go7s7M7Ij",
       "name": "Navigation",
@@ -4970,12 +4595,6 @@
             },
             "type": "array",
             "@mapping": "takeshape:local:Navigation.yDgLbdGqy"
-          },
-          "links": {
-            "title": "Links",
-            "description": "",
-            "@ref": "local:NavigationLinks",
-            "@mapping": "takeshape:local:Navigation.d1o5S0w1Y"
           }
         }
       }
@@ -4987,6 +4606,13 @@
       "schema": {
         "type": "object",
         "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:NavigationSectionsSubsections.7gt8oisHU"
+          },
           "links": {
             "description": "",
             "@args": "TSRelationshipArgs",
@@ -5025,13 +4651,6 @@
               "enabled": false
             },
             "@mapping": "takeshape:local:NavigationSectionsSubsections.EQ9Zhy0s8"
-          },
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:NavigationSectionsSubsections.7gt8oisHU"
           }
         },
         "required": [
