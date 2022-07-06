@@ -1,5 +1,5 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
-import { useController, UseControllerProps } from 'react-hook-form';
+import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 import {
   DefaultInputComponentProps,
   FeatureProps as PhoneInputProps,
@@ -16,7 +16,10 @@ export interface FormPhoneInputProps extends PhoneInputProps<DefaultInputCompone
   defaultErrorMessage?: string;
 }
 
-export const FormPhoneInput = ({
+export const FormPhoneInput = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   className,
   id,
   label,
@@ -29,7 +32,7 @@ export const FormPhoneInput = ({
   inputComponent,
   defaultErrorMessage,
   ...props
-}: FormPhoneInputProps & UseControllerProps<any, any>) => {
+}: FormPhoneInputProps & UseControllerProps<TFieldValues, TName>) => {
   rules = {
     ...rules,
     validate: (value) => (value ? isPossiblePhoneNumber(`${value}`) : true)

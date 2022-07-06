@@ -228,8 +228,8 @@ export const AccountFormAddress = () => {
         <FormInput
           control={control}
           disabled={!isReady}
-          name="zip"
-          id="zip"
+          name="postalCode"
+          id="postalCode"
           label="ZIP / Postal code"
           autoComplete="postal-code"
           defaultValue=""
