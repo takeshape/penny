@@ -123,14 +123,10 @@ to keep error-free and performant.
 
 We also used a few tools from TakeShape's ecosystem to simplify our workflow and improve the development process:
 
-- [Next-Auth-All-Access](https://github.com/takeshape/next-auth-all-access#nextauthallaccess) — Our NextAuth wrapper
-  that provides secure, JWKS-verifiable access tokens for third-party APIs.
-- [@takeshape/cli](https://app.takeshape.io/docs/cli) — Our CLI provides schema validation for the pattern schema in the
-  repo.
-- [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — Our GraphQL query
-  validation module that supports all graphql-cli options and makes writing queries from the frontend much less painful.
-- [@takeshape/routing](https://app.takeshape.io/docs/routing/#:~:text=Routing%E2%80%8B,dynamic%20search%20or%20taxonomy%20pages)
-  — Our routing module, which has methods for generating URLs for image assets stored in TakeShape.
+- [Next-Auth-All-Access](https://github.com/takeshape/next-auth-all-access#nextauthallaccess) — A NextAuth wrapper that
+  provides JWKS-verifiable access tokens for third-party APIs.
+- [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — GraphQL query validation
+  against your TakeShape API.
 
 In the next section, you'll find a screenshot of the finished store's homepage.
 
@@ -168,9 +164,10 @@ Here are the steps for getting started with this project:
 
 - Navigate to the **Home** tab of your TakeShape project's dashboard in the web client. Scroll down to the **Useful
   Snippets** section, and copy the **API Endpoint** there.
+
 - Save the endpoint somewhere. Later, you must either set it as the value of the `NEXT_PUBLIC_TAKESHAPE_API_URL`
   environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
-  hosting provider's UI.
+  hosting provider.
 
 4. Clone this repo:
 
@@ -178,7 +175,7 @@ Here are the steps for getting started with this project:
 git clone https://github.com/takeshape/takeshape-deluxe-sample-project
 ```
 
-4. Navigate to the project directory in your local terminal and run the `npm install` command to install all
+5. Navigate to the project directory in your local terminal and run the `npm install` command to install all
    dependencies.
 
 If you want to run this project locally, follow the instructions in the `.env.test` file.
@@ -205,59 +202,34 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 
 3. Copy the generated url in the **Audience** field and save it somewhere secure. You'll need it for your one of your
    project's environment variables.
+
 4. Select the **Save** button at the top-right of the OpenID service page.
 
 5. Now set up your environment variables. You can either do this in the `.env` file in your Next.js project's directory,
    or [in your hosting provider's UI](https://vercel.com/docs/concepts/projects/environment-variables).
 
-- Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable to the generated **Audience** URL from your OpenID provider.
-- Set the `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable to the same URL you provided for the **Issuer URL** field on your
+- Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
+- Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
   OpenID provider. This should be your store's URL.
 
 #### Setting up NextAuth
 
-To set up NextAuth, use our `@takeshape/next-auth-all-access` package to generate private keys:
+Use our `@takeshape/next-auth-all-access` package to create and sign an access token for your logged-in users.
 
-```bash
-npm i @takeshape/next-auth-all-access
-```
+To generate your keypair, use the following command from the root of your project repo and follow the printed
+instructions.
 
 ```bash
 npx @takeshape/next-auth-all-access generate-keys
 ```
 
-You'll see three messages:
+You will then need to follow these steps:
 
-- "Add the following line to your .env file, this is your private key:"
-- The generated private key. It should look like this:
+1. Add the variable `ALLACCESS_PRIVATE_KEY` with your private key to your `.env.local` file and to your hosting
+   provider's environment.
 
-```
-NEXTAUTHOIDC_PRIVATE_KEY='-----BEGIN PRIVATE KEY-----\nMLP7\nvSyOjVf9pfEAntyYVUyjPq/af+IyHC090TK8gtmCZkkJ8xN80kVcQnIzGxGg+YTO\njqBzGTEX0k+FaR911cQ2lVuX9Nx86DtmuvCUXbl/u+PAndXsInvbutFozu/Yr5Bk\nsKi3bJBMA+AY4oyPAG/hoIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDxxpLhDLp6MdQ4\n5jn0Z4qMFSckU4UBVMEcUSkS1jzaQQAb1Ue6rqBihSSJx19wKxyZwNJAPZQObtuC\nmgYk53B8vxMUMbQVCCYxRrogTVmjYMnbQ/NmkC+K4iWHO/37Qk9P4AgDSkgf8yYKwEaL/sYTCkc1xX0cLgFBlDN3kiRa+NU+AxmgRTk8\n2K/iXt3bAgMBAAECggEACzngKgjwQ6o6o2W1PS7tlPGKfrpOC7DGwqzWDmTaMHwi\nKCiwCu/+zHRILQmP2eJ2koEMgiUZ0c297YN/U4lXhMNOfHqOVQeq1lDlZYiR5+8f\nkEnIbHOTGPy2WxN44S90IDtEfTe9mxqKf09VIZkRtsYaKG\nXx8ebJZzMSWUSQXCaSM0EoAuyNdRTW34cSdHpMUQeQKBgQD57gIAbhnzcyvzD4w5\nORTrCuuz48cnTgGMfU6IpboSzq/O3cWhsu6nCcj8y9Y9+b8CsNqdzg/XVsszHUCS7Wv8FWSFkzJOlkKytcQwc\nxxhJRe3Rxv8bBgdsa/xVVWzAivbmNe9uMjmwQPUWyOLTKmNyl1xF4at8iHjCbeiD\nzG03tBP5wk/XAYXM43dlfx4r0hriju7\nphMd4iDkJJzjpZrbdQnhAdUSYKt+iov37bZmwHwKEtSbh9aEVE9ynsjb3GlxtwKBgQD3pd3NwX0HpE/JY8aiyke3Nv/tMVdZjfji\nY5mQeYdi/lG52swvoAl6PFaJf2kvT42omt\nLPS49YfDYkHFRjnZq1UsRX2vmES3zHkAtQ7MVoiGe1qAK8Twd76XTiCyXUrT40hQ\n1BhXmDJk/QKBgGEW75ohK12iiRk0GgIExbaFGIlaW/xN1lYwO3jkAH/yD584G8MZ\nj8MmAZF2qsMsQUGSH+VwxElKAGUeXxQHcPez55kZDAV3SNAmCD9ric1I1nYC\nv1bDuUJbsEyscgbdtaFXNbDK9zaZLCM+hpz9Z6G+G9Hz0UmI0kedPf09k32rCdJk\nOmRGCxWZ2bExKHUJSmQTxXWu7zAKR8oxPQHfof0CgYADcJ+BZWtKpaIWsZtgcqwX\nNdEs0CFtGhzhT9Sajgr3CXvuwpUClG03j4rxKcUPQgJA8pW9CblgjcTtB0SGsuLf\nA0EGo7/VYpPtPz1tO7mn/qp3uWfU55x41Y3FL6hW24nO0qMbCEaLbAuloW46juqX\nPRDdoC8Y5XGOd0J+9zOt5g==\n-----END
-PRIVATE KEY-----\n'
-```
-
-- "Writing your JWKS file to `'./keys/jwks.json'`"
-
-Paste the line containing your private key into your `.env.local` file. If you're deploying with Vercel or another
-platform, add `NEXTAUTHOIDC_PRIVATE_KEY` to your environment variables, and set the value to the generated private key.
-
-You should also have a new `keys` directory with a `jwks.json` file with generated properties. It should look similar to
-this:
-
-```json
-{
-  "keys": [
-    {
-      "kty": "RSA",
-      "n": "-V6bHaN66DSn7BYh97tmr0hnmXoASpGrZokQ",
-      "e": "ABGA",
-      "use": "sig",
-      "alg": "RS256",
-      "kid": "abcbf2c1ee7a6b2dc6564b783d334e32"
-    }
-  ]
-}
-```
+2. Commit the `./keys/jwks.json` file to your repo, push, and build. Your key will need to be web accessible at the URL
+   you configured in TakeShape before authentication will work.
 
 ### Shopify Admin and Shopify Storefront
 
@@ -356,6 +328,8 @@ configure these settings, stay in the **Checkout** section of the **Settings** m
   - `unauthenticated_read_customers`
   - `unauthenticated_read_product_listings`
   - `unauthenticated_read_selling_plans`
+  - `unauthenticated_read_product_inventory`
+  - `unauthenticated_read_product_tags`
 
   ![A screenshot of the storefront access scopes page](/readme-images/storefront-scopes-page-readme-images.png)
 
@@ -392,13 +366,11 @@ pattern, but you can
 ##### Connecting Shopify Storefront
 
 - Navigate to the **Home** tab of your TakeShape project.
-
 - Select the Shopify Storefront service. It will be a generic GraphQL service, with the GraphQL logo.
-
 - In the **Endpoint** field, enter your store's Shopify Storefront endpoint. It will be of this format:
 
 ```
-https://store-name.myshopify.com/api/2022-04/graphql.json
+https://[STORE_NAME].myshopify.com/api/2022-04/graphql.json
 ```
 
 Here's what ours looked like when we set up this project in June of 2022:
@@ -408,12 +380,16 @@ https://deluxe-store.myshopify.com/api/2022-04/graphql.json
 ```
 
 - For **Authentication Type**, select **Bearer Token**.
-
 - In the **Header** field, enter `X-Shopify-Storefront-Access-Token`.
 - In the **Token** field, enter the Storefront API access token you copied from your store's myshopify.com/admin page.
 
-Now your Shopify store is configured for this project. The next section is about setting up reviews in your store with
-REVIEWS.io.
+You will also need to add your Shopify Storefront information to your `.env`. This is all public information, and can be
+included in the `.env` file that is checked into the repo.
+
+Add or update the lines `NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN` and `NEXT_PUBLIC_SHOPIFY_STOREFRONT_URL` in your `.env`
+file.
+
+Now your Shopify store is configured for this project.
 
 ### REVIEWS.io
 
@@ -439,26 +415,8 @@ how to connect REVIEWS.io to any TakeShape project,
 
 ### ShipEngine
 
-The following section describes how to connect ShipEngine to your Deluxe Sample Project pattern in TakeShape. To learn
-how to connect ShipEngine to any TakeShape project,
-[check out our docs](https://app.takeshape.io/docs/services/providers/ship-engine).
-
-1. First, get your API Key from ShipEngine.
-
-- [Navigate to your ShipEngine API Dashboard by clicking here](https://app.shipengine.com/). Select the **Sandbox** tab
-  on the left.
-- There should already be an API Key generated, but you can generate a new one instantly by selecting **Create New Key**
-  on this page.
-- Copy this key to put into your TakeShape project.
-
-![A screenshot of Ship Engine's API Dashboard](./readme-images/shipengine/api-dashboard-shipengine.png)
-
-> If you're on a free tier Ship Engine account, your API keys will have `TEST_` appended to the front.
-
-2. Navigate to your TakeShape project's dashboard and select **Ship Engine** under the services list.
-
-3. Under **Authentication**, set the **Header** field to `API-Key` and the **Token** field to your API Key. **Save**
-   your service.
+The client frontend project supports the shipping information added to the Shopify graph by the ShipEngine Shopify
+Application. All you need to do is connect ShipEngine to your Shopify store in the Shopify admin and you're set!
 
 ### Voucherify
 
@@ -480,6 +438,9 @@ provider, you can connect most arbitrary REST APIs, including Voucherify.
 
 3. Under **Authentication**, set the Header to `X-App-Id` and the Token to your App ID. **Save** your service.
 
+4. Connect Vourcherify to your Shopify store in the Shopify admin and your purchases will be applied to your customer
+   accounts, and will be available via the `getMyLoyaltyCard` query.
+
 ### Klaviyo
 
 The following section describes how to connect Klaviyo to your Deluxe Sample Project pattern in TakeShape. To learn how
@@ -497,7 +458,7 @@ to connect Klaviyo to any TakeShape project,
 
 4. Be sure to set the `NEXT_PUBLIC_DEFAULT_KLAVIYO_LIST_ID` to
    [the ID of your preferred Klaviyo newsletter](https://help.klaviyo.com/hc/en-us/articles/115005078647-Find-your-List-ID),
-   either in a `.env` file or in your hosting provider's UI.
+   either in a `.env` file or in your hosting provider.
 
 ![A screenshot of the Klaviyo service page](./readme-images/klaviyo/add-authentication-klaviyo.png)
 
@@ -511,6 +472,11 @@ generic REST provider. To learn how to connect ReCAPTCHA to any TakeShape projec
 > env. The Takeshape API will still require Captcha unless the Captcha compose step and
 > `"if": "$resolvers.recaptcha.success == true"` is removed from the relevant mutations in the project schema.
 > [Check out our docs on editing a TakeShape project schema](https://app.takeshape.io/docs/schema/editing).
+
+> Because reCAPTCHA is tied to a specific host in the Google settings you will either need to use a custom domain and
+> allow a wildcard subdomain for your preview builds, e.g., `*.mysite.com` allows `preview-acbiou43891239.mysite.com` or
+> use an environment that disables recaptcha for your preview builds and remove the step above from your TakeShape
+> project schema.
 
 1. First, get your **Site Secret** from reCAPTCHA. If you need to create an account,
    [you can visit Google's ReCAPTCHA site registration page here](https://www.google.com/recaptcha/admin/create).
@@ -587,6 +553,9 @@ To use Sentry with this project, you need your project's
 [Data Source Name](https://docs.sentry.io/product/sentry-basics/dsn-explainer/), as well as your sentry org slug and
 project name.
 
+> If you don't want to use Sentry do not set the `NEXT_PUBLIC_SENTRY_DSN` environment variable and it will not be
+> loaded.
+
 1. Find your Sentry DSN.
 
 - Log into Sentry, and select your project. If you don't have a sentry project ready, create a Next.js project.
@@ -617,24 +586,14 @@ project name.
 
 ### Other environment variables
 
-Follow the instructions in the `.env.local-example` file included at the root of this repo to fill out all necessary
-environment variables. Then rename the file to `.env.local` to use them.
+1. Copy the `.env.local-example` file to `.env.local` and follow the instructions.
+2. Copy the `.env-example` file, overwriting the `.env` file, and follow the instructions.
 
-## Running the starter
+## Type generation
 
-1. Head over to your trusty terminal or tool of choice.
-
-- Clone this repo with `git clone https://github.com/takeshape/takeshape-starter-deluxe-sample-project.git`.
-- `cd` into the folder that the cloning created.
-- Run `cp .env.local-example .env.local` to rename the environment variables file.
-- Run `npm install`.
-
-2. Follow the instructions in `.env.local`.
-
-3. Run `npm run graphql:typegen` to generate type definitions from the GraphQL schema
-
-4. Run `npm run dev` to start the application and open [http://localhost:3000](http://localhost:3000) with your browser
-   to play around!
+Your project is configured to generate types for the GraphQL APIs in use. Run `npm run graphql:typegen` before running
+the site locally to generate query-specific types. This is a big advantage of the TakeShape GraphQL mesh — you will have
+your queries and responses fully typed, and can develop efficiently and safely.
 
 ## Deploying to production
 
@@ -678,27 +637,15 @@ In `Project Settings > Git` add to `Ignored Build Strp` this command:
 bash scripts/ignore-build.sh
 ```
 
-## Learn more
+### IMPORTANT - Development notes
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions
-are welcome!
-
-## Development notes
-
-- Be sure to follow the instructions in the `.env` and `.env.local-example` files included in this repo. Use `.env.test`
-  to run the project locally on your machine. Rename `.env.local-example` to `.env.local` before pushing any changes to
-  it.
-- `@babel/runtime` is required for issues with nested deps of `@takeshape/cli`'s codegen
 - Components with state coming from localstorage via Jotai's `atomWithStorage` should be wrapped in the `<ClientOnly />`
   component. This prevents rendering mismatches and stale / incorrect info.
+
 - The Shopify store is configured to redirect after checkout via the "Additional scripts" field (see the
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
+
 - Shopify **must** use the `2022-04` endpoint, like this:
   `https://shopify-shop-name.myshopify.com/admin/api/2022-04/graphql.json`
 
