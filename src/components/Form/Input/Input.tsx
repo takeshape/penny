@@ -1,6 +1,6 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { InputHTMLAttributes } from 'react';
-import { useController, UseControllerProps } from 'react-hook-form';
+import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
 export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -9,7 +9,10 @@ export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   helpText?: string;
 }
 
-export const FormInput = ({
+export const FormInput = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   className,
   id,
   label,
@@ -20,15 +23,17 @@ export const FormInput = ({
   rules,
   shouldUnregister,
   ...props
-}: FormInputProps & UseControllerProps<any, any>) => {
+}: FormInputProps & UseControllerProps<TFieldValues, TName>) => {
   const { field, fieldState } = useController({
     name,
     control,
-    defaultValue: defaultValue ?? '',
+    defaultValue,
     rules,
     shouldUnregister
   });
+
   const { error } = fieldState;
+
   return (
     <div className={`${className} relative`}>
       <div className="flex justify-between">

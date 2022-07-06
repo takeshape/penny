@@ -1,5 +1,5 @@
 import { SelectHTMLAttributes } from 'react';
-import { useController, UseControllerProps } from 'react-hook-form';
+import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 
 export interface SelectOption {
   key: string;
@@ -15,7 +15,10 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   helpText?: string;
 }
 
-export const FormSelect = ({
+export const FormSelect = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   className,
   helpText,
   id,
@@ -27,7 +30,7 @@ export const FormSelect = ({
   rules,
   shouldUnregister,
   ...props
-}: SelectProps & UseControllerProps<any, any>) => {
+}: SelectProps & UseControllerProps<TFieldValues, TName>) => {
   const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
 
   return (

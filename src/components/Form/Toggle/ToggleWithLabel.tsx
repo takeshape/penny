@@ -1,5 +1,5 @@
 import { Switch } from '@headlessui/react';
-import { useController, UseControllerProps } from 'react-hook-form';
+import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
 export interface FormToggleWithLabelProps {
@@ -10,7 +10,10 @@ export interface FormToggleWithLabelProps {
   disabled?: boolean;
 }
 
-export const FormToggleWithLabel = ({
+export const FormToggleWithLabel = <
+  TFieldValues extends FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
   labelPrimary,
   labelSecondary,
   labelPosition,
@@ -21,7 +24,7 @@ export const FormToggleWithLabel = ({
   rules,
   shouldUnregister,
   ...props
-}: FormToggleWithLabelProps & UseControllerProps<any, any>) => {
+}: FormToggleWithLabelProps & UseControllerProps<TFieldValues, TName>) => {
   labelPosition = labelPosition ?? 'right';
 
   const { field } = useController({ name, control, defaultValue, rules, shouldUnregister });
