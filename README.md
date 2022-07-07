@@ -52,7 +52,7 @@ This starter project composes the following services into a unified GraphQL API:
 TakeShape is also providing performance and data services for the storefront:
 
 - **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) speeds up product queries by
-  over 50% and enables lighting fast product search on the frontend**
+   10x and enables lighting fast product search on the frontend**
 - **TakeShape's [ShapeDB](https://app.takeshape.io/docs/data/modeling) hosts some of the custom content used in this
   build.**
 
