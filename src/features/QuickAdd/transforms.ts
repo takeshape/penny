@@ -1,6 +1,9 @@
 import {
-    createImageGetter, getProductUrl, getProductVariantOptions, getStorefrontPrice,
-    getStorefrontProductVariants
+  createImageGetter,
+  getProductUrl,
+  getProductVariantOptions,
+  getStorefrontPrice,
+  getStorefrontProductVariants
 } from 'transforms/shopify';
 import { QuickAddQueryResponse } from 'types/storefront';
 import { QuickAddProduct } from './types';

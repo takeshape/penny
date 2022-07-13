@@ -1,11 +1,17 @@
-import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getProductVariantOptions } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getCollectionUrl,
+  getPrice,
+  getProductUrl,
+  getProductVariantOptions
+} from 'transforms/shopify';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import {
-    StorefrontCollection,
-    StorefrontCollectionComponent,
-    StorefrontCollectionComponentProduct,
-    StorefrontCollectionItem,
-    StorefrontCollectionItemProduct
+  StorefrontCollection,
+  StorefrontCollectionComponent,
+  StorefrontCollectionComponentProduct,
+  StorefrontCollectionItem,
+  StorefrontCollectionItemProduct
 } from './types';
 
 function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): StorefrontCollectionItemProduct {
