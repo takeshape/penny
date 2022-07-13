@@ -199,6 +199,7 @@ export const productPageProduct: ProductPageProduct = {
   priceMin: { amount: 19200, currencyCode: 'USD' },
   priceMax: { amount: 20000, currencyCode: 'USD' },
   variantsCount: 24,
+  lineItemAttributes: null,
   variants: [
     {
       id: 'gid://shopify/ProductVariant/40234670162020',
@@ -1313,7 +1314,7 @@ export const productPageProduct: ProductPageProduct = {
   hasOneTimePurchaseOption: true,
   hasSubscriptionPurchaseOption: true,
   hasStock: true,
-  options: [
+  variantOptions: [
     {
       name: 'Size',
       id: 'gid://shopify/ProductOption/8766172332132',
@@ -1400,7 +1401,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: true,
     hasSubscriptionPurchaseOption: false,
     hasStock: true,
-    options: [
+    variantOptions: [
       {
         name: 'Size',
         id: 'gid://shopify/ProductOption/8728583471204',
@@ -1476,7 +1477,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: true,
     hasSubscriptionPurchaseOption: true,
     hasStock: true,
-    options: [
+    variantOptions: [
       {
         name: 'Size',
         id: 'gid://shopify/ProductOption/8766172332132',
@@ -1590,7 +1591,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: false,
     hasSubscriptionPurchaseOption: true,
     hasStock: true,
-    options: [
+    variantOptions: [
       {
         name: 'Color',
         id: 'gid://shopify/ProductOption/8728584126564',
@@ -1674,7 +1675,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: true,
     hasSubscriptionPurchaseOption: false,
     hasStock: true,
-    options: [
+    variantOptions: [
       {
         name: 'Size',
         id: 'gid://shopify/ProductOption/8770971140196',

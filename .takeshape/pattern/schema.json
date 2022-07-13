@@ -135,6 +135,9 @@
           "policies": {
             "widget": "relationship"
           },
+          "lineItemAttributes": {
+            "widget": "relationship"
+          },
           "shopifyProduct": {
             "properties": {
               "descriptionHtml": {
@@ -232,6 +235,7 @@
           "details",
           "showPolicies",
           "policies",
+          "lineItemAttributes",
           "shopifyProductId",
           "shopifyProduct"
         ]
@@ -612,6 +616,42 @@
         "order": [
           "name",
           "href"
+        ]
+      }
+    },
+    "LineItemAttributes": {
+      "default": {
+        "properties": {
+          "name": {
+            "widget": "singleLineText"
+          },
+          "attributes": {
+            "widget": "repeater",
+            "properties": {
+              "key": {
+                "widget": "singleLineText"
+              },
+              "values": {
+                "widget": "repeater",
+                "properties": {
+                  "value": {
+                    "widget": "singleLineText"
+                  }
+                },
+                "order": [
+                  "value"
+                ]
+              }
+            },
+            "order": [
+              "key",
+              "values"
+            ]
+          }
+        },
+        "order": [
+          "name",
+          "attributes"
         ]
       }
     }
@@ -1488,6 +1528,26 @@
       },
       "description": "Returns a list Page in natural order.",
       "args": "TSListArgs<Page>"
+    },
+    "getLineItemAttributes": {
+      "shape": "LineItemAttributes",
+      "resolver": {
+        "name": "takeshape:get",
+        "service": "takeshape:local",
+        "shapeName": "LineItemAttributes"
+      },
+      "description": "Get a LineItemAttributes by ID",
+      "args": "TSGetArgs<LineItemAttributes>"
+    },
+    "getLineItemAttributesList": {
+      "shape": "PaginatedList<LineItemAttributes>",
+      "resolver": {
+        "name": "takeshape:list",
+        "service": "takeshape:local",
+        "shapeName": "LineItemAttributes"
+      },
+      "description": "Returns a list LineItemAttributes in natural order.",
+      "args": "TSListArgs<LineItemAttributes>"
     }
   },
   "mutations": {
@@ -3036,6 +3096,46 @@
       },
       "description": "Delete Link",
       "args": "DeleteArgs<Link>"
+    },
+    "updateLineItemAttributes": {
+      "shape": "UpdateResult<LineItemAttributes>",
+      "resolver": {
+        "name": "takeshape:update",
+        "service": "takeshape:local",
+        "shapeName": "LineItemAttributes"
+      },
+      "description": "Update LineItemAttributes",
+      "args": "UpdateArgs<LineItemAttributes>"
+    },
+    "createLineItemAttributes": {
+      "shape": "CreateResult<LineItemAttributes>",
+      "resolver": {
+        "name": "takeshape:create",
+        "service": "takeshape:local",
+        "shapeName": "LineItemAttributes"
+      },
+      "description": "Create LineItemAttributes",
+      "args": "CreateArgs<LineItemAttributes>"
+    },
+    "duplicateLineItemAttributes": {
+      "shape": "DuplicateResult<LineItemAttributes>",
+      "resolver": {
+        "name": "takeshape:duplicate",
+        "service": "takeshape:local",
+        "shapeName": "LineItemAttributes"
+      },
+      "description": "Duplicate LineItemAttributes",
+      "args": "DuplicateArgs<LineItemAttributes>"
+    },
+    "deleteLineItemAttributes": {
+      "shape": "DeleteResult<LineItemAttributes>",
+      "resolver": {
+        "name": "takeshape:delete",
+        "service": "takeshape:local",
+        "shapeName": "LineItemAttributes"
+      },
+      "description": "Delete LineItemAttributes",
+      "args": "DeleteArgs<LineItemAttributes>"
     }
   },
   "shapes": {
@@ -5006,6 +5106,87 @@
             "type": "boolean"
           }
         }
+      }
+    },
+    "LineItemAttributes": {
+      "id": "P56MqxMLJ",
+      "name": "LineItemAttributes",
+      "title": "Line Item Attributes",
+      "workflow": "default",
+      "model": {
+        "type": "multiple"
+      },
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string",
+            "description": "",
+            "title": "Name",
+            "@mapping": "takeshape:local:LineItemAttributes.eTeyFsdLD"
+          },
+          "attributes": {
+            "title": "Attributes",
+            "description": "",
+            "items": {
+              "@ref": "local:LineItemAttributesAttributes"
+            },
+            "minItems": 1,
+            "type": "array",
+            "@mapping": "takeshape:local:LineItemAttributes.gQT0mPkqn"
+          }
+        },
+        "required": [
+          "name",
+          "attributes"
+        ]
+      }
+    },
+    "LineItemAttributesAttributesValues": {
+      "id": "1MLfOPrws",
+      "name": "LineItemAttributesAttributesValues",
+      "title": "Line Item Attributes Attributes Values",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "minLength": 0,
+            "type": "string",
+            "description": "",
+            "title": "Value",
+            "@mapping": "takeshape:local:LineItemAttributesAttributesValues.9NwUFK_Ve"
+          }
+        }
+      }
+    },
+    "LineItemAttributesAttributes": {
+      "id": "gQT0mPkqn",
+      "name": "LineItemAttributesAttributes",
+      "title": "Line Item Attributes Attributes",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The property key.",
+            "title": "Key",
+            "@mapping": "takeshape:local:LineItemAttributesAttributes.C-tUheU-E"
+          },
+          "values": {
+            "title": "Values",
+            "description": "Optional values for the property.",
+            "items": {
+              "@ref": "local:LineItemAttributesAttributesValues"
+            },
+            "type": "array",
+            "@mapping": "takeshape:local:LineItemAttributesAttributes.1MLfOPrws"
+          }
+        },
+        "required": [
+          "key"
+        ]
       }
     }
   },

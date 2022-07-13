@@ -1,9 +1,6 @@
 import {
-  createImageGetter,
-  getProductOptions,
-  getProductUrl,
-  getStorefrontPrice,
-  getStorefrontProductVariants
+    createImageGetter, getProductUrl, getProductVariantOptions, getStorefrontPrice,
+    getStorefrontProductVariants
 } from 'transforms/shopify';
 import { QuickAddQueryResponse } from 'types/storefront';
 import { QuickAddProduct } from './types';
@@ -33,6 +30,6 @@ export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroups.nodes.length > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options, variants)
+    variantOptions: getProductVariantOptions(shopifyProduct.options, variants)
   };
 }

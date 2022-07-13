@@ -1,11 +1,11 @@
-import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
+import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getProductVariantOptions } from 'transforms/shopify';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import {
-  StorefrontCollection,
-  StorefrontCollectionComponent,
-  StorefrontCollectionComponentProduct,
-  StorefrontCollectionItem,
-  StorefrontCollectionItemProduct
+    StorefrontCollection,
+    StorefrontCollectionComponent,
+    StorefrontCollectionComponentProduct,
+    StorefrontCollectionItem,
+    StorefrontCollectionItemProduct
 } from './types';
 
 function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): StorefrontCollectionItemProduct {
@@ -25,7 +25,7 @@ function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): Store
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options)
+    variantOptions: getProductVariantOptions(shopifyProduct.options)
   };
 }
 

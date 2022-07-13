@@ -30,13 +30,13 @@ export const ProductWithImageGrid = ({
   showBreadcrumbs,
   showReviewsLink
 }: PropsWithChildren<ProductWithImageGridProps>) => {
-  const { name, descriptionHtml, images, options, hasStock } = product;
+  const { name, descriptionHtml, images, variantOptions, hasStock } = product;
 
-  const colors = useMemo(() => options.find((opt) => opt.name.toLowerCase() === 'color'), [options]);
+  const colors = useMemo(() => variantOptions.find((opt) => opt.name.toLowerCase() === 'color'), [variantOptions]);
   const initialColor = colors?.values.find((v) => v.hasStock) ?? colors?.values[0] ?? null;
   const [selectedColor, setSelectedColor] = useState(initialColor?.value ?? '');
 
-  const sizes = useMemo(() => options.find((opt) => opt.name.toLowerCase() === 'size'), [options]);
+  const sizes = useMemo(() => variantOptions.find((opt) => opt.name.toLowerCase() === 'size'), [variantOptions]);
   const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
   const [selectedSize, setSelectedSize] = useState(initialSize?.value);
 
@@ -67,7 +67,9 @@ export const ProductWithImageGrid = ({
       addToCart({
         product,
         variant: selectedVariant,
-        price: selectedPrice
+        price: selectedPrice,
+        // Provided by user input, e.g., a monogram component allowing the user to enter text
+        attributes: []
       });
 
       setIsCartOpen(true);

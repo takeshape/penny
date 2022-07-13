@@ -78,6 +78,11 @@ export type ProductOption = {
   values: ProductOptionValue[];
 };
 
+export type ProductLineItemAttribute = {
+  key: string;
+  values?: string[];
+};
+
 export type ProductCore = {
   id: string;
   handle: string;
@@ -93,7 +98,8 @@ export type ProductBase = ProductCore & {
   images?: ProductImage[];
   priceMin: ProductPrice;
   priceMax: ProductPrice;
-  options: ProductOption[];
+  variantOptions: ProductOption[];
+  lineItemAttributes?: ProductLineItemAttribute[];
   variantsCount?: number;
   variants?: ProductVariant[];
   hasOneTimePurchaseOption?: boolean;

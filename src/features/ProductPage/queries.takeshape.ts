@@ -58,6 +58,16 @@ export const ProductPageShopifyProductQuery = gql`
             descriptionHtml
           }
         }
+        lineItemAttributes {
+          _id
+          name
+          attributes {
+            key
+            values {
+              value
+            }
+          }
+        }
       }
       standardizedProductType {
         productTaxonomyNode {

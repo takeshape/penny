@@ -34,7 +34,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: false,
         hasSubscriptionPurchaseOption: true,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: 4, count: 2 } }
     },
@@ -60,7 +60,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: true,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: 4.6667, count: 3 } }
     },
@@ -84,7 +84,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -110,7 +110,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -136,7 +136,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -162,7 +162,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -188,7 +188,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -214,7 +214,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -240,7 +240,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -266,7 +266,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -292,7 +292,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     },
@@ -318,7 +318,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
-        options: []
+        variantOptions: []
       },
       reviews: { stats: { average: null, count: 0 } }
     }

@@ -1,19 +1,19 @@
 import { getStats } from 'transforms/reviewsIo';
 import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getSeo } from 'transforms/shopify';
 import {
-  ProductCategoryShopifyCollectionHandlesResponse,
-  ProductCategoryShopifyCollectionQueryResponse
+    ProductCategoryShopifyCollectionHandlesResponse,
+    ProductCategoryShopifyCollectionQueryResponse
 } from 'types/takeshape';
 import { PaginationDataHookParsedPath } from '../../utils/hooks/usePaginationData';
 import {
-  ProductCategoryBreadcrumbs,
-  ProductCategoryCollection,
-  ProductCategoryCollectionParent,
-  ProductCategoryProduct,
-  ProductCategoryProductListItem,
-  ProductCategoryReviewsIoReviews,
-  ProductCategoryShopifyCollection,
-  ProductCategoryShopifyProduct
+    ProductCategoryBreadcrumbs,
+    ProductCategoryCollection,
+    ProductCategoryCollectionParent,
+    ProductCategoryProduct,
+    ProductCategoryProductListItem,
+    ProductCategoryReviewsIoReviews,
+    ProductCategoryShopifyCollection,
+    ProductCategoryShopifyProduct
 } from './types';
 
 function getReviews(reviewsIoReviews: ProductCategoryReviewsIoReviews) {
@@ -39,7 +39,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: []
+    variantOptions: []
   };
 }
 
