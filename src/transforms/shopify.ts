@@ -130,7 +130,6 @@ export function getProductVariantPriceOptions(
   shopifyVariant: Shopify_ProductVariant
 ): ProductPriceOption[] {
   // variant.contextualPricing would be better for a true multi-currency site
-  // TODO: storefront priceV2 - { amount, currencyCode }
   const { id, price } = shopifyVariant;
   const amount = Number(price) * 100;
 
@@ -155,7 +154,6 @@ export function getProductVariantPriceOptions(
     });
   }
 
-  // TODO Storefront version of this, parsing strings 30 Day(s)
   if (sellingPlanGroupCount > 0) {
     const sellingPlans = sellingPlanGroups.edges.flatMap(({ node }) => node.sellingPlans.edges.map(({ node }) => node));
     prices = prices
