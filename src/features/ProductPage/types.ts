@@ -71,6 +71,7 @@ export type ProductPageProduct = SetRequired<
   | 'hasOneTimePurchaseOption'
   | 'hasSubscriptionPurchaseOption'
   | 'hasStock'
+  | 'lineItemAttributes'
 >;
 export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
 export type ProductPageReviewsReviewList = ReviewList;

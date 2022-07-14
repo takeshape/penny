@@ -1,4 +1,10 @@
-import { createImageGetter, getCollectionUrl, getPrice, getProductOptions, getProductUrl } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getCollectionUrl,
+  getPrice,
+  getProductUrl,
+  getProductVariantOptions
+} from 'transforms/shopify';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import {
   StorefrontCollection,
@@ -25,7 +31,7 @@ function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): Store
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options)
+    variantOptions: getProductVariantOptions(shopifyProduct.options)
   };
 }
 

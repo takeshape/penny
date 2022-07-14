@@ -229,7 +229,7 @@ export function getSeo(shopifyProduct: Shopify_Product | ProductCategoryShopifyC
   };
 }
 
-export function getProductOptions(
+export function getProductVariantOptions(
   options: Pick<Shopify_ProductOption, 'name' | 'id' | 'values'>[],
   variants?: ProductVariant[]
 ) {

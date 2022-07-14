@@ -1517,7 +1517,7 @@ export const quickAddProduct: QuickAddProduct = {
   hasOneTimePurchaseOption: true,
   hasSubscriptionPurchaseOption: true,
   hasStock: true,
-  options: [
+  variantOptions: [
     {
       name: 'Size',
       id: 'gid://shopify/ProductOption/8766172332132',
