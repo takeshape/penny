@@ -17,10 +17,10 @@ export interface QuickAddItemProps {
 }
 
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
-  let { options, hasStock } = product;
+  let { variantOptions, hasStock } = product;
 
-  const colors = options.find((opt) => opt.name.toLowerCase() === 'color');
-  const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
+  const colors = variantOptions.find((opt) => opt.name.toLowerCase() === 'color');
+  const sizes = variantOptions.find((opt) => opt.name.toLowerCase() === 'size');
 
   const initialColor = colors.values.find((v) => v.hasStock) ?? colors.values[0];
   const [selectedColor, setSelectedColor] = useState(initialColor.value);

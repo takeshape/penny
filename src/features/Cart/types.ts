@@ -3,6 +3,11 @@ import { QuickAddProduct } from 'features/QuickAdd/types';
 import { SetOptional } from 'type-fest';
 import { ProductPriceOption, ProductVariant } from 'types/product';
 
+export type CartItemAttribute = {
+  key: string;
+  value: string;
+};
+
 export type CartItem = {
   id: string;
   name: string;
@@ -17,8 +22,10 @@ export type CartItem = {
   intervalCount: number;
   variantId: string;
   variantName: string;
+  attributesKey?: string;
+  attributes?: CartItemAttribute[];
   // Freeform data, for display or later API calls
-  data: Record<string, unknown>;
+  data?: Record<string, unknown>;
 };
 
 export type CartItemInput = SetOptional<CartItem, 'interval' | 'intervalCount' | 'imageSrc' | 'imageAlt' | 'data'>;
@@ -27,4 +34,5 @@ export type AddToCartInput = {
   product: QuickAddProduct | ProductPageProduct;
   variant: ProductVariant;
   price: ProductPriceOption;
+  attributes?: CartItemAttribute[];
 };

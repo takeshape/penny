@@ -1,7 +1,7 @@
 import {
   createImageGetter,
-  getProductOptions,
   getProductUrl,
+  getProductVariantOptions,
   getStorefrontPrice,
   getStorefrontProductVariants
 } from 'transforms/shopify';
@@ -33,6 +33,6 @@ export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroups.nodes.length > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options, variants)
+    variantOptions: getProductVariantOptions(shopifyProduct.options, variants)
   };
 }

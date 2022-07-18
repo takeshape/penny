@@ -14,9 +14,10 @@ export const getCartVariables = (items: CartItem[], session?: Session) => {
       ],
       lines: items?.map(
         (i): CartLineInput => ({
-          merchandiseId: (i.data.price as ProductPriceOption).merchandiseId,
-          sellingPlanId: (i.data.price as ProductPriceOption).subscriptionId,
-          quantity: i.quantity
+          merchandiseId: (i.data?.price as ProductPriceOption).merchandiseId,
+          sellingPlanId: (i.data?.price as ProductPriceOption).subscriptionId,
+          quantity: i.quantity,
+          attributes: i.attributes
         })
       )
     }

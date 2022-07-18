@@ -39,7 +39,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: []
+    variantOptions: []
   };
 }
 

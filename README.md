@@ -14,19 +14,19 @@ TakeShape provides, just deploy the pattern in the `.takeshape/pattern` director
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://deluxe-sample-project-p32n2a9fx-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1657737195118-43698.report.html) |
+| [Path: /](https://deluxe-sample-project-jqwvocj7b-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1657828961541-6486.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://deluxe-sample-project-p32n2a9fx-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1657737196099-75799.report.html) |
+| [Path: /product/__lighthouse](https://deluxe-sample-project-jqwvocj7b-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1657828962039-93986.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://deluxe-sample-project-p32n2a9fx-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1657737196469-87841.report.html) |
+| [Path: /collection/__lighthouse](https://deluxe-sample-project-jqwvocj7b-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1657828962610-45676.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
@@ -52,7 +52,7 @@ This starter project composes the following services into a unified GraphQL API:
 TakeShape is also providing performance and data services for the storefront:
 
 - **TakeShape's [API Indexing](https://app.takeshape.io/docs/schema/api-indexing-guide/) speeds up product queries by
-   10x and enables lighting fast product search on the frontend**
+  10x and enables lighting fast product search on the frontend**
 - **TakeShape's [ShapeDB](https://app.takeshape.io/docs/data/modeling) hosts some of the custom content used in this
   build.**
 
@@ -646,8 +646,9 @@ bash scripts/ignore-build.sh
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
 
-- Shopify **must** use the `2022-04` endpoint, like this:
-  `https://shopify-shop-name.myshopify.com/admin/api/2022-04/graphql.json`
+- Shopify **must** use the `2022-07` endpoint, like this:  
+  Admin API: `https://shopify-shop-name.myshopify.com/admin/api/2022-07/graphql.json`  
+  Storefront API: `https://deluxe-sample-project.myshopify.com/api/2022-07/graphql.json`
 
 ```erb
 {% if checkout.attributes.redirect_origin %}

@@ -6,7 +6,7 @@ import { StorefrontCollectionItem } from '../types';
 export interface CollectionItemProps extends StorefrontCollectionItem {}
 
 export const CollectionItem = ({ product }: CollectionItemProps) => {
-  const colors = product.options.find((opt) => opt.name.toLowerCase() === 'color');
+  const colors = product.variantOptions.find((opt) => opt.name.toLowerCase() === 'color');
 
   return (
     <>

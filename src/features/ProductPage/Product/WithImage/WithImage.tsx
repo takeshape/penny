@@ -24,9 +24,9 @@ export const ProductWithImage = ({
   breadcrumbs,
   showReviewsLink
 }: ProductWithImageProps) => {
-  const { priceMin, name, descriptionHtml, featuredImage, options } = product;
+  const { priceMin, name, descriptionHtml, featuredImage, variantOptions } = product;
 
-  const sizes = options.find((opt) => opt.name.toLowerCase() === 'size');
+  const sizes = variantOptions.find((opt) => opt.name.toLowerCase() === 'size');
 
   const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
   const [selectedSize, setSelectedSize] = useState(initialSize?.value);

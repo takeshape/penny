@@ -1,12 +1,13 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
+import { getProductLineItemAttributes } from 'transforms/product';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import {
   createImageGetter,
   getCollectionUrl,
   getPrice,
-  getProductOptions,
   getProductUrl,
+  getProductVariantOptions,
   getProductVariants,
   getSeo
 } from 'transforms/shopify';
@@ -62,7 +63,8 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
-    options: getProductOptions(shopifyProduct.options, variants)
+    variantOptions: getProductVariantOptions(shopifyProduct.options, variants),
+    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape.lineItemAttributes)
   };
 }
 
@@ -208,7 +210,7 @@ function getRelatedProduct(
     // The currencyCode enums incompatible across the two product types...
     priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
     priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
-    options: getProductOptions(shopifyProduct.options),
+    variantOptions: getProductVariantOptions(shopifyProduct.options),
     hasStock: shopifyProduct.totalInventory > 0
   };
 }
