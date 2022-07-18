@@ -30,12 +30,11 @@ export function createAnonymousTakeshapeApolloClient() {
 function useAuthenticatedClient() {
   const { data: session } = useSession();
 
-  const clientRef = useRef<ApolloClient<NormalizedCacheObject>>();
+  const clientRef = useRef<ApolloClient<NormalizedCacheObject>>(null);
 
   useEffect(() => {
     if (session) {
       const clientToken = getClientToken({ clientId: 'takeshape', session });
-
       clientRef.current = createClient({
         uri: takeshapeApiUrl,
         accessToken: clientToken?.accessToken,
@@ -60,6 +59,7 @@ export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
   const client = useAuthenticatedClient();
   return useQuery(query, {
     ...options,
+    skip: !client,
     client
   });
 }

@@ -22,8 +22,8 @@ export const RecoverCustomerPasswordMutation = gql`
   }
 `;
 
-// export const CustomerAccessTokenCreateMutation = gql`
-//   mutation CustomerAccessTokenCreateMutation($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
+// export const AuthCustomerAccessTokenCreateMutation = gql`
+//   mutation AuthCustomerAccessTokenCreateMutation($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
 //     accessTokenCreate: ShopifyStorefront_customerAccessTokenCreate(input: $input) {
 //       customerAccessToken {
 //         expiresAt
@@ -38,8 +38,8 @@ export const RecoverCustomerPasswordMutation = gql`
 //   }
 // `;
 
-// export const CustomerQuery = gql`
-//   query CustomerQuery($customerAccessToken: String!) {
+// export const AuthCustomerQuery = gql`
+//   query AuthCustomerQuery($customerAccessToken: String!) {
 //     customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
 //       firstName
 //       lastName
