@@ -2,12 +2,16 @@ import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import {
   sessionMaxAgeForgetMe,
   sessionMaxAgeRememberMe,
-  takeshapeApiUrl,
+  shopifyStorefrontToken,
+  shopifyStorefrontUrl,
   takeshapeAuthAudience,
-  takeshapeAuthIssuer,
-  takeshapeWebhookApiKey
+  takeshapeAuthIssuer
 } from 'config';
-import { CustomerAccessTokenCreateMutation, CustomerQuery } from 'features/Auth/queries';
+import {
+  AuthCustomerAccessTokenCreateMutation,
+  AuthCustomerAccessTokenCreateWithMultipassMutation,
+  AuthCustomerQuery
+} from 'features/Auth/queries.storefront';
 import logger from 'logger';
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth from 'next-auth';
@@ -15,19 +19,22 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { parseCookies, setCookie } from 'nookies';
 import path from 'path';
 import {
-  CustomerAccessTokenCreateMutationResponse,
-  CustomerAccessTokenCreateMutationVariables,
-  CustomerQueryResponse,
-  CustomerQueryVariables
-} from 'types/takeshape';
+  AuthCustomerAccessTokenCreateMutationResponse,
+  AuthCustomerAccessTokenCreateMutationVariables,
+  AuthCustomerAccessTokenCreateWithMultipassMutationResponse,
+  AuthCustomerAccessTokenCreateWithMultipassMutationVariables,
+  AuthCustomerQueryResponse,
+  AuthCustomerQueryVariables
+} from 'types/storefront';
 import { withSentry } from 'utils/api/withSentry';
 import { createStaticClient } from 'utils/apollo/client';
+import { createMultipassToken } from 'utils/multipass';
 
 const apolloClient = createStaticClient({
-  uri: takeshapeApiUrl,
-  accessToken: takeshapeWebhookApiKey,
-  accessTokenHeader: 'Authorization',
-  accessTokenPrefix: 'Bearer'
+  uri: shopifyStorefrontUrl,
+  accessToken: shopifyStorefrontToken,
+  accessTokenHeader: 'X-Shopify-Storefront-Access-Token',
+  accessTokenPrefix: ''
 });
 
 const withAllAccess = createNextAuthAllAccess({
@@ -65,11 +72,12 @@ const nextAuthConfig = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize({ email, password }) {
+        console.log('BEFORE', { email, password });
         const { data: accessTokenData } = await apolloClient.mutate<
-          CustomerAccessTokenCreateMutationResponse,
-          CustomerAccessTokenCreateMutationVariables
+          AuthCustomerAccessTokenCreateMutationResponse,
+          AuthCustomerAccessTokenCreateMutationVariables
         >({
-          mutation: CustomerAccessTokenCreateMutation,
+          mutation: AuthCustomerAccessTokenCreateMutation,
           variables: {
             input: {
               email,
@@ -77,6 +85,8 @@ const nextAuthConfig = {
             }
           }
         });
+
+        console.log('AFTER', { accessTokenData });
 
         if (accessTokenData.accessTokenCreate.customerUserErrors.length > 0) {
           logger.error({
@@ -89,25 +99,16 @@ const nextAuthConfig = {
 
         const { accessToken: shopifyCustomerAccessToken } = accessTokenData.accessTokenCreate.customerAccessToken;
 
-        const { data: customerData } = await apolloClient.query<CustomerQueryResponse, CustomerQueryVariables>({
-          query: CustomerQuery,
-          variables: {
-            customerAccessToken: shopifyCustomerAccessToken
-          }
-        });
-
-        // If no error and we have user data, return it
-        if (customerData?.customer) {
+        if (shopifyCustomerAccessToken) {
           return {
-            ...customerData.customer,
-            name: customerData.customer.displayName,
+            email,
             shopifyCustomerAccessToken
           };
         }
 
         logger.error({
           email,
-          errors: [{ message: 'No customer data found' }]
+          errors: [{ message: 'Unable to sign customer in' }]
         });
 
         return null;
@@ -117,12 +118,35 @@ const nextAuthConfig = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        const { firstName, lastName, shopifyCustomerAccessToken } = user;
+        let { shopifyCustomerAccessToken } = user;
+
+        if (!shopifyCustomerAccessToken) {
+          // TODO See what Google gives us
+          // const { first_name, last_name } = user;
+          const { email } = user;
+          const multipassToken = createMultipassToken({ email });
+          ({ data: shopifyCustomerAccessToken } = await apolloClient.mutate<
+            AuthCustomerAccessTokenCreateWithMultipassMutationResponse,
+            AuthCustomerAccessTokenCreateWithMultipassMutationVariables
+          >({
+            mutation: AuthCustomerAccessTokenCreateWithMultipassMutation,
+            variables: {
+              multipassToken
+            }
+          }));
+        }
+
+        // Fetch the customer data to enhance the token
+        const { data: customerData } = await apolloClient.query<AuthCustomerQueryResponse, AuthCustomerQueryVariables>({
+          query: AuthCustomerQuery,
+          variables: {
+            customerAccessToken: shopifyCustomerAccessToken
+          }
+        });
 
         return {
-          ...token,
-          firstName,
-          lastName,
+          ...customerData.customer,
+          name: customerData.customer.displayName,
           shopifyCustomerAccessToken
         };
       }
