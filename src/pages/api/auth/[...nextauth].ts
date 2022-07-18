@@ -73,6 +73,7 @@ const nextAuthConfig = {
       },
       async authorize({ email, password }) {
         console.log('BEFORE', { email, password });
+
         const { data: accessTokenData } = await apolloClient.mutate<
           AuthCustomerAccessTokenCreateMutationResponse,
           AuthCustomerAccessTokenCreateMutationVariables
