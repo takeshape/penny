@@ -14,7 +14,7 @@ import {
 import { getClientToken } from '@takeshape/next-auth-all-access/react';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { createClient } from 'utils/apollo/client';
 import { createStaticClient } from './apollo/client';
 
@@ -29,22 +29,23 @@ export function createAnonymousTakeshapeApolloClient() {
 
 function useAuthenticatedClient() {
   const { data: session } = useSession();
-
-  const clientRef = useRef<ApolloClient<NormalizedCacheObject>>(null);
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>(null);
 
   useEffect(() => {
     if (session) {
       const clientToken = getClientToken({ clientId: 'takeshape', session });
-      clientRef.current = createClient({
-        uri: takeshapeApiUrl,
-        accessToken: clientToken?.accessToken,
-        accessTokenHeader: 'Authorization',
-        accessTokenPrefix: 'Bearer'
-      });
+      setClient(
+        createClient({
+          uri: takeshapeApiUrl,
+          accessToken: clientToken?.accessToken,
+          accessTokenHeader: 'Authorization',
+          accessTokenPrefix: 'Bearer'
+        })
+      );
     }
   }, [session]);
 
-  return clientRef.current;
+  return client;
 }
 
 /**
