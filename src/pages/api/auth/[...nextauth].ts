@@ -2,6 +2,7 @@ import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import {
   sessionMaxAgeForgetMe,
   sessionMaxAgeRememberMe,
+  shopifyMultipassSecret,
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
   takeshapeAuthAudience,
@@ -135,7 +136,7 @@ const nextAuthConfig = {
         const { email } = user;
         let { shopifyCustomerAccessToken } = user;
 
-        if (!shopifyCustomerAccessToken) {
+        if (!shopifyCustomerAccessToken && shopifyMultipassSecret) {
           let firstName;
           let lastName;
 
