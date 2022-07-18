@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
@@ -23,10 +23,22 @@ export interface AuthCreateAccountProps {
   signIn: typeof signIn;
 }
 
+function getErrorMessage(error: ApolloError) {
+  if (!error) {
+    return null;
+  }
+
+  if (error?.message.search('has already been taken')) {
+    return 'Email address already in use';
+  }
+
+  return error.message;
+}
+
 export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProps) => {
   const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
 
-  const [setCustomerPayload, { data: customerResponse, error }] = useMutation<
+  const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<
     CreateCustomerMutationResponse,
     CreateCustomerMutationVariables
   >(CreateCustomerMutation);
@@ -53,11 +65,15 @@ export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProp
           await setCustomerPayload({
             variables: { input: { email, password, recaptchaToken } }
           });
-        })();
+        })().catch(() => {
+          // Swallow errors and handle them through Apollo
+        });
       });
     },
     [executeRecaptcha, handleSubmit, setCustomerPayload]
   );
+
+  const errorMessage = getErrorMessage(customerError);
 
   const signinGoogle = useCallback(() => {
     signIn('google', { callbackUrl });
@@ -74,11 +90,11 @@ export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProp
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={onSubmit}>
-            {error && (
+            {errorMessage && (
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={error.message}
+                secondaryText={errorMessage}
               />
             )}
 
@@ -137,7 +153,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn }: AuthCreateAccountProp
             <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
 
             <Button
-              disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !error)}
+              disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !customerError)}
               color="primary"
               type="submit"
               size="medium"

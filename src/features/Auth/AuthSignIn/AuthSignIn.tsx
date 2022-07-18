@@ -28,7 +28,7 @@ export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string
   OAuthCallback: 'Try signing in with a different account.',
   OAuthCreateAccount: 'Try signing in with a different account.',
   EmailCreateAccount: 'Try signing in with a different account.',
-  Callback: 'Try signing in with a different account.',
+  Callback: 'This email address may already be in use with a different sign in method.',
   OAuthAccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
   EmailSignin: 'The e-mail could not be sent.',
   CredentialsSignin: 'Email address or password are incorrect.',

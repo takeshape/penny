@@ -21,32 +21,3 @@ export const RecoverCustomerPasswordMutation = gql`
     }
   }
 `;
-
-// export const AuthCustomerAccessTokenCreateMutation = gql`
-//   mutation AuthCustomerAccessTokenCreateMutation($input: ShopifyStorefront_CustomerAccessTokenCreateInput!) {
-//     accessTokenCreate: ShopifyStorefront_customerAccessTokenCreate(input: $input) {
-//       customerAccessToken {
-//         expiresAt
-//         accessToken
-//       }
-//       customerUserErrors {
-//         code
-//         field
-//         message
-//       }
-//     }
-//   }
-// `;
-
-// export const AuthCustomerQuery = gql`
-//   query AuthCustomerQuery($customerAccessToken: String!) {
-//     customer: ShopifyStorefront_customer(customerAccessToken: $customerAccessToken) {
-//       firstName
-//       lastName
-//       id
-//       phone
-//       email
-//       displayName
-//     }
-//   }
-// `;

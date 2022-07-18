@@ -37,11 +37,11 @@ function createApolloClient({
   });
 
   const withError = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path }) =>
-        logger.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-      );
-    }
+    // if (graphQLErrors) {
+    //   graphQLErrors.forEach(({ message, locations, path }) =>
+    //     logger.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+    //   );
+    // }
 
     if (networkError) {
       // When unauthenticated, redirect to sign in
