@@ -1,4 +1,4 @@
-import { shopifyMultipassSecret } from 'config';
+import { shopifyUseMultipass } from 'config';
 import { AuthCreateAccount } from 'features/Auth/AuthCreateAccount/AuthCreateAccount';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
@@ -14,7 +14,7 @@ const SignUpPage: NextPage = () => {
       <AuthCreateAccount
         signIn={signIn}
         callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}
-        useMultipass={Boolean(shopifyMultipassSecret)}
+        useMultipass={shopifyUseMultipass}
       />
     </Layout>
   );

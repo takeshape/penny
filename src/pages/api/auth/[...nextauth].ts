@@ -1,10 +1,12 @@
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import {
+  googleClientId,
+  googleClientSecret,
   sessionMaxAgeForgetMe,
   sessionMaxAgeRememberMe,
-  shopifyMultipassSecret,
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
+  shopifyUseMultipass,
   takeshapeAuthAudience,
   takeshapeAuthIssuer
 } from 'config';
@@ -66,10 +68,11 @@ const nextAuthConfig = {
     maxAge: sessionMaxAgeRememberMe
   },
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
-    }),
+    shopifyUseMultipass &&
+      GoogleProvider({
+        clientId: googleClientId,
+        clientSecret: googleClientSecret
+      }),
     CredentialsProvider({
       id: 'shopify',
       name: 'Shopify',
@@ -136,7 +139,7 @@ const nextAuthConfig = {
         const { email } = user;
         let { shopifyCustomerAccessToken } = user;
 
-        if (!shopifyCustomerAccessToken && shopifyMultipassSecret) {
+        if (!shopifyCustomerAccessToken && shopifyUseMultipass) {
           let firstName;
           let lastName;
 
