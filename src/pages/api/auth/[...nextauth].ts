@@ -138,19 +138,16 @@ const nextAuthConfig = {
         if (!shopifyCustomerAccessToken) {
           let firstName;
           let lastName;
-          let multipassIdentifier = user.id;
 
           if (account.provider === 'google') {
             firstName = profile.given_name;
             lastName = profile.family_name;
-            multipassIdentifier = `google:${account.providerAccountId}`;
           }
 
           const multipassToken = createMultipassToken({
             email,
             first_name: firstName,
-            last_name: lastName,
-            identifier: multipassIdentifier
+            last_name: lastName
           });
 
           const { data: accessTokenData } = await shopifyClient.mutate<
@@ -168,11 +165,6 @@ const nextAuthConfig = {
           } = accessTokenData;
 
           if (customerUserErrors && customerUserErrors.length) {
-            const error = customerUserErrors[0];
-            if (error.code === 'INVALID_MULTIPASS_REQUEST') {
-              throw new Error('InvalidMultipassRequest');
-            }
-
             logger.error(
               {
                 email,
@@ -181,7 +173,7 @@ const nextAuthConfig = {
               'Multipass signin failure'
             );
 
-            throw new Error(error.code);
+            throw new Error(customerUserErrors[0].code);
           }
 
           shopifyCustomerAccessToken = customerAccessToken.accessToken;
