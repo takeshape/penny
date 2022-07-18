@@ -8,7 +8,9 @@ type ApolloProviderProps = PropsWithChildren<{ pageProps: any }>;
 const ApolloProvider = ({ pageProps, children }: ApolloProviderProps) => {
   const apolloClient = useApollo(pageProps, {
     uri: takeshapeApiUrl,
-    accessToken: takeshapeAnonymousApiKey
+    accessToken: takeshapeAnonymousApiKey,
+    accessTokenHeader: 'Authorization',
+    accessTokenPrefix: 'Bearer'
   });
 
   return <Provider client={apolloClient}>{children}</Provider>;
