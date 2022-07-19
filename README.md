@@ -584,6 +584,20 @@ project name.
 - Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your `.env.local` or your hosting provider's
   UI.
 
+## Multipass
+
+For Shopify Plus users, this project supports sign in with Google, in addition to the regular Shopify sign in. To set it
+up you need to provide the secret env vars `SHOPIFY_MULTIPASS_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
+set the public env var `NEXT_PUBLIC_SHOPIFY_USE_MULTIPASS='true'`. Because we're using
+[NextAuth.js](https://next-auth.js.com) it's very easy to support almost any identity provider via a simple import in
+`pages/api/[...nextauth].ts` and following the configuration instructions from Next Auth for that provider.
+
+### Important!
+
+Because of how the Google OAuth2 service works, you cannot use wildcard callback urls. This precludes the easy use of
+Google auth in Vercel preview environments, which use dynamic URLs. It is recommended you unset
+`NEXT_PUBLIC_SHOPIFY_USE_MULTIPASS` for preview environments and configure it on a case-by-case basis.
+
 ### Other environment variables
 
 1. Copy the `.env.local-example` file to `.env.local` and follow the instructions.
