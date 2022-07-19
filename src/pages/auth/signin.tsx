@@ -1,3 +1,4 @@
+import { shopifyUseMultipass } from 'config';
 import { AuthSignIn } from 'features/Auth/AuthSignIn/AuthSignIn';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
@@ -14,6 +15,7 @@ const SignUpPage: NextPage = () => {
         signIn={signIn}
         callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}
         error={query.error ? getSingle(query.error) : ''}
+        useMultipass={shopifyUseMultipass}
       />
     </Layout>
   );

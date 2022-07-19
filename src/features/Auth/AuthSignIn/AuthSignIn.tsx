@@ -1,10 +1,10 @@
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
+import NextLink from 'components/NextLink';
 import { siteLogo } from 'config';
 import { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ export interface AuthSignInProps {
   signIn: typeof signIn;
   callbackUrl: string;
   error?: string;
+  useMultipass: boolean;
 }
 
 export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string> = {
@@ -37,7 +38,7 @@ export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string
   default: 'Unable to sign in.'
 };
 
-export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
+export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSignInProps) => {
   const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
 
   const router = useRouter();
@@ -59,6 +60,10 @@ export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
     }
     return href;
   }, [router]);
+
+  const signinGoogle = useCallback(() => {
+    signIn('google', { callbackUrl });
+  }, [callbackUrl, signIn]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -125,33 +130,65 @@ export const AuthSignIn = ({ callbackUrl, error, signIn }: AuthSignInProps) => {
               </div>
 
               <div className="text-sm">
-                <Link href="/auth/reset-password">
-                  <a className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
-                </Link>
+                <NextLink href="/auth/reset-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Forgot your password?
+                </NextLink>
               </div>
             </div>
 
-            <div>
-              <Button
-                disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !error)}
-                type="submit"
-                color="primary"
-                className="w-full"
+            <Button
+              disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !error)}
+              type="submit"
+              color="primary"
+              className="w-full"
+            >
+              Sign in
+            </Button>
+
+            <div className="text-gray-500 text-sm">
+              Don&apos;t have an account?
+              <NextLink
+                href={signupLink}
+                className="ml-1 font-medium text-indigo-500 hover:text-indigo-500 cursor-pointer"
               >
-                Sign in
-              </Button>
+                Sign up
+              </NextLink>
             </div>
           </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="mt-2 border-t border-gray-200 text-gray-500 pt-6 text-center">
-                <Link href={signupLink}>
-                  <a className="text-sm font-medium hover:text-gray-900 cursor-pointer">Sign up instead →</a>
-                </Link>
+          {useMultipass && (
+            <div className="mt-6">
+              <div className="mt-4">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">OR</span>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <div>
+                    <button
+                      className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                      onClick={signinGoogle}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 1024 1024"
+                        className="w-5 h-5"
+                      >
+                        <path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm167 633.6C638.4 735 583 757 516.9 757c-95.7 0-178.5-54.9-218.8-134.9C281.5 589 272 551.6 272 512s9.5-77 26.1-110.1c40.3-80.1 123.1-135 218.8-135 66 0 121.4 24.3 163.9 63.8L610.6 401c-25.4-24.3-57.7-36.6-93.6-36.6-63.8 0-117.8 43.1-137.1 101-4.9 14.7-7.7 30.4-7.7 46.6s2.8 31.9 7.7 46.6c19.3 57.9 73.3 101 137 101 33 0 61-8.7 82.9-23.4 26-17.4 43.2-43.3 48.9-74H516.9v-94.8h230.7c2.9 16.1 4.4 32.8 4.4 50.1 0 74.7-26.7 137.4-73 180.1z" />
+                      </svg>
+                      <span className="ml-2">Continue with Google</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

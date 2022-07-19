@@ -13,9 +13,9 @@ export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
 
 export interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
-  accessToken?: string;
-  accessTokenHeader?: string;
-  accessTokenPrefix?: string;
+  accessToken: string;
+  accessTokenHeader: string;
+  accessTokenPrefix: string;
   ssrMode?: boolean;
   rateLimit?: boolean;
   uri: string;
@@ -28,9 +28,6 @@ function createApolloClient({
   uri,
   ssrMode
 }: Pick<InitializeApolloProps, 'accessToken' | 'accessTokenHeader' | 'accessTokenPrefix' | 'ssrMode' | 'uri'>) {
-  accessTokenHeader = accessTokenHeader ?? 'Authorization';
-  accessTokenPrefix = accessTokenPrefix ?? 'Bearer';
-
   const httpLink = createHttpLink({
     uri
   });
@@ -93,14 +90,25 @@ const staticClientCache = {};
  * The static client is used during static generation. Existing clients will be
  * reused to ensure the cache is complete.
  */
-export function createStaticClient({ accessToken, uri }: InitializeApolloProps): ApolloClient<NormalizedCacheObject> {
+export function createStaticClient({
+  accessToken,
+  accessTokenHeader,
+  accessTokenPrefix,
+  uri
+}: InitializeApolloProps): ApolloClient<NormalizedCacheObject> {
   const cacheKey = `${uri}:${accessToken}`;
 
   if (staticClientCache[cacheKey]) {
     return staticClientCache[cacheKey];
   }
 
-  staticClientCache[cacheKey] = createApolloClient({ accessToken, uri, ssrMode: true });
+  staticClientCache[cacheKey] = createApolloClient({
+    accessToken,
+    uri,
+    accessTokenHeader,
+    accessTokenPrefix,
+    ssrMode: true
+  });
 
   return staticClientCache[cacheKey];
 }
