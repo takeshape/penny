@@ -3,6 +3,7 @@ import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
 import { Fragment } from 'react';
+import classNames from 'utils/classNames';
 
 const orders = [
   {
