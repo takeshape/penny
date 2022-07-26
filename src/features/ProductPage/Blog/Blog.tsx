@@ -47,7 +47,7 @@ export const Blog = (props: BlogProps) => {
           {posts.map((post) => (
             <div key={post.title} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
               <div className="flex-shrink-0 h-48 w-full relative">
-                <NextImage className="object-cover" src={post.imageUrl} alt="" />
+                <NextImage className="object-cover" height={500} width={500} src={post.imageUrl} alt="" />
               </div>
               <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                 <div className="flex-1">

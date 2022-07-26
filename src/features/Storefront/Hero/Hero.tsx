@@ -27,6 +27,8 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroProp
             src={getImageUrl(image)}
             alt={image.description ?? ''}
             className="w-full h-full object-center object-cover"
+            height={1000}
+            width={1000}
             priority
           />
         </div>

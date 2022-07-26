@@ -18,7 +18,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
   return (
     <Fragment>
       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
-        <NextImage src={imageSrc} alt={imageAlt} className="h-full w-full object-cover object-center" />
+        <NextImage src={imageSrc} alt={imageAlt} height={300} width={300} className="h-full w-full object-cover object-center" />
       </div>
 
       <div className="ml-4 flex flex-1 flex-col">
