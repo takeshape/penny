@@ -123,6 +123,10 @@ const config = {
         },
         {
           protocol: 'https',
+          hostname: 'tailwindui.com'
+        },
+        {
+          protocol: 'https',
           hostname: '**.shopify.com'
         },
         {
