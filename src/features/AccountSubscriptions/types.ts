@@ -1,3 +1,6 @@
+import { SetRequired } from 'type-fest';
+import { ProductBase } from 'types/product';
+
 export type ShippingAddress = {
   name: string;
   line1: string;
@@ -10,6 +13,7 @@ export type ShippingAddress = {
 export type Product = {
   quantity: number;
   id: string;
+  handle: string;
   variant: string;
   name: string;
   description: string;
@@ -72,3 +76,5 @@ export type Subscription = {
   products: Product[];
   orders: Order[];
 };
+
+export type SubscriptionProductForUpdate = SetRequired<ProductBase, 'variants'>;

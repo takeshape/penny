@@ -8,6 +8,18 @@ import { ManageSubscription } from './components/ManageSubscription';
 import { SubscriptionOverview } from './components/SubscriptionOverview';
 import { subscriptions } from './placeholders';
 
+const navigationItems = [
+  {
+    name: 'Overview'
+  },
+  {
+    name: 'Manage'
+  },
+  {
+    name: 'Orders'
+  }
+];
+
 export const AccountSubscriptions = () => {
   return (
     <CardPanel primaryText="Active Subscriptions">
@@ -59,63 +71,40 @@ export const AccountSubscriptions = () => {
                   >
                     <Menu.Items className="origin-bottom-right absolute right-0 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
-                        <Menu.Item>
-                          <Tab className="w-full block">
-                            {({ selected }) => (
-                              <button
-                                className={classNames(
-                                  selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                  'w-full text-left px-4 py-2 text-sm'
-                                )}
-                              >
-                                Overview
-                              </button>
-                            )}
-                          </Tab>
-                        </Menu.Item>
-                        <Menu.Item>
-                          <Tab className="w-full block">
-                            {({ selected }) => (
-                              <button
-                                className={classNames(
-                                  selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                  'w-full text-left px-4 py-2 text-sm'
-                                )}
-                              >
-                                Manage
-                              </button>
-                            )}
-                          </Tab>
-                        </Menu.Item>
-                        <Menu.Item>
-                          <Tab className="w-full block">
-                            {({ selected }) => (
-                              <button
-                                className={classNames(
-                                  selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                  'w-full text-left px-4 py-2 text-sm'
-                                )}
-                              >
-                                Orders
-                              </button>
-                            )}
-                          </Tab>
-                        </Menu.Item>
+                        {navigationItems.map(({ name }) => (
+                          <Menu.Item key={name}>
+                            <Tab
+                              className={({ selected }) =>
+                                classNames(
+                                  'w-full text-left px-4 py-2 text-sm',
+                                  selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                                )
+                              }
+                            >
+                              {name}
+                            </Tab>
+                          </Menu.Item>
+                        ))}
                       </div>
                     </Menu.Items>
                   </Transition>
                 </Menu>
 
-                <Tab.List className="hidden lg:col-span-2 lg:flex lg:items-center lg:justify-end lg:space-x-4">
-                  <Tab className="flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Overview
-                  </Tab>
-                  <Tab className="flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Manage
-                  </Tab>
-                  <Tab className="flex items-center justify-center bg-white py-2 px-2.5 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Orders
-                  </Tab>
+                <Tab.List className="hidden lg:flex lg:space-x-1 lg:rounded-xl bg-gray-900/20 p-1 col-span-2">
+                  {navigationItems.map(({ name }) => (
+                    <Tab
+                      key={name}
+                      className={({ selected }) =>
+                        classNames(
+                          'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-gray-700',
+                          'ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none focus:ring-2',
+                          selected ? 'bg-white shadow' : 'text-gray-900 hover:bg-white/[0.12] hover:text-white'
+                        )
+                      }
+                    >
+                      {name}
+                    </Tab>
+                  ))}
                 </Tab.List>
               </div>
 

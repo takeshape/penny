@@ -5,61 +5,56 @@ import ProductColorSelect from 'components/Product/ProductColorSelect';
 import ProductPrice from 'components/Product/ProductPrice';
 import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
-import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
-import { useSetAtom } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getVariant } from 'utils/products';
-import { QuickAddProduct } from '../types';
 
 export interface QuickAddItemProps {
-  product: QuickAddProduct;
+  product: any;
   onClose: () => void;
 }
 
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
   let { variantOptions, hasStock } = product;
 
-  const colors = variantOptions.find((opt) => opt.name.toLowerCase() === 'color');
-  const sizes = variantOptions.find((opt) => opt.name.toLowerCase() === 'size');
+  const colors = useMemo(() => variantOptions.find((opt) => opt.name.toLowerCase() === 'color'), [variantOptions]);
+  const initialColor = colors?.values.find((v) => v.hasStock) ?? colors?.values[0] ?? null;
+  const [selectedColor, setSelectedColor] = useState(initialColor?.value ?? '');
 
-  const initialColor = colors.values.find((v) => v.hasStock) ?? colors.values[0];
-  const [selectedColor, setSelectedColor] = useState(initialColor.value);
-  const initialSize = sizes.values.find((v) => v.hasStock) ?? sizes.values[0];
-  const [selectedSize, setSelectedSize] = useState(initialSize.value);
+  const sizes = useMemo(() => variantOptions.find((opt) => opt.name.toLowerCase() === 'size'), [variantOptions]);
+  const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
+  const [selectedSize, setSelectedSize] = useState(initialSize?.value);
 
-  const initialVariant = getVariant(product.variants, [
-    { name: 'Color', value: selectedColor },
-    { name: 'Size', value: selectedSize }
-  ]);
+  const selectedVariant = useMemo(() => {
+    if (selectedColor && selectedSize) {
+      return getVariant(product.variants, [
+        { name: 'Color', value: selectedColor },
+        { name: 'Size', value: selectedSize }
+      ]);
+    }
 
-  const [selectedVariant, setSelectedVariant] = useState(initialVariant);
-  const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
+    return product.variants[0];
+  }, [product, selectedColor, selectedSize]);
 
-  const addToCart = useSetAtom(addToCartAtom);
-  const setIsCartOpen = useSetAtom(isCartOpenAtom);
+  const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
+
+  useEffect(() => {
+    setSelectedPrice(selectedVariant.prices[0]);
+  }, [selectedVariant, selectedColor, selectedSize]);
 
   const handleAddToCart = useCallback(
     (e) => {
       e.preventDefault();
-      addToCart({
-        product,
-        variant: selectedVariant,
-        price: selectedPrice
-      });
-      setIsCartOpen(true);
+      console.log('UPDATE THE PRODUCT');
+      // addToCart({
+      //   product,
+      //   variant: selectedVariant,
+      //   price: selectedPrice
+      // });
+      // setIsCartOpen(true);
       onClose();
     },
-    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen, onClose]
+    [onClose]
   );
-
-  useEffect(() => {
-    const variant = getVariant(product.variants, [
-      { name: 'Color', value: selectedColor },
-      { name: 'Size', value: selectedSize }
-    ]);
-    setSelectedVariant(variant);
-    setSelectedPrice(variant.prices[0]);
-  }, [product.variants, selectedColor, selectedSize]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
