@@ -37,6 +37,7 @@ export const subscriptions: Subscription[] = [
       {
         quantity: 3,
         id: '1',
+        handle: 'basic-tee-6-pack',
         variant: 'Black / S',
         name: 'Basic T-Shirt',
         description:
@@ -79,6 +80,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
@@ -112,6 +114,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
@@ -144,6 +147,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
@@ -176,6 +180,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
@@ -208,6 +213,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
@@ -257,6 +263,7 @@ export const subscriptions: Subscription[] = [
     products: [
       {
         id: '1',
+        handle: 'basic-tee-6-pack',
         quantity: 1,
         variant: 'Black / S',
         name: 'Basic T-Shirt',
@@ -300,6 +307,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             quantity: 1,
             variant: 'Black / S',
             name: 'Basic T-Shirt',
@@ -332,6 +340,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             quantity: 1,
             variant: 'Black / S',
             name: 'Basic T-Shirt',
@@ -364,6 +373,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
@@ -396,6 +406,7 @@ export const subscriptions: Subscription[] = [
         products: [
           {
             id: '1',
+            handle: 'basic-tee-6-pack',
             variant: 'Black / S',
             name: 'Basic T-Shirt',
             description:
