@@ -56,6 +56,10 @@ export const subscriptions: Subscription[] = [
           status: 'skipped',
           date: 'August 6, 2022',
           datetime: '2022-08-6'
+        },
+        variantOptions: {
+          Color: 'Black',
+          Size: 'XS'
         }
       }
     ],
@@ -283,6 +287,10 @@ export const subscriptions: Subscription[] = [
           status: 'scheduled',
           date: 'August 12, 2021',
           datetime: '2022-08-12'
+        },
+        variantOptions: {
+          Color: 'White',
+          Size: 'LG'
         }
       }
     ],

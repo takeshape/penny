@@ -1,16 +1,19 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { Fragment, MouseEvent, useCallback } from 'react';
-import { QuickAddItem } from './UpdateProductItem';
-import { QuickAddItemLoading } from './UpdateProductItemLoading';
+import { SubscriptionProductForUpdate } from '../../types';
+import { OptionsForm } from './components/OptionsForm';
+import { OptionsFormLoading } from './components/OptionsFormLoading';
 
-export interface QuickAddProps {
+export interface ProductOptionsProps {
   isOpen: boolean;
   onClose: () => void;
-  product: any;
+  product: SubscriptionProductForUpdate;
+  currentQuantity: number;
+  currentOptions: Record<string, string>;
 }
 
-export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {
+export const ProductOptions = ({ isOpen, onClose, product, currentQuantity, currentOptions }: ProductOptionsProps) => {
   const handleClose = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
@@ -45,7 +48,7 @@ export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {
               leaveFrom="opacity-100 translate-y-0 md:scale-100"
               leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
             >
-              <Dialog.Panel className="flex text-base text-left transform transition w-full md:max-w-2xl md:px-4 md:my-8 lg:max-w-4xl">
+              <Dialog.Panel className="flex text-base text-left transform transition w-full md:max-w-2xl md:px-4 md:my-8 lg:max-w-2xl">
                 <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
                   <button
                     type="button"
@@ -56,8 +59,15 @@ export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
-                  {!product && <QuickAddItemLoading />}
-                  {product && <QuickAddItem product={product} onClose={onClose} />}
+                  {!product && <OptionsFormLoading />}
+                  {product && (
+                    <OptionsForm
+                      product={product}
+                      currentQuantity={currentQuantity}
+                      currentOptions={currentOptions}
+                      onClose={onClose}
+                    />
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

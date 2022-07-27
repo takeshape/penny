@@ -31,6 +31,7 @@ export type Product = {
     date: string;
     datetime: string;
   };
+  variantOptions?: Record<string, string>;
 };
 
 export type Order = {
