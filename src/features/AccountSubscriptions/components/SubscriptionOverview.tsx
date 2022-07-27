@@ -2,8 +2,8 @@ import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroico
 import NextImage from 'components/NextImage';
 import { getCreditCardIcon } from 'components/Payments/utils';
 import { useCallback, useState } from 'react';
-import { Subscription } from '../types';
-import { UpdateProductWithData } from './UpdateProductWithData';
+import { Product, Subscription } from '../types';
+import { ProductOptionsWithData } from './ProductOptions/ProductOptionsWithData';
 
 const RecentShipmentStatus = ({ status, datetime, date }) => {
   switch (status) {
@@ -78,10 +78,10 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
   const CreditCardIcon = getCreditCardIcon(subscription.paymentMethod.instrument.brand);
 
   const [isOpen, setIsOpen] = useState(false);
-  const [updateProduct, setUpdateProduct] = useState();
+  const [updateProduct, setUpdateProduct] = useState<Product>();
 
-  const handleUpdateProduct = useCallback((productHandle) => {
-    setUpdateProduct(productHandle);
+  const handleUpdateProduct = useCallback((product) => {
+    setUpdateProduct(product);
     setIsOpen(true);
   }, []);
 
@@ -107,7 +107,7 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                     <div className="mt-2 sm:mt-0">
                       <a
                         href="#"
-                        onClick={() => handleUpdateProduct(product.handle)}
+                        onClick={() => handleUpdateProduct(product)}
                         className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Update Product
@@ -148,7 +148,14 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
           ))}
         </div>
       </div>
-      <UpdateProductWithData productHandle={updateProduct} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+
+      <ProductOptionsWithData
+        productHandle={updateProduct?.handle}
+        currentQuantity={updateProduct?.quantity}
+        currentOptions={updateProduct?.variantOptions}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   );
 };
