@@ -1,19 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import { Fragment, MouseEvent, useCallback } from 'react';
-import { SubscriptionProductForUpdate } from '../../types';
-import { OptionsForm } from './components/OptionsForm';
-import { OptionsFormLoading } from './components/OptionsFormLoading';
+import { Fragment, MouseEvent, PropsWithChildren, useCallback } from 'react';
 
-export interface ProductOptionsProps {
+export interface ModalActionProps {
   isOpen: boolean;
   onClose: () => void;
-  product: SubscriptionProductForUpdate;
-  currentQuantity: number;
-  currentOptions: Record<string, string>;
 }
 
-export const ProductOptions = ({ isOpen, onClose, product, currentQuantity, currentOptions }: ProductOptionsProps) => {
+export const ModalAction = ({ isOpen, onClose, children }: PropsWithChildren<ModalActionProps>) => {
   const handleClose = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
@@ -49,7 +43,7 @@ export const ProductOptions = ({ isOpen, onClose, product, currentQuantity, curr
               leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
             >
               <Dialog.Panel className="flex text-base text-left transform transition w-full md:max-w-2xl md:px-4 md:my-8 lg:max-w-2xl">
-                <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-md">
                   <button
                     type="button"
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
@@ -59,15 +53,7 @@ export const ProductOptions = ({ isOpen, onClose, product, currentQuantity, curr
                     <XIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
-                  {!product && <OptionsFormLoading />}
-                  {product && (
-                    <OptionsForm
-                      product={product}
-                      currentQuantity={currentQuantity}
-                      currentOptions={currentOptions}
-                      onClose={onClose}
-                    />
-                  )}
+                  {children}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

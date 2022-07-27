@@ -90,15 +90,14 @@ export const AccountSubscriptions = () => {
                   </Transition>
                 </Menu>
 
-                <Tab.List className="hidden lg:flex lg:space-x-1 lg:rounded-xl bg-gray-900/20 p-1 col-span-2">
+                <Tab.List className="hidden lg:ml-12 lg:flex lg:space-x-1 lg:col-span-2">
                   {navigationItems.map(({ name }) => (
                     <Tab
                       key={name}
                       className={({ selected }) =>
                         classNames(
-                          'w-full rounded-lg py-2.5 text-sm font-medium leading-5 text-gray-700',
-                          'ring-white ring-opacity-60 ring-offset-2 ring-offset-gray-400 focus:outline-none focus:ring-2',
-                          selected ? 'bg-white shadow' : 'text-gray-900 hover:bg-white/[0.12] hover:text-white'
+                          'w-full px-3 py-2 font-medium text-sm rounded-md',
+                          selected ? 'bg-gray-100 text-gray-700' : 'text-gray-500 hover:text-gray-700'
                         )
                       }
                     >
