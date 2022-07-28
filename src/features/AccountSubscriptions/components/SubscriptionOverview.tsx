@@ -1,9 +1,9 @@
 import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import { getCreditCardIcon } from 'components/Payments/utils';
-import { useCallback, useState } from 'react';
-import { Product, Subscription } from '../types';
-import { ProductOptionsWithData } from './ProductOptions/ProductOptionsWithData';
+import { ProductOptionsForm } from 'features/AccountSubscriptions/components/ProductOptions/ProductOptionsForm';
+import { useState } from 'react';
+import { Subscription } from '../types';
 
 const RecentShipmentStatus = ({ status, datetime, date }) => {
   switch (status) {
@@ -77,84 +77,79 @@ export interface SubscriptionOverviewProps {
 export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps) => {
   const CreditCardIcon = getCreditCardIcon(subscription.paymentMethod.instrument.brand);
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [updateProduct, setUpdateProduct] = useState<Product>();
-
-  const handleUpdateProduct = useCallback((product) => {
-    setUpdateProduct(product);
-    setIsOpen(true);
-  }, []);
+  const { product } = subscription;
+  const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
 
   return (
     <>
       <div className="flow-root">
         <div className="divide-y divide-gray-200">
-          {subscription.products.map((product) => (
-            <div key={product.id} className="flex p-4 sm:p-6">
-              <div className="min-w-0 flex-1 lg:flex lg:flex-col">
-                <div className="lg:flex-1">
-                  <div className="sm:flex">
-                    <div className="flex">
-                      <div className="flex-grow">
-                        <a href={product.href} className="block mb-1">
-                          <h4 className="font-medium text-gray-900 inline-block">{product.name}</h4>
-                        </a>
-                        <div className="text-sm font-medium text-gray-500">{product.variant}</div>
-                        <div className="text-sm font-medium text-gray-500">Quantity: {product.quantity}</div>
-                        <p className="hidden mt-2 text-sm text-gray-500 sm:block">{product.description}</p>
-                      </div>
-                    </div>
-                    <div className="mt-2 sm:mt-0">
-                      <a
-                        href="#"
-                        onClick={() => handleUpdateProduct(product)}
-                        className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                      >
-                        Update Product
+          <div key={product.id} className="flex p-4 sm:p-6">
+            <div className="min-w-0 flex-1 lg:flex lg:flex-col">
+              <div className="lg:flex-1">
+                <div className="sm:flex">
+                  <div className="flex">
+                    <div className="flex-grow">
+                      <a href={product.href} className="block mb-1">
+                        <h4 className="font-medium text-gray-900 inline-block">{product.name}</h4>
                       </a>
+                      <div className="text-sm font-medium text-gray-500">{product.variantName}</div>
+                      <div className="text-sm font-medium text-gray-500">Quantity: {product.quantity}</div>
+                      <p className="hidden mt-2 text-sm text-gray-500 sm:block">{product.description}</p>
                     </div>
                   </div>
-
-                  <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
-                    <div className="flex-grow">
-                      <span className="block">
-                        <CreditCardIcon className="h-6 w-6 inline-block" />
-                        <span className="inline-block ml-2">{subscription.paymentMethod.instrument.brand}</span>{' '}
-                        <span className="inline-block ml-1">{subscription.paymentMethod.instrument.maskedNumber}</span>
-                      </span>
-                    </div>
-                    <div className="mt-2 sm:mt-0">
-                      <a href="#" className="text-indigo-600 hover:text-indigo-500">
-                        Update Payment Method
-                      </a>
-                    </div>
+                  <div className="mt-2 sm:mt-0">
+                    <a
+                      href="#"
+                      onClick={() => setIsProductOptionsOpen(true)}
+                      className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                    >
+                      Update Product
+                    </a>
                   </div>
                 </div>
-                <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2">
-                  <RecentShipmentStatus {...product.fulfillment} />
-                  <NextShipmentStatus {...product.nextFulfillment} />
+
+                <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
+                  <div className="flex-grow">
+                    <span className="block">
+                      <CreditCardIcon className="h-6 w-6 inline-block" />
+                      <span className="inline-block ml-2">{subscription.paymentMethod.instrument.brand}</span>{' '}
+                      <span className="inline-block ml-1">{subscription.paymentMethod.instrument.maskedNumber}</span>
+                    </span>
+                  </div>
+                  <div className="mt-2 sm:mt-0">
+                    <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                      Update Payment Method
+                    </a>
+                  </div>
                 </div>
               </div>
-              <div className="ml-4 flex-shrink-0 sm:m-0 sm:mr-6 sm:order-first">
-                <NextImage
-                  width={200}
-                  height={200}
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
-                  className="col-start-2 col-end-3 sm:col-start-1 sm:row-start-1 sm:row-span-2 w-20 h-20 rounded-lg object-center object-cover sm:w-40 sm:h-40 lg:w-52 lg:h-52"
-                />
+              <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2">
+                <RecentShipmentStatus {...product.fulfillment} />
+                <NextShipmentStatus {...product.nextFulfillment} />
               </div>
             </div>
-          ))}
+            <div className="ml-4 flex-shrink-0 sm:m-0 sm:mr-6 sm:order-first">
+              <NextImage
+                width={200}
+                height={200}
+                src={product.featuredImage.url}
+                alt={product.featuredImage.altText}
+                className="col-start-2 col-end-3 sm:col-start-1 sm:row-start-1 sm:row-span-2 w-20 h-20 rounded-lg object-center object-cover sm:w-40 sm:h-40 lg:w-52 lg:h-52"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
-      <ProductOptionsWithData
-        productHandle={updateProduct?.handle}
-        currentQuantity={updateProduct?.quantity}
-        currentOptions={updateProduct?.variantOptions}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+      <ProductOptionsForm
+        variants={product.variants}
+        variantOptions={product.variantOptions}
+        currentQuantity={product.quantity}
+        currentSelections={product.variantSelections}
+        currentDeliverySchedule={subscription.deliverySchedule}
+        isOpen={isProductOptionsOpen}
+        onClose={() => setIsProductOptionsOpen(false)}
       />
     </>
   );

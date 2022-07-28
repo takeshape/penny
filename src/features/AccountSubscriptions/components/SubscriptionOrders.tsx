@@ -124,7 +124,7 @@ const OrderAction = ({ status }: Pick<Order, 'status'>) => {
   }
 };
 
-const OrderItem = ({ products, ...order }: Order) => {
+const OrderItem = ({ product, ...order }: Order) => {
   return (
     <>
       <div className="space-y-1 flex items-baseline md:space-y-0 sm:space-x-4">
@@ -132,30 +132,28 @@ const OrderItem = ({ products, ...order }: Order) => {
       </div>
 
       <div className="mt-2 -mb-6 flow-root border-t border-gray-200 divide-y divide-gray-200">
-        {products.map((product) => (
-          <div key={product.id} className="py-6 sm:flex">
-            <div className="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
-              <NextImage
-                width={100}
-                height={100}
-                src={product.imageSrc}
-                alt={product.imageAlt}
-                className="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-24 sm:h-24"
-              />
-              <div className="pt-1.5 min-w-0 flex-1 sm:pt-0">
-                <h3 className="font-medium text-gray-900">
-                  <a href={product.href}>{product.name}</a>
-                </h3>
-                <p className="text-sm text-gray-500">{product.variant}</p>
-                <p className="text-sm text-gray-500">Quantity: {product.quantity}</p>
-                <p className="mt-1 font-medium text-gray-900">{product.price}</p>
-              </div>
-            </div>
-            <div className="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">
-              <OrderAction status={order.status} />
+        <div key={product.id} className="py-6 sm:flex">
+          <div className="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
+            <NextImage
+              width={100}
+              height={100}
+              src={product.featuredImage.url}
+              alt={product.featuredImage.altText}
+              className="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-24 sm:h-24"
+            />
+            <div className="pt-1.5 min-w-0 flex-1 sm:pt-0">
+              <h3 className="font-medium text-gray-900">
+                <a href={product.href}>{product.name}</a>
+              </h3>
+              <p className="text-sm text-gray-500">{product.variantName}</p>
+              <p className="text-sm text-gray-500">Quantity: {product.quantity}</p>
+              <p className="mt-1 font-medium text-gray-900">{product.price}</p>
             </div>
           </div>
-        ))}
+          <div className="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">
+            <OrderAction status={order.status} />
+          </div>
+        </div>
       </div>
     </>
   );
