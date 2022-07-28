@@ -7,36 +7,36 @@ import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { DeliveryScheduleOption, DeliveryScheduleOptions } from '../../types';
 
-export interface DeliveryScheduleFormProps extends ModalProps {
+export interface DeliveryFrequencyFormProps extends ModalProps {
   deliveryScheduleOptions: DeliveryScheduleOptions;
   currentDeliverySchedule: DeliveryScheduleOption;
 }
 
-export interface DeliveryScheduleFormValues {
+export interface DeliveryFrequencyFormValues {
   deliveryScheduleIntervalCount: number;
 }
 
 /**
  * TODO Handle submit errors
  */
-export const DeliveryScheduleForm = ({
+export const DeliveryFrequencyForm = ({
   isOpen,
   onClose,
   deliveryScheduleOptions,
   currentDeliverySchedule
-}: DeliveryScheduleFormProps) => {
+}: DeliveryFrequencyFormProps) => {
   const {
     handleSubmit,
     control,
     formState: { isSubmitting, isSubmitSuccessful, errors }
-  } = useForm<DeliveryScheduleFormValues>({
+  } = useForm<DeliveryFrequencyFormValues>({
     defaultValues: {
       deliveryScheduleIntervalCount: currentDeliverySchedule.intervalCount
     }
   });
 
   const handleFormSubmit = useCallback(
-    async (formData: DeliveryScheduleFormValues) => {
+    async (formData: DeliveryFrequencyFormValues) => {
       const deliverySchedule = {
         interval: currentDeliverySchedule.interval,
         intervalCount: formData.deliveryScheduleIntervalCount
@@ -55,8 +55,8 @@ export const DeliveryScheduleForm = ({
       <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
         <div className="sm:col-span-12 lg:col-span-12">
           <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Delivery schedule</h2>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Update the delivery schedule for your subscription.</p>
+            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Delivery frequency</h2>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">Change how often you get your subscription.</p>
           </div>
 
           <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>

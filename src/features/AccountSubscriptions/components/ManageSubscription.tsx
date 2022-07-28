@@ -1,10 +1,14 @@
 import { getCreditCardIcon } from 'components/Payments/utils';
 import { format } from 'date-fns';
+import { CancelSubscriptionForm } from 'features/AccountSubscriptions/components/CancelSubscription/CancelSubscriptionForm';
+import { OrderNowForm } from 'features/AccountSubscriptions/components/OrderNow/OrderNowForm';
+import { ShippingAddressForm } from 'features/AccountSubscriptions/components/ShippingAddress/ShippingAddress';
+import { SkipNextForm } from 'features/AccountSubscriptions/components/SkipNext/SkipNextForm';
 import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { useState } from 'react';
 import { Subscription } from '../types';
-import { DeliveryScheduleForm } from './DeliverySchedule/DeliveryScheduleForm';
-import { NextChargeDate } from './NextChargeDate/NextChargeDate';
+import { DeliveryFrequencyForm } from './DeliveryFrequency/DeliveryFrequencyForm';
+import { NextChargeDateForm } from './NextChargeDate/NextChargeDate';
 import { ProductOptionsForm } from './ProductOptions/ProductOptionsForm';
 export interface ManageSubscriptionProps {
   subscription: Subscription;
@@ -15,8 +19,12 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
   const CreditCardIcon = getCreditCardIcon(subscription.paymentMethod.instrument.brand);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
+  const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isDeliveryScheduleOpen, setIsDeliveryScheduleOpen] = useState(false);
+  const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
+  const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
+  const [isCancelSubscriptionOpen, setIsCancelSubscriptionOpen] = useState(false);
 
   return (
     <>
@@ -30,6 +38,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
           <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
             <button
               type="button"
+              onClick={() => setIsSkipNextOpen(true)}
               className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
             >
               Skip Next Delivery
@@ -37,6 +46,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
 
             <button
               type="button"
+              onClick={() => setIsOrderNowOpen(true)}
               className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
             >
               Order Now
@@ -73,9 +83,9 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               </dd>
             </div>
 
-            {/* Delivery schedule */}
+            {/* Delivery frequency */}
             <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
-              <dt className="text-sm font-medium text-gray-500">Delivery schedule</dt>
+              <dt className="text-sm font-medium text-gray-500">Delivery frequency</dt>
               <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">{formatDeliverySchedule(subscription.deliverySchedule)}</div>
                 <div className="ml-4 flex-shrink-0">
@@ -161,6 +171,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
                 <span className="ml-4 flex-shrink-0">
                   <button
                     type="button"
+                    onClick={() => setIsShippingAddressOpen(true)}
                     className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Update
@@ -200,6 +211,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="flex pt-4 pb-2 sm:pt-6 sm:pb-3">
               <button
                 type="button"
+                onClick={() => setIsCancelSubscriptionOpen(true)}
                 className="ml-auto bg-gray-100 py-2 px-2.5 rounded-md shadow-sm text-sm font-medium text-gray-600 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Cancel Subscription
@@ -209,7 +221,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
         </div>
       </div>
 
-      <NextChargeDate
+      <NextChargeDateForm
         isOpen={isNextChargeDateOpen}
         onClose={() => setIsNextChargeDateOpen(false)}
         currentNextChargeDate={subscription.nextOrder.fulfillmentDate}
@@ -225,12 +237,20 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
         onClose={() => setIsProductOptionsOpen(false)}
       />
 
-      <DeliveryScheduleForm
+      <DeliveryFrequencyForm
         currentDeliverySchedule={subscription.deliverySchedule}
         deliveryScheduleOptions={subscription.deliveryScheduleOptions}
         isOpen={isDeliveryScheduleOpen}
         onClose={() => setIsDeliveryScheduleOpen(false)}
       />
+
+      <ShippingAddressForm isOpen={isShippingAddressOpen} onClose={() => setIsShippingAddressOpen(false)} />
+
+      <SkipNextForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} />
+
+      <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} />
+
+      <CancelSubscriptionForm isOpen={isCancelSubscriptionOpen} onClose={() => setIsCancelSubscriptionOpen(false)} />
     </>
   );
 };
