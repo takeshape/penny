@@ -1,7 +1,7 @@
 import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import Button from 'components/Button/Button';
-import { Modal } from 'components/Modal/Modal';
+import { Modal, ModalProps } from 'components/Modal/Modal';
 import {
   addDays,
   addMonths,
@@ -46,11 +46,18 @@ function getMonth(forDate) {
   };
 }
 
+export interface NextChargeDateFormProps extends ModalProps {
+  currentNextChargeDate: string;
+}
+
 interface NextChargeDateFormValues {
   nextChargeDate: string;
 }
 
-export const NextChargeDate = ({ isOpen, onClose, currentNextChargeDate }) => {
+/**
+ * TODO Handle submit errors
+ */
+export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: NextChargeDateFormProps) => {
   const nextChargeDate = new Date(currentNextChargeDate);
 
   const {
@@ -88,7 +95,9 @@ export const NextChargeDate = ({ isOpen, onClose, currentNextChargeDate }) => {
         <div className="sm:col-span-12 lg:col-span-12">
           <div>
             <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Next charge date</h2>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Update the date for your next subscription charge.</p>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              Changing your next charge date will also adjust the dates of all your upcoming orders.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit(handleFormSubmit)}>
