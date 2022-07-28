@@ -1,7 +1,9 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
+import { format } from 'date-fns';
 import { SubscriptionOrders } from 'features/AccountSubscriptions/components/SubscriptionOrders';
+import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import { ManageSubscription } from './components/ManageSubscription';
@@ -31,7 +33,8 @@ export const AccountSubscriptions = () => {
           >
             <Tab.Group>
               <h3 className="sr-only">
-                Order placed on <time dateTime={subscription.createdDatetime}>{subscription.createdDate}</time>
+                Order placed on{' '}
+                <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
               </h3>
 
               <div className="flex items-center p-4 border-b border-gray-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
@@ -39,12 +42,14 @@ export const AccountSubscriptions = () => {
                   <div>
                     <dt className="font-medium text-gray-900">Date started</dt>
                     <dd className="mt-1 text-gray-500">
-                      <time dateTime={subscription.createdDatetime}>{subscription.createdDate}</time>
+                      <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
                     </dd>
                   </div>
                   <div className="hidden sm:block">
                     <dt className="font-medium text-gray-900">Frequency</dt>
-                    <dd className="mt-1 text-gray-500">Every {subscription.frequency}</dd>
+                    <dd className="mt-1 text-gray-500">
+                      Every {formatDeliverySchedule(subscription.deliverySchedule)}
+                    </dd>
                   </div>
                   <div>
                     <dt className="font-medium text-gray-900">Total amount</dt>

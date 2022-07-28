@@ -6,7 +6,7 @@ import {
   getStorefrontProductVariants
 } from 'transforms/shopify';
 import { QuickAddQueryResponse } from 'types/storefront';
-import { SubscriptionProductForUpdate } from './types';
+import { DeliveryScheduleOptions, SubscriptionProductForUpdate } from './types';
 
 export function getProduct(response: QuickAddQueryResponse): SubscriptionProductForUpdate {
   const shopifyProduct = response?.product;
@@ -35,4 +35,17 @@ export function getProduct(response: QuickAddQueryResponse): SubscriptionProduct
     hasStock: shopifyProduct.totalInventory > 0,
     variantOptions: getProductVariantOptions(shopifyProduct.options, variants)
   };
+}
+
+export function getDeliveryScheduleOptions(): DeliveryScheduleOptions {
+  return [
+    {
+      interval: 'DAY',
+      intervalCount: 30
+    },
+    {
+      interval: 'DAY',
+      intervalCount: 60
+    }
+  ];
 }

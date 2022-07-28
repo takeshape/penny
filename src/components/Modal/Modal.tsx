@@ -2,12 +2,12 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
 import { Fragment, MouseEvent, PropsWithChildren, useCallback } from 'react';
 
-export interface ModalActionProps {
+export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const ModalAction = ({ isOpen, onClose, children }: PropsWithChildren<ModalActionProps>) => {
+export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) => {
   const handleClose = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
@@ -43,7 +43,7 @@ export const ModalAction = ({ isOpen, onClose, children }: PropsWithChildren<Mod
               leaveTo="opacity-0 translate-y-4 md:translate-y-0 md:scale-95"
             >
               <Dialog.Panel className="flex text-base text-left transform transition w-full md:max-w-2xl md:px-4 md:my-8 lg:max-w-2xl">
-                <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 rounded-md">
+                <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 md:rounded-md">
                   <button
                     type="button"
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
