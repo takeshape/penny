@@ -14,7 +14,7 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 
@@ -55,20 +55,25 @@ interface NextChargeDateFormValues {
 }
 
 /**
+ * TODO When the modal overlays a button and closes it prevents clicking the button
  * TODO Handle submit errors
  */
 export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: NextChargeDateFormProps) => {
-  const nextChargeDate = new Date(currentNextChargeDate);
-
   const {
     handleSubmit,
     control,
+    reset,
     formState: { isSubmitting, isSubmitSuccessful, errors }
-  } = useForm<NextChargeDateFormValues>({
-    defaultValues: {
-      nextChargeDate: format(nextChargeDate, 'yyyy-MM-dd')
-    }
-  });
+  } = useForm<NextChargeDateFormValues>();
+
+  // Set initial values
+  useEffect(
+    () =>
+      reset({
+        nextChargeDate: format(new Date(currentNextChargeDate), 'yyyy-MM-dd')
+      }),
+    [currentNextChargeDate, reset]
+  );
 
   const handleFormSubmit = useCallback(
     async (formData: NextChargeDateFormValues) => {
@@ -79,7 +84,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
     [onClose]
   );
 
-  const [month, setMonth] = useState(getMonth(nextChargeDate));
+  const [month, setMonth] = useState(getMonth(new Date(currentNextChargeDate)));
 
   const handlePrevMonth = useCallback(() => {
     setMonth(getMonth(subMonths(month.start, 1)));
@@ -103,7 +108,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             <section
               aria-labelledby="options-heading"
-              className="w-full h-[360px] mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9"
+              className="w-full h-[380px] mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9"
             >
               <h3 id="options-heading" className="sr-only">
                 Next charge date
@@ -143,38 +148,35 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
                 control={control}
                 render={({ field }) => (
                   <RadioGroup {...field}>
-                    <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+                    <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg text-sm">
                       {month.days.map((day, dayIdx) => (
                         <RadioGroup.Option
                           key={day.date}
                           value={day.date}
+                          disabled={!day.isCurrentMonth}
                           className={({ checked }) =>
                             classNames(
-                              'py-1.5 hover:bg-gray-100 focus:z-10',
-                              day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
+                              'text-gray-900 hover:bg-gray-100 focus:z-10 rounded-lg cursor-pointer',
                               (checked || day.isToday) && 'font-semibold',
-                              checked && 'text-white',
-                              !checked && day.isCurrentMonth && !day.isToday && 'text-gray-900',
-                              !checked && !day.isCurrentMonth && !day.isToday && 'text-gray-400',
-                              day.isToday && !checked && 'text-indigo-600',
-                              dayIdx === 0 && 'rounded-tl-lg',
-                              dayIdx === 6 && 'rounded-tr-lg',
-                              dayIdx === month.days.length - 7 && 'rounded-bl-lg',
-                              dayIdx === month.days.length - 1 && 'rounded-br-lg'
+                              !day.isCurrentMonth && 'cursor-default hover:bg-transparent'
                             )
                           }
                         >
                           {({ checked }) => (
-                            <time
-                              dateTime={day.date}
-                              className={classNames(
-                                'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                                checked && day.isToday && 'bg-indigo-600',
-                                checked && !day.isToday && 'bg-gray-900'
+                            <>
+                              {day.isCurrentMonth && (
+                                <time
+                                  dateTime={day.date}
+                                  className={classNames(
+                                    'mx-auto flex items-center justify-center py-2.5 rounded-lg',
+                                    checked && 'bg-indigo-600 text-white',
+                                    day.isToday && !checked && 'bg-gray-300'
+                                  )}
+                                >
+                                  {day.date.split('-').pop().replace(/^0/, '')}
+                                </time>
                               )}
-                            >
-                              {day.date.split('-').pop().replace(/^0/, '')}
-                            </time>
+                            </>
                           )}
                         </RadioGroup.Option>
                       ))}

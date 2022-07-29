@@ -6,14 +6,18 @@ import {
   ProductVariantOption,
   ProductVariantSelection
 } from 'types/product';
+import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
 
 export type ShippingAddress = {
-  name: string;
-  line1: string;
-  line2: string;
+  firstName: string;
+  lastName: string;
+  address1: string;
+  address2: string;
+  countryCode: string;
   city: string;
-  state: string;
+  province: string;
   zip: string;
+  phone?: string;
 };
 
 export type SubscriptionProduct = {
@@ -56,18 +60,6 @@ export type Order = {
   product: SubscriptionProduct;
 };
 
-export type PaymentMethod = {
-  instrument: {
-    brand: string;
-    expiresSoon: boolean;
-    expiryMonth: number;
-    expiryYear: number;
-    lastDigits: string;
-    maskedNumber: string;
-    name: string;
-  };
-};
-
 export type Subscription = {
   status: 'active' | 'canceled';
   number: string;
@@ -81,7 +73,7 @@ export type Subscription = {
   nextChargeDate: string;
   shippingAddress: ShippingAddress;
   // This will come from Shopify https://shopify.dev/api/admin-graphql/2022-07/objects/CustomerPaymentMethod
-  paymentMethod: PaymentMethod;
+  paymentMethod: Shopify_CustomerPaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
   product: SubscriptionProduct;
   orders: Order[];
   nextOrder: Order;

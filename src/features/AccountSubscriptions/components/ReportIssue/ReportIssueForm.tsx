@@ -45,7 +45,7 @@ export const ReportIssueForm = ({ isOpen, onClose }: ReportIssueFormProps) => {
           </div>
 
           <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>
-            <section aria-labelledby="confirm-heading" className="md:max-h-[calc(1/2*100vh)] overflow-scroll">
+            <section aria-labelledby="confirm-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
               <h3 id="confirm-heading" className="sr-only">
                 Report issue contact form
               </h3>

@@ -43,7 +43,7 @@ export const CancelSubscriptionForm = ({ isOpen, onClose }: CancelSubscriptionFo
           </div>
 
           <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>
-            <section aria-labelledby="confirm-heading" className="md:max-h-[calc(1/2*100vh)] overflow-scroll">
+            <section aria-labelledby="confirm-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
               <h3 id="confirm-heading" className="sr-only">
                 Confirm cancel subscription
               </h3>

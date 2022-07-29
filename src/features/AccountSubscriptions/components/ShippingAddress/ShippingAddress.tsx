@@ -1,49 +1,47 @@
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
+import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormSelect from 'components/Form/Select/Select';
 import { Modal, ModalProps } from 'components/Modal/Modal';
-import { useCallback } from 'react';
+import { ShippingAddress } from 'features/AccountSubscriptions/types';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import useCountries from 'utils/hooks/useCountries';
 
-interface ShippingAddressFormValues {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  address2: string;
-  country: string;
-  city: string;
-  province: string;
-  zip: string;
+interface ShippingAddressFormValues extends ShippingAddress {}
+
+interface ShippingAddressFormProps extends ModalProps {
+  currentAddress: ShippingAddress;
 }
 
-interface ShippingAddressFormProps extends ModalProps {}
-
-export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProps) => {
-  const isReady = true;
-
+/**
+ * TODO Handle errors
+ */
+export const ShippingAddressForm = ({ isOpen, onClose, currentAddress }: ShippingAddressFormProps) => {
   const {
     handleSubmit,
     control,
     watch,
+    reset,
     formState: { isSubmitting, isSubmitSuccessful, errors }
-  } = useForm<ShippingAddressFormValues>({
-    defaultValues: {}
-  });
+  } = useForm<ShippingAddress>();
+
+  // Set initial values
+  useEffect(() => reset(currentAddress), [currentAddress, reset]);
 
   const handleFormSubmit = useCallback(
     async (formData: ShippingAddressFormValues) => {
       // eslint-disable-next-line no-console
       console.log(formData);
-
       onClose();
     },
     [onClose]
   );
 
   const countries = useCountries();
-  const watchCountry = watch('country', 'United States');
-  const selectedCountry = watchCountry && countries?.find((c) => c.name === watchCountry);
+  // Use countryCode here because inconsistent...
+  const watchCountry = watch('countryCode', 'US');
+  const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -55,7 +53,7 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
           </div>
 
           <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>
-            <section aria-labelledby="form-heading" className="md:max-h-[calc(1/2*100vh)] overflow-scroll">
+            <section aria-labelledby="form-heading" className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px]">
               <h3 id="form-heading" className="sr-only">
                 Shipping address form
               </h3>
@@ -63,7 +61,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
               <div className="grid grid-cols-6 gap-6">
                 <FormInput
                   control={control}
-                  disabled={!isReady}
                   name="firstName"
                   id="firstName"
                   label="First name"
@@ -78,7 +75,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormInput
                   control={control}
-                  disabled={!isReady}
                   name="lastName"
                   id="lastName"
                   label="Last name"
@@ -93,16 +89,15 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormSelect
                   control={control}
-                  disabled={!isReady}
-                  id="country"
-                  name="country"
+                  id="countryCode"
+                  name="countryCode"
                   autoComplete="country-name"
                   label="Country"
                   defaultValue="US"
                   options={
                     countries?.map(({ name, iso2 }) => ({
                       key: iso2,
-                      value: name,
+                      value: iso2,
                       title: name
                     })) ?? []
                   }
@@ -111,7 +106,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormInput
                   control={control}
-                  disabled={!isReady}
                   name="address1"
                   id="address1"
                   label="Address line 1"
@@ -126,7 +120,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormInput
                   control={control}
-                  disabled={!isReady}
                   name="address2"
                   id="address2"
                   label="Address line 2"
@@ -138,7 +131,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormInput
                   control={control}
-                  disabled={!isReady}
                   name="city"
                   id="city"
                   label="City"
@@ -153,7 +145,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormSelect
                   control={control}
-                  disabled={!isReady}
                   id="province"
                   name="province"
                   autoComplete="address-level2"
@@ -170,7 +161,6 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
 
                 <FormInput
                   control={control}
-                  disabled={!isReady}
                   name="zip"
                   id="postalCode"
                   label="ZIP / Postal code"
@@ -181,6 +171,17 @@ export const ShippingAddressForm = ({ isOpen, onClose }: ShippingAddressFormProp
                     required: 'This field is required'
                   }}
                   className="col-span-6"
+                />
+
+                <FormPhoneInput
+                  label="Phone number"
+                  id="phone"
+                  name="phone"
+                  defaultCountry="US"
+                  withCountryCallingCode={true}
+                  control={control}
+                  defaultErrorMessage="Please enter a valid phone number"
+                  className="col-span-6 sm:col-span-4"
                 />
               </div>
             </section>

@@ -1,9 +1,10 @@
 import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
-import { getCreditCardIcon } from 'components/Payments/utils';
-import { ProductOptionsForm } from 'features/AccountSubscriptions/components/ProductOptions/ProductOptionsForm';
 import { useState } from 'react';
 import { Subscription } from '../types';
+import { CreditCard } from './CreditCard';
+import { PaymentMethodForm } from './PaymentMethod/PaymentMethodForm';
+import { ProductOptionsForm } from './ProductOptions/ProductOptionsForm';
 
 const RecentShipmentStatus = ({ status, datetime, date }) => {
   switch (status) {
@@ -75,10 +76,10 @@ export interface SubscriptionOverviewProps {
 }
 
 export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps) => {
-  const CreditCardIcon = getCreditCardIcon(subscription.paymentMethod.instrument.brand);
-
   const { product } = subscription;
+
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
+  const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
   return (
     <>
@@ -110,17 +111,14 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                 </div>
 
                 <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
-                  <div className="flex-grow">
-                    <span className="block">
-                      <CreditCardIcon className="h-6 w-6 inline-block" />
-                      <span className="inline-block ml-2">{subscription.paymentMethod.instrument.brand}</span>{' '}
-                      <span className="inline-block ml-1">{subscription.paymentMethod.instrument.maskedNumber}</span>
-                    </span>
-                  </div>
+                  <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
                   <div className="mt-2 sm:mt-0">
-                    <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                    <button
+                      onClick={() => setIsPaymentMethodOpen(true)}
+                      className="text-indigo-600 hover:text-indigo-500"
+                    >
                       Update Payment Method
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -150,6 +148,12 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
         currentDeliverySchedule={subscription.deliverySchedule}
         isOpen={isProductOptionsOpen}
         onClose={() => setIsProductOptionsOpen(false)}
+      />
+
+      <PaymentMethodForm
+        currentPaymentMethod={subscription.paymentMethod}
+        isOpen={isPaymentMethodOpen}
+        onClose={() => setIsPaymentMethodOpen(false)}
       />
     </>
   );

@@ -3,7 +3,7 @@ import { ChevronUpIcon } from '@heroicons/react/solid';
 import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import { DeliveryScheduleOption } from 'features/AccountSubscriptions/types';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import classNames from 'utils/classNames';
@@ -34,10 +34,12 @@ const ProductOptionsPrice = ({ control, variants, deliverySchedule }) => {
   const amount = price.amount * quantity;
 
   return (
-    <p className="grid grid-cols-2 px-4 font-medium text-lg">
-      <span className="inline-block">Price</span>
-      <span className="inline-block ml-auto">{formatPrice(price.currencyCode, amount)}</span>
-    </p>
+    <div className="bg-gray-600 text-white rounded-md py-2">
+      <p className="grid grid-cols-2 px-4 font-medium text-lg">
+        <span className="inline-block">Price</span>
+        <span className="inline-block ml-auto">{formatPrice(price.currencyCode, amount)}</span>
+      </p>
+    </div>
   );
 };
 
@@ -69,6 +71,7 @@ export const ProductOptionsForm = ({
   const {
     handleSubmit,
     control,
+    reset,
     watch,
     formState: { isSubmitting, isSubmitSuccessful, errors }
   } = useForm<ProductOptionsFormValues>({
@@ -77,6 +80,16 @@ export const ProductOptionsForm = ({
       quantity: currentQuantity
     }
   });
+
+  // Set initial values
+  useEffect(
+    () =>
+      reset({
+        options: toFormOptions(currentSelections),
+        quantity: currentQuantity
+      }),
+    [currentQuantity, currentSelections, reset]
+  );
 
   const handleFormSubmit = useCallback(
     async ({ options, quantity }: ProductOptionsFormValues) => {
@@ -100,7 +113,7 @@ export const ProductOptionsForm = ({
           </div>
 
           <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>
-            <section aria-labelledby="options-heading" className="md:h-[calc(1/2*100vh)] overflow-scroll">
+            <section aria-labelledby="options-heading" className="md:h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
               <h3 id="options-heading" className="sr-only">
                 Product options
               </h3>
@@ -270,9 +283,14 @@ export const ProductOptionsForm = ({
               <ProductOptionsPrice variants={variants} control={control} deliverySchedule={currentDeliverySchedule} />
             </section>
 
-            <Button disabled={isSubmitting} color="primary" type="submit" size="large" className="mt-6 w-full">
-              Update subscription
-            </Button>
+            <div className="mt-8 flex justify-end gap-2">
+              <Button disabled={isSubmitting} onClick={onClose} color="clear" type="button" className="mt-8">
+                Cancel
+              </Button>
+              <Button disabled={isSubmitting} color="primary" type="submit" className="mt-8">
+                Update subscription
+              </Button>
+            </div>
           </form>
         </div>
       </div>
