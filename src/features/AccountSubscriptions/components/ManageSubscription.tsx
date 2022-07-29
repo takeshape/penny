@@ -2,14 +2,17 @@ import { getCreditCardIcon } from 'components/Payments/utils';
 import { format } from 'date-fns';
 import { CancelSubscriptionForm } from 'features/AccountSubscriptions/components/CancelSubscription/CancelSubscriptionForm';
 import { OrderNowForm } from 'features/AccountSubscriptions/components/OrderNow/OrderNowForm';
+import { PaymentMethodForm } from 'features/AccountSubscriptions/components/PaymentMethod/PaymentMethodForm';
 import { ShippingAddressForm } from 'features/AccountSubscriptions/components/ShippingAddress/ShippingAddress';
 import { SkipNextForm } from 'features/AccountSubscriptions/components/SkipNext/SkipNextForm';
 import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { useState } from 'react';
 import { Subscription } from '../types';
+import { CreditCard } from './CreditCard';
 import { DeliveryFrequencyForm } from './DeliveryFrequency/DeliveryFrequencyForm';
 import { NextChargeDateForm } from './NextChargeDate/NextChargeDate';
 import { ProductOptionsForm } from './ProductOptions/ProductOptionsForm';
+
 export interface ManageSubscriptionProps {
   subscription: Subscription;
 }
@@ -25,6 +28,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
   const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
   const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
   const [isCancelSubscriptionOpen, setIsCancelSubscriptionOpen] = useState(false);
+  const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
   return (
     <>
@@ -160,11 +164,13 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               <dt className="text-sm font-medium text-gray-500">Shipping address</dt>
               <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 <span className="flex-grow">
-                  <span className="block">{subscription.shippingAddress.name}</span>
-                  <span className="block mt-1">{subscription.shippingAddress.line1}</span>
-                  <span className="block mt-1">{subscription.shippingAddress.line2}</span>
+                  <span className="block">
+                    {subscription.shippingAddress.firstName} {subscription.shippingAddress.lastName}
+                  </span>
+                  <span className="block mt-1">{subscription.shippingAddress.address1}</span>
+                  <span className="block mt-1">{subscription.shippingAddress.address2}</span>
                   <span className="block mt-1">
-                    {subscription.shippingAddress.city}, {subscription.shippingAddress.state}
+                    {subscription.shippingAddress.city}, {subscription.shippingAddress.province}
                   </span>
                   <span className="block mt-1">{subscription.shippingAddress.zip}</span>
                 </span>
@@ -184,21 +190,11 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-gray-500">Payment method</dt>
               <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">
-                  <span className="block">
-                    <CreditCardIcon className="h-6 w-6 inline-block" />
-                    <span className="inline-block ml-2">{subscription.paymentMethod.instrument.brand}</span>{' '}
-                    <span className="inline-block ml-1">{subscription.paymentMethod.instrument.maskedNumber}</span>
-                  </span>
-                  <span className="block mt-1">
-                    <span className="font-medium text-xs">Expires:</span>{' '}
-                    {subscription.paymentMethod.instrument.expiryMonth}/
-                    {subscription.paymentMethod.instrument.expiryYear}
-                  </span>
-                </div>
+                <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
                 <div className="ml-4 flex-shrink-0">
                   <button
                     type="button"
+                    onClick={() => setIsPaymentMethodOpen(true)}
                     className="bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
                     Update
@@ -244,13 +240,23 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
         onClose={() => setIsDeliveryScheduleOpen(false)}
       />
 
-      <ShippingAddressForm isOpen={isShippingAddressOpen} onClose={() => setIsShippingAddressOpen(false)} />
+      <ShippingAddressForm
+        isOpen={isShippingAddressOpen}
+        onClose={() => setIsShippingAddressOpen(false)}
+        currentAddress={subscription.shippingAddress}
+      />
 
       <SkipNextForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} />
 
       <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} />
 
       <CancelSubscriptionForm isOpen={isCancelSubscriptionOpen} onClose={() => setIsCancelSubscriptionOpen(false)} />
+
+      <PaymentMethodForm
+        isOpen={isPaymentMethodOpen}
+        onClose={() => setIsPaymentMethodOpen(false)}
+        currentPaymentMethod={subscription.paymentMethod}
+      />
     </>
   );
 };
