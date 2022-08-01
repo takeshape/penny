@@ -250,7 +250,7 @@ export const SubscriptionOrders = ({ orders }: SubscriptionOrdersProps) => {
       </div>
 
       <SkipForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} order={nextOrder} />
-      <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} />
+      <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} order={nextOrder} />
     </>
   );
 };

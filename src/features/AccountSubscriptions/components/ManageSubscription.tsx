@@ -248,9 +248,13 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
 
       <SkipForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} order={nextOrder} />
 
-      <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} />
+      <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} order={nextOrder} />
 
-      <CancelSubscriptionForm isOpen={isCancelSubscriptionOpen} onClose={() => setIsCancelSubscriptionOpen(false)} />
+      <CancelSubscriptionForm
+        isOpen={isCancelSubscriptionOpen}
+        onClose={() => setIsCancelSubscriptionOpen(false)}
+        subscription={subscription}
+      />
 
       <PaymentMethodForm
         isOpen={isPaymentMethodOpen}

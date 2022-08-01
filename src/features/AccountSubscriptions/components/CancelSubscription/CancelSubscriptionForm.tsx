@@ -1,9 +1,13 @@
-import { Modal, ModalProps } from 'components/Modal/Modal';
-import { FormActions } from 'features/AccountSubscriptions/components/FormActions';
+import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { Subscription } from '../../types';
 
-export interface CancelSubscriptionFormProps extends ModalProps {}
+export interface CancelSubscriptionFormProps extends ModalProps {
+  subscription: Subscription;
+}
 
 export interface CancelSubscriptionFormValues {
   confirm: boolean;
@@ -12,11 +16,12 @@ export interface CancelSubscriptionFormValues {
 /**
  * TODO Handle submit errors
  */
-export const CancelSubscriptionForm = ({ isOpen, onClose }: CancelSubscriptionFormProps) => {
+export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: CancelSubscriptionFormProps) => {
   const {
     handleSubmit,
     register,
-    formState: { isSubmitting, isSubmitSuccessful, errors }
+    reset,
+    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
   } = useForm<CancelSubscriptionFormValues>({
     defaultValues: {
       confirm: true
@@ -26,40 +31,56 @@ export const CancelSubscriptionForm = ({ isOpen, onClose }: CancelSubscriptionFo
   const handleFormSubmit = useCallback(
     async (formData: CancelSubscriptionFormValues) => {
       // eslint-disable-next-line no-console
-      console.log(formData);
-
-      onClose();
+      console.log({ formData, subscription });
+      // TODO Mutate subscription to show canceled
     },
-    [onClose]
+    [subscription]
   );
 
+  const resetState = useCallback(() => reset(), [reset]);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
-        <div className="sm:col-span-12 lg:col-span-12">
-          <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Cancel subscription</h2>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">It it isn&apos;t what you wanted.</p>
+    <ModalForm
+      isOpen={isOpen}
+      onClose={onClose}
+      primaryText="Cancel subscription"
+      secondaryText="Will stop all future orders from being processed."
+      afterLeave={resetState}
+      onSubmit={handleSubmit(handleFormSubmit)}
+      isSubmitSuccessful={isSubmitSuccessful}
+      autoCloseDelay={3000}
+    >
+      <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+        {isSubmitSuccessful ? (
+          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+            <p className="mb-4">Your subscription has been canceled.</p>
+            <p className="text-sm">If this was a mistake you can contact support to re-start it.</p>
           </div>
+        ) : (
+          <section aria-labelledby="confirm-heading" className="h-full">
+            <h3 id="confirm-heading" className="sr-only">
+              Confirm cancel subscription
+            </h3>
 
-          <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>
-            <section aria-labelledby="confirm-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
-              <h3 id="confirm-heading" className="sr-only">
-                Confirm cancel subscription
-              </h3>
-              This will cancel your subscription. TKTK, require typing something to confirm.
-              <input {...register('confirm')} className="hidden" />
-            </section>
+            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+              <p className="mb-4">
+                This will cancel your subscription and prevent the processing of all future orders.
+              </p>
+              <p>Would you like to continue?</p>
+            </div>
 
-            <FormActions
-              isSubmitting={isSubmitting}
-              onCancel={onClose}
-              className="mt-8 flex justify-end gap-2"
-              submitText="Cancel subscription"
-            />
-          </form>
-        </div>
+            <input {...register('confirm')} className="hidden" />
+          </section>
+        )}
       </div>
-    </Modal>
+
+      <ModalFormActions
+        isSubmitted={isSubmitted}
+        isSubmitting={isSubmitting}
+        onCancel={onClose}
+        className="mt-8 flex justify-end gap-2"
+        submitText="Cancel subscription"
+      />
+    </ModalForm>
   );
 };
