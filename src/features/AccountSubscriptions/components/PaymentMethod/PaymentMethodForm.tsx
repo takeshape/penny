@@ -1,7 +1,7 @@
 import { RadioGroup } from '@headlessui/react';
-import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import NextLink from 'components/NextLink';
+import { FormActions } from 'features/AccountSubscriptions/components/FormActions';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
@@ -162,14 +162,7 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
               </NextLink>
             </div>
 
-            <div className="mt-8 flex justify-end gap-2">
-              <Button disabled={isSubmitting} onClick={onClose} color="clear" type="button" className="mt-8">
-                Cancel
-              </Button>
-              <Button disabled={isSubmitting} color="primary" type="submit" className="mt-8">
-                Update subscription
-              </Button>
-            </div>
+            <FormActions isSubmitting={isSubmitting} onCancel={onClose} className="mt-8 flex justify-end gap-2" />
           </form>
         </div>
       </div>

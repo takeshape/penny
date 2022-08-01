@@ -1,8 +1,8 @@
-import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormSelect from 'components/Form/Select/Select';
 import { Modal, ModalProps } from 'components/Modal/Modal';
+import { FormActions } from 'features/AccountSubscriptions/components/FormActions';
 import { ShippingAddress } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -186,9 +186,7 @@ export const ShippingAddressForm = ({ isOpen, onClose, currentAddress }: Shippin
               </div>
             </section>
 
-            <Button disabled={isSubmitting} color="primary" type="submit" size="large" className="mt-6 w-full">
-              Update subscription
-            </Button>
+            <FormActions isSubmitting={isSubmitting} onCancel={onClose} className="mt-8 flex justify-end gap-2" />
           </form>
         </div>
       </div>
