@@ -160,11 +160,11 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                   <p className="text-base text-gray-500">
                     By selecting this, you agree to the{' '}
                     <NextLink href="#" className="font-medium text-gray-700 underline">
-                    <a className="font-medium text-primary-500 hover:text-primary-900">Privacy Policy</a>
+                      <a className="font-medium text-primary-500 hover:text-primary-900">Privacy Policy</a>
                     </NextLink>{' '}
                     and{' '}
                     <NextLink href="#" className="font-medium text-gray-700 underline">
-                    <a className="font-medium text-primary-500 hover:text-primary-900">Cookie Policy</a>
+                      <a className="font-medium text-primary-500 hover:text-primary-900">Cookie Policy</a>
                     </NextLink>
                     .
                   </p>
