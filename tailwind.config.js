@@ -20,7 +20,12 @@ module.exports = {
       primary: colors.gray,
       accent: colors.indigo,
       white: colors.white,
-      gray: colors.gray
+      gray: colors.gray,
+      black: colors.black,
+      red: colors.red,
+      yellow: colors.yellow,
+      green: colors.green,
+      blue: colors.blue
     }
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio'), require('@tailwindcss/typography')]
