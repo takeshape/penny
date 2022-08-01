@@ -1,10 +1,10 @@
 import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import { useState } from 'react';
-import { Subscription } from '../types';
-import { CreditCard } from './CreditCard';
-import { PaymentMethodForm } from './PaymentMethod/PaymentMethodForm';
-import { ProductOptionsForm } from './ProductOptions/ProductOptionsForm';
+import { Subscription } from '../../types';
+import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
+import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
+import { CreditCard } from '../components/CreditCard';
 
 const RecentShipmentStatus = ({ status, datetime, date }) => {
   switch (status) {
@@ -91,7 +91,7 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                 <div className="sm:flex">
                   <div className="flex">
                     <div className="flex-grow">
-                      <a href={product.href} className="block mb-1">
+                      <a href={product.url} className="block mb-1">
                         <h4 className="font-medium text-gray-900 inline-block">{product.name}</h4>
                       </a>
                       <div className="text-sm font-medium text-gray-500">{product.variantName}</div>

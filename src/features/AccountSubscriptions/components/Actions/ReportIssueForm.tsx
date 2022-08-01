@@ -1,14 +1,14 @@
 import FormTextarea from 'components/Form/Textarea/Textarea';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
 import { useSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Order } from '../../types';
+import { SubscriptionOrder } from '../../types';
 
 export interface ReportIssueFormProps extends ModalProps {
-  order: Order;
+  order: SubscriptionOrder;
 }
 
 export interface ReportIssueFormValues {

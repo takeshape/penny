@@ -1,36 +1,36 @@
 import { ModalProps } from 'components/Modal/Modal';
 import { format } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { Order } from '../../types';
+import { SubscriptionOrder } from '../../types';
 
-export interface OrderNowFormProps extends ModalProps {
-  order: Order;
+export interface SkipFormProps extends ModalProps {
+  order?: SubscriptionOrder;
 }
 
-export interface OrderNowFormValues {
+export interface SkipFormValues {
   confirm: boolean;
 }
 
 /**
  * TODO Handle submit errors
  */
-export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
+export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
   const {
     handleSubmit,
     register,
-    reset,
-    formState: { isSubmitting, isSubmitted, isSubmitSuccessful, errors }
-  } = useForm<OrderNowFormValues>({
+    formState: { isSubmitting, isSubmitted, isSubmitSuccessful },
+    reset
+  } = useForm<SkipFormValues>({
     defaultValues: {
       confirm: true
     }
   });
 
   const handleFormSubmit = useCallback(
-    async (formData: OrderNowFormValues) => {
+    async (formData: SkipFormValues) => {
       // eslint-disable-next-line no-console
       console.log({ formData, order });
     },
@@ -43,32 +43,35 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
 
   return (
     <ModalForm
-      autoCloseDelay={3000}
       isOpen={isOpen}
       onClose={onClose}
-      primaryText="Order now"
-      secondaryText="Get your next order right away."
+      primaryText="Skip order"
+      secondaryText="Skip an upcoming order."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
+      autoCloseDelay={3000}
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
-            <p className="mb-2">
-              Your <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> order is being processed now.
+            <p className="mb-4">
+              Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> has been skipped.
+            </p>
+            <p className="text-sm">
+              If this was a mistake you can unskip it on the <strong>Subcription → Orders</strong> screen.
             </p>
           </div>
         ) : (
           <section aria-labelledby="confirm-heading" className="h-full">
             <h3 id="confirm-heading" className="sr-only">
-              Confirm order now
+              Confirm skip order
             </h3>
             {order.status === 'upcoming' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
                 <p className="mb-4">
-                  Your next order scheduled for <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will
-                  be processed and shipped immediately.
+                  Your order will not be processed on{' '}
+                  <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.
                 </p>
                 <p>Would you like to continue?</p>
               </div>
@@ -86,7 +89,8 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Order now"
+        submitText="Skip it"
+        disableSubmit={order.status !== 'upcoming'}
       />
     </ModalForm>
   );

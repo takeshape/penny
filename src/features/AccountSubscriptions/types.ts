@@ -1,11 +1,4 @@
-import { SetRequired } from 'type-fest';
-import {
-  ProductBase,
-  ProductImage,
-  ProductVariant,
-  ProductVariantOption,
-  ProductVariantSelection
-} from 'types/product';
+import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
 
 export type ShippingAddress = {
@@ -20,10 +13,14 @@ export type ShippingAddress = {
   phone?: string;
 };
 
+export type SubscriptionPrice = {
+  currencyCode: string;
+  // in cents
+  amount: number;
+};
+
 export type SubscriptionProduct = {
-  description: string;
-  href: string;
-  price: string;
+  // TODO Unclear how to actually handle fulfillment — need Shopify subscription scopes to work on it
   fulfillment?: {
     status: string;
     date: string;
@@ -37,8 +34,11 @@ export type SubscriptionProduct = {
 
   // Final props
   id: string;
+  url: string;
   name: string;
+  description: string;
   handle: string;
+  price: SubscriptionPrice;
   quantity: number;
   featuredImage: ProductImage;
   variants?: ProductVariant[];
@@ -47,7 +47,8 @@ export type SubscriptionProduct = {
   variantOptions?: ProductVariantOption[];
 };
 
-export type Order = {
+// TODO Order needs the most work — need Shopify scopes
+export type SubscriptionOrder = {
   id: string;
   subscriptionId: string;
   fulfillmentDate: string;
@@ -60,30 +61,39 @@ export type Order = {
   product: SubscriptionProduct;
 };
 
-export type Subscription = {
-  status: 'active' | 'canceled';
-  number: string;
-  href: string;
-  createdAt: string;
-  deliveredDate: string;
-  deliveredDatetime: string;
-  total: string;
-  deliverySchedule: DeliveryScheduleOption;
-  deliveryScheduleOptions: DeliveryScheduleOptions;
-  nextChargeDate: string;
-  shippingAddress: ShippingAddress;
-  // This will come from Shopify https://shopify.dev/api/admin-graphql/2022-07/objects/CustomerPaymentMethod
-  paymentMethod: Shopify_CustomerPaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
-  product: SubscriptionProduct;
-  orders: Order[];
-  nextOrder: Order;
-};
-
-export type SubscriptionProductForUpdate = SetRequired<ProductBase, 'variants'>;
-
-export type DeliveryScheduleOption = {
+export type SubscriptionDeliveryScheduleOption = {
   interval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
   intervalCount: number;
 };
 
-export type DeliveryScheduleOptions = DeliveryScheduleOption[];
+export type RawSubscription = {
+  id: string;
+  status: 'active' | 'canceled';
+  createdAt: string;
+  price: SubscriptionPrice;
+  deliverySchedule: SubscriptionDeliveryScheduleOption;
+  deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
+  shippingAddress: ShippingAddress;
+  paymentMethod: Shopify_CustomerPaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
+  product: SubscriptionProduct;
+  orders: SubscriptionOrder[];
+};
+
+export type Subscription = {
+  id: string;
+  // TODO Line this up with Shopify subscription statuses
+  status: 'active' | 'canceled';
+  createdAt: string;
+  price: SubscriptionPrice;
+  deliverySchedule: SubscriptionDeliveryScheduleOption;
+  deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
+  shippingAddress: ShippingAddress;
+  // This will come from Shopify https://shopify.dev/api/admin-graphql/2022-07/objects/CustomerPaymentMethod
+  paymentMethod: Shopify_CustomerPaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
+  product: SubscriptionProduct;
+  orders: SubscriptionOrder[];
+  lastOrder: SubscriptionOrder;
+  nextOrder: SubscriptionOrder;
+  upcomingOrders: SubscriptionOrder[];
+  pastOrders: SubscriptionOrder[];
+};

@@ -1,11 +1,11 @@
 import { compareAsc } from 'date-fns';
-import { DeliveryScheduleOption, Order } from './types';
+import { SubscriptionDeliveryScheduleOption, SubscriptionOrder } from './types';
 
-export function formatDeliverySchedule({ interval, intervalCount }: DeliveryScheduleOption): string {
+export function formatDeliverySchedule({ interval, intervalCount }: SubscriptionDeliveryScheduleOption): string {
   return `${intervalCount} ${interval.toLocaleLowerCase()}(s)`;
 }
 
-export function getSortedOrders(orders: Order[]) {
+export function getSortedOrders(orders: SubscriptionOrder[]) {
   const sortedOrders = orders.sort((a, b) => Date.parse(a.fulfillmentDate) - Date.parse(b.fulfillmentDate));
   const upcomingOrders = [];
   const pastOrders = [];

@@ -1,16 +1,17 @@
 import { format } from 'date-fns';
-import { CancelSubscriptionForm } from 'features/AccountSubscriptions/components/CancelSubscription/CancelSubscriptionForm';
-import { OrderNowForm } from 'features/AccountSubscriptions/components/OrderNow/OrderNowForm';
-import { PaymentMethodForm } from 'features/AccountSubscriptions/components/PaymentMethod/PaymentMethodForm';
-import { ShippingAddressForm } from 'features/AccountSubscriptions/components/ShippingAddress/ShippingAddress';
-import { SkipForm } from 'features/AccountSubscriptions/components/Skip/SkipForm';
-import { formatDeliverySchedule, getSortedOrders } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
-import { Subscription } from '../types';
-import { CreditCard } from './CreditCard';
-import { DeliveryFrequencyForm } from './DeliveryFrequency/DeliveryFrequencyForm';
-import { NextChargeDateForm } from './NextChargeDate/NextChargeDate';
-import { ProductOptionsForm } from './ProductOptions/ProductOptionsForm';
+import { formatPrice } from 'utils/text';
+import { Subscription } from '../../types';
+import { formatDeliverySchedule, getSortedOrders } from '../../utils';
+import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
+import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
+import { NextChargeDateForm } from '../Actions/NextChargeDate';
+import { OrderNowForm } from '../Actions/OrderNowForm';
+import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
+import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
+import { ShippingAddressForm } from '../Actions/ShippingAddress';
+import { SkipForm } from '../Actions/SkipForm';
+import { CreditCard } from '../components/CreditCard';
 
 export interface ManageSubscriptionProps {
   subscription: Subscription;
@@ -19,7 +20,7 @@ export interface ManageSubscriptionProps {
 export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) => {
   const { product, orders } = subscription;
 
-  const { nextOrder, upcomingOrders } = useMemo(() => getSortedOrders(orders), [orders]);
+  const { nextOrder } = useMemo(() => getSortedOrders(orders), [orders]);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
@@ -147,7 +148,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-gray-500">Amount per item</dt>
               <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{product.price}</div>
+                <div className="flex-grow">{formatPrice(product.price.currencyCode, product.price.amount)}</div>
               </dd>
             </div>
 
@@ -155,7 +156,9 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-gray-500">Total Amount</dt>
               <dd className="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{subscription.total}</div>
+                <div className="flex-grow">
+                  {formatPrice(subscription.price.currencyCode, subscription.price.amount)}
+                </div>
               </dd>
             </div>
 

@@ -13,8 +13,8 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -56,7 +56,6 @@ interface NextChargeDateFormValues {
 }
 
 /**
- * TODO When the modal overlays a button and closes it prevents clicking the button
  * TODO Handle submit errors
  */
 export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: NextChargeDateFormProps) => {

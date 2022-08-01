@@ -1,13 +1,13 @@
 import { RadioGroup } from '@headlessui/react';
 import { ModalProps } from 'components/Modal/Modal';
 import NextLink from 'components/NextLink';
-import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
 import classNames from 'utils/classNames';
-import { CreditCard } from '../CreditCard';
+import { CreditCard } from '../components/CreditCard';
 
 export interface PaymentMethodFormProps extends ModalProps {
   currentPaymentMethod: Shopify_CustomerPaymentMethod;

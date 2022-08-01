@@ -1,5 +1,5 @@
 import { ProductVariant } from 'types/product';
-import { Subscription } from './types';
+import { RawSubscription } from './types';
 
 const variants: ProductVariant[] = [
   {
@@ -1492,15 +1492,15 @@ const variants: ProductVariant[] = [
   }
 ];
 
-export const subscriptions: Subscription[] = [
+export const subscriptions: RawSubscription[] = [
   {
+    id: 'gid://shopify/SubscriptionContract/2222222222222222',
     status: 'active',
-    number: '111',
-    href: '#',
     createdAt: '2022-07-06T10:00:00Z',
-    deliveredDate: 'July 12, 2021',
-    deliveredDatetime: '2021-07-12',
-    total: '$210.00',
+    price: {
+      currencyCode: 'USD',
+      amount: 21000
+    },
     deliverySchedule: {
       interval: 'DAY',
       intervalCount: 30
@@ -1515,7 +1515,6 @@ export const subscriptions: Subscription[] = [
         intervalCount: 60
       }
     ],
-    nextChargeDate: 'August 12, 2022',
     shippingAddress: {
       // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
       firstName: 'Michael',
@@ -1544,51 +1543,14 @@ export const subscriptions: Subscription[] = [
       },
       subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
     },
-    nextOrder: {
-      id: 'aaa',
-      subscriptionId: '111',
-      fulfillmentDate: '2022-08-19T10:00:00Z',
-      status: 'upcoming',
-      statusAt: '2022-07-19',
-      email: 'michael@takeshape.io',
-      phone: '919-360-0095',
-      shippingAddress: {
-        // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
-        firstName: 'Michael',
-        lastName: 'Shick',
-        address1: '156 Kent St',
-        address2: 'Apt 2',
-        city: 'Brooklyn',
-        province: 'New York',
-        zip: '11222',
-        countryCode: 'US',
-        phone: '+19193600095'
-      },
-      product: {
-        description:
-          'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-        href: '#',
-        price: '$70.00',
-
-        id: '1',
-        handle: 'basic-tee-6-pack',
-        name: 'Basic T-Shirt 6 Pack',
-        quantity: 3,
-        featuredImage: {
-          url: 'https://tailwindui.com/img/ecommerce-images/order-history-page-03-product-01.jpg',
-          altText:
-            'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
-          height: 996,
-          width: 996
-        },
-        variantName: 'Black / S'
-      }
-    },
     product: {
       description:
         'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-      href: '#',
-      price: '$70.00',
+      url: '#',
+      price: {
+        currencyCode: 'USD',
+        amount: 7000
+      },
       fulfillment: {
         status: 'out-for-delivery',
         date: 'July 6, 2022',
@@ -1735,8 +1697,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '1',
           handle: 'basic-tee-6-pack',
@@ -1776,8 +1741,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '1',
           handle: 'basic-tee-6-pack',
@@ -1816,8 +1784,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '1',
           handle: 'basic-tee-6-pack',
@@ -1856,8 +1827,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '1',
           handle: 'basic-tee-6-pack',
@@ -1896,8 +1870,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '1',
           handle: 'basic-tee-6-pack',
@@ -1916,13 +1893,13 @@ export const subscriptions: Subscription[] = [
     ]
   },
   {
+    id: 'gid://shopify/SubscriptionContract/1111111111111',
     status: 'active',
-    number: '222',
-    href: '#',
     createdAt: '2022-06-06T10:00:00Z',
-    deliveredDate: 'July 12, 2021',
-    deliveredDatetime: '2021-07-12',
-    total: '$160.00',
+    price: {
+      currencyCode: 'USD',
+      amount: 16000
+    },
     deliverySchedule: {
       interval: 'DAY',
       intervalCount: 30
@@ -1941,7 +1918,6 @@ export const subscriptions: Subscription[] = [
         intervalCount: 6
       }
     ],
-    nextChargeDate: 'August 12, 2022',
     shippingAddress: {
       // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
       firstName: 'Michael',
@@ -1969,51 +1945,14 @@ export const subscriptions: Subscription[] = [
       },
       subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
     },
-    nextOrder: {
-      id: 'aaa',
-      subscriptionId: '222',
-      fulfillmentDate: '2022-08-12T10:00:00Z',
-      statusAt: '2022-07-19',
-      status: 'upcoming',
-      email: 'michael@takeshape.io',
-      phone: '919-360-0095',
-      shippingAddress: {
-        // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
-        firstName: 'Michael',
-        lastName: 'Shick',
-        address1: '156 Kent St',
-        address2: 'Apt 2',
-        city: 'Brooklyn',
-        province: 'New York',
-        zip: '11222',
-        countryCode: 'US',
-        phone: '+19193600095'
-      },
-      product: {
-        description:
-          'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-        href: '#',
-        price: '$70.00',
-
-        id: '2',
-        handle: 'basic-tee',
-        name: 'Basic T-Shirt',
-        quantity: 1,
-        featuredImage: {
-          url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
-          altText:
-            'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
-          height: 996,
-          width: 996
-        },
-        variantName: 'White / L'
-      }
-    },
     product: {
       description:
         'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-      href: '#',
-      price: '$80.00',
+      url: '#',
+      price: {
+        currencyCode: 'USD',
+        amount: 8000
+      },
       fulfillment: {
         status: 'delivered',
         date: 'July 12, 2022',
@@ -2159,9 +2098,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
-
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
           id: '2',
           handle: 'basic-tee',
           name: 'Basic T-Shirt',
@@ -2198,8 +2139,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '2',
           handle: 'basic-tee',
@@ -2237,8 +2181,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '2',
           handle: 'basic-tee',
@@ -2276,8 +2223,11 @@ export const subscriptions: Subscription[] = [
         product: {
           description:
             'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
-          href: '#',
-          price: '$70.00',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
 
           id: '2',
           handle: 'basic-tee',

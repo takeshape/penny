@@ -1,9 +1,9 @@
 import { Disclosure, RadioGroup } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
-import { DeliveryScheduleOption } from 'features/AccountSubscriptions/types';
+import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
+import { SubscriptionDeliveryScheduleOption } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
@@ -49,7 +49,7 @@ export interface ProductOptionsFormProps extends ModalProps {
   variantOptions: ProductVariantOption[];
   currentQuantity: number;
   currentSelections: ProductVariantSelection[];
-  currentDeliverySchedule: DeliveryScheduleOption;
+  currentDeliverySchedule: SubscriptionDeliveryScheduleOption;
 }
 
 interface ProductOptionsFormValues {

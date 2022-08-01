@@ -1,70 +1,76 @@
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
-import { useCallback } from 'react';
+import { format } from 'date-fns';
+import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { Subscription } from '../../types';
+import { shopifyGidToId } from 'transforms/shopify';
+import { SubscriptionOrder } from '../../types';
 
-export interface CancelSubscriptionFormProps extends ModalProps {
-  subscription: Subscription;
+export interface UnskipFormProps extends ModalProps {
+  order?: SubscriptionOrder;
 }
 
-export interface CancelSubscriptionFormValues {
+export interface SkipFormValues {
   confirm: boolean;
 }
 
 /**
  * TODO Handle submit errors
  */
-export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: CancelSubscriptionFormProps) => {
+export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
   const {
     handleSubmit,
     register,
-    reset,
-    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
-  } = useForm<CancelSubscriptionFormValues>({
+    formState: { isSubmitting, isSubmitted, isSubmitSuccessful },
+    reset
+  } = useForm<SkipFormValues>({
     defaultValues: {
       confirm: true
     }
   });
 
+  const orderNumber = useMemo(() => shopifyGidToId(order.id), [order]);
+
   const handleFormSubmit = useCallback(
-    async (formData: CancelSubscriptionFormValues) => {
+    async (formData: SkipFormValues) => {
       // eslint-disable-next-line no-console
-      console.log({ formData, subscription });
-      // TODO Mutate subscription to show canceled
+      console.log({ formData, order });
     },
-    [subscription]
+    [order]
   );
 
-  const resetState = useCallback(() => reset(), [reset]);
+  const resetState = useCallback(() => {
+    reset();
+  }, [reset]);
 
   return (
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      primaryText="Cancel subscription"
-      secondaryText="Will stop all future orders from being processed."
+      primaryText="Unskip order"
+      secondaryText="Restore a previously skipped upcoming order."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
-      autoCloseDelay={3000}
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
-            <p className="mb-4">Your subscription has been canceled.</p>
-            <p className="text-sm">If this was a mistake you can contact support to re-start it.</p>
+            <p className="mb-4">
+              Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will be processed.
+            </p>
           </div>
         ) : (
           <section aria-labelledby="confirm-heading" className="h-full">
             <h3 id="confirm-heading" className="sr-only">
-              Confirm cancel subscription
+              Confirm skip order
             </h3>
 
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
               <p className="mb-4">
-                This will cancel your subscription and prevent the processing of all future orders.
+                Your order will be processed normally on{' '}
+                <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.
               </p>
               <p>Would you like to continue?</p>
             </div>
@@ -79,7 +85,7 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Cancel subscription"
+        submitText="Unskip it"
       />
     </ModalForm>
   );

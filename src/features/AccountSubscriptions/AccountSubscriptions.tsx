@@ -2,13 +2,15 @@ import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
 import { format } from 'date-fns';
-import { SubscriptionOrders } from 'features/AccountSubscriptions/components/SubscriptionOrders';
+import { getSubscription } from 'features/AccountSubscriptions/transforms';
 import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import { ManageSubscription } from './components/ManageSubscription';
-import { SubscriptionOverview } from './components/SubscriptionOverview';
-import { subscriptions } from './placeholders';
+import { formatPrice } from 'utils/text';
+import { ManageSubscription } from './components/ManageSubscription/ManageSubscription';
+import { SubscriptionOrders } from './components/SubscriptionOrders/SubscriptionOrders';
+import { SubscriptionOverview } from './components/SubscriptionOverview/SubscriptionOverview';
+import { subscriptions as rawSubscriptions } from './placeholders';
 
 const navigationItems = [
   {
@@ -23,12 +25,14 @@ const navigationItems = [
 ];
 
 export const AccountSubscriptions = () => {
+  const subscriptions = rawSubscriptions.map((subscription) => getSubscription(subscription));
+
   return (
     <CardPanel primaryText="Active Subscriptions">
       <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
         {subscriptions.map((subscription) => (
           <div
-            key={subscription.number}
+            key={subscription.id}
             className="bg-white border-t border-b border-gray-200 shadow-sm sm:rounded-lg sm:border"
           >
             <Tab.Group>
@@ -53,14 +57,16 @@ export const AccountSubscriptions = () => {
                   </div>
                   <div>
                     <dt className="font-medium text-gray-900">Total amount</dt>
-                    <dd className="mt-1 font-medium text-gray-900">{subscription.total}</dd>
+                    <dd className="mt-1 font-medium text-gray-900">
+                      {formatPrice(subscription.price.currencyCode, subscription.price.amount)}
+                    </dd>
                   </div>
                 </dl>
 
                 <Menu as="div" className="relative flex justify-end lg:hidden">
                   <div className="flex items-center">
                     <Menu.Button className="-m-2 p-2 flex items-center text-gray-400 hover:text-gray-500">
-                      <span className="sr-only">Options for subscription {subscription.number}</span>
+                      <span className="sr-only">Options for subscription {subscription.id}</span>
                       <DotsVerticalIcon className="w-6 h-6" aria-hidden="true" />
                     </Menu.Button>
                   </div>
