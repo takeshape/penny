@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
@@ -14,6 +15,12 @@ module.exports = {
       gridTemplateRows: {
         '[auto,auto,1fr]': 'auto auto 1fr'
       }
+    },
+    colors: {
+      primary: colors.gray,
+      accent: colors.indigo,
+      white: colors.white,
+      gray: colors.gray
     }
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio'), require('@tailwindcss/typography')]

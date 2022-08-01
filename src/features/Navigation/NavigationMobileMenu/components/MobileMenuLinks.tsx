@@ -19,7 +19,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                   key={section.name}
                   className={({ selected }) =>
                     classNames(
-                      selected ? 'text-indigo-600 border-indigo-600' : 'text-gray-900 border-transparent',
+                      selected ? 'text-accent-600 border-accent-600' : 'text-primary-900 border-transparent',
                       'flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium'
                     )
                   }
@@ -47,7 +47,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                           {subsection.links?.map((link) => (
                             <li key={link.name} className="flex">
                               <NextLink href={link.href} className="text-gray-500">
-                                {link.name}
+                                <a className="font-medium text-primary-700 hover:text-primary-800">{link.name}</a>
                               </NextLink>
                             </li>
                           ))}
@@ -66,7 +66,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
           {withoutSubsections.map((section) => (
             <div key={section.name} className="flow-root">
               <NextLink href={section.link.href} className="-m-2 p-2 block font-medium text-gray-900">
-                {section.name}
+                <a className="font-medium text-primary-700 hover:text-primary-800">{section.name}</a>
               </NextLink>
             </div>
           ))}

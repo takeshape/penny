@@ -101,7 +101,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             <div className="mt-10">
               <div className="flex items-center justify-between">
                 <h4 className="text-sm text-gray-900 font-medium">Size</h4>
-                <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="#" className="text-sm font-medium text-accent-600 hover:text-accent-500">
                   Size guide
                 </a>
               </div>
@@ -123,7 +123,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
               onClick={handleAddToCart}
               disabled={!hasStock}
               type="submit"
-              className="mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="mt-6 w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               Add to cart
             </button>
@@ -132,7 +132,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
               <NextLink
                 href={product.url}
                 onClick={onClose}
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium text-accent-600 hover:text-accent-500"
               >
                 View full details
               </NextLink>

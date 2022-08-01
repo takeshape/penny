@@ -24,7 +24,7 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
         </div>
         <div className="mt-6">
           {colors && <p className="text-sm text-gray-500">{colors.values[0].name}</p>}
-          <h3 className="mt-1 font-semibold text-gray-900">
+          <h3 className="mt-1 font-semibold text-primary-900">
             <NextLink href={product.url}>
               <span className="absolute inset-0" />
               {product.name}

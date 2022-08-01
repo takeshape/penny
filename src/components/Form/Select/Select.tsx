@@ -49,7 +49,7 @@ export const FormSelect = <
         id={id}
         {...props}
         {...field}
-        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-accent-500 focus:border-accent-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
       >
         {options.map(({ key, value, title, disabled }) => (
           <option key={key} value={value} disabled={disabled}>

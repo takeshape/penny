@@ -36,7 +36,7 @@ export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boo
             <a
               href={tracking.trackingUrl}
               target="_blank"
-              className="flex items-center gap-2 text-sm font-medium text-indigo-700 decoration-indigo-500 underline"
+              className="flex items-center gap-2 text-sm font-medium text-accent-700 decoration-accent-500 underline"
               rel="noreferrer"
             >
               <TruckIcon height={16} width={16} className="inline-block" /> Track Shipment{' '}

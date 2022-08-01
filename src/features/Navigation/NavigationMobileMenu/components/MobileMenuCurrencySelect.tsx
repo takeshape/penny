@@ -15,7 +15,7 @@ export const MobileMenuCurrencySelect = ({ currencies }: Pick<Navigation, 'curre
           <select
             id="mobile-currency"
             name="currency"
-            className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-gray-700 group-hover:text-gray-800 focus:outline-none focus:ring-0 focus:border-transparent uppercase"
+            className="bg-none border-transparent rounded-md py-0.5 pl-2 pr-5 flex items-center text-sm font-medium text-primary-700 group-hover:text-primary-800 focus:outline-none focus:ring-0 focus:border-transparent uppercase"
             onChange={(e) => updateCurrency(e.target.value)}
             value={selectedCurrency}
           >
@@ -29,7 +29,7 @@ export const MobileMenuCurrencySelect = ({ currencies }: Pick<Navigation, 'curre
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 20 20"
-              className="w-5 h-5 text-gray-500"
+              className="w-5 h-5 text-primary-500"
             >
               <path
                 stroke="currentColor"

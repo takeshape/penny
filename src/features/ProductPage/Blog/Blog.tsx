@@ -51,13 +51,13 @@ export const Blog = (props: BlogProps) => {
               </div>
               <div className="flex-1 bg-white p-6 flex flex-col justify-between">
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-indigo-600">
+                  <p className="text-sm font-medium text-accent-600">
                     <a href={post.category.href} className="hover:underline">
                       {post.category.name}
                     </a>
                   </p>
                   <a href={post.href} className="block mt-2">
-                    <p className="text-xl font-semibold text-gray-900">{post.title}</p>
+                    <p className="text-xl font-semibold text-primary-900">{post.title}</p>
                     <p className="mt-3 text-base text-gray-500">{post.description}</p>
                   </a>
                 </div>
@@ -69,7 +69,7 @@ export const Blog = (props: BlogProps) => {
                     </a>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-primary-900">
                       <a href={post.author.href} className="hover:underline">
                         {post.author.name}
                       </a>

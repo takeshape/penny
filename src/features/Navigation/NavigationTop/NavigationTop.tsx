@@ -26,7 +26,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
         </a>
 
         {/* Top navigation */}
-        <div className="bg-gray-900">
+        <div className="bg-primary-900">
           <div className="max-w-7xl mx-auto h-10 px-4 flex items-center justify-between sm:px-6 lg:px-8">
             {/* Currency selector */}
             <form className="hidden lg:block lg:flex-1">
@@ -85,7 +85,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                 <div className="flex-1 flex items-center lg:hidden">
                   <button
                     type="button"
-                    className="-ml-2 bg-white p-2 rounded-md text-gray-400"
+                    className="-ml-2 bg-white p-2 rounded-md text-primary-400"
                     onClick={() => setIsMobileMenuOpen(true)}
                   >
                     <span className="sr-only">Open menu</span>
@@ -93,7 +93,10 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                   </button>
 
                   {/* Search */}
-                  <div onClick={() => setIsSearchOpen(true)} className="ml-2 p-2 text-gray-400 hover:text-gray-500">
+                  <div
+                    onClick={() => setIsSearchOpen(true)}
+                    className="ml-2 p-2 text-primary-400 hover:text-primary-500"
+                  >
                     <span className="sr-only">Search</span>
                     <SearchIcon className="w-6 h-6" aria-hidden="true" />
                   </div>
@@ -113,7 +116,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                       <div className="hidden lg:flex">
                         <div
                           onClick={() => setIsSearchOpen(true)}
-                          className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                          className="-m-2 p-2 text-primary-400 hover:text-primary-500"
                         >
                           <span className="sr-only">Search</span>
                           <SearchIcon className="w-6 h-6" aria-hidden="true" />

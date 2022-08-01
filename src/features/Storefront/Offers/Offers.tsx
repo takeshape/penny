@@ -15,7 +15,7 @@ export const Offers = ({ offers }: OffersProps) => {
                 className="relative flex-1 flex flex-col justify-center bg-white py-6 px-4 text-center focus:z-10"
               >
                 <p className="text-sm text-gray-500">{name}</p>
-                <p className="font-semibold text-gray-900">{description}</p>
+                <p className="font-semibold text-primary-900">{description}</p>
               </a>
             </li>
           ))}

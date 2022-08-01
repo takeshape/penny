@@ -92,7 +92,7 @@ export const ProductWithImage = ({
                   <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
                 </div>
                 {showReviewsLink ? (
-                  <a href="#reviews" className="ml-2 text-sm text-indigo-600 hover:text-indigo-500">
+                  <a href="#reviews" className="ml-2 text-sm text-accent-600 hover:text-accent-500">
                     {reviewHighlights.stats.count} reviews
                   </a>
                 ) : (
@@ -155,7 +155,7 @@ export const ProductWithImage = ({
             <div className="mt-10">
               <button
                 type="submit"
-                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                className="w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-accent-500"
                 onClick={handleAddToCart}
               >
                 Add to cart

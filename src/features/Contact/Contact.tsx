@@ -142,8 +142,8 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                     checked={agreed}
                     onChange={setAgreed}
                     className={classNames(
-                      agreed ? 'bg-indigo-600' : 'bg-gray-200',
-                      'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                      agreed ? 'bg-accent-600' : 'bg-gray-200',
+                      'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500'
                     )}
                   >
                     <span className="sr-only">Agree to policies</span>
@@ -160,11 +160,11 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                   <p className="text-base text-gray-500">
                     By selecting this, you agree to the{' '}
                     <NextLink href="#" className="font-medium text-gray-700 underline">
-                      Privacy Policy
+                    <a className="font-medium text-primary-500 hover:text-primary-900">Privacy Policy</a>
                     </NextLink>{' '}
                     and{' '}
                     <NextLink href="#" className="font-medium text-gray-700 underline">
-                      Cookie Policy
+                    <a className="font-medium text-primary-500 hover:text-primary-900">Cookie Policy</a>
                     </NextLink>
                     .
                   </p>

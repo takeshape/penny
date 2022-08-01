@@ -171,7 +171,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
                   e.preventDefault();
                   signIn(undefined, { callbackUrl });
                 }}
-                className="ml-1 text-sm font-medium text-indigo-500 hover:text-indigo-500 cursor-pointer"
+                className="ml-1 text-sm font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >
                 Sign in
               </a>

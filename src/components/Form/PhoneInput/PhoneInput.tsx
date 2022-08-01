@@ -62,7 +62,7 @@ export const FormPhoneInput = <
         className={classNames(
           error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
-            : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
+            : 'border-gray-300 focus:ring-accent-500 focus:border-accent-500',
           'mt-1 block w-full shadow-sm sm:text-sm rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed'
         )}
       />

@@ -122,7 +122,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
                   id="remember-me"
                   type="checkbox"
                   defaultChecked
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-accent-600 focus:ring-accent-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                   Remember me
@@ -130,7 +130,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               </div>
 
               <div className="text-sm">
-                <NextLink href="/auth/reset-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <NextLink href="/auth/reset-password" className="font-medium text-accent-600 hover:text-accent-500">
                   Forgot your password?
                 </NextLink>
               </div>
@@ -149,7 +149,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               Don&apos;t have an account?
               <NextLink
                 href={signupLink}
-                className="ml-1 font-medium text-indigo-500 hover:text-indigo-500 cursor-pointer"
+                className="ml-1 font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >
                 Sign up
               </NextLink>

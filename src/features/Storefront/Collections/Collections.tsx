@@ -36,7 +36,7 @@ export const Collections = ({ collections }: CollectionsProps) => {
                     {name}
                   </NextLink>
                 </h3>
-                <p className="text-base font-semibold text-gray-900">{description}</p>
+                <p className="text-base font-semibold text-primary-900">{description}</p>
               </div>
             ))}
           </div>

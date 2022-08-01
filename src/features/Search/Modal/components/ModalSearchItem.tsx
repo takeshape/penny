@@ -23,7 +23,7 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
             />
           </div>
           <div className="ml-4 flex-auto">
-            <p className={classNames('text-sm font-medium', active ? 'text-gray-900' : 'text-gray-700')}>
+            <p className={classNames('text-sm font-medium', active ? 'text-primary-900' : 'text-primary-700')}>
               {product.name}
             </p>
             {product.description && (

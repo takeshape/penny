@@ -93,7 +93,7 @@ export const Cart = () => {
                           or{' '}
                           <button
                             type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            className="font-medium text-accent-600 hover:text-accent-500"
                             onClick={() => setIsCartOpen(false)}
                           >
                             Continue Shopping<span aria-hidden="true"> &rarr;</span>

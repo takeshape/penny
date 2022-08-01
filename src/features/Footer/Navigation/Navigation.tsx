@@ -7,7 +7,7 @@ interface NavigationItemProps {
 }
 
 const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => (
-  <NextLink href={props.href} className="text-base text-gray-500 hover:text-gray-900">
+  <NextLink href={props.href} className="text-base text-primary-500 hover:text-primary-900">
     {props.name}
   </NextLink>
 );

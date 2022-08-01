@@ -16,11 +16,12 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
           alt={`Picture of ${product.name}`}
           className="w-full h-full object-center object-cover"
           priority={priority ?? false}
-          height={500} width={500}
+          height={500}
+          width={500}
         />
       </div>
       <div className="pt-10 pb-4 text-center">
-        <h3 className="text-sm font-medium text-gray-900">
+        <h3 className="text-sm font-medium text-primary-900">
           <NextLink href={product.url}>
             <span aria-hidden="true" className="absolute inset-0" />
             {product.name}

@@ -49,7 +49,7 @@ const FilterOption = (props: PropsWithChildren<FilterOptionProps>) => {
         name={`${props.filter}[]`}
         value={props.value}
         type="checkbox"
-        className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+        className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-accent-600 focus:ring-accent-500"
         checked={props.checked}
         onChange={() => props.setFilter(props.filter, props.value, !props.checked)}
       />
@@ -112,16 +112,16 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
       <div className="relative col-start-1 row-start-1 py-4">
         <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-gray-200 text-sm px-4 sm:px-6 lg:px-8">
           <div>
-            <Disclosure.Button className="group text-gray-700 font-medium flex items-center">
+            <Disclosure.Button className="group text-primary-700 font-medium flex items-center">
               <FilterIcon
-                className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
+                className="flex-none w-5 h-5 mr-2 text-primary-400 group-hover:text-primary-500"
                 aria-hidden="true"
               />
               {checkedFilterCount} Filter{checkedFilterCount !== 1 && 's'}
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500" onClick={() => clearAllFilters()}>
+            <button type="button" className="text-primary-500" onClick={() => clearAllFilters()}>
               Clear all
             </button>
           </div>
@@ -143,10 +143,10 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
         <div className="flex justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Menu as="div" className="relative inline-block">
             <div className="flex">
-              <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+              <Menu.Button className="group inline-flex justify-center text-sm font-medium text-primary-700 hover:text-primary-900">
                 Sort
                 <ChevronDownIcon
-                  className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                  className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-primary-400 group-hover:text-primary-500"
                   aria-hidden="true"
                 />
               </Menu.Button>
@@ -169,8 +169,8 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
                         <a
                           href={option.href}
                           className={classNames(
-                            option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                            active ? 'bg-gray-100' : '',
+                            option.current ? 'font-medium text-primary-900' : 'text-primary-500',
+                            active ? 'bg-primary-100' : '',
                             'block px-4 py-2 text-sm'
                           )}
                           onClick={(e) => {

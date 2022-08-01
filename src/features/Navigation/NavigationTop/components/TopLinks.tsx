@@ -11,7 +11,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
         <div className="relative flex">
           <Popover.Button
             className={classNames(
-              open ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-700 hover:text-gray-800',
+              open ? 'border-accent-600 text-accent-600' : 'border-transparent text-primary-700 hover:text-primary-800',
               'relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px'
             )}
           >
@@ -35,7 +35,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
             <div className="relative bg-white">
               <div className="max-w-7xl mx-auto px-8 pt-10">
                 {section.link && (
-                  <NextLink href={section.link.href} className="hover:text-gray-800">
+                  <NextLink href={section.link.href} className="text-primary-700 hover:text-primary-800">
                     Shop all {section.name}
                   </NextLink>
                 )}
@@ -52,7 +52,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
                       >
                         {subsection.links?.map((link) => (
                           <li key={link.name} className="flex">
-                            <NextLink href={link.href} className="hover:text-gray-800">
+                            <NextLink href={link.href} className="text-primary-700 hover:text-primary-800">
                               {link.name}
                             </NextLink>
                           </li>
@@ -72,7 +72,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
 
 const SectionLink = ({ section }: { section: NavigationSection }) => (
   <NextLink
-    className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+    className="flex items-center text-sm font-medium text-primary-700 hover:text-primary-800"
     href={section.link.href}
   >
     {section.name}

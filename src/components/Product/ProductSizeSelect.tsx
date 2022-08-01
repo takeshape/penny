@@ -32,7 +32,7 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
                 size.hasStock
                   ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
                   : 'bg-gray-50 text-gray-200 cursor-not-allowed',
-                active ? 'ring-2 ring-indigo-500' : '',
+                active ? 'ring-2 ring-accent-500' : '',
                 buttonStyles
               )
             }
@@ -44,7 +44,7 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
                   <span
                     className={classNames(
                       active ? 'border' : 'border-2',
-                      checked ? 'border-indigo-500' : 'border-transparent',
+                      checked ? 'border-accent-500' : 'border-transparent',
                       'absolute -inset-px rounded-md pointer-events-none'
                     )}
                     aria-hidden="true"
