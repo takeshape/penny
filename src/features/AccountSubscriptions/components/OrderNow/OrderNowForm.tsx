@@ -1,9 +1,14 @@
-import { Modal, ModalProps } from 'components/Modal/Modal';
-import { FormActions } from 'features/AccountSubscriptions/components/FormActions';
+import { ModalProps } from 'components/Modal/Modal';
+import { format } from 'date-fns';
+import { ModalForm } from 'features/AccountSubscriptions/components/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { Order } from '../../types';
 
-export interface OrderNowFormProps extends ModalProps {}
+export interface OrderNowFormProps extends ModalProps {
+  order: Order;
+}
 
 export interface OrderNowFormValues {
   confirm: boolean;
@@ -12,11 +17,12 @@ export interface OrderNowFormValues {
 /**
  * TODO Handle submit errors
  */
-export const OrderNowForm = ({ isOpen, onClose }: OrderNowFormProps) => {
+export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
   const {
     handleSubmit,
     register,
-    formState: { isSubmitting, isSubmitSuccessful, errors }
+    reset,
+    formState: { isSubmitting, isSubmitted, isSubmitSuccessful, errors }
   } = useForm<OrderNowFormValues>({
     defaultValues: {
       confirm: true
@@ -26,41 +32,62 @@ export const OrderNowForm = ({ isOpen, onClose }: OrderNowFormProps) => {
   const handleFormSubmit = useCallback(
     async (formData: OrderNowFormValues) => {
       // eslint-disable-next-line no-console
-      console.log(formData);
-
-      onClose();
+      console.log({ formData, order });
     },
-    [onClose]
+    [order]
   );
 
+  const resetState = useCallback(() => {
+    reset();
+  }, [reset]);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
-        <div className="sm:col-span-12 lg:col-span-12">
-          <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Order now</h2>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">If you need your stuff now.</p>
+    <ModalForm
+      autoCloseDelay={3000}
+      isOpen={isOpen}
+      onClose={onClose}
+      primaryText="Order now"
+      secondaryText="Get your next order right away."
+      afterLeave={resetState}
+      onSubmit={handleSubmit(handleFormSubmit)}
+      isSubmitSuccessful={isSubmitSuccessful}
+    >
+      <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+        {isSubmitSuccessful ? (
+          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+            <p className="mb-2">
+              Your <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> order is being processed now.
+            </p>
           </div>
+        ) : (
+          <section aria-labelledby="confirm-heading" className="h-full">
+            <h3 id="confirm-heading" className="sr-only">
+              Confirm order now
+            </h3>
+            {order.status === 'upcoming' && (
+              <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+                <p className="mb-4">
+                  Your next order scheduled for <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will
+                  be processed and shipped immediately.
+                </p>
+                <p>Would you like to continue?</p>
+              </div>
+            )}
 
-          <form className="mt-10" onSubmit={handleSubmit(handleFormSubmit)}>
-            <section aria-labelledby="confirm-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
-              <h3 id="confirm-heading" className="sr-only">
-                Confirm order now
-              </h3>
-              Your next order will be processed and shipped immediately. The following order dates will not be changed.
-              If you want to change your delivery
-              <input {...register('confirm')} className="hidden" />
-            </section>
+            {order.status === 'skipped' && <p>This order has already been skipped.</p>}
 
-            <FormActions
-              isSubmitting={isSubmitting}
-              onCancel={onClose}
-              className="mt-8 flex justify-end gap-2"
-              submitText="Order now"
-            />
-          </form>
-        </div>
+            <input {...register('confirm')} className="hidden" />
+          </section>
+        )}
       </div>
-    </Modal>
+
+      <ModalFormActions
+        isSubmitted={isSubmitted}
+        isSubmitting={isSubmitting}
+        onCancel={onClose}
+        className="mt-8 flex justify-end gap-2"
+        submitText="Order now"
+      />
+    </ModalForm>
   );
 };
