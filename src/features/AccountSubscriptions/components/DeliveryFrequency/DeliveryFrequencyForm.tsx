@@ -1,11 +1,11 @@
 import { RadioGroup } from '@headlessui/react';
-import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { DeliveryScheduleOption, DeliveryScheduleOptions } from '../../types';
+import { FormActions } from '../FormActions';
 
 export interface DeliveryFrequencyFormProps extends ModalProps {
   deliveryScheduleOptions: DeliveryScheduleOptions;
@@ -126,9 +126,7 @@ export const DeliveryFrequencyForm = ({
               </div>
             </section>
 
-            <Button disabled={isSubmitting} color="primary" type="submit" size="large" className="mt-6 w-full">
-              Update subscription
-            </Button>
+            <FormActions isSubmitting={isSubmitting} onCancel={onClose} className="mt-8 flex justify-end gap-2" />
           </form>
         </div>
       </div>

@@ -1712,7 +1712,7 @@ export const subscriptions: Subscription[] = [
     },
     orders: [
       {
-        id: 'yyy',
+        id: 'gid://shopify/Order/1111111111111',
         subscriptionId: '111',
         fulfillmentDate: '2022-06-19T10:00:00Z',
         shippingAddress: {
@@ -1753,7 +1753,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'zzz',
+        id: 'gid://shopify/Order/2222222222222',
         subscriptionId: '111',
         fulfillmentDate: '2022-07-19T10:00:00Z',
         shippingAddress: {
@@ -1794,7 +1794,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'aaa',
+        id: 'gid://shopify/Order/333333333333',
         subscriptionId: '111',
         fulfillmentDate: '2022-08-19T10:00:00Z',
         status: 'upcoming',
@@ -1834,7 +1834,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'bbb',
+        id: 'gid://shopify/Order/444444444444',
         subscriptionId: '111',
         fulfillmentDate: '2022-09-19T10:00:00Z',
         status: 'skipped',
@@ -1874,7 +1874,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'ccc',
+        id: 'gid://shopify/Order/555555555555',
         subscriptionId: '111',
         fulfillmentDate: '2022-10-19T10:00:00Z',
         status: 'upcoming',
@@ -2137,7 +2137,7 @@ export const subscriptions: Subscription[] = [
     },
     orders: [
       {
-        id: 'zzz',
+        id: 'gid://shopify/Order/9111111111111',
         subscriptionId: '111',
         fulfillmentDate: '2022-07-12T10:00:00Z',
         status: 'delivered',
@@ -2177,7 +2177,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'aaa',
+        id: 'gid://shopify/Order/922222222222',
         subscriptionId: '222',
         fulfillmentDate: '2022-08-12T10:00:00Z',
         statusAt: '2022-07-19',
@@ -2216,7 +2216,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'bbb',
+        id: 'gid://shopify/Order/933333333333',
         subscriptionId: '222',
         fulfillmentDate: '2022-09-12T10:00:00Z',
         statusAt: '2022-07-19',
@@ -2255,7 +2255,7 @@ export const subscriptions: Subscription[] = [
         }
       },
       {
-        id: 'ccc',
+        id: 'gid://shopify/Order/944444444444',
         subscriptionId: '222',
         fulfillmentDate: '2022-10-12T10:00:00Z',
         statusAt: '2022-07-19',

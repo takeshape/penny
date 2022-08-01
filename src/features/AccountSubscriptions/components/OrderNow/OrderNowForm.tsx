@@ -1,5 +1,5 @@
-import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
+import { FormActions } from 'features/AccountSubscriptions/components/FormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -52,9 +52,12 @@ export const OrderNowForm = ({ isOpen, onClose }: OrderNowFormProps) => {
               <input {...register('confirm')} className="hidden" />
             </section>
 
-            <Button disabled={isSubmitting} color="primary" type="submit" size="large" className="mt-6 w-full">
-              Order now
-            </Button>
+            <FormActions
+              isSubmitting={isSubmitting}
+              onCancel={onClose}
+              className="mt-8 flex justify-end gap-2"
+              submitText="Order now"
+            />
           </form>
         </div>
       </div>

@@ -1,12 +1,11 @@
-import { getCreditCardIcon } from 'components/Payments/utils';
 import { format } from 'date-fns';
 import { CancelSubscriptionForm } from 'features/AccountSubscriptions/components/CancelSubscription/CancelSubscriptionForm';
 import { OrderNowForm } from 'features/AccountSubscriptions/components/OrderNow/OrderNowForm';
 import { PaymentMethodForm } from 'features/AccountSubscriptions/components/PaymentMethod/PaymentMethodForm';
 import { ShippingAddressForm } from 'features/AccountSubscriptions/components/ShippingAddress/ShippingAddress';
-import { SkipNextForm } from 'features/AccountSubscriptions/components/SkipNext/SkipNextForm';
-import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
-import { useState } from 'react';
+import { SkipForm } from 'features/AccountSubscriptions/components/Skip/SkipForm';
+import { formatDeliverySchedule, getSortedOrders } from 'features/AccountSubscriptions/utils';
+import { useMemo, useState } from 'react';
 import { Subscription } from '../types';
 import { CreditCard } from './CreditCard';
 import { DeliveryFrequencyForm } from './DeliveryFrequency/DeliveryFrequencyForm';
@@ -18,8 +17,9 @@ export interface ManageSubscriptionProps {
 }
 
 export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) => {
-  const { product } = subscription;
-  const CreditCardIcon = getCreditCardIcon(subscription.paymentMethod.instrument.brand);
+  const { product, orders } = subscription;
+
+  const { nextOrder, upcomingOrders } = useMemo(() => getSortedOrders(orders), [orders]);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
@@ -45,7 +45,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               onClick={() => setIsSkipNextOpen(true)}
               className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
             >
-              Skip Next Delivery
+              Skip Next Order
             </button>
 
             <button
@@ -246,7 +246,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
         currentAddress={subscription.shippingAddress}
       />
 
-      <SkipNextForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} />
+      <SkipForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} order={nextOrder} />
 
       <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} />
 

@@ -1,6 +1,5 @@
 import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import {
   addDays,
@@ -14,6 +13,7 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
+import { FormActions } from 'features/AccountSubscriptions/components/FormActions';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -186,9 +186,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
               />
             </section>
 
-            <Button disabled={isSubmitting} color="primary" type="submit" size="large" className="mt-6 w-full">
-              Update subscription
-            </Button>
+            <FormActions isSubmitting={isSubmitting} onCancel={onClose} className="mt-8 flex justify-end gap-2" />
           </form>
         </div>
       </div>

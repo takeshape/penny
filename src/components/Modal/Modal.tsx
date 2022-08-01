@@ -5,9 +5,12 @@ import { Fragment, MouseEvent, PropsWithChildren, useCallback } from 'react';
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  afterLeave?: () => void;
 }
 
-export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProps>) => {
+const noop = () => {};
+
+export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildren<ModalProps>) => {
   const handleClose = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
@@ -27,6 +30,7 @@ export const Modal = ({ isOpen, onClose, children }: PropsWithChildren<ModalProp
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
+          afterLeave={afterLeave ?? noop}
         >
           <div className="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity md:block" />
         </Transition.Child>
