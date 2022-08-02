@@ -21,7 +21,13 @@ export const RickAndMortyListItem = ({ character }: RickAndMortyListItemProps) =
   return (
     <li className="py-4 flex">
       <div className="h-10 w-10 relative">
-        <NextImage src={character.image} alt={`${character.name}'s pic`} height={200} width={200} className="rounded-full object-cover" />
+        <NextImage
+          src={character.image}
+          alt={`${character.name}'s pic`}
+          height={200}
+          width={200}
+          className="rounded-full object-cover"
+        />
       </div>
       <div className="ml-3">
         <p className="text-sm font-medium text-gray-900">{character.name}</p>
