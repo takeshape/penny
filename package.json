@@ -89,7 +89,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-json-format": "^2.0.1",
-    "eslint-plugin-mdx": "^1.17.0",
+    "eslint-plugin-mdx": "^2.0.2",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-storybook": "^0.6.2",
     "jest": "^28.1.3",
