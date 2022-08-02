@@ -34,6 +34,9 @@
       "files": [
         "**/*.{mdx,md}"
       ],
+      "rules": {
+        "indent": "off"
+      },
       "settings": {
         "mdx/code-blocks": true,
         "mdx/language-mapper": {}

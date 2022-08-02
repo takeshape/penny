@@ -20,6 +20,7 @@
       ".json"
     ]
   },
+  "eslint.runtime": "node",
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
