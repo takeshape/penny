@@ -5,7 +5,10 @@ import { getSubscription } from './transforms';
 
 const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   title: 'Features / Account Subscriptions',
-  component: AccountSubscriptions
+  component: AccountSubscriptions,
+  parameters: {
+    layout: 'centered'
+  }
 };
 
 const Template: ComponentStory<typeof AccountSubscriptions> = (args) => <AccountSubscriptions {...args} />;
