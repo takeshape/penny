@@ -1,12 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
+import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
 import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { SubscriptionDeliveryScheduleOption } from '../../types';
-import { ModalFormActions } from '../components/ModalFormActions';
+import { ModalFormActions } from './ModalFormActions';
 
 export interface DeliveryFrequencyFormProps extends ModalProps {
   deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];

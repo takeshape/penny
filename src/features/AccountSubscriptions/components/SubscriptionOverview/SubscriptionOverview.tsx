@@ -1,10 +1,10 @@
 import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import { useState } from 'react';
+import { CreditCard } from '../../../../components/Payments/CreditCard';
 import { Subscription } from '../../types';
 import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
-import { CreditCard } from '../components/CreditCard';
 
 const RecentShipmentStatus = ({ status, datetime, date }) => {
   switch (status) {
@@ -100,13 +100,12 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                     </div>
                   </div>
                   <div className="mt-2 sm:mt-0">
-                    <a
-                      href="#"
+                    <button
                       onClick={() => setIsProductOptionsOpen(true)}
                       className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
                     >
                       Update Product
-                    </a>
+                    </button>
                   </div>
                 </div>
 

@@ -2,15 +2,14 @@ import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
 import { format } from 'date-fns';
-import { getSubscription } from 'features/AccountSubscriptions/transforms';
-import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
 import { ManageSubscription } from './components/ManageSubscription/ManageSubscription';
 import { SubscriptionOrders } from './components/SubscriptionOrders/SubscriptionOrders';
 import { SubscriptionOverview } from './components/SubscriptionOverview/SubscriptionOverview';
-import { subscriptions as rawSubscriptions } from './placeholders';
+import { Subscription } from './types';
+import { formatDeliverySchedule } from './utils';
 
 const navigationItems = [
   {
@@ -24,9 +23,11 @@ const navigationItems = [
   }
 ];
 
-export const AccountSubscriptions = () => {
-  const subscriptions = rawSubscriptions.map((subscription) => getSubscription(subscription));
+export interface AccountSubscriptionsProps {
+  subscriptions: Subscription[];
+}
 
+export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProps) => {
   return (
     <CardPanel primaryText="Active Subscriptions">
       <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">

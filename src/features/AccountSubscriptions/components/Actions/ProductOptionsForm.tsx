@@ -1,8 +1,8 @@
 import { Disclosure, RadioGroup } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/solid';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { SubscriptionDeliveryScheduleOption } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';

@@ -1,7 +1,7 @@
 import { ModalProps } from 'components/Modal/Modal';
 import { format } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubscriptionOrder } from '../../types';

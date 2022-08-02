@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XIcon } from '@heroicons/react/outline';
-import { Fragment, MouseEvent, PropsWithChildren, useCallback } from 'react';
+import { Fragment, MouseEvent, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -11,6 +11,9 @@ export interface ModalProps {
 const noop = () => {};
 
 export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildren<ModalProps>) => {
+  // TODO Because of this: https://github.com/tailwindlabs/headlessui/issues/1705
+  const [dialogIsOpen, setDialogIsOpen] = useState(isOpen);
+
   const handleClose = useCallback(
     (e: MouseEvent) => {
       e.preventDefault();
@@ -19,9 +22,22 @@ export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildr
     [onClose]
   );
 
+  const handleAfterLeave = useCallback(() => {
+    setDialogIsOpen(false);
+    if (afterLeave) {
+      afterLeave();
+    }
+  }, [afterLeave]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setDialogIsOpen(true);
+    }
+  }, [isOpen]);
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" open={isOpen} onClose={onClose}>
+      <Dialog as="div" className="relative z-10" open={dialogIsOpen} onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -30,7 +46,7 @@ export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildr
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
-          afterLeave={afterLeave ?? noop}
+          afterLeave={handleAfterLeave}
         >
           <div className="hidden fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity md:block" />
         </Transition.Child>

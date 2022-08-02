@@ -13,8 +13,8 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/components/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/components/ModalFormActions';
+import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
+import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';

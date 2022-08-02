@@ -1,6 +1,7 @@
 import { format } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { formatPrice } from 'utils/text';
+import { CreditCard } from '../../../../components/Payments/CreditCard';
 import { Subscription } from '../../types';
 import { formatDeliverySchedule, getSortedOrders } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
@@ -11,7 +12,6 @@ import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
-import { CreditCard } from '../components/CreditCard';
 
 export interface ManageSubscriptionProps {
   subscription: Subscription;

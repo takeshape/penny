@@ -1,11 +1,11 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
-import { getCreditCardIcon } from 'components/Payments/utils';
-import { Shopify_CustomerCreditCard } from 'types/takeshape';
+import { CreditCard as TCreditCard } from 'types/paymentMethod';
 import classNames from 'utils/classNames';
+import { getCreditCardIcon } from './utils';
 
 export interface CreditCardProps {
   className?: string;
-  card: Shopify_CustomerCreditCard;
+  card: TCreditCard;
 }
 
 export const CreditCard = ({
