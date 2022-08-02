@@ -40,6 +40,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
   const activeSubscriptions = subscriptions.filter(isActiveSubscription);
   const endedSubscriptions = subscriptions.filter(isEndedSubscription);
 
+export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProps) => {
   return (
     <>
       <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
