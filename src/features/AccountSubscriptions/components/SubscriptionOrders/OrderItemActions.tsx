@@ -30,7 +30,7 @@ export const OrderItemActions = ({ order }: OrderItemActionsProps) => {
     }
 
     case 'skipped': {
-      return (
+      return order.isUpcoming ? (
         <>
           <button
             type="button"
@@ -41,11 +41,10 @@ export const OrderItemActions = ({ order }: OrderItemActionsProps) => {
           </button>
           <UnskipForm isOpen={isUnskipOpen} onClose={() => setIsUnskipOpen(false)} order={order} />
         </>
-      );
+      ) : null;
     }
 
-    case 'upcoming':
-    default: {
+    case 'scheduled': {
       return (
         <>
           <button
@@ -58,6 +57,10 @@ export const OrderItemActions = ({ order }: OrderItemActionsProps) => {
           <SkipForm isOpen={isSkipOpen} onClose={() => setIsSkipOpen(false)} order={order} />
         </>
       );
+    }
+
+    default: {
+      return null;
     }
   }
 };

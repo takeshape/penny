@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { formatPrice } from 'utils/text';
 import { CreditCard } from '../../../../components/Payments/CreditCard';
-import { Subscription } from '../../types';
-import { formatDeliverySchedule, getSortedOrders } from '../../utils';
+import { ActiveSubscription } from '../../types';
+import { formatDeliverySchedule } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
@@ -14,13 +14,11 @@ import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
 
 export interface ManageSubscriptionProps {
-  subscription: Subscription;
+  subscription: ActiveSubscription;
 }
 
 export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) => {
-  const { product, orders } = subscription;
-
-  const { nextOrder } = useMemo(() => getSortedOrders(orders), [orders]);
+  const { product, nextOrder } = subscription;
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
@@ -41,21 +39,25 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
           </div>
 
           <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
-            <button
-              type="button"
-              onClick={() => setIsSkipNextOpen(true)}
-              className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
-            >
-              Skip Next Order
-            </button>
+            {nextOrder && (
+              <button
+                type="button"
+                onClick={() => setIsSkipNextOpen(true)}
+                className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
+              >
+                Skip Next Order
+              </button>
+            )}
 
-            <button
-              type="button"
-              onClick={() => setIsOrderNowOpen(true)}
-              className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
-            >
-              Order Now
-            </button>
+            {nextOrder && (
+              <button
+                type="button"
+                onClick={() => setIsOrderNowOpen(true)}
+                className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-gray-200 text-gray-900 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:w-full"
+              >
+                Order Now
+              </button>
+            )}
           </div>
         </div>
 

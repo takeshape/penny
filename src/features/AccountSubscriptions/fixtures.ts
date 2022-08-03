@@ -1763,7 +1763,7 @@ export const subscriptions: RawSubscription[] = [
         id: 'gid://shopify/Order/333333333333',
         subscriptionId: '111',
         fulfillmentDate: '2022-08-19T10:00:00Z',
-        status: 'upcoming',
+        status: 'scheduled',
         statusAt: '2022-07-19',
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
@@ -1847,7 +1847,7 @@ export const subscriptions: RawSubscription[] = [
         id: 'gid://shopify/Order/555555555555',
         subscriptionId: '111',
         fulfillmentDate: '2022-10-19T10:00:00Z',
-        status: 'upcoming',
+        status: 'scheduled',
         statusAt: '2022-07-19',
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
@@ -2116,7 +2116,7 @@ export const subscriptions: RawSubscription[] = [
         subscriptionId: '222',
         fulfillmentDate: '2022-08-12T10:00:00Z',
         statusAt: '2022-07-19',
-        status: 'upcoming',
+        status: 'scheduled',
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
         shippingAddress: {
@@ -2158,7 +2158,7 @@ export const subscriptions: RawSubscription[] = [
         subscriptionId: '222',
         fulfillmentDate: '2022-09-12T10:00:00Z',
         statusAt: '2022-07-19',
-        status: 'upcoming',
+        status: 'scheduled',
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
         shippingAddress: {
@@ -2200,7 +2200,362 @@ export const subscriptions: RawSubscription[] = [
         subscriptionId: '222',
         fulfillmentDate: '2022-10-12T10:00:00Z',
         statusAt: '2022-07-19',
-        status: 'upcoming',
+        status: 'scheduled',
+        email: 'michael@takeshape.io',
+        phone: '919-360-0095',
+        shippingAddress: {
+          firstName: 'Michael',
+          lastName: 'Shick',
+          address1: '156 Kent St',
+          address2: 'Apt 2',
+          city: 'Brooklyn',
+          province: 'New York',
+          zip: '11222',
+          countryCode: 'US',
+          phone: '+19193600095'
+        },
+        product: {
+          description:
+            'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
+
+          id: '2',
+          handle: 'basic-tee',
+          name: 'Basic T-Shirt',
+          quantity: 1,
+          featuredImage: {
+            url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+            altText:
+              'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
+            height: 996,
+            width: 996
+          },
+          variantName: 'White / LG'
+        }
+      }
+    ]
+  },
+  {
+    id: 'gid://shopify/SubscriptionContract/000000000000',
+    status: 'ended',
+    endedAt: '2022-06-06T10:00:00Z',
+    createdAt: '2022-06-06T10:00:00Z',
+    price: {
+      currencyCode: 'USD',
+      amount: 16000
+    },
+    deliverySchedule: {
+      interval: 'MONTH',
+      intervalCount: 3
+    },
+    deliveryScheduleOptions: [
+      {
+        interval: 'MONTH',
+        intervalCount: 1
+      },
+      {
+        interval: 'MONTH',
+        intervalCount: 3
+      },
+      {
+        interval: 'MONTH',
+        intervalCount: 6
+      }
+    ],
+    shippingAddress: {
+      firstName: 'Michael',
+      lastName: 'Shick',
+      address1: '156 Kent St',
+      address2: 'Apt 2',
+      city: 'Brooklyn',
+      province: 'New York',
+      zip: '11222',
+      countryCode: 'US',
+      phone: '+19193600095'
+    },
+    paymentMethod: {
+      id: 'ppp',
+      instrument: {
+        __typename: 'Shopify_CustomerCreditCard',
+        brand: 'Visa',
+        expiresSoon: false,
+        expiryMonth: 10,
+        expiryYear: 2023,
+        lastDigits: '4242',
+        maskedNumber: '••••4242',
+        name: 'Michael Shick',
+        isRevocable: false
+      },
+      subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
+    },
+    product: {
+      description:
+        'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
+      url: '#',
+      price: {
+        currencyCode: 'USD',
+        amount: 8000
+      },
+      fulfillment: {
+        status: 'delivered',
+        date: 'July 12, 2022',
+        datetime: '2022-07-12'
+      },
+      nextFulfillment: {
+        status: 'scheduled',
+        date: 'August 12, 2021',
+        datetime: '2022-08-12'
+      },
+
+      id: '2',
+      handle: 'basic-tee',
+      name: 'Basic T-Shirt',
+      quantity: 1,
+      featuredImage: {
+        url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+        altText:
+          'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
+        height: 996,
+        width: 996
+      },
+      variants,
+      variantName: 'White / L',
+      variantSelections: [
+        {
+          name: 'Color',
+          value: 'White'
+        },
+        {
+          name: 'Size',
+          value: 'L'
+        }
+      ],
+      variantOptions: [
+        {
+          name: 'Size',
+          id: 'gid://shopify/ProductOption/8766172332132',
+          values: [
+            {
+              value: 'XXS',
+              name: 'XXS',
+              hasStock: false,
+              description: 'The very smallest size'
+            },
+            {
+              value: 'XS',
+              name: 'XS',
+              hasStock: true,
+              description: 'A fairly small size'
+            },
+            {
+              value: 'S',
+              name: 'S',
+              hasStock: true,
+              description: 'A small size'
+            },
+            {
+              value: 'M',
+              name: 'M',
+              hasStock: true,
+              description: 'Just about right for everybody'
+            },
+            {
+              value: 'L',
+              name: 'L',
+              hasStock: true,
+              description: 'Getting bigger'
+            },
+            {
+              value: 'XL',
+              name: 'XL',
+              hasStock: true,
+              description: 'And bigger...'
+            },
+            {
+              value: '2XL',
+              name: '2XL',
+              hasStock: true,
+              description: 'Whoa, so big'
+            },
+            {
+              value: '3XL',
+              name: '3XL',
+              hasStock: true,
+              description: 'No way!'
+            }
+          ]
+        },
+        {
+          name: 'Color',
+          id: 'gid://shopify/ProductOption/8766172364900',
+          values: [
+            {
+              value: 'Black',
+              name: 'Black',
+              hasStock: true,
+              class: 'bg-gray-900',
+              selectedClass: 'ring-gray-900',
+              colorBg: '#111827'
+            },
+            {
+              value: 'Gray',
+              name: 'Gray',
+              hasStock: true,
+              class: 'bg-gray-200',
+              selectedClass: 'ring-gray-400',
+              colorBg: '#333333'
+            },
+            {
+              value: 'White',
+              name: 'White',
+              hasStock: true,
+              class: 'bg-white',
+              selectedClass: 'ring-gray-400',
+              colorBg: '#ffffff'
+            }
+          ]
+        }
+      ]
+    },
+    orders: [
+      {
+        id: 'gid://shopify/Order/9111111111111',
+        subscriptionId: '111',
+        fulfillmentDate: '2021-07-12T10:00:00Z',
+        status: 'delivered',
+        statusAt: '2022-07-19',
+        deliveredAt: '2021-07-14T10:00:00Z',
+        email: 'michael@takeshape.io',
+        phone: '919-360-0095',
+        shippingAddress: {
+          firstName: 'Michael',
+          lastName: 'Shick',
+          address1: '156 Kent St',
+          address2: 'Apt 2',
+          city: 'Brooklyn',
+          province: 'New York',
+          zip: '11222',
+          countryCode: 'US',
+          phone: '+19193600095'
+        },
+        product: {
+          description:
+            'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
+          id: '2',
+          handle: 'basic-tee',
+          name: 'Basic T-Shirt',
+          quantity: 1,
+          featuredImage: {
+            url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+            altText:
+              'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
+            height: 996,
+            width: 996
+          },
+          variantName: 'White / LG'
+        }
+      },
+      {
+        id: 'gid://shopify/Order/922222222222',
+        subscriptionId: '222',
+        fulfillmentDate: '2021-08-12T10:00:00Z',
+        statusAt: '2022-07-19',
+        status: 'delivered',
+        deliveredAt: '2021-08-14T10:00:00Z',
+        email: 'michael@takeshape.io',
+        phone: '919-360-0095',
+        shippingAddress: {
+          firstName: 'Michael',
+          lastName: 'Shick',
+          address1: '156 Kent St',
+          address2: 'Apt 2',
+          city: 'Brooklyn',
+          province: 'New York',
+          zip: '11222',
+          countryCode: 'US',
+          phone: '+19193600095'
+        },
+        product: {
+          description:
+            'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
+
+          id: '2',
+          handle: 'basic-tee',
+          name: 'Basic T-Shirt',
+          quantity: 1,
+          featuredImage: {
+            url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+            altText:
+              'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
+            height: 996,
+            width: 996
+          },
+          variantName: 'White / L'
+        }
+      },
+      {
+        id: 'gid://shopify/Order/933333333333',
+        subscriptionId: '222',
+        fulfillmentDate: '2021-09-12T10:00:00Z',
+        statusAt: '2022-07-19',
+        status: 'skipped',
+        email: 'michael@takeshape.io',
+        phone: '919-360-0095',
+        shippingAddress: {
+          firstName: 'Michael',
+          lastName: 'Shick',
+          address1: '156 Kent St',
+          address2: 'Apt 2',
+          city: 'Brooklyn',
+          province: 'New York',
+          zip: '11222',
+          countryCode: 'US',
+          phone: '+19193600095'
+        },
+        product: {
+          description:
+            'Are you a minimalist looking for a compact carry option? The Micro Backpack is the perfect size for your essential everyday carry items. Wear it like a backpack or carry it like a satchel for all-day use.',
+          url: '#',
+          price: {
+            currencyCode: 'USD',
+            amount: 7000
+          },
+
+          id: '2',
+          handle: 'basic-tee',
+          name: 'Basic T-Shirt',
+          quantity: 1,
+          featuredImage: {
+            url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+            altText:
+              'Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps.',
+            height: 996,
+            width: 996
+          },
+          variantName: 'White / LG'
+        }
+      },
+      {
+        id: 'gid://shopify/Order/944444444444',
+        subscriptionId: '222',
+        fulfillmentDate: '2021-10-12T10:00:00Z',
+        statusAt: '2022-07-19',
+        status: 'delivered',
+        deliveredAt: '2021-10-14T10:00:00Z',
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
         shippingAddress: {

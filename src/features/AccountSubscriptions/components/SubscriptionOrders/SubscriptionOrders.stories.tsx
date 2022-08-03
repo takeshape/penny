@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof SubscriptionOrders> = (args) => <Subscript
 export const Orders = Template.bind({});
 
 Orders.args = {
-  orders: getSubscription(subscriptions[0]).orders
+  subscription: getSubscription(subscriptions[0])
 };
 
 export default Meta;

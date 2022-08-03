@@ -76,8 +76,9 @@ export interface SubscriptionOverviewProps {
 }
 
 export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps) => {
-  const { product } = subscription;
+  const { product, status } = subscription;
 
+  const isActive = status === 'active';
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
@@ -99,31 +100,35 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                       <p className="hidden mt-2 text-sm text-gray-500 sm:block">{product.description}</p>
                     </div>
                   </div>
-                  <div className="mt-2 sm:mt-0">
-                    <button
-                      onClick={() => setIsProductOptionsOpen(true)}
-                      className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
-                    >
-                      Update Product
-                    </button>
-                  </div>
+                  {isActive && (
+                    <div className="mt-2 sm:mt-0">
+                      <button
+                        onClick={() => setIsProductOptionsOpen(true)}
+                        className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                      >
+                        Update Product
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
-                  <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
-                  <div className="mt-2 sm:mt-0">
-                    <button
-                      onClick={() => setIsPaymentMethodOpen(true)}
-                      className="text-indigo-600 hover:text-indigo-500"
-                    >
-                      Update Payment Method
-                    </button>
+                {isActive && (
+                  <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
+                    <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
+                    <div className="mt-2 sm:mt-0">
+                      <button
+                        onClick={() => setIsPaymentMethodOpen(true)}
+                        className="text-indigo-600 hover:text-indigo-500"
+                      >
+                        Update Payment Method
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2">
                 <RecentShipmentStatus {...product.fulfillment} />
-                <NextShipmentStatus {...product.nextFulfillment} />
+                {isActive && <NextShipmentStatus {...product.nextFulfillment} />}
               </div>
             </div>
             <div className="ml-4 flex-shrink-0 sm:m-0 sm:mr-6 sm:order-first">
@@ -139,21 +144,25 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
         </div>
       </div>
 
-      <ProductOptionsForm
-        variants={product.variants}
-        variantOptions={product.variantOptions}
-        currentQuantity={product.quantity}
-        currentSelections={product.variantSelections}
-        currentDeliverySchedule={subscription.deliverySchedule}
-        isOpen={isProductOptionsOpen}
-        onClose={() => setIsProductOptionsOpen(false)}
-      />
+      {isActive && (
+        <>
+          <ProductOptionsForm
+            variants={product.variants}
+            variantOptions={product.variantOptions}
+            currentQuantity={product.quantity}
+            currentSelections={product.variantSelections}
+            currentDeliverySchedule={subscription.deliverySchedule}
+            isOpen={isProductOptionsOpen}
+            onClose={() => setIsProductOptionsOpen(false)}
+          />
 
-      <PaymentMethodForm
-        currentPaymentMethod={subscription.paymentMethod}
-        isOpen={isPaymentMethodOpen}
-        onClose={() => setIsPaymentMethodOpen(false)}
-      />
+          <PaymentMethodForm
+            currentPaymentMethod={subscription.paymentMethod}
+            isOpen={isPaymentMethodOpen}
+            onClose={() => setIsPaymentMethodOpen(false)}
+          />
+        </>
+      )}
     </>
   );
 };

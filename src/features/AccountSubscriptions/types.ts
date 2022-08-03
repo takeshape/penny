@@ -53,12 +53,13 @@ export type SubscriptionOrder = {
   subscriptionId: string;
   fulfillmentDate: string;
   statusAt: string;
-  status: 'delivered' | 'upcoming' | 'skipped';
+  status: 'delivered' | 'scheduled' | 'skipped';
   email: string;
   phone: string;
   deliveredAt?: string;
   shippingAddress: ShippingAddress;
   product: SubscriptionProduct;
+  isUpcoming?: boolean;
 };
 
 export type SubscriptionDeliveryScheduleOption = {
@@ -68,8 +69,9 @@ export type SubscriptionDeliveryScheduleOption = {
 
 export type RawSubscription = {
   id: string;
-  status: 'active' | 'canceled';
+  status: 'active' | 'ended';
   createdAt: string;
+  endedAt?: string;
   price: SubscriptionPrice;
   deliverySchedule: SubscriptionDeliveryScheduleOption;
   deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
@@ -82,8 +84,9 @@ export type RawSubscription = {
 export type Subscription = {
   id: string;
   // TODO Line this up with Shopify subscription statuses
-  status: 'active' | 'canceled';
+  status: 'active' | 'ended';
   createdAt: string;
+  endedAt?: string;
   price: SubscriptionPrice;
   deliverySchedule: SubscriptionDeliveryScheduleOption;
   deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
@@ -97,3 +100,6 @@ export type Subscription = {
   upcomingOrders: SubscriptionOrder[];
   pastOrders: SubscriptionOrder[];
 };
+
+export type ActiveSubscription = Subscription & { status: 'active' };
+export type EndedSubscription = Subscription & { status: 'ended' };

@@ -1,5 +1,11 @@
 import { compareAsc } from 'date-fns';
-import { SubscriptionDeliveryScheduleOption, SubscriptionOrder } from './types';
+import {
+  ActiveSubscription,
+  EndedSubscription,
+  Subscription,
+  SubscriptionDeliveryScheduleOption,
+  SubscriptionOrder
+} from './types';
 
 export function formatDeliverySchedule({ interval, intervalCount }: SubscriptionDeliveryScheduleOption): string {
   return `${intervalCount} ${interval.toLocaleLowerCase()}(s)`;
@@ -16,6 +22,7 @@ export function getSortedOrders(orders: SubscriptionOrder[]) {
 
   for (const [orderIdx, order] of Object.entries(sortedOrders)) {
     if (compareAsc(new Date(order.fulfillmentDate), now) === 1) {
+      order.isUpcoming = true;
       upcomingOrders.push(order);
       if (!nextOrder) {
         nextOrder = order;
@@ -37,4 +44,12 @@ export function getSortedOrders(orders: SubscriptionOrder[]) {
     upcomingOrders: upcomingOrders.reverse(),
     pastOrders
   };
+}
+
+export function isActiveSubscription(subscription: Subscription): subscription is ActiveSubscription {
+  return subscription.status === 'active';
+}
+
+export function isEndedSubscription(subscription: Subscription): subscription is EndedSubscription {
+  return subscription.status === 'ended';
 }
