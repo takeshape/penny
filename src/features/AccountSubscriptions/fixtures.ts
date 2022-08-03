@@ -1516,7 +1516,6 @@ export const subscriptions: RawSubscription[] = [
       }
     ],
     shippingAddress: {
-      // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
       firstName: 'Michael',
       lastName: 'Shick',
       address1: '156 Kent St',
@@ -1722,7 +1721,6 @@ export const subscriptions: RawSubscription[] = [
         subscriptionId: '111',
         fulfillmentDate: '2022-07-19T10:00:00Z',
         shippingAddress: {
-          // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
           firstName: 'Michael',
           lastName: 'Shick',
           address1: '156 Kent St',
@@ -1770,7 +1768,6 @@ export const subscriptions: RawSubscription[] = [
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
         shippingAddress: {
-          // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
           firstName: 'Michael',
           lastName: 'Shick',
           address1: '156 Kent St',
@@ -1813,7 +1810,6 @@ export const subscriptions: RawSubscription[] = [
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
         shippingAddress: {
-          // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
           firstName: 'Michael',
           lastName: 'Shick',
           address1: '156 Kent St',
@@ -1856,7 +1852,6 @@ export const subscriptions: RawSubscription[] = [
         email: 'michael@takeshape.io',
         phone: '919-360-0095',
         shippingAddress: {
-          // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
           firstName: 'Michael',
           lastName: 'Shick',
           address1: '156 Kent St',
@@ -1901,8 +1896,8 @@ export const subscriptions: RawSubscription[] = [
       amount: 16000
     },
     deliverySchedule: {
-      interval: 'DAY',
-      intervalCount: 30
+      interval: 'MONTH',
+      intervalCount: 3
     },
     deliveryScheduleOptions: [
       {
@@ -1919,7 +1914,6 @@ export const subscriptions: RawSubscription[] = [
       }
     ],
     shippingAddress: {
-      // Likely from here https://shopify.dev/api/admin-graphql/2022-07/objects/FulfillmentOrderDestination
       firstName: 'Michael',
       lastName: 'Shick',
       address1: '156 Kent St',
