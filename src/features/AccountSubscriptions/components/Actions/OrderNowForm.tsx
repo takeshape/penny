@@ -64,7 +64,7 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
             <h3 id="confirm-heading" className="sr-only">
               Confirm order now
             </h3>
-            {order.status === 'upcoming' && (
+            {order.status === 'scheduled' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
                 <p className="mb-4">
                   Your next order scheduled for <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will

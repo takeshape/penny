@@ -67,7 +67,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
             <h3 id="confirm-heading" className="sr-only">
               Confirm skip order
             </h3>
-            {order.status === 'upcoming' && (
+            {order.status === 'scheduled' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
                 <p className="mb-4">
                   Your order will not be processed on{' '}
@@ -90,7 +90,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Skip it"
-        disableSubmit={order.status !== 'upcoming'}
+        disableSubmit={order.status !== 'scheduled'}
       />
     </ModalForm>
   );

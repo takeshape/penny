@@ -26,9 +26,9 @@ export const OrderItemHeader = ({
       Icon = SkippedIcon;
       break;
 
-    case 'upcoming':
-      const UpcomingIcon = () => <ClockIcon className="w-5 h-5 text-blue-400 inline-block mr-2" aria-hidden="true" />;
-      Icon = UpcomingIcon;
+    case 'scheduled':
+      const ScheduledIcon = () => <ClockIcon className="w-5 h-5 text-blue-400 inline-block mr-2" aria-hidden="true" />;
+      Icon = ScheduledIcon;
       break;
 
     default:

@@ -17,8 +17,8 @@ export const OrderItemBadge = ({ status, deliveredAt }: Pick<SubscriptionOrder, 
       badgeClasses = 'bg-gray-100 text-gray-800';
       break;
 
-    case 'upcoming':
-      badgeText = `Upcoming`;
+    case 'scheduled':
+      badgeText = `Scheduled`;
       badgeClasses = 'bg-blue-100 text-blue-800';
       break;
 
