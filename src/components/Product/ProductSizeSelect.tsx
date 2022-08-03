@@ -30,8 +30,8 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
             className={({ active }) =>
               classNames(
                 size.hasStock
-                  ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
-                  : 'bg-gray-50 text-gray-200 cursor-not-allowed',
+                  ? 'bg-white shadow-sm text-mainText-900 cursor-pointer'
+                  : 'bg-gray-50 text-mainText-200 cursor-not-allowed',
                 active ? 'ring-2 ring-accent-500' : '',
                 buttonStyles
               )

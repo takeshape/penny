@@ -33,7 +33,11 @@
 /* Example of setting custom prose styles, for e.g., dangerouslySetHtml */
 @layer base {
   div#example-prose > p {
-    @apply text-base text-gray-900 mt-4;
+    @apply text-base text-mainText-900 mt-4;
+  }
+
+  div.prose > h3 {
+    @apply text-mainText-900;
   }
 }
 

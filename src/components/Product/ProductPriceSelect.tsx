@@ -45,7 +45,7 @@ export const ProductPriceSelect = ({ value, onChange, options }: ProductPriceSel
                   </div>
                   <RadioGroup.Label
                     as="span"
-                    className={classNames(checked ? 'text-accent-900' : 'text-gray-900', 'ml-3 font-medium')}
+                    className={classNames(checked ? 'text-accent-900' : 'text-mainText-900', 'ml-3 font-medium')}
                   >
                     {price.name} {price.hasDiscount && `(${formatDiscount(price)})`}
                   </RadioGroup.Label>
@@ -53,7 +53,7 @@ export const ProductPriceSelect = ({ value, onChange, options }: ProductPriceSel
                 <RadioGroup.Description
                   as="span"
                   className={classNames(
-                    checked ? 'text-accent-700' : 'text-gray-500',
+                    checked ? 'text-accent-700' : 'text-mainText-500',
                     'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right flex items-center place-content-end'
                   )}
                 >

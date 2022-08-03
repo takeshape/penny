@@ -56,12 +56,12 @@ export const AccountNavigation = ({ items }: AccountNavigationProps) => {
         <a
           onClick={handleLogout}
           className={classNames(
-            'text-gray-600 bg-gray-300 hover:text-gray-800 hover:bg-gray-400',
+            'text-primary-600 bg-primary-300 hover:text-primary-800 hover:bg-primary-400',
             'group rounded-md px-3 py-2 flex items-center text-sm font-medium cursor-pointer'
           )}
         >
           <LogoutIcon
-            className={classNames('text-gray-600 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6')}
+            className={classNames('text-primary-600 group-hover:text-primary-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6')}
             aria-hidden="true"
           />
           <span className="truncate">Sign Out</span>

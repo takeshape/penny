@@ -10,11 +10,11 @@ export const Details = ({ details: { text, details } }: DetailsProps) => (
     <div className="flex flex-col items-center text-center">
       <h2
         id="details-heading"
-        className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl prose"
+        className="text-3xl font-extrabold tracking-tight text-mainText-900 sm:text-4xl prose"
         dangerouslySetInnerHTML={{ __html: text.primary }}
       ></h2>
       <p
-        className="mt-3 max-w-3xl text-lg text-gray-600 prose"
+        className="mt-3 max-w-3xl text-lg text-mainText-600 prose"
         dangerouslySetInnerHTML={{ __html: text.secondary }}
       ></p>
     </div>
@@ -32,7 +32,7 @@ export const Details = ({ details: { text, details } }: DetailsProps) => (
             />
           </div>
           <p
-            className="mt-8 text-base text-gray-500 prose"
+            className="mt-8 text-base text-mainText-500 prose"
             dangerouslySetInnerHTML={{ __html: detail.description }}
           ></p>
         </div>

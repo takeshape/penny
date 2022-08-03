@@ -13,9 +13,9 @@ export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps)
     ) : (
       <ClockIcon className="h-6 w-6 text-gray-800" aria-hidden="true" />
     )}
-    <p>
+    <p className="text-mainText-600">
       Referred{' '}
-      <a href={`mailto:${email}`} className="text-red-600">
+      <a href={`mailto:${email}`} className="text-accent-600">
         {email}
       </a>{' '}
       on {sent.toLocaleDateString()}
