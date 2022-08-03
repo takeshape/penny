@@ -8,8 +8,6 @@ export interface ModalProps {
   afterLeave?: () => void;
 }
 
-const noop = () => {};
-
 export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildren<ModalProps>) => {
   // TODO Because of this: https://github.com/tailwindlabs/headlessui/issues/1705
   const [dialogIsOpen, setDialogIsOpen] = useState(isOpen);
