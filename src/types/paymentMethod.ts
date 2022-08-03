@@ -12,3 +12,8 @@ export type CreditCard = Pick<
   | 'maskedNumber'
   | 'name'
 >;
+
+export type PaymentMethod = {
+  id: string;
+  instrument: CreditCard;
+};
