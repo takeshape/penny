@@ -22,7 +22,12 @@ export const paymentMethods = [
       name: 'Michael Shick',
       source: 'Visa',
       virtualLastDigits: '5252'
-    }
+    },
+    subscriptionContracts: [
+      {
+        id: 'gid://shopify/SubscriptionContract/1111111111111'
+      }
+    ]
   },
   {
     id: '222',

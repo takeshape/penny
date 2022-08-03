@@ -1,53 +1,89 @@
+import { CreditCardIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
+import { getCreditCardIcon } from 'components/Payments/utils';
+import { useState } from 'react';
 import { PaymentMethod } from 'types/paymentMethod';
+import { AddForm } from './components/Actions/AddForm';
+import { RemoveForm } from './components/Actions/RemoveForm';
+import { ViewSubscriptions } from './components/Actions/ViewSubscriptions';
+
+const PaymentMethod = (paymentMethod: PaymentMethod) => {
+  const { instrument } = paymentMethod;
+  const CreditCardIcon = getCreditCardIcon(instrument.brand);
+
+  const [isRemoveFormOpen, setIsRemoveFormOpen] = useState(false);
+  const [isViewSubscriptionsOpen, setIsViewSubscriptionsOpen] = useState(false);
+
+  return (
+    <>
+      <div className="w-full flex space-x-6 items-start">
+        <div className="w-full grid grid-cols-6 gap-4">
+          <div className="col-span-2">
+            <CreditCardIcon className="w-16 h-auto" />
+          </div>
+          <div className="col-span-3 font-medium text-gray-900">
+            <div className="text-lg">
+              <span>{instrument.brand}</span> <span>{instrument.maskedNumber}</span>
+            </div>
+            <div className="text-sm">
+              Expires <span>{instrument.expiryMonth}</span>/<span>{instrument.expiryYear}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row justify-end gap-4 px-2 mt-8 text-sm">
+        <button
+          type="button"
+          onClick={() => setIsRemoveFormOpen(true)}
+          className="whitespace-nowrap font-medium text-indigo-600 hover:text-indigo-500"
+        >
+          Remove
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsViewSubscriptionsOpen(true)}
+          className="whitespace-nowrap font-medium text-indigo-600 hover:text-indigo-500"
+        >
+          Subscriptions
+        </button>
+      </div>
+      <RemoveForm isOpen={isRemoveFormOpen} onClose={() => setIsRemoveFormOpen(false)} paymentMethod={paymentMethod} />
+      <ViewSubscriptions
+        isOpen={isViewSubscriptionsOpen}
+        onClose={() => setIsViewSubscriptionsOpen(false)}
+        paymentMethod={paymentMethod}
+      />
+    </>
+  );
+};
 
 export interface AccountPaymentsProps {
   paymentMethods: PaymentMethod[];
 }
 
 export const AccountPayments = ({ paymentMethods }: AccountPaymentsProps) => {
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+
   return (
-    <CardPanel primaryText="Payment Methods">
-      <ul role="list" className="grid grid-cols-1 gap-6">
-        {paymentMethods.map(({ id, instrument }) => (
-          <li key={id} className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
-            <div className="w-full flex items-center justify-between p-6 space-x-6">
-              <div className="flex-1 truncate">
-                <div className="flex items-center space-x-3">
-                  <h3 className="text-gray-900 text-sm font-medium truncate">{instrument.brand}</h3>
-                  <span className="flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-green-100 rounded-full">
-                    {instrument.name}
-                  </span>
-                </div>
-                <p className="mt-1 text-gray-500 text-sm truncate">{instrument.maskedNumber}</p>
-              </div>
-              {/* <img className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0" src={person.imageUrl} alt="" /> */}
-            </div>
-            <div>
-              <div className="-mt-px flex divide-x divide-gray-200">
-                <div className="w-0 flex-1 flex">
-                  {/* <a
-                    href={`mailto:${person.email}`}
-                    className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
-                  >
-                    <MailIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
-                    <span className="ml-3">Email</span>
-                  </a> */}
-                </div>
-                <div className="-ml-px w-0 flex-1 flex">
-                  {/* <a
-                    href={`tel:${person.telephone}`}
-                    className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
-                  >
-                    <PhoneIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
-                    <span className="ml-3">Call</span>
-                  </a> */}
-                </div>
-              </div>
-            </div>
+    <CardPanel primaryText="Payment Methods" secondaryText="Add and remove payment methods.">
+      <ul role="list" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {paymentMethods.map((paymentMethod) => (
+          <li key={paymentMethod.id} className=" bg-white rounded-lg border px-4 py-6">
+            <PaymentMethod {...paymentMethod} />
           </li>
         ))}
+        <li>
+          <button
+            type="button"
+            onClick={() => setIsAddFormOpen(true)}
+            className="relative block w-full border border-gray-300 border-dashed rounded-lg p-8 h-full text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            <CreditCardIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <span className="mt-2 block text-sm font-medium text-gray-900">Add payment method</span>
+          </button>
+        </li>
       </ul>
+      <AddForm isOpen={isAddFormOpen} onClose={() => setIsAddFormOpen(false)} customerId="" />
     </CardPanel>
   );
 };
