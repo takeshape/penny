@@ -36,10 +36,10 @@ export const Reviews = ({
   const { asPath } = useRouter();
 
   return (
-    <section id="reviews" aria-labelledby="reviews-heading" className="bg-white">
+    <section id="reviews" aria-labelledby="reviews-heading" className="bg-background">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div className="lg:col-span-4">
-          <h2 id="reviews-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
+          <h2 id="reviews-heading" className="text-2xl font-extrabold tracking-tight text-mainText-900">
             Customer Reviews
           </h2>
 
@@ -48,7 +48,7 @@ export const Reviews = ({
               <Stars rating={stats.average ?? 0} />
               <p className="sr-only">{stats.average ?? 0} out of 5 stars</p>
             </div>
-            {stats.average !== null && <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>}
+            {stats.average !== null && <p className="ml-2 text-sm text-mainText-900">Based on {stats.count} reviews</p>}
           </div>
 
           {rollup && (
@@ -60,8 +60,8 @@ export const Reviews = ({
           )}
 
           <div className="mt-10">
-            <h3 className="text-lg font-medium text-gray-900">Share your thoughts</h3>
-            <p className="mt-1 text-sm text-gray-600">
+            <h3 className="text-lg font-medium text-mainText-900">Share your thoughts</h3>
+            <p className="mt-1 text-sm text-mainText-600">
               If you&rsquo;ve used this product, share your thoughts with other customers
             </p>
 

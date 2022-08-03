@@ -17,7 +17,7 @@ module.exports = {
       },
       colors: {
         primary: colors.indigo,
-        accent: colors.pink,
+        accent: colors.yellow,
         mainText: {
           100: '#700',
           200: '#800',
