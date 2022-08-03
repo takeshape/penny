@@ -11,7 +11,7 @@ export interface ProductPriceProps {
 export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
   const { currencyCode, amount } = price;
 
-  const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-gray-900');
+  const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-mainText-900');
 
   if (hasStock) {
     return <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>;

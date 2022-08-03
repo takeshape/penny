@@ -21,8 +21,8 @@ export const BackgroundImage = ({ image, children }: PropsWithChildren<Backgroun
             />
           </div>
         </div>
-        <div className="absolute inset-0 bg-white bg-opacity-75" />
-        <div className="absolute inset-0 bg-gradient-to-t from-white via-white" />
+        <div className="absolute inset-0 bg-background bg-opacity-75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background" />
       </div>
       {children}
     </div>

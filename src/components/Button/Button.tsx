@@ -21,7 +21,7 @@ const styles = {
   colors: {
     primary: 'border-transparent text-white bg-accent-600 hover:bg-accent-700',
     secondary: 'border-transparent text-accent-700 bg-accent-100 hover:bg-accent-200',
-    clear: 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+    clear: 'border-gray-300 text-primary-700 bg-white hover:bg-gray-50'
   }
 };
 

@@ -49,5 +49,5 @@ export interface StorefrontProps {
 }
 
 export const Storefront = ({ storefront }: StorefrontProps) => {
-  return <div className="bg-white">{storefront.components.map(storefrontChildToComponent())}</div>;
+  return <div className="bg-background">{storefront.components.map(storefrontChildToComponent())}</div>;
 };

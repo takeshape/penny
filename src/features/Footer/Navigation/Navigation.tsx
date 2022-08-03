@@ -20,7 +20,7 @@ interface NavigationSectionProps {
 
 const NavigationSection = (props: PropsWithChildren<NavigationSectionProps>) => (
   <>
-    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{props.name}</h3>
+    <h3 className="text-sm font-semibold text-mainText-400 tracking-wider uppercase">{props.name}</h3>
     <ul role="list" className="mt-4 space-y-4">
       {props.links.map((item) => (
         <li key={item.name}>

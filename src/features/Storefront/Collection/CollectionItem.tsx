@@ -23,14 +23,16 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
           </div>
         </div>
         <div className="mt-6">
-          {colors && <p className="text-sm text-gray-500">{colors.values[0].name}</p>}
+          {colors && <p className="text-sm text-mainText-500">{colors.values[0].name}</p>}
           <h3 className="mt-1 font-semibold text-primary-900">
             <NextLink href={product.url}>
               <span className="absolute inset-0" />
               {product.name}
             </NextLink>
           </h3>
-          <p className="mt-1 text-gray-900">{formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}</p>
+          <p className="mt-1 text-mainText-900">
+            {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}
+          </p>
         </div>
       </div>
 

@@ -46,7 +46,7 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
           </div>
         ) : null}
 
-        <p className="mt-4 text-base font-medium text-gray-900">
+        <p className="mt-4 text-base font-medium text-mainText-900">
           {product.variantsCount === 1 ? (
             formatPrice(product.priceMax.currencyCode, product.priceMax.amount)
           ) : (

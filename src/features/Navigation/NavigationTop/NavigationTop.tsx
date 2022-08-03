@@ -65,7 +65,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
         </div>
 
         {/* Secondary navigation */}
-        <div className="bg-white">
+        <div className="bg-background">
           <div className="border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="h-16 flex items-center justify-between">
@@ -85,7 +85,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                 <div className="flex-1 flex items-center lg:hidden">
                   <button
                     type="button"
-                    className="-ml-2 bg-white p-2 rounded-md text-primary-400"
+                    className="-ml-2 bg-background p-2 rounded-md text-primary-400"
                     onClick={() => setIsMobileMenuOpen(true)}
                   >
                     <span className="sr-only">Open menu</span>

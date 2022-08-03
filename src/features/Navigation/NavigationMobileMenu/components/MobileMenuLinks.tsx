@@ -36,7 +36,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                   {section.subsections.map((subsection) => (
                     <div key={subsection.name} className="grid grid-cols-1 gap-y-10 gap-x-6">
                       <div>
-                        <p id={`mobile-featured-heading-${sectionIdx}`} className="font-medium text-gray-900">
+                        <p id={`mobile-featured-heading-${sectionIdx}`} className="font-medium text-mainText-900">
                           {subsection.name}
                         </p>
                         <ul

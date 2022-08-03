@@ -42,11 +42,11 @@ export const NavigationMobileMenu = ({ sections, currencies }: Pick<Navigation, 
           leaveFrom="translate-x-0"
           leaveTo="-translate-x-full"
         >
-          <div className="relative max-w-xs w-full bg-white shadow-xl pb-12 flex flex-col overflow-y-auto">
+          <div className="relative max-w-xs w-full bg-background shadow-xl pb-12 flex flex-col overflow-y-auto">
             <div className="px-4 pt-5 pb-2 flex">
               <button
                 type="button"
-                className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-gray-400"
+                className="-m-2 p-2 rounded-md inline-flex items-center justify-center text-primary-400"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>

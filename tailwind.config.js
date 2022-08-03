@@ -14,18 +14,25 @@ module.exports = {
       },
       gridTemplateRows: {
         '[auto,auto,1fr]': 'auto auto 1fr'
+      },
+      colors: {
+        primary: colors.indigo,
+        accent: colors.pink,
+        mainText: {
+          100: '#700',
+          200: '#800',
+          300: '#900',
+          400: '#a00',
+          500: '#b00',
+          600: '#c00',
+          700: '#d00',
+          800: '#e00',
+          900: '#f00'
+        },
+        invertedText: colors.green['200'],
+        background: colors.indigo['100'],
+        muted: colors.pink['200']
       }
-    },
-    colors: {
-      primary: colors.gray,
-      accent: colors.indigo,
-      white: colors.white,
-      gray: colors.gray,
-      black: colors.black,
-      red: colors.red,
-      yellow: colors.yellow,
-      green: colors.green,
-      blue: colors.blue
     }
   },
   plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio'), require('@tailwindcss/typography')]

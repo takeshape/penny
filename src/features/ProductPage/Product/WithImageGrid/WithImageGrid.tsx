@@ -88,7 +88,7 @@ export const ProductWithImageGrid = ({
       {/* Product info */}
       <div className="max-w-2xl mx-auto pt-10 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
         <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{name}</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight text-mainText-900 sm:text-3xl">{name}</h1>
         </div>
 
         {/* Options */}
@@ -106,7 +106,7 @@ export const ProductWithImageGrid = ({
           <form className="mt-10">
             {colors && (
               <div>
-                <h3 className="text-sm text-gray-900 font-medium">Color</h3>
+                <h3 className="text-sm text-mainText-900 font-medium">Color</h3>
                 <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
               </div>
             )}
@@ -114,7 +114,7 @@ export const ProductWithImageGrid = ({
             {sizes && (
               <div className="mt-10">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm text-gray-900 font-medium">Size</h3>
+                  <h3 className="text-sm text-mainText-900 font-medium">Size</h3>
                   <a href="#" className="text-sm font-medium text-accent-600 hover:text-accent-500">
                     Size guide
                   </a>
@@ -146,7 +146,10 @@ export const ProductWithImageGrid = ({
 
         {/* Description and details */}
         <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <div className="prose prose-accent prose-sm" dangerouslySetInnerHTML={{ __html: descriptionHtml }}></div>
+          <div
+            className="prose prose-accent prose-sm text-mainText-800"
+            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+          ></div>
         </div>
 
         {showFeaturedReviews && reviewHighlights && (
