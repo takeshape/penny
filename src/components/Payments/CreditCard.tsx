@@ -1,7 +1,7 @@
 import { ExclamationCircleIcon } from '@heroicons/react/solid';
 import { CreditCard as TCreditCard } from 'types/paymentMethod';
 import classNames from 'utils/classNames';
-import { getCreditCardIcon } from './utils';
+import { getCreditCardIcon, getIsExpired } from './utils';
 
 export interface CreditCardProps {
   className?: string;
@@ -13,6 +13,7 @@ export const CreditCard = ({
   className
 }: CreditCardProps) => {
   const CreditCardIcon = getCreditCardIcon(brand);
+  const isExpired = getIsExpired({ expiryMonth, expiryYear });
 
   return (
     <div className={className}>
@@ -23,11 +24,11 @@ export const CreditCard = ({
       <div
         className={classNames(
           'mt-1 text-xs font-medium flex items-center gap-1',
-          expiresSoon ? 'text-red-600' : 'text-gray-600'
+          expiresSoon || isExpired ? 'text-red-600' : 'text-gray-600'
         )}
       >
-        {expiresSoon && <ExclamationCircleIcon className="h-4 w-4 text-red-600 inline-block" />}
-        <span>Expires</span>{' '}
+        {(expiresSoon || isExpired) && <ExclamationCircleIcon className="h-4 w-4 text-red-600 inline-block" />}
+        {isExpired ? <span>This card expired</span> : <span>Expires</span>}
         <span>
           {expiryMonth}/{expiryYear}
         </span>

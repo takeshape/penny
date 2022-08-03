@@ -1,3 +1,5 @@
+import { isAfter, lastDayOfMonth } from 'date-fns';
+import { CreditCard } from 'types/paymentMethod';
 import {
   AlipayIcon,
   AmexIcon,
@@ -41,4 +43,9 @@ export function getCreditCardIcon(brand: string) {
   }
 
   return GenericIcon;
+}
+
+export function getIsExpired({ expiryMonth, expiryYear }: Pick<CreditCard, 'expiryMonth' | 'expiryYear'>): boolean {
+  const lastDay = lastDayOfMonth(new Date(expiryYear, expiryMonth - 1, 1));
+  return isAfter(new Date(), lastDay);
 }

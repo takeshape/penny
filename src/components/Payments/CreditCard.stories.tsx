@@ -40,6 +40,18 @@ GenericExpiresSoon.args = {
   }
 };
 
+export const GenericExpired = Template.bind({});
+
+GenericExpired.args = {
+  card: {
+    ...card,
+    brand: 'Generic',
+    expiresSoon: true,
+    expiryMonth: 1,
+    expiryYear: 2020
+  }
+};
+
 export const Amex = Template.bind({});
 
 Amex.args = {
