@@ -30,7 +30,7 @@ export const OrderSkeleton = () => (
     </header>
     <main className="my-2 px-2">
       <div>
-        <header className="w-full mb-2 pb-2 border-b border-mainText-500 text-sm text-mainText-500">
+        <header className="w-full mb-2 pb-2 border-b border-mainText-5300 text-sm text-mainText-500">
           <div className="w-32 bg-mainText-300 h-4 rounded-md" />
         </header>
         <div className="w-24 bg-mainText-300 h-4 rounded-md" />

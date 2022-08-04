@@ -26,7 +26,7 @@ export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineI
         </NextLink>
       </td>
       <td className="py-6 pr-8 text-mainText-900">{lineItem.quantity}</td>
-      <td className="hidden py-6 pr-8 sm:table-cell text-mainText-900">
+      <td className="hidden py-6 pr-8 sm:table-cell text-mainText-500">
         {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
       </td>
     </tr>

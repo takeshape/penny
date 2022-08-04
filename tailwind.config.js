@@ -21,7 +21,6 @@ module.exports = {
         mainText: colors.gray,
         invertedText: colors.white,
         background: colors.white,
-        muted: colors.indigo['100'],
         formText: colors.gray,
         formBackground: colors.white
       }

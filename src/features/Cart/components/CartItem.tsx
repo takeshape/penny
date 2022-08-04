@@ -33,7 +33,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
             <div>
               <h3>
                 <Link href={href}>
-                  <a className="font-medium text-primary-500 hover:text-primary-900">{name}</a>
+                  <a className="font-medium text-primary-900 hover:text-accent-900">{name}</a>
                 </Link>
               </h3>
               <p className="mt-1 text-sm text-mainText-500">{variantName}</p>

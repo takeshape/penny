@@ -25,7 +25,7 @@ export const Layout = ({ children, ...layout }: PropsWithChildren<AccountLayoutP
 
   return (
     <DefaultLayout {...layout}>
-      <div className="bg-muted flex flex-col grow">
+      <div className="bg-accent-100 flex flex-col grow">
         <Wrapper>
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
             <AccountNavigation items={items} />

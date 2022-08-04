@@ -63,7 +63,7 @@ export const FormPhoneInput = <
           error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
             : 'border-formText-300 focus:ring-accent-500 focus:border-accent-500',
-          'mt-1 block w-full shadow-sm sm:text-sm bg-formBackground text-formText-900 rounded-md disabled:bg-formText-100 disabled:cursor-not-allowed'
+          'mt-1 block w-full shadow-sm sm:text-sm bg-formBackground rounded-md disabled:bg-formText-100 disabled:cursor-not-allowed'
         )}
       />
       {error && (
