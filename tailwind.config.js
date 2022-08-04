@@ -16,24 +16,14 @@ module.exports = {
         '[auto,auto,1fr]': 'auto auto 1fr'
       },
       colors: {
-        primary: colors.indigo,
-        accent: colors.yellow,
-        mainText: {
-          100: '#700',
-          200: '#800',
-          300: '#900',
-          400: '#a00',
-          500: '#b00',
-          600: '#c00',
-          700: '#d00',
-          800: '#e00',
-          900: '#f00'
-        },
-        invertedText: colors.green['200'],
-        background: colors.indigo['100'],
-        muted: colors.pink['200'],
-        formText: colors.emerald,
-        formBackground: colors.pink['100']
+        primary: colors.gray,
+        accent: colors.indigo,
+        mainText: colors.gray,
+        invertedText: colors.white,
+        background: colors.white,
+        muted: colors.indigo['100'],
+        formText: colors.gray,
+        formBackground: colors.white
       }
     }
   },
