@@ -1,5 +1,5 @@
 import Button from 'components/Button/Button';
-import { siteLogo } from 'config';
+import { Logo } from 'components/Logo/Logo';
 import { signOut } from 'next-auth/react';
 
 export const AuthSignOut = (props: { signOut: typeof signOut }) => {
@@ -7,8 +7,7 @@ export const AuthSignOut = (props: { signOut: typeof signOut }) => {
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
+        <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Sign out</h2>
       </div>
 

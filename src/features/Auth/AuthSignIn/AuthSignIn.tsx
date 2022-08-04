@@ -1,8 +1,8 @@
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
+import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
-import { siteLogo } from 'config';
 import { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -68,8 +68,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
+        <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Sign in to your account</h2>
       </div>
 
