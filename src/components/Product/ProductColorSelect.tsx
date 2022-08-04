@@ -32,7 +32,7 @@ export const ProductColorSelect = ({ value, onChange, options }: ProductColorSel
             </RadioGroup.Label>
             <span
               aria-hidden="true"
-              className={classNames(color.class, 'h-8 w-8 border border-black border-opacity-10 rounded-full')}
+              className={classNames(color.class, 'h-8 w-8 border border-mainText border-opacity-10 rounded-full')}
             />
           </RadioGroup.Option>
         ))}

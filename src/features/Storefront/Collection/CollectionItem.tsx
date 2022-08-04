@@ -43,7 +43,7 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
             {colors.values.map((color) => (
               <li
                 key={color.name}
-                className="w-4 h-4 rounded-full border border-black border-opacity-10"
+                className="w-4 h-4 rounded-full border border-mainText border-opacity-10"
                 style={{ backgroundColor: color.colorBg as string }}
               >
                 <span className="sr-only">{color.name}</span>

@@ -26,7 +26,7 @@ export const ProductSizeSelectWithDescription = ({
 
   return (
     <RadioGroup value={value} onChange={onChange}>
-      <RadioGroup.Label className="block text-sm font-medium text-gray-700">{label}</RadioGroup.Label>
+      <RadioGroup.Label className="block text-sm font-medium text-formText-700">{label}</RadioGroup.Label>
       <div className={`mt-1 ${gridClasses}`}>
         {options.map((size) => (
           <RadioGroup.Option
@@ -37,16 +37,16 @@ export const ProductSizeSelectWithDescription = ({
             className={({ active }) =>
               classNames(
                 active ? 'ring-2 ring-accent-500' : '',
-                'relative block border border-gray-300 rounded-lg p-4 cursor-pointer focus:outline-none'
+                'relative block border border-formText-300 bg-formBackground rounded-lg p-4 cursor-pointer focus:outline-none'
               )
             }
           >
             {({ active, checked }) => (
               <>
-                <RadioGroup.Label as="p" className="text-base font-medium text-gray-900">
+                <RadioGroup.Label as="p" className="text-base font-medium text-formText-900">
                   {size.name}
                 </RadioGroup.Label>
-                <RadioGroup.Description as="p" className="mt-1 text-sm text-gray-500">
+                <RadioGroup.Description as="p" className="mt-1 text-sm text-formText-500">
                   {(size.description as string) ?? ''}
                 </RadioGroup.Description>
                 <div

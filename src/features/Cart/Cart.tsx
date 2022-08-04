@@ -27,7 +27,7 @@ export const Cart = () => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-ma-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-hidden">
@@ -45,7 +45,7 @@ export const Cart = () => {
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md relative">
                   {isCartCheckingOut && (
                     <div className="z-20 bg-gray-500 bg-opacity-75 absolute h-full w-full">
-                      <PageLoader colorClass="text-white" />
+                      <PageLoader colorClass="text-background" />
                     </div>
                   )}
 
@@ -68,7 +68,7 @@ export const Cart = () => {
                       <div className="mt-8">
                         {items.length ? (
                           <div className="flow-root">
-                            <ul role="list" className="-my-6 divide-y divide-gray-200">
+                            <ul role="list" className="-my-6 divide-y divide-mainText-200">
                               {items.map((atom) => (
                                 <li key={atom.toString()} className="flex py-6">
                                   <CartItem atom={atom} onRemove={() => dispatch({ type: 'remove', atom })} />
@@ -82,7 +82,7 @@ export const Cart = () => {
                       </div>
                     </div>
 
-                    <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                    <div className="border-t border-mainText-200 py-6 px-4 sm:px-6">
                       <CartSubtotal />
                       <p className="mt-0.5 text-sm text-mainText-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">

@@ -20,11 +20,11 @@ export const FormTextarea = <
   return (
     <div className={props.className}>
       <div className="flex justify-between">
-        <label htmlFor={props.id} className="block text-sm font-medium text-gray-700">
+        <label htmlFor={props.id} className="block text-sm font-medium text-formText-700">
           {props.label}
         </label>
         {props.rules?.required && (
-          <span className="text-sm text-gray-400" id="first-name-required">
+          <span className="text-sm text-formText-400" id="first-name-required">
             Required
           </span>
         )}
@@ -39,8 +39,8 @@ export const FormTextarea = <
           className={classNames(
             error
               ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
-              : 'border-gray-300 focus:ring-accent-500 focus:border-accent-500 ',
-            'py-3 px-4 block w-full rounded-md placeholder-gray-400'
+              : 'border-formText-300 focus:ring-accent-500 focus:border-accent-500 ',
+            'py-3 px-4 block w-full rounded-md bg-formBackground placeholder-formText-400'
           )}
         />
         {error && (
@@ -50,7 +50,7 @@ export const FormTextarea = <
         )}
       </div>
       {props.helpText && (
-        <p className="mt-2 text-sm text-gray-500" id={`${props.id}-help-text`}>
+        <p className="mt-2 text-sm text-formText-500" id={`${props.id}-help-text`}>
           {props.helpText}
         </p>
       )}

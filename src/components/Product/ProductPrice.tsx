@@ -19,8 +19,8 @@ export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
 
   return (
     <p className={`${wrapperClass} flex items-center`}>
-      <span className="text-gray-300 line-through">{formatPrice(currencyCode, amount)}</span>
-      <span className="text-gray-500 text-sm uppercase font-bold ml-4">Out of stock</span>
+      <span className="text-mainText-300 line-through">{formatPrice(currencyCode, amount)}</span>
+      <span className="text-mainText-500 text-sm uppercase font-bold ml-4">Out of stock</span>
     </p>
   );
 };

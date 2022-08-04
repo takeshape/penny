@@ -31,7 +31,9 @@ module.exports = {
         },
         invertedText: colors.green['200'],
         background: colors.indigo['100'],
-        muted: colors.pink['200']
+        muted: colors.pink['200'],
+        formText: colors.emerald,
+        formBackground: colors.pink['100']
       }
     }
   },

@@ -11,7 +11,7 @@ export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps)
     {earned ? (
       <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
     ) : (
-      <ClockIcon className="h-6 w-6 text-gray-800" aria-hidden="true" />
+      <ClockIcon className="h-6 w-6 text-mainText-800" aria-hidden="true" />
     )}
     <p className="text-mainText-600">
       Referred{' '}

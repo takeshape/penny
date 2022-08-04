@@ -23,7 +23,7 @@ export const PaginationWithPageList = ({
         {paginationRange.map((pageNumber, idx) => {
           if (pageNumber === '…') {
             return (
-              <span key={`page-more-${idx}`} className="inline-flex items-center text-gray-500 px-1.5 h-10">
+              <span key={`page-more-${idx}`} className="inline-flex items-center text-mainText-500 px-1.5 h-10">
                 &#8230;
               </span>
             );
@@ -47,7 +47,7 @@ export const PaginationWithPageList = ({
   return (
     <nav
       aria-label="Pagination"
-      className="max-w-7xl mx-auto space-x-2 px-4 mt-6 flex justify-between text-sm font-medium text-gray-700 sm:px-6 lg:px-8"
+      className="max-w-7xl mx-auto space-x-2 px-4 mt-6 flex justify-between text-sm font-medium text-mainText-700 sm:px-6 lg:px-8"
     >
       <div className="flex-1">
         <PaginationLink onClick={onPrevious} disabled={currentPage === 1}>

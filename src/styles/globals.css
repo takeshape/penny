@@ -4,7 +4,7 @@
 
 @layer components {
   #__next {
-    @apply h-full bg-white;
+    @apply h-full bg-background;
   }
   html,
   body {
@@ -36,13 +36,15 @@
     @apply text-base text-mainText-900 mt-4;
   }
 
-  div.prose > h3 {
+  .prose h3 {
     @apply text-mainText-900;
   }
 }
 
-/*
-* Hide reCAPTCHA badge
- * https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge.-what-is-allowed
- */
+@layer components {
+  .prose li::marker {
+    @apply text-mainText-300;
+  }
+}
+
 .grecaptcha-badge { visibility: hidden; }

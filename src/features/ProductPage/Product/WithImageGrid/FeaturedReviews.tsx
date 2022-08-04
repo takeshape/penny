@@ -13,11 +13,11 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
       {reviews.map((review) => (
         <div key={review.id} className="flex flex-col sm:flex-row">
           <div className="mt-6 order-2 sm:mt-0 sm:ml-16">
-            <h3 className="text-sm font-medium text-gray-900">{review.title}</h3>
+            <h3 className="text-sm font-medium text-mainText-900">{review.title}</h3>
             <p className="sr-only">{review.rating} out of 5 stars</p>
 
             <div
-              className="mt-3 space-y-6 text-sm text-gray-600 prose"
+              className="mt-3 space-y-6 text-sm text-mainText-600 prose"
               dangerouslySetInnerHTML={{ __html: review.body }}
             />
           </div>
@@ -32,7 +32,7 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
             </div>
 
             <div className="ml-4 sm:ml-0 sm:mt-4">
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-sm font-medium text-mainText-900">
                 {review.reviewer.firstName} {review.reviewer.lastName}
               </p>
               <Stars rating={review.rating} />

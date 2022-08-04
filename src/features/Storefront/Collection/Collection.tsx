@@ -14,7 +14,7 @@ export const Collection = (props: CollectionProps) => {
     <section aria-labelledby="trending-heading" className="bg-background">
       <div className="py-16 sm:py-24 lg:max-w-7xl lg:mx-auto lg:py-32 lg:px-8">
         <div className="px-4 flex items-center justify-between sm:px-6 lg:px-0">
-          <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
+          <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-mainText-900">
             {collection.name}
           </h2>
 

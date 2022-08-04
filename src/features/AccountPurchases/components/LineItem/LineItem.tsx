@@ -18,15 +18,15 @@ export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineI
             />
           </div>
           <div>
-            <div className="font-medium text-gray-900">{lineItem.name}</div>
+            <div className="font-medium text-mainText-900">{lineItem.name}</div>
             <div className="mt-1 sm:hidden">
               {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
             </div>
           </div>
         </NextLink>
       </td>
-      <td className="py-6 pr-8">{lineItem.quantity}</td>
-      <td className="hidden py-6 pr-8 sm:table-cell">
+      <td className="py-6 pr-8 text-mainText-900">{lineItem.quantity}</td>
+      <td className="hidden py-6 pr-8 sm:table-cell text-mainText-900">
         {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
       </td>
     </tr>

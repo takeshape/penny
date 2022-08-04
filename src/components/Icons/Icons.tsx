@@ -48,6 +48,6 @@ export const Dribbble = (props) => (
 
 export const DefaultReviewer = (props) => (
   <div className="bg-mainText-300 rounded-full p-2 h-12 w-12" {...props}>
-    <ChatAlt2Icon className="text-gray-100 h-full w-full" />
+    <ChatAlt2Icon className="text-mainText-100 h-full w-full" />
   </div>
 );

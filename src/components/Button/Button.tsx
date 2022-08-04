@@ -19,9 +19,9 @@ const styles = {
     large: 'px-6 py-3 text-base rounded-md'
   },
   colors: {
-    primary: 'border-transparent text-white bg-accent-600 hover:bg-accent-700',
+    primary: 'border-transparent text-formBackground bg-accent-600 hover:bg-accent-700',
     secondary: 'border-transparent text-accent-700 bg-accent-100 hover:bg-accent-200',
-    clear: 'border-gray-300 text-primary-700 bg-white hover:bg-gray-50'
+    clear: 'border-primary-300 text-primary-700 bg-background hover:bg-primary-50'
   }
 };
 

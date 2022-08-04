@@ -11,16 +11,16 @@ export const TopCreateOrSignIn = () => {
   return (
     <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
       <Link href="/auth/create">
-        <a className="text-sm font-medium text-white hover:text-gray-100 cursor-pointer">Create an account</a>
+        <a className="text-sm font-medium text-invertedText hover:text-primary-100 cursor-pointer">Create an account</a>
       </Link>
-      <span className="h-6 w-px bg-gray-600" aria-hidden="true" />
+      <span className="h-6 w-px bg-primary-600" aria-hidden="true" />
       <a
         href={`/api/auth/signin`}
         onClick={(e) => {
           e.preventDefault();
           signIn();
         }}
-        className="text-sm font-medium text-white hover:text-gray-100 cursor-pointer"
+        className="text-sm font-medium text-invertedText hover:text-primary-100 cursor-pointer"
       >
         Sign in
       </a>

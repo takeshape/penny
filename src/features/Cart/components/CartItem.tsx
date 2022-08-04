@@ -17,7 +17,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
 
   return (
     <Fragment>
-      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 relative">
+      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-mainText-200 relative">
         <NextImage
           src={imageSrc}
           alt={imageAlt}
@@ -41,7 +41,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
             <div>
               <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
               {intervalCount > 0 ? (
-                <p className="ml-4 text-right text-xs text-gray-500">
+                <p className="ml-4 text-right text-xs text-mainText-500">
                   per {pluralizeText(intervalCount, interval.toLowerCase(), `${interval.toLowerCase()}s`)}
                 </p>
               ) : null}

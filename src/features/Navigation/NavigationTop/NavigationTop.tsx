@@ -35,15 +35,15 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                   <label htmlFor="desktop-currency" className="sr-only">
                     Currency
                   </label>
-                  <div className="-ml-2 group relative bg-gray-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-white">
+                  <div className="-ml-2 group relative bg-primary-900 border-transparent rounded-md focus-within:ring-2 focus-within:ring-invertedText">
                     <TopCurrencySelect currencies={currencies} />
-                    <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
+                    <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none text-invertedText">
                       <svg
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 20 20"
-                        className="w-5 h-5 text-gray-300"
+                        className="w-5 h-5 text-invertedText-300"
                       >
                         <path
                           stroke="currentColor"
@@ -66,7 +66,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
 
         {/* Secondary navigation */}
         <div className="bg-background">
-          <div className="border-b border-gray-200">
+          <div className="border-b border-mainText-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="h-16 flex items-center justify-between">
                 {/* Logo (lg+) */}

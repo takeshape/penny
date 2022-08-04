@@ -5,8 +5,8 @@ import { Fulfillment } from '../../types';
 const OrderStatusChip = ({ color, label }: { color?: string; label?: string }) => (
   <p
     className={`inline-flex items-baseline px-2.5 py-0.5 rounded-full text-sm font-medium md:mt-2 lg:mt-0 bg-${
-      color ?? 'gray'
-    }-50 text-${color ?? 'gray'}-800`}
+      color ?? 'mainText'
+    }-50 text-${color ?? 'mainText'}-800`}
   >
     {label ?? 'Unknown Status'}
   </p>
@@ -16,17 +16,19 @@ export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boo
   if (props.unfulfilled) {
     return (
       <div className="flex flex-wrap gap-2 items-center">
-        <header className="w-full m-2 mb-0 pb-2 border-b text-sm text-gray-500">Order Status</header>
-        <OrderStatusChip label="Processing" color="gray" />
+        <header className="w-full m-2 mb-0 pb-2 border-b border-mainText-500 text-sm text-mainText-500">
+          Order Status
+        </header>
+        <OrderStatusChip label="Processing" color="mainText" />
       </div>
     );
   }
   const { label, color, text, date } = props.status;
   return (
     <div className="flex flex-wrap gap-x-4 items-center">
-      <header className="w-full m-2 pb-2 border-b text-sm text-gray-500">Order Status</header>
+      <header className="w-full m-2 pb-2 border-b border-mainText-500 text-sm text-mainText-500">Order Status</header>
       <OrderStatusChip label={label} color={color} />
-      <p className="text-sm text-gray-500 flex-1">
+      <p className="text-sm text-mainText-500 flex-1">
         {text} {format(new Date(date), 'PP')}
       </p>
       {props.trackingInfo.map((tracking, index) => {

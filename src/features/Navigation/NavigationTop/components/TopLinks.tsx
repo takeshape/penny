@@ -28,7 +28,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Popover.Panel className="absolute top-full inset-x-0 text-gray-500 sm:text-sm">
+          <Popover.Panel className="absolute top-full inset-x-0 text-mainText-500 sm:text-sm">
             {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
             <div className="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
 

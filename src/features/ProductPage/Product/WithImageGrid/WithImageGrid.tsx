@@ -87,7 +87,7 @@ export const ProductWithImageGrid = ({
 
       {/* Product info */}
       <div className="max-w-2xl mx-auto pt-10 px-4 sm:px-6 lg:max-w-7xl lg:pt-16 lg:px-8 lg:grid lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8">
-        <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+        <div className="lg:col-span-2 lg:border-r lg:border-mainText-200 lg:pr-8">
           <h1 className="text-2xl font-extrabold tracking-tight text-mainText-900 sm:text-3xl">{name}</h1>
         </div>
 
@@ -137,7 +137,7 @@ export const ProductWithImageGrid = ({
             <button
               disabled={!hasStock}
               onClick={handleAddToCart}
-              className="mt-10 w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
+              className="mt-10 w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-invertedText hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               Add to cart
             </button>
@@ -145,7 +145,7 @@ export const ProductWithImageGrid = ({
         </div>
 
         {/* Description and details */}
-        <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+        <div className="py-10 lg:pt-6 lg:pb-16 lg:col-start-1 lg:col-span-2 lg:border-r lg:border-mainText-200 lg:pr-8">
           <div
             className="prose prose-accent prose-sm text-mainText-800"
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
@@ -153,9 +153,9 @@ export const ProductWithImageGrid = ({
         </div>
 
         {showFeaturedReviews && reviewHighlights && (
-          <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
+          <div className="lg:col-span-2 lg:border-r lg:border-mainText-200 lg:pr-8">
             {/* Reviews */}
-            <section aria-labelledby="reviews-heading" className="border-t border-gray-200 pt-10 lg:pt-16">
+            <section aria-labelledby="reviews-heading" className="border-t border-mainText-200 pt-10 lg:pt-16">
               <h2 id="reviews-heading" className="sr-only">
                 Reviews
               </h2>

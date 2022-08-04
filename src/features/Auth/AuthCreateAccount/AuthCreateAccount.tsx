@@ -85,11 +85,11 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-mainText-900">Create your account</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={onSubmit}>
             {errorMessage && (
               <Alert
@@ -163,7 +163,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               Sign up
             </Button>
 
-            <div className="text-gray-500 text-sm">
+            <div className="text-mainText-500 text-sm">
               Already have an account?
               <a
                 href={`/api/auth/signin`}
@@ -183,17 +183,17 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               <div className="mt-4">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300" />
+                    <div className="w-full border-t border-mainText-300" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">OR</span>
+                    <span className="px-2 bg-background text-mainText-500">OR</span>
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <div>
                     <button
-                      className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                      className="w-full inline-flex justify-center py-2 px-4 border border-mainText-300 rounded-md shadow-sm bg-background text-sm font-medium text-mainText-500 hover:bg-mainText-50"
                       onClick={signinGoogle}
                     >
                       <svg
