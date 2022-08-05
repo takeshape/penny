@@ -1,26 +1,45 @@
 import { useApolloClient } from '@apollo/client';
-import { LogoutIcon } from '@heroicons/react/outline';
+import {
+  CreditCardIcon,
+  GiftIcon,
+  KeyIcon,
+  LogoutIcon,
+  RefreshIcon,
+  TagIcon,
+  UserCircleIcon
+} from '@heroicons/react/outline';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useMemo } from 'react';
 import classNames from 'utils/classNames';
 
-export interface AccountNavigationProps {
-  items: {
-    name: string;
-    href: string;
-    current: boolean;
-    icon: (props: React.ComponentProps<'svg'>) => JSX.Element;
-  }[];
-}
+export const accountNavigationItems = [
+  { name: 'Account', href: '/account', icon: UserCircleIcon, current: false },
+  { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
+  { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
+  { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
+  { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
+  { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
+];
 
-export const AccountNavigation = ({ items }: AccountNavigationProps) => {
+export const AccountNavigation = () => {
   const { resetStore } = useApolloClient();
 
   const handleLogout = useCallback(async () => {
     await resetStore();
     signOut({ callbackUrl: '/' });
   }, [resetStore]);
+
+  const { asPath } = useRouter();
+  const items = useMemo(
+    () =>
+      accountNavigationItems.map((item) => ({
+        ...item,
+        current: asPath.startsWith(item.href)
+      })),
+    [asPath]
+  );
 
   return (
     <aside className="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
