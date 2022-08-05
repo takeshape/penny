@@ -23,14 +23,7 @@ export const accountNavigationItems = [
   { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
 
-export const AccountNavigation = () => {
-  const { resetStore } = useApolloClient();
-
-  const handleLogout = useCallback(async () => {
-    await resetStore();
-    signOut({ callbackUrl: '/' });
-  }, [resetStore]);
-
+function useAccountNavigationItems() {
   const { asPath } = useRouter();
   const items = useMemo(
     () =>
@@ -40,9 +33,26 @@ export const AccountNavigation = () => {
       })),
     [asPath]
   );
+  return items;
+}
+
+function useLogout() {
+  const { resetStore } = useApolloClient();
+  const handleLogout = useCallback(async () => {
+    await resetStore();
+    signOut({ callbackUrl: '/' });
+  }, [resetStore]);
+  return {
+    handleLogout
+  };
+}
+
+export const AccountNavigation = () => {
+  const { handleLogout } = useLogout();
+  const items = useAccountNavigationItems();
 
   return (
-    <aside className="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
+    <aside className="w-full">
       <nav className="space-y-1">
         {items.map((item) => (
           <Link key={item.name} href={item.href}>

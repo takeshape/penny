@@ -122,7 +122,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                       </div>
                     </div>
 
-                    <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
+                    <span className="invisible lg:visible mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
                     <TopCartIcon />
                   </div>

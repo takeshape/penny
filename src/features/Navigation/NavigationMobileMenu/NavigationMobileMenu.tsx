@@ -54,9 +54,9 @@ export const NavigationMobileMenu = ({ sections, currencies }: Pick<Navigation, 
               </button>
             </div>
 
-            <MobileMenuLinks sections={sections} />
-
             <MobileMenuCreateOrSignIn />
+
+            <MobileMenuLinks sections={sections} />
 
             <div className="border-t border-body-200 py-6 px-4 space-y-6">
               <MobileMenuCurrencySelect currencies={currencies} />
