@@ -36,20 +36,24 @@ export const PaymentMethod = (paymentMethod: TPaymentMethod) => {
         >
           Remove
         </button>
-        <button
-          type="button"
-          onClick={() => setIsViewSubscriptionsOpen(true)}
-          className="whitespace-nowrap font-medium text-indigo-600 hover:text-indigo-500"
-        >
-          Subscriptions
-        </button>
+        {paymentMethod.subscriptionContracts?.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setIsViewSubscriptionsOpen(true)}
+            className="whitespace-nowrap font-medium text-indigo-600 hover:text-indigo-500"
+          >
+            Subscriptions
+          </button>
+        )}
       </div>
       <RemoveForm isOpen={isRemoveFormOpen} onClose={() => setIsRemoveFormOpen(false)} paymentMethod={paymentMethod} />
-      <ViewSubscriptions
-        isOpen={isViewSubscriptionsOpen}
-        onClose={() => setIsViewSubscriptionsOpen(false)}
-        paymentMethod={paymentMethod}
-      />
+      {paymentMethod.subscriptionContracts?.length > 0 && (
+        <ViewSubscriptions
+          isOpen={isViewSubscriptionsOpen}
+          onClose={() => setIsViewSubscriptionsOpen(false)}
+          paymentMethod={paymentMethod}
+        />
+      )}
     </>
   );
 };

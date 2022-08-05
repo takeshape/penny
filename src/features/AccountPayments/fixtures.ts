@@ -1,4 +1,6 @@
-export const paymentMethods = [
+import { PaymentMethod } from 'types/paymentMethod';
+
+export const paymentMethods: PaymentMethod[] = [
   {
     id: '111',
     instrument: {
@@ -6,6 +8,7 @@ export const paymentMethods = [
         address1: '156 Kent St',
         city: 'Brooklyn',
         country: 'United States',
+        // @ts-expect-error
         countryCode: 'US',
         province: 'New York',
         provinceCode: 'NY',
@@ -15,9 +18,9 @@ export const paymentMethods = [
       expiresSoon: false,
       expiryYear: 2023,
       expiryMonth: 10,
-      firstDigits: 1234,
+      firstDigits: '1234',
       isRevocable: false,
-      lastDigits: 4242,
+      lastDigits: '4242',
       maskedNumber: '••••4242',
       name: 'Michael Shick',
       source: 'Visa',
@@ -25,7 +28,24 @@ export const paymentMethods = [
     },
     subscriptionContracts: [
       {
-        id: 'gid://shopify/SubscriptionContract/1111111111111'
+        id: 'gid://shopify/SubscriptionContract/2222222222222222',
+        // @ts-expect-error
+        status: 'ACTIVE',
+        createdAt: '2022-07-06T10:00:00Z',
+        lines: {
+          nodes: [
+            {
+              variantTitle: 'Basic T-Shirt',
+              // @ts-expect-error
+              variantImage: {
+                url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+                altText: '',
+                height: 500,
+                width: 500
+              }
+            }
+          ]
+        }
       }
     ]
   },
@@ -36,6 +56,7 @@ export const paymentMethods = [
         address1: '156 Kent St',
         city: 'Brooklyn',
         country: 'United States',
+        // @ts-expect-error
         countryCode: 'US',
         province: 'New York',
         provinceCode: 'NY',
@@ -45,14 +66,56 @@ export const paymentMethods = [
       expiresSoon: true,
       expiryYear: 2023,
       expiryMonth: 10,
-      firstDigits: 1234,
+      firstDigits: '1234',
       isRevocable: false,
-      lastDigits: 4242,
+      lastDigits: '4242',
       maskedNumber: '••••4242',
       name: 'Michael Shick',
       source: 'Visa',
       virtualLastDigits: '5252'
-    }
+    },
+    subscriptionContracts: [
+      {
+        id: 'gid://shopify/SubscriptionContract/1111111111111',
+        // @ts-expect-error
+        status: 'ACTIVE',
+        createdAt: '2022-07-06T10:00:00Z',
+        lines: {
+          nodes: [
+            {
+              variantTitle: 'Basic T-Shirt',
+              // @ts-expect-error
+              variantImage: {
+                url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+                height: 500,
+                width: 500,
+                altText: ''
+              }
+            }
+          ]
+        }
+      },
+      {
+        id: 'gid://shopify/SubscriptionContract/000000000000',
+        // @ts-expect-error
+        status: 'EXPIRED',
+        createdAt: '2021-07-06T10:00:00Z',
+        lines: {
+          nodes: [
+            {
+              variantTitle: 'Basic T-Shirt',
+              // @ts-expect-error
+              variantImage: {
+                url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+                height: 500,
+                width: 500,
+                altText: ''
+              }
+            }
+          ]
+        }
+      }
+    ]
   },
   {
     id: '333',
@@ -61,6 +124,7 @@ export const paymentMethods = [
         address1: '156 Kent St',
         city: 'Brooklyn',
         country: 'United States',
+        // @ts-expect-error
         countryCode: 'US',
         province: 'New York',
         provinceCode: 'NY',
@@ -70,9 +134,9 @@ export const paymentMethods = [
       expiresSoon: true,
       expiryYear: 2023,
       expiryMonth: 10,
-      firstDigits: 1234,
+      firstDigits: '1234',
       isRevocable: false,
-      lastDigits: 4242,
+      lastDigits: '4242',
       maskedNumber: '••••4242',
       name: 'Michael Shick',
       source: 'Visa',

@@ -1,4 +1,4 @@
-import { Shopify_CustomerCreditCard } from 'types/takeshape';
+import { Shopify_CustomerCreditCard, Shopify_SubscriptionContract } from 'types/takeshape';
 
 export type CreditCard = Pick<
   Shopify_CustomerCreditCard,
@@ -16,4 +16,8 @@ export type CreditCard = Pick<
 export type PaymentMethod = {
   id: string;
   instrument: CreditCard;
+  subscriptionContracts: Pick<
+    Shopify_SubscriptionContract,
+    'id' | 'createdAt' | 'status' | 'nextBillingDate' | 'deliveryPrice' | 'lines'
+  >[];
 };
