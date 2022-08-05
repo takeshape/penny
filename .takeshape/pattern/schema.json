@@ -759,6 +759,17 @@
       "options": {
         "endpoint": "https://www.google.com/recaptcha/api"
       }
+    },
+    "zendesk": {
+      "id": "zendesk",
+      "provider": "rest",
+      "title": "Zendesk",
+      "namespace": "Zendesk",
+      "serviceType": "rest",
+      "authenticationType": "none",
+      "options": {
+        "endpoint": "https://takeshape.zendesk.com/"
+      }
     }
   },
   "indexedShapes": {
@@ -2064,6 +2075,80 @@
         },
         "shape": "CreateTicketResponse"
       }
+    },
+    "createZendeskTicket": {
+      "args": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recaptchaToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "message",
+          "recaptchaToken"
+        ]
+      },
+      "resolver": {
+        "compose": [
+          {
+            "id": "recaptcha",
+            "name": "rest:post",
+            "service": "recaptcha",
+            "path": "/siteverify",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "response",
+                  "mapping": "$args.recaptchaToken"
+                }
+              ]
+            }
+          },
+          {
+            "id": "ZendeskCreateTicket",
+            "name": "rest:post",
+            "service": "zendesk",
+            "path": "/api/v2/requests",
+            "json": {
+              "ops": [
+                {
+                  "path": "request.requester.name",
+                  "mapping": "$args.name"
+                },
+                {
+                  "path": "request.requester.email",
+                  "mapping": "$args.email"
+                },
+                {
+                  "path": "request.comment.body",
+                  "mapping": "$args.message"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.request"
+            }
+          ]
+        }
+      },
+      "shape": "CreateTicketResponse"
     },
     "Shopify_products": {
       "resolver": {
