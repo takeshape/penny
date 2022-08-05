@@ -64,7 +64,8 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
 
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
               <p className="mb-4">
-                This will cancel your subscription and prevent the processing of all future orders.
+                This will cancel your subscription and
+                <br /> prevent the processing of all future orders.
               </p>
               <p>Would you like to continue?</p>
             </div>
