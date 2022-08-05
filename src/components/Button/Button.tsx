@@ -12,16 +12,16 @@ export type ButtonProps<T extends React.ElementType = 'button'> = {
 };
 
 const styles = {
-  base: 'min-w-6 inline-flex items-center justify-center gap-2 font-medium shadow-sm border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none',
+  base: 'min-w-6 inline-flex items-center justify-center gap-2 font-medium shadow-sm border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:opacity-50 disabled:pointer-events-none',
   sizes: {
     small: 'px-2.5 py-1.5 text-xs rounded',
     medium: 'px-4 py-2 text-sm rounded-md',
     large: 'px-6 py-3 text-base rounded-md'
   },
   colors: {
-    primary: 'border-transparent text-white bg-indigo-600 hover:bg-indigo-700',
-    secondary: 'border-transparent text-indigo-700 bg-indigo-100 hover:bg-indigo-200',
-    clear: 'border-gray-300 text-gray-700 bg-white hover:bg-gray-50'
+    primary: 'border-transparent text-background bg-accent-600 hover:bg-accent-700',
+    secondary: 'border-transparent text-accent-700 bg-accent-100 hover:bg-accent-200',
+    clear: 'border-primary-300 text-primary-700 bg-background hover:bg-primary-50'
   }
 };
 

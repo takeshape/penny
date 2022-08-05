@@ -70,11 +70,11 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Sign in to your account</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {hasErrors && <Alert status="error" primaryText={errorMessage} />}
 
@@ -122,15 +122,15 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
                   id="remember-me"
                   type="checkbox"
                   defaultChecked
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-accent-600 focus:ring-accent-500 border-body-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                <label htmlFor="remember-me" className="ml-2 block text-sm text-body-900">
                   Remember me
                 </label>
               </div>
 
               <div className="text-sm">
-                <NextLink href="/auth/reset-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+                <NextLink href="/auth/reset-password" className="font-medium text-accent-600 hover:text-accent-500">
                   Forgot your password?
                 </NextLink>
               </div>
@@ -145,11 +145,11 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               Sign in
             </Button>
 
-            <div className="text-gray-500 text-sm">
+            <div className="text-body-500 text-sm">
               Don&apos;t have an account?
               <NextLink
                 href={signupLink}
-                className="ml-1 font-medium text-indigo-500 hover:text-indigo-500 cursor-pointer"
+                className="ml-1 font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >
                 Sign up
               </NextLink>
@@ -161,17 +161,17 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               <div className="mt-4">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300" />
+                    <div className="w-full border-t border-body-300" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">OR</span>
+                    <span className="px-2 bg-background text-body-500">OR</span>
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <div>
                     <button
-                      className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                      className="w-full inline-flex justify-center py-2 px-4 border border-form-300 rounded-md shadow-sm bg-background text-sm font-medium text-form-500 hover:bg-form-50"
                       onClick={signinGoogle}
                     >
                       <svg

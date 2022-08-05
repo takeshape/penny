@@ -3,7 +3,7 @@ export interface LoaderProps {
 }
 
 export const Loader = ({ colorClass }: LoaderProps) => {
-  colorClass = colorClass ?? 'text-black';
+  colorClass = colorClass ?? 'text-body';
   let circleCommonClasses = `h-2.5 w-2.5 bg-current rounded-full ${colorClass}`;
 
   return (

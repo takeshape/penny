@@ -29,7 +29,9 @@ export const ReferralList = ({ referrals }) => {
                 </div>
                 <div className="ml-3 flex-1 md:flex md:justify-between">
                   <p className="text-sm text-red-700 font-bold">{reward.name}</p>
-                  <p className="mt-3 text-sm md:mt-0 md:ml-6 font-semibold">Use code {reward.code} at checkout</p>
+                  <p className="mt-3 text-sm md:mt-0 md:ml-6 font-semibold text-red-900">
+                    Use code {reward.code} at checkout
+                  </p>
                 </div>
               </div>
             </div>

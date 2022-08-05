@@ -7,7 +7,7 @@ interface NavigationItemProps {
 }
 
 const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => (
-  <NextLink href={props.href} className="text-base text-gray-500 hover:text-gray-900">
+  <NextLink href={props.href} className="text-base text-primary-500 hover:text-primary-900">
     {props.name}
   </NextLink>
 );
@@ -20,7 +20,7 @@ interface NavigationSectionProps {
 
 const NavigationSection = (props: PropsWithChildren<NavigationSectionProps>) => (
   <>
-    <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{props.name}</h3>
+    <h3 className="text-sm font-semibold text-body-400 tracking-wider uppercase">{props.name}</h3>
     <ul role="list" className="mt-4 space-y-4">
       {props.links.map((item) => (
         <li key={item.name}>

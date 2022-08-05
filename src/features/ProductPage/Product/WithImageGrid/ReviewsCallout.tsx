@@ -16,7 +16,7 @@ export const ReviewsCallout = ({ stats, showReviewsLink }: ReviewsCalloutProps) 
         </div>
         <p className="sr-only">{stats.average} out of 5 stars</p>
         {showReviewsLink ? (
-          <a href="#reviews" className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+          <a href="#reviews" className="ml-3 text-sm font-medium text-accent-600 hover:text-accent-500">
             {stats.count} reviews
           </a>
         ) : (

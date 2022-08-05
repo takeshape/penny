@@ -1,12 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductOptionValue } from 'types/product';
+import { ProductVariantOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
 export interface ProductColorSelectProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  options: ProductOptionValue[];
+  options: ProductVariantOptionValue[];
 }
 
 export const ProductColorSelect = ({ value, onChange, options }: ProductColorSelectProps) => {
@@ -32,7 +32,7 @@ export const ProductColorSelect = ({ value, onChange, options }: ProductColorSel
             </RadioGroup.Label>
             <span
               aria-hidden="true"
-              className={classNames(color.class, 'h-8 w-8 border border-black border-opacity-10 rounded-full')}
+              className={classNames(color.class, 'h-8 w-8 border border-body border-opacity-10 rounded-full')}
             />
           </RadioGroup.Option>
         ))}

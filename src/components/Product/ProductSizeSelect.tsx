@@ -1,12 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductOptionValue } from 'types/product';
+import { ProductVariantOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
 export interface ProductSizeSelectProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  options: ProductOptionValue[];
+  options: ProductVariantOptionValue[];
   size?: 'large' | 'small';
 }
 
@@ -15,7 +15,7 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
   const wrapperStyles = classNames(size === 'large' && 'sm:grid-cols-8 lg:grid-cols-4', 'grid grid-cols-4 gap-4');
   const buttonStyles = classNames(
     size === 'large' && 'sm:py-6',
-    'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1'
+    'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-primary-100 focus:outline-none sm:flex-1'
   );
 
   return (
@@ -30,9 +30,9 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
             className={({ active }) =>
               classNames(
                 size.hasStock
-                  ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
-                  : 'bg-gray-50 text-gray-200 cursor-not-allowed',
-                active ? 'ring-2 ring-indigo-500' : '',
+                  ? 'bg-background shadow-sm text-form-900 cursor-pointer'
+                  : 'bg-form-50 text-form-200 cursor-not-allowed',
+                active ? 'ring-2 ring-accent-500' : '',
                 buttonStyles
               )
             }
@@ -44,7 +44,7 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
                   <span
                     className={classNames(
                       active ? 'border' : 'border-2',
-                      checked ? 'border-indigo-500' : 'border-transparent',
+                      checked ? 'border-accent-500' : 'border-transparent',
                       'absolute -inset-px rounded-md pointer-events-none'
                     )}
                     aria-hidden="true"
@@ -52,10 +52,10 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
                 ) : (
                   <span
                     aria-hidden="true"
-                    className="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none"
+                    className="absolute -inset-px rounded-md border-2 border-form-200 pointer-events-none"
                   >
                     <svg
-                      className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
+                      className="absolute inset-0 w-full h-full text-form-200 stroke-2"
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
                       stroke="currentColor"

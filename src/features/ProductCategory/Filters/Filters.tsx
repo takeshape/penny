@@ -49,11 +49,11 @@ const FilterOption = (props: PropsWithChildren<FilterOptionProps>) => {
         name={`${props.filter}[]`}
         value={props.value}
         type="checkbox"
-        className="flex-shrink-0 h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500"
+        className="flex-shrink-0 h-4 w-4 border-body-300 rounded text-accent-600 focus:ring-accent-500"
         checked={props.checked}
         onChange={() => props.setFilter(props.filter, props.value, !props.checked)}
       />
-      <label htmlFor={`${props.filter}-${props.index}`} className="ml-3 min-w-0 flex-1 text-gray-600">
+      <label htmlFor={`${props.filter}-${props.index}`} className="ml-3 min-w-0 flex-1 text-body-600">
         {props.label}
       </label>
     </div>
@@ -104,30 +104,30 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
     <Disclosure
       as="section"
       aria-labelledby="filter-heading"
-      className="relative z-10 border-t border-b border-gray-200 grid items-center"
+      className="relative z-10 border-t border-b border-body-200 grid items-center"
     >
       <h2 id="filter-heading" className="sr-only">
         Filters
       </h2>
       <div className="relative col-start-1 row-start-1 py-4">
-        <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-gray-200 text-sm px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-body-200 text-sm px-4 sm:px-6 lg:px-8">
           <div>
-            <Disclosure.Button className="group text-gray-700 font-medium flex items-center">
+            <Disclosure.Button className="group text-primary-700 font-medium flex items-center">
               <FilterIcon
-                className="flex-none w-5 h-5 mr-2 text-gray-400 group-hover:text-gray-500"
+                className="flex-none w-5 h-5 mr-2 text-primary-400 group-hover:text-primary-500"
                 aria-hidden="true"
               />
               {checkedFilterCount} Filter{checkedFilterCount !== 1 && 's'}
             </Disclosure.Button>
           </div>
           <div className="pl-6">
-            <button type="button" className="text-gray-500" onClick={() => clearAllFilters()}>
+            <button type="button" className="text-primary-500" onClick={() => clearAllFilters()}>
               Clear all
             </button>
           </div>
         </div>
       </div>
-      <Disclosure.Panel className="border-t border-gray-200 py-10">
+      <Disclosure.Panel className="border-t border-body-200 py-10">
         <div className="max-w-7xl mx-auto grid grid-cols-2 gap-x-4 px-4 text-sm sm:px-6 md:gap-x-6 lg:px-8">
           <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
             <Filter name="price" legend="Price" options={filters.price} setFilter={setFilter} />
@@ -143,10 +143,10 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
         <div className="flex justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Menu as="div" className="relative inline-block">
             <div className="flex">
-              <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+              <Menu.Button className="group inline-flex justify-center text-sm font-medium text-primary-700 hover:text-primary-900">
                 Sort
                 <ChevronDownIcon
-                  className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                  className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-primary-400 group-hover:text-primary-500"
                   aria-hidden="true"
                 />
               </Menu.Button>
@@ -161,7 +161,7 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Items className="origin-top-right absolute right-0 mt-2 w-40 rounded-md shadow-2xl bg-background ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
                   {sortOptions.map((option) => (
                     <Menu.Item key={option.name}>
@@ -169,8 +169,8 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
                         <a
                           href={option.href}
                           className={classNames(
-                            option.current ? 'font-medium text-gray-900' : 'text-gray-500',
-                            active ? 'bg-gray-100' : '',
+                            option.current ? 'font-medium text-primary-900' : 'text-primary-500',
+                            active ? 'bg-primary-100' : '',
                             'block px-4 py-2 text-sm'
                           )}
                           onClick={(e) => {

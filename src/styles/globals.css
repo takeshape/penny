@@ -4,7 +4,7 @@
 
 @layer components {
   #__next {
-    @apply h-full bg-white;
+    @apply h-full bg-background;
   }
   html,
   body {
@@ -33,12 +33,18 @@
 /* Example of setting custom prose styles, for e.g., dangerouslySetHtml */
 @layer base {
   div#example-prose > p {
-    @apply text-base text-gray-900 mt-4;
+    @apply text-base text-body-900 mt-4;
+  }
+
+  .prose h3 {
+    @apply text-body-900;
   }
 }
 
-/*
-* Hide reCAPTCHA badge
- * https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge.-what-is-allowed
- */
+@layer components {
+  .prose li::marker {
+    @apply text-body-300;
+  }
+}
+
 .grecaptcha-badge { visibility: hidden; }

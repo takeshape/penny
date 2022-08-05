@@ -45,18 +45,18 @@ export const Cart = () => {
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md relative">
                   {isCartCheckingOut && (
                     <div className="z-20 bg-gray-500 bg-opacity-75 absolute h-full w-full">
-                      <PageLoader colorClass="text-white" />
+                      <PageLoader colorClass="text-background" />
                     </div>
                   )}
 
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-background shadow-xl">
                     <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-gray-900"> Shopping cart </Dialog.Title>
+                        <Dialog.Title className="text-lg font-medium text-body-900"> Shopping cart </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
-                            className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                            className="-m-2 p-2 text-primary-400 hover:text-primary-500"
                             onClick={() => setIsCartOpen(false)}
                           >
                             <span className="sr-only">Close panel</span>
@@ -68,7 +68,7 @@ export const Cart = () => {
                       <div className="mt-8">
                         {items.length ? (
                           <div className="flow-root">
-                            <ul role="list" className="-my-6 divide-y divide-gray-200">
+                            <ul role="list" className="-my-6 divide-y divide-body-200">
                               {items.map((atom) => (
                                 <li key={atom.toString()} className="flex py-6">
                                   <CartItem atom={atom} onRemove={() => dispatch({ type: 'remove', atom })} />
@@ -82,18 +82,18 @@ export const Cart = () => {
                       </div>
                     </div>
 
-                    <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                    <div className="border-t border-body-200 py-6 px-4 sm:px-6">
                       <CartSubtotal />
-                      <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                      <p className="mt-0.5 text-sm text-body-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
                         <CartCheckout />
                       </div>
-                      <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                      <div className="mt-6 flex justify-center text-center text-sm text-body-500">
                         <p>
                           or{' '}
                           <button
                             type="button"
-                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                            className="font-medium text-accent-600 hover:text-accent-500"
                             onClick={() => setIsCartOpen(false)}
                           >
                             Continue Shopping<span aria-hidden="true"> &rarr;</span>

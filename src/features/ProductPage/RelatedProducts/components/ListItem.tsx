@@ -36,14 +36,14 @@ export const ListItem = ({ product }: ListItemProps) => {
             />
           </div>
           <div className="relative mt-4">
-            <h3 className="text-sm font-medium text-gray-900">{truncate(product.name, { length: 30 })}</h3>
+            <h3 className="text-sm font-medium text-primary-900">{truncate(product.name, { length: 30 })}</h3>
           </div>
           <div className="absolute top-0 inset-x-0 h-72 rounded-lg p-4 flex items-end justify-end overflow-hidden">
             <div
               aria-hidden="true"
               className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
             />
-            <p className="relative text-lg font-semibold text-white">
+            <p className="relative text-lg font-semibold text-inverted">
               {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}
             </p>
           </div>
@@ -52,7 +52,7 @@ export const ListItem = ({ product }: ListItemProps) => {
       <div className="mt-6">
         <a
           href={product.url}
-          className="relative flex bg-gray-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-200"
+          className="relative flex bg-body-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-200"
           onClick={handleAddToCart}
         >
           Add to cart<span className="sr-only">, {product.name}</span>

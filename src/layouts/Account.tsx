@@ -1,4 +1,4 @@
-import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { CreditCardIcon, GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import Wrapper from 'components/Wrapper/Content';
 import { AccountNavigation } from 'features/AccountNavigation/AccountNavigation';
 import { useSession } from 'next-auth/react';
@@ -11,6 +11,7 @@ const accountNavigation = [
   { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
   { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
+  { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
   { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
 
@@ -25,7 +26,7 @@ export const Layout = ({ children, ...layout }: PropsWithChildren<AccountLayoutP
 
   return (
     <DefaultLayout {...layout}>
-      <div className="bg-gray-100 flex flex-col grow">
+      <div className="bg-body-100 flex flex-col grow">
         <Wrapper>
           <div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
             <AccountNavigation items={items} />

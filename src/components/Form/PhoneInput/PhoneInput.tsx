@@ -44,11 +44,11 @@ export const FormPhoneInput = <
   return (
     <div className={`${className} relative`}>
       <div className="flex justify-between">
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+        <label htmlFor={id} className="block text-sm font-medium text-form-700">
           {label}
         </label>
         {rules?.required && (
-          <span className="text-sm text-gray-400" id={`${id}-required`}>
+          <span className="text-sm text-form-400" id={`${id}-required`}>
             Required
           </span>
         )}
@@ -62,8 +62,8 @@ export const FormPhoneInput = <
         className={classNames(
           error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
-            : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500',
-          'mt-1 block w-full shadow-sm sm:text-sm rounded-md disabled:bg-gray-100 disabled:cursor-not-allowed'
+            : 'border-form-300 focus:ring-accent-500 focus:border-accent-500',
+          'mt-1 block w-full shadow-sm sm:text-sm bg-background rounded-md disabled:bg-form-100 disabled:cursor-not-allowed'
         )}
       />
       {error && (
@@ -72,7 +72,7 @@ export const FormPhoneInput = <
         </div>
       )}
       {helpText && (
-        <p className="mt-2 text-sm text-gray-500" id={`${id}-help-text`}>
+        <p className="mt-2 text-sm text-form-500" id={`${id}-help-text`}>
           {helpText}
         </p>
       )}
