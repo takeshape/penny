@@ -92,7 +92,6 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Company"
               autoComplete="organization"
               type="text"
-              rules={{ required: 'This field is required' }}
             />
             <FormInput
               className="sm:col-span-2"
@@ -123,9 +122,6 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               defaultErrorMessage="Please enter a valid phone number"
               withCountryCallingCode={true}
               type="text"
-              rules={{
-                required: 'This field is required'
-              }}
             />
             <FormTextarea
               className="sm:col-span-2"

@@ -1,4 +1,3 @@
-import { RadioGroup } from '@headlessui/react';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import ProductColorSelect from 'components/Product/ProductColorSelect';
@@ -67,6 +66,8 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
         <NextImage
           src={product.featuredImage.url}
           alt={product.featuredImage.altText}
+          height={product.featuredImage.height}
+          width={product.featuredImage.width}
           className="w-full h-full object-center object-cover"
         />
       </div>
@@ -90,11 +91,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             {/* Colors */}
             <div>
               <h4 className="text-sm text-gray-900 font-medium">Color</h4>
-
-              <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
-                <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
-              </RadioGroup>
+              <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
             </div>
 
             {/* Sizes */}

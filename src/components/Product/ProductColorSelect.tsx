@@ -1,12 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductOptionValue } from 'types/product';
+import { ProductVariantOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
 export interface ProductColorSelectProps {
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  options: ProductOptionValue[];
+  options: ProductVariantOptionValue[];
 }
 
 export const ProductColorSelect = ({ value, onChange, options }: ProductColorSelectProps) => {

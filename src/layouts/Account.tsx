@@ -1,4 +1,4 @@
-import { GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
+import { CreditCardIcon, GiftIcon, KeyIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import Wrapper from 'components/Wrapper/Content';
 import { AccountNavigation } from 'features/AccountNavigation/AccountNavigation';
 import { useSession } from 'next-auth/react';
@@ -11,6 +11,7 @@ const accountNavigation = [
   { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
   { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
+  { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
   { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
 

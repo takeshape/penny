@@ -43,7 +43,7 @@ export type ProductPrice = {
   currencyCode: ProductPriceCurrencyCode;
 };
 
-export type ProductVariantOption = {
+export type ProductVariantSelection = {
   name: string;
   value: string;
 };
@@ -58,7 +58,7 @@ export type ProductVariant = {
   quantityAvailable: number;
   currentlyNotInStock: boolean;
   sku: string;
-  options: ProductVariantOption[];
+  options: ProductVariantSelection[];
 };
 
 export type ProductSeo = {
@@ -66,16 +66,16 @@ export type ProductSeo = {
   description: string;
 };
 
-export type ProductOptionValue = {
+export type ProductVariantOptionValue = {
   value: string;
   name: string;
   hasStock: boolean | null;
 } & Record<string, unknown>;
 
-export type ProductOption = {
+export type ProductVariantOption = {
   id: string;
   name: string;
-  values: ProductOptionValue[];
+  values: ProductVariantOptionValue[];
 };
 
 export type ProductLineItemAttribute = {
@@ -98,7 +98,7 @@ export type ProductBase = ProductCore & {
   images?: ProductImage[];
   priceMin: ProductPrice;
   priceMax: ProductPrice;
-  variantOptions: ProductOption[];
+  variantOptions: ProductVariantOption[];
   lineItemAttributes?: ProductLineItemAttribute[];
   variantsCount?: number;
   variants?: ProductVariant[];

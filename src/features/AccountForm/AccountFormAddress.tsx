@@ -20,10 +20,10 @@ interface AccountFormAddressForm {
   lastName: string;
   address1: string;
   address2: string;
-  countryCodeV2: string;
+  country: string;
   city: string;
-  provinceCode: string;
-  postalCode: string;
+  province: string;
+  zip: string;
 }
 
 export const AccountFormAddress = () => {
@@ -49,7 +49,7 @@ export const AccountFormAddress = () => {
   const timer = useRef<NodeJS.Timer>(null);
 
   const onSubmit = useCallback(
-    async ({ firstName, lastName, address1, address2 }: AccountFormAddressForm) => {
+    async ({ firstName, lastName, address1, address2, country, city, province, zip }: AccountFormAddressForm) => {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
@@ -58,7 +58,16 @@ export const AccountFormAddress = () => {
       await setCustomerAddressPayload({
         variables: {
           customerAccessToken: session.shopifyCustomerAccessToken as string,
-          address: { firstName, lastName, address1, address2 },
+          address: {
+            firstName,
+            lastName,
+            address1,
+            address2,
+            country,
+            city,
+            province,
+            zip
+          },
           id: customerData.customer.defaultAddress.id
         }
       });
@@ -98,8 +107,8 @@ export const AccountFormAddress = () => {
   }, [isSubmitSuccessful, reset]);
 
   const countries = useCountries();
-  const watchCountry = watch('countryCodeV2', 'US');
-  const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
+  const watchCountry = watch('country', 'United States');
+  const selectedCountry = watchCountry && countries?.find((c) => c.name === watchCountry);
 
   const isReady = Boolean(customerData);
   const error =
@@ -151,15 +160,15 @@ export const AccountFormAddress = () => {
         <FormSelect
           control={control}
           disabled={!isReady}
-          id="countryCodeV2"
-          name="countryCodeV2"
+          id="country"
+          name="country"
           autoComplete="country-name"
           label="Country"
           defaultValue="US"
           options={
             countries?.map(({ name, iso2 }) => ({
               key: iso2,
-              value: iso2,
+              value: name,
               title: name
             })) ?? []
           }
@@ -211,14 +220,14 @@ export const AccountFormAddress = () => {
         <FormSelect
           control={control}
           disabled={!isReady}
-          id="provinceCode"
-          name="provinceCode"
+          id="province"
+          name="province"
           autoComplete="address-level2"
           label="State"
           options={
             selectedCountry?.states?.map(({ name, state_code }) => ({
               key: state_code,
-              value: state_code,
+              value: name,
               title: name
             })) ?? []
           }
@@ -228,7 +237,7 @@ export const AccountFormAddress = () => {
         <FormInput
           control={control}
           disabled={!isReady}
-          name="postalCode"
+          name="zip"
           id="postalCode"
           label="ZIP / Postal code"
           autoComplete="postal-code"
