@@ -5,10 +5,10 @@ export interface ViewSubscriptionsProps extends ModalProps {
   paymentMethod: PaymentMethod;
 }
 
-export const ViewSubscriptions = ({ isOpen, onClose }: ViewSubscriptionsProps) => {
+export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscriptionsProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div>SUBS!</div>
+      <ul>SUBS!</ul>
     </Modal>
   );
 };

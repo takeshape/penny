@@ -1,6 +1,5 @@
 import cardValidator from 'card-validator';
 import FormInput from 'components/Form/Input/Input';
-import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
@@ -16,20 +15,11 @@ export interface AddFormProps extends ModalProps {
 
 export interface AddFormValues {
   number: string;
-  first_name: string;
-  last_name: string;
+  name: string;
   expiration: string;
-  verification_value: string;
-  billingAddress: {
-    address1: string;
-    address2: string;
-    city: string;
-    company: string;
-    countryCode: string;
-    phone: string;
-    provinceCode: string;
-    zip: string;
-  };
+  verificationValue: string;
+  countryCode: string;
+  zip: string;
 }
 
 /**
@@ -40,12 +30,9 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     handleSubmit,
     control,
     reset,
-    watch,
     formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
   } = useForm<AddFormValues>();
   const countries = useCountries();
-  const watchCountry = watch('billingAddress.countryCode', 'US');
-  const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
 
   const handleFormSubmit = useCallback(
     async (formData: AddFormValues) => {
@@ -62,13 +49,13 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      primaryText="Add payment method"
+      primaryText="Payment method"
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >
-      <div className="md:h-[calc(1/2*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+      <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
             <p className="mb-4">Your payment method has been added.</p>
@@ -105,6 +92,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                       },
                       {
                         mask: '3412 123456 12345',
+                        // @ts-expect-error custom prop
                         startsWith: '34',
                         maxLength: 15,
                         lazy: true,
@@ -131,6 +119,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                       },
                       {
                         mask: '3712 123456 12345',
+                        // @ts-expect-error custom prop
                         startsWith: '37',
                         maxLength: 15,
                         lazy: true,
@@ -156,12 +145,10 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                         }
                       }
                     ],
-                    dispatch: function (appended, dynamicMasked) {
+                    dispatch: (appended, dynamicMasked) => {
                       const number = (dynamicMasked.value + appended).replace(/\D/g, '');
-                      const mask = dynamicMasked.compiledMasks.find(function (m) {
-                        return number.indexOf(m.startsWith) === 0;
-                      });
-
+                      // @ts-expect-error custom prop
+                      const mask = dynamicMasked.compiledMasks.find((m) => number.indexOf(m.startsWith) === 0);
                       return mask ?? dynamicMasked.compiledMasks[0];
                     }
                   }
@@ -217,13 +204,14 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
 
               <FormInput
                 control={control}
-                name="verification_value"
-                id="verification_value"
+                name="verificationValue"
+                id="verificationValue"
                 label="CVV"
                 autoComplete="cc-csc"
                 defaultValue=""
                 placeholder="CVC"
                 type="text"
+                maxLength={4}
                 rules={{
                   required: 'This field is required'
                 }}
@@ -232,98 +220,29 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
 
               <FormInput
                 control={control}
-                name="first_name"
-                id="first_name"
-                label="First name"
-                autoComplete="given-name"
+                name="name"
+                id="name"
+                label="Name"
+                autoComplete="cc-name"
                 defaultValue=""
                 type="text"
                 rules={{
                   required: 'This field is required'
                 }}
-                className="col-span-6 sm:col-span-3"
-              />
-
-              <FormInput
-                control={control}
-                name="last_name"
-                id="last_name"
-                label="Last name"
-                autoComplete="family-name"
-                defaultValue=""
-                type="text"
-                rules={{
-                  required: 'This field is required'
-                }}
-                className="col-span-6 sm:col-span-3"
-              />
-
-              <FormInput
-                control={control}
-                name="billingAddress.address1"
-                id="address1"
-                label="Address Line 1"
-                autoComplete="address-line1"
-                defaultValue=""
-                type="text"
-                rules={{
-                  required: 'This field is required'
-                }}
-                className="col-span-6 sm:col-span-3"
-              />
-
-              <FormInput
-                control={control}
-                name="billingAddress.address2"
-                id="address2"
-                label="Address Line 2"
-                autoComplete="address-line2"
-                defaultValue=""
-                type="text"
-                rules={{
-                  required: 'This field is required'
-                }}
-                className="col-span-6 sm:col-span-3"
-              />
-
-              <FormInput
-                control={control}
-                name="billingAddress.company"
-                id="company"
-                label="Company"
-                autoComplete="organization"
-                defaultValue=""
-                type="text"
-                rules={{
-                  required: 'This field is required'
-                }}
-                className="col-span-6 sm:col-span-3"
-              />
-
-              <FormInput
-                control={control}
-                name="billingAddress.city"
-                id="city"
-                label="City"
-                autoComplete="address-level1"
-                defaultValue=""
-                type="text"
-                rules={{
-                  required: 'This field is required'
-                }}
-                className="col-span-3"
+                className="col-span-6 sm:col-span-6"
               />
 
               <FormSelect
                 control={control}
-                id="billingAddress.provinceCode"
-                name="billingAddress.provinceCode"
-                autoComplete="address-level2"
-                label="State"
+                id="countryCode"
+                name="countryCode"
+                autoComplete="country"
+                label="Country"
+                defaultValue="US"
                 options={
-                  selectedCountry?.states?.map(({ name, state_code }) => ({
-                    key: state_code,
-                    value: name,
+                  countries?.map(({ name, iso2 }) => ({
+                    key: iso2,
+                    value: iso2,
                     title: name
                   })) ?? []
                 }
@@ -332,7 +251,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
 
               <FormInput
                 control={control}
-                name="billingAddress.zip"
+                name="zip"
                 id="zip"
                 label="ZIP / Postal code"
                 autoComplete="postal-code"
@@ -341,18 +260,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 rules={{
                   required: 'This field is required'
                 }}
-                className="col-span-6"
-              />
-
-              <FormPhoneInput
-                label="Phone number"
-                id="billingAddress.phone"
-                name="billingAddress.phone"
-                defaultCountry="US"
-                withCountryCallingCode={true}
-                control={control}
-                defaultErrorMessage="Please enter a valid phone number"
-                className="col-span-6 sm:col-span-4"
+                className="col-span-6 sm:col-span-3"
               />
             </div>
           </section>
@@ -364,7 +272,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Add"
+        submitText="Add payment method"
       />
     </ModalForm>
   );
