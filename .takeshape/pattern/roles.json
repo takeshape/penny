@@ -242,15 +242,6 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createZendeskTicket"
-          ],
-          "Effect": "Allow",
-          "Action": [
-            "graphql:execute"
-          ]
-        },
-        {
-          "Resource": [
             "ts:shape:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:*"
           ],
           "Effect": "Allow",
