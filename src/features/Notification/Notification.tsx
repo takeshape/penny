@@ -58,13 +58,13 @@ export const Notification = () => {
                     <StatusIcon status={status} size={6} />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-mainText-900">{title}</p>
-                    <p className="mt-1 text-sm text-mainText-500">{body}</p>
+                    <p className="text-sm font-medium text-body-900">{title}</p>
+                    <p className="mt-1 text-sm text-body-500">{body}</p>
                   </div>
                   <div className="ml-4 flex-shrink-0 flex">
                     <button
                       type="button"
-                      className="bg-background rounded-md inline-flex text-mainText-400 hover:text-mainText-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
+                      className="bg-background rounded-md inline-flex text-body-400 hover:text-body-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
                       onClick={handleClose}
                     >
                       <span className="sr-only">Close</span>

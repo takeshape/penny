@@ -13,7 +13,7 @@ export const Collections = ({ collections }: CollectionsProps) => {
     <section aria-labelledby="collections-heading" className="bg-accent-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto py-16 sm:py-24 lg:py-32 lg:max-w-none">
-          <h2 id="collections-heading" className="text-2xl font-extrabold text-mainText-900">
+          <h2 id="collections-heading" className="text-2xl font-extrabold text-body-900">
             Collections
           </h2>
 
@@ -30,7 +30,7 @@ export const Collections = ({ collections }: CollectionsProps) => {
                   />
                 </div>
 
-                <h3 className="mt-6 text-sm text-mainText-500">
+                <h3 className="mt-6 text-sm text-body-500">
                   <NextLink href={href}>
                     <span className="absolute inset-0" />
                     {name}

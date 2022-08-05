@@ -12,11 +12,11 @@ export const Sale = ({ buttonText, primaryText, secondaryText }: SaleProps) => {
       <div className="max-w-2xl mx-auto lg:max-w-none">
         <h2
           id="sale-heading"
-          className="text-4xl font-extrabold tracking-tight text-mainText-900 sm:text-5xl lg:text-6xl"
+          className="text-4xl font-extrabold tracking-tight text-body-900 sm:text-5xl lg:text-6xl"
         >
           {primaryText}
         </h2>
-        <p className="mt-4 max-w-xl mx-auto text-xl text-mainText-600">{secondaryText}</p>
+        <p className="mt-4 max-w-xl mx-auto text-xl text-body-600">{secondaryText}</p>
         <Button as="a" href="#" size="large" className="mt-6 w-full sm:w-auto">
           {buttonText}
         </Button>

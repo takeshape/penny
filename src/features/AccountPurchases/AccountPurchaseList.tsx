@@ -7,7 +7,7 @@ import { GetMyAdminCustomerOrdersQuery } from './queries';
 import { getOrders } from './transforms';
 
 const Empty = () => (
-  <div className="p-4 sm:p-6 flex flex-col items-center gap-2 text-mainText-500">
+  <div className="p-4 sm:p-6 flex flex-col items-center gap-2 text-body-500">
     <p>No purchases found.</p>
     <p>Why not get yourself something nice!</p>
   </div>
@@ -15,8 +15,8 @@ const Empty = () => (
 
 const Header = () => (
   <header>
-    <h3 className="text-lg leading-6 font-medium text-mainText-900">Order history</h3>
-    <p className="mt-1 text-sm text-mainText-500">
+    <h3 className="text-lg leading-6 font-medium text-body-900">Order history</h3>
+    <p className="mt-1 text-sm text-body-500">
       Check the status of recent orders, manage returns, and download invoices.
     </p>
   </header>

@@ -49,7 +49,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-mainText-900">Reset your password</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Reset your password</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

@@ -18,11 +18,10 @@ module.exports = {
       colors: {
         primary: colors.gray,
         accent: colors.indigo,
-        mainText: colors.gray,
-        invertedText: colors.white,
+        body: colors.gray,
+        inverted: colors.white,
         background: colors.white,
-        formText: colors.gray,
-        formBackground: colors.white
+        form: colors.gray
       }
     }
   },

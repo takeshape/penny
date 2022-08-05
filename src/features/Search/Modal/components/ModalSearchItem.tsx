@@ -29,7 +29,7 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
               {product.name}
             </p>
             {product.description && (
-              <p className={classNames('text-sm', active ? 'text-mainText-700' : 'text-mainText-500')}>
+              <p className={classNames('text-sm', active ? 'text-body-700' : 'text-body-500')}>
                 {truncate(product.description, { length: 160, separator: ' ' })}
               </p>
             )}

@@ -44,8 +44,8 @@ export const FormToggleWithLabel = <
         {...props}
         checked={isChecked}
         className={classNames(
-          isChecked ? 'bg-accent-600' : 'bg-formText-200',
-          'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-formText-500'
+          isChecked ? 'bg-accent-600' : 'bg-form-200',
+          'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-form-500'
         )}
       >
         <span
@@ -57,8 +57,8 @@ export const FormToggleWithLabel = <
         />
       </Switch>
       <Switch.Label as="span">
-        <span className="text-sm font-medium text-formText-900">{labelPrimary}</span>
-        {labelSecondary && <span className="ml-1 text-sm text-formText-500">{labelSecondary}</span>}
+        <span className="text-sm font-medium text-form-900">{labelPrimary}</span>
+        {labelSecondary && <span className="ml-1 text-sm text-form-500">{labelSecondary}</span>}
       </Switch.Label>
     </Switch.Group>
   );

@@ -56,8 +56,8 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
       <div className="relative max-w-xl mx-auto">
         <BackgroundDots />
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-mainText-900 sm:text-4xl">{text.primary}</h2>
-          <p className="mt-4 text-lg leading-6 text-mainText-500">{text.secondary}</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-body-900 sm:text-4xl">{text.primary}</h2>
+          <p className="mt-4 text-lg leading-6 text-body-500">{text.secondary}</p>
         </div>
         <div className="mt-12">
           <form
@@ -138,7 +138,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                     checked={agreed}
                     onChange={setAgreed}
                     className={classNames(
-                      agreed ? 'bg-accent-600' : 'bg-formText-200',
+                      agreed ? 'bg-accent-600' : 'bg-form-200',
                       'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500'
                     )}
                   >
@@ -153,13 +153,13 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                   </Switch>
                 </div>
                 <div className="ml-3">
-                  <p className="text-base text-mainText-500">
+                  <p className="text-base text-body-500">
                     By selecting this, you agree to the{' '}
-                    <NextLink href="#" className="font-medium text-mainText-700 underline">
+                    <NextLink href="#" className="font-medium text-body-700 underline">
                       <a className="font-medium text-primary-500 hover:text-primary-900">Privacy Policy</a>
                     </NextLink>{' '}
                     and{' '}
-                    <NextLink href="#" className="font-medium text-mainText-700 underline">
+                    <NextLink href="#" className="font-medium text-body-700 underline">
                       <a className="font-medium text-primary-500 hover:text-primary-900">Cookie Policy</a>
                     </NextLink>
                     .

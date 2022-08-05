@@ -40,8 +40,8 @@ export const Blog = (props: BlogProps) => {
       </div>
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center">
-          <h2 className="text-3xl tracking-tight font-extrabold text-mainText-900 sm:text-4xl">{text.primary}</h2>
-          <p className="mt-3 max-w-2xl mx-auto text-xl text-mainText-500 sm:mt-4">{text.secondary}</p>
+          <h2 className="text-3xl tracking-tight font-extrabold text-body-900 sm:text-4xl">{text.primary}</h2>
+          <p className="mt-3 max-w-2xl mx-auto text-xl text-body-500 sm:mt-4">{text.secondary}</p>
         </div>
         <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
           {posts.map((post) => (
@@ -58,7 +58,7 @@ export const Blog = (props: BlogProps) => {
                   </p>
                   <a href={post.href} className="block mt-2">
                     <p className="text-xl font-semibold text-primary-900">{post.title}</p>
-                    <p className="mt-3 text-base text-mainText-500">{post.description}</p>
+                    <p className="mt-3 text-base text-body-500">{post.description}</p>
                   </a>
                 </div>
                 <div className="mt-6 flex items-center">
@@ -74,7 +74,7 @@ export const Blog = (props: BlogProps) => {
                         {post.author.name}
                       </a>
                     </p>
-                    <div className="flex space-x-1 text-sm text-mainText-500">
+                    <div className="flex space-x-1 text-sm text-body-500">
                       <time dateTime={post.datetime}>{post.date}</time>
                       <span aria-hidden="true">&middot;</span>
                       <span>{post.readingTime} read</span>

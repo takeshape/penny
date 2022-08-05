@@ -11,8 +11,8 @@ export const ErrorMessage = ({ headline, subhead, body, children }: PropsWithChi
     <>
       <div className="flex-shrink-0 my-auto py-16 sm:py-32">
         <p className="text-sm font-semibold text-accent-600 uppercase tracking-wide">{headline}</p>
-        <h1 className="mt-2 text-4xl font-extrabold text-mainText-900 tracking-tight sm:text-5xl">{subhead}</h1>
-        <p className="mt-2 text-base text-mainText-500">{body}</p>
+        <h1 className="mt-2 text-4xl font-extrabold text-body-900 tracking-tight sm:text-5xl">{subhead}</h1>
+        <p className="mt-2 text-base text-body-500">{body}</p>
         <div className="mt-10 flex space-x-3 sm:border-l sm:border-transparent">{children}</div>
       </div>
     </>

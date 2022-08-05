@@ -52,7 +52,7 @@ export const Cart = () => {
                   <div className="flex h-full flex-col overflow-y-scroll bg-background shadow-xl">
                     <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
                       <div className="flex items-start justify-between">
-                        <Dialog.Title className="text-lg font-medium text-mainText-900"> Shopping cart </Dialog.Title>
+                        <Dialog.Title className="text-lg font-medium text-body-900"> Shopping cart </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
                             type="button"
@@ -68,7 +68,7 @@ export const Cart = () => {
                       <div className="mt-8">
                         {items.length ? (
                           <div className="flow-root">
-                            <ul role="list" className="-my-6 divide-y divide-mainText-200">
+                            <ul role="list" className="-my-6 divide-y divide-body-200">
                               {items.map((atom) => (
                                 <li key={atom.toString()} className="flex py-6">
                                   <CartItem atom={atom} onRemove={() => dispatch({ type: 'remove', atom })} />
@@ -82,13 +82,13 @@ export const Cart = () => {
                       </div>
                     </div>
 
-                    <div className="border-t border-mainText-200 py-6 px-4 sm:px-6">
+                    <div className="border-t border-body-200 py-6 px-4 sm:px-6">
                       <CartSubtotal />
-                      <p className="mt-0.5 text-sm text-mainText-500">Shipping and taxes calculated at checkout.</p>
+                      <p className="mt-0.5 text-sm text-body-500">Shipping and taxes calculated at checkout.</p>
                       <div className="mt-6">
                         <CartCheckout />
                       </div>
-                      <div className="mt-6 flex justify-center text-center text-sm text-mainText-500">
+                      <div className="mt-6 flex justify-center text-center text-sm text-body-500">
                         <p>
                           or{' '}
                           <button

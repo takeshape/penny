@@ -30,8 +30,8 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
             className={({ active }) =>
               classNames(
                 size.hasStock
-                  ? 'bg-formBackground shadow-sm text-formText-900 cursor-pointer'
-                  : 'bg-formText-50 text-formText-200 cursor-not-allowed',
+                  ? 'bg-background shadow-sm text-form-900 cursor-pointer'
+                  : 'bg-form-50 text-form-200 cursor-not-allowed',
                 active ? 'ring-2 ring-accent-500' : '',
                 buttonStyles
               )
@@ -52,10 +52,10 @@ export const ProductSizeSelect = ({ value, onChange, options, size }: ProductSiz
                 ) : (
                   <span
                     aria-hidden="true"
-                    className="absolute -inset-px rounded-md border-2 border-formText-200 pointer-events-none"
+                    className="absolute -inset-px rounded-md border-2 border-form-200 pointer-events-none"
                   >
                     <svg
-                      className="absolute inset-0 w-full h-full text-formText-200 stroke-2"
+                      className="absolute inset-0 w-full h-full text-form-200 stroke-2"
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
                       stroke="currentColor"

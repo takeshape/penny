@@ -11,7 +11,7 @@ export interface ProductPriceProps {
 export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
   const { currencyCode, amount } = price;
 
-  const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-mainText-900');
+  const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-body-900');
 
   if (hasStock) {
     return <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>;
@@ -19,8 +19,8 @@ export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
 
   return (
     <p className={`${wrapperClass} flex items-center`}>
-      <span className="text-mainText-300 line-through">{formatPrice(currencyCode, amount)}</span>
-      <span className="text-mainText-500 text-sm uppercase font-bold ml-4">Out of stock</span>
+      <span className="text-body-300 line-through">{formatPrice(currencyCode, amount)}</span>
+      <span className="text-body-500 text-sm uppercase font-bold ml-4">Out of stock</span>
     </p>
   );
 };

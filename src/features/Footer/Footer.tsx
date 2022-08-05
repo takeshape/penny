@@ -54,9 +54,9 @@ export const Footer = ({ navigation, newsletter }: FooterProps) => {
             <Newsletter text={newsletter?.text} />
           </div>
         </div>
-        <div className="mt-8 border-t border-mainText-200 pt-8 md:flex md:items-center md:justify-between">
+        <div className="mt-8 border-t border-body-200 pt-8 md:flex md:items-center md:justify-between">
           <Social {...social} />
-          <p className="mt-8 text-base text-mainText-400 md:mt-0 md:order-1">
+          <p className="mt-8 text-base text-body-400 md:mt-0 md:order-1">
             &copy; {currentYear} Workflow, Inc. All rights reserved.
           </p>
         </div>

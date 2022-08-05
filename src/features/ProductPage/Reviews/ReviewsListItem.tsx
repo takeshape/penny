@@ -18,7 +18,7 @@ export const ReviewsListItem = ({ item }: ReviewsListItemProps) => {
         />
 
         <div className="ml-4">
-          <h4 className="text-sm font-bold text-mainText-900">
+          <h4 className="text-sm font-bold text-body-900">
             {item.reviewer.firstName} {item.reviewer.lastName}
           </h4>
           <Stars rating={item.rating} />
@@ -27,7 +27,7 @@ export const ReviewsListItem = ({ item }: ReviewsListItemProps) => {
       </div>
 
       <div
-        className="mt-4 space-y-6 text-base italic text-mainText-600 prose"
+        className="mt-4 space-y-6 text-base italic text-body-600 prose"
         dangerouslySetInnerHTML={{ __html: item.body }}
       />
     </>

@@ -49,11 +49,11 @@ const FilterOption = (props: PropsWithChildren<FilterOptionProps>) => {
         name={`${props.filter}[]`}
         value={props.value}
         type="checkbox"
-        className="flex-shrink-0 h-4 w-4 border-mainText-300 rounded text-accent-600 focus:ring-accent-500"
+        className="flex-shrink-0 h-4 w-4 border-body-300 rounded text-accent-600 focus:ring-accent-500"
         checked={props.checked}
         onChange={() => props.setFilter(props.filter, props.value, !props.checked)}
       />
-      <label htmlFor={`${props.filter}-${props.index}`} className="ml-3 min-w-0 flex-1 text-mainText-600">
+      <label htmlFor={`${props.filter}-${props.index}`} className="ml-3 min-w-0 flex-1 text-body-600">
         {props.label}
       </label>
     </div>
@@ -104,13 +104,13 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
     <Disclosure
       as="section"
       aria-labelledby="filter-heading"
-      className="relative z-10 border-t border-b border-mainText-200 grid items-center"
+      className="relative z-10 border-t border-b border-body-200 grid items-center"
     >
       <h2 id="filter-heading" className="sr-only">
         Filters
       </h2>
       <div className="relative col-start-1 row-start-1 py-4">
-        <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-mainText-200 text-sm px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-body-200 text-sm px-4 sm:px-6 lg:px-8">
           <div>
             <Disclosure.Button className="group text-primary-700 font-medium flex items-center">
               <FilterIcon
@@ -127,7 +127,7 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
           </div>
         </div>
       </div>
-      <Disclosure.Panel className="border-t border-mainText-200 py-10">
+      <Disclosure.Panel className="border-t border-body-200 py-10">
         <div className="max-w-7xl mx-auto grid grid-cols-2 gap-x-4 px-4 text-sm sm:px-6 md:gap-x-6 lg:px-8">
           <div className="grid grid-cols-1 gap-y-10 auto-rows-min md:grid-cols-2 md:gap-x-6">
             <Filter name="price" legend="Price" options={filters.price} setFilter={setFilter} />

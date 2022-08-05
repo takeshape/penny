@@ -102,7 +102,7 @@ export const CreateReview = (props: ReviewsProps) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-background p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg text-mainText-900 font-medium mb-3">
+                <Dialog.Title as="h3" className="text-lg text-body-900 font-medium mb-3">
                   Review {productName}
                 </Dialog.Title>
 
@@ -116,7 +116,7 @@ export const CreateReview = (props: ReviewsProps) => {
                       }}
                       render={({ field: { value, onChange } }) => (
                         <>
-                          <label htmlFor="starRating" className="block text-sm font-medium text-mainText-700 mb-2">
+                          <label htmlFor="starRating" className="block text-sm font-medium text-body-700 mb-2">
                             Rating
                           </label>
                           <div id="starRating" className="flex items-center">

@@ -14,11 +14,11 @@ export const ProductGrid = ({ items }: PropsWithChildren<ProductGridProps>) => {
         Products
       </h2>
 
-      <div className="-mx-px border-l border-mainText-200 grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+      <div className="-mx-px border-l border-body-200 grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
         {items.map((item, idx) => (
           <div
             key={item ? item.product.id : idx}
-            className="group relative p-4 border-r border-b border-mainText-200 sm:p-6"
+            className="group relative p-4 border-r border-b border-body-200 sm:p-6"
           >
             {item ? <GridItem priority={[0, 1, 2, 3].includes(idx)} {...item} /> : <GridItemLoading />}
           </div>

@@ -30,7 +30,7 @@ export const CreateReferral = ({ sendReferral }: CreateReferralProps) => {
         id="email-address"
         autoComplete="none"
         required
-        className="appearance-none min-w-0 w-full bg-formBackground border border-formText-300 rounded-md shadow-sm py-2 px-4 text-base text-formText-900 placeholder-formText-500 focus:outline-none focus:ring-accent-500 focus:border-accent-500 focus:placeholder-formText-400"
+        className="appearance-none min-w-0 w-full bg-background border border-form-300 rounded-md shadow-sm py-2 px-4 text-base text-form-900 placeholder-form-500 focus:outline-none focus:ring-accent-500 focus:border-accent-500 focus:placeholder-form-400"
         placeholder="your.friend@gmail.com"
       />
       <div className="mt-3 rounded-md sm:mt-0 sm:ml-3 sm:flex-shrink-0">

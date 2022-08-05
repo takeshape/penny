@@ -1,6 +1,6 @@
 export const RecaptchaBranding = () => {
   return (
-    <div className="text-sm font-medium text-mainText-400">
+    <div className="text-sm font-medium text-body-400">
       This site is protected by reCAPTCHA and the Google{' '}
       <a
         className="text-accent-400 hover:text-accent-400"

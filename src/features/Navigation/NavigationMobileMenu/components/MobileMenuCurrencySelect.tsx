@@ -11,7 +11,7 @@ export const MobileMenuCurrencySelect = ({ currencies }: Pick<Navigation, 'curre
         <label htmlFor="mobile-currency" className="sr-only">
           Currency
         </label>
-        <div className="-ml-2 group relative border-transparent rounded-md focus-within:ring-2 focus-within:ring-invertedText">
+        <div className="-ml-2 group relative border-transparent rounded-md focus-within:ring-2 focus-within:ring-inverted">
           <select
             id="mobile-currency"
             name="currency"

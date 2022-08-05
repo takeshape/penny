@@ -33,17 +33,17 @@
 /* Example of setting custom prose styles, for e.g., dangerouslySetHtml */
 @layer base {
   div#example-prose > p {
-    @apply text-base text-mainText-900 mt-4;
+    @apply text-base text-body-900 mt-4;
   }
 
   .prose h3 {
-    @apply text-mainText-900;
+    @apply text-body-900;
   }
 }
 
 @layer components {
   .prose li::marker {
-    @apply text-mainText-300;
+    @apply text-body-300;
   }
 }
 

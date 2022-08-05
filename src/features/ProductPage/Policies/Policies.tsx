@@ -21,8 +21,8 @@ export const Policies = ({ policies }: PoliciesProps) => {
               width={200}
               className="h-24 w-auto"
             />
-            <h3 className="mt-6 text-base font-medium text-mainText-900">{policy.name}</h3>
-            <p className="mt-3 text-base text-mainText-500">{policy.description}</p>
+            <h3 className="mt-6 text-base font-medium text-body-900">{policy.name}</h3>
+            <p className="mt-3 text-base text-body-500">{policy.description}</p>
           </div>
         ))}
       </div>

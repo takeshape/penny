@@ -39,7 +39,7 @@ export const BackgroundDots = () => (
           height={20}
           patternUnits="userSpaceOnUse"
         >
-          <rect x={0} y={0} width={4} height={4} className="text-mainText-200" fill="currentColor" />
+          <rect x={0} y={0} width={4} height={4} className="text-body-200" fill="currentColor" />
         </pattern>
       </defs>
       <rect width={404} height={404} fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)" />

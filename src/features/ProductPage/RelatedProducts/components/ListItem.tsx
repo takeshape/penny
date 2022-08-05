@@ -43,7 +43,7 @@ export const ListItem = ({ product }: ListItemProps) => {
               aria-hidden="true"
               className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
             />
-            <p className="relative text-lg font-semibold text-invertedText">
+            <p className="relative text-lg font-semibold text-inverted">
               {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}
             </p>
           </div>
@@ -52,7 +52,7 @@ export const ListItem = ({ product }: ListItemProps) => {
       <div className="mt-6">
         <a
           href={product.url}
-          className="relative flex bg-formBackground border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-formText-900 hover:bg-formText-200"
+          className="relative flex bg-background border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-200"
           onClick={handleAddToCart}
         >
           Add to cart<span className="sr-only">, {product.name}</span>

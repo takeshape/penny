@@ -12,7 +12,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
       {/* Links */}
       {Boolean(withSubsections.length) && (
         <Tab.Group as="div" className="mt-2">
-          <div className="border-b border-mainText-200">
+          <div className="border-b border-body-200">
             <Tab.List className="-mb-px flex px-4 space-x-8">
               {withSubsections.map((section) => (
                 <Tab
@@ -36,7 +36,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                   {section.subsections.map((subsection) => (
                     <div key={subsection.name} className="grid grid-cols-1 gap-y-10 gap-x-6">
                       <div>
-                        <p id={`mobile-featured-heading-${sectionIdx}`} className="font-medium text-mainText-900">
+                        <p id={`mobile-featured-heading-${sectionIdx}`} className="font-medium text-body-900">
                           {subsection.name}
                         </p>
                         <ul
@@ -46,7 +46,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                         >
                           {subsection.links?.map((link) => (
                             <li key={link.name} className="flex">
-                              <NextLink href={link.href} className="text-mainText-500">
+                              <NextLink href={link.href} className="text-body-500">
                                 <a className="font-medium text-primary-700 hover:text-primary-800">{link.name}</a>
                               </NextLink>
                             </li>
@@ -62,10 +62,10 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
         </Tab.Group>
       )}
       {Boolean(withoutSubsections.length) && (
-        <div className="border-t border-mainText-200 py-6 px-4 space-y-6">
+        <div className="border-t border-body-200 py-6 px-4 space-y-6">
           {withoutSubsections.map((section) => (
             <div key={section.name} className="flow-root">
-              <NextLink href={section.link.href} className="-m-2 p-2 block font-medium text-mainText-900">
+              <NextLink href={section.link.href} className="-m-2 p-2 block font-medium text-body-900">
                 <a className="font-medium text-primary-700 hover:text-primary-800">{section.name}</a>
               </NextLink>
             </div>

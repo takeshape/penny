@@ -35,7 +35,7 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
                 <StarIcon
                   key={rating}
                   className={classNames(
-                    reviews.stats.average > rating ? 'text-yellow-400' : 'text-mainText-200',
+                    reviews.stats.average > rating ? 'text-yellow-400' : 'text-body-200',
                     'flex-shrink-0 h-5 w-5'
                   )}
                   aria-hidden="true"
@@ -46,7 +46,7 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
           </div>
         ) : null}
 
-        <p className="mt-4 text-base font-medium text-mainText-900">
+        <p className="mt-4 text-base font-medium text-body-900">
           {product.variantsCount === 1 ? (
             formatPrice(product.priceMax.currencyCode, product.priceMax.amount)
           ) : (

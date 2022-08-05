@@ -28,7 +28,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Popover.Panel className="absolute top-full inset-x-0 text-mainText-500 sm:text-sm">
+          <Popover.Panel className="absolute top-full inset-x-0 text-body-500 sm:text-sm">
             {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
             <div className="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
 
@@ -42,7 +42,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
                 <div className="grid grid-cols-4 items-start gap-y-10 gap-x-8 pt-10 pb-12">
                   {section.subsections?.map((subsection, subsectionIdx) => (
                     <div key={`${subsection.name}-${subsectionIdx}`}>
-                      <p id={`desktop-featured-heading-${subsectionIdx}`} className="font-medium text-mainText-900">
+                      <p id={`desktop-featured-heading-${subsectionIdx}`} className="font-medium text-body-900">
                         {subsection.name}
                       </p>
                       <ul

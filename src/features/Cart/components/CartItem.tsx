@@ -17,7 +17,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
 
   return (
     <Fragment>
-      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-mainText-200 relative">
+      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-body-200 relative">
         <NextImage
           src={imageSrc}
           alt={imageAlt}
@@ -29,19 +29,19 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
 
       <div className="ml-4 flex flex-1 flex-col">
         <div>
-          <div className="flex justify-between text-base font-medium text-mainText-900">
+          <div className="flex justify-between text-base font-medium text-body-900">
             <div>
               <h3>
                 <Link href={href}>
                   <a className="font-medium text-primary-900 hover:text-accent-900">{name}</a>
                 </Link>
               </h3>
-              <p className="mt-1 text-sm text-mainText-500">{variantName}</p>
+              <p className="mt-1 text-sm text-body-500">{variantName}</p>
             </div>
             <div>
               <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
               {intervalCount > 0 ? (
-                <p className="ml-4 text-right text-xs text-mainText-500">
+                <p className="ml-4 text-right text-xs text-body-500">
                   per {pluralizeText(intervalCount, interval.toLowerCase(), `${interval.toLowerCase()}s`)}
                 </p>
               ) : null}
@@ -55,17 +55,17 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
                 <button
                   disabled={quantity < 2}
                   onClick={() => setItem({ ...item, quantity: item.quantity - 1 })}
-                  className="text-mainText-400 hover:text-mainText-500 disabled:text-mainText-300"
+                  className="text-body-400 hover:text-body-500 disabled:text-body-300"
                 >
                   <span className="sr-only">One Less</span>
                   <MinusCircleIcon className="w-5 h-5" aria-hidden="true" />
                 </button>
 
-                <div className="flex justify-center items-center w-1 text-mainText-500">{quantity}</div>
+                <div className="flex justify-center items-center w-1 text-body-500">{quantity}</div>
 
                 <a
                   onClick={() => setItem({ ...item, quantity: item.quantity + 1 })}
-                  className="text-mainText-400 hover:text-mainText-500"
+                  className="text-body-400 hover:text-body-500"
                 >
                   <span className="sr-only">One More</span>
                   <PlusCircleIcon className="w-5 h-5" aria-hidden="true" />

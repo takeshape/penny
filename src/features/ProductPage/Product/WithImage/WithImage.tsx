@@ -73,7 +73,7 @@ export const ProductWithImage = ({
         <Breadcrumbs breadcrumbs={breadcrumbs} />
 
         <div className="mt-4">
-          <h1 className="text-3xl font-extrabold tracking-tight text-mainText-900 sm:text-4xl">{name}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-body-900 sm:text-4xl">{name}</h1>
         </div>
 
         <section aria-labelledby="information-heading" className="mt-4">
@@ -82,11 +82,9 @@ export const ProductWithImage = ({
           </h2>
 
           <div className="flex items-center">
-            <p className="text-lg text-mainText-900 sm:text-xl">
-              {formatPrice(priceMin.currencyCode, priceMin.amount)}
-            </p>
+            <p className="text-lg text-body-900 sm:text-xl">{formatPrice(priceMin.currencyCode, priceMin.amount)}</p>
 
-            <div className="ml-4 pl-4 border-l border-mainText-300">
+            <div className="ml-4 pl-4 border-l border-body-300">
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <div>
@@ -98,7 +96,7 @@ export const ProductWithImage = ({
                     {reviewHighlights.stats.count} reviews
                   </a>
                 ) : (
-                  <p className="ml-2 text-sm text-mainText-500">{reviewHighlights.stats.count} reviews</p>
+                  <p className="ml-2 text-sm text-body-500">{reviewHighlights.stats.count} reviews</p>
                 )}
               </div>
             </div>
@@ -106,14 +104,14 @@ export const ProductWithImage = ({
 
           <div className="mt-4 space-y-6">
             <p
-              className="text-base text-mainText-500 prose prose-sm"
+              className="text-base text-body-500 prose prose-sm"
               dangerouslySetInnerHTML={{ __html: descriptionHtml }}
             ></p>
           </div>
 
           <div className="mt-6 flex items-center">
             <CheckIcon className="flex-shrink-0 w-5 h-5 text-green-500" aria-hidden="true" />
-            <p className="ml-2 text-sm text-mainText-500">In stock and ready to ship</p>
+            <p className="ml-2 text-sm text-body-500">In stock and ready to ship</p>
           </div>
         </section>
       </div>
@@ -146,10 +144,10 @@ export const ProductWithImage = ({
               )}
             </div>
             <div className="mt-4">
-              <a href="#" className="group inline-flex text-sm text-mainText-500 hover:text-mainText-700">
+              <a href="#" className="group inline-flex text-sm text-body-500 hover:text-body-700">
                 <span>What size should I buy?</span>
                 <QuestionMarkCircleIcon
-                  className="flex-shrink-0 ml-2 h-5 w-5 text-mainText-400 group-hover:text-mainText-500"
+                  className="flex-shrink-0 ml-2 h-5 w-5 text-body-400 group-hover:text-body-500"
                   aria-hidden="true"
                 />
               </a>
@@ -157,7 +155,7 @@ export const ProductWithImage = ({
             <div className="mt-10">
               <button
                 type="submit"
-                className="w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-invertedText hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-mainText-50 focus:ring-accent-500"
+                className="w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body-50 focus:ring-accent-500"
                 onClick={handleAddToCart}
               >
                 Add to cart
@@ -166,10 +164,10 @@ export const ProductWithImage = ({
             <div className="mt-6 text-center">
               <a href="#" className="group inline-flex text-base font-medium">
                 <ShieldCheckIcon
-                  className="flex-shrink-0 mr-2 h-6 w-6 text-mainText-400 group-hover:text-mainText-500"
+                  className="flex-shrink-0 mr-2 h-6 w-6 text-body-400 group-hover:text-body-500"
                   aria-hidden="true"
                 />
-                <span className="text-mainText-500 hover:text-mainText-700">Lifetime Guarantee</span>
+                <span className="text-body-500 hover:text-body-700">Lifetime Guarantee</span>
               </a>
             </div>
           </form>

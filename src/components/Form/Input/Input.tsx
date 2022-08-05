@@ -37,11 +37,11 @@ export const FormInput = <
   return (
     <div className={`${className} relative`}>
       <div className="flex justify-between">
-        <label htmlFor={id} className="block text-sm font-medium text-formText-700">
+        <label htmlFor={id} className="block text-sm font-medium text-form-700">
           {label}
         </label>
         {rules?.required && (
-          <span className="text-sm text-formText-400" id={`${id}-required`}>
+          <span className="text-sm text-form-400" id={`${id}-required`}>
             Required
           </span>
         )}
@@ -53,8 +53,8 @@ export const FormInput = <
         className={classNames(
           error
             ? 'border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500'
-            : 'border-formText-300 focus:ring-accent-500 focus:border-accent-500',
-          'mt-1 block w-full shadow-sm bg-formBackground placeholder-formText-400 text-formText-900 sm:text-sm rounded-md disabled:bg-formText-100 disabled:cursor-not-allowed'
+            : 'border-form-300 focus:ring-accent-500 focus:border-accent-500',
+          'mt-1 block w-full shadow-sm bg-background placeholder-form-400 text-form-900 sm:text-sm rounded-md disabled:bg-form-100 disabled:cursor-not-allowed'
         )}
       />
       {error && (
@@ -63,7 +63,7 @@ export const FormInput = <
         </div>
       )}
       {helpText && (
-        <p className="mt-2 text-sm text-formText-500" id={`${id}-help-text`}>
+        <p className="mt-2 text-sm text-form-500" id={`${id}-help-text`}>
           {helpText}
         </p>
       )}

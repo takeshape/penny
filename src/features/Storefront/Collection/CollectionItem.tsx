@@ -23,16 +23,14 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
           </div>
         </div>
         <div className="mt-6">
-          {colors && <p className="text-sm text-mainText-500">{colors.values[0].name}</p>}
+          {colors && <p className="text-sm text-body-500">{colors.values[0].name}</p>}
           <h3 className="mt-1 font-semibold text-primary-900">
             <NextLink href={product.url}>
               <span className="absolute inset-0" />
               {product.name}
             </NextLink>
           </h3>
-          <p className="mt-1 text-mainText-900">
-            {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}
-          </p>
+          <p className="mt-1 text-body-900">{formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}</p>
         </div>
       </div>
 
@@ -43,7 +41,7 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
             {colors.values.map((color) => (
               <li
                 key={color.name}
-                className="w-4 h-4 rounded-full border border-mainText border-opacity-10"
+                className="w-4 h-4 rounded-full border border-body border-opacity-10"
                 style={{ backgroundColor: color.colorBg as string }}
               >
                 <span className="sr-only">{color.name}</span>
