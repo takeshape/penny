@@ -1,5 +1,7 @@
 import Wrapper from 'components/Wrapper/Content';
+import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWIthData';
 import { shopifyGidToId } from 'transforms/shopify';
+import { TrustpilotReviewList, TrustpilotSummary } from 'types/trustpilot';
 import { Details, DetailsProps } from './Details/Details';
 import { Policies, PoliciesProps } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
@@ -9,8 +11,10 @@ import { ProductPageOptions } from './types';
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
   PoliciesProps &
-  Omit<ReviewsWithDataProps, 'sku' | 'productName'> &
-  DetailsProps & {
+  Omit<ReviewsWithDataProps, 'sku' | 'productName'> & {
+    trustpilotReviewList: TrustpilotReviewList;
+    trustpilotSummary: TrustpilotSummary;
+  } & DetailsProps & {
     options: ProductPageOptions;
   };
 
@@ -22,6 +26,8 @@ export const ProductPage = ({
   details,
   policies,
   reviewList,
+  trustpilotReviewList,
+  trustpilotSummary,
   breadcrumbs,
   reviewsPerPage
 }: ProductPageProps) => {
@@ -56,6 +62,11 @@ export const ProductPage = ({
               reviewsPerPage={reviewsPerPage}
             />
           )}
+          <TrustpilotWithData
+            sku={shopifyGidToId(product.id)}
+            trustpilotReviewList={trustpilotReviewList}
+            trustpilotSummary={trustpilotSummary}
+          />
           {showRelatedProducts && <RelatedProductsWithData limit={4} productId={product.id} />}
         </Wrapper>
       </div>

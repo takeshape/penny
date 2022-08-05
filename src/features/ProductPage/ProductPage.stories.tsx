@@ -6,7 +6,9 @@ import {
   productPagePolicies,
   productPageProduct,
   productPageReviewHighlights,
-  productPageReviewList
+  productPageReviewList,
+  trustpilotPageData,
+  trustpilotSummary
 } from './fixtures';
 import { ProductPage } from './ProductPage';
 import { relatedProductsResponse } from './queries.fixtures';
@@ -34,7 +36,9 @@ _ProductPage.args = {
   reviewList: productPageReviewList,
   details: productPageDetails,
   policies: productPagePolicies,
-  breadcrumbs: productPageBreadcrumbs
+  breadcrumbs: productPageBreadcrumbs,
+  trustpilotSummary,
+  trustpilotReviewList: trustpilotPageData
 };
 
 _ProductPage.parameters = {

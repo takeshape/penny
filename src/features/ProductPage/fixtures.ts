@@ -1,3 +1,4 @@
+import { TrustpilotReviewList, TrustpilotSummary } from 'types/trustpilot';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -1743,3 +1744,50 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     ]
   }
 ];
+
+export const trustpilotSummary: TrustpilotSummary = {
+  average: 3.9,
+  total: 15
+};
+
+export const trustpilotSummaryEmpty: TrustpilotSummary = {
+  total: 0
+};
+
+export const trustpilotPageData: TrustpilotReviewList = {
+  items: [
+    {
+      id: 'id',
+      createdAt: 'today at 1:07 PM',
+      stars: 5,
+      content: 'Pretty good, I wish someone would feed me kibble though. I am a dog.',
+      consumer: {
+        displayName: 'Rye'
+      }
+    },
+    {
+      id: 'id',
+      createdAt: 'last Monday at 1:07 PM',
+      stars: 1,
+      content: 'It never arrived even though I ordered it 2 months ago. I am very upset.',
+      consumer: {
+        displayName: 'Frito'
+      }
+    },
+    {
+      id: 'id',
+      createdAt: '08/01/2022',
+      stars: 4,
+      content: 'I am going to escape again. I am a cat.',
+      consumer: {
+        displayName: 'Tuna'
+      }
+    }
+  ],
+  nextPage: true
+};
+
+export const trustpilotPageDataEmpty: TrustpilotReviewList = {
+  items: [],
+  nextPage: false
+};

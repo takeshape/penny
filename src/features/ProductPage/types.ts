@@ -9,6 +9,7 @@ import {
   Shopify_Product,
   Shopify_ProductConnection
 } from 'types/takeshape';
+import { TrustpilotReviewList } from 'types/trustpilot';
 
 export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
 export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConnection, 'pageInfo'> & {
@@ -79,5 +80,7 @@ export type ProductPageReviewsReview = Review;
 export type ProductPageReviewHighlights = ReviewHighlights;
 export type ProductPageReviewsRollup = ReviewRollup;
 export type ProductPageReviewsStats = ReviewStats;
+
+export type TrustpilotProductPageReviewsReviewList = TrustpilotReviewList;
 
 export type ProductPageBreadcrumbs = Breadcrumb[];
