@@ -10,7 +10,7 @@ type CollectionsProps = StorefrontChild & {
 export const Collections = ({ collections }: CollectionsProps) => {
   if (!collections || !collections.length) return null;
   return (
-    <section aria-labelledby="collections-heading" className="bg-accent-100">
+    <section aria-labelledby="collections-heading" className="bg-body-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto py-16 sm:py-24 lg:py-32 lg:max-w-none">
           <h2 id="collections-heading" className="text-2xl font-extrabold text-body-900">

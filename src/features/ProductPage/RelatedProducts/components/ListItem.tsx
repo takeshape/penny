@@ -52,7 +52,7 @@ export const ListItem = ({ product }: ListItemProps) => {
       <div className="mt-6">
         <a
           href={product.url}
-          className="relative flex bg-background border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-200"
+          className="relative flex bg-body-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-200"
           onClick={handleAddToCart}
         >
           Add to cart<span className="sr-only">, {product.name}</span>
