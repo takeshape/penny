@@ -1,13 +1,13 @@
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductOptionValue } from 'types/product';
+import { ProductVariantOptionValue } from 'types/product';
 import classNames from 'utils/classNames';
 
 export interface ProductSizeSelectWithDescriptionProps {
   label: string;
   value: string;
   onChange: Dispatch<SetStateAction<string>>;
-  options: ProductOptionValue[];
+  options: ProductVariantOptionValue[];
 }
 
 export const ProductSizeSelectWithDescription = ({
