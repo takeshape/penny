@@ -1,9 +1,11 @@
+import cardValidator from 'card-validator';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
 import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
+import IMask from 'imask';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import useCountries from 'utils/hooks/useCountries';
@@ -16,8 +18,7 @@ export interface AddFormValues {
   number: string;
   first_name: string;
   last_name: string;
-  month: string;
-  year: string;
+  expiration: string;
   verification_value: string;
   billingAddress: {
     address1: string;
@@ -42,7 +43,6 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     watch,
     formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
   } = useForm<AddFormValues>();
-
   const countries = useCountries();
   const watchCountry = watch('billingAddress.countryCode', 'US');
   const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
@@ -87,39 +87,132 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 label="Card number"
                 autoComplete="cc-number"
                 defaultValue=""
+                mask={[
+                  {
+                    mask: [
+                      {
+                        mask: '1234 1234 1234 1234',
+                        lazy: true,
+                        maxLength: 16,
+                        blocks: {
+                          '1234': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 9999,
+                            autofix: true
+                          }
+                        }
+                      },
+                      {
+                        mask: '3412 123456 12345',
+                        startsWith: '34',
+                        maxLength: 15,
+                        lazy: true,
+                        blocks: {
+                          '3412': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 9999,
+                            autofix: true
+                          },
+                          '123456': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 999999,
+                            autofix: true
+                          },
+                          '12345': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 99999,
+                            autofix: true
+                          }
+                        }
+                      },
+                      {
+                        mask: '3712 123456 12345',
+                        startsWith: '37',
+                        maxLength: 15,
+                        lazy: true,
+                        blocks: {
+                          '3712': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 9999,
+                            autofix: true
+                          },
+                          '123456': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 999999,
+                            autofix: true
+                          },
+                          '12345': {
+                            mask: IMask.MaskedRange,
+                            from: 0,
+                            to: 99999,
+                            autofix: true
+                          }
+                        }
+                      }
+                    ],
+                    dispatch: function (appended, dynamicMasked) {
+                      const number = (dynamicMasked.value + appended).replace(/\D/g, '');
+                      const mask = dynamicMasked.compiledMasks.find(function (m) {
+                        return number.indexOf(m.startsWith) === 0;
+                      });
+
+                      return mask ?? dynamicMasked.compiledMasks[0];
+                    }
+                  }
+                ]}
+                placeholder="1234 1234 1234 1234"
                 type="text"
                 rules={{
-                  required: 'This field is required'
+                  required: 'This field is required',
+                  validate: {
+                    isValid: (value: string) => cardValidator.number(value).isValid || 'Invalid card number'
+                  }
                 }}
-                className="col-span-6 sm:col-span-3"
+                className="col-span-6 sm:col-span-6"
               />
 
               <FormInput
                 control={control}
-                name="month"
-                id="month"
-                label="Expiration month"
-                autoComplete="cc-exp-month"
+                name="expiration"
+                id="expiration"
+                label="Expiration"
+                autoComplete="cc-exp"
                 defaultValue=""
                 type="text"
+                mask={[
+                  {
+                    mask: 'MM/YY',
+                    lazy: true,
+                    blocks: {
+                      MM: {
+                        mask: IMask.MaskedRange,
+                        from: 1,
+                        to: 12,
+                        autofix: 'pad'
+                      },
+                      YY: {
+                        mask: IMask.MaskedRange,
+                        from: 22,
+                        to: 99
+                      }
+                    }
+                  }
+                ]}
+                placeholder="MM/YY"
+                // maxLength={4}
                 rules={{
-                  required: 'This field is required'
+                  required: 'This field is required',
+                  validate: {
+                    isValid: (value: string) => cardValidator.expirationDate(value).isValid || 'Invalid expiration date'
+                  }
                 }}
-                className="col-span-6 sm:col-span-3"
-              />
-
-              <FormInput
-                control={control}
-                name="year"
-                id="year"
-                label="Expiration year"
-                autoComplete="cc-exp-year"
-                defaultValue=""
-                type="text"
-                rules={{
-                  required: 'This field is required'
-                }}
-                className="col-span-6 sm:col-span-3"
+                className="col-span-3 sm:col-span-3"
               />
 
               <FormInput
@@ -129,11 +222,12 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 label="CVV"
                 autoComplete="cc-csc"
                 defaultValue=""
+                placeholder="CVC"
                 type="text"
                 rules={{
                   required: 'This field is required'
                 }}
-                className="col-span-6 sm:col-span-3"
+                className="col-span-3 sm:col-span-3"
               />
 
               <FormInput
@@ -194,10 +288,10 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
 
               <FormInput
                 control={control}
-                name="billingAddress.address2"
-                id="address2"
-                label="Address Line 2"
-                autoComplete="address-line2"
+                name="billingAddress.company"
+                id="company"
+                label="Company"
+                autoComplete="organization"
                 defaultValue=""
                 type="text"
                 rules={{

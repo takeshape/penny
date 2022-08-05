@@ -17,11 +17,11 @@ const PaymentMethod = (paymentMethod: PaymentMethod) => {
   return (
     <>
       <div className="w-full flex space-x-6 items-start">
-        <div className="w-full grid grid-cols-6 gap-4">
-          <div className="col-span-2">
-            <CreditCardIcon className="w-16 h-auto" />
+        <div className="w-full grid grid-cols-3 gap-4">
+          <div className="col-span-1">
+            <CreditCardIcon className="w-24 h-auto" />
           </div>
-          <div className="col-span-3 font-medium text-gray-900">
+          <div className="col-span-2 font-medium text-gray-900">
             <div className="text-lg">
               <span>{instrument.brand}</span> <span>{instrument.maskedNumber}</span>
             </div>
@@ -68,7 +68,7 @@ export const AccountPayments = ({ paymentMethods }: AccountPaymentsProps) => {
     <CardPanel primaryText="Payment Methods" secondaryText="Add and remove payment methods.">
       <ul role="list" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {paymentMethods.map((paymentMethod) => (
-          <li key={paymentMethod.id} className=" bg-white rounded-lg border px-4 py-6">
+          <li key={paymentMethod.id} className=" bg-white rounded-lg border px-8 py-6">
             <PaymentMethod {...paymentMethod} />
           </li>
         ))}
