@@ -8,7 +8,7 @@ export interface LayoutProps {
 
 export const Layout = ({ children, seo }: PropsWithChildren<LayoutProps>) => {
   return (
-    <div className="h-full bg-gray-50">
+    <div className="h-full bg-body-50">
       <div className="h-full">
         <Seo {...seo} />
         {children}

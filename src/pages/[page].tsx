@@ -26,7 +26,7 @@ const PagePage: NextPage = ({ navigation, footer, page }: InferGetStaticPropsTyp
 
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: page.title }}>
-      <Page page={page} />;
+      <Page page={page} />
     </Layout>
   );
 };

@@ -21,7 +21,7 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
         />
       </div>
       <div className="pt-10 pb-4 text-center">
-        <h3 className="text-sm font-medium text-gray-900">
+        <h3 className="text-sm font-medium text-primary-900">
           <NextLink href={product.url}>
             <span aria-hidden="true" className="absolute inset-0" />
             {product.name}
@@ -35,18 +35,18 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
                 <StarIcon
                   key={rating}
                   className={classNames(
-                    reviews.stats.average > rating ? 'text-yellow-400' : 'text-gray-200',
+                    reviews.stats.average > rating ? 'text-yellow-400' : 'text-body-200',
                     'flex-shrink-0 h-5 w-5'
                   )}
                   aria-hidden="true"
                 />
               ))}
             </div>
-            <p className="mt-1 text-sm text-gray-500">{reviews.stats.count} reviews</p>
+            <p className="mt-1 text-sm text-primary-500">{reviews.stats.count} reviews</p>
           </div>
         ) : null}
 
-        <p className="mt-4 text-base font-medium text-gray-900">
+        <p className="mt-4 text-base font-medium text-body-900">
           {product.variantsCount === 1 ? (
             formatPrice(product.priceMax.currencyCode, product.priceMax.amount)
           ) : (

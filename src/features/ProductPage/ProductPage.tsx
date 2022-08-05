@@ -29,7 +29,7 @@ export const ProductPage = ({
 
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-background">
         <Product
           component={component}
           product={product}
@@ -40,13 +40,13 @@ export const ProductPage = ({
           showReviewsLink={showReviews}
         />
       </div>
-      <div className="bg-gray-50">
+      <div className="bg-background">
         <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
           {details && showDetails && <Details details={details} />}
           {policies && showPolicies && <Policies policies={policies} />}
         </div>
       </div>
-      <div className="bg-white">
+      <div className="bg-background">
         <Wrapper>
           {showReviews && (
             <ReviewsWithData

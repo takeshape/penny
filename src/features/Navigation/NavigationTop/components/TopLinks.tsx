@@ -11,7 +11,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
         <div className="relative flex">
           <Popover.Button
             className={classNames(
-              open ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-700 hover:text-gray-800',
+              open ? 'border-accent-600 text-accent-600' : 'border-transparent text-primary-700 hover:text-primary-800',
               'relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px'
             )}
           >
@@ -28,21 +28,21 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Popover.Panel className="absolute top-full inset-x-0 text-gray-500 sm:text-sm">
+          <Popover.Panel className="absolute top-full inset-x-0 text-body-500 sm:text-sm">
             {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
             <div className="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
 
-            <div className="relative bg-white">
+            <div className="relative bg-background">
               <div className="max-w-7xl mx-auto px-8 pt-10">
                 {section.link && (
-                  <NextLink href={section.link.href} className="hover:text-gray-800">
+                  <NextLink href={section.link.href} className="text-primary-700 hover:text-primary-800">
                     Shop all {section.name}
                   </NextLink>
                 )}
                 <div className="grid grid-cols-4 items-start gap-y-10 gap-x-8 pt-10 pb-12">
                   {section.subsections?.map((subsection, subsectionIdx) => (
                     <div key={`${subsection.name}-${subsectionIdx}`}>
-                      <p id={`desktop-featured-heading-${subsectionIdx}`} className="font-medium text-gray-900">
+                      <p id={`desktop-featured-heading-${subsectionIdx}`} className="font-medium text-body-900">
                         {subsection.name}
                       </p>
                       <ul
@@ -52,7 +52,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
                       >
                         {subsection.links?.map((link) => (
                           <li key={link.name} className="flex">
-                            <NextLink href={link.href} className="hover:text-gray-800">
+                            <NextLink href={link.href} className="text-primary-700 hover:text-primary-800">
                               {link.name}
                             </NextLink>
                           </li>
@@ -72,7 +72,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
 
 const SectionLink = ({ section }: { section: NavigationSection }) => (
   <NextLink
-    className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+    className="flex items-center text-sm font-medium text-primary-700 hover:text-primary-800"
     href={section.link.href}
   >
     {section.name}

@@ -8,7 +8,7 @@ export const CartSubtotal = () => {
   const currency = useAtomValue(currencyAtom);
 
   return (
-    <div className="flex justify-between text-base font-medium text-gray-900">
+    <div className="flex justify-between text-base font-medium text-body-900">
       <p>Subtotal</p>
       <p>{formatPrice(currency, subtotal)}</p>
     </div>

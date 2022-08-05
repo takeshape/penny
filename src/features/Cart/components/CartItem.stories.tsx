@@ -9,7 +9,7 @@ const Meta: ComponentMeta<typeof CartItem> = {
   decorators: [
     (Story) => (
       <div className="w-screen max-w-md">
-        <ul className="-my-6 divide-y divide-gray-200">
+        <ul className="-my-6 divide-y divide-mainText-200">
           <li className="flex py-6">
             <Story />
           </li>

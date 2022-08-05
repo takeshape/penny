@@ -52,12 +52,12 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
   );
 
   return (
-    <div className="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
+    <div className="bg-background py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
       <div className="relative max-w-xl mx-auto">
         <BackgroundDots />
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">{text.primary}</h2>
-          <p className="mt-4 text-lg leading-6 text-gray-500">{text.secondary}</p>
+          <h2 className="text-3xl font-extrabold tracking-tight text-body-900 sm:text-4xl">{text.primary}</h2>
+          <p className="mt-4 text-lg leading-6 text-body-500">{text.secondary}</p>
         </div>
         <div className="mt-12">
           <form
@@ -138,8 +138,8 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                     checked={agreed}
                     onChange={setAgreed}
                     className={classNames(
-                      agreed ? 'bg-indigo-600' : 'bg-gray-200',
-                      'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                      agreed ? 'bg-accent-600' : 'bg-form-200',
+                      'relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500'
                     )}
                   >
                     <span className="sr-only">Agree to policies</span>
@@ -147,20 +147,20 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                       aria-hidden="true"
                       className={classNames(
                         agreed ? 'translate-x-5' : 'translate-x-0',
-                        'inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200'
+                        'inline-block h-5 w-5 rounded-full bg-background shadow transform ring-0 transition ease-in-out duration-200'
                       )}
                     />
                   </Switch>
                 </div>
                 <div className="ml-3">
-                  <p className="text-base text-gray-500">
+                  <p className="text-base text-body-500">
                     By selecting this, you agree to the{' '}
-                    <NextLink href="#" className="font-medium text-gray-700 underline">
-                      Privacy Policy
+                    <NextLink href="#" className="font-medium text-body-700 underline">
+                      <a className="font-medium text-primary-500 hover:text-primary-900">Privacy Policy</a>
                     </NextLink>{' '}
                     and{' '}
-                    <NextLink href="#" className="font-medium text-gray-700 underline">
-                      Cookie Policy
+                    <NextLink href="#" className="font-medium text-body-700 underline">
+                      <a className="font-medium text-primary-500 hover:text-primary-900">Cookie Policy</a>
                     </NextLink>
                     .
                   </p>

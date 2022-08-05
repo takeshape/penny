@@ -1,9 +1,9 @@
 export const RecaptchaBranding = () => {
   return (
-    <div className="text-sm font-medium text-gray-400">
+    <div className="text-sm font-medium text-body-400">
       This site is protected by reCAPTCHA and the Google{' '}
       <a
-        className="text-indigo-400 hover:text-indigo-400"
+        className="text-accent-400 hover:text-accent-400"
         href="https://policies.google.com/privacy"
         target="_blank"
         rel="noreferrer"
@@ -12,7 +12,7 @@ export const RecaptchaBranding = () => {
       </a>{' '}
       and{' '}
       <a
-        className="text-indigo-400 hover:text-indigo-400"
+        className="text-accent-400 hover:text-accent-400"
         href="https://policies.google.com/terms"
         target="_blank"
         rel="noreferrer"

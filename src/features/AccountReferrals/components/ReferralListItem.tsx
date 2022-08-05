@@ -11,11 +11,11 @@ export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps)
     {earned ? (
       <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
     ) : (
-      <ClockIcon className="h-6 w-6 text-gray-800" aria-hidden="true" />
+      <ClockIcon className="h-6 w-6 text-body-800" aria-hidden="true" />
     )}
-    <p>
+    <p className="text-body-600">
       Referred{' '}
-      <a href={`mailto:${email}`} className="text-red-600">
+      <a href={`mailto:${email}`} className="text-accent-600">
         {email}
       </a>{' '}
       on {sent.toLocaleDateString()}
