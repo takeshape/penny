@@ -3,6 +3,16 @@ import { format } from 'date-fns';
 import { SubscriptionOrder } from '../../types';
 import { OrderItemBadge } from './OrderItemBadge';
 
+const DeliveredIcon = () => <CheckCircleIcon className="w-5 h-5 text-green-500 inline-block mr-2" aria-hidden="true" />;
+
+const SkippedIcon = () => <MinusCircleIcon className="w-5 h-5 text-gray-500 inline-block mr-2" aria-hidden="true" />;
+
+const ScheduledIcon = () => <ClockIcon className="w-5 h-5 text-blue-400 inline-block mr-2" aria-hidden="true" />;
+
+const DefaultIcon = () => (
+  <InformationCircleIcon className="w-5 h-5 text-gray-500 inline-block mr-2" aria-hidden="true" />
+);
+
 export const OrderItemHeader = ({
   id,
   status,
@@ -13,28 +23,18 @@ export const OrderItemHeader = ({
 
   switch (status) {
     case 'delivered':
-      const DeliveredIcon = () => (
-        <CheckCircleIcon className="w-5 h-5 text-green-500 inline-block mr-2" aria-hidden="true" />
-      );
       Icon = DeliveredIcon;
       break;
 
     case 'skipped':
-      const SkippedIcon = () => (
-        <MinusCircleIcon className="w-5 h-5 text-gray-500 inline-block mr-2" aria-hidden="true" />
-      );
       Icon = SkippedIcon;
       break;
 
     case 'scheduled':
-      const ScheduledIcon = () => <ClockIcon className="w-5 h-5 text-blue-400 inline-block mr-2" aria-hidden="true" />;
       Icon = ScheduledIcon;
       break;
 
     default:
-      const DefaultIcon = () => (
-        <InformationCircleIcon className="w-5 h-5 text-gray-500 inline-block mr-2" aria-hidden="true" />
-      );
       Icon = DefaultIcon;
   }
 
