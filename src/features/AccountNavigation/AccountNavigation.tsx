@@ -51,10 +51,10 @@ export const AccountNavigation = ({ items }: AccountNavigationProps) => {
         ))}
         <button
           onClick={handleLogout}
-          className="text-primary-900 hover:text-primary-900 hover:bg-primary-50 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
+          className="text-mainText-500 hover:text-mainText-900 bg-mainText-300 hover:bg-mainText-400 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
         >
           <LogoutIcon
-            className="text-primary-400 group-hover:text-primary-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+            className="text-mainText-400 group-hover:text-mainText-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
             aria-hidden="true"
           />
           <span className="truncate">Sign Out</span>
