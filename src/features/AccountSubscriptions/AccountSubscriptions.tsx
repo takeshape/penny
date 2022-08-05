@@ -125,9 +125,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
                           className={({ selected }) =>
                             classNames(
                               'w-full px-3 py-2 font-medium text-sm rounded-md',
-                              selected
-                                ? 'bg-body-100 text-body-700'
-                                : 'text-body-500 hover:text-body-700'
+                              selected ? 'bg-body-100 text-body-700' : 'text-body-500 hover:text-body-700'
                             )
                           }
                         >
@@ -229,9 +227,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
                           className={({ selected }) =>
                             classNames(
                               'w-full px-3 py-2 font-medium text-sm rounded-md',
-                              selected
-                                ? 'bg-body-100 text-body-700'
-                                : 'text-body-500 hover:text-body-700'
+                              selected ? 'bg-body-100 text-body-700' : 'text-body-500 hover:text-body-700'
                             )
                           }
                         >

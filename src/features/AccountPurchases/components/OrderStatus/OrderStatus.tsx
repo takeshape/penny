@@ -16,9 +16,7 @@ export const PurchaseItemOrderStatus = (props: Fulfillment & { unfulfilled?: boo
   if (props.unfulfilled) {
     return (
       <div className="flex flex-wrap gap-2 items-center">
-        <header className="w-full m-2 mb-0 pb-2 border-b border-body-300 text-sm text-body-500">
-          Order Status
-        </header>
+        <header className="w-full m-2 mb-0 pb-2 border-b border-body-300 text-sm text-body-500">Order Status</header>
         <OrderStatusChip label="Processing" color="body" />
       </div>
     );
