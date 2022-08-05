@@ -38,6 +38,14 @@ export const seo: DefaultSeoProps = {
     {
       name: 'theme-color',
       content: '#000000'
+    },
+    /*
+     * Remove this after Trustpilot verification is complete.
+     * https://support.trustpilot.com/hc/en-us/articles/360019072354#verify-metatag
+     */
+    {
+      name: 'trustpilot-one-time-domain-verification-id',
+      content: 'f5b270e0-4ee4-4d74-8fb6-794d5b465b26'
     }
   ],
   additionalLinkTags: [
