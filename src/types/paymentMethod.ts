@@ -13,11 +13,13 @@ export type CreditCard = Pick<
   | 'name'
 >;
 
+export type SubscriptionContract = Pick<
+  Shopify_SubscriptionContract,
+  'id' | 'createdAt' | 'status' | 'nextBillingDate' | 'deliveryPrice' | 'lines'
+>;
+
 export type PaymentMethod = {
   id: string;
   instrument: CreditCard;
-  subscriptionContracts: Pick<
-    Shopify_SubscriptionContract,
-    'id' | 'createdAt' | 'status' | 'nextBillingDate' | 'deliveryPrice' | 'lines'
-  >[];
+  subscriptionContracts: SubscriptionContract[];
 };
