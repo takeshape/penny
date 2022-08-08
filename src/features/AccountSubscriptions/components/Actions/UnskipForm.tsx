@@ -56,7 +56,7 @@ export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">
               Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will be processed.
             </p>
@@ -67,7 +67,7 @@ export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
               Confirm skip order
             </h3>
 
-            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
                 Your order will be processed normally on{' '}
                 <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.

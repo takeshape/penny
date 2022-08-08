@@ -35,7 +35,7 @@ const ProductOptionsPrice = ({ control, variants, deliverySchedule }) => {
   const amount = price.amount * quantity;
 
   return (
-    <div className="bg-gray-600 text-white rounded-md py-2">
+    <div className="bg-body-600 text-white rounded-md py-2">
       <p className="grid grid-cols-2 px-4 font-medium text-lg">
         <span className="inline-block">Price</span>
         <span className="inline-block ml-auto">{formatPrice(price.currencyCode, amount)}</span>
@@ -122,15 +122,15 @@ export const ProductOptionsForm = ({
             <Disclosure>
               {({ open }) => (
                 <>
-                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75">
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-body-100 px-4 py-2 text-left font-medium text-body-900 hover:bg-body-200 focus:outline-none focus-visible:ring focus-visible:ring-accent-500 focus-visible:ring-opacity-75">
                     <div className="inline-block">
                       <span>{option.name}</span>
-                      <span className="ml-2 text-gray-500">{watch(`options.${option.name}`)}</span>
+                      <span className="ml-2 text-body-500">{watch(`options.${option.name}`)}</span>
                     </div>
-                    <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500`} />
+                    <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-body-500`} />
                   </Disclosure.Button>
 
-                  <Disclosure.Panel className="pt-4 pb-2 text-sm text-gray-500">
+                  <Disclosure.Panel className="pt-4 pb-2 text-sm text-body-500">
                     <Controller
                       name={`options.${option.name}`}
                       control={control}
@@ -146,7 +146,7 @@ export const ProductOptionsForm = ({
                                   classNames(
                                     valueIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
                                     valueIdx === option.values.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
-                                    checked ? 'bg-indigo-50 border-indigo-200 z-10' : 'border-gray-200',
+                                    checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
                                     'relative border p-4 flex cursor-pointer focus:outline-none'
                                   )
                                 }
@@ -155,8 +155,8 @@ export const ProductOptionsForm = ({
                                   <>
                                     <span
                                       className={classNames(
-                                        checked ? 'bg-indigo-600 border-transparent' : 'bg-white border-gray-300',
-                                        active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
+                                        checked ? 'bg-accent-600 border-transparent' : 'bg-white border-body-300',
+                                        active ? 'ring-2 ring-offset-2 ring-accent-500' : '',
                                         'h-4 w-4 mt-0.5 cursor-pointer shrink-0 rounded-full border flex items-center justify-center'
                                       )}
                                       aria-hidden="true"
@@ -167,7 +167,7 @@ export const ProductOptionsForm = ({
                                       <RadioGroup.Label
                                         as="span"
                                         className={classNames(
-                                          checked ? 'text-indigo-900' : 'text-gray-900',
+                                          checked ? 'text-accent-900' : 'text-body-900',
                                           'block text-sm font-medium'
                                         )}
                                       >
@@ -177,7 +177,7 @@ export const ProductOptionsForm = ({
                                         <RadioGroup.Description
                                           as="span"
                                           className={classNames(
-                                            checked ? 'text-indigo-700' : 'text-gray-500',
+                                            checked ? 'text-accent-700' : 'text-body-500',
                                             'block text-sm'
                                           )}
                                         >
@@ -205,15 +205,15 @@ export const ProductOptionsForm = ({
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-100 px-4 py-2 text-left font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring focus-visible:ring-indigo-500 focus-visible:ring-opacity-75">
+                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-body-100 px-4 py-2 text-left font-medium text-body-900 hover:bg-body-200 focus:outline-none focus-visible:ring focus-visible:ring-accent-500 focus-visible:ring-opacity-75">
                   <div className="inline-block">
                     <span>Quantity</span>
-                    <span className="ml-2 text-gray-500">{watch('quantity')}</span>
+                    <span className="ml-2 text-body-500">{watch('quantity')}</span>
                   </div>
-                  <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500`} />
+                  <ChevronUpIcon className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-body-500`} />
                 </Disclosure.Button>
 
-                <Disclosure.Panel className="pt-4 pb-2 text-sm text-gray-500">
+                <Disclosure.Panel className="pt-4 pb-2 text-sm text-body-500">
                   <Controller
                     name="quantity"
                     control={control}
@@ -231,7 +231,7 @@ export const ProductOptionsForm = ({
                                   classNames(
                                     idx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
                                     idx === 7 ? 'rounded-bl-md rounded-br-md' : '',
-                                    checked ? 'bg-indigo-50 border-indigo-200 z-10' : 'border-gray-200',
+                                    checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
                                     'relative border p-4 flex cursor-pointer focus:outline-none'
                                   )
                                 }
@@ -240,8 +240,8 @@ export const ProductOptionsForm = ({
                                   <>
                                     <span
                                       className={classNames(
-                                        checked ? 'bg-indigo-600 border-transparent' : 'bg-white border-gray-300',
-                                        active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
+                                        checked ? 'bg-accent-600 border-transparent' : 'bg-white border-body-300',
+                                        active ? 'ring-2 ring-offset-2 ring-accent-500' : '',
                                         'h-4 w-4 mt-0.5 cursor-pointer shrink-0 rounded-full border flex items-center justify-center'
                                       )}
                                       aria-hidden="true"
@@ -252,7 +252,7 @@ export const ProductOptionsForm = ({
                                       <RadioGroup.Label
                                         as="span"
                                         className={classNames(
-                                          checked ? 'text-indigo-900' : 'text-gray-900',
+                                          checked ? 'text-accent-900' : 'text-body-900',
                                           'block text-sm font-medium'
                                         )}
                                       >

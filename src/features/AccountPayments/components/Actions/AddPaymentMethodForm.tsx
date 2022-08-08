@@ -58,7 +58,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     >
       <div className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">Your payment method has been added.</p>
           </div>
         ) : (

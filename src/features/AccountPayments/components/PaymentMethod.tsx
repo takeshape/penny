@@ -18,7 +18,7 @@ export const PaymentMethod = (paymentMethod: TPaymentMethod) => {
           <div className="col-span-1">
             <CreditCardIcon className="w-24 h-auto" />
           </div>
-          <div className="col-span-2 font-medium text-gray-900">
+          <div className="col-span-2 font-medium text-body-900">
             <div className="text-lg">
               <span>{instrument.brand}</span> <span>{instrument.maskedNumber}</span>
             </div>
@@ -32,7 +32,7 @@ export const PaymentMethod = (paymentMethod: TPaymentMethod) => {
         <button
           type="button"
           onClick={() => setIsRemoveFormOpen(true)}
-          className="whitespace-nowrap font-medium text-indigo-600 hover:text-indigo-500"
+          className="whitespace-nowrap font-medium text-accent-600 hover:text-accent-500"
         >
           Remove
         </button>
@@ -40,7 +40,7 @@ export const PaymentMethod = (paymentMethod: TPaymentMethod) => {
           <button
             type="button"
             onClick={() => setIsViewSubscriptionsOpen(true)}
-            className="whitespace-nowrap font-medium text-indigo-600 hover:text-indigo-500"
+            className="whitespace-nowrap font-medium text-accent-600 hover:text-accent-500"
           >
             Subscriptions
           </button>

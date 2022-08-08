@@ -28,11 +28,11 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
         Order placed on <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
       </h3>
 
-      <div className="flex items-center p-4 border-b border-gray-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
+      <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
         <dl className="flex-1 grid grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
           <div>
-            <dt className="font-medium text-gray-900">Date ended</dt>
-            <dd className="mt-1 text-gray-500">
+            <dt className="font-medium text-body-900">Date ended</dt>
+            <dd className="mt-1 text-body-500">
               <time dateTime={subscription.endedAt}>{format(new Date(subscription.endedAt), 'PPP')}</time>
             </dd>
           </div>
@@ -40,7 +40,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
 
         <Menu as="div" className="relative flex justify-end lg:hidden">
           <div className="flex items-center">
-            <Menu.Button className="-m-2 p-2 flex items-center text-gray-400 hover:text-gray-500">
+            <Menu.Button className="-m-2 p-2 flex items-center text-body-400 hover:text-body-500">
               <span className="sr-only">Options for subscription {subscription.id}</span>
               <DotsVerticalIcon className="w-6 h-6" aria-hidden="true" />
             </Menu.Button>
@@ -63,7 +63,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
                       className={({ selected }) =>
                         classNames(
                           'w-full text-left px-4 py-2 text-sm',
-                          selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                          selected ? 'bg-body-100 text-body-900' : 'text-body-700'
                         )
                       }
                     >
@@ -83,7 +83,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
               className={({ selected }) =>
                 classNames(
                   'w-full px-3 py-2 font-medium text-sm rounded-md',
-                  selected ? 'bg-gray-100 text-gray-700' : 'text-gray-500 hover:text-gray-700'
+                  selected ? 'bg-body-100 text-body-700' : 'text-body-500 hover:text-body-700'
                 )
               }
             >

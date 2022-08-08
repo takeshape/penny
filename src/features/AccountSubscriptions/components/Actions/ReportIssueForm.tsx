@@ -57,7 +57,7 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
     >
       <div className="md:h-[calc(1/4*100vh)] p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
             <p className="mb-4">Created ticket #{ticket?.id}</p>
             <p>We&apos;ll be in touch soon.</p>
           </div>

@@ -53,7 +53,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
     >
       <div className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">Your payment method has been removed.</p>
           </div>
         ) : (
@@ -62,7 +62,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
               Confirm remove payment method
             </h3>
 
-            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <div className="flex items-center gap-8">
                 <CreditCardIcon className="h-24 w-24 mb-4" />
                 <span>{instrument.maskedNumber}</span>

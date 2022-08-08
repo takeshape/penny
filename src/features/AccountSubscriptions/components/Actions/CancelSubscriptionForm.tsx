@@ -52,7 +52,7 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">Your subscription has been canceled.</p>
             <p className="text-sm">If this was a mistake you can contact support to re-start it.</p>
           </div>
@@ -62,7 +62,7 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
               Confirm cancel subscription
             </h3>
 
-            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
                 This will cancel your subscription and
                 <br /> prevent the processing of all future orders.

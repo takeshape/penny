@@ -14,10 +14,10 @@ export const AddPaymentMethod = ({ customerId }) => {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="relative block w-full border border-gray-300 border-dashed rounded-lg p-8 h-full text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="relative block w-full border border-body-300 border-dashed rounded-lg p-8 h-full text-center hover:border-body-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
       >
-        <CreditCardIcon className="mx-auto h-12 w-12 text-gray-400" />
-        <span className="mt-2 block text-sm font-medium text-gray-900">Add payment method</span>
+        <CreditCardIcon className="mx-auto h-12 w-12 text-body-400" />
+        <span className="mt-2 block text-sm font-medium text-body-900">Add payment method</span>
       </button>
 
       <AddForm isOpen={isOpen} onClose={() => setIsOpen(false)} customerId={customerId} />

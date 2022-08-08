@@ -94,7 +94,7 @@ export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscr
                 <td className="py-6 font-medium text-right whitespace-nowrap">
                   <NextLink
                     href={`/account/subscriptions/${shopifyGidToId(subscription.id)}`}
-                    className="text-indigo-600"
+                    className="text-accent-600"
                   >
                     View<span className="hidden lg:inline"> Subscription</span>
                   </NextLink>

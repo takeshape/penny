@@ -54,7 +54,7 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-2">
               Your <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> order is being processed now.
             </p>
@@ -65,7 +65,7 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
               Confirm order now
             </h3>
             {order.status === 'scheduled' && (
-              <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+              <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
                 <p className="mb-4">
                   Your next order scheduled for <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will
                   be processed and shipped immediately.
