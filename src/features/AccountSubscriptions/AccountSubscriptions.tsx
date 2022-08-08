@@ -21,7 +21,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
             {activeSubscriptions.map((subscription) => (
               <div
                 key={subscription.id}
-                className="bg-white border-t border-b border-gray-200 shadow-sm sm:rounded-lg sm:border"
+                className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
                 <ActiveSubscription subscription={subscription} />
               </div>
@@ -29,8 +29,8 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
           </div>
         ) : (
           <div className="relative block w-full p-12 text-center">
-            <RefreshIcon className="mx-auto h-12 w-12 text-gray-400" />
-            <span className="mt-2 block text-sm font-medium text-gray-900">No active subscriptions</span>
+            <RefreshIcon className="mx-auto h-12 w-12 text-body-400" />
+            <span className="mt-2 block text-sm font-medium text-body-900">No active subscriptions</span>
           </div>
         )}
       </CardPanel>
@@ -41,7 +41,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
             {endedSubscriptions.map((subscription) => (
               <div
                 key={subscription.id}
-                className="bg-white border-t border-b border-gray-200 shadow-sm sm:rounded-lg sm:border"
+                className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
                 <EndedSubscription subscription={subscription} />
               </div>

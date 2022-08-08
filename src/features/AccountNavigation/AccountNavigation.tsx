@@ -30,8 +30,8 @@ export const AccountNavigation = ({ items }: AccountNavigationProps) => {
             <button
               className={classNames(
                 item.current
-                  ? 'bg-gray-50 text-indigo-700 hover:text-indigo-700 hover:bg-white'
-                  : 'text-gray-900 hover:text-gray-900 hover:bg-gray-50',
+                  ? 'bg-primary-50 text-accent-700 hover:text-accent-700 hover:bg-background'
+                  : 'text-primary-900 hover:text-primary-900 hover:bg-primary-50',
                 'group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full'
               )}
               aria-current={item.current ? 'page' : undefined}
@@ -39,8 +39,8 @@ export const AccountNavigation = ({ items }: AccountNavigationProps) => {
               <item.icon
                 className={classNames(
                   item.current
-                    ? 'text-indigo-500 group-hover:text-indigo-500'
-                    : 'text-gray-400 group-hover:text-gray-500',
+                    ? 'text-accent-500 group-hover:text-accent-500'
+                    : 'text-primary-400 group-hover:text-primary-500',
                   'flex-shrink-0 -ml-1 mr-3 h-6 w-6'
                 )}
                 aria-hidden="true"
@@ -51,10 +51,10 @@ export const AccountNavigation = ({ items }: AccountNavigationProps) => {
         ))}
         <button
           onClick={handleLogout}
-          className="text-gray-500 hover:text-gray-900 hover:bg-gray-50 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
+          className="text-body-500 hover:text-body-900 bg-body-300 hover:bg-body-400 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
         >
           <LogoutIcon
-            className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+            className="text-body-400 group-hover:text-body-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
             aria-hidden="true"
           />
           <span className="truncate">Sign Out</span>

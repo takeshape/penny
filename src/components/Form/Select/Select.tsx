@@ -36,11 +36,11 @@ export const FormSelect = <
   return (
     <div className={className}>
       <div className="flex justify-between">
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+        <label htmlFor={id} className="block text-sm font-medium text-form-700">
           {label}
         </label>
         {rules?.required && (
-          <span className="text-sm text-gray-400" id={`${id}-required`}>
+          <span className="text-sm text-form-400" id={`${id}-required`}>
             Required
           </span>
         )}
@@ -49,7 +49,7 @@ export const FormSelect = <
         id={id}
         {...props}
         {...field}
-        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+        className="mt-1 block w-full py-2 px-3 border border-form-300 bg-background text-form-900 rounded-md shadow-sm focus:outline-none focus:ring-accent-500 focus:border-accent-500 sm:text-sm disabled:bg-form-100 disabled:cursor-not-allowed"
       >
         {options.map(({ key, value, title, disabled }) => (
           <option key={key} value={value} disabled={disabled}>
@@ -58,7 +58,7 @@ export const FormSelect = <
         ))}
       </select>
       {helpText && (
-        <p className="mt-2 text-sm text-gray-500" id={`${id}-help-text`}>
+        <p className="mt-2 text-sm text-form-500" id={`${id}-help-text`}>
           {helpText}
         </p>
       )}

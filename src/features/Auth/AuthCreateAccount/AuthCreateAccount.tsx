@@ -3,8 +3,8 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
+import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { siteLogo } from 'config';
 import { signIn } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -83,13 +83,12 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+        <Logo className="h-12 w-auto" />
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Create your account</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={onSubmit}>
             {errorMessage && (
               <Alert
@@ -163,7 +162,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               Sign up
             </Button>
 
-            <div className="text-gray-500 text-sm">
+            <div className="text-body-500 text-sm">
               Already have an account?
               <a
                 href={`/api/auth/signin`}
@@ -171,7 +170,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
                   e.preventDefault();
                   signIn(undefined, { callbackUrl });
                 }}
-                className="ml-1 text-sm font-medium text-indigo-500 hover:text-indigo-500 cursor-pointer"
+                className="ml-1 text-sm font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >
                 Sign in
               </a>
@@ -183,17 +182,17 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               <div className="mt-4">
                 <div className="relative">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300" />
+                    <div className="w-full border-t border-body-300" />
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">OR</span>
+                    <span className="px-2 bg-background text-body-500">OR</span>
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <div>
                     <button
-                      className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+                      className="w-full inline-flex justify-center py-2 px-4 border border-body-300 rounded-md shadow-sm bg-background text-sm font-medium text-body-500 hover:bg-body-50"
                       onClick={signinGoogle}
                     >
                       <svg

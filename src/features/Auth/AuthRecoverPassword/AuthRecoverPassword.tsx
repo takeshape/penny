@@ -3,8 +3,8 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
+import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { siteLogo } from 'config';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { RecoverCustomerPasswordMutationResponse, RecoverCustomerPasswordMutationVariables } from 'types/takeshape';
@@ -47,13 +47,12 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className="mx-auto h-12 w-auto" src={siteLogo} alt="Workflow" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Reset your password</h2>
+        <Logo className="h-12 w-auto" />
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Reset your password</h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={onSubmit}>
             {hasErrors && (
               <Alert

@@ -13,10 +13,10 @@ export const AccountLoyaltyCard = ({ code, loyalty_card, assets }: AccountLoyalt
         </div>
       </div>
       <dl>
-        <dt className="font-bold text-sm uppercase">Member Code</dt>
-        <dd className="font-mono mb-1 tracking-widest">{code}</dd>
-        <dt className="font-bold text-sm uppercase">Balance</dt>
-        <dd className="font-mono mb-1 tracking-widest">{loyalty_card.balance} points</dd>
+        <dt className="font-bold text-body-900 text-sm uppercase">Member Code</dt>
+        <dd className="font-mono text-body-900 mb-1 tracking-widest">{code}</dd>
+        <dt className="font-bold text-body-900 text-sm uppercase">Balance</dt>
+        <dd className="font-mono text-body-900 mb-1 tracking-widest">{loyalty_card.balance} points</dd>
       </dl>
     </CardPanel>
   );

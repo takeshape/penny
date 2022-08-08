@@ -78,15 +78,15 @@ export const Modal = () => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-gray-100 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
+            <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-form-100 overflow-hidden rounded-xl bg-background shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
               <Combobox value={query} onChange={onSelectResult}>
                 <div className="relative">
                   <SearchIcon
-                    className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
+                    className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-form-400"
                     aria-hidden="true"
                   />
                   <Combobox.Input
-                    className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 placeholder-gray-400 focus:ring-0 sm:text-sm"
+                    className="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-form-800 placeholder-form-400 focus:ring-0 sm:text-sm"
                     placeholder="Search..."
                     onChange={onQueryChange}
                   />
@@ -104,9 +104,9 @@ export const Modal = () => {
 
                 {query !== '' && results.length === 0 && !loading && (
                   <div className="py-14 px-6 text-center text-sm sm:px-14">
-                    <ExclamationIcon className="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
-                    <p className="mt-4 font-semibold text-gray-900">No results found</p>
-                    <p className="mt-2 text-gray-500">We couldn’t find anything with that term. Please try again.</p>
+                    <ExclamationIcon className="mx-auto h-6 w-6 text-body-400" aria-hidden="true" />
+                    <p className="mt-4 font-semibold text-body-900">No results found</p>
+                    <p className="mt-2 text-body-500">We couldn’t find anything with that term. Please try again.</p>
                   </div>
                 )}
 

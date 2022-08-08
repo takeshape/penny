@@ -57,9 +57,9 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
   return (
     <>
       {text?.primary && (
-        <h3 className="text-sm font-semibold text-gray-400 tracking-wider uppercase">{text.primary}</h3>
+        <h3 className="text-sm font-semibold text-body-400 tracking-wider uppercase">{text.primary}</h3>
       )}
-      {text?.secondary && <p className="mt-4 text-base text-gray-500">{text.secondary}</p>}
+      {text?.secondary && <p className="mt-4 text-base text-body-500">{text.secondary}</p>}
       <form className="mt-4 sm:flex" onSubmit={handleSubmit}>
         <label htmlFor="email-address" className="sr-only">
           Email address
@@ -70,7 +70,7 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
           id="email-address"
           autoComplete="email"
           required
-          className="appearance-none min-w-0 w-full bg-white border border-gray-300 rounded-md shadow-sm py-2 px-4 text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:placeholder-gray-400"
+          className="appearance-none min-w-0 w-full bg-background border border-form-300 rounded-md shadow-sm py-2 px-4 text-base text-form-900 placeholder-form-500 focus:outline-none focus:ring-accent-500 focus:border-accent-500 focus:placeholder-form-400"
           placeholder="Enter your email"
         />
         <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />

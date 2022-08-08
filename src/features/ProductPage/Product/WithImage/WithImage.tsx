@@ -73,7 +73,7 @@ export const ProductWithImage = ({
         <Breadcrumbs breadcrumbs={breadcrumbs} />
 
         <div className="mt-4">
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">{name}</h1>
+          <h1 className="text-3xl font-extrabold tracking-tight text-body-900 sm:text-4xl">{name}</h1>
         </div>
 
         <section aria-labelledby="information-heading" className="mt-4">
@@ -82,9 +82,9 @@ export const ProductWithImage = ({
           </h2>
 
           <div className="flex items-center">
-            <p className="text-lg text-gray-900 sm:text-xl">{formatPrice(priceMin.currencyCode, priceMin.amount)}</p>
+            <p className="text-lg text-body-900 sm:text-xl">{formatPrice(priceMin.currencyCode, priceMin.amount)}</p>
 
-            <div className="ml-4 pl-4 border-l border-gray-300">
+            <div className="ml-4 pl-4 border-l border-body-300">
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <div>
@@ -92,11 +92,11 @@ export const ProductWithImage = ({
                   <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
                 </div>
                 {showReviewsLink ? (
-                  <a href="#reviews" className="ml-2 text-sm text-indigo-600 hover:text-indigo-500">
+                  <a href="#reviews" className="ml-2 text-sm text-accent-600 hover:text-accent-500">
                     {reviewHighlights.stats.count} reviews
                   </a>
                 ) : (
-                  <p className="ml-2 text-sm text-gray-500">{reviewHighlights.stats.count} reviews</p>
+                  <p className="ml-2 text-sm text-body-500">{reviewHighlights.stats.count} reviews</p>
                 )}
               </div>
             </div>
@@ -104,14 +104,14 @@ export const ProductWithImage = ({
 
           <div className="mt-4 space-y-6">
             <p
-              className="text-base text-gray-500 prose prose-sm"
+              className="text-base text-body-500 prose prose-sm"
               dangerouslySetInnerHTML={{ __html: descriptionHtml }}
             ></p>
           </div>
 
           <div className="mt-6 flex items-center">
             <CheckIcon className="flex-shrink-0 w-5 h-5 text-green-500" aria-hidden="true" />
-            <p className="ml-2 text-sm text-gray-500">In stock and ready to ship</p>
+            <p className="ml-2 text-sm text-body-500">In stock and ready to ship</p>
           </div>
         </section>
       </div>
@@ -144,10 +144,10 @@ export const ProductWithImage = ({
               )}
             </div>
             <div className="mt-4">
-              <a href="#" className="group inline-flex text-sm text-gray-500 hover:text-gray-700">
+              <a href="#" className="group inline-flex text-sm text-body-500 hover:text-body-700">
                 <span>What size should I buy?</span>
                 <QuestionMarkCircleIcon
-                  className="flex-shrink-0 ml-2 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                  className="flex-shrink-0 ml-2 h-5 w-5 text-body-400 group-hover:text-body-500"
                   aria-hidden="true"
                 />
               </a>
@@ -155,7 +155,7 @@ export const ProductWithImage = ({
             <div className="mt-10">
               <button
                 type="submit"
-                className="w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500"
+                className="w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body-50 focus:ring-accent-500"
                 onClick={handleAddToCart}
               >
                 Add to cart
@@ -164,10 +164,10 @@ export const ProductWithImage = ({
             <div className="mt-6 text-center">
               <a href="#" className="group inline-flex text-base font-medium">
                 <ShieldCheckIcon
-                  className="flex-shrink-0 mr-2 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                  className="flex-shrink-0 mr-2 h-6 w-6 text-body-400 group-hover:text-body-500"
                   aria-hidden="true"
                 />
-                <span className="text-gray-500 hover:text-gray-700">Lifetime Guarantee</span>
+                <span className="text-body-500 hover:text-body-700">Lifetime Guarantee</span>
               </a>
             </div>
           </form>

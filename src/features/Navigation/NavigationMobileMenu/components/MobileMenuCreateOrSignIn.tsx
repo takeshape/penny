@@ -8,7 +8,7 @@ export const MobileMenuCreateOrSignIn = () => {
   }
 
   return (
-    <div className="border-t border-gray-200 py-6 px-4 space-y-6">
+    <div className="border-t border-body-200 py-6 px-4 space-y-6">
       <div className="flow-root">
         <a
           href={`/api/auth/signin`}
@@ -16,7 +16,7 @@ export const MobileMenuCreateOrSignIn = () => {
             e.preventDefault();
             signIn();
           }}
-          className="-m-2 p-2 block font-medium text-gray-900 cursor-pointer"
+          className="-m-2 p-2 block font-medium text-body-900 cursor-pointer"
         >
           Create an account
         </a>
@@ -28,7 +28,7 @@ export const MobileMenuCreateOrSignIn = () => {
             e.preventDefault();
             signIn();
           }}
-          className="-m-2 p-2 block font-medium text-gray-900 cursor-pointer"
+          className="-m-2 p-2 block font-medium text-body-900 cursor-pointer"
         >
           Sign in
         </a>

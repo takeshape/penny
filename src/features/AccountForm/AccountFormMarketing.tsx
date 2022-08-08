@@ -156,10 +156,10 @@ export const AccountFormMarketing = () => {
       isValid={Object.entries(errors).length === 0}
       error={error}
     >
-      <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
+      <div className="px-4 py-5 bg-background space-y-6 sm:p-6">
         <fieldset>
           <legend className="sr-only">Newsletters</legend>
-          <div className="text-base font-medium text-gray-900" aria-hidden="true">
+          <div className="text-base font-medium text-body-900" aria-hidden="true">
             Newsletters
           </div>
           <div className="mt-4 space-y-4">
@@ -179,7 +179,7 @@ export const AccountFormMarketing = () => {
         </fieldset>
         <fieldset>
           <legend className="sr-only">Marketing</legend>
-          <div className="text-base font-medium text-gray-900" aria-hidden="true">
+          <div className="text-base font-medium text-body-900" aria-hidden="true">
             Marketing
           </div>
           <div className="mt-4 space-y-4">

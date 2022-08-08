@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
@@ -13,6 +14,14 @@ module.exports = {
       },
       gridTemplateRows: {
         '[auto,auto,1fr]': 'auto auto 1fr'
+      },
+      colors: {
+        primary: colors.gray,
+        accent: colors.indigo,
+        body: colors.gray,
+        inverted: colors.white,
+        background: colors.white,
+        form: colors.gray
       }
     }
   },

@@ -1,5 +1,5 @@
 /* Commerce */
-export const showCurrencySelector = false;
+export const showCurrencySelector = true;
 export const currencyList = ['CAD', 'USD', 'AUD', 'EUR', 'GBP'] as const;
 export const defaultCurrency = 'USD';
 
