@@ -1,7 +1,7 @@
 import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
-import NextImage from 'components/NextImage';
+import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
-import { showCurrencySelector, siteLogo } from 'config';
+import { showCurrencySelector } from 'config';
 import { useSetAtom } from 'jotai';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from '../types';
@@ -72,10 +72,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                 {/* Logo (lg+) */}
                 <div className="hidden lg:flex lg:items-center">
                   <NextLink href="/">
-                    <span className="sr-only">Workflow</span>
-                    <div className="h-8 w-8 relative">
-                      <NextImage src={siteLogo} alt="" height={100} width={100} className="w-auto h-8" />
-                    </div>
+                    <Logo className="h-8 w-8" />
                   </NextLink>
                 </div>
 
@@ -104,10 +101,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
 
                 {/* Logo (lg-) */}
                 <NextLink href="/" className="lg:hidden">
-                  <span className="sr-only">Workflow</span>
-                  <div className="h-8 w-8 relative">
-                    <NextImage src={siteLogo} height={100} width={100} alt="" className="w-auto h-8" />
-                  </div>
+                  <Logo className="h-8 w-8" />
                 </NextLink>
 
                 <div className="flex-1 flex items-center justify-end">
