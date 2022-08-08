@@ -20,9 +20,12 @@ export interface AccountLayoutProps extends LayoutProps {}
 export const Layout = ({ children, ...layout }: PropsWithChildren<AccountLayoutProps>) => {
   useSession({ required: true });
 
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
 
-  const items = accountNavigation.map((item) => ({ ...item, current: item.href === pathname }));
+  const items = accountNavigation.map((item) => ({
+    ...item,
+    current: asPath.startsWith(item.href)
+  }));
 
   return (
     <DefaultLayout {...layout}>
