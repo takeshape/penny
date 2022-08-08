@@ -1,7 +1,7 @@
 import FormTextarea from 'components/Form/Textarea/Textarea';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useSession } from 'next-auth/react';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -40,10 +40,10 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
   );
 
   const resetState = useCallback(() => {
-    if (isSubmitted) {
+    if (isSubmitSuccessful) {
       reset();
     }
-  }, [reset, isSubmitted]);
+  }, [reset, isSubmitSuccessful]);
 
   return (
     <ModalForm
@@ -80,7 +80,7 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

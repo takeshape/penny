@@ -1,6 +1,6 @@
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { Subscription } from '../../types';
@@ -76,7 +76,7 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

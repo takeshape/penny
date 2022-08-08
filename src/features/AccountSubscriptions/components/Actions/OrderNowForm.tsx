@@ -1,7 +1,7 @@
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubscriptionOrder } from '../../types';
@@ -22,7 +22,7 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting, isSubmitted, isSubmitSuccessful, errors }
+    formState: { isSubmitting, isSubmitted, isSubmitSuccessful }
   } = useForm<OrderNowFormValues>({
     defaultValues: {
       confirm: true
@@ -82,7 +82,7 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

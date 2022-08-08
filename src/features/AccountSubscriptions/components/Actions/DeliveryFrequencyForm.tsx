@@ -1,12 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { formatDeliverySchedule } from 'features/AccountSubscriptions/utils';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { SubscriptionDeliveryScheduleOption } from '../../types';
-import { ModalFormActions } from './ModalFormActions';
 
 export interface DeliveryFrequencyFormProps extends ModalProps {
   deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
@@ -30,7 +30,7 @@ export const DeliveryFrequencyForm = ({
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<DeliveryFrequencyFormValues>();
 
   const handleFormSubmit = useCallback(
@@ -128,7 +128,7 @@ export const DeliveryFrequencyForm = ({
       </section>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

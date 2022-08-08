@@ -1,6 +1,8 @@
 import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import {
   addDays,
   addMonths,
@@ -13,8 +15,6 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -63,7 +63,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<NextChargeDateFormValues>();
 
   const [month, setMonth] = useState(getMonth(new Date(currentNextChargeDate)));
@@ -184,7 +184,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
       </section>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

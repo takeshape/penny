@@ -1,9 +1,9 @@
-import cardValidator from 'card-validator';
 import FormInput from 'components/Form/Input/Input';
 import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { isBefore, lastDayOfMonth } from 'date-fns';
 import IMask from 'imask';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<AddFormValues>();
   const countries = useCountries();
 
@@ -49,13 +49,14 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      primaryText="Payment method"
+      primaryText="Add payment method"
+      secondaryText="Add a new payment method to use with subscriptions and purchases."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >
-      <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+      <div className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
             <p className="mb-4">Your payment method has been added.</p>
@@ -156,10 +157,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 placeholder="1234 1234 1234 1234"
                 type="text"
                 rules={{
-                  required: 'This field is required',
-                  validate: {
-                    isValid: (value: string) => cardValidator.number(value).isValid || 'Invalid card number'
-                  }
+                  required: 'This field is required'
                 }}
                 className="col-span-6 sm:col-span-6"
               />
@@ -192,11 +190,18 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                   }
                 ]}
                 placeholder="MM/YY"
-                // maxLength={4}
                 rules={{
                   required: 'This field is required',
                   validate: {
-                    isValid: (value: string) => cardValidator.expirationDate(value).isValid || 'Invalid expiration date'
+                    isValid: (value: string) => {
+                      const now = new Date();
+                      const [month, year] = value.split('/');
+                      const exp = new Date(Number(`20${year}`), Number(month), 1);
+                      if (isBefore(lastDayOfMonth(exp), now)) {
+                        return 'Invalid expiration date';
+                      }
+                      return true;
+                    }
                   }
                 }}
                 className="col-span-3 sm:col-span-3"
@@ -268,11 +273,11 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Add payment method"
+        submitText="Add card"
       />
     </ModalForm>
   );

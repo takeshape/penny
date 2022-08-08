@@ -1,8 +1,8 @@
 import { RadioGroup } from '@headlessui/react';
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import NextLink from 'components/NextLink';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
@@ -56,7 +56,7 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<PaymentMethodFormValues>();
 
   //  TODO Assuming we use this:
@@ -164,7 +164,7 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

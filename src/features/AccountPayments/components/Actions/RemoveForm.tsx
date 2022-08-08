@@ -1,7 +1,7 @@
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { getCreditCardIcon } from 'components/Payments/utils';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { PaymentMethod } from 'types/paymentMethod';
@@ -22,7 +22,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<RemoveFormValues>({
     defaultValues: {
       confirm: true
@@ -45,12 +45,13 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
       isOpen={isOpen}
       onClose={onClose}
       primaryText="Remove payment method"
+      secondaryText="Remove a payment method from your account."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >
-      <div className="md:h-[calc(1/6*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+      <div className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
             <p className="mb-4">Your payment method has been removed.</p>
@@ -78,11 +79,11 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Remove"
+        submitText="Remove card"
       />
     </ModalForm>
   );
