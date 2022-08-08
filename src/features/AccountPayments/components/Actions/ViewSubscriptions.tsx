@@ -1,8 +1,44 @@
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
+import { format } from 'date-fns';
 import { shopifyGidToId } from 'transforms/shopify';
-import { PaymentMethod } from 'types/paymentMethod';
+import { PaymentMethod, SubscriptionContract } from 'types/paymentMethod';
+
+import classNames from 'utils/classNames';
+
+export const SubscriptionStatus = ({ status }: Pick<SubscriptionContract, 'status'>) => {
+  let badgeText = '';
+  let badgeClasses = '';
+
+  switch (status) {
+    case 'ACTIVE':
+      badgeText = `Active`;
+      badgeClasses = 'bg-green-100 text-green-800';
+      break;
+
+    // case 'skipped':
+    //   badgeText = `Skipped`;
+    //   badgeClasses = 'bg-gray-100 text-gray-800';
+    //   break;
+
+    // case 'scheduled':
+    //   badgeText = `Scheduled`;
+    //   badgeClasses = 'bg-blue-100 text-blue-800';
+    //   break;
+
+    default:
+      badgeText = `${status}`;
+  }
+
+  return (
+    <span
+      className={classNames(badgeClasses, 'inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium ')}
+    >
+      {badgeText}
+    </span>
+  );
+};
 
 export interface ViewSubscriptionsProps extends ModalProps {
   paymentMethod: PaymentMethod;
@@ -19,7 +55,7 @@ export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscr
               Product
             </th>
             <th scope="col" className="hidden w-1/5 pr-8 py-3 font-normal sm:table-cell">
-              Price
+              Started
             </th>
             <th scope="col" className="hidden pr-8 py-3 font-normal sm:table-cell">
               Status
@@ -46,8 +82,10 @@ export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscr
                   </div>
                 </div>
               </td>
-              <td className="hidden py-6 pr-8 sm:table-cell">{subscription.createdAt}</td>
-              <td className="hidden py-6 pr-8 sm:table-cell">{subscription.status}</td>
+              <td className="hidden py-6 pr-8 sm:table-cell">{format(new Date(subscription.createdAt), 'PPP')}</td>
+              <td className="hidden py-6 pr-8 sm:table-cell">
+                <SubscriptionStatus status={subscription.status} />
+              </td>
               <td className="py-6 font-medium text-right whitespace-nowrap">
                 <NextLink
                   href={`/account/subscriptions/${shopifyGidToId(subscription.id)}`}
