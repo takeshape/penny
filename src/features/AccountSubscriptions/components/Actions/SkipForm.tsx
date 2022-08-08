@@ -1,7 +1,7 @@
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubscriptionOrder } from '../../types';
@@ -21,7 +21,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
   const {
     handleSubmit,
     register,
-    formState: { isSubmitting, isSubmitted, isSubmitSuccessful },
+    formState: { isSubmitting, isSubmitSuccessful },
     reset
   } = useForm<SkipFormValues>({
     defaultValues: {
@@ -54,7 +54,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
-          <div className="h-full font-medium flex flex-col items-center justify-center text-gray-600">
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">
               Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> has been skipped.
             </p>
@@ -68,7 +68,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
               Confirm skip order
             </h3>
             {order.status === 'scheduled' && (
-              <div className="h-full font-medium flex flex-col items-center justify-center text-center text-gray-600">
+              <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
                 <p className="mb-4">
                   Your order will not be processed on{' '}
                   <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.
@@ -85,7 +85,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

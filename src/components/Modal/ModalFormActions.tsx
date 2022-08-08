@@ -22,7 +22,7 @@ export const ModalFormActions = ({
       <Button disabled={isSubmitting || isSubmitted} onClick={onCancel} color="clear" type="button">
         Cancel
       </Button>
-      <Button disabled={disableSubmit || isSubmitting || isSubmitted} color="primary" type="submit">
+      <Button disabled={disableSubmit === true || isSubmitting || isSubmitted} color="primary" type="submit">
         {submitText ?? 'Update subscription'}
       </Button>
     </div>

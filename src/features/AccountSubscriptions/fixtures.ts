@@ -1896,21 +1896,21 @@ export const subscriptions: RawSubscription[] = [
       amount: 16000
     },
     deliverySchedule: {
-      interval: 'MONTH',
-      intervalCount: 3
+      interval: 'DAY',
+      intervalCount: 30
     },
     deliveryScheduleOptions: [
       {
-        interval: 'MONTH',
-        intervalCount: 1
+        interval: 'DAY',
+        intervalCount: 30
       },
       {
-        interval: 'MONTH',
-        intervalCount: 3
+        interval: 'DAY',
+        intervalCount: 60
       },
       {
-        interval: 'MONTH',
-        intervalCount: 6
+        interval: 'DAY',
+        intervalCount: 90
       }
     ],
     shippingAddress: {
@@ -2249,21 +2249,21 @@ export const subscriptions: RawSubscription[] = [
       amount: 16000
     },
     deliverySchedule: {
-      interval: 'MONTH',
-      intervalCount: 3
+      interval: 'DAY',
+      intervalCount: 30
     },
     deliveryScheduleOptions: [
       {
-        interval: 'MONTH',
-        intervalCount: 1
+        interval: 'DAY',
+        intervalCount: 30
       },
       {
-        interval: 'MONTH',
-        intervalCount: 3
+        interval: 'DAY',
+        intervalCount: 60
       },
       {
-        interval: 'MONTH',
-        intervalCount: 6
+        interval: 'DAY',
+        intervalCount: 90
       }
     ],
     shippingAddress: {

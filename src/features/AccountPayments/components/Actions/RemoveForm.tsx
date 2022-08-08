@@ -1,41 +1,42 @@
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { getCreditCardIcon } from 'components/Payments/utils';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { Subscription } from '../../types';
+import { PaymentMethod } from 'types/paymentMethod';
 
-export interface CancelSubscriptionFormProps extends ModalProps {
-  subscription: Subscription;
+export interface RemoveFormProps extends ModalProps {
+  paymentMethod: PaymentMethod;
 }
 
-export interface CancelSubscriptionFormValues {
+export interface RemoveFormValues {
   confirm: boolean;
 }
 
 /**
  * TODO Handle submit errors
  */
-export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: CancelSubscriptionFormProps) => {
+export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) => {
   const {
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
-  } = useForm<CancelSubscriptionFormValues>({
+    formState: { isSubmitting, isSubmitSuccessful }
+  } = useForm<RemoveFormValues>({
     defaultValues: {
       confirm: true
     }
   });
 
-  const handleFormSubmit = useCallback(
-    async (formData: CancelSubscriptionFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, subscription });
-      // TODO Mutate subscription to show canceled
-    },
-    [subscription]
-  );
+  const { instrument } = paymentMethod;
+  const CreditCardIcon = getCreditCardIcon(instrument.brand);
+
+  const handleFormSubmit = useCallback(async (formData: RemoveFormValues) => {
+    // eslint-disable-next-line no-console
+    console.log({ formData });
+    // TODO Mutate payment methods list
+  }, []);
 
   const resetState = useCallback(() => reset(), [reset]);
 
@@ -43,31 +44,33 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      primaryText="Cancel subscription"
-      secondaryText="Will stop all future orders from being processed."
+      primaryText="Remove payment method"
+      secondaryText="Remove a payment method from your account."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >
-      <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+      <div className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
-            <p className="mb-4">Your subscription has been canceled.</p>
-            <p className="text-sm">If this was a mistake you can contact support to re-start it.</p>
+            <p className="mb-4">Your payment method has been removed.</p>
           </div>
         ) : (
           <section aria-labelledby="confirm-heading" className="h-full">
             <h3 id="confirm-heading" className="sr-only">
-              Confirm cancel subscription
+              Confirm remove payment method
             </h3>
 
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
-              <p className="mb-4">
-                This will cancel your subscription and
-                <br /> prevent the processing of all future orders.
+              <div className="flex items-center gap-8">
+                <CreditCardIcon className="h-24 w-24 mb-4" />
+                <span>{instrument.maskedNumber}</span>
+              </div>
+              <p className="mb-4 px-12">
+                Removing this payment method may cause some subscriptions to fail to be processed.
               </p>
-              <p>Would you like to continue?</p>
+              <p>Would you like to remove it?</p>
             </div>
 
             <input {...register('confirm')} className="hidden" />
@@ -80,7 +83,7 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Cancel subscription"
+        submitText="Remove card"
       />
     </ModalForm>
   );

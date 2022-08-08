@@ -1,4 +1,6 @@
 import { AccountPayments } from 'features/AccountPayments/AccountPayments';
+import { paymentMethods } from 'features/AccountPayments/fixtures';
+import { getPaymentMethods } from 'features/AccountPayments/transforms';
 import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
@@ -6,7 +8,7 @@ import { InferGetStaticPropsType, NextPage } from 'next';
 const AccountPaymentsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Payment Methods' }}>
-      <AccountPayments />
+      <AccountPayments paymentMethods={getPaymentMethods(paymentMethods)} />
     </Layout>
   );
 };

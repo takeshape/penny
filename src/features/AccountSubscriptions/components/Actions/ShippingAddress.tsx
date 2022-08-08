@@ -2,8 +2,8 @@ import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { ShippingAddress } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,7 +24,7 @@ export const ShippingAddressForm = ({ isOpen, onClose, currentAddress }: Shippin
     control,
     watch,
     reset,
-    formState: { isSubmitting, isSubmitted, isSubmitSuccessful }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<ShippingAddress>();
 
   const handleFormSubmit = useCallback(
@@ -190,7 +190,7 @@ export const ShippingAddressForm = ({ isOpen, onClose, currentAddress }: Shippin
       </section>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

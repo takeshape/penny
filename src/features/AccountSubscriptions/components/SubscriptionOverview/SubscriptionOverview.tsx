@@ -93,18 +93,18 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                   <div className="flex">
                     <div className="flex-grow">
                       <a href={product.url} className="block mb-1">
-                        <h4 className="font-medium text-gray-900 inline-block">{product.name}</h4>
+                        <h4 className="font-medium text-body-900 inline-block">{product.name}</h4>
                       </a>
-                      <div className="text-sm font-medium text-gray-500">{product.variantName}</div>
-                      <div className="text-sm font-medium text-gray-500">Quantity: {product.quantity}</div>
-                      <p className="hidden mt-2 text-sm text-gray-500 sm:block">{product.description}</p>
+                      <div className="text-sm font-medium text-body-500">{product.variantName}</div>
+                      <div className="text-sm font-medium text-body-500">Quantity: {product.quantity}</div>
+                      <p className="hidden mt-2 text-sm text-body-500 sm:block">{product.description}</p>
                     </div>
                   </div>
                   {isActive && (
                     <div className="mt-2 sm:mt-0">
                       <button
                         onClick={() => setIsProductOptionsOpen(true)}
-                        className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                        className="whitespace-nowrap text-sm font-medium text-accent-600 hover:text-accent-500"
                       >
                         Update Product
                       </button>
@@ -118,7 +118,7 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                     <div className="mt-2 sm:mt-0">
                       <button
                         onClick={() => setIsPaymentMethodOpen(true)}
-                        className="text-indigo-600 hover:text-indigo-500"
+                        className="text-accent-600 hover:text-accent-500"
                       >
                         Update Payment Method
                       </button>

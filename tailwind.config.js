@@ -16,11 +16,17 @@ module.exports = {
         '[auto,auto,1fr]': 'auto auto 1fr'
       },
       colors: {
+        // Primary brand color for links, buttons, etc.
         primary: colors.gray,
+        // A contrast color for emphasizing UI
         accent: colors.indigo,
+        // Body foreground color
         body: colors.gray,
+        // Inverted body foreground color, for e.g., a dark theme
         inverted: colors.white,
+        // Body background color
         background: colors.white,
+        // Form text
         form: colors.gray
       }
     }

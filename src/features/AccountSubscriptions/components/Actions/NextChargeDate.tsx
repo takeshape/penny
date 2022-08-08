@@ -1,6 +1,8 @@
 import { RadioGroup } from '@headlessui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import {
   addDays,
   addMonths,
@@ -13,8 +15,6 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
@@ -63,7 +63,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<NextChargeDateFormValues>();
 
   const [month, setMonth] = useState(getMonth(new Date(currentNextChargeDate)));
@@ -110,12 +110,12 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
         <h3 id="options-heading" className="sr-only">
           Next charge date
         </h3>
-        <div className="flex items-center text-gray-900">
+        <div className="flex items-center text-body-900">
           <button
             type="button"
             disabled={month.isCurrentMonth}
             onClick={handlePrevMonth}
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-body-400 hover:text-body-500"
           >
             <span className="sr-only">Previous month</span>
             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
@@ -124,13 +124,13 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
           <button
             type="button"
             onClick={handleNextMonth}
-            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-body-400 hover:text-body-500"
           >
             <span className="sr-only">Next month</span>
             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
-        <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+        <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-body-500">
           <div>S</div>
           <div>M</div>
           <div>T</div>
@@ -153,7 +153,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
                     disabled={!day.isCurrentMonth}
                     className={({ checked }) =>
                       classNames(
-                        'text-gray-900 hover:bg-gray-100 focus:z-10 rounded-lg cursor-pointer',
+                        'text-body-900 hover:bg-body-100 focus:z-10 rounded-lg cursor-pointer',
                         (checked || day.isToday) && 'font-semibold',
                         !day.isCurrentMonth && 'cursor-default hover:bg-transparent'
                       )
@@ -166,8 +166,8 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
                             dateTime={day.date}
                             className={classNames(
                               'mx-auto flex items-center justify-center py-2.5 rounded-lg',
-                              checked && 'bg-indigo-600 text-white',
-                              day.isToday && !checked && 'bg-gray-300'
+                              checked && 'bg-accent-600 text-white',
+                              day.isToday && !checked && 'bg-body-300'
                             )}
                           >
                             {day.date.split('-').pop().replace(/^0/, '')}
@@ -184,7 +184,7 @@ export const NextChargeDateForm = ({ isOpen, onClose, currentNextChargeDate }: N
       </section>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

@@ -1,8 +1,8 @@
 import { RadioGroup } from '@headlessui/react';
 import { ModalProps } from 'components/Modal/Modal';
+import { ModalForm } from 'components/Modal/ModalForm';
+import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import NextLink from 'components/NextLink';
-import { ModalForm } from 'features/AccountSubscriptions/components/Actions/ModalForm';
-import { ModalFormActions } from 'features/AccountSubscriptions/components/Actions/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
@@ -56,7 +56,7 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<PaymentMethodFormValues>();
 
   //  TODO Assuming we use this:
@@ -115,7 +115,7 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
                         classNames(
                           paymentIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
                           paymentIdx === paymentMethods.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
-                          checked ? 'bg-indigo-50 border-indigo-200 z-10' : 'border-gray-200',
+                          checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
                           'relative border p-4 flex cursor-pointer focus:outline-none'
                         )
                       }
@@ -124,8 +124,8 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
                         <>
                           <span
                             className={classNames(
-                              checked ? 'bg-indigo-600 border-transparent' : 'bg-white border-gray-300',
-                              active ? 'ring-2 ring-offset-2 ring-indigo-500' : '',
+                              checked ? 'bg-accent-600 border-transparent' : 'bg-white border-body-300',
+                              active ? 'ring-2 ring-offset-2 ring-accent-500' : '',
                               'h-4 w-4 mt-0.5 cursor-pointer shrink-0 rounded-full border flex items-center justify-center'
                             )}
                             aria-hidden="true"
@@ -136,7 +136,7 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
                             <RadioGroup.Label
                               as="span"
                               className={classNames(
-                                checked ? 'text-indigo-900' : 'text-gray-900',
+                                checked ? 'text-accent-900' : 'text-body-900',
                                 'block text-sm font-medium'
                               )}
                             >
@@ -157,14 +157,14 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
       <div className="mt-4 flex items-center justify-center">
         <NextLink
           href="/account/payments"
-          className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
+          className="whitespace-nowrap text-sm font-medium text-accent-600 hover:text-accent-500"
         >
           Add a payment method
         </NextLink>
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitted}
+        isSubmitted={isSubmitSuccessful}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"

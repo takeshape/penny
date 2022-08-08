@@ -17,7 +17,7 @@ export const OrderItem = ({ order }: OrderItemProps) => {
         <OrderItemHeader {...order} />
       </div>
 
-      <div className="mt-2 -mb-6 flow-root border-t border-gray-200 divide-y divide-gray-200">
+      <div className="mt-2 -mb-6 flow-root border-t border-body-200 divide-y divide-body-200">
         <div key={product.id} className="py-6 sm:flex">
           <div className="flex space-x-4 sm:min-w-0 sm:flex-1 sm:space-x-6 lg:space-x-8">
             <NextImage
@@ -28,12 +28,12 @@ export const OrderItem = ({ order }: OrderItemProps) => {
               className="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-24 sm:h-24"
             />
             <div className="pt-1.5 min-w-0 flex-1 sm:pt-0">
-              <h3 className="font-medium text-gray-900">
+              <h3 className="font-medium text-body-900">
                 <a href={product.url}>{product.name}</a>
               </h3>
-              <p className="text-sm text-gray-500">{product.variantName}</p>
-              <p className="text-sm text-gray-500">Quantity: {product.quantity}</p>
-              <p className="mt-1 font-medium text-gray-900">
+              <p className="text-sm text-body-500">{product.variantName}</p>
+              <p className="text-sm text-body-500">Quantity: {product.quantity}</p>
+              <p className="mt-1 font-medium text-body-900">
                 {formatPrice(product.price.currencyCode, product.price.amount)}
               </p>
             </div>
