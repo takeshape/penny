@@ -29,13 +29,6 @@ export const PaymentMethod = (paymentMethod: TPaymentMethod) => {
         </div>
       </div>
       <div className="flex flex-row justify-end gap-4 px-2 mt-8 text-sm">
-        <button
-          type="button"
-          onClick={() => setIsRemoveFormOpen(true)}
-          className="whitespace-nowrap font-medium text-accent-600 hover:text-accent-500"
-        >
-          Remove
-        </button>
         {paymentMethod.subscriptionContracts?.length > 0 && (
           <button
             type="button"
@@ -45,6 +38,13 @@ export const PaymentMethod = (paymentMethod: TPaymentMethod) => {
             Subscriptions
           </button>
         )}
+        <button
+          type="button"
+          onClick={() => setIsRemoveFormOpen(true)}
+          className="whitespace-nowrap font-medium text-accent-600 hover:text-accent-500"
+        >
+          Remove
+        </button>
       </div>
       <RemoveForm isOpen={isRemoveFormOpen} onClose={() => setIsRemoveFormOpen(false)} paymentMethod={paymentMethod} />
       {paymentMethod.subscriptionContracts?.length > 0 && (

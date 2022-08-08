@@ -26,7 +26,7 @@ export const SubscriptionStatus = ({ status }: Pick<SubscriptionContract, 'statu
     case 'CANCELLED':
     case 'PAUSED':
     default:
-      badgeText = `Skipped`;
+      badgeText = `Ended`;
       badgeClasses = 'bg-gray-100 text-gray-800';
       break;
   }
