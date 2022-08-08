@@ -17,4 +17,9 @@ _ProductGrid.args = {
   items: productCategoryCollection.items
 };
 
+export const Loading = Template.bind({});
+Loading.args = {
+  items: [null, null, null]
+};
+
 export default Meta;

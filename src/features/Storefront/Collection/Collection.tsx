@@ -11,16 +11,16 @@ export const Collection = (props: CollectionProps) => {
   if (!(collection.items ?? collection.items.length)) return null;
 
   return (
-    <section aria-labelledby="trending-heading" className="bg-white">
+    <section aria-labelledby="trending-heading" className="bg-background">
       <div className="py-16 sm:py-24 lg:max-w-7xl lg:mx-auto lg:py-32 lg:px-8">
         <div className="px-4 flex items-center justify-between sm:px-6 lg:px-0">
-          <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
+          <h2 id="trending-heading" className="text-2xl font-extrabold tracking-tight text-body-900">
             {collection.name}
           </h2>
 
           <NextLink
             href={collection.url}
-            className="hidden sm:block text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+            className="hidden sm:block text-sm font-semibold text-accent-600 hover:text-accent-500"
           >
             See everything<span aria-hidden="true"> &rarr;</span>
           </NextLink>
@@ -41,7 +41,7 @@ export const Collection = (props: CollectionProps) => {
         </div>
 
         <div className="mt-12 px-4 sm:hidden">
-          <NextLink href={collection.url} className="text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+          <NextLink href={collection.url} className="text-sm font-semibold text-accent-600 hover:text-accent-500">
             See everything<span aria-hidden="true"> &rarr;</span>
           </NextLink>
         </div>

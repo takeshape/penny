@@ -36,10 +36,10 @@ export const Reviews = ({
   const { asPath } = useRouter();
 
   return (
-    <section id="reviews" aria-labelledby="reviews-heading" className="bg-white">
+    <section id="reviews" aria-labelledby="reviews-heading" className="bg-background">
       <div className="max-w-2xl mx-auto py-24 px-4 sm:px-6 lg:max-w-7xl lg:py-32 lg:px-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
         <div className="lg:col-span-4">
-          <h2 id="reviews-heading" className="text-2xl font-extrabold tracking-tight text-gray-900">
+          <h2 id="reviews-heading" className="text-2xl font-extrabold tracking-tight text-body-900">
             Customer Reviews
           </h2>
 
@@ -48,7 +48,7 @@ export const Reviews = ({
               <Stars rating={stats.average ?? 0} />
               <p className="sr-only">{stats.average ?? 0} out of 5 stars</p>
             </div>
-            {stats.average !== null && <p className="ml-2 text-sm text-gray-900">Based on {stats.count} reviews</p>}
+            {stats.average !== null && <p className="ml-2 text-sm text-body-900">Based on {stats.count} reviews</p>}
           </div>
 
           {rollup && (
@@ -60,22 +60,22 @@ export const Reviews = ({
           )}
 
           <div className="mt-10">
-            <h3 className="text-lg font-medium text-gray-900">Share your thoughts</h3>
-            <p className="mt-1 text-sm text-gray-600">
+            <h3 className="text-lg font-medium text-body-900">Share your thoughts</h3>
+            <p className="mt-1 text-sm text-body-600">
               If you&rsquo;ve used this product, share your thoughts with other customers
             </p>
 
             {session ? (
               <Button
                 onClick={onCreateReview}
-                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full cursor-pointer"
+                className="mt-6 inline-flex w-full bg-background border border-form-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-50 sm:w-auto lg:w-full cursor-pointer"
               >
                 Write a review
               </Button>
             ) : (
               <span
                 onClick={() => signIn(undefined, { callbackUrl: `${asPath}?writeReview=true` })}
-                className="mt-6 inline-flex w-full bg-white border border-gray-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full cursor-pointer"
+                className="mt-6 inline-flex w-full bg-background border border-form-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-50 sm:w-auto lg:w-full cursor-pointer"
               >
                 Sign in to write a review
               </span>
@@ -100,7 +100,7 @@ export const Reviews = ({
         </div>
 
         {totalPages && (
-          <div className="mt-12 flex items-center lg:col-start-6 lg:col-span-7">
+          <div className="mt-12 flex items-center lg:col-start-6 lg:col-span-7 text-body-900">
             <div className="mr-2">
               Page {currentPage} of {totalPages}
             </div>

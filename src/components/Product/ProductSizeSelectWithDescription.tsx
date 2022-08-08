@@ -26,7 +26,7 @@ export const ProductSizeSelectWithDescription = ({
 
   return (
     <RadioGroup value={value} onChange={onChange}>
-      <RadioGroup.Label className="block text-sm font-medium text-gray-700">{label}</RadioGroup.Label>
+      <RadioGroup.Label className="block text-sm font-medium text-form-700">{label}</RadioGroup.Label>
       <div className={`mt-1 ${gridClasses}`}>
         {options.map((size) => (
           <RadioGroup.Option
@@ -36,23 +36,23 @@ export const ProductSizeSelectWithDescription = ({
             disabled={!size.hasStock}
             className={({ active }) =>
               classNames(
-                active ? 'ring-2 ring-indigo-500' : '',
-                'relative block border border-gray-300 rounded-lg p-4 cursor-pointer focus:outline-none'
+                active ? 'ring-2 ring-accent-500' : '',
+                'relative block border border-form-300 bg-background rounded-lg p-4 cursor-pointer focus:outline-none'
               )
             }
           >
             {({ active, checked }) => (
               <>
-                <RadioGroup.Label as="p" className="text-base font-medium text-gray-900">
+                <RadioGroup.Label as="p" className="text-base font-medium text-form-900">
                   {size.name}
                 </RadioGroup.Label>
-                <RadioGroup.Description as="p" className="mt-1 text-sm text-gray-500">
+                <RadioGroup.Description as="p" className="mt-1 text-sm text-form-500">
                   {(size.description as string) ?? ''}
                 </RadioGroup.Description>
                 <div
                   className={classNames(
                     active ? 'border' : 'border-2',
-                    checked ? 'border-indigo-500' : 'border-transparent',
+                    checked ? 'border-accent-500' : 'border-transparent',
                     'absolute -inset-px rounded-lg pointer-events-none'
                   )}
                   aria-hidden="true"

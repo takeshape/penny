@@ -14,11 +14,11 @@ export const TopCartIcon = () => {
         className="group -m-2 p-2 flex items-center"
       >
         <ShoppingCartIcon
-          className="flex-shrink-0 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+          className="flex-shrink-0 h-6 w-6 text-primary-400 group-hover:text-primary-500"
           aria-hidden="true"
         />
         <ClientOnly>
-          <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cartQuantity}</span>
+          <span className="ml-2 text-sm font-medium text-primary-700 group-hover:text-primary-800">{cartQuantity}</span>
         </ClientOnly>
         <span className="sr-only">items in cart, view cart</span>
       </div>

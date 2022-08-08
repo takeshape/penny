@@ -10,7 +10,9 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
   return (
     <Combobox.Option
       value={product.url}
-      className={({ active }) => classNames('flex cursor-pointer select-none rounded-xl p-3', active && 'bg-gray-100')}
+      className={({ active }) =>
+        classNames('flex cursor-pointer select-none rounded-xl p-3', active && 'bg-primary-100')
+      }
     >
       {({ active }) => (
         <>
@@ -23,11 +25,11 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
             />
           </div>
           <div className="ml-4 flex-auto">
-            <p className={classNames('text-sm font-medium', active ? 'text-gray-900' : 'text-gray-700')}>
+            <p className={classNames('text-sm font-medium', active ? 'text-primary-900' : 'text-primary-700')}>
               {product.name}
             </p>
             {product.description && (
-              <p className={classNames('text-sm', active ? 'text-gray-700' : 'text-gray-500')}>
+              <p className={classNames('text-sm', active ? 'text-body-700' : 'text-body-500')}>
                 {truncate(product.description, { length: 160, separator: ' ' })}
               </p>
             )}

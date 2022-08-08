@@ -41,7 +41,7 @@ function getFulfillmentStatus(
     case Shopify_FulfillmentDisplayStatus.PickedUp:
       return {
         label: 'Delivered',
-        color: 'indigo',
+        color: 'accent',
         text: 'Delivered at',
         date: deliveredAt ?? updatedAt
       };

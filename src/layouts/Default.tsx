@@ -24,7 +24,7 @@ export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<
         <SearchModal />
         <Navigation {...navigation} />
 
-        <main id="content" className="flex flex-col grow">
+        <main id="content" className="flex flex-col grow bg-background">
           {children}
         </main>
 
