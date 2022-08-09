@@ -60,7 +60,7 @@ export const AccountNavigation = () => {
               className={classNames(
                 item.current
                   ? 'bg-primary-50 text-accent-700 hover:text-accent-700 hover:bg-background'
-                  : 'text-primary-900 hover:text-primary-900 hover:bg-primary-50',
+                  : 'text-primary-800 hover:text-primary-800 hover:bg-primary-50',
                 'group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full'
               )}
               aria-current={item.current ? 'page' : undefined}

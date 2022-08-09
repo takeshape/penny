@@ -4,10 +4,15 @@ import { isStorybook } from 'config';
 import { useAtom } from 'jotai';
 import { Fragment } from 'react';
 import { isMobileMenuOpenAtom } from 'store';
+import classNames from 'utils/classNames';
 import { Navigation } from '../types';
-import { MobileMenuCreateOrSignIn } from './components/MobileMenuCreateOrSignIn';
+import { MobileMenuAccount } from './components/MobileMenuAccount';
 import { MobileMenuCurrencySelect } from './components/MobileMenuCurrencySelect';
 import { MobileMenuLinks } from './components/MobileMenuLinks';
+
+const Divider = ({ className }: { className?: string }) => (
+  <div className={classNames('border-t border-body-200', className)} />
+);
 
 export const NavigationMobileMenu = ({ sections, currencies }: Pick<Navigation, 'currencies' | 'sections'>) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useAtom(isMobileMenuOpenAtom);
@@ -54,13 +59,13 @@ export const NavigationMobileMenu = ({ sections, currencies }: Pick<Navigation, 
               </button>
             </div>
 
-            <MobileMenuCreateOrSignIn />
-
             <MobileMenuLinks sections={sections} />
-
-            <div className="border-t border-body-200 py-6 px-4 space-y-6">
+            <Divider />
+            <div className="py-6 px-6 space-y-6">
               <MobileMenuCurrencySelect currencies={currencies} />
             </div>
+            <Divider />
+            <MobileMenuAccount />
           </div>
         </Transition.Child>
       </Dialog>

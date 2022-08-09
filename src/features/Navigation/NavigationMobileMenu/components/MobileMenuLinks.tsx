@@ -1,77 +1,64 @@
-import { Tab } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import NextLink from 'components/NextLink';
-import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import { Navigation } from '../../types';
 
 export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
-  const withSubsections = sections.filter((section) => section.subsections);
-  const withoutSubsections = sections.filter((section) => !section.subsections);
   return (
-    <Fragment>
-      {/* Links */}
-      {Boolean(withSubsections.length) && (
-        <Tab.Group as="div" className="mt-2">
-          <div className="border-b border-body-200">
-            <Tab.List className="-mb-px flex px-4 space-x-8">
-              {withSubsections.map((section) => (
-                <Tab
-                  key={section.name}
-                  className={({ selected }) =>
-                    classNames(
-                      selected ? 'text-accent-600 border-accent-600' : 'text-primary-900 border-transparent',
-                      'flex-1 whitespace-nowrap py-4 px-1 border-b-2 text-base font-medium'
-                    )
-                  }
-                >
-                  {section.name}
-                </Tab>
-              ))}
-            </Tab.List>
-          </div>
-          <Tab.Panels as={Fragment}>
-            {withSubsections.map((section, sectionIdx) => (
-              <Tab.Panel key={section.name} className="px-4 pt-10 pb-6 space-y-12">
-                <div className="grid grid-cols-1 items-start gap-y-10 gap-x-6">
-                  {section.subsections.map((subsection) => (
-                    <div key={subsection.name} className="grid grid-cols-1 gap-y-10 gap-x-6">
-                      <div>
-                        <p id={`mobile-featured-heading-${sectionIdx}`} className="font-medium text-body-900">
-                          {subsection.name}
-                        </p>
-                        <ul
-                          role="list"
-                          aria-labelledby={`mobile-featured-heading-${sectionIdx}`}
-                          className="mt-6 space-y-6"
-                        >
-                          {subsection.links?.map((link) => (
-                            <li key={link.name} className="flex">
-                              <NextLink href={link.href} className="text-body-500">
-                                <a className="font-medium text-primary-700 hover:text-primary-800">{link.name}</a>
-                              </NextLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Tab.Panel>
-            ))}
-          </Tab.Panels>
-        </Tab.Group>
-      )}
-      {Boolean(withoutSubsections.length) && (
-        <div className="border-t border-body-200 py-6 px-4 space-y-6">
-          {withoutSubsections.map((section) => (
-            <div key={section.name} className="flow-root">
-              <NextLink href={section.link.href} className="-m-2 p-2 block font-medium text-body-900">
-                <a className="font-medium text-primary-700 hover:text-primary-800">{section.name}</a>
+    <div className="my-5 flex flex-col">
+      <nav className="flex-1 px-4 space-y-1 bg-white" aria-label="Sidebar">
+        {sections.map((section) =>
+          !section.subsections ? (
+            <div key={section.link.name}>
+              <NextLink
+                href={section.link.href}
+                className="bg-white text-body-800 hover:bg-body-50 hover:text-body-800 group w-full flex items-center pl-7 pr-2 py-2 text-sm font-medium rounded-md"
+              >
+                {section.link.name}
               </NextLink>
             </div>
-          ))}
-        </div>
-      )}
-    </Fragment>
+          ) : (
+            <Disclosure as="div" key={section.name} className="space-y-1">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="bg-white text-body-800 hover:bg-body-50 hover:text-body-800 group w-full flex items-center pr-2 py-2 text-left text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <svg
+                      className={classNames(
+                        open ? 'text-body-400 rotate-90' : 'text-body-300',
+                        'mr-2 flex-shrink-0 h-5 w-5 transform group-hover:text-body-400 transition-colors ease-in-out duration-150'
+                      )}
+                      viewBox="0 0 20 20"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 6L14 10L6 14V6Z" fill="currentColor" />
+                    </svg>
+                    {section.name}
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="space-y-1">
+                    {section.subsections.map((subsection) => (
+                      <>
+                        <p className="bg-white text-body-400 group w-full flex items-center pl-7 pr-2 py-2 text-xs font-medium rounded-md uppercase">
+                          {subsection.name}
+                        </p>
+                        {subsection.links.map((link) => (
+                          <Disclosure.Button
+                            key={link.name}
+                            as="a"
+                            href={link.href}
+                            className="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-body-800 rounded-md hover:text-body-800 hover:bg-body-50"
+                          >
+                            {link.name}
+                          </Disclosure.Button>
+                        ))}
+                      </>
+                    ))}
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+          )
+        )}
+      </nav>
+    </div>
   );
 };
