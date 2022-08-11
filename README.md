@@ -110,6 +110,14 @@ to keep error-free and performant.
 
 - [Lighthouse](https://web.dev/lighthouse-seo/) for SEO and browser performance metrics
 
+**IMPORTANT**
+
+If you have branch protections in place on your `main` branch you will need to include a repo secret
+`PROTECTED_PUSH_TOKEN` that is a personal access token with the `repo` scopes and which is an admin on the project repo.
+
+If you are not using branch protection rules you can replace `${{ secrets.PROTECTED_PUSH_TOKEN }}` with
+`${{ secrest.GITHUB_TOKEN }}` in the `lighthouse.yml` workflow file.
+
 #### Snapshots
 
 - [Chromatic](https://www.chromatic.com/) hosts Storybook stories and provides visual snapshot comparisons

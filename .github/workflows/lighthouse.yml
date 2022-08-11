@@ -126,7 +126,7 @@ jobs:
         if: always()
         uses: stefanzweifel/git-auto-commit-action@v4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PROTECTED_PUSH_TOKEN }}
         with:
           commit_message: Lighthouse Score [skip ci]
           skip_dirty_check: true
