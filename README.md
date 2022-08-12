@@ -1,4 +1,4 @@
-# TakeShape Deluxe ™️ Ecommerce Sample Project
+# Penny Ecommerce Sample Project
 
 The easiest way to know if a tool is right for you is to see it in action. Check out the store now at
 https://deluxe-sample-project.vercel.app/.
