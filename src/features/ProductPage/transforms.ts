@@ -1,5 +1,6 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
+import { enableReviewsIo, enableTrustpilot } from 'config/ecommerce';
 import formatRelative from 'date-fns/formatRelative';
 import { getProductLineItemAttributes } from 'transforms/product';
 import { getReview, getStats } from 'transforms/reviewsIo';
@@ -239,7 +240,8 @@ export function getPageOptions(response: ProductPageShopifyProductResponse): Pro
   return {
     showDetails: takeshapeProduct.showDetails ?? false,
     showPolicies: takeshapeProduct.showPolicies ?? false,
-    showReviews: takeshapeProduct.hideReviews === true ? false : true,
+    showReviewsIo: takeshapeProduct.hideReviews === true ? false : enableReviewsIo,
+    showTrustpilot: takeshapeProduct.hideReviews === true ? false : enableTrustpilot,
     showRelatedProducts: takeshapeProduct.hideRelatedProducts === true ? false : true,
     showBreadcrumbs: takeshapeProduct.hideBreadcrumbs === true ? false : true,
     component: getProductComponent(takeshapeProduct.productComponent)

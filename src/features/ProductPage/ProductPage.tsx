@@ -31,7 +31,7 @@ export const ProductPage = ({
   breadcrumbs,
   reviewsPerPage
 }: ProductPageProps) => {
-  const { showDetails, showPolicies, showReviews, showRelatedProducts, showBreadcrumbs } = options;
+  const { showDetails, showPolicies, showReviewsIo, showTrustpilot, showRelatedProducts, showBreadcrumbs } = options;
 
   return (
     <>
@@ -40,10 +40,10 @@ export const ProductPage = ({
           component={component}
           product={product}
           reviewHighlights={reviewHighlights}
-          showFeaturedReviews={!showReviews}
+          showFeaturedReviews={!showReviewsIo}
           breadcrumbs={breadcrumbs}
           showBreadcrumbs={showBreadcrumbs}
-          showReviewsLink={showReviews}
+          showReviewsLink={showReviewsIo}
         />
       </div>
       <div className="bg-background">
@@ -54,7 +54,7 @@ export const ProductPage = ({
       </div>
       <div className="bg-background">
         <Wrapper>
-          {showReviews && (
+          {showReviewsIo && (
             <ReviewsWithData
               productName={product.name}
               sku={shopifyGidToId(product.id)}
@@ -62,11 +62,13 @@ export const ProductPage = ({
               reviewsPerPage={reviewsPerPage}
             />
           )}
-          <TrustpilotWithData
-            sku={shopifyGidToId(product.id)}
-            trustpilotReviewList={trustpilotReviewList}
-            trustpilotSummary={trustpilotSummary}
-          />
+          {showTrustpilot && (
+            <TrustpilotWithData
+              sku={shopifyGidToId(product.id)}
+              trustpilotReviewList={trustpilotReviewList}
+              trustpilotSummary={trustpilotSummary}
+            />
+          )}
           {showRelatedProducts && <RelatedProductsWithData limit={4} productId={product.id} />}
         </Wrapper>
       </div>

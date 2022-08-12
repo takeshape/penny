@@ -55,7 +55,8 @@ export type ProductPageProductComponent = 'withImageGrid' | 'withImage';
 
 export type ProductPageOptions = {
   component: ProductPageProductComponent;
-  showReviews: boolean;
+  showReviewsIo: boolean;
+  showTrustpilot: boolean;
   showRelatedProducts: boolean;
   showDetails: boolean;
   showPolicies: boolean;

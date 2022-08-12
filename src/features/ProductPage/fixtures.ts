@@ -149,7 +149,8 @@ export const productPageReviewHighlights: ProductPageReviewHighlights = {
 export const productPageOptions: ProductPageOptions = {
   showDetails: true,
   showPolicies: true,
-  showReviews: true,
+  showReviewsIo: true,
+  showTrustpilot: true,
   showRelatedProducts: true,
   showBreadcrumbs: true,
   component: 'withImageGrid'

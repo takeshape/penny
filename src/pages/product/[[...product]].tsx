@@ -3,7 +3,7 @@ import {
   lighthouseHandle,
   lighthouseProductHandle,
   pageRevalidationTtl,
-  productReviewsPerPage,
+  reviewsIoReviewsPerPage,
   trustpilotReviewsPerPage
 } from 'config';
 import { trustpilotBusinessUnit } from 'config/trustpilot';
@@ -79,7 +79,7 @@ const ProductPage: NextPage = ({
         trustpilotSummary={trustpilotSummary}
         details={details}
         policies={policies}
-        reviewsPerPage={productReviewsPerPage}
+        reviewsPerPage={reviewsIoReviewsPerPage}
       />
     </Layout>
   );
@@ -101,7 +101,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       query: ProductPageShopifyProductQuery,
       variables: {
         handle,
-        reviewsPerPage: productReviewsPerPage,
+        reviewsPerPage: reviewsIoReviewsPerPage,
         trustpilotReviewsPerPage: trustpilotReviewsPerPage,
         trustpilotBusinessUnit
       }
