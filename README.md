@@ -1,10 +1,14 @@
-# Penny Ecommerce Sample Project
+# Penny
+
+![penny-logo](https://user-images.githubusercontent.com/277401/184440759-05acd25e-6adc-453e-b5a2-ccb6811549e0.png)
+
+An e-commerce starter by TakeShape.
 
 The easiest way to know if a tool is right for you is to see it in action. Check out the store now at
-https://deluxe-sample-project.vercel.app/.
+https://penny-ecommerce.vercel.app/.
 
 You can clone this repo with git to run the Next.js frontend locally
-(`git clone https://github.com/takeshape/takeshape-deluxe-sample-project`). To connect it to a GraphQL backend that
+(`git clone https://github.com/takeshape/penny`). To connect it to a GraphQL backend that
 TakeShape provides, just deploy the pattern in the `.takeshape/pattern` directory.
 [The instructions section of this README will teach you how to do that](#instructions).
 
