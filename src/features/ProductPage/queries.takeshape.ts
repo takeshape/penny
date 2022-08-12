@@ -16,7 +16,12 @@ export const ProductPageShopifyProductHandlesQuery = gql`
 `;
 
 export const ProductPageShopifyProductQuery = gql`
-  query ProductPageShopifyProduct($handle: String!, $reviewsPerPage: Int) {
+  query ProductPageShopifyProduct(
+    $handle: String!
+    $reviewsPerPage: Int
+    $trustpilotReviewsPerPage: Int
+    $trustpilotBusinessUnit: String!
+  ) {
     product: productByHandleWithTtl(handle: $handle) {
       id
       handle
@@ -25,6 +30,25 @@ export const ProductPageShopifyProductQuery = gql`
       descriptionHtml
       tags
       requiresSellingPlan
+      trustpilotReviews(businessUnit: $trustpilotBusinessUnit, perPage: $trustpilotReviewsPerPage) {
+        productReviews {
+          content
+          stars
+          createdAt
+          consumer {
+            displayName
+          }
+        }
+        links {
+          rel
+        }
+      }
+      trustpilotReviewsSummary(businessUnit: $trustpilotBusinessUnit) {
+        starsAverage
+        numberOfReviews {
+          total
+        }
+      }
       takeshape {
         _id
         productComponent
@@ -267,6 +291,24 @@ export const ProductPageReviewPageQuery = gql`
           review
           date_created
         }
+      }
+    }
+  }
+`;
+
+export const TrustpilotProductPageReviewPageQuery = gql`
+  query TrustpilotProductPageReviewPageQuery($businessUnit: String!, $sku: [String!], $page: Int!, $perPage: Int!) {
+    reviewData: getTrustpilotProductReviews(businessUnit: $businessUnit, sku: $sku, page: $page, perPage: $perPage) {
+      productReviews {
+        content
+        stars
+        createdAt
+        consumer {
+          displayName
+        }
+      }
+      links {
+        rel
       }
     }
   }

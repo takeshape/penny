@@ -1,5 +1,7 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
+import { enableReviewsIo, enableTrustpilot } from 'config/ecommerce';
+import formatRelative from 'date-fns/formatRelative';
 import { getProductLineItemAttributes } from 'transforms/product';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import {
@@ -16,8 +18,12 @@ import {
   ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
-  Shopify_MoneyV2
+  Shopify_MoneyV2,
+  TrustpilotProductPageReviewPageQueryResponse,
+  TrustpilotProductReviews,
+  TrustpilotProductReviewsSummary
 } from 'types/takeshape';
+import { TrustpilotSummary } from 'types/trustpilot';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -30,7 +36,8 @@ import {
   ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
   ProductPageReviewsIoReviews,
-  ProductPageReviewsReviewList
+  ProductPageReviewsReviewList,
+  TrustpilotProductPageReviewsReviewList
 } from './types';
 
 type Shopify_Collection = ProductPageShopifyProductResponse['product']['collections']['nodes'][0];
@@ -82,6 +89,23 @@ export function getReviewList(
   };
 }
 
+export function getTrustpilotReviewList(reviews: TrustpilotProductReviews): TrustpilotProductPageReviewsReviewList {
+  return {
+    items: reviews.productReviews.map((review) => {
+      return {
+        id: `${review.consumer.displayName}-${review.createdAt}`,
+        createdAt: formatRelative(new Date(review.createdAt), Date.now()),
+        stars: review.stars,
+        content: review.content,
+        consumer: {
+          displayName: review.consumer.displayName
+        }
+      };
+    }),
+    nextPage: reviews.links.some((link) => link.rel === 'next-page')
+  };
+}
+
 export function getProductReviewsPage(response: ProductPageReviewPageQueryResponse): ProductPageReviewsReviewList {
   const reviews = response?.reviewData;
 
@@ -90,6 +114,49 @@ export function getProductReviewsPage(response: ProductPageReviewPageQueryRespon
   }
 
   return getReviewList(reviews);
+}
+
+export function getTrustpilotSummary(summaryData: TrustpilotProductReviewsSummary): TrustpilotSummary {
+  const total = summaryData.numberOfReviews.total;
+
+  return {
+    average: total === 0 ? null : summaryData.starsAverage,
+    total
+  };
+}
+
+export function getTrustpilotProductReviewsPage(
+  response: TrustpilotProductPageReviewPageQueryResponse
+): TrustpilotProductPageReviewsReviewList {
+  const reviews = response?.reviewData;
+
+  if (!reviews) {
+    return null;
+  }
+
+  return getTrustpilotReviewList(reviews);
+}
+
+export function getTrustpilotProductReviews(
+  response: ProductPageShopifyProductResponse
+): TrustpilotProductPageReviewsReviewList {
+  const reviews = response?.product.trustpilotReviews;
+
+  if (!reviews) {
+    return null;
+  }
+
+  return getTrustpilotReviewList(reviews);
+}
+
+export function getTrustpilotReviewsSummary(response: ProductPageShopifyProductResponse): TrustpilotSummary {
+  const summary = response?.product.trustpilotReviewsSummary;
+
+  if (!summary) {
+    return null;
+  }
+
+  return getTrustpilotSummary(summary);
 }
 
 export function getProductReviews(response: ProductPageShopifyProductResponse): ProductPageReviewsReviewList {
@@ -173,7 +240,8 @@ export function getPageOptions(response: ProductPageShopifyProductResponse): Pro
   return {
     showDetails: takeshapeProduct.showDetails ?? false,
     showPolicies: takeshapeProduct.showPolicies ?? false,
-    showReviews: takeshapeProduct.hideReviews === true ? false : true,
+    showReviewsIo: takeshapeProduct.hideReviews === true ? false : enableReviewsIo,
+    showTrustpilot: takeshapeProduct.hideReviews === true ? false : enableTrustpilot,
     showRelatedProducts: takeshapeProduct.hideRelatedProducts === true ? false : true,
     showBreadcrumbs: takeshapeProduct.hideBreadcrumbs === true ? false : true,
     component: getProductComponent(takeshapeProduct.productComponent)

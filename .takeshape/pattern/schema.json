@@ -770,6 +770,17 @@
       "options": {
         "endpoint": "https://takeshape.zendesk.com/"
       }
+    },
+    "trustpilot": {
+      "id": "trustpilot",
+      "provider": "rest",
+      "title": "Trustpilot",
+      "namespace": "Trustpilot",
+      "serviceType": "rest",
+      "authenticationType": "searchParams",
+      "options": {
+        "endpoint": "https://api.trustpilot.com"
+      }
     }
   },
   "indexedShapes": {
@@ -1559,6 +1570,124 @@
       },
       "description": "Returns a list LineItemAttributes in natural order.",
       "args": "TSListArgs<LineItemAttributes>"
+    },
+    "getTrustpilotProductReviews": {
+      "resolver": {
+        "name": "rest:get",
+        "service": "trustpilot",
+        "path": {
+          "ops": [
+            {
+              "path": "businessUnit",
+              "mapping": "$args.businessUnit"
+            }
+          ],
+          "serialize": {
+            "template": "/v1/product-reviews/business-units/{businessUnit}/reviews"
+          }
+        },
+        "searchParams": {
+          "ops": [
+            {
+              "path": "page",
+              "mapping": "$args.page"
+            },
+            {
+              "path": "perPage",
+              "mapping": "$args.perPage"
+            },
+            {
+              "path": "productUrl",
+              "mapping": "$args.productUrl"
+            },
+            {
+              "path": "sku",
+              "mapping": "$args.sku"
+            },
+            {
+              "path": "language",
+              "mapping": "$args.language"
+            },
+            {
+              "path": "stars",
+              "mapping": "$args.stars"
+            },
+            {
+              "path": "locale",
+              "mapping": "$args.locale"
+            },
+            {
+              "path": "attributeIds",
+              "mapping": "$args.attributeIds"
+            }
+          ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "businessUnit": {
+            "type": "string",
+            "description": "The BusinessUnitId that owns the products."
+          },
+          "page": {
+            "type": "integer",
+            "description": "The page to retrieve. If the page number requested is higher than the available number of pages an empty array will be returned.\nConstraints: The allowed range is minimum: 1, maximum: 2147483647\nDefault value: 1"
+          },
+          "perPage": {
+            "type": "integer",
+            "description": "The number of reviews to retrieve per page.\nConstraints: The allowed range is minimum: 1, maximum: 100\nDefault value: 20"
+          },
+          "productUrl": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The url of the product. Optional only if sku is provided."
+          },
+          "sku": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The sku of the product. Optional only if productUrl is provided."
+          },
+          "language": {
+            "type": "string",
+            "description": "Filter reviews by language."
+          },
+          "stars": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Filter reviews with a specific number of stars.\nConstraints: Allowed values are 1, 2, 3, 4, 5"
+          },
+          "locale": {
+            "type": "string",
+            "description": "The language in which the attributes, if any, are returned\nDefault value: en-US"
+          },
+          "attributeIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A comma-separated list of attribute ids"
+          }
+        },
+        "required": [
+          "businessUnit"
+        ]
+      },
+      "shape": "TrustpilotProductReviews"
     }
   },
   "mutations": {
@@ -3765,6 +3894,175 @@
                   }
                 }
               },
+              "trustpilotReviews": {
+                "@ref": "local:TrustpilotProductReviews",
+                "@args": {
+                  "type": "object",
+                  "properties": {
+                    "businessUnit": {
+                      "type": "string",
+                      "description": "The BusinessUnitId that owns the products."
+                    },
+                    "page": {
+                      "type": "integer",
+                      "description": "The page to retrieve. If the page number requested is higher than the available number of pages an empty array will be returned.\nConstraints: The allowed range is minimum: 1, maximum: 2147483647\nDefault value: 1"
+                    },
+                    "perPage": {
+                      "type": "integer",
+                      "description": "The number of reviews to retrieve per page.\nConstraints: The allowed range is minimum: 1, maximum: 100\nDefault value: 20"
+                    },
+                    "productUrl": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "The url of the product. Optional only if sku is provided."
+                    },
+                    "language": {
+                      "type": "string",
+                      "description": "Filter reviews by language."
+                    },
+                    "stars": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "description": "Filter reviews with a specific number of stars.\nConstraints: Allowed values are 1, 2, 3, 4, 5"
+                    },
+                    "locale": {
+                      "type": "string",
+                      "description": "The language in which the attributes, if any, are returned\nDefault value: en-US"
+                    },
+                    "attributeIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "A comma-separated list of attribute ids"
+                    }
+                  },
+                  "required": [
+                    "businessUnit"
+                  ]
+                },
+                "@resolver": {
+                  "name": "rest:get",
+                  "service": "trustpilot",
+                  "path": {
+                    "ops": [
+                      {
+                        "path": "businessUnit",
+                        "mapping": "$args.businessUnit"
+                      }
+                    ],
+                    "serialize": {
+                      "template": "/v1/product-reviews/business-units/{businessUnit}/reviews"
+                    }
+                  },
+                  "searchParams": {
+                    "ops": [
+                      {
+                        "path": "page",
+                        "mapping": "$args.page"
+                      },
+                      {
+                        "path": "perPage",
+                        "mapping": "$args.perPage"
+                      },
+                      {
+                        "path": "productUrl",
+                        "mapping": "$args.productUrl"
+                      },
+                      {
+                        "path": "sku",
+                        "mapping": [
+                          [
+                            "get",
+                            {
+                              "path": "$source.id"
+                            }
+                          ],
+                          [
+                            "replace",
+                            {
+                              "pattern": "gid://shopify/Product/",
+                              "replacement": ""
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "path": "language",
+                        "mapping": "$args.language"
+                      },
+                      {
+                        "path": "stars",
+                        "mapping": "$args.stars"
+                      },
+                      {
+                        "path": "locale",
+                        "mapping": "$args.locale"
+                      },
+                      {
+                        "path": "attributeIds",
+                        "mapping": "$args.attributeIds"
+                      }
+                    ]
+                  }
+                }
+              },
+              "trustpilotReviewsSummary": {
+                "@ref": "local:TrustpilotProductReviewsSummary",
+                "@args": {
+                  "type": "object",
+                  "properties": {
+                    "businessUnit": {
+                      "type": "string",
+                      "description": "The BusinessUnitId that owns the products."
+                    }
+                  },
+                  "required": [
+                    "businessUnit"
+                  ]
+                },
+                "@resolver": {
+                  "name": "rest:get",
+                  "service": "trustpilot",
+                  "path": {
+                    "ops": [
+                      {
+                        "path": "businessUnit",
+                        "mapping": "$args.businessUnit"
+                      }
+                    ],
+                    "serialize": {
+                      "template": "/v1/product-reviews/business-units/{businessUnit}"
+                    }
+                  },
+                  "searchParams": {
+                    "ops": [
+                      {
+                        "path": "sku",
+                        "mapping": [
+                          [
+                            "get",
+                            {
+                              "path": "$source.id"
+                            }
+                          ],
+                          [
+                            "replace",
+                            {
+                              "pattern": "gid://shopify/Product/",
+                              "replacement": ""
+                            }
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
               "takeshape": {
                 "@ref": "local:Product",
                 "@resolver": {
@@ -5272,6 +5570,189 @@
         "required": [
           "key"
         ]
+      }
+    },
+    "TrustpilotProductReviews": {
+      "id": "TrustpilotProductReviews",
+      "name": "TrustpilotProductReviews",
+      "title": "Trustpilot Product Reviews",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "productReviews": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "stars": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "consumer": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "language": {
+                  "type": "string"
+                },
+                "attributeRatings": {
+                  "type": "array",
+                  "items": {
+                    "@ref": "local:TrustpilotAttributeRating"
+                  }
+                },
+                "attachments": {
+                  "type": "array",
+                  "items": {
+                    "@ref": "local:TrustpilotAttachment"
+                  }
+                }
+              }
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "@ref": "local:TrustpilotLink"
+            }
+          }
+        }
+      }
+    },
+    "TrustpilotAttributeRating": {
+      "id": "TrustpilotAttributeRating",
+      "name": "TrustpilotAttributeRating",
+      "title": "Trustpilot Attribute Rating",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "attributeId": {
+            "type": "string"
+          },
+          "attributeName": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "TrustpilotAttachment": {
+      "id": "TrustpilotAttachment",
+      "name": "TrustpilotAttachment",
+      "title": "Trustpilot Attachment",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "processedFiles": {
+            "type": "array",
+            "items": {
+              "@ref": "local:TrustpilotAttachmentProcessedFiles"
+            }
+          }
+        }
+      }
+    },
+    "TrustpilotAttachmentProcessedFiles": {
+      "id": "TrustpilotAttachmentProcessedFiles",
+      "name": "TrustpilotAttachmentProcessedFiles",
+      "title": "Trustpilot Attachment Processed FIles",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "type": "string"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "TrustpilotLink": {
+      "id": "TrustpilotLink",
+      "name": "TrustpilotLink",
+      "title": "Trustpilot Link",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "rel": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "TrustpilotProductReviewsSummary": {
+      "id": "TrustpilotProductReviewsSummary",
+      "name": "TrustpilotProductReviewsSummary",
+      "title": "Trustpilot Product Reviews Summary",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "starsAverage": {
+            "type": "number"
+          },
+          "numberOfReviews": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "integer"
+              },
+              "oneStar": {
+                "type": "integer"
+              },
+              "twoStar": {
+                "type": "integer"
+              },
+              "threeStar": {
+                "type": "integer"
+              },
+              "fourStars": {
+                "type": "integer"
+              },
+              "fiveStars": {
+                "type": "integer"
+              }
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "@ref": "local:TrustpilotLink"
+            }
+          }
+        }
       }
     }
   },
