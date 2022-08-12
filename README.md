@@ -2,7 +2,7 @@
 
 ![penny-logo](https://user-images.githubusercontent.com/277401/184440759-05acd25e-6adc-453e-b5a2-ccb6811549e0.png)
 
-An e-commerce starter by TakeShape.
+An e-commerce starter kit by TakeShape.
 
 The easiest way to know if a tool is right for you is to see it in action. Check out the store now at
 https://penny-ecommerce.vercel.app/.
