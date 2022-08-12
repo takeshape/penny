@@ -14,24 +14,24 @@ TakeShape provides, just deploy the pattern in the `.takeshape/pattern` director
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://deluxe-sample-project-p82lr59kq-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1660065383363-51639.report.html) |
+| [Path: /](https://deluxe-sample-project-kdq0bgrgo-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1660234785108-74160.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 92 |
+| 🟢 SEO | 100 |
+| 🟢 PWA | 100 |
+| [Path: /product/__lighthouse](https://deluxe-sample-project-kdq0bgrgo-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1660234785572-75004.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://deluxe-sample-project-p82lr59kq-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1660065383792-85350.report.html) |
+| [Path: /collection/__lighthouse](https://deluxe-sample-project-kdq0bgrgo-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1660234785896-40579.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://deluxe-sample-project-p82lr59kq-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1660065384445-64172.report.html) |
-| 🟢 Performance | 100 |
-| 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
-| 🟢 SEO | 90 |
-| 🟠 PWA | 88 |
 
 <!-- LIGHTHOUSE:END -->
 <!-- prettier-ignore-end -->
@@ -109,6 +109,14 @@ to keep error-free and performant.
 #### Performance Tests
 
 - [Lighthouse](https://web.dev/lighthouse-seo/) for SEO and browser performance metrics
+
+**IMPORTANT**
+
+If you have branch protections in place on your `main` branch you will need to include a repo secret
+`PROTECTED_PUSH_TOKEN` that is a personal access token with the `repo` scopes and which is an admin on the project repo.
+
+If you are not using branch protection rules you can replace `${{ secrets.PROTECTED_PUSH_TOKEN }}` with
+`${{ secrest.GITHUB_TOKEN }}` in the `lighthouse.yml` workflow file.
 
 #### Snapshots
 
