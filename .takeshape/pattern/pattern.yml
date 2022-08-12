@@ -1,5 +1,5 @@
-name: TakeShape Deluxe ™️ Ecommerce Sample Project
-description: "This pattern is for our Deluxe Sample Project starter. It composes 9 popular e-commerce services into a single GraphQL API. Services include Shopify, OpenID, Klaviyo, REVIEWS.io, Voucherify, ShipEngine, Gorgias, and reCAPTCHA."
+name: Penny Ecommerce
+description: "This pattern is for our Penny starter. It composes 9 popular e-commerce services into a single GraphQL API. Services include Shopify, OpenID, Klaviyo, REVIEWS.io, Voucherify, ShipEngine, Gorgias, and reCAPTCHA."
 icon: dollar-sign
 color: "#95bf46"
 categories:
