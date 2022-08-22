@@ -768,7 +768,7 @@
       "serviceType": "rest",
       "authenticationType": "none",
       "options": {
-        "endpoint": "https://takeshape.zendesk.com/"
+        "endpoint": ""
       }
     },
     "trustpilot": {
