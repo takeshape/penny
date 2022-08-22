@@ -141,11 +141,11 @@ We also used a few tools from TakeShape's ecosystem to simplify our workflow and
 
 In the next section, you'll find a screenshot of the finished store's homepage.
 
-## Screenshot
+# Screenshot
 
 ![A screenshot of the store's homepage.](/readme-images/store/homepage-in-browser.png)
 
-## Instructions
+# Instructions
 
 Here are the steps for getting started with this project:
 
@@ -401,7 +401,7 @@ file.
 
 Now your Shopify store is configured for this project.
 
-### REVIEWS.io
+## REVIEWS.io
 
 The following section describes how to connect REVIEWS.io to your Penny pattern in TakeShape. To learn how to connect
 REVIEWS.io to any TakeShape project, [check out our docs](https://app.takeshape.io/docs/services/providers/reviews-io).
@@ -422,7 +422,7 @@ REVIEWS.io to any TakeShape project, [check out our docs](https://app.takeshape.
 
 ![A screenshot of the REVIEWS.io service page](./readme-images/reviewsio/service-page-reviewsio.png)
 
-### Trustpilot
+## Trustpilot
 
 You'll need the [Trustpilot Connect](https://business.trustpilot.com/plans#addons) add-on module to proceed. To check if
 you have it, check if "APIs" is available under Integrations > Developers in the
@@ -457,12 +457,12 @@ curl --request GET \
 
 7. After completing these steps, Trustpilot reviews for the matching SKU are shown on the product page.
 
-### ShipEngine
+## ShipEngine
 
 The client frontend project supports the shipping information added to the Shopify graph by the ShipEngine Shopify
 Application. All you need to do is connect ShipEngine to your Shopify store in the Shopify admin and you're set!
 
-### Voucherify
+## Voucherify
 
 The following section describes how to connect Voucherify to your Penny pattern in TakeShape. To learn how to connect
 Voucherify to any TakeShape project,
@@ -485,7 +485,7 @@ provider, you can connect most arbitrary REST APIs, including Voucherify.
 4. Connect Vourcherify to your Shopify store in the Shopify admin and your purchases will be applied to your customer
    accounts, and will be available via the `getMyLoyaltyCard` query.
 
-### Klaviyo
+## Klaviyo
 
 The following section describes how to connect Klaviyo to your Penny pattern in TakeShape. To learn how to connect
 Klaviyo to any TakeShape project, [check out our docs](https://app.takeshape.io/docs/services/providers/klaviyo).
@@ -505,7 +505,7 @@ Klaviyo to any TakeShape project, [check out our docs](https://app.takeshape.io/
 
 ![A screenshot of the Klaviyo service page](./readme-images/klaviyo/add-authentication-klaviyo.png)
 
-### reCAPTCHA
+## reCAPTCHA
 
 The following section describes how to connect reCAPTCHA to your Penny pattern in TakeShape using a generic REST
 provider. To learn how to connect ReCAPTCHA to any TakeShape project,
@@ -549,7 +549,7 @@ provider. To learn how to connect ReCAPTCHA to any TakeShape project,
 
 - Select the **Save** button at the top-right of the page.
 
-### Gorgias
+## Gorgias
 
 The following section describes how to connect Gorgias to your Penny pattern in TakeShape. To learn how to connect
 Gorgias to any TakeShape project,
@@ -589,6 +589,26 @@ provider, you can connect most arbitrary REST APIs, including Gorgias.
   field.
 
 - Select the **Save** button at the top-right of the page.
+
+## Zendesk
+
+The following section describes how to connect Zendesk to your Penny pattern in TakeShape. To learn how to connect
+Zendesk to any TakeShape project,
+[check out our REST provider docs](https://app.takeshape.io/docs/services/providers/rest). Using our generic REST
+provider, you can connect most arbitrary REST APIs, including Zendesk.
+
+1. On your TakeShape project's dashboard, navigate to the **Home** tab and select **Zendesk** from the list of services.
+   You'll be taken to the **Generic REST** service page for **Zendesk**.
+1. In the **Endpoint** field, add your Zendesk domain. This is the domain you use to access the Zendesk Admin Center
+   (e.g., `https://your-store.zendesk.com`).
+1. Select the **Save** button at the top-right of the page.
+
+Zendesk allows for the creation of up to 5 requests per hour without the need for authentication. If you need to handle
+a larger volume of requests, options include authenticating
+[end users](https://developer.zendesk.com/api-reference/ticketing/users/users/#end-users) with Zendesk and using the
+same [Requests endpoint](https://developer.zendesk.com/api-reference/ticketing/tickets/ticket-requests/#create-request)
+or using the [Tickets endpoint](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#create-ticket) as
+an authenticated Zendesk agent.
 
 ## Sentry
 
@@ -652,7 +672,7 @@ Your project is configured to generate types for the GraphQL APIs in use. Run `n
 the site locally to generate query-specific types. This is a big advantage of the TakeShape GraphQL mesh — you will have
 your queries and responses fully typed, and can develop efficiently and safely.
 
-## Deploying to production
+# Deploying to production
 
 > When deploying this project to production, be sure to replace all public placeholder assets.
 
@@ -674,7 +694,7 @@ offer [a similar deploy preview tool](https://docs.netlify.com/site-deploys/depl
 To learn more about deploying with Netlify,
 [check out their comprehensive guide](https://docs.netlify.com/integrations/frameworks/next-js/).
 
-## GitHub Actions
+# GitHub Actions
 
 If you are using the included workflows you will get a great CI process, that includes:
 
@@ -719,7 +739,7 @@ bash scripts/ignore-build.sh
   will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
   removed from the relevant mutations in the project schema.
 
-## Credits
+# Credits
 
 - This project uses credit card icons from
   [svg-credit-card-payment-icons](https://github.com/aaronfagan/svg-credit-card-payment-icons/tree/main/flat-rounded)
