@@ -781,6 +781,18 @@
       "options": {
         "endpoint": "https://api.trustpilot.com"
       }
+    },
+    "loyal": {
+      "id": "loyal",
+      "provider": "loyaltylion",
+      "title": "Loyalty Lion",
+      "namespace": "Loyal",
+      "serviceType": "openapi",
+      "authenticationType": "basic",
+      "options": {
+        "endpoint": "https://api.loyaltylion.com/v2/",
+        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/main/specs/loyaltylion/v2.yml"
+      }
     }
   },
   "indexedShapes": {
@@ -1688,6 +1700,35 @@
         ]
       },
       "shape": "TrustpilotProductReviews"
+    },
+    "getMyLoyaltyLionCustomer": {
+      "shape": "Loyal_Customer",
+      "resolver": {
+        "if": "$claims.email",
+        "name": "rest:get",
+        "service": "loyal",
+        "path": "/customers",
+        "searchParams": {
+          "ops": [{"path": "email", "mapping": "$claims.email"}]
+        },
+        "results": {
+          "ops": [{"path": "$", "mapping": "$finalResolver.customers[0]"}]
+        }
+      },
+      "description": "Returns a pageable list of all customers.",
+      "args": {
+        "type": "object",
+        "properties": {
+          "email": {"type": "string"},
+          "since_id": {"type": "string"},
+          "limit": {"type": "integer"},
+          "created_at_min": {"format": "date-time", "type": "string"},
+          "created_at_max": {"format": "date-time", "type": "string"},
+          "updated_at_min": {"format": "date-time", "type": "string"},
+          "updated_at_max": {"format": "date-time", "type": "string"}
+        },
+        "required": []
+      }
     }
   },
   "mutations": {
@@ -3350,6 +3391,35 @@
       },
       "description": "Delete LineItemAttributes",
       "args": "DeleteArgs<LineItemAttributes>"
+    },
+    "Loyal_claimReward": {
+      "shape": "Loyal_ClaimedReward",
+      "resolver": {
+        "name": "rest:post",
+        "service": "loyal",
+        "path": {
+          "ops": [{"path": "merchant_id", "mapping": "$args.merchant_id"}],
+          "serialize": {
+            "template": "/customers/{merchant_id}/claimed_rewards",
+            "paths": {"merchant_id": {"style": "simple"}}
+          }
+        },
+        "body": {
+          "ops": [{"path": "$", "mapping": "$args.input"}],
+          "serialize": {"content": {"contentType": "application/json"}}
+        },
+        "headers": {
+          "ops": [{"path": "content-type", "value": "application/json"}]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "input": {"@ref": "loyal:ClaimedRewardsPayload"},
+          "merchant_id": {"type": "string"}
+        },
+        "required": ["merchant_id"]
+      }
     }
   },
   "shapes": {
@@ -5753,6 +5823,41 @@
             }
           }
         }
+      }
+    },
+    "Loyal_Customer": {
+      "name": "Loyal_Customer",
+      "title": "Loyal_Customer",
+      "id": "Loyal_Customer",
+      "schema": {
+        "extends": [
+          {"@ref": "loyal:Customer"},
+          {
+            "type": "object",
+            "properties": {
+              "rewards": {
+                "type": "array",
+                "items": {"@ref": "loyal:Reward"},
+                "@resolver": {
+                  "name": "rest:get",
+                  "service": "loyal",
+                  "path": {
+                    "ops": [
+                      {"path": "merchant_id", "mapping": "$source.merchant_id"}
+                    ],
+                    "serialize": {
+                      "template": "/customers/{merchant_id}/available_rewards",
+                      "paths": {"merchant_id": {"style": "simple"}}
+                    }
+                  },
+                  "results": {
+                    "ops": [{"path": "$", "mapping": "$finalResolver.rewards"}]
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     }
   },
