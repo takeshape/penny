@@ -30,7 +30,7 @@ Woo.args = {
   },
   merchant_id: '6145627226296',
   metadata: {},
-  points_approved: 120,
+  points_approved: 450,
   points_pending: 0,
   points_spent: 0,
   properties: {
@@ -42,6 +42,25 @@ Woo.args = {
   referral_url: 'https://prz.io/EDNEzXniK',
   referred_by: null,
   rewards: [
+    {
+      content: {},
+      description: null,
+      discount_amount: 5,
+      discount_type: 'flat',
+      id: 120404,
+      kind: 'cart_discount_voucher',
+      max_free_shipping: null,
+      max_redemption_amount: 1,
+      method: 'voucher',
+      min_redemption_amount: 1,
+      minimum_spend: null,
+      order_type: 'one_time',
+      point_cost: 100,
+      site_id: 29724,
+      target_type: 'all',
+      title: '$1 voucher',
+      usage_limit: 1
+    },
     {
       content: {},
       description: null,
@@ -78,6 +97,25 @@ Woo.args = {
       site_id: 29724,
       target_type: 'all',
       title: '$10 voucher',
+      usage_limit: 1
+    },
+    {
+      content: {},
+      description: null,
+      discount_amount: 10,
+      discount_type: 'flat',
+      id: 121986,
+      kind: 'cart_discount_voucher',
+      max_free_shipping: null,
+      max_redemption_amount: 1,
+      method: 'voucher',
+      min_redemption_amount: 1,
+      minimum_spend: null,
+      order_type: 'one_time',
+      point_cost: 10000,
+      site_id: 29724,
+      target_type: 'all',
+      title: '$100 voucher',
       usage_limit: 1
     }
   ],

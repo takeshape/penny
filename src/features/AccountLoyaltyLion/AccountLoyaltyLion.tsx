@@ -1,7 +1,6 @@
 import CardPanel from 'components/Card/Panel/Panel';
 import { GetMyLoyaltyLionCustomerQueryResponse } from 'types/takeshape';
 import Button from '../../components/Button/Button';
-import { MailIcon, PhoneIcon } from '@heroicons/react/solid';
 
 export type AccountLoyaltyCardProps = GetMyLoyaltyLionCustomerQueryResponse['loyaltyCard'];
 
@@ -10,21 +9,24 @@ export interface RewardProps {
   points: number;
 }
 function Reward({ reward, points }: RewardProps) {
+  const enoughPoints = points >= reward.point_cost;
   return (
     <li className="col-span-1 bg-white rounded-lg shadow divide-y divide-gray-200">
       <div className="w-full flex items-center justify-between p-6 space-x-6">
         <div className="flex-1 truncate">
           <div className="flex items-center space-x-3">
-            <h3 className="text-gray-900 text-sm font-medium truncate">{reward.title}</h3>
-            <span className="flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-green-100 rounded-full">
-              {reward.point_cost}
-            </span>
+            <h3 className="text-gray-900 text-xl font-medium truncate w-full text-center">{reward.title}</h3>
           </div>
-          {points < reward.point_cost ? (
-            <PointsProgress points={points} cost={reward.point_cost} />
-          ) : (
-            <Button>Claim Reward for {reward.point_cost} Points</Button>
-          )}
+          <div className="font-medium text-sm w-full text-center mt-2">{reward.point_cost.toLocaleString()} points</div>
+          <div className="mt-2">
+            {enoughPoints ? (
+              <Button disabled={!enoughPoints} color="primary" className="w-full mt-2">
+                {enoughPoints ? `Claim Reward for ${reward.point_cost} Points` : `More Points Needed`}
+              </Button>
+            ) : (
+              <PointsProgress points={points} cost={reward.point_cost} />
+            )}
+          </div>
         </div>
       </div>
     </li>
@@ -37,14 +39,15 @@ export interface PointsProgressProps {
 }
 
 function PointsProgress({ points, cost }: PointsProgressProps) {
-  const progress = Math.floor(points / cost);
+  const progress = Math.floor((points / cost) * 100);
   return (
-    <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
+    <div className="w-full bg-gray-700 rounded-md overflow-auto h-9 mt-4 relative">
       <div
-        className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+        className="bg-accent-800 font-medium text-blue-100 text-center p-0.5 leading-none rounded-md py-2 absolute h-9"
         style={{ width: `${progress}%` }}
-      >
-        {points}/{cost}
+      />
+      <div className="absolute text-center w-full leading-9 text-sm text-primary-200">
+        Need {cost - points} more points
       </div>
     </div>
   );
