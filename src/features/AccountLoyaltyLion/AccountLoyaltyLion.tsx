@@ -42,10 +42,7 @@ function PointsProgress({ points, cost }: PointsProgressProps) {
   const progress = Math.floor((points / cost) * 100);
   return (
     <div className="w-full bg-gray-700 rounded-md overflow-auto h-9 mt-4 relative">
-      <div
-        className="bg-accent-800 font-medium text-blue-100 text-center p-0.5 leading-none rounded-md py-2 absolute h-9"
-        style={{ width: `${progress}%` }}
-      />
+      <div className="bg-accent-800 font-medium rounded-md py-2 absolute h-9" style={{ width: `${progress}%` }} />
       <div className="absolute text-center w-full leading-9 text-sm text-primary-200">
         Need {cost - points} more points
       </div>
