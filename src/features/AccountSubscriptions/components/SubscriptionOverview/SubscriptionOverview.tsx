@@ -1,46 +1,86 @@
 import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
+import { CreditCard } from 'components/Payments/CreditCard';
+import { format, isFuture } from 'date-fns';
+import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
+import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
+import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { useState } from 'react';
-import { CreditCard } from '../../../../components/Payments/CreditCard';
-import { Subscription } from '../../types';
-import { PaymentMethodRechargeForm } from '../Actions/PaymentMethodRechargeForm';
-import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
+import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
+import { RechargeCharge, Subscription, SubscriptionSelectedVariant } from '../../types';
 
-const RecentShipmentStatus = ({ status, datetime, date }) => {
-  switch (status) {
-    case 'delivered': {
-      return (
-        <div className="flex items-center">
-          <CheckCircleIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
-          <p className="ml-2 text-sm font-medium text-gray-900">
-            Last delivered on <time dateTime={datetime}>{date}</time>
-          </p>
-        </div>
-      );
-    }
+interface RecentShipmentStatusProps {
+  subscription: Subscription;
+  order: RechargeCharge;
+}
 
-    case 'out-for-delivery': {
-      return (
-        <div className="flex items-center">
-          <TruckIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
-          <p className="ml-2 text-sm font-medium text-gray-900">Last order is out for delivery</p>
-        </div>
-      );
-    }
+const RecentShipmentStatus = ({ subscription, order }: RecentShipmentStatusProps) => {
+  const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
+    fulfillment.fulfillmentLineItems.edges.find(
+      (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
+    )
+  );
 
-    case 'canceled': {
-      return (
-        <div className="flex items-center">
-          <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
-          <p className="ml-2 text-sm font-medium text-gray-900">Last ordered was canceled</p>
-        </div>
-      );
-    }
-
-    default: {
-      return null;
-    }
+  if (subscriptionFulfillment?.deliveredAt) {
+    return (
+      <div className="flex items-center">
+        <CheckCircleIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-900">
+          Last delivered on{' '}
+          <time dateTime={subscriptionFulfillment.deliveredAt}>
+            {format(new Date(subscriptionFulfillment.deliveredAt), 'PPP')}
+          </time>
+        </p>
+      </div>
+    );
   }
+
+  if (subscriptionFulfillment?.displayStatus === 'OUT_FOR_DELIVERY') {
+    return (
+      <div className="flex items-center">
+        <TruckIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-900">Last order is out for delivery</p>
+      </div>
+    );
+  }
+
+  if (subscriptionFulfillment?.inTransitAt) {
+    return (
+      <div className="flex items-center">
+        <TruckIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-900">
+          Shipped on{' '}
+          <time dateTime={subscriptionFulfillment.inTransitAt}>
+            {format(new Date(subscriptionFulfillment.inTransitAt), 'PPP')}
+          </time>
+        </p>
+      </div>
+    );
+  }
+
+  if (order.shopifyOrder?.processedAt) {
+    return (
+      <div className="flex items-center">
+        <p className="ml-2 text-sm font-medium text-gray-900">
+          Processed on{' '}
+          <time dateTime={order.shopifyOrder.processedAt}>
+            {format(new Date(order.shopifyOrder.processedAt), 'PPP')}
+          </time>
+        </p>
+      </div>
+    );
+  }
+
+  if (subscriptionFulfillment?.displayStatus === 'CANCELED') {
+    return (
+      <div className="flex items-center">
+        <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-900">Last ordered was canceled</p>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 const NextShipmentStatus = ({ status, datetime, date }) => {
@@ -73,14 +113,35 @@ const NextShipmentStatus = ({ status, datetime, date }) => {
 
 export interface SubscriptionOverviewProps {
   subscription: Subscription;
+  variant: SubscriptionSelectedVariant;
 }
 
-export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps) => {
-  const { product, status } = subscription;
-
-  const isActive = status === 'active';
+export const SubscriptionOverview = ({ subscription, variant }: SubscriptionOverviewProps) => {
+  const isActive = subscription.status === 'ACTIVE';
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
+
+  const product = variant.product;
+
+  const upcomingCharges = subscription.charges.filter((charge) => isFuture(new Date(charge.scheduled_at)));
+  const nextCharge = upcomingCharges.find((charge) => charge.status === 'QUEUED');
+  const mostRecentCharge = subscription.charges.reduce((previous, current) => {
+    const currentDate = new Date(current.scheduled_at);
+    if (isFuture(currentDate)) {
+      return previous;
+    }
+
+    if (previous === undefined) {
+      return current;
+    }
+
+    const previousDate = new Date(previous.scheduled_at);
+    if (currentDate > previousDate) {
+      return current;
+    }
+
+    return previous;
+  }, undefined);
 
   return (
     <>
@@ -92,11 +153,11 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                 <div className="sm:flex">
                   <div className="flex">
                     <div className="flex-grow">
-                      <a href={product.url} className="block mb-1">
-                        <h4 className="font-medium text-body-900 inline-block">{product.name}</h4>
+                      <a href={getProductUrl(product.handle)} className="block mb-1">
+                        <h4 className="font-medium text-body-900 inline-block">{product.title}</h4>
                       </a>
-                      <div className="text-sm font-medium text-body-500">{product.variantName}</div>
-                      <div className="text-sm font-medium text-body-500">Quantity: {product.quantity}</div>
+                      <div className="text-sm font-medium text-body-500">{subscription.variant_title}</div>
+                      <div className="text-sm font-medium text-body-500">Quantity: {subscription.quantity}</div>
                       <p className="hidden mt-2 text-sm text-body-500 sm:block">{product.description}</p>
                     </div>
                   </div>
@@ -111,10 +172,12 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                     </div>
                   )}
                 </div>
-
                 {isActive && (
                   <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
-                    <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
+                    <CreditCard
+                      className="flex-grow"
+                      card={getPaymentMethod(subscription.address.include.payment_methods[0]).instrument}
+                    />
                     <div className="mt-2 sm:mt-0">
                       <button
                         onClick={() => setIsPaymentMethodOpen(true)}
@@ -127,8 +190,18 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
                 )}
               </div>
               <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2">
-                <RecentShipmentStatus {...product.fulfillment} />
-                {isActive && <NextShipmentStatus {...product.nextFulfillment} />}
+                {mostRecentCharge !== undefined && (
+                  <RecentShipmentStatus subscription={subscription} order={mostRecentCharge} />
+                )}
+                {isActive && nextCharge !== undefined ? (
+                  <NextShipmentStatus
+                    date={format(new Date(nextCharge.scheduled_at), 'PPP')}
+                    datetime={nextCharge.scheduled_at}
+                    status="scheduled"
+                  />
+                ) : (
+                  'No upcoming orders'
+                )}
               </div>
             </div>
             <div className="ml-4 flex-shrink-0 sm:m-0 sm:mr-6 sm:order-first">
@@ -147,17 +220,16 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
       {isActive && (
         <>
           <ProductOptionsForm
-            variants={product.variants}
-            variantOptions={product.variantOptions}
-            currentQuantity={product.quantity}
-            currentSelections={product.variantSelections}
-            currentDeliverySchedule={subscription.deliverySchedule}
+            subscription={subscription}
+            variants={product.variants.edges.map((edge) => edge.node)}
+            variantOptions={product.options}
+            currentSelections={variant.selectedOptions}
             isOpen={isProductOptionsOpen}
             onClose={() => setIsProductOptionsOpen(false)}
           />
 
           <PaymentMethodRechargeForm
-            addressId={subscription.shippingAddress.id}
+            addressId={subscription.address_id}
             isOpen={isPaymentMethodOpen}
             onClose={() => setIsPaymentMethodOpen(false)}
           />

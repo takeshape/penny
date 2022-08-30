@@ -1,4 +1,4 @@
-import { ProductPriceOption, ProductVariant, ProductVariantSelection } from 'types/product';
+import { ProductVariant, ProductVariantSelection } from 'types/product';
 
 export function getVariant(variants: ProductVariant[], options: ProductVariantSelection[]) {
   return variants.find((variant) => {
@@ -9,17 +9,5 @@ export function getVariant(variants: ProductVariant[], options: ProductVariantSe
     }
 
     return isVariant;
-  });
-}
-
-export function findPriceOption(
-  prices: ProductPriceOption[],
-  options: Pick<ProductPriceOption, 'interval' | 'intervalCount'>
-): ProductPriceOption {
-  return prices.find((price) => {
-    if (price.interval === options.interval && price.intervalCount === options.intervalCount) {
-      return true;
-    }
-    return false;
   });
 }

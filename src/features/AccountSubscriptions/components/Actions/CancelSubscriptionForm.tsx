@@ -1,8 +1,11 @@
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { CancelSubscriptionMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { CancelSubscriptionMutationResponse, CancelSubscriptionMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
 import { Subscription } from '../../types';
 
 export interface CancelSubscriptionFormProps extends ModalProps {
@@ -28,13 +31,16 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
     }
   });
 
+  const [cancelSubscription] = useAuthenticatedMutation<
+    CancelSubscriptionMutationResponse,
+    CancelSubscriptionMutationVariables
+  >(CancelSubscriptionMutation);
+
   const handleFormSubmit = useCallback(
     async (formData: CancelSubscriptionFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, subscription });
-      // TODO Mutate subscription to show canceled
+      cancelSubscription({ variables: { id: subscription.id } });
     },
-    [subscription]
+    [cancelSubscription, subscription.id]
   );
 
   const resetState = useCallback(() => reset(), [reset]);

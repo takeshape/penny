@@ -2,13 +2,16 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
+import { UnskipChargeMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
-import { SubscriptionOrder } from '../../types';
+import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { RechargeCharge } from '../../types';
 
 export interface UnskipFormProps extends ModalProps {
-  order?: SubscriptionOrder;
+  order: RechargeCharge;
 }
 
 export interface SkipFormValues {
@@ -32,12 +35,15 @@ export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
 
   const orderNumber = useMemo(() => shopifyGidToId(order.id), [order]);
 
+  const [unskipCharge] = useAuthenticatedMutation<UnskipChargeMutationResponse, UnskipChargeMutationVariables>(
+    UnskipChargeMutation
+  );
+
   const handleFormSubmit = useCallback(
     async (formData: SkipFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, order });
+      unskipCharge({ variables: { id: order.id } });
     },
-    [order]
+    [order.id, unskipCharge]
   );
 
   const resetState = useCallback(() => {
@@ -58,7 +64,7 @@ export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">
-              Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will be processed.
+              Your order on <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> will be processed.
             </p>
           </div>
         ) : (
@@ -70,7 +76,7 @@ export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
                 Your order will be processed normally on{' '}
-                <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.
+                <strong className="text-black">{format(new Date(order.scheduled_at), 'PPP')}</strong>.
               </p>
               <p>Would you like to continue?</p>
             </div>

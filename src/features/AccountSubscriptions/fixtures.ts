@@ -1502,17 +1502,17 @@ export const subscriptions: RawSubscription[] = [
       amount: 21000
     },
     deliverySchedule: {
-      interval: 'DAY',
-      intervalCount: 30
+      order_interval_unit: 'day',
+      order_interval_frequency: 30
     },
     deliveryScheduleOptions: [
       {
-        interval: 'DAY',
-        intervalCount: 30
+        order_interval_unit: 'day',
+        order_interval_frequency: 30
       },
       {
-        interval: 'DAY',
-        intervalCount: 60
+        order_interval_unit: 'day',
+        order_interval_frequency: 60
       }
     ],
     shippingAddress: {
@@ -1896,21 +1896,21 @@ export const subscriptions: RawSubscription[] = [
       amount: 16000
     },
     deliverySchedule: {
-      interval: 'DAY',
-      intervalCount: 30
+      order_interval_unit: 'day',
+      order_interval_frequency: 30
     },
     deliveryScheduleOptions: [
       {
-        interval: 'DAY',
-        intervalCount: 30
+        order_interval_unit: 'day',
+        order_interval_frequency: 30
       },
       {
-        interval: 'DAY',
-        intervalCount: 60
+        order_interval_unit: 'day',
+        order_interval_frequency: 60
       },
       {
-        interval: 'DAY',
-        intervalCount: 90
+        order_interval_unit: 'day',
+        order_interval_frequency: 90
       }
     ],
     shippingAddress: {
@@ -2250,21 +2250,21 @@ export const subscriptions: RawSubscription[] = [
       amount: 16000
     },
     deliverySchedule: {
-      interval: 'DAY',
-      intervalCount: 30
+      order_interval_unit: 'day',
+      order_interval_frequency: 30
     },
     deliveryScheduleOptions: [
       {
-        interval: 'DAY',
-        intervalCount: 30
+        order_interval_unit: 'day',
+        order_interval_frequency: 30
       },
       {
-        interval: 'DAY',
-        intervalCount: 60
+        order_interval_unit: 'day',
+        order_interval_frequency: 60
       },
       {
-        interval: 'DAY',
-        intervalCount: 90
+        order_interval_unit: 'day',
+        order_interval_frequency: 90
       }
     ],
     shippingAddress: {

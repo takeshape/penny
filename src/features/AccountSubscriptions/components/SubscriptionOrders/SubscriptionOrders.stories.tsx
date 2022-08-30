@@ -1,6 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { subscriptions } from '../../fixtures';
-import { getSubscription } from '../../transforms';
 import { SubscriptionOrders } from './SubscriptionOrders';
 
 const Meta: ComponentMeta<typeof SubscriptionOrders> = {
@@ -11,12 +9,8 @@ const Meta: ComponentMeta<typeof SubscriptionOrders> = {
   }
 };
 
-const Template: ComponentStory<typeof SubscriptionOrders> = (args) => <SubscriptionOrders {...args} />;
+const Template: ComponentStory<typeof SubscriptionOrders> = (args) => <div />;
 
 export const Orders = Template.bind({});
-
-Orders.args = {
-  subscription: getSubscription(subscriptions[0])
-};
 
 export default Meta;

@@ -2,12 +2,16 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
+import { CreateOnetimeMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { SubscriptionOrder } from '../../types';
+import { CreateOnetimeMutationResponse, CreateOnetimeMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { RechargeCharge, Subscription } from '../../types';
 
 export interface OrderNowFormProps extends ModalProps {
-  order: SubscriptionOrder;
+  subscription: Subscription;
+  order: RechargeCharge;
 }
 
 export interface OrderNowFormValues {
@@ -17,7 +21,7 @@ export interface OrderNowFormValues {
 /**
  * TODO Handle submit errors
  */
-export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
+export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowFormProps) => {
   const {
     handleSubmit,
     register,
@@ -29,12 +33,25 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
     }
   });
 
+  const [orderNow, { data }] = useAuthenticatedMutation<CreateOnetimeMutationResponse, CreateOnetimeMutationVariables>(
+    CreateOnetimeMutation
+  );
+
+  const lineItem = order.line_items.find((li) => li.subscription_id === subscription.id);
+
   const handleFormSubmit = useCallback(
     async (formData: OrderNowFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, order });
+      orderNow({
+        variables: {
+          addressId: order.address_id,
+          variantId: lineItem.shopify_variant_id,
+          price: lineItem.price,
+          productTitle: lineItem.title,
+          quantity: lineItem.quantity
+        }
+      });
     },
-    [order]
+    [lineItem.price, lineItem.quantity, lineItem.shopify_variant_id, lineItem.title, order.address_id, orderNow]
   );
 
   const resetState = useCallback(() => {
@@ -56,7 +73,7 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-2">
-              Your <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> order is being processed now.
+              Your <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> order is being processed now.
             </p>
           </div>
         ) : (
@@ -64,17 +81,17 @@ export const OrderNowForm = ({ isOpen, onClose, order }: OrderNowFormProps) => {
             <h3 id="confirm-heading" className="sr-only">
               Confirm order now
             </h3>
-            {order.status === 'scheduled' && (
+            {order.status === 'QUEUED' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
                 <p className="mb-4">
-                  Your next order scheduled for <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> will
-                  be processed and shipped immediately.
+                  Your next order scheduled for <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> will be
+                  processed and shipped immediately.
                 </p>
                 <p>Would you like to continue?</p>
               </div>
             )}
 
-            {order.status === 'skipped' && <p>This order has already been skipped.</p>}
+            {order.status === 'SKIPPED' && <p>This order has already been skipped.</p>}
 
             <input {...register('confirm')} className="hidden" />
           </section>

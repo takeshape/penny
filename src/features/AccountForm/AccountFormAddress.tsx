@@ -10,8 +10,8 @@ import {
   CustomerQueryResponse,
   CustomerQueryVariables
 } from 'types/storefront';
+import { countries } from 'utils/countries/countries';
 import { formatError } from 'utils/errors';
-import useCountries from 'utils/hooks/useCountries';
 import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
 import { CustomerAddressUpdateMutation, CustomerQuery } from './queries.storefront';
 
@@ -106,9 +106,8 @@ export const AccountFormAddress = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const countries = useCountries();
   const watchCountry = watch('country', 'United States');
-  const selectedCountry = watchCountry && countries?.find((c) => c.name === watchCountry);
+  const selectedCountry = watchCountry && countries.find((c) => c.name === watchCountry);
 
   const isReady = Boolean(customerData);
   const error =
@@ -166,7 +165,7 @@ export const AccountFormAddress = () => {
           label="Country"
           defaultValue="US"
           options={
-            countries?.map(({ name, iso2 }) => ({
+            countries.map(({ name, iso2 }) => ({
               key: iso2,
               value: name,
               title: name

@@ -15,8 +15,8 @@ export function pluralizeText(count: number, singular: string, plural: string) {
   }
 }
 
-export function formatPrice(currency: string, amountInCents: number) {
-  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amountInCents / 100);
+export function formatPrice(currency: string, amount: number) {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
 }
 
 export function formatDiscount(price: ProductPriceOption) {

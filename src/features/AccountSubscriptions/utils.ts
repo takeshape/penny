@@ -1,14 +1,8 @@
 import { compareAsc } from 'date-fns';
-import {
-  ActiveSubscription,
-  EndedSubscription,
-  Subscription,
-  SubscriptionDeliveryScheduleOption,
-  SubscriptionOrder
-} from './types';
+import { Subscription, SubscriptionOrder } from './types';
 
-export function formatDeliverySchedule({ interval, intervalCount }: SubscriptionDeliveryScheduleOption): string {
-  return `${intervalCount} ${interval.toLocaleLowerCase()}(s)`;
+export function formatDeliverySchedule({ order_interval_unit, order_interval_frequency }: Subscription): string {
+  return `${order_interval_frequency} ${order_interval_unit.toLocaleLowerCase()}(s)`;
 }
 
 export function getSortedOrders(orders: SubscriptionOrder[]) {
@@ -46,10 +40,10 @@ export function getSortedOrders(orders: SubscriptionOrder[]) {
   };
 }
 
-export function isActiveSubscription(subscription: Subscription): subscription is ActiveSubscription {
-  return subscription.status === 'active';
+export function isActiveSubscription(subscription: Subscription) {
+  return subscription.status === 'ACTIVE';
 }
 
-export function isEndedSubscription(subscription: Subscription): subscription is EndedSubscription {
-  return subscription.status === 'ended';
+export function isEndedSubscription(subscription: Subscription) {
+  return subscription.status === 'CANCELLED' || subscription.status === 'EXPIRED';
 }

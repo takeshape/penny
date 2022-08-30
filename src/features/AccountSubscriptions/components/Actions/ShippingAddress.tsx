@@ -4,48 +4,79 @@ import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { ShippingAddress } from 'features/AccountSubscriptions/types';
+import { ChangeSubscriptionAddressMutation } from 'features/AccountSubscriptions/queries';
+import { Subscription } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import useCountries from 'utils/hooks/useCountries';
-
-interface ShippingAddressFormValues extends ShippingAddress {}
-
+import { ChangeSubscriptionAddressMutationResponse, ChangeSubscriptionAddressMutationVariables } from 'types/takeshape';
+import { countries } from 'utils/countries/countries';
+import { useAuthenticatedMutation } from 'utils/takeshape';
 interface ShippingAddressFormProps extends ModalProps {
-  currentAddress: ShippingAddress;
+  subscription: Subscription;
 }
+
+type ShippingAddressFormValues = Pick<
+  ChangeSubscriptionAddressMutationVariables,
+  'address1' | 'address2' | 'city' | 'countryCode' | 'firstName' | 'lastName' | 'phone' | 'province' | 'zip'
+>;
 
 /**
  * TODO Handle errors
  */
-export const ShippingAddressForm = ({ isOpen, onClose, currentAddress }: ShippingAddressFormProps) => {
+export const ShippingAddressForm = ({ isOpen, onClose, subscription }: ShippingAddressFormProps) => {
   const {
     handleSubmit,
     control,
     watch,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful }
-  } = useForm<ShippingAddress>();
+    formState: { isSubmitting, isSubmitSuccessful },
+    getValues,
+    setValue
+  } = useForm<ShippingAddressFormValues>();
+
+  const [changeSubscriptionAddress] = useAuthenticatedMutation<
+    ChangeSubscriptionAddressMutationResponse,
+    ChangeSubscriptionAddressMutationVariables
+  >(ChangeSubscriptionAddressMutation);
 
   const handleFormSubmit = useCallback(
     async (formData: ShippingAddressFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log(formData);
-      // TODO Mutate underlying state so the subscription show changes
+      changeSubscriptionAddress({
+        variables: {
+          ...formData,
+          rechargeCustomerId: subscription.customer_id,
+          subscriptionId: subscription.id
+        }
+      });
       onClose();
     },
-    [onClose]
+    [changeSubscriptionAddress, onClose, subscription.customer_id, subscription.id]
   );
 
-  const resetState = useCallback(() => reset(currentAddress), [reset, currentAddress]);
+  // Use countryCode here because inconsistent...
+  const watchCountry = watch('countryCode', 'US');
+  const selectedCountry = watchCountry && countries.find((c) => c.iso2 === watchCountry);
+
+  useEffect(() => {
+    const selectedProvince = getValues().province;
+    if (selectedCountry.states.find((state) => state.name === selectedProvince) === undefined) {
+      setValue('province', selectedCountry.states[0].name);
+    }
+  }, [getValues, selectedCountry.states, setValue, watchCountry]);
+
+  const resetState = useCallback(
+    () =>
+      reset({
+        ...subscription.address,
+        firstName: subscription.address.first_name,
+        lastName: subscription.address.last_name,
+        countryCode: countries.find((country) => country.name === subscription.address.country).iso2 ?? 'US'
+      }),
+    [reset, subscription.address]
+  );
 
   // Set initial values
   useEffect(() => resetState(), [resetState]);
-
-  const countries = useCountries();
-  // Use countryCode here because inconsistent...
-  const watchCountry = watch('countryCode', 'US');
-  const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
 
   return (
     <ModalForm

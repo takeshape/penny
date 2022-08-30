@@ -1,23 +1,26 @@
-import { format } from 'date-fns';
+import { format, isFuture } from 'date-fns';
+import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
 import { useState } from 'react';
 import { formatPrice } from 'utils/text';
-import { ActiveSubscription } from '../../types';
+import { Subscription, SubscriptionSelectedVariant } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
 import { OrderNowForm } from '../Actions/OrderNowForm';
-import { PaymentMethodRechargeForm } from '../Actions/PaymentMethodRechargeForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
 
 export interface ManageSubscriptionProps {
-  subscription: ActiveSubscription;
+  subscription: Subscription;
+  variant: SubscriptionSelectedVariant;
 }
 
-export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) => {
-  const { product, nextOrder } = subscription;
+export const ManageSubscription = ({ subscription, variant }: ManageSubscriptionProps) => {
+  const nextOrder = subscription.charges
+    .filter((charge) => isFuture(new Date(charge.scheduled_at)))
+    .find((charge) => charge.status === 'QUEUED');
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
@@ -67,7 +70,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               <dt className="text-sm font-medium text-body-500">Date started</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
+                  <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
                 </div>
               </dd>
             </div>
@@ -76,7 +79,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Next charge date</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{format(new Date(subscription.nextOrder.fulfillmentDate), 'PPP')}</div>
+                <div className="flex-grow">{format(new Date(nextOrder.scheduled_at), 'PPP')}</div>
                 <div className="ml-4 flex-shrink-0 flex space-x-4">
                   <button
                     type="button"
@@ -93,7 +96,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Delivery frequency</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{formatDeliverySchedule(subscription.deliverySchedule)}</div>
+                <div className="flex-grow">{formatDeliverySchedule(subscription)}</div>
                 <div className="ml-4 flex-shrink-0">
                   <button
                     type="button"
@@ -111,8 +114,8 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               <dt className="text-sm font-medium text-body-500">Product</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  <div>{product.name}</div>
-                  <div className="mt-2">{product.variantName}</div>
+                  <div>{variant.product.title}</div>
+                  <div className="mt-2">{variant.title}</div>
                 </div>
                 <div className="ml-4 flex-shrink-0">
                   <button
@@ -131,7 +134,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               <dt className="text-sm font-medium text-body-500">Quantity</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  <div className="mt-2">{product.quantity}</div>
+                  <div className="mt-2">{subscription.quantity}</div>
                 </div>
                 <div className="ml-4 flex-shrink-0">
                   <button
@@ -149,7 +152,9 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Amount per item</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{formatPrice(product.price.currencyCode, product.price.amount)}</div>
+                <div className="flex-grow">
+                  {formatPrice(subscription.presentment_currency, subscription.price / subscription.quantity)}
+                </div>
               </dd>
             </div>
 
@@ -157,9 +162,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Total Amount</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">
-                  {formatPrice(subscription.price.currencyCode, subscription.price.amount)}
-                </div>
+                <div className="flex-grow">{formatPrice(subscription.presentment_currency, subscription.price)}</div>
               </dd>
             </div>
 
@@ -169,14 +172,14 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <span className="flex-grow">
                   <span className="block">
-                    {subscription.shippingAddress.firstName} {subscription.shippingAddress.lastName}
+                    {subscription.address.first_name} {subscription.address.last_name}
                   </span>
-                  <span className="block mt-1">{subscription.shippingAddress.address1}</span>
-                  <span className="block mt-1">{subscription.shippingAddress.address2}</span>
+                  <span className="block mt-1">{subscription.address.address1}</span>
+                  <span className="block mt-1">{subscription.address.address2}</span>
                   <span className="block mt-1">
-                    {subscription.shippingAddress.city}, {subscription.shippingAddress.province}
+                    {subscription.address.city}, {subscription.address.province}
                   </span>
-                  <span className="block mt-1">{subscription.shippingAddress.zip}</span>
+                  <span className="block mt-1">{subscription.address.zip}</span>
                 </span>
                 <span className="ml-4 flex-shrink-0">
                   <button
@@ -224,35 +227,38 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
       <NextChargeDateForm
         isOpen={isNextChargeDateOpen}
         onClose={() => setIsNextChargeDateOpen(false)}
-        currentNextChargeDate={subscription.nextOrder.fulfillmentDate}
+        subscription={subscription}
       />
 
       <ProductOptionsForm
-        variants={product.variants}
-        variantOptions={product.variantOptions}
-        currentQuantity={product.quantity}
-        currentSelections={product.variantSelections}
-        currentDeliverySchedule={subscription.deliverySchedule}
+        subscription={subscription}
+        variants={variant.product.variants.edges.map((edge) => edge.node)}
+        variantOptions={variant.product.options}
+        currentSelections={variant.selectedOptions}
         isOpen={isProductOptionsOpen}
         onClose={() => setIsProductOptionsOpen(false)}
       />
 
       <DeliveryFrequencyForm
-        currentDeliverySchedule={subscription.deliverySchedule}
-        deliveryScheduleOptions={subscription.deliveryScheduleOptions}
+        subscription={subscription}
         isOpen={isDeliveryScheduleOpen}
         onClose={() => setIsDeliveryScheduleOpen(false)}
       />
 
       <ShippingAddressForm
+        subscription={subscription}
         isOpen={isShippingAddressOpen}
         onClose={() => setIsShippingAddressOpen(false)}
-        currentAddress={subscription.shippingAddress}
       />
 
       <SkipForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} order={nextOrder} />
 
-      <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} order={nextOrder} />
+      <OrderNowForm
+        isOpen={isOrderNowOpen}
+        onClose={() => setIsOrderNowOpen(false)}
+        subscription={subscription}
+        order={nextOrder}
+      />
 
       <CancelSubscriptionForm
         isOpen={isCancelSubscriptionOpen}
@@ -263,7 +269,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
       <PaymentMethodRechargeForm
         isOpen={isPaymentMethodOpen}
         onClose={() => setIsPaymentMethodOpen(false)}
-        addressId={subscription.shippingAddress.id}
+        addressId={subscription.address_id}
       />
     </>
   );

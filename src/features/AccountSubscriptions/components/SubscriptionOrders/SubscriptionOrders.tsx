@@ -1,21 +1,26 @@
+import { isFuture, isPast } from 'date-fns';
+import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/OrderNowForm';
+import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
+import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
 import { useState } from 'react';
-import { Subscription } from '../../types';
-import { OrderNowForm } from '../Actions/OrderNowForm';
-import { SkipForm } from '../Actions/SkipForm';
-import { OrderItem } from './OrderItem';
+import { Subscription, SubscriptionSelectedVariant } from '../../types';
 
 export interface SubscriptionOrdersProps {
   subscription: Subscription;
+  variant: SubscriptionSelectedVariant;
 }
 
-export const SubscriptionOrders = ({ subscription }: SubscriptionOrdersProps) => {
+export const SubscriptionOrders = ({ subscription, variant }: SubscriptionOrdersProps) => {
   const { status } = subscription;
-  const { upcomingOrders, pastOrders, nextOrder } = subscription;
 
-  const isActive = status === 'active';
+  const isActive = status === 'ACTIVE';
 
   const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
   const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
+
+  const upcomingCharges = subscription.charges.filter((charge) => isFuture(new Date(charge.scheduled_at)));
+  const pastCharges = subscription.charges.filter((charge) => isPast(new Date(charge.scheduled_at)));
+  const nextOrder = upcomingCharges.find((charge) => charge.status === 'QUEUED');
 
   return (
     <>
@@ -53,27 +58,27 @@ export const SubscriptionOrders = ({ subscription }: SubscriptionOrdersProps) =>
           )}
         </div>
 
-        {isActive && upcomingOrders.length > 0 && (
+        {isActive && upcomingCharges.length > 0 && (
           <div className="mt-6 space-y-16 sm:mt-8">
-            {upcomingOrders.reverse().map((order) => (
+            {upcomingCharges.reverse().map((order) => (
               <section key={order.id} aria-labelledby={`${order.id}-heading`}>
-                <OrderItem order={order} />
+                <OrderItem subscription={subscription} order={order} />
               </section>
             ))}
           </div>
         )}
 
-        {isActive && pastOrders.length > 0 && (
+        {isActive && pastCharges.length > 0 && (
           <div className="mt-16">
             <h3 className="text-lg leading-6 font-medium text-body-900">Past orders</h3>
           </div>
         )}
 
-        {pastOrders.length > 0 && (
+        {pastCharges.length > 0 && (
           <div className="mt-6 space-y-16 sm:mt-8">
-            {pastOrders.map((order) => (
+            {pastCharges.map((order) => (
               <section key={order.id} aria-labelledby={`${order.id}-heading`}>
-                <OrderItem order={order} />
+                <OrderItem subscription={subscription} order={order} />
               </section>
             ))}
           </div>
@@ -83,7 +88,12 @@ export const SubscriptionOrders = ({ subscription }: SubscriptionOrdersProps) =>
       {isActive && nextOrder && (
         <>
           <SkipForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} order={nextOrder} />
-          <OrderNowForm isOpen={isOrderNowOpen} onClose={() => setIsOrderNowOpen(false)} order={nextOrder} />
+          <OrderNowForm
+            isOpen={isOrderNowOpen}
+            onClose={() => setIsOrderNowOpen(false)}
+            subscription={subscription}
+            order={nextOrder}
+          />
         </>
       )}
     </>

@@ -2,21 +2,21 @@ import { RefreshIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
 import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
 import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
-import { Subscription } from './types';
+import { GetMySubscriptionsQuery } from 'features/AccountSubscriptions/queries';
+import { GetMySubscriptionsQueryResponse } from 'types/takeshape';
+import { useAuthenticatedQuery } from 'utils/takeshape';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
-export interface AccountSubscriptionsProps {
-  subscriptions: Subscription[];
-}
+export const AccountSubscriptions = () => {
+  const { data } = useAuthenticatedQuery<GetMySubscriptionsQueryResponse>(GetMySubscriptionsQuery);
 
-export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProps) => {
-  const activeSubscriptions = subscriptions.filter(isActiveSubscription);
-  const endedSubscriptions = subscriptions.filter(isEndedSubscription);
+  const activeSubscriptions = data?.subscriptions.filter(isActiveSubscription) ?? [];
+  const endedSubscriptions = data?.subscriptions.filter(isEndedSubscription) ?? [];
 
   return (
     <>
       <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
-        {activeSubscriptions?.length ? (
+        {activeSubscriptions?.length > 0 ? (
           <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
             {activeSubscriptions.map((subscription) => (
               <div
@@ -35,7 +35,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
         )}
       </CardPanel>
 
-      {endedSubscriptions?.length && (
+      {endedSubscriptions?.length > 0 && (
         <CardPanel primaryText="Past Subscriptions" secondaryText="Expired or canceled subscriptions.">
           <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
             {endedSubscriptions.map((subscription) => (

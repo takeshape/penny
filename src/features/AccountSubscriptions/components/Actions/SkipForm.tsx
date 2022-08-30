@@ -2,12 +2,15 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
+import { SkipChargeMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { SubscriptionOrder } from '../../types';
+import { SkipChargeMutationResponse, SkipChargeMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { RechargeCharge } from '../../types';
 
 export interface SkipFormProps extends ModalProps {
-  order?: SubscriptionOrder;
+  order: RechargeCharge;
 }
 
 export interface SkipFormValues {
@@ -29,12 +32,15 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
     }
   });
 
+  const [skipCharge] = useAuthenticatedMutation<SkipChargeMutationResponse, SkipChargeMutationVariables>(
+    SkipChargeMutation
+  );
+
   const handleFormSubmit = useCallback(
     async (formData: SkipFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, order });
+      skipCharge({ variables: { id: order.id } });
     },
-    [order]
+    [order, skipCharge]
   );
 
   const resetState = useCallback(() => {
@@ -56,7 +62,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">
-              Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> has been skipped.
+              Your order on <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> has been skipped.
             </p>
             <p className="text-sm">
               If this was a mistake you can unskip it on the <strong>Subcription → Orders</strong> screen.
@@ -67,17 +73,17 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
             <h3 id="confirm-heading" className="sr-only">
               Confirm skip order
             </h3>
-            {order.status === 'scheduled' && (
+            {order.status === 'QUEUED' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
                 <p className="mb-4">
                   Your order will not be processed on{' '}
-                  <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.
+                  <strong className="text-black">{format(new Date(order.scheduled_at), 'PPP')}</strong>.
                 </p>
                 <p>Would you like to continue?</p>
               </div>
             )}
 
-            {order.status === 'skipped' && <p>This order has already been skipped.</p>}
+            {order.status === 'SKIPPED' && <p>This order has already been skipped.</p>}
 
             <input {...register('confirm')} className="hidden" />
           </section>
@@ -90,7 +96,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Skip it"
-        disableSubmit={order.status !== 'scheduled'}
+        disableSubmit={order.status !== 'QUEUED'}
       />
     </ModalForm>
   );

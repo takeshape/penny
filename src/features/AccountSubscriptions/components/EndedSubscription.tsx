@@ -1,10 +1,14 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
+import Loader from 'components/Loader/Loader';
 import { format } from 'date-fns';
+import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
+import { Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
 import { shopifyGidToId } from 'transforms/shopify';
+import { SubscriptionProductVariantQueryResponse, SubscriptionProductVariantQueryVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
-import { EndedSubscription as TEndedSubscription } from '../types';
+import { useAuthenticatedQuery } from 'utils/takeshape';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
 import { SubscriptionOverview } from './SubscriptionOverview/SubscriptionOverview';
 
@@ -18,14 +22,28 @@ const navigationItems = [
 ];
 
 export interface EndedSubscriptionProps {
-  subscription: TEndedSubscription;
+  subscription: Subscription;
 }
 
 export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
+  const { data: variantData } = useAuthenticatedQuery<
+    SubscriptionProductVariantQueryResponse,
+    SubscriptionProductVariantQueryVariables
+  >(SubscriptionProductVariantQuery, {
+    variables: { id: `gid://shopify/ProductVariant/${subscription.shopify_variant_id}` }
+  });
+
+  if (!variantData) {
+    return <Loader />;
+  }
+
+  const variant = variantData.variant;
+
   return (
     <Tab.Group>
       <h3 className="sr-only" id={shopifyGidToId(subscription.id)}>
-        Order placed on <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
+        Order placed on{' '}
+        <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
       </h3>
 
       <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
@@ -33,7 +51,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
           <div>
             <dt className="font-medium text-body-900">Date ended</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.endedAt}>{format(new Date(subscription.endedAt), 'PPP')}</time>
+              <time dateTime={subscription.cancelled_at}>{format(new Date(subscription.cancelled_at), 'PPP')}</time>
             </dd>
           </div>
         </dl>
@@ -95,10 +113,10 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview subscription={subscription} />
+          <SubscriptionOverview subscription={subscription} variant={variant} />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} />
+          <SubscriptionOrders subscription={subscription} variant={variant} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

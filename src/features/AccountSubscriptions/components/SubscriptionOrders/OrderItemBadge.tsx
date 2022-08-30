@@ -1,29 +1,33 @@
 import { format } from 'date-fns';
 import classNames from 'utils/classNames';
-import { SubscriptionOrder } from '../../types';
+import { RechargeCharge } from '../../types';
 
-export const OrderItemBadge = ({ status, deliveredAt }: Pick<SubscriptionOrder, 'status' | 'deliveredAt'>) => {
+interface OrderItemBadgeProps {
+  order: RechargeCharge;
+}
+
+export const OrderItemBadge = ({ order }: OrderItemBadgeProps) => {
   let badgeText = '';
   let badgeClasses = '';
 
-  switch (status) {
-    case 'delivered':
-      badgeText = `Delivered on ${format(new Date(deliveredAt), 'PPP')}`;
+  switch (order.status) {
+    case 'SUCCESS':
+      badgeText = `Delivered on ${format(new Date(order.scheduled_at), 'PPP')}`;
       badgeClasses = 'bg-green-100 text-green-800';
       break;
 
-    case 'skipped':
+    case 'SKIPPED':
       badgeText = `Skipped`;
       badgeClasses = 'bg-gray-100 text-gray-800';
       break;
 
-    case 'scheduled':
+    case 'QUEUED':
       badgeText = `Scheduled`;
       badgeClasses = 'bg-blue-100 text-blue-800';
       break;
 
     default:
-      badgeText = `${status}`;
+      badgeText = `${order.status}`;
   }
 
   return (
