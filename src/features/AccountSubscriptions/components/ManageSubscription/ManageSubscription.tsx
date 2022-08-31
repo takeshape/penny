@@ -1,14 +1,13 @@
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { formatPrice } from 'utils/text';
-import { CreditCard } from '../../../../components/Payments/CreditCard';
 import { ActiveSubscription } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
 import { OrderNowForm } from '../Actions/OrderNowForm';
-import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
+import { PaymentMethodRechargeForm } from '../Actions/PaymentMethodRechargeForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
@@ -195,7 +194,7 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
             <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Payment method</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
+                {/* <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} /> */}
                 <div className="ml-4 flex-shrink-0">
                   <button
                     type="button"
@@ -261,10 +260,10 @@ export const ManageSubscription = ({ subscription }: ManageSubscriptionProps) =>
         subscription={subscription}
       />
 
-      <PaymentMethodForm
+      <PaymentMethodRechargeForm
         isOpen={isPaymentMethodOpen}
         onClose={() => setIsPaymentMethodOpen(false)}
-        currentPaymentMethod={subscription.paymentMethod}
+        addressId={subscription.shippingAddress.id}
       />
     </>
   );

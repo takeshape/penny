@@ -1688,6 +1688,130 @@
         ]
       },
       "shape": "TrustpilotProductReviews"
+    },
+    "Recharge_getMyPaymentMethods": {
+      "shape": {
+        "type": "array",
+        "items": {
+          "@ref": "recharge:PaymentMethod"
+        }
+      },
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                },
+                {
+                  "path": "include",
+                  "value": "payment_methods"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0].include.payment_methods"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Recharge_getAddressPaymentMethods": {
+      "shape": {
+        "type": "array",
+        "items": {
+          "@ref": "recharge:PaymentMethod"
+        }
+      },
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
+            }
+          },
+          {
+            "name": "rest:get",
+            "id": "paymentMethods",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "addressId",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{addressId}"
+              }
+            },
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "include",
+                  "value": "payment_methods"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": [
+                    [
+                      "expressionEval",
+                      {
+                        "expression": "$resolvers.customer.id === $currentResolver.address.customer_id ? $currentResolver.address.include.payment_methods : null"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "addressId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "addressId"
+        ]
+      }
     }
   },
   "mutations": {
@@ -3350,6 +3474,194 @@
       },
       "description": "Delete LineItemAttributes",
       "args": "DeleteArgs<LineItemAttributes>"
+    },
+    "Recharge_sendUpdatePaymentEmail": {
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
+            }
+          },
+          {
+            "if": "!isEmpty($resolvers.customer)",
+            "id": "notification",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "customerId",
+                  "mapping": "$resolvers.customer.id"
+                }
+              ],
+              "serialize": {
+                "template": "/customers/{customerId}/notifications"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "type",
+                  "value": "email"
+                },
+                {
+                  "path": "template_type",
+                  "value": "shopify_update_payment_information"
+                },
+                {
+                  "path": "template_vars.payment_method_id",
+                  "mapping": "$args.paymentMethodId"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "customer_id",
+              "mapping": "$resolvers.customer.id"
+            }
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "paymentMethodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentMethodId"
+        ]
+      },
+      "shape": "recharge:CreateNotificationResponse"
+    },
+    "Recharge_updateOwnSubscriptionPaymentMethod": {
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
+            }
+          },
+          {
+            "if": "!isEmpty($resolvers.customer)",
+            "name": "rest:get",
+            "id": "address",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "addressId",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{addressId}"
+              }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": [
+                    [
+                      "expressionEval",
+                      {
+                        "expression": "$resolvers.customer.id === $currentResolver.address.customer_id"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "if": "$resolvers.address === true",
+            "id": "updateAddressPaymentMethod",
+            "name": "rest:put",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "addressId",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{addressId}"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.addressId"
+                },
+                {
+                  "path": "payment_method_id",
+                  "mapping": "$args.paymentMethodId"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "addressId": {
+            "type": "string"
+          },
+          "paymentMethodId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "addressId",
+          "paymentMethodId"
+        ]
+      },
+      "shape": "recharge:Address"
     }
   },
   "shapes": {
@@ -5751,6 +6063,107 @@
             "items": {
               "@ref": "local:TrustpilotLink"
             }
+          }
+        }
+      }
+    },
+    "Recharge_PaymentMethod": {
+      "id": "Recharge_PaymentMethod",
+      "title": "Recharge_PaymentMethod",
+      "name": "Recharge_PaymentMethod",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "customer_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "default": {
+            "type": "boolean"
+          },
+          "payment_details": {
+            "type": "object",
+            "properties": {
+              "brand": {
+                "type": "string"
+              },
+              "exp_month": {
+                "type": "number"
+              },
+              "exp_year": {
+                "type": "number"
+              },
+              "last4": {
+                "type": "string"
+              }
+            }
+          },
+          "payment_type": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "status_reason": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Recharge_CreateNotificationResponse": {
+      "name": "Recharge_CreateNotificationResponse",
+      "title": "Recharge_CreateNotificationResponse",
+      "id": "Recharge_CreateNotificationResponse",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "customer_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Recharge_Address": {
+      "id": "Recharge_Address",
+      "title": "Recharge_Address",
+      "name": "Recharge_Address",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "address1": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "country_code": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
           }
         }
       }

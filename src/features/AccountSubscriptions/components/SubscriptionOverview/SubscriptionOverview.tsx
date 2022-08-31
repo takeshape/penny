@@ -3,7 +3,7 @@ import NextImage from 'components/NextImage';
 import { useState } from 'react';
 import { CreditCard } from '../../../../components/Payments/CreditCard';
 import { Subscription } from '../../types';
-import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
+import { PaymentMethodRechargeForm } from '../Actions/PaymentMethodRechargeForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 
 const RecentShipmentStatus = ({ status, datetime, date }) => {
@@ -156,8 +156,8 @@ export const SubscriptionOverview = ({ subscription }: SubscriptionOverviewProps
             onClose={() => setIsProductOptionsOpen(false)}
           />
 
-          <PaymentMethodForm
-            currentPaymentMethod={subscription.paymentMethod}
+          <PaymentMethodRechargeForm
+            addressId={subscription.shippingAddress.id}
             isOpen={isPaymentMethodOpen}
             onClose={() => setIsPaymentMethodOpen(false)}
           />

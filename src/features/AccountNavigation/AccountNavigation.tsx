@@ -1,13 +1,5 @@
 import { useApolloClient } from '@apollo/client';
-import {
-  CreditCardIcon,
-  GiftIcon,
-  KeyIcon,
-  LogoutIcon,
-  RefreshIcon,
-  TagIcon,
-  UserCircleIcon
-} from '@heroicons/react/outline';
+import { GiftIcon, KeyIcon, LogoutIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -19,7 +11,8 @@ export const accountNavigationItems = [
   { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
   { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
-  { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
+  // Cannot use without `write_customer_payment_methods` scope — requires an approved app
+  // { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
   { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
 

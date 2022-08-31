@@ -1,3 +1,6 @@
+/**
+ * If a project is able to use `write_customer_payment_methods` can use this.
+ */
 import { RadioGroup } from '@headlessui/react';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';

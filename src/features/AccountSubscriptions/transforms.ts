@@ -1,3 +1,10 @@
+import { getIsExpiringSoon } from 'components/Payments/utils';
+import {
+  GetAddressPaymentMethodsQueryResponse,
+  GetMyPaymentMethodsQueryResponse,
+  Recharge_PaymentMethod
+} from 'types/takeshape';
+import { capitalize } from 'utils/text';
 import { RawSubscription, Subscription, SubscriptionDeliveryScheduleOption } from './types';
 import { getSortedOrders } from './utils';
 
@@ -24,4 +31,38 @@ export function getDeliveryScheduleOptions(): SubscriptionDeliveryScheduleOption
       intervalCount: 60
     }
   ];
+}
+
+function getPaymentMethod(paymentMethod: Recharge_PaymentMethod) {
+  const { exp_month: expiryMonth, exp_year: expiryYear, last4 } = paymentMethod.payment_details;
+
+  return {
+    id: paymentMethod.id,
+    instrument: {
+      brand: capitalize(paymentMethod.payment_details.brand),
+      expiresSoon: getIsExpiringSoon({ expiryMonth, expiryYear }),
+      expiryMonth,
+      expiryYear,
+      lastDigits: last4,
+      maskedNumber: `••••${last4}`,
+      name: '',
+      isRevocable: false
+    }
+  };
+}
+
+export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse) {
+  if (!response?.paymentMethods) {
+    return null;
+  }
+
+  return response.paymentMethods.map(getPaymentMethod);
+}
+
+export function getAddressDefaultPaymentMethod(response: GetAddressPaymentMethodsQueryResponse) {
+  if (!response?.paymentMethods) {
+    return null;
+  }
+
+  return getPaymentMethod(response.paymentMethods[0]);
 }
