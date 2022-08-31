@@ -1,6 +1,6 @@
 import { getIsExpiringSoon } from 'components/Payments/utils';
 import {
-  GetAddressPaymentMethodsQueryResponse,
+  GetMyAddressPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryResponse,
   Recharge_PaymentMethod
 } from 'types/takeshape';
@@ -59,7 +59,7 @@ export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse) {
   return response.paymentMethods.map(getPaymentMethod);
 }
 
-export function getAddressDefaultPaymentMethod(response: GetAddressPaymentMethodsQueryResponse) {
+export function getAddressDefaultPaymentMethod(response: GetMyAddressPaymentMethodsQueryResponse) {
   if (!response?.paymentMethods) {
     return null;
   }
