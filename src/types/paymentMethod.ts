@@ -21,5 +21,6 @@ export type SubscriptionContract = Pick<
 export type PaymentMethod = {
   id: string;
   instrument: CreditCard;
+  // TODO: Not functional right now
   subscriptionContracts: SubscriptionContract[];
 };

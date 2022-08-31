@@ -1,5 +1,5 @@
+import { PaymentMethod } from 'types/paymentMethod';
 import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
-import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
 
 export type ShippingAddress = {
   firstName: string;
@@ -75,8 +75,8 @@ export type RawSubscription = {
   price: SubscriptionPrice;
   deliverySchedule: SubscriptionDeliveryScheduleOption;
   deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
-  shippingAddress: ShippingAddress;
-  paymentMethod: Shopify_CustomerPaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
+  shippingAddress: ShippingAddress & { id: string };
+  paymentMethod: PaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
   product: SubscriptionProduct;
   orders: SubscriptionOrder[];
 };
@@ -90,9 +90,9 @@ export type Subscription = {
   price: SubscriptionPrice;
   deliverySchedule: SubscriptionDeliveryScheduleOption;
   deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
-  shippingAddress: ShippingAddress;
+  shippingAddress: ShippingAddress & { id: string };
   // This will come from Shopify https://shopify.dev/api/admin-graphql/2022-07/objects/CustomerPaymentMethod
-  paymentMethod: Shopify_CustomerPaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
+  paymentMethod: PaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
   product: SubscriptionProduct;
   orders: SubscriptionOrder[];
   lastOrder: SubscriptionOrder;

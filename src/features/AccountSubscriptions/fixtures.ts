@@ -1516,6 +1516,7 @@ export const subscriptions: RawSubscription[] = [
       }
     ],
     shippingAddress: {
+      id: '101027982',
       firstName: 'Michael',
       lastName: 'Shick',
       address1: '156 Kent St',
@@ -1526,9 +1527,8 @@ export const subscriptions: RawSubscription[] = [
       countryCode: 'US',
       phone: '+19193600095'
     },
-    // This will come from Shopify https://shopify.dev/api/admin-graphql/2022-07/objects/CustomerPaymentMethod
     paymentMethod: {
-      id: 'ppp',
+      id: '66493468',
       instrument: {
         __typename: 'Shopify_CustomerCreditCard',
         brand: 'Visa',
@@ -1537,9 +1537,9 @@ export const subscriptions: RawSubscription[] = [
         expiryYear: 2023,
         lastDigits: '4242',
         maskedNumber: '••••4242',
-        name: 'Michael Shick',
-        isRevocable: false
+        name: 'Michael Shick'
       },
+      // @ts-expect-error
       subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
     },
     product: {
@@ -1914,6 +1914,7 @@ export const subscriptions: RawSubscription[] = [
       }
     ],
     shippingAddress: {
+      id: '101027982',
       firstName: 'Michael',
       lastName: 'Shick',
       address1: '156 Kent St',
@@ -1925,7 +1926,7 @@ export const subscriptions: RawSubscription[] = [
       phone: '+19193600095'
     },
     paymentMethod: {
-      id: 'ppp',
+      id: '66493468',
       instrument: {
         __typename: 'Shopify_CustomerCreditCard',
         brand: 'Visa',
@@ -1934,9 +1935,9 @@ export const subscriptions: RawSubscription[] = [
         expiryYear: 2023,
         lastDigits: '4242',
         maskedNumber: '••••4242',
-        name: 'Michael Shick',
-        isRevocable: false
+        name: 'Michael Shick'
       },
+      // @ts-expect-error
       subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
     },
     product: {
@@ -2267,6 +2268,7 @@ export const subscriptions: RawSubscription[] = [
       }
     ],
     shippingAddress: {
+      id: '101027982',
       firstName: 'Michael',
       lastName: 'Shick',
       address1: '156 Kent St',
@@ -2278,7 +2280,7 @@ export const subscriptions: RawSubscription[] = [
       phone: '+19193600095'
     },
     paymentMethod: {
-      id: 'ppp',
+      id: '66493468',
       instrument: {
         __typename: 'Shopify_CustomerCreditCard',
         brand: 'Visa',
@@ -2287,9 +2289,9 @@ export const subscriptions: RawSubscription[] = [
         expiryYear: 2023,
         lastDigits: '4242',
         maskedNumber: '••••4242',
-        name: 'Michael Shick',
-        isRevocable: false
+        name: 'Michael Shick'
       },
+      // @ts-expect-error
       subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
     },
     product: {
