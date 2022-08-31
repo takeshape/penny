@@ -14,9 +14,9 @@ export const GetMyPaymentMethodsQuery = gql`
   }
 `;
 
-export const GetAddressPaymentMethodsQuery = gql`
-  query GetAddressPaymentMethodsQuery($addressId: String!) {
-    paymentMethods: Recharge_getAddressPaymentMethods(addressId: $addressId) {
+export const GetMyAddressPaymentMethodsQuery = gql`
+  query GetMyAddressPaymentMethodsQuery($addressId: String!) {
+    paymentMethods: Recharge_getMyAddressPaymentMethods(addressId: $addressId) {
       id
       payment_details {
         brand
@@ -28,17 +28,17 @@ export const GetAddressPaymentMethodsQuery = gql`
   }
 `;
 
-export const SendUpdatePaymentEmailMutation = gql`
-  mutation SendUpdatePaymentEmailMutation($paymentMethodId: String!) {
-    sendUpdatePaymentEmail: Recharge_sendUpdatePaymentEmail(paymentMethodId: $paymentMethodId) {
+export const SendMyUpdatePaymentEmailMutation = gql`
+  mutation SendMyUpdatePaymentEmailMutation($paymentMethodId: String!) {
+    sendUpdatePaymentEmail: Recharge_sendMyUpdatePaymentEmail(paymentMethodId: $paymentMethodId) {
       customer_id
     }
   }
 `;
 
-export const UpdatePaymentMethodMutation = gql`
-  mutation UpdatePaymentMethodMutation($paymentMethodId: String!, $addressId: String!) {
-    updatePaymentMethod: Recharge_updateOwnSubscriptionPaymentMethod(
+export const UpdateMyPaymentMethodMutation = gql`
+  mutation UpdateMyPaymentMethodMutation($paymentMethodId: String!, $addressId: String!) {
+    updatePaymentMethod: Recharge_updateMySubscriptionPaymentMethod(
       paymentMethodId: $paymentMethodId
       addressId: $addressId
     ) {

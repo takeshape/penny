@@ -1728,7 +1728,7 @@
         ]
       }
     },
-    "Recharge_getAddressPaymentMethods": {
+    "Recharge_getMyAddressPaymentMethods": {
       "shape": {
         "type": "array",
         "items": {
@@ -3475,7 +3475,7 @@
       "description": "Delete LineItemAttributes",
       "args": "DeleteArgs<LineItemAttributes>"
     },
-    "Recharge_sendUpdatePaymentEmail": {
+    "Recharge_sendMyUpdatePaymentEmail": {
       "resolver": {
         "compose": [
           {
@@ -3557,7 +3557,7 @@
       },
       "shape": "recharge:CreateNotificationResponse"
     },
-    "Recharge_updateOwnSubscriptionPaymentMethod": {
+    "Recharge_updateMySubscriptionPaymentMethod": {
       "resolver": {
         "compose": [
           {

@@ -10,22 +10,22 @@ import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
-  GetAddressPaymentMethodsQueryResponse,
-  GetAddressPaymentMethodsQueryVariables,
+  GetMyAddressPaymentMethodsQueryResponse,
+  GetMyAddressPaymentMethodsQueryVariables,
   GetMyPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryVariables,
-  SendUpdatePaymentEmailMutationResponse,
-  SendUpdatePaymentEmailMutationVariables,
-  UpdatePaymentMethodMutationResponse,
-  UpdatePaymentMethodMutationVariables
+  SendMyUpdatePaymentEmailMutationResponse,
+  SendMyUpdatePaymentEmailMutationVariables,
+  UpdateMyPaymentMethodMutationResponse,
+  UpdateMyPaymentMethodMutationVariables
 } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation, useAuthenticatedQuery } from 'utils/takeshape';
 import {
-  GetAddressPaymentMethodsQuery,
+  GetMyAddressPaymentMethodsQuery,
   GetMyPaymentMethodsQuery,
-  SendUpdatePaymentEmailMutation,
-  UpdatePaymentMethodMutation
+  SendMyUpdatePaymentEmailMutation,
+  UpdateMyPaymentMethodMutation
 } from '../../queries';
 import { getAddressDefaultPaymentMethod, getPaymentMethods } from '../../transforms';
 
@@ -60,9 +60,9 @@ export const PaymentMethodRechargeForm = ({ isOpen, onClose, addressId }: Paymen
   >(GetMyPaymentMethodsQuery);
 
   const { data: addressPaymentMethodsResponse, refetch: refetchAddressPaymentMethods } = useAuthenticatedQuery<
-    GetAddressPaymentMethodsQueryResponse,
-    GetAddressPaymentMethodsQueryVariables
-  >(GetAddressPaymentMethodsQuery, { variables: { addressId } });
+    GetMyAddressPaymentMethodsQueryResponse,
+    GetMyAddressPaymentMethodsQueryVariables
+  >(GetMyAddressPaymentMethodsQuery, { variables: { addressId } });
 
   const currentPaymentMethod = useMemo(
     () => getAddressDefaultPaymentMethod(addressPaymentMethodsResponse),
@@ -70,14 +70,14 @@ export const PaymentMethodRechargeForm = ({ isOpen, onClose, addressId }: Paymen
   );
 
   const [sendUpdatePaymentEmail] = useAuthenticatedMutation<
-    SendUpdatePaymentEmailMutationResponse,
-    SendUpdatePaymentEmailMutationVariables
-  >(SendUpdatePaymentEmailMutation);
+    SendMyUpdatePaymentEmailMutationResponse,
+    SendMyUpdatePaymentEmailMutationVariables
+  >(SendMyUpdatePaymentEmailMutation);
 
   const [updatePaymentMethod] = useAuthenticatedMutation<
-    UpdatePaymentMethodMutationResponse,
-    UpdatePaymentMethodMutationVariables
-  >(UpdatePaymentMethodMutation);
+    UpdateMyPaymentMethodMutationResponse,
+    UpdateMyPaymentMethodMutationVariables
+  >(UpdateMyPaymentMethodMutation);
 
   const paymentMethods = getPaymentMethods(paymentMethodsResponse);
 
