@@ -143,7 +143,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createTicket"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Gorgias_createTicket"
           ],
           "Effect": "Allow",
           "Action": [
@@ -152,7 +152,7 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createZendeskTicket"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Zendesk_createTicket"
           ],
           "Effect": "Allow",
           "Action": [
@@ -242,7 +242,16 @@
         },
         {
           "Resource": [
-            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.createTicket"
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Gorgias_createTicket"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Zendesk_createTicket"
           ],
           "Effect": "Allow",
           "Action": [

@@ -1,4 +1,5 @@
 export * from './auth';
+export * from './contact';
 export * from './ecommerce';
 export * from './klaviyo';
 export * from './lighthouse';

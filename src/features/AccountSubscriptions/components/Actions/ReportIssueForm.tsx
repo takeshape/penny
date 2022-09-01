@@ -2,9 +2,12 @@ import FormTextarea from 'components/Form/Textarea/Textarea';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { siteContactEmail } from 'config';
+import { useAuthenticatedCreateTicket } from 'features/Contact/useCreateTicket';
 import { useSession } from 'next-auth/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { shopifyGidToId } from 'transforms/shopify';
 import { SubscriptionOrder } from '../../types';
 
 export interface ReportIssueFormProps extends ModalProps {
@@ -15,28 +18,33 @@ export interface ReportIssueFormValues {
   message: string;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps) => {
   const { data: session } = useSession();
 
-  const [ticket, setTicket] = useState<{ id: number }>(null);
+  const [createTicket, { data: createTicketResponse, error: createTicketError }] = useAuthenticatedCreateTicket();
+
+  const orderId = useMemo(() => shopifyGidToId(order.id), [order.id]);
 
   const {
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitted, isSubmitSuccessful }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<ReportIssueFormValues>();
 
   const handleFormSubmit = useCallback(
-    async (formData: ReportIssueFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ session, order, formData });
-      setTicket({ id: 10672931 });
+    async ({ message }: ReportIssueFormValues) => {
+      createTicket({
+        variables: {
+          name: session.user.name,
+          email: session.user.email,
+          message: `From: ${session.user.name}
+Order ID: ${orderId}
+${message}`
+        }
+      });
     },
-    [order, session]
+    [createTicket, orderId, session]
   );
 
   const resetState = useCallback(() => {
@@ -56,12 +64,24 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
       isSubmitSuccessful={isSubmitSuccessful}
     >
       <div className="md:h-[calc(1/4*100vh)] p-[1px] flex flex-col">
-        {isSubmitSuccessful ? (
+        {createTicketError && (
           <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
-            <p className="mb-4">Created ticket #{ticket?.id}</p>
+            <p className="mb-4">There was an issue reporting your issue.</p>
+            <p>
+              Please send us an email at <a href={`mailto:${siteContactEmail}`}>{siteContactEmail}</a> and include{' '}
+              <strong>Order #{orderId}</strong>
+            </p>
+          </div>
+        )}
+
+        {createTicketResponse && (
+          <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
+            <p className="mb-4">Created ticket #{createTicketResponse.createTicket.id}</p>
             <p>We&apos;ll be in touch soon.</p>
           </div>
-        ) : (
+        )}
+
+        {!createTicketResponse && !createTicketError && (
           <section aria-labelledby="confirm-heading" className="flex-grow">
             <h3 id="confirm-heading" className="sr-only">
               Report issue contact form

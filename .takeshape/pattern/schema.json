@@ -2239,124 +2239,14 @@
         "required": [
           "list_id"
         ]
-      },
-      "createTicket": {
-        "resolver": {
-          "compose": [
-            {
-              "id": "recaptcha",
-              "name": "rest:post",
-              "service": "recaptcha",
-              "path": "/siteverify",
-              "searchParams": {
-                "ops": [
-                  {
-                    "path": "response",
-                    "mapping": "$args.recaptchaToken"
-                  }
-                ]
-              }
-            },
-            {
-              "id": "gorgiasCreateTicket",
-              "if": "$resolvers.recaptcha.success == true",
-              "name": "rest:post",
-              "service": "gorgias",
-              "path": "/tickets",
-              "json": {
-                "ops": [
-                  {
-                    "path": "customer.email",
-                    "mapping": "$args.email"
-                  },
-                  {
-                    "path": "messages",
-                    "value": [
-                      {
-                        "channel": "email",
-                        "from_agent": false,
-                        "source": {
-                          "to": [
-                            {
-                              "address": "qw72eg20ez05v4dy@emails.gorgias.com"
-                            }
-                          ]
-                        },
-                        "via": "api"
-                      }
-                    ]
-                  },
-                  {
-                    "path": "messages[0].body_text",
-                    "mapping": "$args.message"
-                  },
-                  {
-                    "path": "messages[0].source.from.address",
-                    "mapping": "$args.email"
-                  }
-                ]
-              }
-            }
-          ],
-          "results": {
-            "ops": [
-              {
-                "path": "$",
-                "mapping": "$finalResolver"
-              }
-            ]
-          }
-        },
-        "args": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string"
-            },
-            "message": {
-              "type": "string"
-            },
-            "recaptchaToken": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "email",
-            "message",
-            "recaptchaToken"
-          ]
-        },
-        "shape": "CreateTicketResponse"
       }
     },
-    "createZendeskTicket": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "recaptchaToken": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "email",
-          "message",
-          "recaptchaToken"
-        ]
-      },
+    "Gorgias_createTicket": {
       "resolver": {
         "compose": [
           {
             "id": "recaptcha",
+            "if": "isEmpty($claims.email)",
             "name": "rest:post",
             "service": "recaptcha",
             "path": "/siteverify",
@@ -2370,7 +2260,83 @@
             }
           },
           {
-            "id": "ZendeskCreateTicket",
+            "id": "createTicket",
+            "if": "$resolvers.recaptcha.success == true || !isEmpty($claims.email)",
+            "name": "rest:post",
+            "service": "gorgias",
+            "path": "/tickets",
+            "json": {
+              "ops": [
+                {
+                  "path": "customer.email",
+                  "mapping": "$args.email"
+                },
+                {
+                  "path": "messages",
+                  "value": [
+                    {
+                      "channel": "email",
+                      "from_agent": false,
+                      "source": {
+                        "to": [
+                          {
+                            "address": "qw72eg20ez05v4dy@emails.gorgias.com"
+                          }
+                        ]
+                      },
+                      "via": "api"
+                    }
+                  ]
+                },
+                {
+                  "path": "messages[0].body_text",
+                  "mapping": "$args.message"
+                },
+                {
+                  "path": "messages[0].source.from.address",
+                  "mapping": "$args.email"
+                },
+                {
+                  "path": "messages[0].source.from.name",
+                  "mapping": "$args.name"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver"
+            }
+          ]
+        }
+      },
+      "args": "CreateTicketVariables",
+      "shape": "CreateTicketResponse"
+    },
+    "Zendesk_createTicket": {
+      "resolver": {
+        "compose": [
+          {
+            "id": "recaptcha",
+            "if": "isEmpty($claims.email)",
+            "name": "rest:post",
+            "service": "recaptcha",
+            "path": "/siteverify",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "response",
+                  "mapping": "$args.recaptchaToken"
+                }
+              ]
+            }
+          },
+          {
+            "id": "createTicket",
+            "if": "$resolvers.recaptcha.success == true || !isEmpty($claims.email)",
             "name": "rest:post",
             "service": "zendesk",
             "path": "/api/v2/requests",
@@ -2401,6 +2367,7 @@
           ]
         }
       },
+      "args": "CreateTicketVariables",
       "shape": "CreateTicketResponse"
     },
     "Shopify_products": {
@@ -4426,6 +4393,33 @@
               }
             }
           }
+        ]
+      }
+    },
+    "CreateTicketVariables": {
+      "id": "CreateTicketVariables",
+      "name": "CreateTicketVariables",
+      "title": "CreateTicketVariables",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "recaptchaToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "message"
         ]
       }
     },
