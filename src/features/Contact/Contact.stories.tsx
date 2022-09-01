@@ -3,12 +3,7 @@ import { Contact } from './Contact';
 
 const Meta: ComponentMeta<typeof Contact> = {
   title: 'Features / Contact',
-  component: Contact,
-  argTypes: {
-    onSubmit: {
-      action: 'Submit'
-    }
-  }
+  component: Contact
 };
 
 const Template: ComponentStory<typeof Contact> = (args) => <Contact {...args} />;

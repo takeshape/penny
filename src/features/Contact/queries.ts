@@ -1,16 +1,26 @@
 import { gql } from '@apollo/client';
 
-export const CreateTicketMutation = gql`
-  mutation CreateTicketMutation($email: String!, $message: String!, $recaptchaToken: String!) {
-    createTicket(email: $email, message: $message, recaptchaToken: $recaptchaToken) {
+export const CreateTicketWithGorgiasMutation = gql`
+  mutation CreateTicketWithGorgiasMutation(
+    $name: String!
+    $email: String!
+    $message: String!
+    $recaptchaToken: String
+  ) {
+    createTicket: Gorgias_createTicket(name: $name, email: $email, message: $message, recaptchaToken: $recaptchaToken) {
       id
     }
   }
 `;
 
-export const CreateZendeskTicketMutation = gql`
-  mutation CreateZendeskTicketMutation($name: String!, $email: String!, $message: String!, $recaptchaToken: String!) {
-    createZendeskTicket(name: $name, email: $email, message: $message, recaptchaToken: $recaptchaToken) {
+export const CreateTicketWithZendeskMutation = gql`
+  mutation CreateTicketWithZendeskMutation(
+    $name: String!
+    $email: String!
+    $message: String!
+    $recaptchaToken: String
+  ) {
+    createTicket: Zendesk_createTicket(name: $name, email: $email, message: $message, recaptchaToken: $recaptchaToken) {
       id
     }
   }
