@@ -61,6 +61,9 @@ const securityHeaders = [
   }
 ];
 
+/**
+ * @type {import('next').NextConfig}
+ */
 const nextConfig = {
   async headers() {
     return [
@@ -138,10 +141,6 @@ const nextConfig = {
         }
       ]
     }
-  },
-  pwa: {
-    dest: 'public',
-    disable: process.env.NODE_ENV === 'development'
   }
 };
 
@@ -153,7 +152,10 @@ const withPlugins = (plugins, config) => () =>
 export default withPlugins(
   [
     withBundleAnalyzer,
-    withPwa,
+    withPwa({
+      dest: 'public',
+      disable: process.env.NODE_ENV === 'development'
+    }),
     (config) =>
       SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
   ],
