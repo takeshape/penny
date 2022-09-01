@@ -657,6 +657,17 @@
     }
   },
   "services": {
+    "recharge": {
+      "id": "recharge",
+      "provider": "rest",
+      "title": "Recharge",
+      "namespace": "Recharge",
+      "serviceType": "rest",
+      "authenticationType": "bearer",
+      "options": {
+        "endpoint": "https://api.rechargeapps.com"
+      }
+    },
     "gorgias": {
       "id": "gorgias",
       "provider": "generic",
