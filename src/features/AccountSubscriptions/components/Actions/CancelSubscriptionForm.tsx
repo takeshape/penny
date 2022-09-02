@@ -6,10 +6,11 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { CancelSubscriptionMutationResponse, CancelSubscriptionMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { Subscription } from '../../types';
+import { RefetchSubscriptions, Subscription } from '../../types';
 
 export interface CancelSubscriptionFormProps extends ModalProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface CancelSubscriptionFormValues {
@@ -19,7 +20,12 @@ export interface CancelSubscriptionFormValues {
 /**
  * TODO Handle submit errors
  */
-export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: CancelSubscriptionFormProps) => {
+export const CancelSubscriptionForm = ({
+  isOpen,
+  onClose,
+  subscription,
+  refetchSubscriptions
+}: CancelSubscriptionFormProps) => {
   const {
     handleSubmit,
     register,
@@ -38,9 +44,10 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
 
   const handleFormSubmit = useCallback(
     async (formData: CancelSubscriptionFormValues) => {
-      cancelSubscription({ variables: { id: subscription.id } });
+      await cancelSubscription({ variables: { id: subscription.id } });
+      refetchSubscriptions();
     },
-    [cancelSubscription, subscription.id]
+    [cancelSubscription, refetchSubscriptions, subscription.id]
   );
 
   const resetState = useCallback(() => reset(), [reset]);

@@ -3,12 +3,12 @@ import { DotsVerticalIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader/Loader';
 import { format } from 'date-fns';
 import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
-import { Subscription } from 'features/AccountSubscriptions/types';
+import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
 import { SubscriptionProductVariantQueryResponse, SubscriptionProductVariantQueryVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedQuery } from 'utils/takeshape';
-import { formatPrice } from 'utils/text';
+import { formatRechargePrice } from 'utils/text';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
@@ -28,9 +28,10 @@ const navigationItems = [
 
 export interface ActiveSubscriptionProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
+export const ActiveSubscription = ({ subscription, refetchSubscriptions }: ActiveSubscriptionProps) => {
   const { data: variantData } = useAuthenticatedQuery<
     SubscriptionProductVariantQueryResponse,
     SubscriptionProductVariantQueryVariables
@@ -66,7 +67,7 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
           <div>
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="mt-1 font-medium text-body-900">
-              {formatPrice(subscription.presentment_currency, subscription.price)}
+              {formatRechargePrice(subscription.presentment_currency, subscription.price)}
             </dd>
           </div>
         </dl>
@@ -128,13 +129,21 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview subscription={subscription} variant={variant} />
+          <SubscriptionOverview
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
         <Tab.Panel>
-          <ManageSubscription subscription={subscription} variant={variant} />
+          <ManageSubscription
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} />
+          <SubscriptionOrders subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

@@ -15,8 +15,13 @@ export function pluralizeText(count: number, singular: string, plural: string) {
   }
 }
 
-export function formatPrice(currency: string, amount: number) {
-  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
+export function formatShopifyPrice(currency: string, amountInCents: number) {
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amountInCents / 100);
+}
+
+export function formatRechargePrice(currency: string, price: number | string) {
+  const priceAsNumber = typeof price === 'number' ? price : parseFloat(price);
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(priceAsNumber);
 }
 
 export function formatDiscount(price: ProductPriceOption) {
@@ -28,7 +33,7 @@ export function formatDiscount(price: ProductPriceOption) {
     case 'PRICE':
     case 'FIXED_AMOUNT': {
       const amountOff = price.amountBeforeDiscount - price.amount;
-      return formatPrice(price.currencyCode, amountOff);
+      return formatShopifyPrice(price.currencyCode, amountOff);
     }
     case 'PERCENTAGE':
     default: {

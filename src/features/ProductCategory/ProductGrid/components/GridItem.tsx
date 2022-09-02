@@ -2,7 +2,7 @@ import { StarIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import classNames from 'utils/classNames';
-import { formatPrice } from 'utils/text';
+import { formatShopifyPrice } from 'utils/text';
 import { ProductCategoryProductListItem } from '../../types';
 
 export type GridItemProps = Pick<ProductCategoryProductListItem, 'product' | 'reviews'> & { priority?: boolean };
@@ -48,11 +48,11 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
 
         <p className="mt-4 text-base font-medium text-body-900">
           {product.variantsCount === 1 ? (
-            formatPrice(product.priceMax.currencyCode, product.priceMax.amount)
+            formatShopifyPrice(product.priceMax.currencyCode, product.priceMax.amount)
           ) : (
             <span>
-              {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)} to{' '}
-              {formatPrice(product.priceMax.currencyCode, product.priceMax.amount)}
+              {formatShopifyPrice(product.priceMin.currencyCode, product.priceMin.amount)} to{' '}
+              {formatShopifyPrice(product.priceMax.currencyCode, product.priceMax.amount)}
             </span>
           )}
         </p>

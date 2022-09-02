@@ -1,14 +1,16 @@
 import { isFuture } from 'date-fns';
 import { useState } from 'react';
-import { RechargeCharge } from '../../types';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 import { SkipForm } from '../Actions/SkipForm';
 import { UnskipForm } from '../Actions/UnskipForm';
 
 interface OrderItemActionsProps {
+  subscription: Subscription;
   order: RechargeCharge;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const OrderItemActions = ({ order }: OrderItemActionsProps) => {
+export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: OrderItemActionsProps) => {
   const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
   const [isUnskipOpen, setIsUnskipOpen] = useState(false);
   const [isSkipOpen, setIsSkipOpen] = useState(false);
@@ -25,7 +27,13 @@ export const OrderItemActions = ({ order }: OrderItemActionsProps) => {
             >
               Unskip
             </button>
-            <UnskipForm isOpen={isUnskipOpen} onClose={() => setIsUnskipOpen(false)} order={order} />
+            <UnskipForm
+              isOpen={isUnskipOpen}
+              onClose={() => setIsUnskipOpen(false)}
+              subscription={subscription}
+              order={order}
+              refetchSubscriptions={refetchSubscriptions}
+            />
           </>
         )
       );
@@ -41,7 +49,13 @@ export const OrderItemActions = ({ order }: OrderItemActionsProps) => {
           >
             Skip delivery
           </button>
-          <SkipForm isOpen={isSkipOpen} onClose={() => setIsSkipOpen(false)} order={order} />
+          <SkipForm
+            isOpen={isSkipOpen}
+            onClose={() => setIsSkipOpen(false)}
+            subscription={subscription}
+            order={order}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </>
       );
     }

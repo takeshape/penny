@@ -5,7 +5,7 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { ChangeSubscriptionAddressMutation } from 'features/AccountSubscriptions/queries';
-import { Subscription } from 'features/AccountSubscriptions/types';
+import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ChangeSubscriptionAddressMutationResponse, ChangeSubscriptionAddressMutationVariables } from 'types/takeshape';
@@ -13,6 +13,7 @@ import { countries } from 'utils/countries/countries';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 interface ShippingAddressFormProps extends ModalProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 type ShippingAddressFormValues = Pick<
@@ -23,7 +24,12 @@ type ShippingAddressFormValues = Pick<
 /**
  * TODO Handle errors
  */
-export const ShippingAddressForm = ({ isOpen, onClose, subscription }: ShippingAddressFormProps) => {
+export const ShippingAddressForm = ({
+  isOpen,
+  onClose,
+  subscription,
+  refetchSubscriptions
+}: ShippingAddressFormProps) => {
   const {
     handleSubmit,
     control,
@@ -41,16 +47,17 @@ export const ShippingAddressForm = ({ isOpen, onClose, subscription }: ShippingA
 
   const handleFormSubmit = useCallback(
     async (formData: ShippingAddressFormValues) => {
-      changeSubscriptionAddress({
+      await changeSubscriptionAddress({
         variables: {
           ...formData,
           rechargeCustomerId: subscription.customer_id,
           subscriptionId: subscription.id
         }
       });
+      refetchSubscriptions();
       onClose();
     },
-    [changeSubscriptionAddress, onClose, subscription.customer_id, subscription.id]
+    [changeSubscriptionAddress, onClose, refetchSubscriptions, subscription.customer_id, subscription.id]
   );
 
   // Use countryCode here because inconsistent...

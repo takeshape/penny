@@ -7,7 +7,7 @@ import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Act
 import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { useState } from 'react';
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import { RechargeCharge, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 
 interface RecentShipmentStatusProps {
   subscription: Subscription;
@@ -114,9 +114,10 @@ const NextShipmentStatus = ({ status, datetime, date }) => {
 export interface SubscriptionOverviewProps {
   subscription: Subscription;
   variant: SubscriptionSelectedVariant;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const SubscriptionOverview = ({ subscription, variant }: SubscriptionOverviewProps) => {
+export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptions }: SubscriptionOverviewProps) => {
   const isActive = subscription.status === 'ACTIVE';
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
@@ -224,6 +225,7 @@ export const SubscriptionOverview = ({ subscription, variant }: SubscriptionOver
             variants={product.variants.edges.map((edge) => edge.node)}
             variantOptions={product.options}
             currentSelections={variant.selectedOptions}
+            refetchSubscriptions={refetchSubscriptions}
             isOpen={isProductOptionsOpen}
             onClose={() => setIsProductOptionsOpen(false)}
           />

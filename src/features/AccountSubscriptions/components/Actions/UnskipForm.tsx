@@ -8,10 +8,12 @@ import { useForm } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
 import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { RechargeCharge } from '../../types';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 
 export interface UnskipFormProps extends ModalProps {
+  subscription: Subscription;
   order: RechargeCharge;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface SkipFormValues {
@@ -21,7 +23,7 @@ export interface SkipFormValues {
 /**
  * TODO Handle submit errors
  */
-export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
+export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscriptions }: UnskipFormProps) => {
   const {
     handleSubmit,
     register,
@@ -41,9 +43,10 @@ export const UnskipForm = ({ isOpen, onClose, order }: UnskipFormProps) => {
 
   const handleFormSubmit = useCallback(
     async (formData: SkipFormValues) => {
-      unskipCharge({ variables: { id: order.id } });
+      await unskipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
+      refetchSubscriptions();
     },
-    [order.id, unskipCharge]
+    [order.id, refetchSubscriptions, subscription.id, unskipCharge]
   );
 
   const resetState = useCallback(() => {

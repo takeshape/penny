@@ -1,6 +1,6 @@
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import { formatPrice } from 'utils/text';
+import { formatShopifyPrice } from 'utils/text';
 import { StorefrontCollectionItem } from '../types';
 
 export interface CollectionItemProps extends StorefrontCollectionItem {}
@@ -30,7 +30,9 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
               {product.name}
             </NextLink>
           </h3>
-          <p className="mt-1 text-body-900">{formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}</p>
+          <p className="mt-1 text-body-900">
+            {formatShopifyPrice(product.priceMin.currencyCode, product.priceMin.amount)}
+          </p>
         </div>
       </div>
 

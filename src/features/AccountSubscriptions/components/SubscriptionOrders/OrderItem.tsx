@@ -1,15 +1,16 @@
 import NextImage from 'components/NextImage';
-import { formatPrice } from 'utils/text';
-import { RechargeCharge, Subscription } from '../../types';
+import { formatRechargePrice } from 'utils/text';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 import { OrderItemActions } from './OrderItemActions';
 import { OrderItemHeader } from './OrderItemHeader';
 
 export interface OrderItemProps {
   subscription: Subscription;
   order: RechargeCharge;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const OrderItem = ({ subscription, order }: OrderItemProps) => {
+export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderItemProps) => {
   const product = order.line_items.find((lineItem) => lineItem.subscription_id === subscription.id);
 
   return (
@@ -32,12 +33,12 @@ export const OrderItem = ({ subscription, order }: OrderItemProps) => {
               <p className="text-sm text-body-500">{product.variant_title}</p>
               <p className="text-sm text-body-500">Quantity: {product.quantity}</p>
               <p className="mt-1 font-medium text-body-900">
-                {formatPrice(subscription.presentment_currency, parseInt(product.price, 10))}
+                {formatRechargePrice(subscription.presentment_currency, product.price)}
               </p>
             </div>
           </div>
           <div className="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">
-            <OrderItemActions order={order} />
+            <OrderItemActions subscription={subscription} order={order} refetchSubscriptions={refetchSubscriptions} />
           </div>
         </div>
       </div>

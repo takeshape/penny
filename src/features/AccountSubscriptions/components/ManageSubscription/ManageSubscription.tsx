@@ -1,8 +1,8 @@
 import { format, isFuture } from 'date-fns';
 import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
 import { useState } from 'react';
-import { formatPrice } from 'utils/text';
-import { Subscription, SubscriptionSelectedVariant } from '../../types';
+import { formatRechargePrice } from 'utils/text';
+import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
@@ -15,9 +15,10 @@ import { SkipForm } from '../Actions/SkipForm';
 export interface ManageSubscriptionProps {
   subscription: Subscription;
   variant: SubscriptionSelectedVariant;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const ManageSubscription = ({ subscription, variant }: ManageSubscriptionProps) => {
+export const ManageSubscription = ({ subscription, variant, refetchSubscriptions }: ManageSubscriptionProps) => {
   const nextOrder = subscription.charges
     .filter((charge) => isFuture(new Date(charge.scheduled_at)))
     .find((charge) => charge.status === 'QUEUED');
@@ -153,7 +154,7 @@ export const ManageSubscription = ({ subscription, variant }: ManageSubscription
               <dt className="text-sm font-medium text-body-500">Amount per item</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  {formatPrice(subscription.presentment_currency, subscription.price / subscription.quantity)}
+                  {formatRechargePrice(subscription.presentment_currency, subscription.price / subscription.quantity)}
                 </div>
               </dd>
             </div>
@@ -162,7 +163,9 @@ export const ManageSubscription = ({ subscription, variant }: ManageSubscription
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Total Amount</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{formatPrice(subscription.presentment_currency, subscription.price)}</div>
+                <div className="flex-grow">
+                  {formatRechargePrice(subscription.presentment_currency, subscription.price)}
+                </div>
               </dd>
             </div>
 
@@ -228,6 +231,7 @@ export const ManageSubscription = ({ subscription, variant }: ManageSubscription
         isOpen={isNextChargeDateOpen}
         onClose={() => setIsNextChargeDateOpen(false)}
         subscription={subscription}
+        refetchSubscriptions={refetchSubscriptions}
       />
 
       <ProductOptionsForm
@@ -235,23 +239,32 @@ export const ManageSubscription = ({ subscription, variant }: ManageSubscription
         variants={variant.product.variants.edges.map((edge) => edge.node)}
         variantOptions={variant.product.options}
         currentSelections={variant.selectedOptions}
+        refetchSubscriptions={refetchSubscriptions}
         isOpen={isProductOptionsOpen}
         onClose={() => setIsProductOptionsOpen(false)}
       />
 
       <DeliveryFrequencyForm
         subscription={subscription}
+        refetchSubscriptions={refetchSubscriptions}
         isOpen={isDeliveryScheduleOpen}
         onClose={() => setIsDeliveryScheduleOpen(false)}
       />
 
       <ShippingAddressForm
         subscription={subscription}
+        refetchSubscriptions={refetchSubscriptions}
         isOpen={isShippingAddressOpen}
         onClose={() => setIsShippingAddressOpen(false)}
       />
 
-      <SkipForm isOpen={isSkipNextOpen} onClose={() => setIsSkipNextOpen(false)} order={nextOrder} />
+      <SkipForm
+        isOpen={isSkipNextOpen}
+        onClose={() => setIsSkipNextOpen(false)}
+        subscription={subscription}
+        order={nextOrder}
+        refetchSubscriptions={refetchSubscriptions}
+      />
 
       <OrderNowForm
         isOpen={isOrderNowOpen}
@@ -264,6 +277,7 @@ export const ManageSubscription = ({ subscription, variant }: ManageSubscription
         isOpen={isCancelSubscriptionOpen}
         onClose={() => setIsCancelSubscriptionOpen(false)}
         subscription={subscription}
+        refetchSubscriptions={refetchSubscriptions}
       />
 
       <PaymentMethodRechargeForm

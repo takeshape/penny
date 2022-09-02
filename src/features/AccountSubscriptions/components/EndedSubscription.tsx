@@ -3,7 +3,7 @@ import { DotsVerticalIcon } from '@heroicons/react/solid';
 import Loader from 'components/Loader/Loader';
 import { format } from 'date-fns';
 import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
-import { Subscription } from 'features/AccountSubscriptions/types';
+import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
 import { shopifyGidToId } from 'transforms/shopify';
 import { SubscriptionProductVariantQueryResponse, SubscriptionProductVariantQueryVariables } from 'types/takeshape';
@@ -23,9 +23,10 @@ const navigationItems = [
 
 export interface EndedSubscriptionProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
+export const EndedSubscription = ({ subscription, refetchSubscriptions }: EndedSubscriptionProps) => {
   const { data: variantData } = useAuthenticatedQuery<
     SubscriptionProductVariantQueryResponse,
     SubscriptionProductVariantQueryVariables
@@ -113,10 +114,14 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview subscription={subscription} variant={variant} />
+          <SubscriptionOverview
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} />
+          <SubscriptionOrders subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

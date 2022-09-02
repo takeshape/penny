@@ -8,7 +8,7 @@ import { useAuthenticatedQuery } from 'utils/takeshape';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
 export const AccountSubscriptions = () => {
-  const { data } = useAuthenticatedQuery<GetMySubscriptionsQueryResponse>(GetMySubscriptionsQuery);
+  const { data, refetch } = useAuthenticatedQuery<GetMySubscriptionsQueryResponse>(GetMySubscriptionsQuery);
 
   const activeSubscriptions = data?.subscriptions.filter(isActiveSubscription) ?? [];
   const endedSubscriptions = data?.subscriptions.filter(isEndedSubscription) ?? [];
@@ -23,7 +23,7 @@ export const AccountSubscriptions = () => {
                 key={subscription.id}
                 className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
-                <ActiveSubscription subscription={subscription} />
+                <ActiveSubscription subscription={subscription} refetchSubscriptions={refetch} />
               </div>
             ))}
           </div>
@@ -43,7 +43,7 @@ export const AccountSubscriptions = () => {
                 key={subscription.id}
                 className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
-                <EndedSubscription subscription={subscription} />
+                <EndedSubscription subscription={subscription} refetchSubscriptions={refetch} />
               </div>
             ))}
           </div>

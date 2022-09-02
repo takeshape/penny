@@ -16,7 +16,7 @@ import {
   subMonths
 } from 'date-fns';
 import { SetNextChargeDateMutation } from 'features/AccountSubscriptions/queries';
-import { Subscription } from 'features/AccountSubscriptions/types';
+import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { SetNextChargeDateMutationResponse, SetNextChargeDateMutationVariables } from 'types/takeshape';
@@ -53,6 +53,7 @@ function getMonth(forDate) {
 
 export interface NextChargeDateFormProps extends ModalProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 interface NextChargeDateFormValues {
@@ -62,7 +63,12 @@ interface NextChargeDateFormValues {
 /**
  * TODO Handle submit errors
  */
-export const NextChargeDateForm = ({ isOpen, onClose, subscription }: NextChargeDateFormProps) => {
+export const NextChargeDateForm = ({
+  isOpen,
+  onClose,
+  subscription,
+  refetchSubscriptions
+}: NextChargeDateFormProps) => {
   const {
     handleSubmit,
     control,
@@ -87,10 +93,11 @@ export const NextChargeDateForm = ({ isOpen, onClose, subscription }: NextCharge
 
   const handleFormSubmit = useCallback(
     async (formData: NextChargeDateFormValues) => {
-      setNextChargeDate({ variables: { subscriptionId: subscription.id, date: formData.nextChargeDate } });
+      await setNextChargeDate({ variables: { subscriptionId: subscription.id, date: formData.nextChargeDate } });
+      refetchSubscriptions();
       onClose();
     },
-    [onClose, setNextChargeDate, subscription.id]
+    [onClose, refetchSubscriptions, setNextChargeDate, subscription.id]
   );
 
   const resetState = useCallback(() => {

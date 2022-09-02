@@ -1,3 +1,4 @@
+import { QueryResult } from '@apollo/client';
 import { PaymentMethod } from 'types/paymentMethod';
 import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { GetMySubscriptionsQueryResponse, SubscriptionProductVariantQueryResponse } from 'types/takeshape';
@@ -90,3 +91,5 @@ export type SubscriptionProductVariants =
   SubscriptionProductVariantQueryResponse['variant']['product']['variants']['edges'][0]['node'];
 
 export type RechargeCharge = GetMySubscriptionsQueryResponse['subscriptions'][0]['charges'][0];
+
+export type RefetchSubscriptions = QueryResult['refetch'];

@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
-import { formatPrice } from 'utils/text';
+import { formatShopifyPrice } from 'utils/text';
 import { Order } from '../../types';
 import { LineItem } from '../LineItem/LineItem';
 import { PurchaseItemOrderStatus } from '../OrderStatus/OrderStatus';
@@ -26,7 +26,7 @@ export const PurchaseOrder = ({ order }: PropsWithChildren<{ order: Order }>) =>
           <div className="flex justify-between pt-6 sm:block sm:pt-0">
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="sm:mt-1">
-              {formatPrice(order.totalPrice.currencyCode, Number(order.totalPrice.amount) * 100)}
+              {formatShopifyPrice(order.totalPrice.currencyCode, Number(order.totalPrice.amount) * 100)}
             </dd>
           </div>
         </dl>

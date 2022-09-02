@@ -4,9 +4,10 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { UpdateProductOptionsMutation } from 'features/AccountSubscriptions/queries';
-import { Subscription, SubscriptionProductVariants } from 'features/AccountSubscriptions/types';
+import { RefetchSubscriptions, Subscription, SubscriptionProductVariants } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { Control, Controller, useForm, useWatch } from 'react-hook-form';
+import { shopifyGidToId } from 'transforms/shopify';
 import { ProductVariantSelection } from 'types/product';
 import {
   SubscriptionProductVariantQueryResponse,
@@ -15,7 +16,7 @@ import {
 } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { formatPrice } from 'utils/text';
+import { formatRechargePrice } from 'utils/text';
 
 function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
   return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});
@@ -60,7 +61,7 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
     <div className="bg-body-600 text-white rounded-md py-2">
       <p className="grid grid-cols-2 px-4 font-medium text-lg">
         <span className="inline-block">Price</span>
-        <span className="inline-block ml-auto">{formatPrice(subscription.presentment_currency, amount)}</span>
+        <span className="inline-block ml-auto">{formatRechargePrice(subscription.presentment_currency, amount)}</span>
       </p>
     </div>
   );
@@ -71,6 +72,7 @@ export interface ProductOptionsFormProps extends ModalProps {
   variants: SubscriptionProductVariants[];
   variantOptions: SubscriptionProductVariantQueryResponse['variant']['product']['options'];
   currentSelections: ProductVariantSelection[];
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 interface ProductOptionsFormValues {
@@ -86,6 +88,7 @@ export const ProductOptionsForm = ({
   variants,
   variantOptions,
   currentSelections,
+  refetchSubscriptions,
   isOpen,
   onClose
 }: ProductOptionsFormProps) => {
@@ -110,17 +113,17 @@ export const ProductOptionsForm = ({
   const handleFormSubmit = useCallback(
     async ({ options, quantity }: ProductOptionsFormValues) => {
       const variant = getVariant(variants, toSelections(options));
-      updateProductOptions({
-        variables: { subscriptionId: subscription.id, variantId: variant.id, quantity: quantity.toString() }
+      await updateProductOptions({
+        variables: {
+          subscriptionId: subscription.id,
+          variantId: shopifyGidToId(variant.id),
+          quantity: quantity.toString()
+        }
       });
-
-      const variantSelections = toSelections(options);
-      // eslint-disable-next-line no-console
-      console.log({ quantity, options: variantSelections });
-      // TODO Mutate underlying state so the subscription show changes
+      refetchSubscriptions();
       onClose();
     },
-    [onClose, subscription.id, updateProductOptions, variants]
+    [onClose, refetchSubscriptions, subscription.id, updateProductOptions, variants]
   );
 
   const resetState = useCallback(() => {

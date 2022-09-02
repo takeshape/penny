@@ -9,10 +9,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { UpdateDeliveryFrequencyMutationResponse, UpdateDeliveryFrequencyMutationVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { Subscription } from '../../types';
+import { RefetchSubscriptions, Subscription } from '../../types';
 
 export interface DeliveryFrequencyFormProps extends ModalProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface DeliveryFrequencyFormValues {
@@ -22,7 +23,12 @@ export interface DeliveryFrequencyFormValues {
 /**
  * TODO Handle submit errors
  */
-export const DeliveryFrequencyForm = ({ isOpen, onClose, subscription }: DeliveryFrequencyFormProps) => {
+export const DeliveryFrequencyForm = ({
+  isOpen,
+  onClose,
+  subscription,
+  refetchSubscriptions
+}: DeliveryFrequencyFormProps) => {
   const {
     handleSubmit,
     control,
@@ -37,16 +43,17 @@ export const DeliveryFrequencyForm = ({ isOpen, onClose, subscription }: Deliver
 
   const handleFormSubmit = useCallback(
     async (formData: DeliveryFrequencyFormValues) => {
-      updateDeliveryFrequency({
+      await updateDeliveryFrequency({
         variables: {
           frequency: formData.deliveryScheduleIntervalCount.toString(),
           unit: subscription.order_interval_unit,
           subscriptionId: subscription.id
         }
       });
+      refetchSubscriptions();
       onClose();
     },
-    [onClose, subscription.id, subscription.order_interval_unit, updateDeliveryFrequency]
+    [onClose, refetchSubscriptions, subscription.id, subscription.order_interval_unit, updateDeliveryFrequency]
   );
 
   const resetState = useCallback(

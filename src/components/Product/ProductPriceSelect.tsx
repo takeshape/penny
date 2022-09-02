@@ -2,7 +2,7 @@ import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
 import { ProductPriceOption } from 'types/product';
 import classNames from 'utils/classNames';
-import { formatDiscount, formatPrice, pluralizeText } from 'utils/text';
+import { formatDiscount, formatShopifyPrice, pluralizeText } from 'utils/text';
 
 export interface ProductPriceSelectProps {
   value: ProductPriceOption;
@@ -57,7 +57,7 @@ export const ProductPriceSelect = ({ value, onChange, options }: ProductPriceSel
                     'ml-6 pl-1 text-sm md:ml-0 md:pl-0 md:text-right flex items-center place-content-end'
                   )}
                 >
-                  {formatPrice(price.currencyCode, price.amount)}
+                  {formatShopifyPrice(price.currencyCode, price.amount)}
                   {price.intervalCount > 0 &&
                     ` / ${pluralizeText(
                       price.intervalCount,
