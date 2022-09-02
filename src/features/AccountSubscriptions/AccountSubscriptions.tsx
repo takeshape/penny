@@ -1,14 +1,29 @@
+import { NetworkStatus } from '@apollo/client';
 import { RefreshIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
 import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
 import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
+import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
 import { GetMySubscriptionsQuery } from 'features/AccountSubscriptions/queries';
 import { GetMySubscriptionsQueryResponse } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
 export const AccountSubscriptions = () => {
-  const { data, refetch } = useAuthenticatedQuery<GetMySubscriptionsQueryResponse>(GetMySubscriptionsQuery);
+  const { data, loading, networkStatus, refetch } =
+    useAuthenticatedQuery<GetMySubscriptionsQueryResponse>(GetMySubscriptionsQuery);
+
+  if (loading && networkStatus !== NetworkStatus.refetch) {
+    return (
+      <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
+        <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
+          <div className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border">
+            <SubscriptionSkeleton />
+          </div>
+        </div>
+      </CardPanel>
+    );
+  }
 
   const activeSubscriptions = data?.subscriptions.filter(isActiveSubscription) ?? [];
   const endedSubscriptions = data?.subscriptions.filter(isEndedSubscription) ?? [];

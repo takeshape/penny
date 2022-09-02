@@ -1,7 +1,7 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
-import Loader from 'components/Loader/Loader';
 import { format } from 'date-fns';
+import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
 import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
 import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
@@ -32,18 +32,18 @@ export interface ActiveSubscriptionProps {
 }
 
 export const ActiveSubscription = ({ subscription, refetchSubscriptions }: ActiveSubscriptionProps) => {
-  const { data: variantData } = useAuthenticatedQuery<
+  const { data } = useAuthenticatedQuery<
     SubscriptionProductVariantQueryResponse,
     SubscriptionProductVariantQueryVariables
   >(SubscriptionProductVariantQuery, {
     variables: { id: `gid://shopify/ProductVariant/${subscription.shopify_variant_id}` }
   });
 
-  if (!variantData) {
-    return <Loader />;
+  if (!data) {
+    return <SubscriptionSkeleton />;
   }
 
-  const variant = variantData.variant;
+  const variant = data.variant;
 
   return (
     <Tab.Group>
