@@ -7,18 +7,20 @@ import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormTextarea from 'components/Form/Textarea/Textarea';
 import NextLink from 'components/NextLink';
 import { BackgroundDots } from 'features/Contact/components/BackgroundDots';
-import React, { useCallback, useState } from 'react';
+import { useCreateTicket } from 'features/Contact/useCreateTicket';
+import { useSession } from 'next-auth/react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 
 export interface ContactForm {
+  company?: string;
+  email: string;
   firstName: string;
   lastName: string;
-  company: string;
-  email: string;
-  phoneNumber: string;
   message: string;
+  phoneNumber?: string;
 }
 
 export interface ContactProps {
@@ -27,17 +29,40 @@ export interface ContactProps {
     secondary: string;
     button: string;
   };
-  onSubmit: (data: ContactForm, recaptchaToken: string) => void;
-  success?: string;
-  error?: string;
 }
 
 export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
-  const { text, onSubmit, success, error } = props;
+  const { text } = props;
   const [agreed, setAgreed] = useState(false);
-  const { handleSubmit, control, formState } = useForm<ContactForm>({ mode: 'onBlur' });
-
+  const { handleSubmit, control, formState, reset } = useForm<ContactForm>({ mode: 'onBlur' });
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
+
+  const [success, setSuccess] = useState<string>();
+  const [createTicket, { error }] = useCreateTicket();
+  const { data: session } = useSession();
+
+  const onSubmit = useCallback(
+    async (formValues: ContactForm, recaptchaToken: string) => {
+      const { firstName, lastName, company, email, phoneNumber, message } = formValues;
+
+      const result = await createTicket({
+        variables: {
+          name: `${firstName} ${lastName}`,
+          email,
+          message: `From: ${firstName} ${lastName}
+  Company: ${company}
+  Phone Number: ${phoneNumber}
+  ${message}`,
+          recaptchaToken
+        }
+      });
+      const { id } = result.data.createTicket;
+      if (id) {
+        setSuccess(`Thank you for reaching out! Created ticket #${id}.`);
+      }
+    },
+    [createTicket]
+  );
 
   const handleFormSubmit = useCallback(
     (e) => {
@@ -50,6 +75,19 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
     },
     [executeRecaptcha, handleSubmit, onSubmit]
   );
+
+  // Set initial values
+  useEffect(() => {
+    if (session?.user) {
+      reset({
+        firstName: session.user.name.split(' ')[0],
+        lastName: session.user.name.split(' ')[1],
+        email: session.user.email
+      });
+    } else {
+      reset();
+    }
+  }, [reset, session]);
 
   return (
     <div className="bg-background py-16 px-4 overflow-hidden sm:px-6 lg:px-8 lg:py-24">
@@ -73,6 +111,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="First name"
               autoComplete="given-name"
               type="text"
+              defaultValue=""
               rules={{ required: 'This field is required' }}
             />
             <FormInput
@@ -82,6 +121,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Last name"
               autoComplete="family-name"
               type="text"
+              defaultValue=""
               rules={{ required: 'This field is required' }}
             />
             <FormInput
@@ -91,6 +131,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               id="company"
               label="Company"
               autoComplete="organization"
+              defaultValue=""
               type="text"
             />
             <FormInput
@@ -101,6 +142,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               label="Email"
               autoComplete="email"
               type="text"
+              defaultValue=""
               rules={{
                 required: 'This field is required',
                 pattern: {
@@ -183,7 +225,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
               )}
 
               {success && <Alert status="success" primaryText={success} />}
-              {error && <Alert status="error" primaryText={error} />}
+              {error && <Alert status="error" primaryText={error?.message} />}
             </div>
           </form>
         </div>
