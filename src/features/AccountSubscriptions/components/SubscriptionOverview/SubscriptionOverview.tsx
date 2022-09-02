@@ -9,12 +9,12 @@ import { useState } from 'react';
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
 import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 
-interface RecentShipmentStatusProps {
+interface ShipmentStatusProps {
   subscription: Subscription;
   order: RechargeCharge;
 }
 
-const RecentShipmentStatus = ({ subscription, order }: RecentShipmentStatusProps) => {
+const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
   const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
     fulfillment.fulfillmentLineItems.edges.find(
       (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
@@ -84,32 +84,28 @@ const RecentShipmentStatus = ({ subscription, order }: RecentShipmentStatusProps
   return null;
 };
 
-const NextShipmentStatus = ({ status, datetime, date }) => {
-  switch (status) {
-    case 'scheduled': {
-      return (
-        <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
-          <ClockIcon className="w-5 h-5 text-blue-500" aria-hidden="true" />
-          <p className="ml-2 text-sm font-medium text-gray-500">
-            Next order on <time dateTime={datetime}>{date}</time>
-          </p>
-        </div>
-      );
-    }
-
-    case 'skipped': {
-      return (
-        <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
-          <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
-          <p className="ml-2 text-sm font-medium text-gray-500">Next order is skipped</p>
-        </div>
-      );
-    }
-
-    default: {
-      return null;
-    }
+const NextShipmentStatus = ({ order }: ShipmentStatusProps) => {
+  if (order.status === 'QUEUED') {
+    return (
+      <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
+        <ClockIcon className="w-5 h-5 text-blue-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-500">
+          Next order on <time dateTime={order.scheduled_at}>{format(new Date(order.scheduled_at), 'PPP')}</time>
+        </p>
+      </div>
+    );
   }
+
+  if (order.status === 'SKIPPED') {
+    return (
+      <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
+        <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-500">Next order is skipped</p>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export interface SubscriptionOverviewProps {
@@ -196,13 +192,11 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
                   <RecentShipmentStatus subscription={subscription} order={mostRecentCharge} />
                 )}
                 {isActive && nextCharge !== undefined ? (
-                  <NextShipmentStatus
-                    date={format(new Date(nextCharge.scheduled_at), 'PPP')}
-                    datetime={nextCharge.scheduled_at}
-                    status="scheduled"
-                  />
+                  <NextShipmentStatus subscription={subscription} order={nextCharge} />
                 ) : (
-                  'No upcoming orders'
+                  <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
+                    <p className="ml-2 text-sm font-medium text-gray-500">No upcoming orders</p>
+                  </div>
                 )}
               </div>
             </div>

@@ -1,33 +1,39 @@
 import { format } from 'date-fns';
+import { shopifyGidToId } from 'transforms/shopify';
 import classNames from 'utils/classNames';
-import { RechargeCharge } from '../../types';
+import { RechargeCharge, Subscription } from '../../types';
 
 interface OrderItemBadgeProps {
+  subscription: Subscription;
   order: RechargeCharge;
 }
 
-export const OrderItemBadge = ({ order }: OrderItemBadgeProps) => {
+export const OrderItemBadge = ({ subscription, order }: OrderItemBadgeProps) => {
   let badgeText = '';
   let badgeClasses = '';
 
-  switch (order.status) {
-    case 'SUCCESS':
-      badgeText = `Delivered on ${format(new Date(order.scheduled_at), 'PPP')}`;
-      badgeClasses = 'bg-green-100 text-green-800';
-      break;
+  const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
+    fulfillment.fulfillmentLineItems.edges.find(
+      (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
+    )
+  );
 
-    case 'SKIPPED':
-      badgeText = `Skipped`;
-      badgeClasses = 'bg-gray-100 text-gray-800';
-      break;
-
-    case 'QUEUED':
-      badgeText = `Scheduled`;
-      badgeClasses = 'bg-blue-100 text-blue-800';
-      break;
-
-    default:
-      badgeText = `${order.status}`;
+  if (subscriptionFulfillment?.deliveredAt) {
+    badgeText = `Delivered on ${format(new Date(subscriptionFulfillment.deliveredAt), 'PPP')}`;
+    badgeClasses = 'bg-green-100 text-green-800';
+  } else if (order.status === 'SUCCESS') {
+    badgeText = order.shopifyOrder?.processedAt
+      ? `Processed on ${format(new Date(order.shopifyOrder.processedAt), 'PPP')}`
+      : 'Processed';
+    badgeClasses = 'bg-green-100 text-green-800';
+  } else if (order.status === 'SKIPPED') {
+    badgeText = `Skipped`;
+    badgeClasses = 'bg-gray-100 text-gray-800';
+  } else if (order.status === 'QUEUED') {
+    badgeText = `Scheduled`;
+    badgeClasses = 'bg-blue-100 text-blue-800';
+  } else {
+    badgeText = `${order.status}`;
   }
 
   return (
