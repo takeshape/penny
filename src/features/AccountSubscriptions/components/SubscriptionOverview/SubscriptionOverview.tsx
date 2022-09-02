@@ -61,7 +61,8 @@ const RecentShipmentStatus = ({ subscription, order }: RecentShipmentStatusProps
   if (order.shopifyOrder?.processedAt) {
     return (
       <div className="flex items-center">
-        <p className="ml-2 text-sm font-medium text-gray-900">
+        <ClockIcon className="w-5 h-5 text-blue-500" aria-hidden="true" />
+        <p className="ml-2 text-sm font-medium text-gray-500">
           Processed on{' '}
           <time dateTime={order.shopifyOrder.processedAt}>
             {format(new Date(order.shopifyOrder.processedAt), 'PPP')}
