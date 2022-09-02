@@ -3,14 +3,13 @@ import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/O
 import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
 import { useState } from 'react';
-import { Subscription, SubscriptionSelectedVariant } from '../../types';
+import { Subscription } from '../../types';
 
 export interface SubscriptionOrdersProps {
   subscription: Subscription;
-  variant: SubscriptionSelectedVariant;
 }
 
-export const SubscriptionOrders = ({ subscription, variant }: SubscriptionOrdersProps) => {
+export const SubscriptionOrders = ({ subscription }: SubscriptionOrdersProps) => {
   const { status } = subscription;
 
   const isActive = status === 'ACTIVE';

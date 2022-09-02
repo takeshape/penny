@@ -134,7 +134,7 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
           <ManageSubscription subscription={subscription} variant={variant} />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} variant={variant} />
+          <SubscriptionOrders subscription={subscription} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

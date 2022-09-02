@@ -1,33 +1,6 @@
 import { getIsExpiringSoon } from 'components/Payments/utils';
 import { GetMyAddressPaymentMethodsQueryResponse, GetMyPaymentMethodsQueryResponse } from 'types/takeshape';
 import { capitalize } from 'utils/text';
-import { RawSubscription, Subscription, SubscriptionDeliveryScheduleOption } from './types';
-import { getSortedOrders } from './utils';
-
-export function getSubscription(rawSubscription: RawSubscription): Subscription {
-  const { orders } = rawSubscription;
-  const { lastOrder, nextOrder, upcomingOrders, pastOrders } = getSortedOrders(orders);
-  return {
-    ...rawSubscription,
-    lastOrder,
-    nextOrder,
-    upcomingOrders,
-    pastOrders
-  };
-}
-
-export function getDeliveryScheduleOptions(): SubscriptionDeliveryScheduleOption[] {
-  return [
-    {
-      order_interval_unit: 'day',
-      order_interval_frequency: 30
-    },
-    {
-      order_interval_unit: 'day',
-      order_interval_frequency: 60
-    }
-  ];
-}
 
 export function getPaymentMethod(paymentMethod: GetMyPaymentMethodsQueryResponse['paymentMethods'][0]) {
   const { exp_month: expiryMonth, exp_year: expiryYear, last4 } = paymentMethod.payment_details;

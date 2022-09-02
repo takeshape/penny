@@ -116,7 +116,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
           <SubscriptionOverview subscription={subscription} variant={variant} />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} variant={variant} />
+          <SubscriptionOrders subscription={subscription} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>
