@@ -17,7 +17,7 @@ export interface DeliveryFrequencyFormProps extends ModalProps {
 }
 
 export interface DeliveryFrequencyFormValues {
-  deliveryScheduleIntervalCount: number;
+  deliveryScheduleIntervalCount: string;
 }
 
 /**
@@ -59,7 +59,7 @@ export const DeliveryFrequencyForm = ({
   const resetState = useCallback(
     () =>
       reset({
-        deliveryScheduleIntervalCount: parseInt(subscription.order_interval_frequency, 10)
+        deliveryScheduleIntervalCount: subscription.order_interval_frequency
       }),
     [reset, subscription.order_interval_frequency]
   );

@@ -62,6 +62,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
       isSubmitSuccessful={isSubmitSuccessful}
+      autoCloseDelay={3000}
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
