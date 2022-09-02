@@ -154,7 +154,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
               <dt className="text-sm font-medium text-body-500">Amount per item</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  {formatRechargePrice(subscription.presentment_currency, subscription.price / subscription.quantity)}
+                  {formatRechargePrice(subscription.presentment_currency, subscription.price)}
                 </div>
               </dd>
             </div>
@@ -164,7 +164,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
               <dt className="text-sm font-medium text-body-500">Total Amount</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  {formatRechargePrice(subscription.presentment_currency, subscription.price)}
+                  {formatRechargePrice(subscription.presentment_currency, subscription.quantity * subscription.price)}
                 </div>
               </dd>
             </div>

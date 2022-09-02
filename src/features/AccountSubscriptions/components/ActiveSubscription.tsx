@@ -67,7 +67,7 @@ export const ActiveSubscription = ({ subscription, refetchSubscriptions }: Activ
           <div>
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="mt-1 font-medium text-body-900">
-              {formatRechargePrice(subscription.presentment_currency, subscription.price)}
+              {formatRechargePrice(subscription.presentment_currency, subscription.quantity * subscription.price)}
             </dd>
           </div>
         </dl>
