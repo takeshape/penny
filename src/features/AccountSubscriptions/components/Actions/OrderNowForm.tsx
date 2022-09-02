@@ -1,7 +1,6 @@
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { format } from 'date-fns';
 import { CreateOnetimeMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -72,9 +71,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
-            <p className="mb-2">
-              Your <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> order is being processed now.
-            </p>
+            <p className="mb-2">Your one-time order is being processed.</p>
           </div>
         ) : (
           <section aria-labelledby="confirm-heading" className="h-full">
@@ -84,10 +81,12 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
             {order.status === 'QUEUED' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
                 <p className="mb-4">
-                  Your next order scheduled for <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> will be
-                  processed and shipped immediately.
+                  Order the same product to be processed immediately using this subscription&apos;s payment method.
                 </p>
-                <p>Would you like to continue?</p>
+                <p>
+                  This will not affect your upcoming delivery on DATE and it will not receive your standard subscription
+                  discounts.
+                </p>
               </div>
             )}
 
