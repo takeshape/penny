@@ -1,7 +1,7 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
-import Loader from 'components/Loader/Loader';
 import { format } from 'date-fns';
+import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
 import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
 import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
@@ -35,7 +35,7 @@ export const EndedSubscription = ({ subscription, refetchSubscriptions }: EndedS
   });
 
   if (!variantData) {
-    return <Loader />;
+    return <SubscriptionSkeleton />;
   }
 
   const variant = variantData.variant;
