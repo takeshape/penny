@@ -50,14 +50,13 @@ export const ShippingAddressForm = ({
       await changeSubscriptionAddress({
         variables: {
           ...formData,
-          rechargeCustomerId: subscription.customer_id,
           subscriptionId: subscription.id
         }
       });
       refetchSubscriptions();
       onClose();
     },
-    [changeSubscriptionAddress, onClose, refetchSubscriptions, subscription.customer_id, subscription.id]
+    [changeSubscriptionAddress, onClose, refetchSubscriptions, subscription.id]
   );
 
   // Use countryCode here because inconsistent...

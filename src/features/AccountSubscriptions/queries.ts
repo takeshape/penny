@@ -258,7 +258,6 @@ export const ChangeSubscriptionAddressMutation = gql`
   ${SubscriptionFragment}
   mutation ChangeSubscriptionAddressMutation(
     $subscriptionId: String!
-    $rechargeCustomerId: String!
     $address1: String!
     $address2: String
     $city: String!
@@ -271,7 +270,6 @@ export const ChangeSubscriptionAddressMutation = gql`
   ) {
     subscription: Recharge_changeSubscriptionAddress(
       subscriptionId: $subscriptionId
-      rechargeCustomerId: $rechargeCustomerId
       address1: $address1
       address2: $address2
       city: $city
