@@ -1823,6 +1823,141 @@
           "addressId"
         ]
       }
+    },
+    "Recharge_getMySubscriptions": {
+      "shape": {
+        "type": "array",
+        "items": {
+          "@ref": "recharge:Subscription"
+        }
+      },
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.custom.customer_access_token)",
+            "id": "customer",
+            "name": "graphql:query",
+            "service": "shopify-storefront",
+            "fieldName": "customer",
+            "options": {
+              "selectionSet": "{ id }"
+            },
+            "args": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$args"
+                },
+                {
+                  "path": "customerAccessToken",
+                  "mapping": "$claims.custom.customer_access_token"
+                }
+              ]
+            }
+          },
+          {
+            "if": "!isEmpty($claims.custom.customer_access_token)",
+            "id": "subscriptions",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/subscriptions",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "shopify_customer_id",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$resolvers.customer.id"
+                      }
+                    ],
+                    [
+                      "replace",
+                      {
+                        "pattern": "gid://shopify/Customer/",
+                        "replacement": ""
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.subscriptions"
+            }
+          ]
+        }
+      }
+    },
+    "Recharge_getSubscription": {
+      "shape": "Recharge_Subscription",
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "subscription",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.id"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": [
+                    [
+                      "expressionEval",
+                      {
+                        "expression": "$resolvers.customer.customers[0].id === $currentResolver.subscription.customer_id ? $currentResolver.subscription : null"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
     }
   },
   "mutations": {
@@ -3640,6 +3775,787 @@
         ]
       },
       "shape": "recharge:Address"
+    },
+    "Recharge_skipCharge": {
+      "shape": "Recharge_Charge",
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "charge",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.chargeId"
+                }
+              ],
+              "serialize": {
+                "template": "/charges/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.charge.charge.customer_id",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.chargeId"
+                }
+              ],
+              "serialize": {
+                "template": "/charges/{id}/skip"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "subscription_id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.charge"
+            }
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "chargeId": {
+            "type": "string"
+          },
+          "subscriptionId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "chargeId, subscriptionId"
+        ]
+      }
+    },
+    "Recharge_unskipCharge": {
+      "shape": "Recharge_Charge",
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "charge",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.chargeId"
+                }
+              ],
+              "serialize": {
+                "template": "/charges/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.charge.charge.customer_id",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.chargeId"
+                }
+              ],
+              "serialize": {
+                "template": "/charges/{id}/unskip"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "subscription_id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.charge"
+            }
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "chargeId": {
+            "type": "string"
+          },
+          "subscriptionId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "chargeId, subscriptionId"
+        ]
+      }
+    },
+    "Recharge_createOnetime": {
+      "shape": "Recharge_Onetime",
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "address",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.address.address.id",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{id}/onetimes"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "add_to_next_charge",
+                  "value": true
+                },
+                {
+                  "path": "shopify_product_id",
+                  "mapping": "$args.productId"
+                },
+                {
+                  "path": "shopify_variant_id",
+                  "mapping": "$args.variantId"
+                },
+                {
+                  "path": "quantity",
+                  "mapping": "$args.quantity"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.onetime"
+            }
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "addressId": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string"
+          },
+          "variantId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "addressId",
+          "productId",
+          "variantId",
+          "quantity"
+        ]
+      }
+    },
+    "Recharge_setNextChargeDate": {
+      "shape": "Recharge_Subscription",
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "subscription",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}/set_next_charge_date"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "date",
+                  "mapping": "$args.date"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$finalResolver.subscription"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subscriptionId",
+          "date"
+        ]
+      }
+    },
+    "Recharge_cancelSubscription": {
+      "shape": "Recharge_Subscription",
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "subscription",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.id"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.id"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}/cancel"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "cancellation_reason",
+                  "value": "Cancelled by customer"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.subscription"
+            }
+          ]
+        }
+      },
+      "args": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      }
+    },
+    "Recharge_changeSubscriptionAddress": {
+      "shape": "Recharge_Subscription",
+      "args": {
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string"
+          },
+          "address1": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "zip": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subscriptionId",
+          "address1",
+          "city",
+          "countryCode",
+          "firstName",
+          "lastName",
+          "phone",
+          "province",
+          "zip"
+        ]
+      },
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "createAddress",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": "/addresses",
+            "json": {
+              "ops": [
+                {
+                  "path": "customer_id",
+                  "mapping": "$resolvers.customer.customers[0].id"
+                },
+                {
+                  "path": "address1",
+                  "mapping": "$args.address1"
+                },
+                {
+                  "path": "address2",
+                  "mapping": "$args.address2"
+                },
+                {
+                  "path": "city",
+                  "mapping": "$args.city"
+                },
+                {
+                  "path": "country",
+                  "mapping": "$args.countryCode"
+                },
+                {
+                  "path": "first_name",
+                  "mapping": "$args.firstName"
+                },
+                {
+                  "path": "last_name",
+                  "mapping": "$args.lastName"
+                },
+                {
+                  "path": "phone",
+                  "mapping": "$args.phone"
+                },
+                {
+                  "path": "province",
+                  "mapping": "$args.province"
+                },
+                {
+                  "path": "zip",
+                  "mapping": "$args.zip"
+                }
+              ]
+            }
+          },
+          {
+            "id": "changeSubscriptionAddress",
+            "name": "rest:post",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}/change_address"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "address_id",
+                  "mapping": "$resolvers.createAddress.address.id"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.subscription"
+            }
+          ]
+        }
+      }
+    },
+    "Recharge_updateDeliveryFrequency": {
+      "shape": "recharge:Subscription",
+      "args": {
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subscriptionId",
+          "frequency",
+          "unit"
+        ]
+      },
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "subscription",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.id"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "name": "rest:put",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "charge_interval_frequency",
+                  "mapping": "$args.frequency"
+                },
+                {
+                  "path": "order_interval_frequency",
+                  "mapping": "$args.frequency"
+                },
+                {
+                  "path": "order_interval_unit",
+                  "mapping": "$args.unit"
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.subscription"
+            }
+          ]
+        }
+      }
+    },
+    "Recharge_updateProductOptions": {
+      "shape": "recharge:Subscription",
+      "args": {
+        "type": "object",
+        "properties": {
+          "subscriptionId": {
+            "type": "string"
+          },
+          "variantId": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subscriptionId"
+        ]
+      },
+      "resolver": {
+        "compose": [
+          {
+            "if": "!isEmpty($claims.email)",
+            "id": "customer",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": "/customers",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "email",
+                  "mapping": "$claims.email"
+                }
+              ]
+            }
+          },
+          {
+            "id": "subscription",
+            "name": "rest:get",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.id"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            }
+          },
+          {
+            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "name": "rest:put",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.subscriptionId"
+                }
+              ],
+              "serialize": {
+                "template": "/subscriptions/{id}"
+              }
+            },
+            "json": {
+              "ops": [
+                {
+                  "path": "shopify_variant_id",
+                  "mapping": "$args.variantId"
+                },
+                {
+                  "path": "quantity",
+                  "mapping": "$args.quantity"
+                },
+                {
+                  "path": "use_shopify_variant_defaults",
+                  "value": true
+                }
+              ]
+            }
+          }
+        ],
+        "results": {
+          "ops": [
+            {
+              "path": "$",
+              "mapping": "$finalResolver.subscription"
+            }
+          ]
+        }
+      }
     }
   },
   "shapes": {
@@ -6136,6 +7052,284 @@
         }
       }
     },
+    "Recharge_Subscription": {
+      "id": "Recharge_Subscription",
+      "title": "Recharge_Subscription",
+      "name": "Recharge_Subscription",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "address_id": {
+            "type": "string"
+          },
+          "cancelled_at": {
+            "type": "string"
+          },
+          "charge_interval_frequency": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "customer_id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "is_prepaid": {
+            "type": "boolean"
+          },
+          "is_skippable": {
+            "type": "boolean"
+          },
+          "is_swappable": {
+            "type": "boolean"
+          },
+          "next_charge_scheduled_at": {
+            "type": "string"
+          },
+          "order_interval_frequency": {
+            "type": "string"
+          },
+          "order_interval_unit": {
+            "type": "string"
+          },
+          "presentment_currency": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "product_title": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "recharge_product_id": {
+            "type": "string"
+          },
+          "shopify_product_id": {
+            "type": "string"
+          },
+          "shopify_variant_id": {
+            "type": "string"
+          },
+          "sku_override": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "EXPIRED",
+              "CANCELLED"
+            ]
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "variant_title": {
+            "type": "string"
+          },
+          "charges": {
+            "type": "array",
+            "items": {
+              "@ref": "recharge:Charge"
+            },
+            "@resolver": {
+              "name": "rest:get",
+              "service": "recharge",
+              "path": "/charges",
+              "results": {
+                "ops": [
+                  {
+                    "path": "$",
+                    "mapping": "$finalResolver.charges"
+                  }
+                ]
+              },
+              "searchParams": {
+                "ops": [
+                  {
+                    "path": "subscription_id",
+                    "mapping": "$source.id"
+                  }
+                ]
+              }
+            }
+          },
+          "rechargeProduct": {
+            "@ref": "recharge:Product",
+            "@resolver": {
+              "name": "rest:get",
+              "service": "recharge",
+              "path": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.recharge_product_id"
+                  }
+                ],
+                "serialize": {
+                  "template": "/products/{id}"
+                }
+              },
+              "results": {
+                "ops": [
+                  {
+                    "path": "$",
+                    "mapping": "$finalResolver.product"
+                  }
+                ]
+              }
+            }
+          },
+          "address": {
+            "@ref": "recharge:Address",
+            "@resolver": {
+              "name": "rest:get",
+              "service": "recharge",
+              "path": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": "$source.address_id"
+                  }
+                ],
+                "serialize": {
+                  "template": "/addresses/{id}"
+                }
+              },
+              "searchParams": {
+                "ops": [
+                  {
+                    "path": "include",
+                    "value": "payment_methods"
+                  }
+                ]
+              },
+              "results": {
+                "ops": [
+                  {
+                    "path": "$",
+                    "mapping": "$finalResolver.address"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "Recharge_Charge": {
+      "id": "Recharge_Charge",
+      "title": "Recharge_Charge",
+      "name": "Recharge_Charge",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "scheduled_at": {
+            "type": "string"
+          },
+          "line_items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "images": {
+                  "type": "object",
+                  "properties": {
+                    "large": {
+                      "type": "string"
+                    },
+                    "medium": {
+                      "type": "string"
+                    },
+                    "small": {
+                      "type": "string"
+                    },
+                    "original": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "subscription_id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "variant_title": {
+                  "type": "string"
+                },
+                "shopify_product_id": {
+                  "type": "string"
+                },
+                "shopify_variant_id": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "currency": {
+            "type": "string"
+          },
+          "shopify_order_id": {
+            "type": "string"
+          },
+          "shopifyOrder": {
+            "@ref": "shopify:Order",
+            "@resolver": {
+              "if": "!isNull($source.shopify_order_id)",
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "order",
+              "args": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": [
+                      [
+                        "get",
+                        {
+                          "path": "$source.shopify_order_id"
+                        }
+                      ],
+                      [
+                        "format",
+                        {
+                          "template": "gid://shopify/Order/%s"
+                        }
+                      ]
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "status": {
+            "type": "string"
+          },
+          "address_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "Recharge_Address": {
       "id": "Recharge_Address",
       "title": "Recharge_Address",
@@ -6155,6 +7349,9 @@
           "city": {
             "type": "string"
           },
+          "country": {
+            "type": "string"
+          },
           "country_code": {
             "type": "string"
           },
@@ -6169,8 +7366,65 @@
           },
           "zip": {
             "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "include": {
+            "type": "object",
+            "properties": {
+              "payment_methods": {
+                "type": "array",
+                "items": {
+                  "@ref": "recharge:PaymentMethod"
+                }
+              }
+            }
           }
         }
+      }
+    },
+    "Recharge_Product": {
+      "id": "Recharge_Product",
+      "title": "Recharge_Product",
+      "name": "Recharge_Product",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "discount_amount": {
+            "type": "number"
+          },
+          "subscription_defaults": {
+            "type": "object",
+            "properties": {
+              "order_interval_frequency_options": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Recharge_Onetime": {
+      "id": "Recharge_Onetime",
+      "title": "Recharge_Onetime",
+      "name": "Recharge_Onetime",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
       }
     }
   },
