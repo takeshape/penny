@@ -297,18 +297,11 @@ export const SetNextChargeDateMutation = gql`
 `;
 
 export const CreateOnetimeMutation = gql`
-  mutation CreateOnetimeMutation(
-    $addressId: String!
-    $variantId: String!
-    $price: String!
-    $productTitle: String!
-    $quantity: Int!
-  ) {
+  mutation CreateOnetimeMutation($addressId: String!, $productId: String!, $variantId: String!, $quantity: Int!) {
     onetime: Recharge_createOnetime(
       addressId: $addressId
+      productId: $productId
       variantId: $variantId
-      price: $price
-      productTitle: $productTitle
       quantity: $quantity
     ) {
       id

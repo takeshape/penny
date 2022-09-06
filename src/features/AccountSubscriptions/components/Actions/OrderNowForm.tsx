@@ -43,14 +43,13 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
       orderNow({
         variables: {
           addressId: order.address_id,
+          productId: lineItem.shopify_product_id,
           variantId: lineItem.shopify_variant_id,
-          price: lineItem.price,
-          productTitle: lineItem.title,
           quantity: lineItem.quantity
         }
       });
     },
-    [lineItem.price, lineItem.quantity, lineItem.shopify_variant_id, lineItem.title, order.address_id, orderNow]
+    [lineItem.quantity, lineItem.shopify_product_id, lineItem.shopify_variant_id, order.address_id, orderNow]
   );
 
   const resetState = useCallback(() => {
