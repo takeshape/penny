@@ -3980,7 +3980,7 @@
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.address.address.id",
+            "if": "$resolvers.customer.customers[0].id === $resolvers.address.address.customer_id",
             "name": "rest:post",
             "service": "recharge",
             "path": {
@@ -4411,7 +4411,7 @@
               "ops": [
                 {
                   "path": "id",
-                  "mapping": "$args.id"
+                  "mapping": "$args.subscriptionId"
                 }
               ],
               "serialize": {
@@ -4506,7 +4506,7 @@
               "ops": [
                 {
                   "path": "id",
-                  "mapping": "$args.id"
+                  "mapping": "$args.subscriptionId"
                 }
               ],
               "serialize": {
