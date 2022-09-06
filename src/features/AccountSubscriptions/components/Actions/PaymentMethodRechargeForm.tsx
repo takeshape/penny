@@ -6,6 +6,7 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { CreditCard } from 'components/Payments/CreditCard';
+import { RefetchSubscriptions } from 'features/AccountSubscriptions/types';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -31,6 +32,7 @@ import { getAddressDefaultPaymentMethod, getPaymentMethods } from '../../transfo
 
 export interface PaymentMethodRechargeFormProps extends ModalProps {
   addressId: string;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface PaymentMethodRechargeFormValues {
@@ -40,7 +42,12 @@ export interface PaymentMethodRechargeFormValues {
 /**
  * TODO: Replace addressId and lookup with a paymentMethodId that lives on the sub
  */
-export const PaymentMethodRechargeForm = ({ isOpen, onClose, addressId }: PaymentMethodRechargeFormProps) => {
+export const PaymentMethodRechargeForm = ({
+  isOpen,
+  onClose,
+  addressId,
+  refetchSubscriptions
+}: PaymentMethodRechargeFormProps) => {
   const { data: session } = useSession();
 
   const { email } = session?.user ?? {};
@@ -85,9 +92,10 @@ export const PaymentMethodRechargeForm = ({ isOpen, onClose, addressId }: Paymen
     async ({ paymentMethodId }: PaymentMethodRechargeFormValues) => {
       await updatePaymentMethod({ variables: { paymentMethodId, addressId } });
       refetchAddressPaymentMethods();
+      refetchSubscriptions();
       onClose();
     },
-    [addressId, onClose, refetchAddressPaymentMethods, updatePaymentMethod]
+    [addressId, onClose, refetchAddressPaymentMethods, refetchSubscriptions, updatePaymentMethod]
   );
 
   const handleAddPaymentMethod = useCallback(() => {

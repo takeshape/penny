@@ -284,6 +284,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
         isOpen={isPaymentMethodOpen}
         onClose={() => setIsPaymentMethodOpen(false)}
         addressId={subscription.address_id}
+        refetchSubscriptions={refetchSubscriptions}
       />
     </>
   );

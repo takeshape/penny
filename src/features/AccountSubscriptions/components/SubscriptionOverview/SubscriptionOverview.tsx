@@ -227,6 +227,7 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
 
           <PaymentMethodRechargeForm
             addressId={subscription.address_id}
+            refetchSubscriptions={refetchSubscriptions}
             isOpen={isPaymentMethodOpen}
             onClose={() => setIsPaymentMethodOpen(false)}
           />
