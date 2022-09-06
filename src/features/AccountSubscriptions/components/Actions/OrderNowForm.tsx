@@ -1,6 +1,7 @@
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { format } from 'date-fns';
 import { CreateOnetimeMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
@@ -83,8 +84,8 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
                   Order the same product to be processed immediately using this subscription&apos;s payment method.
                 </p>
                 <p>
-                  This will not affect your upcoming delivery on DATE and it will not receive your standard subscription
-                  discounts.
+                  This will not affect your upcoming delivery on {format(new Date(order.scheduled_at), 'PPP')} and it
+                  will not receive your standard subscription discounts.
                 </p>
               </div>
             )}
