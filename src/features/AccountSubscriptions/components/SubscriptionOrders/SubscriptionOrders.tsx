@@ -3,14 +3,15 @@ import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/O
 import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
 import { useState } from 'react';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 
 export interface SubscriptionOrdersProps {
   subscription: Subscription;
+  variant: SubscriptionSelectedVariant;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: SubscriptionOrdersProps) => {
+export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions }: SubscriptionOrdersProps) => {
   const { status } = subscription;
 
   const isActive = status === 'ACTIVE';
@@ -62,7 +63,12 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
           <div className="mt-6 space-y-16 sm:mt-8">
             {upcomingCharges.reverse().map((order) => (
               <section key={order.id} aria-labelledby={`${order.id}-heading`}>
-                <OrderItem subscription={subscription} order={order} refetchSubscriptions={refetchSubscriptions} />
+                <OrderItem
+                  subscription={subscription}
+                  order={order}
+                  variant={variant}
+                  refetchSubscriptions={refetchSubscriptions}
+                />
               </section>
             ))}
           </div>
@@ -78,7 +84,12 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
           <div className="mt-6 space-y-16 sm:mt-8">
             {pastCharges.map((order) => (
               <section key={order.id} aria-labelledby={`${order.id}-heading`}>
-                <OrderItem subscription={subscription} order={order} refetchSubscriptions={refetchSubscriptions} />
+                <OrderItem
+                  subscription={subscription}
+                  order={order}
+                  variant={variant}
+                  refetchSubscriptions={refetchSubscriptions}
+                />
               </section>
             ))}
           </div>

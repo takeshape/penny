@@ -143,7 +143,11 @@ export const ActiveSubscription = ({ subscription, refetchSubscriptions }: Activ
           />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
+          <SubscriptionOrders
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>
