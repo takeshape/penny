@@ -62,12 +62,14 @@ TakeShape is also providing performance and data services for the storefront:
 ```mermaid
 graph TD
     A[Frontend Next.js Client] --> |Unified GraphQL API| Mesh{TakeShape's API Mesh}
-    Mesh --> |User Authentication| OpenID
+    Mesh --> |User Authentication| OpenID[OpenID connect]
     Mesh --> |DDoS prevention| reCAPTCHA
     Mesh --> P{Products}
     P --> Shopify[Shopify Admin and Storefront]
+    P --> Recharge[Recharge]
     Mesh --> UP{User Profile}
-    UP --> |Orders, Subscriptions, and Customer Data| Shopify
+    UP --> |Orders, and Customer Data| Shopify
+    UP --> |Subscripitons, and Customer Data| Recharge
     UP --> |Newsletter| Klaviyo
     P --> |Product Reviews| REVIEWS.io
     UP --> |Reviews Written| REVIEWS.io
