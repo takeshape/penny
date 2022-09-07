@@ -3,12 +3,12 @@ import { GetMyAddressPaymentMethodsQueryResponse, GetMyPaymentMethodsQueryRespon
 import { capitalize } from 'utils/text';
 
 export function getPaymentMethod(paymentMethod: GetMyPaymentMethodsQueryResponse['paymentMethods'][0]) {
-  const { exp_month: expiryMonth, exp_year: expiryYear, last4 } = paymentMethod.payment_details;
+  const { exp_month: expiryMonth, exp_year: expiryYear, last4 } = paymentMethod?.payment_details ?? {};
 
   return {
-    id: paymentMethod.id,
+    id: paymentMethod?.id ?? '',
     instrument: {
-      brand: capitalize(paymentMethod.payment_details.brand),
+      brand: capitalize(paymentMethod?.payment_details?.brand ?? ''),
       expiresSoon: getIsExpiringSoon({ expiryMonth, expiryYear }),
       expiryMonth,
       expiryYear,

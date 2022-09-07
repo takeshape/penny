@@ -1895,7 +1895,7 @@
         }
       }
     },
-    "Recharge_getSubscription": {
+    "Recharge_getMySubscription": {
       "shape": "Recharge_Subscription",
       "resolver": {
         "compose": [
@@ -1912,9 +1912,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "subscription",
             "name": "rest:get",
             "service": "recharge",
@@ -1937,7 +1946,7 @@
                     [
                       "expressionEval",
                       {
-                        "expression": "$resolvers.customer.customers[0].id === $currentResolver.subscription.customer_id ? $currentResolver.subscription : null"
+                        "expression": "$resolvers.customer.id === $currentResolver.subscription.customer_id ? $currentResolver.subscription : null"
                       }
                     ]
                   ]
@@ -3776,7 +3785,7 @@
       },
       "shape": "recharge:Address"
     },
-    "Recharge_skipCharge": {
+    "Recharge_skipMyCharge": {
       "shape": "Recharge_Charge",
       "resolver": {
         "compose": [
@@ -3793,9 +3802,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "charge",
             "name": "rest:get",
             "service": "recharge",
@@ -3809,10 +3827,18 @@
               "serialize": {
                 "template": "/charges/{id}"
               }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.charge"
+                }
+              ]
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.charge.charge.customer_id",
+            "if": "$resolvers.customer.id === $resolvers.charge.customer_id",
             "name": "rest:post",
             "service": "recharge",
             "path": {
@@ -3860,7 +3886,7 @@
         ]
       }
     },
-    "Recharge_unskipCharge": {
+    "Recharge_unskipMyCharge": {
       "shape": "Recharge_Charge",
       "resolver": {
         "compose": [
@@ -3877,9 +3903,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "charge",
             "name": "rest:get",
             "service": "recharge",
@@ -3893,10 +3928,18 @@
               "serialize": {
                 "template": "/charges/{id}"
               }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.charge"
+                }
+              ]
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.charge.charge.customer_id",
+            "if": "$resolvers.customer.id === $resolvers.charge.customer_id",
             "name": "rest:post",
             "service": "recharge",
             "path": {
@@ -3944,112 +3987,7 @@
         ]
       }
     },
-    "Recharge_createOnetime": {
-      "shape": "Recharge_Onetime",
-      "resolver": {
-        "compose": [
-          {
-            "if": "!isEmpty($claims.email)",
-            "id": "customer",
-            "name": "rest:get",
-            "service": "recharge",
-            "path": "/customers",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "email",
-                  "mapping": "$claims.email"
-                }
-              ]
-            }
-          },
-          {
-            "id": "address",
-            "name": "rest:get",
-            "service": "recharge",
-            "path": {
-              "ops": [
-                {
-                  "path": "id",
-                  "mapping": "$args.addressId"
-                }
-              ],
-              "serialize": {
-                "template": "/addresses/{id}"
-              }
-            }
-          },
-          {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.address.address.customer_id",
-            "name": "rest:post",
-            "service": "recharge",
-            "path": {
-              "ops": [
-                {
-                  "path": "id",
-                  "mapping": "$args.addressId"
-                }
-              ],
-              "serialize": {
-                "template": "/addresses/{id}/onetimes"
-              }
-            },
-            "json": {
-              "ops": [
-                {
-                  "path": "add_to_next_charge",
-                  "value": true
-                },
-                {
-                  "path": "shopify_product_id",
-                  "mapping": "$args.productId"
-                },
-                {
-                  "path": "shopify_variant_id",
-                  "mapping": "$args.variantId"
-                },
-                {
-                  "path": "quantity",
-                  "mapping": "$args.quantity"
-                }
-              ]
-            }
-          }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$finalResolver.onetime"
-            }
-          ]
-        }
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "addressId": {
-            "type": "string"
-          },
-          "productId": {
-            "type": "string"
-          },
-          "variantId": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "addressId",
-          "productId",
-          "variantId",
-          "quantity"
-        ]
-      }
-    },
-    "Recharge_setNextChargeDate": {
+    "Recharge_setMyNextChargeDate": {
       "shape": "Recharge_Subscription",
       "resolver": {
         "compose": [
@@ -4066,9 +4004,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "subscription",
             "name": "rest:get",
             "service": "recharge",
@@ -4082,10 +4029,18 @@
               "serialize": {
                 "template": "/subscriptions/{id}"
               }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.subscription"
+                }
+              ]
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "if": "$resolvers.customer.id === $resolvers.subscription.customer_id",
             "name": "rest:post",
             "service": "recharge",
             "path": {
@@ -4111,7 +4066,7 @@
               "ops": [
                 {
                   "path": "$",
-                  "mapping": "$finalResolver.subscription"
+                  "mapping": "$currentResolver.subscription"
                 }
               ]
             }
@@ -4134,7 +4089,7 @@
         ]
       }
     },
-    "Recharge_cancelSubscription": {
+    "Recharge_cancelMySubscription": {
       "shape": "Recharge_Subscription",
       "resolver": {
         "compose": [
@@ -4151,9 +4106,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "subscription",
             "name": "rest:get",
             "service": "recharge",
@@ -4167,10 +4131,18 @@
               "serialize": {
                 "template": "/subscriptions/{id}"
               }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.subscription"
+                }
+              ]
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "if": "$resolvers.customer.id === $resolvers.subscription.customer_id",
             "name": "rest:post",
             "service": "recharge",
             "path": {
@@ -4215,12 +4187,13 @@
         ]
       }
     },
-    "Recharge_changeSubscriptionAddress": {
-      "shape": "Recharge_Subscription",
+    "Recharge_updateMyAddress": {
+      "shape": "recharge:Address",
+      "description": "Update an address, modifying the address for all uses.",
       "args": {
         "type": "object",
         "properties": {
-          "subscriptionId": {
+          "addressId": {
             "type": "string"
           },
           "address1": {
@@ -4252,13 +4225,12 @@
           }
         },
         "required": [
-          "subscriptionId",
+          "addressId",
           "address1",
           "city",
           "countryCode",
           "firstName",
           "lastName",
-          "phone",
           "province",
           "zip"
         ]
@@ -4278,18 +4250,62 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
-            "id": "createAddress",
-            "name": "rest:post",
+            "if": "!isEmpty($resolvers.customer)",
+            "id": "address",
+            "name": "rest:get",
             "service": "recharge",
-            "path": "/addresses",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{id}"
+              }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.address"
+                }
+              ]
+            }
+          },
+          {
+            "if": "$resolvers.customer.id === $resolvers.address.customer_id",
+            "id": "updateAddress",
+            "name": "rest:put",
+            "service": "recharge",
+            "path": {
+              "ops": [
+                {
+                  "path": "id",
+                  "mapping": "$args.addressId"
+                }
+              ],
+              "serialize": {
+                "template": "/addresses/{id}"
+              }
+            },
             "json": {
               "ops": [
                 {
-                  "path": "customer_id",
-                  "mapping": "$resolvers.customer.customers[0].id"
+                  "path": "id",
+                  "mapping": "$args.address1"
                 },
                 {
                   "path": "address1",
@@ -4328,44 +4344,20 @@
                   "mapping": "$args.zip"
                 }
               ]
-            }
-          },
-          {
-            "id": "changeSubscriptionAddress",
-            "name": "rest:post",
-            "service": "recharge",
-            "path": {
-              "ops": [
-                {
-                  "path": "id",
-                  "mapping": "$args.subscriptionId"
-                }
-              ],
-              "serialize": {
-                "template": "/subscriptions/{id}/change_address"
-              }
             },
-            "json": {
+            "results": {
               "ops": [
                 {
-                  "path": "address_id",
-                  "mapping": "$resolvers.createAddress.address.id"
+                  "path": "$",
+                  "mapping": "$currentResolver.address"
                 }
               ]
             }
           }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$finalResolver.subscription"
-            }
-          ]
-        }
+        ]
       }
     },
-    "Recharge_updateDeliveryFrequency": {
+    "Recharge_updateMyDeliveryFrequency": {
       "shape": "recharge:Subscription",
       "args": {
         "type": "object",
@@ -4401,9 +4393,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "subscription",
             "name": "rest:get",
             "service": "recharge",
@@ -4417,10 +4418,18 @@
               "serialize": {
                 "template": "/subscriptions/{id}"
               }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.subscription"
+                }
+              ]
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "if": "$resolvers.customer.id === $resolvers.subscription.customer_id",
             "name": "rest:put",
             "service": "recharge",
             "path": {
@@ -4462,7 +4471,7 @@
         }
       }
     },
-    "Recharge_updateProductOptions": {
+    "Recharge_updateMyProductOptions": {
       "shape": "recharge:Subscription",
       "args": {
         "type": "object",
@@ -4496,9 +4505,18 @@
                   "mapping": "$claims.email"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
             }
           },
           {
+            "if": "!isEmpty($resolvers.customer)",
             "id": "subscription",
             "name": "rest:get",
             "service": "recharge",
@@ -4512,10 +4530,18 @@
               "serialize": {
                 "template": "/subscriptions/{id}"
               }
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.subscription"
+                }
+              ]
             }
           },
           {
-            "if": "$resolvers.customer.customers[0].id === $resolvers.subscription.subscription.customer_id",
+            "if": "$resolvers.customer.id === $resolvers.subscription.customer_id",
             "name": "rest:put",
             "service": "recharge",
             "path": {

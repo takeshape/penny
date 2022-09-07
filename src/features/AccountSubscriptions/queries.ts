@@ -1,5 +1,21 @@
 import { gql } from '@apollo/client';
 
+const AddressFragment = gql`
+  fragment Address on Recharge_Address {
+    id
+    address1
+    address2
+    city
+    country
+    country_code
+    first_name
+    last_name
+    province
+    zip
+    phone
+  }
+`;
+
 const ChargeFragment = gql`
   fragment Charge on Recharge_Charge {
     id
@@ -145,7 +161,7 @@ export const UpdateMyPaymentMethodMutation = gql`
 export const GetSubscriptionQuery = gql`
   ${SubscriptionFragment}
   query GetSubscriptionQuery($id: String!) {
-    subscription: Recharge_getSubscription(id: $id) {
+    subscription: Recharge_getMySubscription(id: $id) {
       ...Subscription
     }
   }
@@ -230,7 +246,7 @@ export const SubscriptionProductVariantQuery = gql`
 export const CancelSubscriptionMutation = gql`
   ${SubscriptionFragment}
   mutation CancelSubscriptionMutation($id: String!) {
-    subscription: Recharge_cancelSubscription(id: $id) {
+    subscription: Recharge_cancelMySubscription(id: $id) {
       ...Subscription
     }
   }
@@ -239,7 +255,7 @@ export const CancelSubscriptionMutation = gql`
 export const SkipChargeMutation = gql`
   ${ChargeFragment}
   mutation SkipChargeMutation($chargeId: String!, $subscriptionId: String!) {
-    charge: Recharge_skipCharge(chargeId: $chargeId, subscriptionId: $subscriptionId) {
+    charge: Recharge_skipMyCharge(chargeId: $chargeId, subscriptionId: $subscriptionId) {
       ...Charge
     }
   }
@@ -248,28 +264,28 @@ export const SkipChargeMutation = gql`
 export const UnskipChargeMutation = gql`
   ${ChargeFragment}
   mutation UnskipChargeMutation($chargeId: String!, $subscriptionId: String!) {
-    charge: Recharge_unskipCharge(chargeId: $chargeId, subscriptionId: $subscriptionId) {
+    charge: Recharge_unskipMyCharge(chargeId: $chargeId, subscriptionId: $subscriptionId) {
       ...Charge
     }
   }
 `;
 
-export const ChangeSubscriptionAddressMutation = gql`
-  ${SubscriptionFragment}
-  mutation ChangeSubscriptionAddressMutation(
-    $subscriptionId: String!
+export const UpdateMyAddressMutation = gql`
+  ${AddressFragment}
+  mutation UpdateMyAddressMutation(
+    $addressId: String!
     $address1: String!
     $address2: String
     $city: String!
     $countryCode: String!
     $firstName: String!
     $lastName: String!
-    $phone: String!
+    $phone: String
     $province: String!
     $zip: String!
   ) {
-    subscription: Recharge_changeSubscriptionAddress(
-      subscriptionId: $subscriptionId
+    address: Recharge_updateMyAddress(
+      addressId: $addressId
       address1: $address1
       address2: $address2
       city: $city
@@ -280,7 +296,7 @@ export const ChangeSubscriptionAddressMutation = gql`
       province: $province
       zip: $zip
     ) {
-      ...Subscription
+      ...Address
     }
   }
 `;
@@ -288,29 +304,29 @@ export const ChangeSubscriptionAddressMutation = gql`
 export const SetNextChargeDateMutation = gql`
   ${SubscriptionFragment}
   mutation SetNextChargeDateMutation($subscriptionId: String!, $date: String!) {
-    Recharge_setNextChargeDate(subscriptionId: $subscriptionId, date: $date) {
+    subscription: Recharge_setMyNextChargeDate(subscriptionId: $subscriptionId, date: $date) {
       ...Subscription
     }
   }
 `;
 
-export const CreateOnetimeMutation = gql`
-  mutation CreateOnetimeMutation($addressId: String!, $productId: String!, $variantId: String!, $quantity: Int!) {
-    onetime: Recharge_createOnetime(
-      addressId: $addressId
-      productId: $productId
-      variantId: $variantId
-      quantity: $quantity
-    ) {
-      id
-    }
-  }
-`;
+// export const CreateOnetimeMutation = gql`
+//   mutation CreateOnetimeMutation($addressId: String!, $productId: String!, $variantId: String!, $quantity: Int!) {
+//     onetime: Recharge_createOnetime(
+//       addressId: $addressId
+//       productId: $productId
+//       variantId: $variantId
+//       quantity: $quantity
+//     ) {
+//       id
+//     }
+//   }
+// `;
 
 export const UpdateDeliveryFrequencyMutation = gql`
   ${SubscriptionFragment}
   mutation UpdateDeliveryFrequencyMutation($subscriptionId: String!, $frequency: String!, $unit: String!) {
-    subscription: Recharge_updateDeliveryFrequency(
+    subscription: Recharge_updateMyDeliveryFrequency(
       subscriptionId: $subscriptionId
       frequency: $frequency
       unit: $unit
@@ -323,7 +339,7 @@ export const UpdateDeliveryFrequencyMutation = gql`
 export const UpdateProductOptionsMutation = gql`
   ${SubscriptionFragment}
   mutation UpdateProductOptionsMutation($subscriptionId: String!, $variantId: String, $quantity: String) {
-    subscription: Recharge_updateProductOptions(
+    subscription: Recharge_updateMyProductOptions(
       subscriptionId: $subscriptionId
       variantId: $variantId
       quantity: $quantity

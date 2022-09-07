@@ -120,7 +120,7 @@ export const ProductOptionsForm = ({
           quantity: quantity.toString()
         }
       });
-      refetchSubscriptions();
+      await refetchSubscriptions();
       onClose();
     },
     [onClose, refetchSubscriptions, subscription.id, updateProductOptions, variants]

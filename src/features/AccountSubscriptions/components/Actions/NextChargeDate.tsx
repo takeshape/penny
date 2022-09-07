@@ -94,7 +94,7 @@ export const NextChargeDateForm = ({
   const handleFormSubmit = useCallback(
     async (formData: NextChargeDateFormValues) => {
       await setNextChargeDate({ variables: { subscriptionId: subscription.id, date: formData.nextChargeDate } });
-      refetchSubscriptions();
+      await refetchSubscriptions();
       onClose();
     },
     [onClose, refetchSubscriptions, setNextChargeDate, subscription.id]

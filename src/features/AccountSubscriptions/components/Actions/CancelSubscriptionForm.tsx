@@ -42,13 +42,10 @@ export const CancelSubscriptionForm = ({
     CancelSubscriptionMutationVariables
   >(CancelSubscriptionMutation);
 
-  const handleFormSubmit = useCallback(
-    async (formData: CancelSubscriptionFormValues) => {
-      await cancelSubscription({ variables: { id: subscription.id } });
-      refetchSubscriptions();
-    },
-    [cancelSubscription, refetchSubscriptions, subscription.id]
-  );
+  const handleFormSubmit = useCallback(async () => {
+    await cancelSubscription({ variables: { id: subscription.id } });
+    await refetchSubscriptions();
+  }, [cancelSubscription, refetchSubscriptions, subscription.id]);
 
   const resetState = useCallback(() => reset(), [reset]);
 

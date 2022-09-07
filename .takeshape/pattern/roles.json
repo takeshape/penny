@@ -287,6 +287,15 @@
         },
         {
           "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Recharge_getMySubscription"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Query.Recharge_getMyAddressPaymentMethods"
           ],
           "Effect": "Allow",
@@ -306,6 +315,69 @@
         {
           "Resource": [
             "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_updateMySubscriptionPaymentMethod"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_updateMyAddress"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_skipMyCharge"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_unskipMyCharge"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_cancelMySubscription"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_setMyNextChargeDate"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_updateMyDeliveryFrequency"
+          ],
+          "Effect": "Allow",
+          "Action": [
+            "graphql:execute"
+          ]
+        },
+        {
+          "Resource": [
+            "ts:graphql:06ccc3dc-a9da-4f5b-9142-5a104db52ee3:Mutation.Recharge_updateMyProductOptions"
           ],
           "Effect": "Allow",
           "Action": [

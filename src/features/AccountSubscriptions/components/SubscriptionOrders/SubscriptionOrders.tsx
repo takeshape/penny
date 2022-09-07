@@ -1,8 +1,5 @@
 import { isFuture, isPast } from 'date-fns';
-import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/OrderNowForm';
-import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
-import { useState } from 'react';
 import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 
 export interface SubscriptionOrdersProps {
@@ -16,8 +13,8 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
 
   const isActive = status === 'ACTIVE';
 
-  const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
-  const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
+  // const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
+  // const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
 
   const upcomingCharges = subscription.charges.filter((charge) => isFuture(new Date(charge.scheduled_at)));
   const pastCharges = subscription.charges.filter((charge) => isPast(new Date(charge.scheduled_at)));
@@ -34,7 +31,8 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
             </p>
           </div>
 
-          {isActive && (
+          {/* Disabled as Recharge only supports the proper call on Pro plans */}
+          {/* {isActive && (
             <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
               {nextOrder && (
                 <button
@@ -56,7 +54,7 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
                 </button>
               )}
             </div>
-          )}
+          )} */}
         </div>
 
         {isActive && upcomingCharges.length > 0 && (
@@ -98,19 +96,19 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
 
       {isActive && nextOrder && (
         <>
-          <SkipForm
+          {/* <SkipForm
             isOpen={isSkipNextOpen}
             onClose={() => setIsSkipNextOpen(false)}
             subscription={subscription}
             order={nextOrder}
             refetchSubscriptions={refetchSubscriptions}
-          />
-          <OrderNowForm
+          /> */}
+          {/* <OrderNowForm
             isOpen={isOrderNowOpen}
             onClose={() => setIsOrderNowOpen(false)}
             subscription={subscription}
             order={nextOrder}
-          />
+          /> */}
         </>
       )}
     </>

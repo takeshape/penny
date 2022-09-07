@@ -38,13 +38,10 @@ export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscrip
     SkipChargeMutation
   );
 
-  const handleFormSubmit = useCallback(
-    async (formData: SkipFormValues) => {
-      await skipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
-      refetchSubscriptions();
-    },
-    [order.id, refetchSubscriptions, skipCharge, subscription.id]
-  );
+  const handleFormSubmit = useCallback(async () => {
+    await skipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
+    await refetchSubscriptions();
+  }, [order.id, refetchSubscriptions, skipCharge, subscription.id]);
 
   const resetState = useCallback(() => {
     reset();

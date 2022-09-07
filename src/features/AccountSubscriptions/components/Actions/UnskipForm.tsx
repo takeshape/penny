@@ -3,9 +3,8 @@ import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
 import { UnskipChargeMutation } from 'features/AccountSubscriptions/queries';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { shopifyGidToId } from 'transforms/shopify';
 import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
@@ -35,19 +34,14 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
     }
   });
 
-  const orderNumber = useMemo(() => shopifyGidToId(order.id), [order]);
-
   const [unskipCharge] = useAuthenticatedMutation<UnskipChargeMutationResponse, UnskipChargeMutationVariables>(
     UnskipChargeMutation
   );
 
-  const handleFormSubmit = useCallback(
-    async (formData: SkipFormValues) => {
-      await unskipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
-      refetchSubscriptions();
-    },
-    [order.id, refetchSubscriptions, subscription.id, unskipCharge]
-  );
+  const handleFormSubmit = useCallback(async () => {
+    await unskipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
+    await refetchSubscriptions();
+  }, [order.id, refetchSubscriptions, subscription.id, unskipCharge]);
 
   const resetState = useCallback(() => {
     reset();

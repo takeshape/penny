@@ -39,19 +39,16 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
 
   const lineItem = order.line_items.find((li) => li.subscription_id === subscription.id);
 
-  const handleFormSubmit = useCallback(
-    async (formData: OrderNowFormValues) => {
-      orderNow({
-        variables: {
-          addressId: order.address_id,
-          productId: lineItem.shopify_product_id,
-          variantId: lineItem.shopify_variant_id,
-          quantity: lineItem.quantity
-        }
-      });
-    },
-    [lineItem.quantity, lineItem.shopify_product_id, lineItem.shopify_variant_id, order.address_id, orderNow]
-  );
+  const handleFormSubmit = useCallback(async () => {
+    orderNow({
+      variables: {
+        addressId: order.address_id,
+        productId: lineItem.shopify_product_id,
+        variantId: lineItem.shopify_variant_id,
+        quantity: lineItem.quantity
+      }
+    });
+  }, [lineItem.quantity, lineItem.shopify_product_id, lineItem.shopify_variant_id, order.address_id, orderNow]);
 
   const resetState = useCallback(() => {
     reset();

@@ -91,8 +91,8 @@ export const PaymentMethodRechargeForm = ({
   const handleFormSubmit = useCallback(
     async ({ paymentMethodId }: PaymentMethodRechargeFormValues) => {
       await updatePaymentMethod({ variables: { paymentMethodId, addressId } });
-      refetchAddressPaymentMethods();
-      refetchSubscriptions();
+      await refetchAddressPaymentMethods();
+      await refetchSubscriptions();
       onClose();
     },
     [addressId, onClose, refetchAddressPaymentMethods, refetchSubscriptions, updatePaymentMethod]

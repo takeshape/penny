@@ -50,7 +50,7 @@ export const DeliveryFrequencyForm = ({
           subscriptionId: subscription.id
         }
       });
-      refetchSubscriptions();
+      await refetchSubscriptions();
       onClose();
     },
     [onClose, refetchSubscriptions, subscription.id, subscription.order_interval_unit, updateDeliveryFrequency]

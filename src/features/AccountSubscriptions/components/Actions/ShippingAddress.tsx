@@ -4,11 +4,11 @@ import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { ChangeSubscriptionAddressMutation } from 'features/AccountSubscriptions/queries';
+import { UpdateMyAddressMutation } from 'features/AccountSubscriptions/queries';
 import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ChangeSubscriptionAddressMutationResponse, ChangeSubscriptionAddressMutationVariables } from 'types/takeshape';
+import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } from 'types/takeshape';
 import { countries } from 'utils/countries/countries';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 interface ShippingAddressFormProps extends ModalProps {
@@ -17,7 +17,7 @@ interface ShippingAddressFormProps extends ModalProps {
 }
 
 type ShippingAddressFormValues = Pick<
-  ChangeSubscriptionAddressMutationVariables,
+  UpdateMyAddressMutationVariables,
   'address1' | 'address2' | 'city' | 'countryCode' | 'firstName' | 'lastName' | 'phone' | 'province' | 'zip'
 >;
 
@@ -40,23 +40,28 @@ export const ShippingAddressForm = ({
     setValue
   } = useForm<ShippingAddressFormValues>();
 
-  const [changeSubscriptionAddress] = useAuthenticatedMutation<
-    ChangeSubscriptionAddressMutationResponse,
-    ChangeSubscriptionAddressMutationVariables
-  >(ChangeSubscriptionAddressMutation);
+  /**
+   * NOTE We are modifying an address that could be in use by other subscriptions
+   * in Recharge, however, every subscription checkout creates a new address
+   * object in Recharge, so this is, in effect, updating an address only in
+   * use by the subscription in context.
+   */
+  const [updateMyAddress] = useAuthenticatedMutation<UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables>(
+    UpdateMyAddressMutation
+  );
 
   const handleFormSubmit = useCallback(
     async (formData: ShippingAddressFormValues) => {
-      await changeSubscriptionAddress({
+      await updateMyAddress({
         variables: {
           ...formData,
-          subscriptionId: subscription.id
+          addressId: subscription.address_id
         }
       });
-      refetchSubscriptions();
+      await refetchSubscriptions();
       onClose();
     },
-    [changeSubscriptionAddress, onClose, refetchSubscriptions, subscription.id]
+    [updateMyAddress, onClose, refetchSubscriptions, subscription.address_id]
   );
 
   // Use countryCode here because inconsistent...

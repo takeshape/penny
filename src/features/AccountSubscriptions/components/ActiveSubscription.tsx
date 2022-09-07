@@ -57,7 +57,7 @@ export const ActiveSubscription = ({ subscription, refetchSubscriptions }: Activ
           <div>
             <dt className="font-medium text-body-900">Date started</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
+              <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PP')}</time>
             </dd>
           </div>
           <div className="hidden sm:block">
