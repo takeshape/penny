@@ -149,7 +149,7 @@ export const PaymentMethodRechargeForm = ({
                     <RadioGroup {...field}>
                       <RadioGroup.Label className="sr-only">Delivery schedule</RadioGroup.Label>
                       <div className="bg-white rounded-md -space-y-px">
-                        {paymentMethods.map((payment, paymentIdx) => (
+                        {paymentMethods?.map((payment, paymentIdx) => (
                           <RadioGroup.Option
                             key={payment.id}
                             value={payment.id}
@@ -197,10 +197,10 @@ export const PaymentMethodRechargeForm = ({
             </section>
             <div className="mt-4 flex items-center justify-center">
               <span
-                className="whitespace-nowrap text-sm font-medium text-accent-600 hover:text-accent-500 cursor-pointer"
+                className="whitespace-nowrap font-medium text-accent-600 hover:text-accent-500 cursor-pointer"
                 onClick={handleAddPaymentMethod}
               >
-                Add a payment method
+                Update or replace current payment method &rarr;
               </span>
             </div>
           </>
@@ -212,8 +212,8 @@ export const PaymentMethodRechargeForm = ({
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Update payment method"
-        disableSubmit={paymentMethods.length < 2}
+        submitText="Change payment method"
+        disableSubmit={paymentMethods?.length < 2}
       />
     </ModalForm>
   );
