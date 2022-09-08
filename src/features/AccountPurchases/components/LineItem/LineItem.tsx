@@ -1,6 +1,6 @@
 import Image from 'components/NextImage';
 import NextLink from 'components/NextLink';
-import { formatShopifyPrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 import { LineItem as LineItemType } from '../../types';
 
 export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineItemType }>) => {
@@ -20,14 +20,14 @@ export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: LineI
           <div>
             <div className="font-medium text-body-900">{lineItem.name}</div>
             <div className="mt-1 sm:hidden">
-              {formatShopifyPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
+              {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
             </div>
           </div>
         </NextLink>
       </td>
       <td className="py-6 pr-8 text-body-900">{lineItem.quantity}</td>
       <td className="hidden py-6 pr-8 sm:table-cell text-body-900">
-        {formatShopifyPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
+        {formatPrice(lineItem.price.currencyCode, lineItem.price.amount * 100)}
       </td>
     </tr>
   );

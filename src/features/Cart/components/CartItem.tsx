@@ -3,7 +3,7 @@ import NextImage from 'components/NextImage';
 import { PrimitiveAtom, useAtom } from 'jotai';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { formatShopifyPrice, pluralizeText } from 'utils/text';
+import { formatPrice, pluralizeText } from 'utils/text';
 import { CartItem as CartItemType } from '../types';
 
 export interface CartItemProps {
@@ -39,7 +39,7 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
               <p className="mt-1 text-sm text-body-500">{variantName}</p>
             </div>
             <div>
-              <p className="ml-4 text-right">{formatShopifyPrice(currency, unitAmount * quantity)}</p>
+              <p className="ml-4 text-right">{formatPrice(currency, unitAmount * quantity)}</p>
               {intervalCount > 0 ? (
                 <p className="ml-4 text-right text-xs text-body-500">
                   per {pluralizeText(intervalCount, interval.toLowerCase(), `${interval.toLowerCase()}s`)}

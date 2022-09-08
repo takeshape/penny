@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { getVariant } from 'utils/products';
-import { formatShopifyPrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 
 export interface ProductWithImageProps {
   product: ProductType;
@@ -82,9 +82,7 @@ export const ProductWithImage = ({
           </h2>
 
           <div className="flex items-center">
-            <p className="text-lg text-body-900 sm:text-xl">
-              {formatShopifyPrice(priceMin.currencyCode, priceMin.amount)}
-            </p>
+            <p className="text-lg text-body-900 sm:text-xl">{formatPrice(priceMin.currencyCode, priceMin.amount)}</p>
 
             <div className="ml-4 pl-4 border-l border-body-300">
               <h2 className="sr-only">Reviews</h2>

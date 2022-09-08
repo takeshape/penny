@@ -3,7 +3,7 @@ import NextLink from 'components/NextLink';
 import { quickAddAtom } from 'features/QuickAdd/store';
 import { useSetAtom } from 'jotai';
 import { MouseEvent, useCallback } from 'react';
-import { formatShopifyPrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 import { truncate } from 'utils/truncate';
 import { ProductPageRelatedProductsProduct } from '../../types';
 
@@ -44,7 +44,7 @@ export const ListItem = ({ product }: ListItemProps) => {
               className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
             />
             <p className="relative text-lg font-semibold text-inverted">
-              {formatShopifyPrice(product.priceMin.currencyCode, product.priceMin.amount)}
+              {formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}
             </p>
           </div>
         </div>
