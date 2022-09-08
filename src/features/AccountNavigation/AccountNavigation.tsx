@@ -18,14 +18,17 @@ export const accountNavigationItems = [
 
 function useAccountNavigationItems() {
   const { asPath } = useRouter();
-  const items = useMemo(
-    () =>
-      accountNavigationItems.map((item) => ({
+  const items = useMemo(() => {
+    const asPathParts = asPath.split('/');
+    return accountNavigationItems.map((item) => {
+      const hrefParts = item.href.split('/');
+      return {
         ...item,
-        current: asPath.startsWith(item.href)
-      })),
-    [asPath]
-  );
+        // Supports dynamic subscription URLs while not matching on /account
+        current: asPathParts[0] === hrefParts[0] && asPathParts[1] === hrefParts[1] && asPathParts[2] === hrefParts[2]
+      };
+    });
+  }, [asPath]);
   return items;
 }
 
