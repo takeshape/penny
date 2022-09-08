@@ -11,7 +11,7 @@ export const quickAddProduct: QuickAddProduct = {
     '<p>The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered...</p>\n<h3>Highlights<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Hand cut and sewn locally</li>\n<li>Dyed with our proprietary colors</li>\n<li>Pre-washed &amp; pre-shrunk</li>\n<li>Ultra-soft 100% cotton</li>\n</ul>\n<h3>Details<br data-mce-fragment="1">\n</h3>\n<p>The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.</p>',
   featuredImage: {
     height: 1088,
-    url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot_500x500.jpg.webp?v=1654530734',
+    url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._500x500.png.webp?v=1660406577',
     width: 840,
     altText: 'A bunch of shirts.'
   },

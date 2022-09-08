@@ -167,35 +167,35 @@ export const productPageProduct: ProductPageProduct = {
   descriptionHtml:
     '<p>The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.</p>\n<h3>Highlights<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Hand cut and sewn locally</li>\n<li>Dyed with our proprietary colors</li>\n<li>Pre-washed &amp; pre-shrunk</li>\n<li>Ultra-soft 100% cotton</li>\n</ul>\n<h3>Details<br data-mce-fragment="1">\n</h3>\n<p>The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.</p>',
   featuredImage: {
-    height: 1088,
-    url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530734',
-    width: 840,
-    altText: 'A bunch of shirts.'
+    height: 1024,
+    url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._800x800.png.webp?v=1660406577',
+    width: 1024,
+    altText: 'Image of An Exceptional Tee for Men'
   },
   images: [
     {
-      height: 1088,
-      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530734',
-      width: 840,
-      altText: 'A bunch of shirts.'
+      height: 1024,
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._800x800.png.webp?v=1660406577',
+      width: 1024,
+      altText: 'Image of An Exceptional Tee for Men'
     },
     {
-      height: 512,
-      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-tertiary-product-shot-01.jpg?v=1654530699',
-      width: 768,
-      altText: 'Image of Basic Tee 6-Pack'
+      height: 1024,
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1311.41.56-Aphotographofamanwearingaplainwhitet-shirtwithhisfaceshowingandstaringofftotheright._800x800.png.webp?v=1660406577',
+      width: 1024,
+      altText: 'Image of An Exceptional Tee for Men'
     },
     {
-      height: 512,
-      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-tertiary-product-shot-02.jpg?v=1654530699',
-      width: 768,
-      altText: 'Image of Basic Tee 6-Pack'
+      height: 1024,
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1311.34.46-Aphotographofamanwearingaplainblackt-shirt._800x800.png.webp?v=1660406577',
+      width: 1024,
+      altText: 'Image of An Exceptional Tee for Men'
     },
     {
-      height: 1960,
-      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-featured-product-shot.jpg?v=1654530699',
-      width: 1536,
-      altText: 'Image of Basic Tee 6-Pack'
+      height: 1024,
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.43-Aphotographofamanwearingaplainwhitet-shirtwithhisfaceshowingandstaringofftotheright._800x800.png.webp?v=1660406591',
+      width: 1024,
+      altText: 'Image of An Exceptional Tee for Men'
     }
   ],
   priceMin: { amount: 19200, currencyCode: 'USD' },
@@ -1463,7 +1463,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
       '<p>The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.</p>\n<h3>Highlights<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Hand cut and sewn locally</li>\n<li>Dyed with our proprietary colors</li>\n<li>Pre-washed &amp; pre-shrunk</li>\n<li>Ultra-soft 100% cotton</li>\n</ul>\n<h3>Details<br data-mce-fragment="1">\n</h3>\n<p>The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.</p>',
     featuredImage: {
       height: 1088,
-      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530734',
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._800x800.png.webp?v=1660406577',
       width: 840,
       altText: 'A bunch of shirts.'
     },
@@ -1577,7 +1577,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
       '<meta charset="utf-8"><span>Don\'t compromise on snack-carrying capacity with this lightweight and spacious bag. The drawstring top keeps all your favorite chips, crisps, fries, biscuits, crackers, and cookies secure.</span>',
     featuredImage: {
       height: 791,
-      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts.png?v=1650570316',
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_800x800.png.webp?v=1650570316',
       width: 860,
       altText: 'Image of Mesh Gym Shorts'
     },
