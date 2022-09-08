@@ -1,10 +1,11 @@
 import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
 import NextImage from 'components/NextImage';
 import { CreditCard } from 'components/Payments/CreditCard';
-import { format, isFuture } from 'date-fns';
+import { format } from 'date-fns';
 import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
 import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
 import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
+import { getCharges } from 'features/AccountSubscriptions/utils';
 import { useState } from 'react';
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
 import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
@@ -61,7 +62,7 @@ const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
   if (order.shopifyOrder?.processedAt) {
     return (
       <div className="flex items-center">
-        <ClockIcon className="w-5 h-5 text-blue-500" aria-hidden="true" />
+        <CheckCircleIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
         <p className="ml-2 text-sm font-medium text-gray-500">
           Processed on{' '}
           <time dateTime={order.shopifyOrder.processedAt}>
@@ -121,25 +122,7 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
 
   const product = variant.product;
 
-  const upcomingCharges = subscription.charges.filter((charge) => isFuture(new Date(charge.scheduled_at)));
-  const nextCharge = upcomingCharges.find((charge) => charge.status === 'QUEUED');
-  const mostRecentCharge = subscription.charges.reduce((previous, current) => {
-    const currentDate = new Date(current.scheduled_at);
-    if (isFuture(currentDate)) {
-      return previous;
-    }
-
-    if (previous === undefined) {
-      return current;
-    }
-
-    const previousDate = new Date(previous.scheduled_at);
-    if (currentDate > previousDate) {
-      return current;
-    }
-
-    return previous;
-  }, undefined);
+  const { mostRecentOrder, nextOrder } = getCharges(subscription.charges);
 
   return (
     <>
@@ -187,15 +170,15 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
                   </div>
                 )}
               </div>
-              <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2">
-                {mostRecentCharge !== undefined && (
-                  <RecentShipmentStatus subscription={subscription} order={mostRecentCharge} />
+              <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {mostRecentOrder !== undefined && (
+                  <RecentShipmentStatus subscription={subscription} order={mostRecentOrder} />
                 )}
-                {isActive && nextCharge !== undefined ? (
-                  <NextShipmentStatus subscription={subscription} order={nextCharge} />
+                {isActive && nextOrder !== undefined ? (
+                  <NextShipmentStatus subscription={subscription} order={nextOrder} />
                 ) : (
-                  <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
-                    <p className="ml-2 text-sm font-medium text-gray-500">No upcoming orders</p>
+                  <div className="flex items-center mt-4 sm:mt-0">
+                    <p className="text-sm font-medium text-gray-500">No upcoming orders</p>
                   </div>
                 )}
               </div>

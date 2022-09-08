@@ -1,5 +1,5 @@
 import { CreditCard } from 'components/Payments/CreditCard';
-import { format, isFuture } from 'date-fns';
+import { format, isFuture, isToday } from 'date-fns';
 import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
 import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { useState } from 'react';
@@ -9,8 +9,10 @@ import { formatDeliverySchedule } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
+import { OrderNowForm } from '../Actions/OrderNowForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShippingAddressForm } from '../Actions/ShippingAddress';
+import { SkipForm } from '../Actions/SkipForm';
 
 export interface ManageSubscriptionProps {
   subscription: Subscription;
@@ -20,15 +22,15 @@ export interface ManageSubscriptionProps {
 
 export const ManageSubscription = ({ subscription, variant, refetchSubscriptions }: ManageSubscriptionProps) => {
   const nextOrder = subscription.charges
-    .filter((charge) => isFuture(new Date(charge.scheduled_at)))
+    .filter((charge) => isFuture(new Date(charge.scheduled_at)) || isToday(new Date(charge.scheduled_at)))
     .find((charge) => charge.status === 'QUEUED');
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isDeliveryScheduleOpen, setIsDeliveryScheduleOpen] = useState(false);
-  // const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
-  // const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
+  const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
+  const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
   const [isCancelSubscriptionOpen, setIsCancelSubscriptionOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
@@ -41,8 +43,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
             <p className="mt-1 max-w-2xl text-sm text-body-500">Make changes to your deliveries, payments and more.</p>
           </div>
 
-          {/* Disabled as Recharge only supports the proper call on Pro plans */}
-          {/* <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
+          <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
             {nextOrder && (
               <button
                 type="button"
@@ -62,7 +63,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
                 Order Now
               </button>
             )}
-          </div> */}
+          </div>
         </div>
 
         <div className="mt-6 sm:mt-8 border-t border-body-200">
@@ -262,20 +263,21 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
         onClose={() => setIsShippingAddressOpen(false)}
       />
 
-      {/* <SkipForm
+      <SkipForm
         isOpen={isSkipNextOpen}
         onClose={() => setIsSkipNextOpen(false)}
         subscription={subscription}
         order={nextOrder}
         refetchSubscriptions={refetchSubscriptions}
-      /> */}
+      />
 
-      {/* <OrderNowForm
+      <OrderNowForm
         isOpen={isOrderNowOpen}
         onClose={() => setIsOrderNowOpen(false)}
         subscription={subscription}
         order={nextOrder}
-      /> */}
+        refetchSubscriptions={refetchSubscriptions}
+      />
 
       <CancelSubscriptionForm
         isOpen={isCancelSubscriptionOpen}

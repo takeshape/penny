@@ -2,16 +2,17 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
-import { CreateOnetimeMutation } from 'features/AccountSubscriptions/queries';
+import { SetNextChargeDateMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { CreateOnetimeMutationResponse, CreateOnetimeMutationVariables } from 'types/takeshape';
+import { SetNextChargeDateMutationResponse, SetNextChargeDateMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { RechargeCharge, Subscription } from '../../types';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 
 export interface OrderNowFormProps extends ModalProps {
   subscription: Subscription;
   order: RechargeCharge;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface OrderNowFormValues {
@@ -20,8 +21,10 @@ export interface OrderNowFormValues {
 
 /**
  * TODO Handle submit errors
+ * TODO Ideally we'd use this: https://developer.rechargepayments.com/2021-11/charges/charge_process but it requires a
+ * pro acct
  */
-export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowFormProps) => {
+export const OrderNowForm = ({ isOpen, onClose, subscription, order, refetchSubscriptions }: OrderNowFormProps) => {
   const {
     handleSubmit,
     register,
@@ -33,22 +36,18 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
     }
   });
 
-  const [orderNow, { data }] = useAuthenticatedMutation<CreateOnetimeMutationResponse, CreateOnetimeMutationVariables>(
-    CreateOnetimeMutation
-  );
-
-  const lineItem = order.line_items.find((li) => li.subscription_id === subscription.id);
+  const [setNextChargeDate] = useAuthenticatedMutation<
+    SetNextChargeDateMutationResponse,
+    SetNextChargeDateMutationVariables
+  >(SetNextChargeDateMutation);
 
   const handleFormSubmit = useCallback(async () => {
-    orderNow({
-      variables: {
-        addressId: order.address_id,
-        productId: lineItem.shopify_product_id,
-        variantId: lineItem.shopify_variant_id,
-        quantity: lineItem.quantity
-      }
+    await setNextChargeDate({
+      variables: { subscriptionId: subscription.id, date: format(new Date(), 'yyyy-MM-dd') }
     });
-  }, [lineItem.quantity, lineItem.shopify_product_id, lineItem.shopify_variant_id, order.address_id, orderNow]);
+    await refetchSubscriptions();
+    onClose();
+  }, [onClose, refetchSubscriptions, setNextChargeDate, subscription.id]);
 
   const resetState = useCallback(() => {
     reset();
@@ -68,7 +67,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
-            <p className="mb-2">Your one-time order is being processed.</p>
+            <p className="mb-2">Your order scheduled has been adjusted.</p>
           </div>
         ) : (
           <section aria-labelledby="confirm-heading" className="h-full">
@@ -78,11 +77,13 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
             {order.status === 'QUEUED' && (
               <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
                 <p className="mb-4">
-                  Order the same product to be processed immediately using this subscription&apos;s payment method.
+                  Your next order is currently scheduled for{' '}
+                  <span className="font-bold">{format(new Date(order.scheduled_at), 'PPP')}</span>. Would you like to
+                  move that up to today?
                 </p>
-                <p>
-                  This will not affect your upcoming delivery on {format(new Date(order.scheduled_at), 'PPP')} and it
-                  will not receive your standard subscription discounts.
+                <p className="text-sm">
+                  Please note, your order will be processed in the next 24 hours and all your future orders will be
+                  adjusted according to your delivery frequency.
                 </p>
               </div>
             )}
@@ -100,6 +101,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order }: OrderNowF
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Order now"
+        disableSubmit={order.status !== 'QUEUED'}
       />
     </ModalForm>
   );

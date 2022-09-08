@@ -52,7 +52,7 @@ export const EndedSubscription = ({ subscription, refetchSubscriptions }: EndedS
           <div>
             <dt className="font-medium text-body-900">Date ended</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.cancelled_at}>{format(new Date(subscription.cancelled_at), 'PPP')}</time>
+              <time dateTime={subscription.cancelled_at}>{format(new Date(subscription.cancelled_at), 'PP')}</time>
             </dd>
           </div>
         </dl>

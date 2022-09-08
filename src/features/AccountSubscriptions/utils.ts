@@ -1,5 +1,5 @@
-import { compareAsc } from 'date-fns';
-import { Subscription, SubscriptionOrder } from './types';
+import { compareAsc, isPast, isToday } from 'date-fns';
+import { RechargeCharge, Subscription, SubscriptionOrder } from './types';
 
 export function formatDeliverySchedule({ order_interval_unit, order_interval_frequency }: Subscription): string {
   return `${order_interval_frequency} ${order_interval_unit.toLocaleLowerCase()}(s)`;
@@ -37,6 +37,25 @@ export function getSortedOrders(orders: SubscriptionOrder[]) {
     nextOrder,
     upcomingOrders: upcomingOrders.reverse(),
     pastOrders
+  };
+}
+
+export function getCharges(charges: RechargeCharge[]) {
+  const mostRecentOrder = charges.find(
+    (charge) => charge.status === 'SUCCESS' && isPast(new Date(charge.scheduled_at))
+  );
+  const nextOrder = charges.find((charge) => charge.status === 'QUEUED');
+  const skippedAndPastOrders = charges.filter(
+    (charge) =>
+      (charge.status === 'SKIPPED' ||
+        (isPast(new Date(charge.scheduled_at)) && !isToday(new Date(charge.scheduled_at)))) &&
+      charge.id !== mostRecentOrder?.id
+  );
+
+  return {
+    mostRecentOrder,
+    nextOrder,
+    skippedAndPastOrders
   };
 }
 

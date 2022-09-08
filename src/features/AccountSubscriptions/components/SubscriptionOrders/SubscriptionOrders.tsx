@@ -1,6 +1,9 @@
-import { isFuture, isPast } from 'date-fns';
+import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/OrderNowForm';
+import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
+import { useState } from 'react';
 import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { getCharges } from '../../utils';
 
 export interface SubscriptionOrdersProps {
   subscription: Subscription;
@@ -13,12 +16,10 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
 
   const isActive = status === 'ACTIVE';
 
-  // const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
-  // const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
+  const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
+  const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
 
-  const upcomingCharges = subscription.charges.filter((charge) => isFuture(new Date(charge.scheduled_at)));
-  const pastCharges = subscription.charges.filter((charge) => isPast(new Date(charge.scheduled_at)));
-  const nextOrder = upcomingCharges.find((charge) => charge.status === 'QUEUED');
+  const { mostRecentOrder, nextOrder, skippedAndPastOrders } = getCharges(subscription.charges);
 
   return (
     <>
@@ -31,8 +32,7 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
             </p>
           </div>
 
-          {/* Disabled as Recharge only supports the proper call on Pro plans */}
-          {/* {isActive && (
+          {isActive && (
             <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
               {nextOrder && (
                 <button
@@ -54,33 +54,56 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
                 </button>
               )}
             </div>
-          )} */}
+          )}
         </div>
 
-        {isActive && upcomingCharges.length > 0 && (
-          <div className="mt-6 space-y-16 sm:mt-8">
-            {upcomingCharges.reverse().map((order) => (
-              <section key={order.id} aria-labelledby={`${order.id}-heading`}>
+        {isActive && nextOrder && (
+          <>
+            <div className="mt-12">
+              <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Next order</h3>
+            </div>
+
+            <div className="mt-4 space-y-16">
+              <section aria-labelledby={`${nextOrder.id}-order`}>
                 <OrderItem
                   subscription={subscription}
-                  order={order}
+                  order={nextOrder}
                   variant={variant}
                   refetchSubscriptions={refetchSubscriptions}
                 />
               </section>
-            ))}
+            </div>
+          </>
+        )}
+
+        {isActive && mostRecentOrder && (
+          <div className="mt-12">
+            <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Most recent order</h3>
           </div>
         )}
 
-        {isActive && pastCharges.length > 0 && (
-          <div className="mt-16">
-            <h3 className="text-lg leading-6 font-medium text-body-900">Past orders</h3>
+        {mostRecentOrder && (
+          <div className="mt-4 space-y-16">
+            <section key={mostRecentOrder.id} aria-labelledby={`${mostRecentOrder.id}-order`}>
+              <OrderItem
+                subscription={subscription}
+                order={mostRecentOrder}
+                variant={variant}
+                refetchSubscriptions={refetchSubscriptions}
+              />
+            </section>
           </div>
         )}
 
-        {pastCharges.length > 0 && (
-          <div className="mt-6 space-y-16 sm:mt-8">
-            {pastCharges.map((order) => (
+        {isActive && skippedAndPastOrders.length > 0 && (
+          <div className="mt-12">
+            <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Skipped and past orders</h3>
+          </div>
+        )}
+
+        {skippedAndPastOrders.length > 0 && (
+          <div className="mt-4 space-y-16">
+            {skippedAndPastOrders.map((order) => (
               <section key={order.id} aria-labelledby={`${order.id}-heading`}>
                 <OrderItem
                   subscription={subscription}
@@ -96,19 +119,20 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
 
       {isActive && nextOrder && (
         <>
-          {/* <SkipForm
+          <SkipForm
             isOpen={isSkipNextOpen}
             onClose={() => setIsSkipNextOpen(false)}
             subscription={subscription}
             order={nextOrder}
             refetchSubscriptions={refetchSubscriptions}
-          /> */}
-          {/* <OrderNowForm
+          />
+          <OrderNowForm
             isOpen={isOrderNowOpen}
             onClose={() => setIsOrderNowOpen(false)}
             subscription={subscription}
             order={nextOrder}
-          /> */}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </>
       )}
     </>
