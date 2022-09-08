@@ -213,6 +213,7 @@ export const PaymentMethodRechargeForm = ({
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Update payment method"
+        disableSubmit={paymentMethods.length < 2}
       />
     </ModalForm>
   );
