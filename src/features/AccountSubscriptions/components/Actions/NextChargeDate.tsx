@@ -203,7 +203,7 @@ export const NextChargeDateForm = ({
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Update next charge date"
+        submitText="Update delivery schedule"
       />
     </ModalForm>
   );

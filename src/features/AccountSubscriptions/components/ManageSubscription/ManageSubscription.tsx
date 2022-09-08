@@ -78,9 +78,9 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
 
             {/* Next charge */}
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-              <dt className="text-sm font-medium text-body-500">Delivery schedule</dt>
+              <dt className="text-sm font-medium text-body-500">Order schedule</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{format(new Date(nextOrder.scheduled_at), 'PPP')}</div>
+                <div className="flex-grow">{format(new Date(subscription.next_charge_scheduled_at), 'PPP')}</div>
                 <div className="ml-4 flex-shrink-0 flex space-x-4">
                   <button
                     type="button"
@@ -95,7 +95,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
 
             {/* Delivery frequency */}
             <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
-              <dt className="text-sm font-medium text-body-500">Delivery frequency</dt>
+              <dt className="text-sm font-medium text-body-500">Order frequency</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">{formatDeliverySchedule(subscription)}</div>
                 <div className="ml-4 flex-shrink-0">
