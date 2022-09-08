@@ -401,6 +401,21 @@ file.
 
 Now your Shopify store is configured for this project.
 
+## Recharge Subscriptions
+
+You will need to set up a free [Recharge Subscriptions](https://rechargepayments.com) Shopify app and account to use
+subscriptions in Penny. You can follow their
+[guide](https://support.rechargepayments.com/hc/en-us/articles/360056632214-Getting-started-with-Recharge) if you are
+unfamiliar.
+
+Once Recharge is configured, you will need to get an API token. Go to Apps > API Tokens > Create an API token. At a
+minimum you'll want to provide read & write access to the following scopes: `orders`, `discounts`, `subscriptions`,
+`payments`, `payment methods`, `customers`, `products`, `customer notifications`. You will then enter this API token in
+your Recharge service config in TakeShape.
+
+For a product to appear with subscription options in your Penny site, you'll need to add it as a subscription-enabled
+product in Recharge. Go to Products > Products > Add products in the Recharge admin, search for and add your item.
+
 ## REVIEWS.io
 
 The following section describes how to connect REVIEWS.io to your Penny pattern in TakeShape. To learn how to connect
