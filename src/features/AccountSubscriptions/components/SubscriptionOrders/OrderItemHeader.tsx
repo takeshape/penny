@@ -26,8 +26,6 @@ export const OrderItemHeader = ({ subscription, order }: OrderItemHeaderProps) =
     )
   );
 
-  console.log(order.status);
-
   const Icon = subscriptionFulfillment?.deliveredAt
     ? DeliveredIcon
     : order.status === 'SKIPPED'
