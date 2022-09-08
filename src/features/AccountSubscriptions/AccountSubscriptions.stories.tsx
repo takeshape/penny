@@ -1,14 +1,14 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountSubscriptions } from './AccountSubscriptions';
-import { subscriptions } from './fixtures';
 import {
   getMyAddressPaymentMethodsResponse,
   getMyPaymentMethodsResponse,
+  getMySubscriptionsResponse,
   sendMyUpdatePaymentEmailMutation,
+  subscriptionProductVariantResponse,
   updateMyPaymentMethodResponse
 } from './queries.fixtures';
-import { getSubscription } from './transforms';
 
 const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   title: 'Features / Account Subscriptions',
@@ -18,17 +18,21 @@ const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   }
 };
 
-const Template: ComponentStory<typeof AccountSubscriptions> = (args) => <AccountSubscriptions {...args} />;
+const Template: ComponentStory<typeof AccountSubscriptions> = () => <AccountSubscriptions />;
 
 export const _AccountSubscriptions = Template.bind({});
-
-_AccountSubscriptions.args = {
-  subscriptions: subscriptions.map(getSubscription)
-};
 
 _AccountSubscriptions.parameters = {
   msw: {
     handlers: {
+      subscriptions: [
+        graphql.query('GetMySubscriptionsQuery', (req, res, ctx) => {
+          return res(ctx.data(getMySubscriptionsResponse));
+        }),
+        graphql.query('SubscriptionProductVariantQuery', (req, res, ctx) => {
+          return res(ctx.data(subscriptionProductVariantResponse));
+        })
+      ],
       payments: [
         graphql.query('GetMyPaymentMethodsQuery', (req, res, ctx) => {
           return res(ctx.data(getMyPaymentMethodsResponse));

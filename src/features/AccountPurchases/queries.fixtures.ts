@@ -29,7 +29,7 @@ export const myPurchasesResponse = {
                     id: 'gid://shopify/LineItem/10727677755492',
                     image: {
                       __typename: 'Shopify_Image',
-                      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530699',
+                      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._500x500.png.webp?v=1660406577',
                       height: 1088,
                       width: 840,
                       altText: 'A bunch of shirts.'
@@ -81,7 +81,7 @@ export const myPurchasesResponse = {
                     id: 'gid://shopify/LineItem/10718445863012',
                     image: {
                       __typename: 'Shopify_Image',
-                      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530699',
+                      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._500x500.png.webp?v=1660406577',
                       height: 1088,
                       width: 840,
                       altText: 'A bunch of shirts.'
@@ -133,7 +133,7 @@ export const myPurchasesResponse = {
                           id: 'gid://shopify/LineItem/10718445863012',
                           image: {
                             __typename: 'Shopify_Image',
-                            url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot.jpg?v=1654530699',
+                            url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._500x500.png.webp?v=1660406577',
                             height: 1088,
                             width: 840,
                             altText: 'A bunch of shirts.'

@@ -1,5 +1,7 @@
+import { QueryResult } from '@apollo/client';
 import { PaymentMethod } from 'types/paymentMethod';
 import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
+import { GetMySubscriptionsQueryResponse, SubscriptionProductVariantQueryResponse } from 'types/takeshape';
 
 export type ShippingAddress = {
   firstName: string;
@@ -63,8 +65,8 @@ export type SubscriptionOrder = {
 };
 
 export type SubscriptionDeliveryScheduleOption = {
-  interval: 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
-  intervalCount: number;
+  order_interval_unit: 'day' | 'week' | 'month' | 'year';
+  order_interval_frequency: number;
 };
 
 export type RawSubscription = {
@@ -81,25 +83,13 @@ export type RawSubscription = {
   orders: SubscriptionOrder[];
 };
 
-export type Subscription = {
-  id: string;
-  // TODO Line this up with Shopify subscription statuses
-  status: 'active' | 'ended';
-  createdAt: string;
-  endedAt?: string;
-  price: SubscriptionPrice;
-  deliverySchedule: SubscriptionDeliveryScheduleOption;
-  deliveryScheduleOptions: SubscriptionDeliveryScheduleOption[];
-  shippingAddress: ShippingAddress & { id: string };
-  // This will come from Shopify https://shopify.dev/api/admin-graphql/2022-07/objects/CustomerPaymentMethod
-  paymentMethod: PaymentMethod & { instrument: { __typename: 'Shopify_CustomerCreditCard' } };
-  product: SubscriptionProduct;
-  orders: SubscriptionOrder[];
-  lastOrder: SubscriptionOrder;
-  nextOrder: SubscriptionOrder;
-  upcomingOrders: SubscriptionOrder[];
-  pastOrders: SubscriptionOrder[];
-};
+export type Subscription = GetMySubscriptionsQueryResponse['subscriptions'][0];
 
-export type ActiveSubscription = Subscription & { status: 'active' };
-export type EndedSubscription = Subscription & { status: 'ended' };
+export type SubscriptionSelectedVariant = SubscriptionProductVariantQueryResponse['variant'];
+
+export type SubscriptionProductVariants =
+  SubscriptionProductVariantQueryResponse['variant']['product']['variants']['edges'][0]['node'];
+
+export type RechargeCharge = GetMySubscriptionsQueryResponse['subscriptions'][0]['charges'][0];
+
+export type RefetchSubscriptions = QueryResult['refetch'];

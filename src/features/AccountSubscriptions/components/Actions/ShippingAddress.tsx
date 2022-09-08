@@ -4,48 +4,90 @@ import FormSelect from 'components/Form/Select/Select';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { ShippingAddress } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import useCountries from 'utils/hooks/useCountries';
-
-interface ShippingAddressFormValues extends ShippingAddress {}
-
+import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } from 'types/takeshape';
+import { countries } from 'utils/countries/countries';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { UpdateMyAddressMutation } from '../../queries';
+import { RefetchSubscriptions, Subscription } from '../../types';
 interface ShippingAddressFormProps extends ModalProps {
-  currentAddress: ShippingAddress;
+  subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
+
+type ShippingAddressFormValues = Pick<
+  UpdateMyAddressMutationVariables,
+  'address1' | 'address2' | 'city' | 'countryCode' | 'firstName' | 'lastName' | 'phone' | 'province' | 'zip'
+>;
 
 /**
  * TODO Handle errors
  */
-export const ShippingAddressForm = ({ isOpen, onClose, currentAddress }: ShippingAddressFormProps) => {
+export const ShippingAddressForm = ({
+  isOpen,
+  onClose,
+  subscription,
+  refetchSubscriptions
+}: ShippingAddressFormProps) => {
   const {
     handleSubmit,
     control,
     watch,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful }
-  } = useForm<ShippingAddress>();
+    formState: { isSubmitting, isSubmitSuccessful },
+    getValues,
+    setValue
+  } = useForm<ShippingAddressFormValues>();
+
+  /**
+   * NOTE We are modifying an address that could be in use by other subscriptions
+   * in Recharge, however, every subscription checkout creates a new address
+   * object in Recharge, so this is, in effect, updating an address only in
+   * use by the subscription in context.
+   */
+  const [updateMyAddress] = useAuthenticatedMutation<UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables>(
+    UpdateMyAddressMutation
+  );
 
   const handleFormSubmit = useCallback(
     async (formData: ShippingAddressFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log(formData);
-      // TODO Mutate underlying state so the subscription show changes
+      await updateMyAddress({
+        variables: {
+          ...formData,
+          addressId: subscription.address_id
+        }
+      });
+      await refetchSubscriptions();
       onClose();
     },
-    [onClose]
+    [updateMyAddress, onClose, refetchSubscriptions, subscription.address_id]
   );
 
-  const resetState = useCallback(() => reset(currentAddress), [reset, currentAddress]);
+  // Use countryCode here because inconsistent...
+  const watchCountry = watch('countryCode', 'US');
+  const selectedCountry = watchCountry && countries.find((c) => c.iso2 === watchCountry);
+
+  useEffect(() => {
+    const selectedProvince = getValues().province;
+    if (selectedCountry.states.find((state) => state.name === selectedProvince) === undefined) {
+      setValue('province', selectedCountry.states[0].name);
+    }
+  }, [getValues, selectedCountry.states, setValue, watchCountry]);
+
+  const resetState = useCallback(
+    () =>
+      reset({
+        ...subscription.address,
+        firstName: subscription.address.first_name,
+        lastName: subscription.address.last_name,
+        countryCode: countries.find((country) => country.name === subscription.address.country).iso2 ?? 'US'
+      }),
+    [reset, subscription.address]
+  );
 
   // Set initial values
   useEffect(() => resetState(), [resetState]);
-
-  const countries = useCountries();
-  // Use countryCode here because inconsistent...
-  const watchCountry = watch('countryCode', 'US');
-  const selectedCountry = watchCountry && countries?.find((c) => c.iso2 === watchCountry);
 
   return (
     <ModalForm

@@ -7,7 +7,7 @@ import { isBefore, lastDayOfMonth } from 'date-fns';
 import IMask from 'imask';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import useCountries from 'utils/hooks/useCountries';
+import { countries } from 'utils/countries/countries';
 
 export interface AddFormProps extends ModalProps {
   customerId: string;
@@ -32,7 +32,6 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     reset,
     formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<AddFormValues>();
-  const countries = useCountries();
 
   const handleFormSubmit = useCallback(
     async (formData: AddFormValues) => {
@@ -245,7 +244,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 label="Country"
                 defaultValue="US"
                 options={
-                  countries?.map(({ name, iso2 }) => ({
+                  countries.map(({ name, iso2 }) => ({
                     key: iso2,
                     value: iso2,
                     title: name

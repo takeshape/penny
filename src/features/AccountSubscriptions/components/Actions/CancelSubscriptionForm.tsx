@@ -3,10 +3,14 @@ import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { Subscription } from '../../types';
+import { CancelSubscriptionMutationResponse, CancelSubscriptionMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { CancelSubscriptionMutation } from '../../queries';
+import { RefetchSubscriptions, Subscription } from '../../types';
 
 export interface CancelSubscriptionFormProps extends ModalProps {
   subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface CancelSubscriptionFormValues {
@@ -16,7 +20,12 @@ export interface CancelSubscriptionFormValues {
 /**
  * TODO Handle submit errors
  */
-export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: CancelSubscriptionFormProps) => {
+export const CancelSubscriptionForm = ({
+  isOpen,
+  onClose,
+  subscription,
+  refetchSubscriptions
+}: CancelSubscriptionFormProps) => {
   const {
     handleSubmit,
     register,
@@ -28,14 +37,15 @@ export const CancelSubscriptionForm = ({ isOpen, onClose, subscription }: Cancel
     }
   });
 
-  const handleFormSubmit = useCallback(
-    async (formData: CancelSubscriptionFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, subscription });
-      // TODO Mutate subscription to show canceled
-    },
-    [subscription]
-  );
+  const [cancelSubscription] = useAuthenticatedMutation<
+    CancelSubscriptionMutationResponse,
+    CancelSubscriptionMutationVariables
+  >(CancelSubscriptionMutation);
+
+  const handleFormSubmit = useCallback(async () => {
+    await cancelSubscription({ variables: { id: subscription.id } });
+    await refetchSubscriptions();
+  }, [cancelSubscription, refetchSubscriptions, subscription.id]);
 
   const resetState = useCallback(() => reset(), [reset]);
 

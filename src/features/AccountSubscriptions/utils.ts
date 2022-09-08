@@ -1,14 +1,8 @@
-import { compareAsc } from 'date-fns';
-import {
-  ActiveSubscription,
-  EndedSubscription,
-  Subscription,
-  SubscriptionDeliveryScheduleOption,
-  SubscriptionOrder
-} from './types';
+import { compareAsc, isFuture, isPast, isToday } from 'date-fns';
+import { RechargeCharge, Subscription, SubscriptionOrder } from './types';
 
-export function formatDeliverySchedule({ interval, intervalCount }: SubscriptionDeliveryScheduleOption): string {
-  return `${intervalCount} ${interval.toLocaleLowerCase()}(s)`;
+export function formatDeliverySchedule({ order_interval_unit, order_interval_frequency }: Subscription): string {
+  return `${order_interval_frequency} ${order_interval_unit.toLocaleLowerCase()}(s)`;
 }
 
 export function getSortedOrders(orders: SubscriptionOrder[]) {
@@ -46,10 +40,34 @@ export function getSortedOrders(orders: SubscriptionOrder[]) {
   };
 }
 
-export function isActiveSubscription(subscription: Subscription): subscription is ActiveSubscription {
-  return subscription.status === 'active';
+export function getCharges(charges: RechargeCharge[]) {
+  const mostRecentOrder = charges.find(
+    (charge) => charge.status === 'SUCCESS' && isPast(new Date(charge.scheduled_at))
+  );
+  const nextQueuedOrder = charges.find((charge) => charge.status === 'QUEUED');
+  const nextOrder = charges.find(
+    (charge) => isToday(new Date(charge.scheduled_at)) || isFuture(new Date(charge.scheduled_at))
+  );
+
+  const skippedAndPastOrders = charges.filter(
+    (charge) =>
+      (charge.status === 'SKIPPED' ||
+        (isPast(new Date(charge.scheduled_at)) && !isToday(new Date(charge.scheduled_at)))) &&
+      charge.id !== mostRecentOrder?.id
+  );
+
+  return {
+    mostRecentOrder,
+    nextQueuedOrder,
+    nextOrder,
+    skippedAndPastOrders
+  };
 }
 
-export function isEndedSubscription(subscription: Subscription): subscription is EndedSubscription {
-  return subscription.status === 'ended';
+export function isActiveSubscription(subscription: Subscription) {
+  return subscription.status === 'ACTIVE';
+}
+
+export function isEndedSubscription(subscription: Subscription) {
+  return subscription.status === 'CANCELLED' || subscription.status === 'EXPIRED';
 }

@@ -4,10 +4,15 @@ import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { SubscriptionOrder } from '../../types';
+import { SkipChargeMutationResponse, SkipChargeMutationVariables } from 'types/takeshape';
+import { useAuthenticatedMutation } from 'utils/takeshape';
+import { SkipChargeMutation } from '../../queries';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 
 export interface SkipFormProps extends ModalProps {
-  order?: SubscriptionOrder;
+  subscription: Subscription;
+  order: RechargeCharge;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface SkipFormValues {
@@ -17,7 +22,7 @@ export interface SkipFormValues {
 /**
  * TODO Handle submit errors
  */
-export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
+export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscriptions }: SkipFormProps) => {
   const {
     handleSubmit,
     register,
@@ -29,13 +34,14 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
     }
   });
 
-  const handleFormSubmit = useCallback(
-    async (formData: SkipFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log({ formData, order });
-    },
-    [order]
+  const [skipCharge] = useAuthenticatedMutation<SkipChargeMutationResponse, SkipChargeMutationVariables>(
+    SkipChargeMutation
   );
+
+  const handleFormSubmit = useCallback(async () => {
+    await skipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
+    await refetchSubscriptions();
+  }, [order.id, refetchSubscriptions, skipCharge, subscription.id]);
 
   const resetState = useCallback(() => {
     reset();
@@ -55,9 +61,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
-            <p className="mb-4">
-              Your order on <strong>{format(new Date(order.fulfillmentDate), 'PPP')}</strong> has been skipped.
-            </p>
+            <p className="mb-4">Your order on has been skipped.</p>
             <p className="text-sm">
               If this was a mistake you can unskip it on the <strong>Subcription → Orders</strong> screen.
             </p>
@@ -67,17 +71,14 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
             <h3 id="confirm-heading" className="sr-only">
               Confirm skip order
             </h3>
-            {order.status === 'scheduled' && (
-              <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
-                <p className="mb-4">
-                  Your order will not be processed on{' '}
-                  <strong className="text-black">{format(new Date(order.fulfillmentDate), 'PPP')}</strong>.
-                </p>
-                <p>Would you like to continue?</p>
-              </div>
-            )}
 
-            {order.status === 'skipped' && <p>This order has already been skipped.</p>}
+            <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
+              <p className="mb-4">
+                Your order will not be processed on{' '}
+                <strong className="text-black">{format(new Date(order.scheduled_at), 'PPP')}</strong>.
+              </p>
+              <p>Would you like to continue?</p>
+            </div>
 
             <input {...register('confirm')} className="hidden" />
           </section>
@@ -90,7 +91,7 @@ export const SkipForm = ({ isOpen, onClose, order }: SkipFormProps) => {
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Skip it"
-        disableSubmit={order.status !== 'scheduled'}
+        disableSubmit={order.status !== 'QUEUED'}
       />
     </ModalForm>
   );

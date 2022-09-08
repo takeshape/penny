@@ -1,11 +1,14 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
+import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
+import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
+import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
-import { shopifyGidToId } from 'transforms/shopify';
+import { SubscriptionProductVariantQueryResponse, SubscriptionProductVariantQueryVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
-import { formatPrice } from 'utils/text';
-import { ActiveSubscription as TActiveSubscription } from '../types';
+import { useAuthenticatedQuery } from 'utils/takeshape';
+import { formatRechargePrice } from 'utils/text';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
@@ -24,14 +27,29 @@ const navigationItems = [
 ];
 
 export interface ActiveSubscriptionProps {
-  subscription: TActiveSubscription;
+  subscription: Subscription;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
+export const ActiveSubscription = ({ subscription, refetchSubscriptions }: ActiveSubscriptionProps) => {
+  const { data } = useAuthenticatedQuery<
+    SubscriptionProductVariantQueryResponse,
+    SubscriptionProductVariantQueryVariables
+  >(SubscriptionProductVariantQuery, {
+    variables: { id: `gid://shopify/ProductVariant/${subscription.shopify_variant_id}` }
+  });
+
+  if (!data) {
+    return <SubscriptionSkeleton />;
+  }
+
+  const variant = data.variant;
+
   return (
     <Tab.Group>
-      <h3 className="sr-only" id={shopifyGidToId(subscription.id)}>
-        Order placed on <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
+      <h3 className="sr-only" id={subscription.id.toString()}>
+        Order placed on{' '}
+        <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
       </h3>
 
       <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
@@ -39,17 +57,17 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
           <div>
             <dt className="font-medium text-body-900">Date started</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
+              <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PP')}</time>
             </dd>
           </div>
           <div className="hidden sm:block">
             <dt className="font-medium text-body-900">Frequency</dt>
-            <dd className="mt-1 text-body-500">Every {formatDeliverySchedule(subscription.deliverySchedule)}</dd>
+            <dd className="mt-1 text-body-500">Every {formatDeliverySchedule(subscription)}</dd>
           </div>
           <div>
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="mt-1 font-medium text-body-900">
-              {formatPrice(subscription.price.currencyCode, subscription.price.amount)}
+              {formatRechargePrice(subscription.presentment_currency, subscription.price, subscription.quantity)}
             </dd>
           </div>
         </dl>
@@ -111,13 +129,25 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview subscription={subscription} />
+          <SubscriptionOverview
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
         <Tab.Panel>
-          <ManageSubscription subscription={subscription} />
+          <ManageSubscription
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={subscription} />
+          <SubscriptionOrders
+            subscription={subscription}
+            variant={variant}
+            refetchSubscriptions={refetchSubscriptions}
+          />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

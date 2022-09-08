@@ -1,29 +1,44 @@
+import { NetworkStatus } from '@apollo/client';
 import { RefreshIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
 import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
 import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
-import { Subscription } from './types';
+import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
+import { GetMySubscriptionsQuery } from 'features/AccountSubscriptions/queries';
+import { GetMySubscriptionsQueryResponse } from 'types/takeshape';
+import { useAuthenticatedQuery } from 'utils/takeshape';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
-export interface AccountSubscriptionsProps {
-  subscriptions: Subscription[];
-}
+export const AccountSubscriptions = () => {
+  const { data, loading, networkStatus, refetch } =
+    useAuthenticatedQuery<GetMySubscriptionsQueryResponse>(GetMySubscriptionsQuery);
 
-export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProps) => {
-  const activeSubscriptions = subscriptions.filter(isActiveSubscription);
-  const endedSubscriptions = subscriptions.filter(isEndedSubscription);
+  if (loading && networkStatus !== NetworkStatus.refetch) {
+    return (
+      <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
+        <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
+          <div className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border">
+            <SubscriptionSkeleton />
+          </div>
+        </div>
+      </CardPanel>
+    );
+  }
+
+  const activeSubscriptions = data?.subscriptions.filter(isActiveSubscription) ?? [];
+  const endedSubscriptions = data?.subscriptions.filter(isEndedSubscription) ?? [];
 
   return (
     <>
       <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
-        {activeSubscriptions?.length ? (
+        {activeSubscriptions?.length > 0 ? (
           <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
             {activeSubscriptions.map((subscription) => (
               <div
                 key={subscription.id}
                 className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
-                <ActiveSubscription subscription={subscription} />
+                <ActiveSubscription subscription={subscription} refetchSubscriptions={refetch} />
               </div>
             ))}
           </div>
@@ -35,7 +50,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
         )}
       </CardPanel>
 
-      {endedSubscriptions?.length && (
+      {endedSubscriptions?.length > 0 && (
         <CardPanel primaryText="Past Subscriptions" secondaryText="Expired or canceled subscriptions.">
           <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
             {endedSubscriptions.map((subscription) => (
@@ -43,7 +58,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
                 key={subscription.id}
                 className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
-                <EndedSubscription subscription={subscription} />
+                <EndedSubscription subscription={subscription} refetchSubscriptions={refetch} />
               </div>
             ))}
           </div>

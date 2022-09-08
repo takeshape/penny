@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
-import { subscriptions } from '../../fixtures';
 import {
   getMyAddressPaymentMethodsResponse,
   getMyPaymentMethodsResponse,
+  getMySubscriptionsResponse,
   sendMyUpdatePaymentEmailMutation,
+  subscriptionProductVariantResponse,
   updateMyPaymentMethodResponse
 } from '../../queries.fixtures';
-import { getSubscription } from '../../transforms';
 import { SubscriptionOverview } from './SubscriptionOverview';
 
 const Meta: ComponentMeta<typeof SubscriptionOverview> = {
@@ -23,7 +23,8 @@ const Template: ComponentStory<typeof SubscriptionOverview> = (args) => <Subscri
 export const Overview = Template.bind({});
 
 Overview.args = {
-  subscription: getSubscription(subscriptions[0])
+  subscription: getMySubscriptionsResponse.subscriptions[0],
+  variant: subscriptionProductVariantResponse.variant
 };
 
 Overview.parameters = {

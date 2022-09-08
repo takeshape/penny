@@ -1,12 +1,12 @@
 import PageLoader from 'components/PageLoader';
 import { AccountSubscription } from 'features/AccountSubscriptions/AccountSubscription';
-import { subscriptions as rawSubscriptions } from 'features/AccountSubscriptions/fixtures';
-import { getSubscription } from 'features/AccountSubscriptions/transforms';
+import { GetSubscriptionQuery } from 'features/AccountSubscriptions/queries';
 import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { shopifyGidToId } from 'transforms/shopify';
+import { GetSubscriptionQueryResponse, GetSubscriptionQueryVariables } from 'types/takeshape';
+import { useAuthenticatedQuery } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
 const AccountSubscriptionsPage: NextPage = ({
@@ -16,7 +16,12 @@ const AccountSubscriptionsPage: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
 
-  if (isFallback) {
+  const { data, refetch } = useAuthenticatedQuery<GetSubscriptionQueryResponse, GetSubscriptionQueryVariables>(
+    GetSubscriptionQuery,
+    { variables: { id: subscriptionId } }
+  );
+
+  if (isFallback || !data) {
     return (
       <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscription is loading...' }}>
         <PageLoader />
@@ -24,11 +29,9 @@ const AccountSubscriptionsPage: NextPage = ({
     );
   }
 
-  const subscription = rawSubscriptions.find((sub) => shopifyGidToId(sub.id) === subscriptionId);
-
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscriptions' }}>
-      <AccountSubscription subscription={getSubscription(subscription)} />
+      <AccountSubscription subscription={data.subscription} refetchSubscriptions={refetch} />
     </Layout>
   );
 };

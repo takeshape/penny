@@ -1,6 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { subscriptions } from '../../fixtures';
-import { getSubscription } from '../../transforms';
+import {
+  getMySubscriptionsResponse,
+  subscriptionProductVariantResponse
+} from 'features/AccountSubscriptions/queries.fixtures';
 import { SubscriptionOrders } from './SubscriptionOrders';
 
 const Meta: ComponentMeta<typeof SubscriptionOrders> = {
@@ -16,7 +18,8 @@ const Template: ComponentStory<typeof SubscriptionOrders> = (args) => <Subscript
 export const Orders = Template.bind({});
 
 Orders.args = {
-  subscription: getSubscription(subscriptions[0])
+  subscription: getMySubscriptionsResponse.subscriptions[0],
+  variant: subscriptionProductVariantResponse.variant
 };
 
 export default Meta;
