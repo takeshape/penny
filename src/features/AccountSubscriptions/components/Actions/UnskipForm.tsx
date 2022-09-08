@@ -61,9 +61,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
-            <p className="mb-4">
-              Your order on <strong>{format(new Date(order.scheduled_at), 'PP')}</strong> will be processed.
-            </p>
+            <p className="mb-4">Your order on will be processed.</p>
           </div>
         ) : (
           <section aria-labelledby="confirm-heading" className="h-full">

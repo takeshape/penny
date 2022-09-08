@@ -61,9 +61,7 @@ export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscrip
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
-            <p className="mb-4">
-              Your order on <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> has been skipped.
-            </p>
+            <p className="mb-4">Your order on has been skipped.</p>
             <p className="text-sm">
               If this was a mistake you can unskip it on the <strong>Subcription → Orders</strong> screen.
             </p>
