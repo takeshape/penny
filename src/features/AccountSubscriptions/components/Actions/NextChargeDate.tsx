@@ -113,8 +113,8 @@ export const NextChargeDateForm = ({
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      primaryText="Next charge date"
-      secondaryText="Changing your next charge date will also adjust the dates of all your upcoming orders."
+      primaryText="Delivery schedule"
+      secondaryText="Change the date of your next scheduled order and all upcoming orders."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
     >
