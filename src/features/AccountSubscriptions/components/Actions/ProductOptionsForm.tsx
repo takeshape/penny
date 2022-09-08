@@ -55,13 +55,15 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
   });
 
   const variant = getVariant(variants, toSelections(options));
-  const amount = variant.price * quantity * ((100 - subscription.rechargeProduct.discount_amount) / 100);
+  const amount = variant.price * ((100 - subscription.rechargeProduct.discount_amount) / 100);
 
   return (
     <div className="bg-body-600 text-white rounded-md py-2">
       <p className="grid grid-cols-2 px-4 font-medium text-lg">
         <span className="inline-block">Price</span>
-        <span className="inline-block ml-auto">{formatRechargePrice(subscription.presentment_currency, amount)}</span>
+        <span className="inline-block ml-auto">
+          {formatRechargePrice(subscription.presentment_currency, amount, quantity)}
+        </span>
       </p>
     </div>
   );
