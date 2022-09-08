@@ -1,7 +1,7 @@
 import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/OrderNowForm';
 import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 import { getCharges } from '../../utils';
 
@@ -19,7 +19,10 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
   const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
   const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
 
-  const { mostRecentOrder, nextOrder, skippedAndPastOrders } = getCharges(subscription.charges);
+  const { mostRecentOrder, nextOrder, nextQueuedOrder, skippedAndPastOrders } = useMemo(
+    () => getCharges(subscription.charges),
+    [subscription.charges]
+  );
 
   return (
     <>
@@ -34,7 +37,7 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
 
           {isActive && (
             <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
-              {nextOrder && (
+              {nextQueuedOrder && (
                 <button
                   type="button"
                   onClick={() => setIsSkipNextOpen(true)}
@@ -57,17 +60,17 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
           )}
         </div>
 
-        {isActive && nextOrder && (
+        {isActive && nextQueuedOrder && (
           <>
             <div className="mt-12">
-              <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Next order</h3>
+              <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Next scheduled order</h3>
             </div>
 
             <div className="mt-4 space-y-16">
-              <section aria-labelledby={`${nextOrder.id}-order`}>
+              <section aria-labelledby={`${nextQueuedOrder.id}-order`}>
                 <OrderItem
                   subscription={subscription}
-                  order={nextOrder}
+                  order={nextQueuedOrder}
                   variant={variant}
                   refetchSubscriptions={refetchSubscriptions}
                 />
@@ -123,7 +126,7 @@ export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions
             isOpen={isSkipNextOpen}
             onClose={() => setIsSkipNextOpen(false)}
             subscription={subscription}
-            order={nextOrder}
+            order={nextQueuedOrder}
             refetchSubscriptions={refetchSubscriptions}
           />
           <OrderNowForm

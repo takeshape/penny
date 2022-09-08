@@ -3,8 +3,6 @@ import { ChevronUpIcon } from '@heroicons/react/solid';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { UpdateProductOptionsMutation } from 'features/AccountSubscriptions/queries';
-import { RefetchSubscriptions, Subscription, SubscriptionProductVariants } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect } from 'react';
 import { Control, Controller, useForm, useWatch } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
@@ -17,6 +15,8 @@ import {
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { formatRechargePrice } from 'utils/text';
+import { UpdateProductOptionsMutation } from '../../queries';
+import { RefetchSubscriptions, Subscription, SubscriptionProductVariants } from '../../types';
 
 function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
   return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});

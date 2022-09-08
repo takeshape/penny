@@ -6,7 +6,6 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { CreditCard } from 'components/Payments/CreditCard';
-import { RefetchSubscriptions } from 'features/AccountSubscriptions/types';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -29,6 +28,7 @@ import {
   UpdateMyPaymentMethodMutation
 } from '../../queries';
 import { getAddressDefaultPaymentMethod, getPaymentMethods } from '../../transforms';
+import { RefetchSubscriptions } from '../../types';
 
 export interface PaymentMethodRechargeFormProps extends ModalProps {
   addressId: string;

@@ -1,11 +1,11 @@
 import { CreditCard } from 'components/Payments/CreditCard';
-import { format, isFuture, isToday } from 'date-fns';
+import { format } from 'date-fns';
 import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
 import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { formatRechargePrice } from 'utils/text';
 import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
-import { formatDeliverySchedule } from '../../utils';
+import { formatDeliverySchedule, getCharges } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
@@ -21,9 +21,7 @@ export interface ManageSubscriptionProps {
 }
 
 export const ManageSubscription = ({ subscription, variant, refetchSubscriptions }: ManageSubscriptionProps) => {
-  const nextOrder = subscription.charges
-    .filter((charge) => isFuture(new Date(charge.scheduled_at)) || isToday(new Date(charge.scheduled_at)))
-    .find((charge) => charge.status === 'QUEUED');
+  const { nextOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
@@ -44,7 +42,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
           </div>
 
           <div className="flex flex-shrink-0 mt-6 space-x-4 lg:mt-0">
-            {nextOrder && (
+            {nextQueuedOrder && (
               <button
                 type="button"
                 onClick={() => setIsSkipNextOpen(true)}
@@ -267,7 +265,7 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
         isOpen={isSkipNextOpen}
         onClose={() => setIsSkipNextOpen(false)}
         subscription={subscription}
-        order={nextOrder}
+        order={nextQueuedOrder}
         refetchSubscriptions={refetchSubscriptions}
       />
 

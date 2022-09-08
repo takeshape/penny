@@ -2,11 +2,11 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { format } from 'date-fns';
-import { UnskipChargeMutation } from 'features/AccountSubscriptions/queries';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
+import { UnskipChargeMutation } from '../../queries';
 import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 
 export interface UnskipFormProps extends ModalProps {
@@ -62,7 +62,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
         {isSubmitSuccessful ? (
           <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
             <p className="mb-4">
-              Your order on <strong>{format(new Date(order.scheduled_at), 'PPP')}</strong> will be processed.
+              Your order on <strong>{format(new Date(order.scheduled_at), 'PP')}</strong> will be processed.
             </p>
           </div>
         ) : (
@@ -74,7 +74,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
                 Your order will be processed normally on{' '}
-                <strong className="text-black">{format(new Date(order.scheduled_at), 'PPP')}</strong>.
+                <strong className="text-black">{format(new Date(order.scheduled_at), 'PP')}</strong>.
               </p>
               <p>Would you like to continue?</p>
             </div>

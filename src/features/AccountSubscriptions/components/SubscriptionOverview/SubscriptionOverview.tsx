@@ -6,7 +6,7 @@ import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/compone
 import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
 import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { getCharges } from 'features/AccountSubscriptions/utils';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
 import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 
@@ -29,7 +29,7 @@ const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
         <p className="ml-2 text-sm font-medium text-gray-900">
           Last delivered on{' '}
           <time dateTime={subscriptionFulfillment.deliveredAt}>
-            {format(new Date(subscriptionFulfillment.deliveredAt), 'PPP')}
+            {format(new Date(subscriptionFulfillment.deliveredAt), 'PP')}
           </time>
         </p>
       </div>
@@ -52,7 +52,7 @@ const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
         <p className="ml-2 text-sm font-medium text-gray-900">
           Shipped on{' '}
           <time dateTime={subscriptionFulfillment.inTransitAt}>
-            {format(new Date(subscriptionFulfillment.inTransitAt), 'PPP')}
+            {format(new Date(subscriptionFulfillment.inTransitAt), 'PP')}
           </time>
         </p>
       </div>
@@ -66,7 +66,7 @@ const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
         <p className="ml-2 text-sm font-medium text-gray-500">
           Processed on{' '}
           <time dateTime={order.shopifyOrder.processedAt}>
-            {format(new Date(order.shopifyOrder.processedAt), 'PPP')}
+            {format(new Date(order.shopifyOrder.processedAt), 'PP')}
           </time>
         </p>
       </div>
@@ -88,10 +88,11 @@ const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
 const NextShipmentStatus = ({ order }: ShipmentStatusProps) => {
   if (order.status === 'QUEUED') {
     return (
-      <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
+      <div className="flex items-center mt-4 sm:mt-0">
         <ClockIcon className="w-5 h-5 text-blue-500" aria-hidden="true" />
         <p className="ml-2 text-sm font-medium text-gray-500">
-          Next order on <time dateTime={order.scheduled_at}>{format(new Date(order.scheduled_at), 'PPP')}</time>
+          Next order scheduled for{' '}
+          <time dateTime={order.scheduled_at}>{format(new Date(order.scheduled_at), 'PP')}</time>
         </p>
       </div>
     );
@@ -99,7 +100,7 @@ const NextShipmentStatus = ({ order }: ShipmentStatusProps) => {
 
   if (order.status === 'SKIPPED') {
     return (
-      <div className="flex items-center sm:ml-auto mt-4 sm:mt-0">
+      <div className="flex items-center mt-4 sm:mt-0">
         <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
         <p className="ml-2 text-sm font-medium text-gray-500">Next order is skipped</p>
       </div>
@@ -122,7 +123,7 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
 
   const product = variant.product;
 
-  const { mostRecentOrder, nextOrder } = getCharges(subscription.charges);
+  const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
 
   return (
     <>
@@ -174,8 +175,8 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
                 {mostRecentOrder !== undefined && (
                   <RecentShipmentStatus subscription={subscription} order={mostRecentOrder} />
                 )}
-                {isActive && nextOrder !== undefined ? (
-                  <NextShipmentStatus subscription={subscription} order={nextOrder} />
+                {isActive && nextQueuedOrder !== undefined ? (
+                  <NextShipmentStatus subscription={subscription} order={nextQueuedOrder} />
                 ) : (
                   <div className="flex items-center mt-4 sm:mt-0">
                     <p className="text-sm font-medium text-gray-500">No upcoming orders</p>

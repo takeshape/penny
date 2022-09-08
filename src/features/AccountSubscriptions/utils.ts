@@ -1,4 +1,4 @@
-import { compareAsc, isPast, isToday } from 'date-fns';
+import { compareAsc, isFuture, isPast, isToday } from 'date-fns';
 import { RechargeCharge, Subscription, SubscriptionOrder } from './types';
 
 export function formatDeliverySchedule({ order_interval_unit, order_interval_frequency }: Subscription): string {
@@ -44,7 +44,11 @@ export function getCharges(charges: RechargeCharge[]) {
   const mostRecentOrder = charges.find(
     (charge) => charge.status === 'SUCCESS' && isPast(new Date(charge.scheduled_at))
   );
-  const nextOrder = charges.find((charge) => charge.status === 'QUEUED');
+  const nextQueuedOrder = charges.find((charge) => charge.status === 'QUEUED');
+  const nextOrder = charges.find(
+    (charge) => isToday(new Date(charge.scheduled_at)) || isFuture(new Date(charge.scheduled_at))
+  );
+
   const skippedAndPastOrders = charges.filter(
     (charge) =>
       (charge.status === 'SKIPPED' ||
@@ -54,6 +58,7 @@ export function getCharges(charges: RechargeCharge[]) {
 
   return {
     mostRecentOrder,
+    nextQueuedOrder,
     nextOrder,
     skippedAndPastOrders
   };

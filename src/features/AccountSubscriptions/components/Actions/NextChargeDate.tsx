@@ -15,13 +15,13 @@ import {
   startOfWeek,
   subMonths
 } from 'date-fns';
-import { SetNextChargeDateMutation } from 'features/AccountSubscriptions/queries';
-import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { SetNextChargeDateMutationResponse, SetNextChargeDateMutationVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
+import { SetNextChargeDateMutation } from '../../queries';
+import { RefetchSubscriptions, Subscription } from '../../types';
 
 function getMonth(forDate) {
   const now = new Date();
