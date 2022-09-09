@@ -144,25 +144,23 @@ const ShopifyProductVariantFragment = gql`
         }
       }
       variants(first: 50) {
-        edges {
-          node {
-            id
-            availableForSale
-            compareAtPrice
-            image {
-              width
-              height
-              url
-            }
-            price
-            inventoryPolicy
-            sellableOnlineQuantity
-            sku
-            title
-            selectedOptions {
-              name
-              value
-            }
+        nodes {
+          id
+          availableForSale
+          compareAtPrice
+          image {
+            width
+            height
+            url
+          }
+          price
+          inventoryPolicy
+          sellableOnlineQuantity
+          sku
+          title
+          selectedOptions {
+            name
+            value
           }
         }
       }

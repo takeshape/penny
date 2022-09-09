@@ -201,7 +201,7 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
         <>
           <ProductOptionsForm
             subscription={subscription}
-            variants={product.variants.edges.map((edge) => edge.node)}
+            variants={product.variants.nodes}
             variantOptions={product.options}
             currentSelections={variant.selectedOptions}
             refetchSubscriptions={refetchSubscriptions}

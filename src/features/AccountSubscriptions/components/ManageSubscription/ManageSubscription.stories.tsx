@@ -5,7 +5,6 @@ import {
   getMyPaymentMethodsResponse,
   getMySubscriptionsResponse,
   sendMyUpdatePaymentEmailMutation,
-  subscriptionProductVariantResponse,
   updateMyPaymentMethodResponse
 } from '../../queries.fixtures';
 import { ManageSubscription } from './ManageSubscription';
@@ -23,8 +22,7 @@ const Template: ComponentStory<typeof ManageSubscription> = (args) => <ManageSub
 export const Manage = Template.bind({});
 
 Manage.args = {
-  subscription: getMySubscriptionsResponse.subscriptions[0],
-  variant: subscriptionProductVariantResponse.variant
+  subscription: getMySubscriptionsResponse.subscriptions[0]
 };
 
 Manage.parameters = {

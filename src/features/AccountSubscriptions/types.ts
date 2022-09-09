@@ -1,6 +1,6 @@
 import { PaymentMethod } from 'types/paymentMethod';
 import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
-import { GetMySubscriptionQueryResponse, SubscriptionProductVariantQueryResponse } from 'types/takeshape';
+import { GetMySubscriptionQueryResponse } from 'types/takeshape';
 
 export type ShippingAddress = {
   firstName: string;
@@ -84,10 +84,9 @@ export type RawSubscription = {
 
 export type Subscription = GetMySubscriptionQueryResponse['subscription'];
 
-export type SubscriptionSelectedVariant = SubscriptionProductVariantQueryResponse['variant'];
+export type SubscriptionSelectedVariant = GetMySubscriptionQueryResponse['subscription']['shopifyProductVariant'];
 
-export type SubscriptionProductVariants =
-  SubscriptionProductVariantQueryResponse['variant']['product']['variants']['edges'][0]['node'];
+export type SubscriptionProductVariants = SubscriptionSelectedVariant['product']['variants']['nodes'];
 
 export type RechargeCharge = GetMySubscriptionQueryResponse['subscription']['charges'][0];
 

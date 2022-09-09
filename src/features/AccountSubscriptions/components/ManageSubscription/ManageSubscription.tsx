@@ -240,7 +240,7 @@ export const ManageSubscription = ({ subscription, refetchSubscriptions }: Manag
 
       <ProductOptionsForm
         subscription={subscription}
-        variants={variant.product.variants.edges.map((edge) => edge.node)}
+        variants={variant.product.variants.nodes}
         variantOptions={variant.product.options}
         currentSelections={variant.selectedOptions}
         refetchSubscriptions={refetchSubscriptions}
