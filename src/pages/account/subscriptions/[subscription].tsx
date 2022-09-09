@@ -17,7 +17,7 @@ const AccountSubscriptionsPage: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
 
-  const { data } = useAuthenticatedQuery<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>(
+  const { data, refetch } = useAuthenticatedQuery<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>(
     GetMySubscriptionQuery,
     { variables: { id: subscriptionId } }
   );
@@ -32,7 +32,11 @@ const AccountSubscriptionsPage: NextPage = ({
 
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscription' }}>
-      <AccountSubscription subscription={getSubscription(data)} />
+      <div className="shadow sm:rounded-md sm:overflow-hidden">
+        <div className="bg-white py-6 sm:px-4 sm:p-6">
+          <AccountSubscription subscription={getSubscription(data)} refetchSubscriptionList={refetch} />
+        </div>
+      </div>
     </Layout>
   );
 };

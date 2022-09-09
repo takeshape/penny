@@ -1,10 +1,10 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
-import { Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment, useCallback } from 'react';
 import { shopifyGidToId } from 'transforms/shopify';
 import classNames from 'utils/classNames';
+import { RefetchSubscriptions, Subscription } from '../types';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
 import { SubscriptionOverview } from './SubscriptionOverview/SubscriptionOverview';
 
@@ -19,6 +19,8 @@ const navigationItems = [
 
 export interface EndedSubscriptionProps {
   subscription: Subscription;
+  refetchSubscription?: RefetchSubscriptions;
+  refetchSubscriptionList?: RefetchSubscriptions;
 }
 
 export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {

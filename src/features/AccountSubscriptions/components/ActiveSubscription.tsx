@@ -1,14 +1,10 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
-import { Fragment, useCallback, useState } from 'react';
-import { GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables } from 'types/takeshape';
+import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import { useAuthenticatedClient } from 'utils/takeshape';
 import { formatRechargePrice } from 'utils/text';
-import { GetMySubscriptionQuery } from '../queries';
-import { getSubscription } from '../transforms';
-import { Subscription } from '../types';
+import { RefetchSubscriptions, Subscription } from '../types';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
@@ -28,24 +24,20 @@ const navigationItems = [
 
 export interface ActiveSubscriptionProps {
   subscription: Subscription;
+  refetchSubscription: RefetchSubscriptions;
+  refetchSubscriptionList: RefetchSubscriptions;
 }
 
-export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) => {
-  const client = useAuthenticatedClient();
-  const [sub, setSub] = useState(subscription);
-
-  const refetchSubscription = useCallback(async () => {
-    const updatedSubscription = await client.query<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>({
-      query: GetMySubscriptionQuery,
-      variables: { id: subscription.id }
-    });
-    setSub(getSubscription(updatedSubscription.data));
-  }, [client, subscription.id]);
-
+export const ActiveSubscription = ({
+  subscription,
+  refetchSubscription,
+  refetchSubscriptionList
+}: ActiveSubscriptionProps) => {
   return (
     <Tab.Group>
-      <h3 className="sr-only" id={sub.id.toString()}>
-        Order placed on <time dateTime={sub.created_at}>{format(new Date(sub.created_at), 'PPP')}</time>
+      <h3 className="sr-only" id={subscription.id.toString()}>
+        Order placed on{' '}
+        <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
       </h3>
 
       <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
@@ -53,7 +45,7 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
           <div>
             <dt className="font-medium text-body-900">Date started</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={sub.created_at}>{format(new Date(sub.created_at), 'PP')}</time>
+              <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PP')}</time>
             </dd>
           </div>
           <div className="hidden sm:block">
@@ -63,7 +55,7 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
           <div>
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="mt-1 font-medium text-body-900">
-              {formatRechargePrice(sub.presentment_currency, sub.price, sub.quantity)}
+              {formatRechargePrice(subscription.presentment_currency, subscription.price, subscription.quantity)}
             </dd>
           </div>
         </dl>
@@ -71,7 +63,7 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
         <Menu as="div" className="relative flex justify-end lg:hidden">
           <div className="flex items-center">
             <Menu.Button className="-m-2 p-2 flex items-center text-body-400 hover:text-body-500">
-              <span className="sr-only">Options for subscription {sub.id}</span>
+              <span className="sr-only">Options for subscription {subscription.id}</span>
               <DotsVerticalIcon className="w-6 h-6" aria-hidden="true" />
             </Menu.Button>
           </div>
@@ -125,13 +117,17 @@ export const ActiveSubscription = ({ subscription }: ActiveSubscriptionProps) =>
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview subscription={sub} refetchSubscriptions={refetchSubscription} />
+          <SubscriptionOverview subscription={subscription} refetchSubscriptions={refetchSubscription} />
         </Tab.Panel>
         <Tab.Panel>
-          <ManageSubscription subscription={sub} refetchSubscriptions={refetchSubscription} />
+          <ManageSubscription
+            subscription={subscription}
+            refetchSubscriptions={refetchSubscription}
+            refetchSubscriptionList={refetchSubscriptionList}
+          />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders subscription={sub} refetchSubscriptions={refetchSubscription} />
+          <SubscriptionOrders subscription={subscription} refetchSubscriptions={refetchSubscription} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

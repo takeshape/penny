@@ -1,5 +1,5 @@
 import { compareAsc, isFuture, isPast, isToday } from 'date-fns';
-import { RechargeCharge, Subscription, SubscriptionOrder } from './types';
+import { ActiveSubscription, EndedSubscription, RechargeCharge, Subscription, SubscriptionOrder } from './types';
 
 export function formatDeliverySchedule({ order_interval_unit, order_interval_frequency }: Subscription): string {
   return `${order_interval_frequency} ${order_interval_unit.toLocaleLowerCase()}(s)`;
@@ -64,10 +64,10 @@ export function getCharges(charges: RechargeCharge[]) {
   };
 }
 
-export function isActiveSubscription(subscription: Subscription) {
+export function isActiveSubscription(subscription: Subscription): subscription is ActiveSubscription {
   return subscription.status === 'ACTIVE';
 }
 
-export function isEndedSubscription(subscription: Subscription) {
+export function isEndedSubscription(subscription: Subscription): subscription is EndedSubscription {
   return subscription.status === 'CANCELLED' || subscription.status === 'EXPIRED';
 }

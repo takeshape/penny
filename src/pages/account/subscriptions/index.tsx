@@ -8,11 +8,11 @@ import { GetMySubscriptionListQueryResponse } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
 
 const AccountSubscriptionsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { data } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse>(GetMySubscriptionListQuery);
+  const { data, refetch } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse>(GetMySubscriptionListQuery);
 
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscriptions' }}>
-      <AccountSubscriptions subscriptions={getSubscriptionList(data)} />
+      <AccountSubscriptions subscriptions={getSubscriptionList(data)} refetchSubscriptionList={refetch} />
     </Layout>
   );
 };

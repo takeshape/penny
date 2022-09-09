@@ -82,13 +82,15 @@ export type RawSubscription = {
   orders: SubscriptionOrder[];
 };
 
-export type Subscription = GetMySubscriptionQueryResponse['subscription'];
-
 export type SubscriptionSelectedVariant = GetMySubscriptionQueryResponse['subscription']['shopifyProductVariant'];
 
 export type SubscriptionProductVariants = SubscriptionSelectedVariant['product']['variants']['nodes'];
 
 export type RechargeCharge = GetMySubscriptionQueryResponse['subscription']['charges'][0];
 
-// export type RefetchSubscriptions = QueryResult['refetch'];
 export type RefetchSubscriptions = () => Promise<any>;
+
+export type SubscriptionResponse = GetMySubscriptionQueryResponse['subscription'];
+export type ActiveSubscription = SubscriptionResponse & { status: 'ACTIVE' };
+export type EndedSubscription = SubscriptionResponse & { status: 'CANCELLED' | 'EXPIRED' };
+export type Subscription = ActiveSubscription | EndedSubscription;

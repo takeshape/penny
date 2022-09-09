@@ -1,16 +1,17 @@
 import { RefreshIcon } from '@heroicons/react/solid';
 import CardPanel from 'components/Card/Panel/Panel';
-import { ActiveSubscription } from './components/ActiveSubscription';
-import { EndedSubscription } from './components/EndedSubscription';
+import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
+import { AccountSubscription } from './AccountSubscription';
 import { SubscriptionSkeleton } from './components/SubscriptionSkeleton';
-import { Subscription } from './types';
+import { RefetchSubscriptions, Subscription } from './types';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
 export interface AccountSubscriptionsProps {
   subscriptions: Subscription[];
+  refetchSubscriptionList: RefetchSubscriptions;
 }
 
-export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProps) => {
+export const AccountSubscriptions = ({ subscriptions, refetchSubscriptionList }: AccountSubscriptionsProps) => {
   if (!subscriptions) {
     return (
       <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
@@ -36,7 +37,7 @@ export const AccountSubscriptions = ({ subscriptions }: AccountSubscriptionsProp
                 key={subscription.id}
                 className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
               >
-                <ActiveSubscription subscription={subscription} />
+                <AccountSubscription subscription={subscription} refetchSubscriptionList={refetchSubscriptionList} />
               </div>
             ))}
           </div>

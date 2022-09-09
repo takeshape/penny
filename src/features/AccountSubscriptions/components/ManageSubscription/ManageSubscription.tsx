@@ -17,9 +17,14 @@ import { SkipForm } from '../Actions/SkipForm';
 export interface ManageSubscriptionProps {
   subscription: Subscription;
   refetchSubscriptions: RefetchSubscriptions;
+  refetchSubscriptionList: RefetchSubscriptions;
 }
 
-export const ManageSubscription = ({ subscription, refetchSubscriptions }: ManageSubscriptionProps) => {
+export const ManageSubscription = ({
+  subscription,
+  refetchSubscriptions,
+  refetchSubscriptionList
+}: ManageSubscriptionProps) => {
   const { nextOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
@@ -282,7 +287,7 @@ export const ManageSubscription = ({ subscription, refetchSubscriptions }: Manag
         isOpen={isCancelSubscriptionOpen}
         onClose={() => setIsCancelSubscriptionOpen(false)}
         subscription={subscription}
-        refetchSubscriptions={refetchSubscriptions}
+        refetchSubscriptions={refetchSubscriptionList}
       />
 
       <PaymentMethodRechargeForm
