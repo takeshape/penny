@@ -1,7 +1,10 @@
 import { compareAsc, isFuture, isPast, isToday } from 'date-fns';
 import { ActiveSubscription, EndedSubscription, RechargeCharge, Subscription, SubscriptionOrder } from './types';
 
-export function formatDeliverySchedule({ order_interval_unit, order_interval_frequency }: Subscription): string {
+export function formatDeliverySchedule({
+  order_interval_unit,
+  order_interval_frequency
+}: Pick<Subscription, 'order_interval_frequency' | 'order_interval_unit'>): string {
   return `${order_interval_frequency} ${order_interval_unit.toLocaleLowerCase()}(s)`;
 }
 

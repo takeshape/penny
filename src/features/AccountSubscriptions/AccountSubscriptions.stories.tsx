@@ -19,7 +19,10 @@ const Meta: ComponentMeta<typeof AccountSubscriptions> = {
 };
 
 const Template: ComponentStory<typeof AccountSubscriptions> = () => (
-  <AccountSubscriptions subscriptions={getSubscriptionList(getMySubscriptionsResponse)} />
+  <AccountSubscriptions
+    subscriptions={getSubscriptionList(getMySubscriptionsResponse)}
+    refetchSubscriptionList={async () => {}}
+  />
 );
 
 export const _AccountSubscriptions = Template.bind({});
