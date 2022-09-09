@@ -1,11 +1,12 @@
 import PageLoader from 'components/PageLoader';
 import { AccountSubscription } from 'features/AccountSubscriptions/AccountSubscription';
-import { GetSubscriptionQuery } from 'features/AccountSubscriptions/queries';
+import { GetMySubscriptionQuery } from 'features/AccountSubscriptions/queries';
+import { getSubscription } from 'features/AccountSubscriptions/transforms';
 import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { GetSubscriptionQueryResponse, GetSubscriptionQueryVariables } from 'types/takeshape';
+import { GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
@@ -16,8 +17,8 @@ const AccountSubscriptionsPage: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { isFallback } = useRouter();
 
-  const { data, refetch } = useAuthenticatedQuery<GetSubscriptionQueryResponse, GetSubscriptionQueryVariables>(
-    GetSubscriptionQuery,
+  const { data } = useAuthenticatedQuery<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>(
+    GetMySubscriptionQuery,
     { variables: { id: subscriptionId } }
   );
 
@@ -30,8 +31,8 @@ const AccountSubscriptionsPage: NextPage = ({
   }
 
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscriptions' }}>
-      <AccountSubscription subscription={data.subscription} refetchSubscriptions={refetch} />
+    <Layout navigation={navigation} footer={footer} seo={{ title: 'Subscription' }}>
+      <AccountSubscription subscription={getSubscription(data)} />
     </Layout>
   );
 };

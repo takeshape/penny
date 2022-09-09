@@ -4,7 +4,7 @@ import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/compone
 import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { useMemo, useState } from 'react';
 import { formatRechargePrice } from 'utils/text';
-import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { RefetchSubscriptions, Subscription } from '../../types';
 import { formatDeliverySchedule, getCharges } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
@@ -16,11 +16,10 @@ import { SkipForm } from '../Actions/SkipForm';
 
 export interface ManageSubscriptionProps {
   subscription: Subscription;
-  variant: SubscriptionSelectedVariant;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const ManageSubscription = ({ subscription, variant, refetchSubscriptions }: ManageSubscriptionProps) => {
+export const ManageSubscription = ({ subscription, refetchSubscriptions }: ManageSubscriptionProps) => {
   const { nextOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
@@ -31,6 +30,8 @@ export const ManageSubscription = ({ subscription, variant, refetchSubscriptions
   const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
   const [isCancelSubscriptionOpen, setIsCancelSubscriptionOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
+
+  const variant = subscription.shopifyProductVariant;
 
   return (
     <>

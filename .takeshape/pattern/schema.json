@@ -7215,6 +7215,29 @@
               }
             }
           },
+          "shopifyProductVariant": {
+            "@ref": "shopify:ProductVariant",
+            "@resolver": {
+              "name": "graphql:query",
+              "service": "shopify",
+              "fieldName": "productVariant",
+              "args": {
+                "ops": [
+                  {
+                    "path": "id",
+                    "mapping": [
+                      [
+                        "expressionEval",
+                        {
+                          "expression": "'gid://shopify/ProductVariant/' + $source.shopify_variant_id"
+                        }
+                      ]
+                    ]
+                  }
+                ]
+              }
+            }
+          },
           "address": {
             "@ref": "recharge:Address",
             "@resolver": {

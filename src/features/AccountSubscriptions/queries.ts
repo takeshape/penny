@@ -111,6 +111,71 @@ const SubscriptionFragment = gql`
   }
 `;
 
+const ShopifyProductVariantFragment = gql`
+  fragment ShopifyProductVariant on Shopify_ProductVariant {
+    id
+    title
+    price
+    selectedOptions {
+      name
+      value
+    }
+    product {
+      id
+      handle
+      title
+      description
+      descriptionHtml
+      featuredImage {
+        id
+        url(transform: { maxWidth: 800, maxHeight: 800, preferredContentType: WEBP })
+        width
+        height
+        altText
+      }
+      priceRangeV2 {
+        maxVariantPrice {
+          currencyCode
+          amount
+        }
+        minVariantPrice {
+          currencyCode
+          amount
+        }
+      }
+      variants(first: 50) {
+        edges {
+          node {
+            id
+            availableForSale
+            compareAtPrice
+            image {
+              width
+              height
+              url
+            }
+            price
+            inventoryPolicy
+            sellableOnlineQuantity
+            sku
+            title
+            selectedOptions {
+              name
+              value
+            }
+          }
+        }
+      }
+      options {
+        name
+        position
+        id
+        values
+      }
+    }
+  }
+`;
+
 export const GetMyPaymentMethodsQuery = gql`
   query GetMyPaymentMethodsQuery {
     paymentMethods: Recharge_getMyPaymentMethods {
@@ -158,86 +223,27 @@ export const UpdateMyPaymentMethodMutation = gql`
   }
 `;
 
-export const GetSubscriptionQuery = gql`
+export const GetMySubscriptionQuery = gql`
   ${SubscriptionFragment}
-  query GetSubscriptionQuery($id: String!) {
+  ${ShopifyProductVariantFragment}
+  query GetMySubscriptionQuery($id: String!) {
     subscription: Recharge_getMySubscription(id: $id) {
       ...Subscription
+      shopifyProductVariant {
+        ...ShopifyProductVariant
+      }
     }
   }
 `;
 
-export const GetMySubscriptionsQuery = gql`
+export const GetMySubscriptionListQuery = gql`
   ${SubscriptionFragment}
-  query GetMySubscriptionsQuery {
+  ${ShopifyProductVariantFragment}
+  query GetMySubscriptionListQuery {
     subscriptions: Recharge_getMySubscriptions {
       ...Subscription
-    }
-  }
-`;
-
-export const SubscriptionProductVariantQuery = gql`
-  query SubscriptionProductVariantQuery($id: ID!) {
-    variant: variantWithTtl(id: $id) {
-      id
-      title
-      price
-      selectedOptions {
-        name
-        value
-      }
-      product {
-        id
-        handle
-        title
-        description
-        descriptionHtml
-        featuredImage {
-          id
-          url(transform: { maxWidth: 800, maxHeight: 800, preferredContentType: WEBP })
-          width
-          height
-          altText
-        }
-        priceRangeV2 {
-          maxVariantPrice {
-            currencyCode
-            amount
-          }
-          minVariantPrice {
-            currencyCode
-            amount
-          }
-        }
-        variants(first: 50) {
-          edges {
-            node {
-              id
-              availableForSale
-              compareAtPrice
-              image {
-                width
-                height
-                url
-              }
-              price
-              inventoryPolicy
-              sellableOnlineQuantity
-              sku
-              title
-              selectedOptions {
-                name
-                value
-              }
-            }
-          }
-        }
-        options {
-          name
-          position
-          id
-          values
-        }
+      shopifyProductVariant {
+        ...ShopifyProductVariant
       }
     }
   }

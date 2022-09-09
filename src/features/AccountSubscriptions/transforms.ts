@@ -1,6 +1,12 @@
 import { getIsExpiringSoon } from 'components/Payments/utils';
-import { GetMyAddressPaymentMethodsQueryResponse, GetMyPaymentMethodsQueryResponse } from 'types/takeshape';
+import {
+  GetMyAddressPaymentMethodsQueryResponse,
+  GetMyPaymentMethodsQueryResponse,
+  GetMySubscriptionListQueryResponse,
+  GetMySubscriptionQueryResponse
+} from 'types/takeshape';
 import { capitalize } from 'utils/text';
+import { Subscription } from './types';
 
 export function getPaymentMethod(paymentMethod: GetMyPaymentMethodsQueryResponse['paymentMethods'][0]) {
   const { exp_month: expiryMonth, exp_year: expiryYear, last4 } = paymentMethod?.payment_details ?? {};
@@ -34,4 +40,24 @@ export function getAddressDefaultPaymentMethod(response: GetMyAddressPaymentMeth
   }
 
   return getPaymentMethod(response.paymentMethods[0]);
+}
+
+function _getSubscription(rechargeSubscription: Subscription) {
+  return rechargeSubscription;
+}
+
+export function getSubscription(response: GetMySubscriptionQueryResponse): Subscription {
+  if (!response?.subscription) {
+    return null;
+  }
+
+  return _getSubscription(response.subscription);
+}
+
+export function getSubscriptionList(response: GetMySubscriptionListQueryResponse): Subscription[] {
+  if (!response?.subscriptions) {
+    return null;
+  }
+
+  return response.subscriptions.map(_getSubscription);
 }

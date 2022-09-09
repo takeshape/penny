@@ -27,7 +27,7 @@ export function createAnonymousTakeshapeApolloClient() {
   });
 }
 
-function useAuthenticatedClient() {
+export function useAuthenticatedClient() {
   const { data: session } = useSession();
   const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>(null);
 

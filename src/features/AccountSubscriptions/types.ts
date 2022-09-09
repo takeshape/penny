@@ -1,7 +1,6 @@
-import { QueryResult } from '@apollo/client';
 import { PaymentMethod } from 'types/paymentMethod';
 import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
-import { GetMySubscriptionsQueryResponse, SubscriptionProductVariantQueryResponse } from 'types/takeshape';
+import { GetMySubscriptionQueryResponse, SubscriptionProductVariantQueryResponse } from 'types/takeshape';
 
 export type ShippingAddress = {
   firstName: string;
@@ -83,13 +82,14 @@ export type RawSubscription = {
   orders: SubscriptionOrder[];
 };
 
-export type Subscription = GetMySubscriptionsQueryResponse['subscriptions'][0];
+export type Subscription = GetMySubscriptionQueryResponse['subscription'];
 
 export type SubscriptionSelectedVariant = SubscriptionProductVariantQueryResponse['variant'];
 
 export type SubscriptionProductVariants =
   SubscriptionProductVariantQueryResponse['variant']['product']['variants']['edges'][0]['node'];
 
-export type RechargeCharge = GetMySubscriptionsQueryResponse['subscriptions'][0]['charges'][0];
+export type RechargeCharge = GetMySubscriptionQueryResponse['subscription']['charges'][0];
 
-export type RefetchSubscriptions = QueryResult['refetch'];
+// export type RefetchSubscriptions = QueryResult['refetch'];
+export type RefetchSubscriptions = () => Promise<any>;

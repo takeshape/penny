@@ -9,7 +9,11 @@ import 'styles/globals.css';
 export default function App({ Component, pageProps }: AppContext & AppInitialProps) {
   return (
     <ErrorBoundary>
-      <SessionProvider session={pageProps.session} refetchInterval={sessionRefetchInterval} refetchOnWindowFocus={true}>
+      <SessionProvider
+        session={pageProps.session}
+        refetchInterval={sessionRefetchInterval}
+        refetchOnWindowFocus={false}
+      >
         <ApolloProvider pageProps={pageProps}>
           <DefaultSeo {...seo} />
           <Component {...pageProps} />
