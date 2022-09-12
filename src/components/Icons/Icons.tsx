@@ -1,4 +1,4 @@
-import { ChatAlt2Icon } from '@heroicons/react/solid';
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 
 export const Facebook = (props) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
@@ -48,6 +48,6 @@ export const Dribbble = (props) => (
 
 export const DefaultReviewer = (props) => (
   <div className="bg-body-300 rounded-full p-2 h-12 w-12" {...props}>
-    <ChatAlt2Icon className="text-body-100 h-full w-full" />
+    <ChatBubbleLeftRightIcon className="text-body-100 h-full w-full" />
   </div>
 );

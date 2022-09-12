@@ -1,4 +1,4 @@
-import { MailIcon } from '@heroicons/react/solid';
+import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Button } from './Button';
 
@@ -67,7 +67,7 @@ WithIcon.args = {
   ...Primary.args,
   children: (
     <>
-      <MailIcon className="h-4 w-4" aria-hidden="true" /> Subscribe
+      <EnvelopeIcon className="h-4 w-4" aria-hidden="true" /> Subscribe
     </>
   )
 };
