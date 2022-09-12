@@ -2,59 +2,53 @@
  * If a project is able to use `write_customer_payment_methods` can use this.
  */
 import { RadioGroup } from '@headlessui/react';
+import { Loader } from 'components/Loader/Loader';
 import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import NextLink from 'components/NextLink';
-import { useCallback, useEffect } from 'react';
+import { CreditCard } from 'components/Payments/CreditCard';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Shopify_CustomerPaymentMethod } from 'types/takeshape';
+import {
+  GetMyPaymentMethodsQueryResponse,
+  GetMyPaymentMethodsQueryVariables,
+  SendMyUpdatePaymentEmailMutationResponse,
+  SendMyUpdatePaymentEmailMutationVariables,
+  UpdateMyPaymentMethodMutationResponse,
+  UpdateMyPaymentMethodMutationVariables
+} from 'types/takeshape';
 import classNames from 'utils/classNames';
-import { CreditCard } from '../../../../components/Payments/CreditCard';
+import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from 'utils/takeshape';
+import {
+  GetMyPaymentMethodsQuery,
+  SendMyUpdatePaymentEmailMutation,
+  UpdateMyPaymentMethodMutation
+} from '../../queries';
+import { getPaymentMethods } from '../../transforms';
+import { RefetchSubscriptions } from '../../types';
 
 export interface PaymentMethodFormProps extends ModalProps {
-  currentPaymentMethod: Shopify_CustomerPaymentMethod;
+  defaultPaymentMethodId: string;
+  addressId: string;
+  refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface PaymentMethodFormValues {
   paymentMethodId: string;
 }
 
-const paymentMethods = [
-  {
-    id: 'ppp',
-    instrument: {
-      brand: 'Visa',
-      expiresSoon: false,
-      expiryMonth: 10,
-      expiryYear: 2023,
-      lastDigits: '4242',
-      maskedNumber: '••••4242',
-      name: 'Michael Shick',
-      isRevocable: false
-    },
-    subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
-  },
-  {
-    id: 'qqq',
-    instrument: {
-      brand: 'Amex',
-      expiresSoon: false,
-      expiryMonth: 10,
-      expiryYear: 2023,
-      lastDigits: '5858',
-      maskedNumber: '••••5858',
-      name: 'Michael Shick',
-      isRevocable: false
-    },
-    subscriptionContracts: { nodes: [], edges: [], pageInfo: { hasNextPage: false, hasPreviousPage: false } }
-  }
-];
+export const PaymentMethodForm = ({
+  isOpen,
+  onClose,
+  addressId,
+  defaultPaymentMethodId,
+  refetchSubscriptions
+}: PaymentMethodFormProps) => {
+  const { data: session } = useSession();
 
-/**
- * TODO Handle submit errors
- */
-export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: PaymentMethodFormProps) => {
+  const { email } = session?.user ?? {};
+
   const {
     handleSubmit,
     control,
@@ -62,31 +56,51 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
     formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<PaymentMethodFormValues>();
 
-  //  TODO Assuming we use this:
-  //  https://shopify.dev/api/admin-rest/2022-07/resources/payment#post-https:-elb.deposit.shopifycs.com-sessions
-  //  then this
-  //  https://shopify.dev/api/admin-graphql/2022-07/mutations/customerpaymentmethodcreditcardcreate
-  // TODO query to get customer payment methods available
-  // TODO find current method in list and set initial form value with unique id
+  const [isPaymentMethodAdded, setIsPaymentMethodAdded] = useState(false);
+
+  const [getMyPaymentMethods, { data: paymentMethodsResponse }] = useAuthenticatedLazyQuery<
+    GetMyPaymentMethodsQueryResponse,
+    GetMyPaymentMethodsQueryVariables
+  >(GetMyPaymentMethodsQuery);
+
+  const [sendUpdatePaymentEmail] = useAuthenticatedMutation<
+    SendMyUpdatePaymentEmailMutationResponse,
+    SendMyUpdatePaymentEmailMutationVariables
+  >(SendMyUpdatePaymentEmailMutation);
+
+  const [updatePaymentMethod] = useAuthenticatedMutation<
+    UpdateMyPaymentMethodMutationResponse,
+    UpdateMyPaymentMethodMutationVariables
+  >(UpdateMyPaymentMethodMutation);
+
+  const paymentMethods = getPaymentMethods(paymentMethodsResponse);
 
   const handleFormSubmit = useCallback(
-    async (formData: PaymentMethodFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log(formData);
-      // TODO Mutate subscription state to show new values
+    async ({ paymentMethodId }: PaymentMethodFormValues) => {
+      await updatePaymentMethod({ variables: { paymentMethodId, addressId } });
+      await refetchSubscriptions();
       onClose();
     },
-    [onClose]
+    [addressId, onClose, refetchSubscriptions, updatePaymentMethod]
   );
 
+  const handleAddPaymentMethod = useCallback(() => {
+    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId } });
+    setIsPaymentMethodAdded(true);
+  }, [defaultPaymentMethodId, sendUpdatePaymentEmail]);
+
   const resetState = useCallback(() => {
-    reset({
-      paymentMethodId: currentPaymentMethod.id
-    });
-  }, [currentPaymentMethod, reset]);
+    reset({ paymentMethodId: defaultPaymentMethodId });
+    setIsPaymentMethodAdded(false);
+  }, [defaultPaymentMethodId, reset]);
 
   // Set initial values
-  useEffect(() => resetState(), [resetState]);
+  useEffect(() => {
+    if (isOpen) {
+      getMyPaymentMethods();
+    }
+    resetState();
+  }, [getMyPaymentMethods, isOpen, resetState]);
 
   return (
     <ModalForm
@@ -96,82 +110,101 @@ export const PaymentMethodForm = ({ isOpen, onClose, currentPaymentMethod }: Pay
       secondaryText="Change how you pay for this subscription."
       afterLeave={resetState}
       onSubmit={handleSubmit(handleFormSubmit)}
+      isSubmitSuccessful={isSubmitSuccessful || isPaymentMethodAdded}
+      autoCloseDelay={3000}
     >
-      <section aria-labelledby="options-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
-        <h3 id="options-heading" className="sr-only">
-          Payment method options
-        </h3>
+      <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col justify-center">
+        {isPaymentMethodAdded ? (
+          <div className="h-full font-medium flex flex-col items-center justify-center text-body-600">
+            <p className="mb-4 text-lg">Shopify sent an email to {email}.</p>
+            <p className="mb-4 text-sm">Follow the instructions in the email update your payment method.</p>
+          </div>
+        ) : (
+          <>
+            <section aria-labelledby="options-heading" className="w-full">
+              <h3 id="options-heading" className="sr-only">
+                Payment method options
+              </h3>
 
-        <div className="mx-auto w-full rounded-2xl bg-white py-2">
-          <Controller
-            name="paymentMethodId"
-            control={control}
-            render={({ field }) => (
-              <RadioGroup {...field}>
-                <RadioGroup.Label className="sr-only">Delivery schedule</RadioGroup.Label>
-                <div className="bg-white rounded-md -space-y-px">
-                  {paymentMethods.map((payment, paymentIdx) => (
-                    <RadioGroup.Option
-                      key={payment.id}
-                      value={payment.id}
-                      className={({ checked }) =>
-                        classNames(
-                          paymentIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
-                          paymentIdx === paymentMethods.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
-                          checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
-                          'relative border p-4 flex cursor-pointer focus:outline-none'
-                        )
-                      }
-                    >
-                      {({ active, checked }) => (
-                        <>
-                          <span
-                            className={classNames(
-                              checked ? 'bg-accent-600 border-transparent' : 'bg-white border-body-300',
-                              active ? 'ring-2 ring-offset-2 ring-accent-500' : '',
-                              'h-4 w-4 mt-0.5 cursor-pointer shrink-0 rounded-full border flex items-center justify-center'
-                            )}
-                            aria-hidden="true"
-                          >
-                            <span className="rounded-full bg-white w-1.5 h-1.5" />
-                          </span>
-                          <span className="ml-3 flex flex-col">
-                            <RadioGroup.Label
-                              as="span"
-                              className={classNames(
-                                checked ? 'text-accent-900' : 'text-body-900',
-                                'block text-sm font-medium'
-                              )}
+              <div className="mx-auto w-full rounded-2xl bg-white py-2">
+                {paymentMethods ? (
+                  <Controller
+                    name="paymentMethodId"
+                    control={control}
+                    render={({ field }) => (
+                      <RadioGroup {...field}>
+                        <RadioGroup.Label className="sr-only">Delivery schedule</RadioGroup.Label>
+                        <div className="bg-white rounded-md -space-y-px">
+                          {paymentMethods?.map((payment, paymentIdx) => (
+                            <RadioGroup.Option
+                              key={payment.id}
+                              value={payment.id}
+                              className={({ checked }) =>
+                                classNames(
+                                  paymentIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
+                                  paymentIdx === paymentMethods.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
+                                  checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
+                                  'relative border p-4 flex cursor-pointer focus:outline-none'
+                                )
+                              }
                             >
-                              <CreditCard card={payment.instrument} />
-                            </RadioGroup.Label>
-                          </span>
-                        </>
-                      )}
-                    </RadioGroup.Option>
-                  ))}
-                </div>
-              </RadioGroup>
-            )}
-          />
-        </div>
-      </section>
-
-      <div className="mt-4 flex items-center justify-center">
-        <NextLink
-          href="/account/payments"
-          className="whitespace-nowrap text-sm font-medium text-accent-600 hover:text-accent-500"
-        >
-          Add a payment method
-        </NextLink>
+                              {({ active, checked }) => (
+                                <>
+                                  <span
+                                    className={classNames(
+                                      checked ? 'bg-accent-600 border-transparent' : 'bg-white border-body-300',
+                                      active ? 'ring-2 ring-offset-2 ring-accent-500' : '',
+                                      'h-4 w-4 mt-0.5 cursor-pointer shrink-0 rounded-full border flex items-center justify-center'
+                                    )}
+                                    aria-hidden="true"
+                                  >
+                                    <span className="rounded-full bg-white w-1.5 h-1.5" />
+                                  </span>
+                                  <span className="ml-3 flex flex-col">
+                                    <RadioGroup.Label
+                                      as="span"
+                                      className={classNames(
+                                        checked ? 'text-accent-900' : 'text-body-900',
+                                        'block text-sm font-medium'
+                                      )}
+                                    >
+                                      <CreditCard card={payment.instrument} />
+                                    </RadioGroup.Label>
+                                  </span>
+                                </>
+                              )}
+                            </RadioGroup.Option>
+                          ))}
+                        </div>
+                      </RadioGroup>
+                    )}
+                  />
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center text-center text-body-600">
+                    <Loader />
+                  </div>
+                )}
+              </div>
+            </section>
+            <div className="mt-4 flex items-center justify-center">
+              <span
+                className="whitespace-nowrap font-medium text-accent-600 hover:text-accent-500 cursor-pointer"
+                onClick={handleAddPaymentMethod}
+              >
+                Update or replace current payment method &rarr;
+              </span>
+            </div>
+          </>
+        )}
       </div>
 
       <ModalFormActions
-        isSubmitted={isSubmitSuccessful}
+        isSubmitted={isSubmitSuccessful || isPaymentMethodAdded}
         isSubmitting={isSubmitting}
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
-        submitText="Update payment method"
+        submitText="Change payment method"
+        disableSubmit={paymentMethods?.length < 2}
       />
     </ModalForm>
   );

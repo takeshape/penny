@@ -8,7 +8,7 @@ import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
 import { OrderNowForm } from '../Actions/OrderNowForm';
-import { PaymentMethodRechargeForm } from '../Actions/PaymentMethodRechargeForm';
+import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
@@ -288,10 +288,10 @@ export const ManageSubscription = ({
         refetchSubscriptions={refetchSubscriptionList}
       />
 
-      <PaymentMethodRechargeForm
+      <PaymentMethodForm
         isOpen={isPaymentMethodOpen}
         onClose={() => setIsPaymentMethodOpen(false)}
-        paymentMethod={subscription.paymentMethod}
+        defaultPaymentMethodId={subscription.paymentMethod.id}
         addressId={subscription.address.id}
         refetchSubscriptions={refetchSubscriptions}
       />

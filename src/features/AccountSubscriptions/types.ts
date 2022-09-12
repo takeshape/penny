@@ -247,3 +247,8 @@ export type ActiveSubscription = NewSubscription & { status: 'ACTIVE' };
 export type EndedSubscription = NewSubscription & { status: 'CANCELLED' | 'EXPIRED' };
 
 export type Subscription = ActiveSubscription | EndedSubscription;
+
+export type SubscriptionPaymentFormItem = {
+  addressId: string;
+  defaultPaymentMethodId: string;
+};

@@ -2,7 +2,7 @@ import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroico
 import NextImage from 'components/NextImage';
 import { CreditCard } from 'components/Payments/CreditCard';
 import { format } from 'date-fns';
-import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
+import { PaymentMethodForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodForm';
 import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
 import { getCharges } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
@@ -205,8 +205,8 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
             onClose={() => setIsProductOptionsOpen(false)}
           />
 
-          <PaymentMethodRechargeForm
-            paymentMethod={subscription.paymentMethod}
+          <PaymentMethodForm
+            defaultPaymentMethodId={subscription.paymentMethod.id}
             addressId={subscription.address.id}
             refetchSubscriptions={refetchSubscriptions}
             isOpen={isPaymentMethodOpen}
