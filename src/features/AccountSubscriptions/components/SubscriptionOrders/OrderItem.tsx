@@ -1,17 +1,16 @@
 import NextImage from 'components/NextImage';
 import { formatPrice } from 'utils/text';
-import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 import { OrderItemActions } from './OrderItemActions';
 import { OrderItemHeader } from './OrderItemHeader';
 
 export interface OrderItemProps {
   subscription: Subscription;
   order: RechargeCharge;
-  variant: SubscriptionSelectedVariant;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const OrderItem = ({ subscription, order, variant, refetchSubscriptions }: OrderItemProps) => {
+export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderItemProps) => {
   const product = order.line_items.find((lineItem) => lineItem.subscription_id === subscription.id);
 
   return (
@@ -26,9 +25,9 @@ export const OrderItem = ({ subscription, order, variant, refetchSubscriptions }
             <NextImage
               width={100}
               height={100}
-              src={variant.product.featuredImage.url}
+              src={subscription.product.featuredImage.url}
               className="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-24 sm:h-24"
-              alt={variant.product.featuredImage.altText}
+              alt={subscription.product.featuredImage.altText}
             />
             <div className="pt-1.5 min-w-0 flex-1 sm:pt-0">
               <h3 className="font-medium text-body-900">{product.title}</h3>

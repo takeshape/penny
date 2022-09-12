@@ -6,18 +6,13 @@ import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Control, Controller, useForm, useWatch } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
-import { ProductVariantSelection } from 'types/product';
+import { ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { formatPrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
-import {
-  RefetchSubscriptions,
-  Subscription,
-  SubscriptionProductVariants,
-  SubscriptionSelectedVariant
-} from '../../types';
+import { RefetchSubscriptions, Subscription, SubscriptionProductVariant } from '../../types';
 
 function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
   return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});
@@ -27,13 +22,12 @@ function toSelections(formOptions: Record<string, string>): ProductVariantSelect
   return Object.entries(formOptions).map(([name, value]) => ({ name, value }));
 }
 
-function getVariant(variants: SubscriptionProductVariants, options: ProductVariantSelection[]) {
+function getVariant(variants: SubscriptionProductVariant[], options: ProductVariantSelection[]) {
   return variants.find((variant) => {
     let isVariant = true;
 
     for (const opt of options) {
-      isVariant =
-        isVariant && variant.selectedOptions.findIndex((o) => o.name === opt.name && o.value === opt.value) > -1;
+      isVariant = isVariant && variant.options.findIndex((o) => o.name === opt.name && o.value === opt.value) > -1;
     }
 
     return isVariant;
@@ -56,13 +50,14 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
   });
 
   const variant = getVariant(variants, toSelections(options));
-  const amount = variant.price * 100 * ((100 - subscription.rechargeProduct.discount_amount) / 100);
 
   return (
     <div className="bg-body-600 text-white rounded-md py-2">
       <p className="grid grid-cols-2 px-4 font-medium text-lg">
         <span className="inline-block">Price</span>
-        <span className="inline-block ml-auto">{formatPrice(subscription.price.currencyCode, amount, quantity)}</span>
+        <span className="inline-block ml-auto">
+          {formatPrice(variant.price.currencyCode, variant.price.amount, quantity)}
+        </span>
       </p>
     </div>
   );
@@ -70,8 +65,8 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
 
 export interface ProductOptionsFormProps extends ModalProps {
   subscription: Subscription;
-  variants: SubscriptionProductVariants;
-  variantOptions: SubscriptionSelectedVariant['product']['options'];
+  variants: SubscriptionProductVariant[];
+  variantOptions: ProductVariantOption[];
   currentSelections: ProductVariantSelection[];
   refetchSubscriptions: RefetchSubscriptions;
 }
@@ -174,8 +169,8 @@ export const ProductOptionsForm = ({
                           <div className="bg-white rounded-md -space-y-px">
                             {option.values.map((value, valueIdx) => (
                               <RadioGroup.Option
-                                key={value}
-                                value={value}
+                                key={value.value}
+                                value={value.value}
                                 className={({ checked }) =>
                                   classNames(
                                     valueIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
@@ -205,7 +200,7 @@ export const ProductOptionsForm = ({
                                           'block text-sm font-medium'
                                         )}
                                       >
-                                        {value}
+                                        {value.name}
                                       </RadioGroup.Label>
                                     </span>
                                   </>

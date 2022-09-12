@@ -11,7 +11,7 @@ export interface SubscriptionOrdersProps {
 }
 
 export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: SubscriptionOrdersProps) => {
-  const { status, shopifyProductVariant: variant } = subscription;
+  const { status } = subscription;
 
   const isActive = status === 'ACTIVE';
 
@@ -70,7 +70,6 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
                 <OrderItem
                   subscription={subscription}
                   order={nextQueuedOrder}
-                  variant={variant}
                   refetchSubscriptions={refetchSubscriptions}
                 />
               </section>
@@ -90,7 +89,6 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
               <OrderItem
                 subscription={subscription}
                 order={mostRecentOrder}
-                variant={variant}
                 refetchSubscriptions={refetchSubscriptions}
               />
             </section>
@@ -107,12 +105,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
           <div className="mt-4 space-y-16">
             {skippedAndPastOrders.map((order) => (
               <section key={order.id} aria-labelledby={`${order.id}-heading`}>
-                <OrderItem
-                  subscription={subscription}
-                  order={order}
-                  variant={variant}
-                  refetchSubscriptions={refetchSubscriptions}
-                />
+                <OrderItem subscription={subscription} order={order} refetchSubscriptions={refetchSubscriptions} />
               </section>
             ))}
           </div>

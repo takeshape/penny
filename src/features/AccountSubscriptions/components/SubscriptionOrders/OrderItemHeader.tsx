@@ -1,6 +1,5 @@
 import { CheckCircleIcon, ClockIcon, InformationCircleIcon, MinusCircleIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
-import { shopifyGidToId } from 'transforms/shopify';
 import { RechargeCharge, Subscription } from '../../types';
 import { OrderItemBadge } from './OrderItemBadge';
 
@@ -22,7 +21,7 @@ interface OrderItemHeaderProps {
 export const OrderItemHeader = ({ subscription, order }: OrderItemHeaderProps) => {
   const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
     fulfillment.fulfillmentLineItems.edges.find(
-      (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
+      (edge) => edge.node.lineItem.variant.id === subscription.product.variantId
     )
   );
 

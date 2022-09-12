@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { shopifyGidToId } from 'transforms/shopify';
 import classNames from 'utils/classNames';
 import { RechargeCharge, Subscription } from '../../types';
 
@@ -14,7 +13,7 @@ export const OrderItemBadge = ({ subscription, order }: OrderItemBadgeProps) => 
 
   const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
     fulfillment.fulfillmentLineItems.edges.find(
-      (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
+      (edge) => edge.node.lineItem.variant.id === subscription.product.variantId
     )
   );
 

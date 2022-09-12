@@ -1,5 +1,4 @@
 import {
-  GetMyAddressPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryResponse,
   GetMySubscriptionListQueryResponse,
   SendMyUpdatePaymentEmailMutationResponse,
@@ -903,22 +902,6 @@ export const getMyPaymentMethodsResponse: GetMyPaymentMethodsQueryResponse = {
       },
       __typename: 'Recharge_PaymentMethod'
     },
-    {
-      id: '66493468',
-      payment_details: {
-        brand: 'Visa',
-        exp_month: 4,
-        exp_year: 2024,
-        last4: '4242',
-        __typename: 'Recharge_PaymentMethodPaymentDetailsProperty'
-      },
-      __typename: 'Recharge_PaymentMethod'
-    }
-  ]
-};
-
-export const getMyAddressPaymentMethodsResponse: GetMyAddressPaymentMethodsQueryResponse = {
-  paymentMethods: [
     {
       id: '66493468',
       payment_details: {

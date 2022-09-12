@@ -54,7 +54,7 @@ export const ActiveSubscription = ({
           <div>
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="mt-1 font-medium text-body-900">
-              {formatPrice(subscription.price.currencyCode, subscription.price.amount, subscription.quantity)}
+              {formatPrice(subscription.price.currencyCode, subscription.price.amount)}
             </dd>
           </div>
         </dl>

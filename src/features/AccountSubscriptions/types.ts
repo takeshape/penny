@@ -1,4 +1,4 @@
-import { ProductImage, ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
+import { ProductCore, ProductImage, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { GetMySubscriptionQueryResponse } from 'types/takeshape';
 
 export type ShippingAddress = {
@@ -16,32 +16,34 @@ export type ShippingAddress = {
 export type SubscriptionPrice = {
   currencyCode: string;
   // in cents
+  amountPerItem: number;
   amount: number;
 };
 
-export type SubscriptionProduct = {
-  // TODO Unclear how to actually handle fulfillment — need Shopify subscription scopes to work on it
-  fulfillment?: {
-    status: string;
-    date: string;
-    datetime: string;
-  };
-  nextFulfillment?: {
-    status: string;
-    date: string;
-    datetime: string;
-  };
+export type SubscriptionProductVariantPrice = {
+  amountBeforeDiscount: number;
+  amount: number;
+  currencyCode: string;
+};
 
-  // Final props
+export type SubscriptionProductVariant = {
   id: string;
-  url: string;
   name: string;
   description: string;
-  handle: string;
-  price: SubscriptionPrice;
-  quantity: number;
-  featuredImage: ProductImage;
-  variants?: ProductVariant[];
+  price: SubscriptionProductVariantPrice;
+  available: boolean;
+  image: ProductImage;
+  quantityAvailable: number;
+  currentlyNotInStock: boolean;
+  sku: string;
+  options: ProductVariantSelection[];
+};
+
+export type SubscriptionProduct = ProductCore & {
+  // TODO Add fulfillment data
+  descriptionHtml: string;
+  variants: SubscriptionProductVariant[];
+  variantId: string;
   variantName: string;
   variantSelections?: ProductVariantSelection[];
   variantOptions?: ProductVariantOption[];
@@ -121,6 +123,12 @@ export type NewSubscription = Omit<
   | 'order_interval_frequency'
   | 'quantity'
   | 'cancelled_at'
+  | 'shopifyProductVariant'
+  | 'quantity'
+  | 'variant_title'
+  | 'shopify_product_id'
+  | 'shopify_variant_id'
+  | 'rechargeProduct'
 > & {
   id: string;
   customerId: string;
@@ -131,9 +139,11 @@ export type NewSubscription = Omit<
   price: SubscriptionPrice;
   interval: SubscriptionInterval;
   intervalCount: number;
-  quantity: number;
+  intervalOptions: string[];
   address: SubscriptionAddress;
   paymentMethod?: SubscriptionPaymentMethod;
+  product: SubscriptionProduct;
+  quantity: number;
 
   // shopify_product_id?: string | null;
   // variant_title?: string | null;

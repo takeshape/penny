@@ -29,7 +29,7 @@ type Shopify_SellingPlanRecurringBillingPolicy =
 
 type Shopify_Product = ProductPageShopifyProductResponse['product'];
 
-type Shopify_ProductVariant = ProductPageShopifyProductResponse['product']['variants']['edges'][0]['node'];
+type Shopify_ProductVariant = ProductPageShopifyProductResponse['product']['variants']['nodes'][0];
 
 type Shopify_ProductOption = ProductPageShopifyProductResponse['product']['options'][0];
 
@@ -209,7 +209,7 @@ function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_Pro
 }
 
 export function getProductVariants(shopifyProduct: Shopify_Product): ProductVariant[] {
-  return (shopifyProduct as ProductPageShopifyProductResponse['product']).variants.edges.map(({ node }) =>
+  return (shopifyProduct as ProductPageShopifyProductResponse['product']).variants.nodes.map((node) =>
     getVariant(shopifyProduct, node)
   );
 }
@@ -231,7 +231,7 @@ export function getSeo(shopifyProduct: Shopify_Product | ProductCategoryShopifyC
 
 export function getProductVariantOptions(
   options: Pick<Shopify_ProductOption, 'name' | 'id' | 'values'>[],
-  variants?: ProductVariant[]
+  variants?: Pick<ProductVariant, 'options' | 'available'>[]
 ) {
   return (
     options?.map(({ name, id, values }) => {

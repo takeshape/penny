@@ -67,7 +67,7 @@ export const DeliveryFrequencyForm = ({
   // Set initial values
   useEffect(() => resetState(), [resetState]);
 
-  const { order_interval_frequency_options } = subscription.rechargeProduct.subscription_defaults;
+  const { intervalOptions } = subscription;
 
   return (
     <ModalForm
@@ -91,16 +91,14 @@ export const DeliveryFrequencyForm = ({
               <RadioGroup {...field}>
                 <RadioGroup.Label className="sr-only">Delivery schedule</RadioGroup.Label>
                 <div className="bg-white rounded-md -space-y-px">
-                  {order_interval_frequency_options.map((option, optionIdx) => (
+                  {intervalOptions.map((option, optionIdx) => (
                     <RadioGroup.Option
                       key={option}
                       value={option}
                       className={({ checked }) =>
                         classNames(
                           optionIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
-                          optionIdx === order_interval_frequency_options.length - 1
-                            ? 'rounded-bl-md rounded-br-md'
-                            : '',
+                          optionIdx === intervalOptions.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
                           checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
                           'relative border p-4 flex cursor-pointer focus:outline-none'
                         )

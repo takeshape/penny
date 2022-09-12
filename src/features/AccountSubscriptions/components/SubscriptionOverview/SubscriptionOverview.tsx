@@ -6,7 +6,7 @@ import { PaymentMethodForm } from 'features/AccountSubscriptions/components/Acti
 import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
 import { getCharges } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
-import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
+import { getProductUrl } from 'transforms/shopify';
 import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 
 interface ShipmentStatusProps {
@@ -17,7 +17,7 @@ interface ShipmentStatusProps {
 const RecentShipmentStatus = ({ subscription, order }: ShipmentStatusProps) => {
   const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
     fulfillment.fulfillmentLineItems.edges.find(
-      (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
+      (edge) => edge.node.lineItem.variant.id === subscription.product.variantId
     )
   );
 
@@ -119,8 +119,7 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
-  const variant = subscription.shopifyProductVariant;
-  const product = variant.product;
+  const product = subscription.product;
 
   const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
 
@@ -135,9 +134,9 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
                   <div className="flex">
                     <div className="flex-grow">
                       <a href={getProductUrl(product.handle)} className="block mb-1">
-                        <h4 className="font-medium text-body-900 inline-block">{product.title}</h4>
+                        <h4 className="font-medium text-body-900 inline-block">{product.name}</h4>
                       </a>
-                      <div className="text-sm font-medium text-body-500">{subscription.variant_title}</div>
+                      <div className="text-sm font-medium text-body-500">{product.variantName}</div>
                       <div className="text-sm font-medium text-body-500">Quantity: {subscription.quantity}</div>
                       <p className="hidden mt-2 text-sm text-body-500 sm:block">{product.description}</p>
                     </div>
@@ -197,9 +196,9 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
         <>
           <ProductOptionsForm
             subscription={subscription}
-            variants={product.variants.nodes}
-            variantOptions={product.options}
-            currentSelections={variant.selectedOptions}
+            variants={product.variants}
+            variantOptions={product.variantOptions}
+            currentSelections={product.variantSelections}
             refetchSubscriptions={refetchSubscriptions}
             isOpen={isProductOptionsOpen}
             onClose={() => setIsProductOptionsOpen(false)}

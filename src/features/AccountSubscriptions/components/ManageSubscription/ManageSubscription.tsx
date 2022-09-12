@@ -35,7 +35,7 @@ export const ManageSubscription = ({
   const [isCancelSubscriptionOpen, setIsCancelSubscriptionOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
-  const variant = subscription.shopifyProductVariant;
+  const product = subscription.product;
 
   return (
     <>
@@ -120,8 +120,8 @@ export const ManageSubscription = ({
               <dt className="text-sm font-medium text-body-500">Product</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  <div>{variant.product.title}</div>
-                  <div className="mt-2">{variant.title}</div>
+                  <div>{product.name}</div>
+                  <div className="mt-2">{product.variantName}</div>
                 </div>
                 <div className="ml-4 flex-shrink-0">
                   <button
@@ -159,7 +159,7 @@ export const ManageSubscription = ({
               <dt className="text-sm font-medium text-body-500">Amount per item</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  {formatPrice(subscription.price.currencyCode, subscription.price.amount, 1)}
+                  {formatPrice(subscription.price.currencyCode, subscription.price.amountPerItem)}
                 </div>
               </dd>
             </div>
@@ -169,7 +169,7 @@ export const ManageSubscription = ({
               <dt className="text-sm font-medium text-body-500">Total Amount</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  {formatPrice(subscription.price.currencyCode, subscription.price.amount, subscription.quantity)}
+                  {formatPrice(subscription.price.currencyCode, subscription.price.amount)}
                 </div>
               </dd>
             </div>
@@ -243,9 +243,9 @@ export const ManageSubscription = ({
 
       <ProductOptionsForm
         subscription={subscription}
-        variants={variant.product.variants.nodes}
-        variantOptions={variant.product.options}
-        currentSelections={variant.selectedOptions}
+        variants={product.variants}
+        variantOptions={product.variantOptions}
+        currentSelections={product.variantSelections}
         refetchSubscriptions={refetchSubscriptions}
         isOpen={isProductOptionsOpen}
         onClose={() => setIsProductOptionsOpen(false)}
