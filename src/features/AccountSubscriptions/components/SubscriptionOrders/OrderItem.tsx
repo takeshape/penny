@@ -28,6 +28,7 @@ export const OrderItem = ({ subscription, order, variant, refetchSubscriptions }
               height={100}
               src={variant.product.featuredImage.url}
               className="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-24 sm:h-24"
+              alt={variant.product.featuredImage.altText}
             />
             <div className="pt-1.5 min-w-0 flex-1 sm:pt-0">
               <h3 className="font-medium text-body-900">{product.title}</h3>

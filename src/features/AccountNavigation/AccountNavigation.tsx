@@ -1,5 +1,12 @@
 import { useApolloClient } from '@apollo/client';
-import { GiftIcon, KeyIcon, LogoutIcon, RefreshIcon, TagIcon, UserCircleIcon } from '@heroicons/react/outline';
+import {
+  ArrowPathIcon,
+  ArrowRightOnRectangleIcon,
+  GiftIcon,
+  KeyIcon,
+  TagIcon,
+  UserCircleIcon
+} from '@heroicons/react/24/outline';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -10,7 +17,7 @@ export const accountNavigationItems = [
   { name: 'Account', href: '/account', icon: UserCircleIcon, current: false },
   { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
-  { name: 'Subscriptions', href: '/account/subscriptions', icon: RefreshIcon, current: false },
+  { name: 'Subscriptions', href: '/account/subscriptions', icon: ArrowPathIcon, current: false },
   // Cannot use without `write_customer_payment_methods` scope — requires an approved app
   // { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
   { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
@@ -78,7 +85,7 @@ export const AccountNavigation = () => {
           onClick={handleLogout}
           className="text-body-500 hover:text-body-900 hover:bg-primary-50 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
         >
-          <LogoutIcon
+          <ArrowRightOnRectangleIcon
             className="text-body-400 group-hover:text-body-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
             aria-hidden="true"
           />

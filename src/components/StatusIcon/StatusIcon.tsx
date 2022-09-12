@@ -1,4 +1,9 @@
-import { CheckCircleIcon, ExclamationIcon, InformationCircleIcon, XCircleIcon } from '@heroicons/react/solid';
+import {
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  InformationCircleIcon,
+  XCircleIcon
+} from '@heroicons/react/24/solid';
 import classNames from 'utils/classNames';
 
 export interface StatusIconProps {
@@ -16,7 +21,7 @@ export const StatusIcon = ({ status, size }: StatusIconProps) => {
       return <XCircleIcon className={`${sizeClasses} text-red-400`} aria-hidden="true" />;
     }
     case 'warn': {
-      return <ExclamationIcon className={`${sizeClasses} text-yellow-400`} aria-hidden="true" />;
+      return <ExclamationTriangleIcon className={`${sizeClasses} text-yellow-400`} aria-hidden="true" />;
     }
     case 'success': {
       return <CheckCircleIcon className={`${sizeClasses} text-green-400`} aria-hidden="true" />;

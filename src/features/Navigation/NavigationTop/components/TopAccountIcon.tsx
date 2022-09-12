@@ -1,5 +1,5 @@
-import { UserIcon } from '@heroicons/react/outline';
-import { UserIcon as SolidUserIcon } from '@heroicons/react/solid';
+import { UserIcon } from '@heroicons/react/24/outline';
+import { UserIcon as SolidUserIcon } from '@heroicons/react/24/solid';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 

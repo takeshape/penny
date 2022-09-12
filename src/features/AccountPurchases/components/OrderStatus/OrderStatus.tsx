@@ -1,4 +1,4 @@
-import { TruckIcon } from '@heroicons/react/solid';
+import { TruckIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
 import { Fulfillment } from '../../types';
 

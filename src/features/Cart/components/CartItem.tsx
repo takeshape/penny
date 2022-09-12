@@ -1,4 +1,4 @@
-import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import NextImage from 'components/NextImage';
 import { PrimitiveAtom, useAtom } from 'jotai';
 import Link from 'next/link';

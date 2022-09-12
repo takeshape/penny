@@ -1,4 +1,4 @@
-import { ExclamationCircleIcon } from '@heroicons/react/solid';
+import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import IMask from 'imask';
 import { createRef, forwardRef, InputHTMLAttributes, RefCallback } from 'react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';

@@ -1,4 +1,4 @@
-import { MenuIcon, SearchIcon } from '@heroicons/react/outline';
+import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
 import { showCurrencySelector } from 'config';
@@ -86,7 +86,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                     onClick={() => setIsMobileMenuOpen(true)}
                   >
                     <span className="sr-only">Open menu</span>
-                    <MenuIcon className="h-6 w-6" aria-hidden="true" />
+                    <Bars3Icon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
                   {/* Search */}
@@ -95,7 +95,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                     className="ml-2 p-2 text-primary-400 hover:text-primary-500"
                   >
                     <span className="sr-only">Search</span>
-                    <SearchIcon className="w-6 h-6" aria-hidden="true" />
+                    <MagnifyingGlassIcon className="w-6 h-6" aria-hidden="true" />
                   </div>
                 </div>
 
@@ -113,7 +113,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                           className="-m-2 p-2 text-primary-400 hover:text-primary-500"
                         >
                           <span className="sr-only">Search</span>
-                          <SearchIcon className="w-6 h-6" aria-hidden="true" />
+                          <MagnifyingGlassIcon className="w-6 h-6" aria-hidden="true" />
                         </div>
                       </div>
 

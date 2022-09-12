@@ -22,6 +22,7 @@ export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
               height={100}
               src={product.featuredImage.url}
               className="h-20 w-20 object-center object-cover rounded-lg"
+              alt={product.featuredImage.altText}
             />
           </div>
           <div className="ml-4 flex-auto">

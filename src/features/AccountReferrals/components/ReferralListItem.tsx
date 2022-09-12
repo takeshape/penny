@@ -1,4 +1,4 @@
-import { CheckCircleIcon, ClockIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
 
 export interface ReferralListItemProps {
   email: string;
