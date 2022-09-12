@@ -10,7 +10,7 @@ import { ProductVariantSelection } from 'types/product';
 import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { formatRechargePrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
 import {
   RefetchSubscriptions,
@@ -56,15 +56,13 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
   });
 
   const variant = getVariant(variants, toSelections(options));
-  const amount = variant.price * ((100 - subscription.rechargeProduct.discount_amount) / 100);
+  const amount = variant.price * 100 * ((100 - subscription.rechargeProduct.discount_amount) / 100);
 
   return (
     <div className="bg-body-600 text-white rounded-md py-2">
       <p className="grid grid-cols-2 px-4 font-medium text-lg">
         <span className="inline-block">Price</span>
-        <span className="inline-block ml-auto">
-          {formatRechargePrice(subscription.presentment_currency, amount, quantity)}
-        </span>
+        <span className="inline-block ml-auto">{formatPrice(subscription.price.currencyCode, amount, quantity)}</span>
       </p>
     </div>
   );

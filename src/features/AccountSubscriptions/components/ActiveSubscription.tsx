@@ -3,7 +3,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
-import { formatRechargePrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 import { RefetchSubscriptions, Subscription } from '../types';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
@@ -36,8 +36,7 @@ export const ActiveSubscription = ({
   return (
     <Tab.Group>
       <h3 className="sr-only" id={subscription.id.toString()}>
-        Order placed on{' '}
-        <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
+        Order placed on <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
       </h3>
 
       <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
@@ -45,7 +44,7 @@ export const ActiveSubscription = ({
           <div>
             <dt className="font-medium text-body-900">Date started</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PP')}</time>
+              <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PP')}</time>
             </dd>
           </div>
           <div className="hidden sm:block">
@@ -55,7 +54,7 @@ export const ActiveSubscription = ({
           <div>
             <dt className="font-medium text-body-900">Total amount</dt>
             <dd className="mt-1 font-medium text-body-900">
-              {formatRechargePrice(subscription.presentment_currency, subscription.price, subscription.quantity)}
+              {formatPrice(subscription.price.currencyCode, subscription.price.amount, subscription.quantity)}
             </dd>
           </div>
         </dl>

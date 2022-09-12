@@ -7,11 +7,9 @@ import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { CreditCard } from 'components/Payments/CreditCard';
 import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
-  GetMyAddressPaymentMethodsQueryResponse,
-  GetMyAddressPaymentMethodsQueryVariables,
   GetMyPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryVariables,
   SendMyUpdatePaymentEmailMutationResponse,
@@ -22,15 +20,15 @@ import {
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation, useAuthenticatedQuery } from 'utils/takeshape';
 import {
-  GetMyAddressPaymentMethodsQuery,
   GetMyPaymentMethodsQuery,
   SendMyUpdatePaymentEmailMutation,
   UpdateMyPaymentMethodMutation
 } from '../../queries';
-import { getAddressDefaultPaymentMethod, getPaymentMethods } from '../../transforms';
-import { RefetchSubscriptions } from '../../types';
+import { getPaymentMethods } from '../../transforms';
+import { RefetchSubscriptions, SubscriptionPaymentMethod } from '../../types';
 
 export interface PaymentMethodRechargeFormProps extends ModalProps {
+  paymentMethod: SubscriptionPaymentMethod;
   addressId: string;
   refetchSubscriptions: RefetchSubscriptions;
 }
@@ -39,13 +37,11 @@ export interface PaymentMethodRechargeFormValues {
   paymentMethodId: string;
 }
 
-/**
- * TODO: Replace addressId and lookup with a paymentMethodId that lives on the sub
- */
 export const PaymentMethodRechargeForm = ({
   isOpen,
   onClose,
   addressId,
+  paymentMethod,
   refetchSubscriptions
 }: PaymentMethodRechargeFormProps) => {
   const { data: session } = useSession();
@@ -66,15 +62,7 @@ export const PaymentMethodRechargeForm = ({
     GetMyPaymentMethodsQueryVariables
   >(GetMyPaymentMethodsQuery);
 
-  const { data: addressPaymentMethodsResponse, refetch: refetchAddressPaymentMethods } = useAuthenticatedQuery<
-    GetMyAddressPaymentMethodsQueryResponse,
-    GetMyAddressPaymentMethodsQueryVariables
-  >(GetMyAddressPaymentMethodsQuery, { variables: { addressId } });
-
-  const currentPaymentMethod = useMemo(
-    () => getAddressDefaultPaymentMethod(addressPaymentMethodsResponse),
-    [addressPaymentMethodsResponse]
-  );
+  const currentPaymentMethod = paymentMethod;
 
   const [sendUpdatePaymentEmail] = useAuthenticatedMutation<
     SendMyUpdatePaymentEmailMutationResponse,
@@ -91,11 +79,10 @@ export const PaymentMethodRechargeForm = ({
   const handleFormSubmit = useCallback(
     async ({ paymentMethodId }: PaymentMethodRechargeFormValues) => {
       await updatePaymentMethod({ variables: { paymentMethodId, addressId } });
-      await refetchAddressPaymentMethods();
       await refetchSubscriptions();
       onClose();
     },
-    [addressId, onClose, refetchAddressPaymentMethods, refetchSubscriptions, updatePaymentMethod]
+    [addressId, onClose, refetchSubscriptions, updatePaymentMethod]
   );
 
   const handleAddPaymentMethod = useCallback(() => {
@@ -104,18 +91,12 @@ export const PaymentMethodRechargeForm = ({
   }, [currentPaymentMethod, sendUpdatePaymentEmail]);
 
   const resetState = useCallback(() => {
-    if (currentPaymentMethod?.id) {
-      reset({ paymentMethodId: currentPaymentMethod.id });
-    }
+    reset({ paymentMethodId: paymentMethod.id });
     setIsPaymentMethodAdded(false);
-  }, [currentPaymentMethod, reset]);
+  }, [paymentMethod, reset]);
 
   // Set initial values
-  useEffect(() => {
-    if (currentPaymentMethod?.id) {
-      resetState();
-    }
-  }, [currentPaymentMethod, resetState]);
+  useEffect(() => resetState(), [resetState]);
 
   return (
     <ModalForm

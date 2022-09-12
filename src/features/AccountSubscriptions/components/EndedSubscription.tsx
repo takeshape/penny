@@ -29,8 +29,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
   return (
     <Tab.Group>
       <h3 className="sr-only" id={shopifyGidToId(subscription.id)}>
-        Order placed on{' '}
-        <time dateTime={subscription.created_at}>{format(new Date(subscription.created_at), 'PPP')}</time>
+        Order placed on <time dateTime={subscription.createdAt}>{format(new Date(subscription.createdAt), 'PPP')}</time>
       </h3>
 
       <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
@@ -38,7 +37,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
           <div>
             <dt className="font-medium text-body-900">Date ended</dt>
             <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.cancelled_at}>{format(new Date(subscription.cancelled_at), 'PP')}</time>
+              <time dateTime={subscription.cancelledAt}>{format(new Date(subscription.cancelledAt), 'PP')}</time>
             </dd>
           </div>
         </dl>

@@ -1,5 +1,5 @@
 import NextImage from 'components/NextImage';
-import { formatRechargePrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
 import { OrderItemActions } from './OrderItemActions';
 import { OrderItemHeader } from './OrderItemHeader';
@@ -35,7 +35,7 @@ export const OrderItem = ({ subscription, order, variant, refetchSubscriptions }
               <p className="text-sm text-body-500">{product.variant_title}</p>
               <p className="text-sm text-body-500">Quantity: {product.quantity}</p>
               <p className="mt-1 font-medium text-body-900">
-                {formatRechargePrice(subscription.presentment_currency, product.price, product.quantity)}
+                {formatPrice(subscription.price.currencyCode, parseFloat(product.price) * 100, product.quantity)}
               </p>
             </div>
           </div>

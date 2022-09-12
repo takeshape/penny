@@ -55,13 +55,13 @@ export const ShippingAddressForm = ({
       await updateMyAddress({
         variables: {
           ...formData,
-          addressId: subscription.address_id
+          addressId: subscription.address.id
         }
       });
       await refetchSubscriptions();
       onClose();
     },
-    [updateMyAddress, onClose, refetchSubscriptions, subscription.address_id]
+    [updateMyAddress, onClose, refetchSubscriptions, subscription.address.id]
   );
 
   // Use countryCode here because inconsistent...
@@ -79,8 +79,8 @@ export const ShippingAddressForm = ({
     () =>
       reset({
         ...subscription.address,
-        firstName: subscription.address.first_name,
-        lastName: subscription.address.last_name,
+        firstName: subscription.address.firstName,
+        lastName: subscription.address.lastName,
         countryCode: countries.find((country) => country.name === subscription.address.country).iso2 ?? 'US'
       }),
     [reset, subscription.address]

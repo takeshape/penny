@@ -4,7 +4,6 @@ import { CreditCard } from 'components/Payments/CreditCard';
 import { format } from 'date-fns';
 import { PaymentMethodRechargeForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodRechargeForm';
 import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
-import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { getCharges } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
@@ -154,12 +153,9 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
                     </div>
                   )}
                 </div>
-                {isActive && (
+                {isActive && subscription.paymentMethod && (
                   <div className="mt-4 flex flex-col text-sm font-medium sm:flex-row sm:mt-8">
-                    <CreditCard
-                      className="flex-grow"
-                      card={getPaymentMethod(subscription.address.include.payment_methods[0]).instrument}
-                    />
+                    <CreditCard className="flex-grow" card={subscription.paymentMethod.instrument} />
                     <div className="mt-2 sm:mt-0">
                       <button
                         onClick={() => setIsPaymentMethodOpen(true)}
@@ -210,7 +206,8 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
           />
 
           <PaymentMethodRechargeForm
-            addressId={subscription.address_id}
+            paymentMethod={subscription.paymentMethod}
+            addressId={subscription.address.id}
             refetchSubscriptions={refetchSubscriptions}
             isOpen={isPaymentMethodOpen}
             onClose={() => setIsPaymentMethodOpen(false)}

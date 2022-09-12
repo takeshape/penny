@@ -17,7 +17,7 @@ export interface DeliveryFrequencyFormProps extends ModalProps {
 }
 
 export interface DeliveryFrequencyFormValues {
-  deliveryScheduleIntervalCount: string;
+  intervalCount: number;
 }
 
 /**
@@ -45,23 +45,23 @@ export const DeliveryFrequencyForm = ({
     async (formData: DeliveryFrequencyFormValues) => {
       await updateDeliveryFrequency({
         variables: {
-          frequency: formData.deliveryScheduleIntervalCount.toString(),
-          unit: subscription.order_interval_unit,
+          frequency: formData.intervalCount.toString(),
+          unit: subscription.interval.toLowerCase(),
           subscriptionId: subscription.id
         }
       });
       await refetchSubscriptions();
       onClose();
     },
-    [onClose, refetchSubscriptions, subscription.id, subscription.order_interval_unit, updateDeliveryFrequency]
+    [onClose, refetchSubscriptions, subscription.id, subscription.interval, updateDeliveryFrequency]
   );
 
   const resetState = useCallback(
     () =>
       reset({
-        deliveryScheduleIntervalCount: subscription.order_interval_frequency
+        intervalCount: subscription.intervalCount
       }),
-    [reset, subscription.order_interval_frequency]
+    [reset, subscription.intervalCount]
   );
 
   // Set initial values
@@ -85,7 +85,7 @@ export const DeliveryFrequencyForm = ({
 
         <div className="mx-auto w-full rounded-2xl bg-white py-2">
           <Controller
-            name="deliveryScheduleIntervalCount"
+            name="intervalCount"
             control={control}
             render={({ field }) => (
               <RadioGroup {...field}>
@@ -128,8 +128,8 @@ export const DeliveryFrequencyForm = ({
                             >
                               Every{' '}
                               {formatDeliverySchedule({
-                                order_interval_unit: subscription.order_interval_unit,
-                                order_interval_frequency: option
+                                interval: subscription.interval,
+                                intervalCount: Number(option)
                               })}
                             </RadioGroup.Label>
                           </span>
