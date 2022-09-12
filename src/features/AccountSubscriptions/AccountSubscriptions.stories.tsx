@@ -6,9 +6,9 @@ import {
   getMyPaymentMethodsResponse,
   getMySubscriptionsResponse,
   sendMyUpdatePaymentEmailMutation,
-  subscriptionProductVariantResponse,
   updateMyPaymentMethodResponse
 } from './queries.fixtures';
+import { getSubscriptionList } from './transforms';
 
 const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   title: 'Features / Account Subscriptions',
@@ -18,7 +18,12 @@ const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   }
 };
 
-const Template: ComponentStory<typeof AccountSubscriptions> = () => <AccountSubscriptions />;
+const Template: ComponentStory<typeof AccountSubscriptions> = () => (
+  <AccountSubscriptions
+    subscriptions={getSubscriptionList(getMySubscriptionsResponse)}
+    refetchSubscriptionList={async () => {}}
+  />
+);
 
 export const _AccountSubscriptions = Template.bind({});
 
@@ -26,11 +31,11 @@ _AccountSubscriptions.parameters = {
   msw: {
     handlers: {
       subscriptions: [
-        graphql.query('GetMySubscriptionsQuery', (req, res, ctx) => {
+        graphql.query('GetMySubscriptionListQuery', (req, res, ctx) => {
           return res(ctx.data(getMySubscriptionsResponse));
         }),
-        graphql.query('SubscriptionProductVariantQuery', (req, res, ctx) => {
-          return res(ctx.data(subscriptionProductVariantResponse));
+        graphql.query('GetMySubscriptionQuery', (req, res, ctx) => {
+          return res(ctx.data(getMySubscriptionsResponse.subscriptions[0]));
         })
       ],
       payments: [

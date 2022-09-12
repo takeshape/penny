@@ -2,17 +2,16 @@ import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/O
 import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
 import { useMemo, useState } from 'react';
-import { RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { RefetchSubscriptions, Subscription } from '../../types';
 import { getCharges } from '../../utils';
 
 export interface SubscriptionOrdersProps {
   subscription: Subscription;
-  variant: SubscriptionSelectedVariant;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const SubscriptionOrders = ({ subscription, variant, refetchSubscriptions }: SubscriptionOrdersProps) => {
-  const { status } = subscription;
+export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: SubscriptionOrdersProps) => {
+  const { status, shopifyProductVariant: variant } = subscription;
 
   const isActive = status === 'ACTIVE';
 

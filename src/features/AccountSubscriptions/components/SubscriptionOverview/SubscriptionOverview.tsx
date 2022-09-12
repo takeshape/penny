@@ -8,7 +8,7 @@ import { getPaymentMethod } from 'features/AccountSubscriptions/transforms';
 import { getCharges } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
 import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
 
 interface ShipmentStatusProps {
   subscription: Subscription;
@@ -112,15 +112,15 @@ const NextShipmentStatus = ({ order }: ShipmentStatusProps) => {
 
 export interface SubscriptionOverviewProps {
   subscription: Subscription;
-  variant: SubscriptionSelectedVariant;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptions }: SubscriptionOverviewProps) => {
+export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: SubscriptionOverviewProps) => {
   const isActive = subscription.status === 'ACTIVE';
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
+  const variant = subscription.shopifyProductVariant;
   const product = variant.product;
 
   const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
@@ -201,7 +201,7 @@ export const SubscriptionOverview = ({ subscription, variant, refetchSubscriptio
         <>
           <ProductOptionsForm
             subscription={subscription}
-            variants={product.variants.edges.map((edge) => edge.node)}
+            variants={product.variants.nodes}
             variantOptions={product.options}
             currentSelections={variant.selectedOptions}
             refetchSubscriptions={refetchSubscriptions}

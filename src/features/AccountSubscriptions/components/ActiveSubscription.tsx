@@ -1,14 +1,10 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
-import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
-import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
-import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
 import { Fragment } from 'react';
-import { SubscriptionProductVariantQueryResponse, SubscriptionProductVariantQueryVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
-import { useAuthenticatedQuery } from 'utils/takeshape';
 import { formatRechargePrice } from 'utils/text';
+import { RefetchSubscriptions, Subscription } from '../types';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
@@ -28,23 +24,15 @@ const navigationItems = [
 
 export interface ActiveSubscriptionProps {
   subscription: Subscription;
-  refetchSubscriptions: RefetchSubscriptions;
+  refetchSubscription: RefetchSubscriptions;
+  refetchSubscriptionList: RefetchSubscriptions;
 }
 
-export const ActiveSubscription = ({ subscription, refetchSubscriptions }: ActiveSubscriptionProps) => {
-  const { data } = useAuthenticatedQuery<
-    SubscriptionProductVariantQueryResponse,
-    SubscriptionProductVariantQueryVariables
-  >(SubscriptionProductVariantQuery, {
-    variables: { id: `gid://shopify/ProductVariant/${subscription.shopify_variant_id}` }
-  });
-
-  if (!data) {
-    return <SubscriptionSkeleton />;
-  }
-
-  const variant = data.variant;
-
+export const ActiveSubscription = ({
+  subscription,
+  refetchSubscription,
+  refetchSubscriptionList
+}: ActiveSubscriptionProps) => {
   return (
     <Tab.Group>
       <h3 className="sr-only" id={subscription.id.toString()}>
@@ -129,25 +117,17 @@ export const ActiveSubscription = ({ subscription, refetchSubscriptions }: Activ
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview
-            subscription={subscription}
-            variant={variant}
-            refetchSubscriptions={refetchSubscriptions}
-          />
+          <SubscriptionOverview subscription={subscription} refetchSubscriptions={refetchSubscription} />
         </Tab.Panel>
         <Tab.Panel>
           <ManageSubscription
             subscription={subscription}
-            variant={variant}
-            refetchSubscriptions={refetchSubscriptions}
+            refetchSubscriptions={refetchSubscription}
+            refetchSubscriptionList={refetchSubscriptionList}
           />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders
-            subscription={subscription}
-            variant={variant}
-            refetchSubscriptions={refetchSubscriptions}
-          />
+          <SubscriptionOrders subscription={subscription} refetchSubscriptions={refetchSubscription} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

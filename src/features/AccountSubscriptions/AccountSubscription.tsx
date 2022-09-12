@@ -1,24 +1,39 @@
 import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
 import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
+import { useCallback, useState } from 'react';
+import { GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables } from 'types/takeshape';
+import { useAuthenticatedClient } from 'utils/takeshape';
+import { GetMySubscriptionQuery } from './queries';
+import { getSubscription } from './transforms';
 import { RefetchSubscriptions, Subscription } from './types';
-import { isActiveSubscription, isEndedSubscription } from './utils';
+import { isActiveSubscription } from './utils';
 
 export interface AccountSubscriptionProps {
   subscription: Subscription;
-  refetchSubscriptions: RefetchSubscriptions;
+  refetchSubscriptionList: RefetchSubscriptions;
 }
 
-export const AccountSubscription = ({ subscription, refetchSubscriptions }: AccountSubscriptionProps) => {
+export const AccountSubscription = ({ subscription, refetchSubscriptionList }: AccountSubscriptionProps) => {
+  const client = useAuthenticatedClient();
+  const [sub, setSub] = useState(subscription);
+
+  const refetchSubscription = useCallback(async () => {
+    const updatedSubscription = await client.query<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>({
+      query: GetMySubscriptionQuery,
+      variables: { id: subscription.id }
+    });
+    setSub(getSubscription(updatedSubscription.data));
+  }, [client, subscription.id]);
+
+  const SubscriptionComponent = isActiveSubscription(sub) ? ActiveSubscription : EndedSubscription;
+
   return (
-    <div className="shadow sm:rounded-md sm:overflow-hidden">
-      <div className="bg-white py-6 sm:px-4 sm:p-6">
-        {isActiveSubscription(subscription) && (
-          <ActiveSubscription subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
-        )}
-        {isEndedSubscription(subscription) && (
-          <EndedSubscription subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
-        )}
-      </div>
-    </div>
+    <>
+      <SubscriptionComponent
+        subscription={sub}
+        refetchSubscription={refetchSubscription}
+        refetchSubscriptionList={refetchSubscriptionList}
+      />
+    </>
   );
 };

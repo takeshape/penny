@@ -7,16 +7,17 @@ import { useCallback, useEffect } from 'react';
 import { Control, Controller, useForm, useWatch } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
 import { ProductVariantSelection } from 'types/product';
-import {
-  SubscriptionProductVariantQueryResponse,
-  UpdateProductOptionsMutationResponse,
-  UpdateProductOptionsMutationVariables
-} from 'types/takeshape';
+import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { formatRechargePrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription, SubscriptionProductVariants } from '../../types';
+import {
+  RefetchSubscriptions,
+  Subscription,
+  SubscriptionProductVariants,
+  SubscriptionSelectedVariant
+} from '../../types';
 
 function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
   return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});
@@ -26,7 +27,7 @@ function toSelections(formOptions: Record<string, string>): ProductVariantSelect
   return Object.entries(formOptions).map(([name, value]) => ({ name, value }));
 }
 
-function getVariant(variants: SubscriptionProductVariants[], options: ProductVariantSelection[]) {
+function getVariant(variants: SubscriptionProductVariants, options: ProductVariantSelection[]) {
   return variants.find((variant) => {
     let isVariant = true;
 
@@ -71,8 +72,8 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
 
 export interface ProductOptionsFormProps extends ModalProps {
   subscription: Subscription;
-  variants: SubscriptionProductVariants[];
-  variantOptions: SubscriptionProductVariantQueryResponse['variant']['product']['options'];
+  variants: SubscriptionProductVariants;
+  variantOptions: SubscriptionSelectedVariant['product']['options'];
   currentSelections: ProductVariantSelection[];
   refetchSubscriptions: RefetchSubscriptions;
 }

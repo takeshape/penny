@@ -5,7 +5,6 @@ import {
   getMyPaymentMethodsResponse,
   getMySubscriptionsResponse,
   sendMyUpdatePaymentEmailMutation,
-  subscriptionProductVariantResponse,
   updateMyPaymentMethodResponse
 } from '../../queries.fixtures';
 import { SubscriptionOverview } from './SubscriptionOverview';
@@ -23,8 +22,7 @@ const Template: ComponentStory<typeof SubscriptionOverview> = (args) => <Subscri
 export const Overview = Template.bind({});
 
 Overview.args = {
-  subscription: getMySubscriptionsResponse.subscriptions[0],
-  variant: subscriptionProductVariantResponse.variant
+  subscription: getMySubscriptionsResponse.subscriptions[0]
 };
 
 Overview.parameters = {

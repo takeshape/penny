@@ -1,14 +1,10 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { DotsVerticalIcon } from '@heroicons/react/solid';
 import { format } from 'date-fns';
-import { SubscriptionSkeleton } from 'features/AccountSubscriptions/components/SubscriptionSkeleton';
-import { SubscriptionProductVariantQuery } from 'features/AccountSubscriptions/queries';
-import { RefetchSubscriptions, Subscription } from 'features/AccountSubscriptions/types';
-import { Fragment } from 'react';
+import { Fragment, useCallback } from 'react';
 import { shopifyGidToId } from 'transforms/shopify';
-import { SubscriptionProductVariantQueryResponse, SubscriptionProductVariantQueryVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
-import { useAuthenticatedQuery } from 'utils/takeshape';
+import { RefetchSubscriptions, Subscription } from '../types';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
 import { SubscriptionOverview } from './SubscriptionOverview/SubscriptionOverview';
 
@@ -23,22 +19,12 @@ const navigationItems = [
 
 export interface EndedSubscriptionProps {
   subscription: Subscription;
-  refetchSubscriptions: RefetchSubscriptions;
+  refetchSubscription?: RefetchSubscriptions;
+  refetchSubscriptionList?: RefetchSubscriptions;
 }
 
-export const EndedSubscription = ({ subscription, refetchSubscriptions }: EndedSubscriptionProps) => {
-  const { data: variantData } = useAuthenticatedQuery<
-    SubscriptionProductVariantQueryResponse,
-    SubscriptionProductVariantQueryVariables
-  >(SubscriptionProductVariantQuery, {
-    variables: { id: `gid://shopify/ProductVariant/${subscription.shopify_variant_id}` }
-  });
-
-  if (!variantData) {
-    return <SubscriptionSkeleton />;
-  }
-
-  const variant = variantData.variant;
+export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
+  const refetchSubscriptions = useCallback(async () => {}, []);
 
   return (
     <Tab.Group>
@@ -114,18 +100,10 @@ export const EndedSubscription = ({ subscription, refetchSubscriptions }: EndedS
 
       <Tab.Panels>
         <Tab.Panel>
-          <SubscriptionOverview
-            subscription={subscription}
-            variant={variant}
-            refetchSubscriptions={refetchSubscriptions}
-          />
+          <SubscriptionOverview subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
         </Tab.Panel>
         <Tab.Panel>
-          <SubscriptionOrders
-            subscription={subscription}
-            variant={variant}
-            refetchSubscriptions={refetchSubscriptions}
-          />
+          <SubscriptionOrders subscription={subscription} refetchSubscriptions={refetchSubscriptions} />
         </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>

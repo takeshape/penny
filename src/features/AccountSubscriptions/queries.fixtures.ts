@@ -1,13 +1,523 @@
 import {
   GetMyAddressPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryResponse,
-  GetMySubscriptionsQueryResponse,
+  GetMySubscriptionListQueryResponse,
   SendMyUpdatePaymentEmailMutationResponse,
-  SubscriptionProductVariantQueryResponse,
   UpdateMyPaymentMethodMutationResponse
 } from 'types/takeshape';
 
-export const getMySubscriptionsResponse: GetMySubscriptionsQueryResponse = {
+export const subscriptionProductVariantResponse = {
+  id: 'gid://shopify/ProductVariant/40234670260324',
+  title: 'XS / Black',
+  price: '10.00',
+  selectedOptions: [
+    { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
+    { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+  ],
+  product: {
+    id: 'gid://shopify/Product/6857243132004',
+    handle: 'basic-tee-6-pack',
+    title: 'An Exceptional Tee for Men',
+    description:
+      "This tee is the bee's knees. It is made of a proprietary blend of 12 herbs and spices. It will keep you warm when it's cold outside (down to -10º, guaranteed) and it will keep you cold when it's hot outside. It will pick you up when you're down and spin you all around. The Good Organic Synthetic Magical Colorful! Everything Else This shirt should not be washed, worn indoors, or slept-in. Significantly increases your change of developing hang nails. Tends to attract raccoons.",
+    descriptionHtml:
+      '<p>This tee is the bee\'s knees. It is made of a proprietary blend of 12 herbs and spices. It will keep you warm when it\'s cold outside (down to -10º, guaranteed) and it will keep you cold when it\'s hot outside. It will pick you up when you\'re down and spin you all around.<br></p>\n<h3>The Good<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Organic<br>\n</li>\n<li>Synthetic<br>\n</li>\n<li>Magical<br>\n</li>\n<li>Colorful!<br>\n</li>\n</ul>\n<h3>Everything Else<br data-mce-fragment="1">\n</h3>\n<p>This shirt should not be washed, worn indoors, or slept-in. Significantly increases your change of developing hang nails. Tends to attract raccoons.</p>',
+    featuredImage: {
+      id: 'gid://shopify/ProductImage/29703186710628',
+      url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._800x800.png.webp?v=1660406577',
+      width: 1024,
+      height: 1024,
+      altText: null,
+      __typename: 'Shopify_Image'
+    },
+    priceRangeV2: {
+      maxVariantPrice: { currencyCode: 'USD', amount: '12.0', __typename: 'Shopify_MoneyV2' },
+      minVariantPrice: { currencyCode: 'USD', amount: '10.0', __typename: 'Shopify_MoneyV2' },
+      __typename: 'Shopify_ProductPriceRangeV2'
+    },
+    variants: {
+      edges: [
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670162020',
+            availableForSale: false,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 0,
+            sku: '',
+            title: 'XXS / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'XXS', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670194788',
+            availableForSale: false,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 0,
+            sku: '',
+            title: 'XXS / Gray',
+            selectedOptions: [
+              { name: 'Size', value: 'XXS', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670227556',
+            availableForSale: false,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 0,
+            sku: '',
+            title: 'XXS / White',
+            selectedOptions: [
+              { name: 'Size', value: 'XXS', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670260324',
+            availableForSale: false,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 0,
+            sku: '',
+            title: 'XS / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670293092',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'XS / Gray',
+            selectedOptions: [
+              { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670325860',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'XS / White',
+            selectedOptions: [
+              { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670358628',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'S / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'S', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670391396',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 4,
+            sku: '',
+            title: 'S / Gray',
+            selectedOptions: [
+              { name: 'Size', value: 'S', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670424164',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'S / White',
+            selectedOptions: [
+              { name: 'Size', value: 'S', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670456932',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'M / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'M', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670489700',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'M / Gray',
+            selectedOptions: [
+              { name: 'Size', value: 'M', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670555236',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'M / White',
+            selectedOptions: [
+              { name: 'Size', value: 'M', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670588004',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'L / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'L', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670620772',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'L / Gray',
+            selectedOptions: [
+              { name: 'Size', value: 'L', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670653540',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'L / White',
+            selectedOptions: [
+              { name: 'Size', value: 'L', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670686308',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'XL / Black',
+            selectedOptions: [
+              { name: 'Size', value: 'XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670719076',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'XL / Gray',
+            selectedOptions: [
+              { name: 'Size', value: 'XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670751844',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: 'XL / White',
+            selectedOptions: [
+              { name: 'Size', value: 'XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670784612',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: '2XL / Black',
+            selectedOptions: [
+              { name: 'Size', value: '2XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670817380',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: '2XL / Gray',
+            selectedOptions: [
+              { name: 'Size', value: '2XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670850148',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '10.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: '2XL / White',
+            selectedOptions: [
+              { name: 'Size', value: '2XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670882916',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '12.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: '3XL / Black',
+            selectedOptions: [
+              { name: 'Size', value: '3XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670915684',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '12.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: '3XL / Gray',
+            selectedOptions: [
+              { name: 'Size', value: '3XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        },
+        {
+          node: {
+            id: 'gid://shopify/ProductVariant/40234670981220',
+            availableForSale: true,
+            compareAtPrice: null,
+            image: null,
+            price: '12.00',
+            inventoryPolicy: 'DENY',
+            sellableOnlineQuantity: 5,
+            sku: '',
+            title: '3XL / White',
+            selectedOptions: [
+              { name: 'Size', value: '3XL', __typename: 'Shopify_SelectedOption' },
+              { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
+            ],
+            __typename: 'Shopify_ProductVariant'
+          },
+          __typename: 'Shopify_ProductVariantEdge'
+        }
+      ],
+      __typename: 'Shopify_ProductVariantConnection'
+    },
+    options: [
+      {
+        name: 'Size',
+        position: 1,
+        id: 'gid://shopify/ProductOption/8766172332132',
+        values: ['XXS', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+        __typename: 'Shopify_ProductOption'
+      },
+      {
+        name: 'Color',
+        position: 2,
+        id: 'gid://shopify/ProductOption/8766172364900',
+        values: ['Black', 'Gray', 'White'],
+        __typename: 'Shopify_ProductOption'
+      }
+    ],
+    __typename: 'Shopify_Product'
+  },
+  __typename: 'Shopify_ProductVariant'
+};
+
+export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
   subscriptions: [
     {
       id: '274757498',
@@ -116,6 +626,10 @@ export const getMySubscriptionsResponse: GetMySubscriptionsQueryResponse = {
           __typename: 'Recharge_ProductSubscriptionDefaultsProperty'
         },
         __typename: 'Recharge_Product'
+      },
+      // @ts-expect-error
+      shopifyProductVariant: {
+        ...subscriptionProductVariantResponse
       },
       __typename: 'Recharge_Subscription'
     },
@@ -226,6 +740,10 @@ export const getMySubscriptionsResponse: GetMySubscriptionsQueryResponse = {
           __typename: 'Recharge_ProductSubscriptionDefaultsProperty'
         },
         __typename: 'Recharge_Product'
+      },
+      // @ts-expect-error
+      shopifyProductVariant: {
+        ...subscriptionProductVariantResponse
       },
       __typename: 'Recharge_Subscription'
     },
@@ -363,524 +881,14 @@ export const getMySubscriptionsResponse: GetMySubscriptionsQueryResponse = {
         },
         __typename: 'Recharge_Product'
       },
+      // @ts-expect-error
+      shopifyProductVariant: {
+        ...subscriptionProductVariantResponse
+      },
       __typename: 'Recharge_Subscription'
     }
   ]
 };
-
-// @ts-expect-error
-export const subscriptionProductVariantResponse: SubscriptionProductVariantQueryResponse = {
-  variant: {
-    id: 'gid://shopify/ProductVariant/40234670260324',
-    title: 'XS / Black',
-    price: '10.00',
-    selectedOptions: [
-      { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
-      { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-    ],
-    product: {
-      id: 'gid://shopify/Product/6857243132004',
-      handle: 'basic-tee-6-pack',
-      title: 'An Exceptional Tee for Men',
-      description:
-        "This tee is the bee's knees. It is made of a proprietary blend of 12 herbs and spices. It will keep you warm when it's cold outside (down to -10º, guaranteed) and it will keep you cold when it's hot outside. It will pick you up when you're down and spin you all around. The Good Organic Synthetic Magical Colorful! Everything Else This shirt should not be washed, worn indoors, or slept-in. Significantly increases your change of developing hang nails. Tends to attract raccoons.",
-      descriptionHtml:
-        '<p>This tee is the bee\'s knees. It is made of a proprietary blend of 12 herbs and spices. It will keep you warm when it\'s cold outside (down to -10º, guaranteed) and it will keep you cold when it\'s hot outside. It will pick you up when you\'re down and spin you all around.<br></p>\n<h3>The Good<br data-mce-fragment="1">\n</h3>\n<ul>\n<li>Organic<br>\n</li>\n<li>Synthetic<br>\n</li>\n<li>Magical<br>\n</li>\n<li>Colorful!<br>\n</li>\n</ul>\n<h3>Everything Else<br data-mce-fragment="1">\n</h3>\n<p>This shirt should not be washed, worn indoors, or slept-in. Significantly increases your change of developing hang nails. Tends to attract raccoons.</p>',
-      featuredImage: {
-        id: 'gid://shopify/ProductImage/29703186710628',
-        url: 'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._800x800.png.webp?v=1660406577',
-        width: 1024,
-        height: 1024,
-        altText: null,
-        __typename: 'Shopify_Image'
-      },
-      priceRangeV2: {
-        maxVariantPrice: { currencyCode: 'USD', amount: '12.0', __typename: 'Shopify_MoneyV2' },
-        minVariantPrice: { currencyCode: 'USD', amount: '10.0', __typename: 'Shopify_MoneyV2' },
-        __typename: 'Shopify_ProductPriceRangeV2'
-      },
-      variants: {
-        edges: [
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670162020',
-              availableForSale: false,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 0,
-              sku: '',
-              title: 'XXS / Black',
-              selectedOptions: [
-                { name: 'Size', value: 'XXS', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670194788',
-              availableForSale: false,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 0,
-              sku: '',
-              title: 'XXS / Gray',
-              selectedOptions: [
-                { name: 'Size', value: 'XXS', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670227556',
-              availableForSale: false,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 0,
-              sku: '',
-              title: 'XXS / White',
-              selectedOptions: [
-                { name: 'Size', value: 'XXS', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670260324',
-              availableForSale: false,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 0,
-              sku: '',
-              title: 'XS / Black',
-              selectedOptions: [
-                { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670293092',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'XS / Gray',
-              selectedOptions: [
-                { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670325860',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'XS / White',
-              selectedOptions: [
-                { name: 'Size', value: 'XS', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670358628',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'S / Black',
-              selectedOptions: [
-                { name: 'Size', value: 'S', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670391396',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 4,
-              sku: '',
-              title: 'S / Gray',
-              selectedOptions: [
-                { name: 'Size', value: 'S', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670424164',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'S / White',
-              selectedOptions: [
-                { name: 'Size', value: 'S', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670456932',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'M / Black',
-              selectedOptions: [
-                { name: 'Size', value: 'M', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670489700',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'M / Gray',
-              selectedOptions: [
-                { name: 'Size', value: 'M', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670555236',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'M / White',
-              selectedOptions: [
-                { name: 'Size', value: 'M', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670588004',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'L / Black',
-              selectedOptions: [
-                { name: 'Size', value: 'L', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670620772',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'L / Gray',
-              selectedOptions: [
-                { name: 'Size', value: 'L', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670653540',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'L / White',
-              selectedOptions: [
-                { name: 'Size', value: 'L', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670686308',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'XL / Black',
-              selectedOptions: [
-                { name: 'Size', value: 'XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670719076',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'XL / Gray',
-              selectedOptions: [
-                { name: 'Size', value: 'XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670751844',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: 'XL / White',
-              selectedOptions: [
-                { name: 'Size', value: 'XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670784612',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: '2XL / Black',
-              selectedOptions: [
-                { name: 'Size', value: '2XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670817380',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: '2XL / Gray',
-              selectedOptions: [
-                { name: 'Size', value: '2XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670850148',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '10.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: '2XL / White',
-              selectedOptions: [
-                { name: 'Size', value: '2XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670882916',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '12.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: '3XL / Black',
-              selectedOptions: [
-                { name: 'Size', value: '3XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Black', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670915684',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '12.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: '3XL / Gray',
-              selectedOptions: [
-                { name: 'Size', value: '3XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'Gray', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          },
-          {
-            node: {
-              id: 'gid://shopify/ProductVariant/40234670981220',
-              availableForSale: true,
-              compareAtPrice: null,
-              image: null,
-              price: '12.00',
-              inventoryPolicy: 'DENY',
-              sellableOnlineQuantity: 5,
-              sku: '',
-              title: '3XL / White',
-              selectedOptions: [
-                { name: 'Size', value: '3XL', __typename: 'Shopify_SelectedOption' },
-                { name: 'Color', value: 'White', __typename: 'Shopify_SelectedOption' }
-              ],
-              __typename: 'Shopify_ProductVariant'
-            },
-            __typename: 'Shopify_ProductVariantEdge'
-          }
-        ],
-        __typename: 'Shopify_ProductVariantConnection'
-      },
-      options: [
-        {
-          name: 'Size',
-          position: 1,
-          id: 'gid://shopify/ProductOption/8766172332132',
-          values: ['XXS', 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
-          __typename: 'Shopify_ProductOption'
-        },
-        {
-          name: 'Color',
-          position: 2,
-          id: 'gid://shopify/ProductOption/8766172364900',
-          values: ['Black', 'Gray', 'White'],
-          __typename: 'Shopify_ProductOption'
-        }
-      ],
-      __typename: 'Shopify_Product'
-    },
-    __typename: 'Shopify_ProductVariant'
-  }
-} as const;
 
 export const getMyPaymentMethodsResponse: GetMyPaymentMethodsQueryResponse = {
   paymentMethods: [
