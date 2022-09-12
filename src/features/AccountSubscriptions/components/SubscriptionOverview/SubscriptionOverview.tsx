@@ -1,4 +1,4 @@
-import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/24/solid';
 import NextImage from 'components/NextImage';
 import { CreditCard } from 'components/Payments/CreditCard';
 import { format } from 'date-fns';

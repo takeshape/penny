@@ -1,5 +1,5 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
-import { DotsVerticalIcon } from '@heroicons/react/solid';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
 import { Fragment, useCallback } from 'react';
 import { shopifyGidToId } from 'transforms/shopify';
@@ -47,7 +47,7 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
           <div className="flex items-center">
             <Menu.Button className="-m-2 p-2 flex items-center text-body-400 hover:text-body-500">
               <span className="sr-only">Options for subscription {subscription.id}</span>
-              <DotsVerticalIcon className="w-6 h-6" aria-hidden="true" />
+              <EllipsisVerticalIcon className="w-6 h-6" aria-hidden="true" />
             </Menu.Button>
           </div>
 

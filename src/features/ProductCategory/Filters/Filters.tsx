@@ -1,5 +1,5 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon, FilterIcon } from '@heroicons/react/solid';
+import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/solid';
 import { Fragment, PropsWithChildren, useCallback, useMemo } from 'react';
 import classNames from 'utils/classNames';
 
@@ -113,7 +113,7 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
         <div className="max-w-7xl mx-auto flex space-x-6 divide-x divide-body-200 text-sm px-4 sm:px-6 lg:px-8">
           <div>
             <Disclosure.Button className="group text-primary-700 font-medium flex items-center">
-              <FilterIcon
+              <FunnelIcon
                 className="flex-none w-5 h-5 mr-2 text-primary-400 group-hover:text-primary-500"
                 aria-hidden="true"
               />

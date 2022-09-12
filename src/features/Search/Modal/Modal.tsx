@@ -1,6 +1,6 @@
 import { Combobox, Dialog, Transition } from '@headlessui/react';
-import { ExclamationIcon } from '@heroicons/react/outline';
-import { SearchIcon } from '@heroicons/react/solid';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Loader from 'components/Loader/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
@@ -81,7 +81,7 @@ export const Modal = () => {
             <Dialog.Panel className="mx-auto max-w-xl transform divide-y divide-form-100 overflow-hidden rounded-xl bg-background shadow-2xl ring-1 ring-black ring-opacity-5 transition-all">
               <Combobox value={query} onChange={onSelectResult}>
                 <div className="relative">
-                  <SearchIcon
+                  <MagnifyingGlassIcon
                     className="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-form-400"
                     aria-hidden="true"
                   />
@@ -104,7 +104,7 @@ export const Modal = () => {
 
                 {query !== '' && results.length === 0 && !loading && (
                   <div className="py-14 px-6 text-center text-sm sm:px-14">
-                    <ExclamationIcon className="mx-auto h-6 w-6 text-body-400" aria-hidden="true" />
+                    <ExclamationTriangleIcon className="mx-auto h-6 w-6 text-body-400" aria-hidden="true" />
                     <p className="mt-4 font-semibold text-body-900">No results found</p>
                     <p className="mt-2 text-body-500">We couldn’t find anything with that term. Please try again.</p>
                   </div>

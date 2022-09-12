@@ -1,4 +1,4 @@
-import { CheckCircleIcon, ClockIcon, InformationCircleIcon, MinusCircleIcon } from '@heroicons/react/solid';
+import { CheckCircleIcon, ClockIcon, InformationCircleIcon, MinusCircleIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
 import { shopifyGidToId } from 'transforms/shopify';
 import { RechargeCharge, Subscription } from '../../types';

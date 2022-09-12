@@ -1,4 +1,4 @@
-import { StarIcon } from '@heroicons/react/solid';
+import { StarIcon } from '@heroicons/react/24/solid';
 import NextImage from 'components/NextImage';
 import NextLink from 'components/NextLink';
 import classNames from 'utils/classNames';
