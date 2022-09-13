@@ -169,9 +169,6 @@ Here are the steps for getting started with this project:
   environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
   hosting provider's UI.
 
-- Do the same process, but this time create a key with `webhook` permissions. The environment variable for this key will
-  be `TAKESHAPE_WEBHOOK_API_KEY`.
-
 3. Get your TakeShape project's API Endpoint. Here's how:
 
 - Navigate to the **Home** tab of your TakeShape project's dashboard in the web client. Scroll down to the **Useful
