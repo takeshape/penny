@@ -46,9 +46,13 @@ export const Blog = (props: BlogProps) => {
         <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-3 lg:max-w-none">
           {posts.map((post) => (
             <div key={post.title} className="flex flex-col rounded-lg shadow-lg overflow-hidden">
-              <div className="flex-shrink-0 h-48 w-full relative">
-                <NextImage className="object-cover" height={500} width={500} src={post.imageUrl} alt="" />
-              </div>
+              <NextImage
+                className="flex-shrink-0 object-cover h-48 w-full"
+                height={500}
+                width={500}
+                src={post.imageUrl}
+                alt=""
+              />
               <div className="flex-1 bg-background p-6 flex flex-col justify-between">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-accent-600">
