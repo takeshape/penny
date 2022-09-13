@@ -544,8 +544,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small'
               },
               price: '2.90',
               quantity: 1,
@@ -553,8 +552,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40184079351908',
               subscription_id: '274757498',
               title: 'Mesh Gym Shorts',
-              variant_title: 'Black / S',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'Black / S'
             }
           ],
           currency: 'USD',
@@ -570,8 +568,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small'
               },
               price: '2.9',
               quantity: 1,
@@ -579,8 +576,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40184079351908',
               subscription_id: '274757498',
               title: 'Mesh Gym Shorts',
-              variant_title: 'Black / S',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'Black / S'
             }
           ],
           currency: 'USD',
@@ -658,8 +654,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot_large.jpg?v=1654530734_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot_large.jpg?v=1654530734_small'
               },
               price: '172.80',
               quantity: 1,
@@ -667,8 +662,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40234670260324',
               subscription_id: '271016815',
               title: 'Basic Tee 6-Pack',
-              variant_title: 'XS / Black',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'XS / Black'
             }
           ],
           currency: 'USD',
@@ -684,8 +678,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot_large.jpg?v=1654530734_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/product-page-02-secondary-product-shot_large.jpg?v=1654530734_small'
               },
               price: '172.8',
               quantity: 1,
@@ -693,8 +686,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40234670260324',
               subscription_id: '271016815',
               title: 'Basic Tee 6-Pack',
-              variant_title: 'XS / Black',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'XS / Black'
             }
           ],
           currency: 'USD',
@@ -772,8 +764,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small'
               },
               price: '0.29',
               quantity: 1,
@@ -781,8 +772,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40184079351908',
               subscription_id: '264305561',
               title: 'Mesh Gym Shorts',
-              variant_title: 'Black / S',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'Black / S'
             }
           ],
           currency: 'USD',
@@ -798,8 +788,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small'
               },
               price: '0.29',
               quantity: 1,
@@ -807,8 +796,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40184079351908',
               subscription_id: '264305561',
               title: 'Mesh Gym Shorts',
-              variant_title: 'Black / S',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'Black / S'
             }
           ],
           currency: 'USD',
@@ -824,8 +812,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
             {
               images: {
                 small:
-                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small',
-                __typename: 'Recharge_ChargeLineItemsImagesProperty'
+                  'https://cdn.shopify.com/s/files/1/0579/6744/4068/products/gymshorts_large.png?v=1650570316_small'
               },
               price: '0.29',
               quantity: 1,
@@ -833,8 +820,7 @@ export const getMySubscriptionsResponse: GetMySubscriptionListQueryResponse = {
               shopify_variant_id: '40184079351908',
               subscription_id: '264305561',
               title: 'Mesh Gym Shorts',
-              variant_title: 'Black / S',
-              __typename: 'Recharge_ChargeLineItemsProperty'
+              variant_title: 'Black / S'
             }
           ],
           currency: 'USD',

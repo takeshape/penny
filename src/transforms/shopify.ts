@@ -15,7 +15,8 @@ import {
   Shopify_MoneyV2,
   Shopify_SellingPlanInterval,
   Shopify_SellingPlanPricingPolicyAdjustmentType,
-  Shopify_SellingPlanPricingPolicyPercentageValue
+  Shopify_SellingPlanPricingPolicyPercentageValue,
+  Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
 
 type Shopify_Image =
@@ -23,9 +24,6 @@ type Shopify_Image =
 
 type Shopify_SellingPlanPricingPolicy =
   ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['pricingPolicies'][0];
-
-type Shopify_SellingPlanRecurringBillingPolicy =
-  ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['billingPolicy'];
 
 type Shopify_Product = ProductPageShopifyProductResponse['product'];
 
@@ -80,7 +78,10 @@ function getSubscriptionInterval({
   maxCycles,
   minCycles,
   anchors
-}: Shopify_SellingPlanRecurringBillingPolicy) {
+}: Pick<
+  Shopify_SellingPlanRecurringBillingPolicy,
+  'interval' | 'intervalCount' | 'maxCycles' | 'minCycles' | 'anchors'
+>) {
   const subscriptionInterval = {
     anchor: anchors[0],
     intervalCount,
@@ -159,7 +160,8 @@ export function getProductVariantPriceOptions(
     prices = prices
       .concat(
         sellingPlans.map((plan) => {
-          const subscriptionInterval = getSubscriptionInterval(plan.billingPolicy);
+          // TODO Don't know what happened to these types
+          const subscriptionInterval = getSubscriptionInterval(plan.billingPolicy as any);
           const discount = getDiscount(amount, plan.pricingPolicies[0]);
 
           return {
