@@ -5,7 +5,7 @@ export const TopCreateOrSignIn = () => {
   const { status } = useSession();
 
   if (status === 'authenticated') {
-    return null;
+    return <div className="hidden lg:flex lg:flex-1"></div>;
   }
 
   return (
