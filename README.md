@@ -89,7 +89,6 @@ Here are the frameworks, language and styling options we went with for this buil
 
 - [Next.js](https://nextjs.org/) to build the pages and bundle the frontend application
 - [NextAuth](https://next-auth.js.org/) for user authentication against TakeShape and Shopify
-- [Tailwind UI](https://tailwindui.com/) for attractive components that are easy to customize
 - [TypeScript](https://www.typescriptlang.org/) for type safety and documentation
 - [Apollo Client](https://www.apollographql.com/docs/react/) for efficient GraphQL queries against TakeShape
 - [Jotai](https://jotai.org/) for optimized component state management
