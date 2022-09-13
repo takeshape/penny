@@ -48,7 +48,6 @@ const ChargeFragment = gql`
         province
         provinceCode
         country
-        countryCodeV2
         zip
         phone
       }
