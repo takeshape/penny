@@ -2,8 +2,8 @@ import { CreditCard } from 'components/Payments/CreditCard';
 import { format } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { formatPrice } from 'utils/text';
-import { RefetchSubscriptions, Subscription } from '../../types';
-import { formatDeliverySchedule, getCharges } from '../../utils';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
+import { formatDeliverySchedule, getOrders } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
 import { NextChargeDateForm } from '../Actions/NextChargeDate';
@@ -14,7 +14,7 @@ import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
 
 export interface ManageSubscriptionProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
   refetchSubscriptionList: RefetchSubscriptions;
 }
@@ -24,7 +24,7 @@ export const ManageSubscription = ({
   refetchSubscriptions,
   refetchSubscriptionList
 }: ManageSubscriptionProps) => {
-  const { nextOrder, nextQueuedOrder } = useMemo(() => getCharges(subscription.charges), [subscription.charges]);
+  const { nextOrder, nextQueuedOrder } = useMemo(() => getOrders(subscription.orders), [subscription.orders]);
 
   const [isNextChargeDateOpen, setIsNextChargeDateOpen] = useState(false);
   const [isShippingAddressOpen, setIsShippingAddressOpen] = useState(false);
@@ -35,7 +35,7 @@ export const ManageSubscription = ({
   const [isCancelSubscriptionOpen, setIsCancelSubscriptionOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
-  const product = subscription.product;
+  const { product, productVariant } = subscription;
 
   return (
     <>
@@ -85,7 +85,7 @@ export const ManageSubscription = ({
             <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
               <dt className="text-sm font-medium text-body-500">Order schedule</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{format(new Date(subscription.next_charge_scheduled_at), 'PPP')}</div>
+                <div className="flex-grow">{format(new Date(subscription.nextChargeScheduledAt), 'PPP')}</div>
                 <div className="ml-4 flex-shrink-0 flex space-x-4">
                   <button
                     type="button"
@@ -121,7 +121,7 @@ export const ManageSubscription = ({
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
                   <div>{product.name}</div>
-                  <div className="mt-2">{product.variantName}</div>
+                  <div className="mt-2">{productVariant.name}</div>
                 </div>
                 <div className="ml-4 flex-shrink-0">
                   <button
@@ -159,7 +159,7 @@ export const ManageSubscription = ({
               <dt className="text-sm font-medium text-body-500">Amount per item</dt>
               <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
                 <div className="flex-grow">
-                  {formatPrice(subscription.price.currencyCode, subscription.price.amountPerItem)}
+                  {formatPrice(subscription.unitPrice.currencyCode, subscription.unitPrice.amount)}
                 </div>
               </dd>
             </div>
@@ -245,7 +245,7 @@ export const ManageSubscription = ({
         subscription={subscription}
         variants={product.variants}
         variantOptions={product.variantOptions}
-        currentSelections={product.variantSelections}
+        currentSelections={productVariant.options}
         refetchSubscriptions={refetchSubscriptions}
         isOpen={isProductOptionsOpen}
         onClose={() => setIsProductOptionsOpen(false)}

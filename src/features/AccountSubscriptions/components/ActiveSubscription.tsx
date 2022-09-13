@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
-import { RefetchSubscriptions, Subscription } from '../types';
+import { AnySubscription, RefetchSubscriptions } from '../types';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
@@ -23,7 +23,7 @@ const navigationItems = [
 ];
 
 export interface ActiveSubscriptionProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscription: RefetchSubscriptions;
   refetchSubscriptionList: RefetchSubscriptions;
 }

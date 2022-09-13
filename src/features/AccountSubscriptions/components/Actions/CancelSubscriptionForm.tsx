@@ -6,10 +6,10 @@ import { useForm } from 'react-hook-form';
 import { CancelSubscriptionMutationResponse, CancelSubscriptionMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { CancelSubscriptionMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 
 export interface CancelSubscriptionFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 

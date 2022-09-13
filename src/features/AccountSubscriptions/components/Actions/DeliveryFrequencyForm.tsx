@@ -8,21 +8,18 @@ import { UpdateDeliveryFrequencyMutationResponse, UpdateDeliveryFrequencyMutatio
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UpdateDeliveryFrequencyMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 
 export interface DeliveryFrequencyFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface DeliveryFrequencyFormValues {
-  intervalCount: number;
+  intervalCount: string;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const DeliveryFrequencyForm = ({
   isOpen,
   onClose,
@@ -45,7 +42,7 @@ export const DeliveryFrequencyForm = ({
     async (formData: DeliveryFrequencyFormValues) => {
       await updateDeliveryFrequency({
         variables: {
-          frequency: formData.intervalCount.toString(),
+          frequency: formData.intervalCount,
           unit: subscription.interval.toLowerCase(),
           subscriptionId: subscription.id
         }
@@ -59,7 +56,7 @@ export const DeliveryFrequencyForm = ({
   const resetState = useCallback(
     () =>
       reset({
-        intervalCount: subscription.intervalCount
+        intervalCount: String(subscription.intervalCount)
       }),
     [reset, subscription.intervalCount]
   );

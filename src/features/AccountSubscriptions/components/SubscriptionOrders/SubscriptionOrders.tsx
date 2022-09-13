@@ -2,11 +2,11 @@ import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/O
 import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
 import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
 import { useMemo, useState } from 'react';
-import { RefetchSubscriptions, Subscription } from '../../types';
-import { getCharges } from '../../utils';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
+import { getOrders } from '../../utils';
 
 export interface SubscriptionOrdersProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -19,8 +19,8 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
   const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
 
   const { mostRecentOrder, nextOrder, nextQueuedOrder, skippedAndPastOrders } = useMemo(
-    () => getCharges(subscription.charges),
-    [subscription.charges]
+    () => getOrders(subscription.orders),
+    [subscription.orders]
   );
 
   return (

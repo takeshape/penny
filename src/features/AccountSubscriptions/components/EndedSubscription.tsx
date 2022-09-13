@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Fragment, useCallback } from 'react';
 import { shopifyGidToId } from 'transforms/shopify';
 import classNames from 'utils/classNames';
-import { RefetchSubscriptions, Subscription } from '../types';
+import { AnySubscription, RefetchSubscriptions } from '../types';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
 import { SubscriptionOverview } from './SubscriptionOverview/SubscriptionOverview';
 
@@ -18,7 +18,7 @@ const navigationItems = [
 ];
 
 export interface EndedSubscriptionProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscription?: RefetchSubscriptions;
   refetchSubscriptionList?: RefetchSubscriptions;
 }

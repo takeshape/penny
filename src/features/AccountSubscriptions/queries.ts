@@ -19,7 +19,10 @@ const AddressFragment = gql`
 const ChargeFragment = gql`
   fragment Charge on Recharge_Charge {
     id
+    created_at
     scheduled_at
+    processed_at
+    updated_at
     line_items {
       images {
         small
@@ -28,19 +31,33 @@ const ChargeFragment = gql`
       quantity
       shopify_product_id
       shopify_variant_id
-      subscription_id
       title
       variant_title
     }
     currency
     status
-    address_id
     shopifyOrder {
       processedAt
+      shippingAddress {
+        firstName
+        lastName
+        address1
+        address2
+        company
+        city
+        province
+        provinceCode
+        country
+        countryCodeV2
+        zip
+        phone
+      }
       fulfillments(first: 10) {
+        updatedAt
         deliveredAt
-        displayStatus
+        estimatedDeliveryAt
         inTransitAt
+        displayStatus
         fulfillmentLineItems(first: 10) {
           edges {
             node {
@@ -115,8 +132,18 @@ const SubscriptionFragment = gql`
 const ShopifyProductVariantFragment = gql`
   fragment ShopifyProductVariant on Shopify_ProductVariant {
     id
-    title
+    availableForSale
+    compareAtPrice
+    image {
+      width
+      height
+      url
+    }
     price
+    inventoryPolicy
+    sellableOnlineQuantity
+    sku
+    title
     selectedOptions {
       name
       value

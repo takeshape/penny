@@ -12,7 +12,7 @@ import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { formatPrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription, SubscriptionProductVariant } from '../../types';
+import { AnySubscription, RefetchSubscriptions, SubscriptionProductVariant } from '../../types';
 
 function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
   return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});
@@ -64,7 +64,7 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
 };
 
 export interface ProductOptionsFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   variants: SubscriptionProductVariant[];
   variantOptions: ProductVariantOption[];
   currentSelections: ProductVariantSelection[];

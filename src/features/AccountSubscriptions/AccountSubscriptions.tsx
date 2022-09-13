@@ -3,11 +3,11 @@ import CardPanel from 'components/Card/Panel/Panel';
 import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
 import { AccountSubscription } from './AccountSubscription';
 import { SubscriptionSkeleton } from './components/SubscriptionSkeleton';
-import { RefetchSubscriptions, Subscription } from './types';
+import { AnySubscription, RefetchSubscriptions } from './types';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
 export interface AccountSubscriptionsProps {
-  subscriptions: Subscription[];
+  subscriptions: AnySubscription[];
   refetchSubscriptionList: RefetchSubscriptions;
 }
 

@@ -12,11 +12,11 @@ import {
 } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { SetNextChargeDateMutation, UnskipChargeMutation } from '../../queries';
-import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
 export interface OrderNowFormProps extends ModalProps {
-  subscription: Subscription;
-  order: RechargeCharge;
+  subscription: AnySubscription;
+  order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -51,7 +51,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order, refetchSubs
   );
 
   const handleFormSubmit = useCallback(async () => {
-    if (order.status === 'SKIPPED') {
+    if (order.status === 'CHARGE_SKIPPED') {
       await unskipCharge({ variables: { chargeId: order.id, subscriptionId: subscription.id } });
     }
 
@@ -90,9 +90,9 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order, refetchSubs
 
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
-                Your next order is currently {order.status === 'SKIPPED' ? 'skipped and' : ''} scheduled for{' '}
-                <span className="font-bold">{format(new Date(order.scheduled_at), 'PPP')}</span>. Would you like to move
-                that up to today?
+                Your next order is currently {order.status === 'CHARGE_SKIPPED' ? 'skipped and' : ''} scheduled for{' '}
+                <span className="font-bold">{format(new Date(order.chargeScheduledAt), 'PPP')}</span>. Would you like to
+                move that up to today?
               </p>
               <p className="text-sm">
                 Please note, your order will be processed in the next 24 hours and all your future orders will be

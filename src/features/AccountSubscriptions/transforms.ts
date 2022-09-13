@@ -7,9 +7,13 @@ import {
 } from 'types/takeshape';
 import { capitalize } from 'utils/text';
 import {
-  Subscription,
+  AnySubscription,
   SubscriptionAddress,
   SubscriptionInterval,
+  SubscriptionOrder,
+  SubscriptionOrderFulfillment,
+  SubscriptionOrderLineItem,
+  SubscriptionOrderStatus,
   SubscriptionPaymentMethod,
   SubscriptionPrice,
   SubscriptionProduct,
@@ -73,15 +77,12 @@ function _getSubscriptionAddress(address: SubscriptionResponse['address']): Subs
 
 function _getSubscriptionPrice(
   price: SubscriptionResponse['price'],
-  presentmentCurrency: SubscriptionResponse['presentment_currency'],
-  quantity: number
+  presentmentCurrency: SubscriptionResponse['presentment_currency']
 ): SubscriptionPrice {
   const priceAsNumber = typeof price === 'number' ? price : parseFloat(price);
-
   return {
     currencyCode: presentmentCurrency,
-    amountPerItem: priceAsNumber * 100,
-    amount: priceAsNumber * 100 * quantity
+    amount: priceAsNumber * 100
   };
 }
 
@@ -99,26 +100,27 @@ function _getSubscriptionInterval(
   }
 }
 
-function _getVariant(
+function _getSubscriptionProductVariant(
   shopifyProduct: SubscriptionResponse['shopifyProductVariant']['product'],
-  shopifyVariant: SubscriptionResponse['shopifyProductVariant']['product']['variants']['nodes'][0],
+  shopifyVariant:
+    | SubscriptionResponse['shopifyProductVariant']['product']['variants']['nodes'][0]
+    | SubscriptionResponse['shopifyProductVariant'],
   currencyCode: string,
   rechargeProduct: SubscriptionResponse['rechargeProduct']
 ): SubscriptionProductVariant {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-  const { id, title, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
+  const { id, title, price, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
     shopifyVariant;
+  const discountAmount = (100 - rechargeProduct.discount_amount) / 100;
 
   return {
     id,
     name: title,
     description: title,
     price: {
-      amountBeforeDiscount: shopifyVariant.price * 100,
-      amount: shopifyVariant.price * 100 * ((100 - rechargeProduct.discount_amount) / 100),
+      amount: price * 100 * discountAmount,
       currencyCode
     },
-    // prices: getProductVariantPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
     image: getImage(image),
     quantityAvailable: sellableOnlineQuantity,
@@ -128,14 +130,6 @@ function _getVariant(
   };
 }
 
-function _getProductVariants(
-  shopifyProduct: SubscriptionResponse['shopifyProductVariant']['product'],
-  currencyCode: string,
-  rechargeProduct: SubscriptionResponse['rechargeProduct']
-): SubscriptionProductVariant[] {
-  return shopifyProduct.variants.nodes.map((node) => _getVariant(shopifyProduct, node, currencyCode, rechargeProduct));
-}
-
 function _getSubscriptionProduct(
   shopifyProductVariant: SubscriptionResponse['shopifyProductVariant'],
   currencyCode: string,
@@ -143,7 +137,9 @@ function _getSubscriptionProduct(
 ): SubscriptionProduct {
   const { product } = shopifyProductVariant;
   const getImage = createImageGetter(`Image of ${product.title}`);
-  const variants = _getProductVariants(product, currencyCode, rechargeProduct);
+  const variants = product.variants.nodes.map((node) =>
+    _getSubscriptionProductVariant(product, node, currencyCode, rechargeProduct)
+  );
 
   return {
     id: product.id,
@@ -155,14 +151,213 @@ function _getSubscriptionProduct(
     featuredImage: getImage(product.featuredImage),
     hasStock: product.totalInventory > 0,
     variants,
-    variantId: shopifyProductVariant.id,
-    variantName: shopifyProductVariant.title,
-    variantSelections: shopifyProductVariant.selectedOptions,
     variantOptions: getProductVariantOptions(product.options, variants)
   };
 }
 
-function _getSubscription(rechargeSubscription: SubscriptionResponse): Subscription {
+type SubscriptionChargeStatus = {
+  status: SubscriptionOrderStatus;
+  statusAt: string;
+};
+
+function _getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionChargeStatus {
+  const { updated_at, created_at, shopifyOrder } = rechargeCharge;
+  const fulfillment = shopifyOrder?.fulfillments?.[0];
+
+  switch (rechargeCharge.status) {
+    case 'QUEUED':
+      return {
+        status: 'CHARGE_QUEUED',
+        statusAt: created_at
+      };
+    case 'SKIPPED':
+      return {
+        status: 'CHARGE_SKIPPED',
+        statusAt: updated_at
+      };
+    case 'CANCELLED':
+      return {
+        status: 'CHARGE_CANCELLED',
+        statusAt: updated_at
+      };
+    case 'REFUNDED':
+    case 'PARTIALLY_REFUNDED':
+      return {
+        status: 'CHARGE_REFUNDED',
+        statusAt: updated_at
+      };
+    case 'PENDING_MANUAL_PAYMENT':
+      return {
+        status: 'CHARGE_PENDING_MANUAL_PAYMENT',
+        statusAt: updated_at
+      };
+    case 'PENDING':
+      return {
+        status: 'CHARGE_PENDING',
+        statusAt: updated_at
+      };
+    case 'ERROR':
+      return {
+        status: 'CHARGE_ERROR',
+        statusAt: updated_at
+      };
+    case 'SUCCESS':
+      if (!fulfillment) {
+        return {
+          status: 'CHARGE_SUCCESS',
+          statusAt: updated_at
+        };
+      }
+      break;
+
+    default:
+      return {
+        status: 'CHARGE_UNKNOWN',
+        statusAt: updated_at
+      };
+  }
+
+  const { updatedAt, inTransitAt, deliveredAt } = fulfillment;
+
+  switch (fulfillment.displayStatus) {
+    case 'SUBMITTED':
+    case 'MARKED_AS_FULFILLED':
+    case 'LABEL_VOIDED':
+    case 'LABEL_PRINTED':
+    case 'LABEL_PURCHASED':
+    case 'FULFILLED':
+    case 'READY_FOR_PICKUP':
+      return {
+        // User doesn't care
+        status: 'CHARGE_SUCCESS',
+        statusAt: updatedAt
+      };
+
+    case 'PICKED_UP':
+    case 'IN_TRANSIT':
+      return {
+        status: 'FULFILLMENT_IN_TRANSIT',
+        statusAt: inTransitAt ?? updatedAt
+      };
+
+    case 'OUT_FOR_DELIVERY':
+      return {
+        status: 'FULFILLMENT_OUT_FOR_DELIVERY',
+        statusAt: updatedAt
+      };
+
+    case 'ATTEMPTED_DELIVERY':
+      return {
+        status: 'FULFILLMENT_ATTEMPTED_DELIVERY',
+        statusAt: updatedAt
+      };
+
+    case 'DELIVERED':
+      return {
+        status: 'FULFILLMENT_DELIVERED',
+        statusAt: deliveredAt
+      };
+
+    case 'NOT_DELIVERED':
+      return {
+        status: 'FULFILLMENT_NOT_DELIVERED',
+        statusAt: deliveredAt
+      };
+
+    case 'CANCELED':
+      return {
+        status: 'FULFILLMENT_CANCELED',
+        statusAt: updatedAt
+      };
+
+    case 'FAILURE':
+      return {
+        status: 'FULFILLMENT_FAILURE',
+        statusAt: updatedAt
+      };
+
+    default:
+      return {
+        status: 'FULFILLMENT_UNKNOWN',
+        statusAt: updatedAt
+      };
+  }
+}
+
+function _getSubscriptionOrderLineItem(
+  lineItem: SubscriptionResponse['charges'][0]['line_items'][0],
+  currencyCode: string
+): SubscriptionOrderLineItem {
+  return {
+    price: {
+      amount: parseFloat(lineItem.price) * 100,
+      currencyCode
+    },
+    quantity: lineItem.quantity ?? 1,
+    product: {
+      id: `gid://shopify/Product/${lineItem.shopify_product_id}`,
+      name: lineItem.title,
+      image: {
+        url: lineItem.images.small,
+        height: 300,
+        width: 300,
+        altText: `Image of ${lineItem.title}`
+      }
+    },
+    productVariant: {
+      id: `gid://shopify/Product/${lineItem.shopify_variant_id}`,
+      name: lineItem.variant_title
+    }
+  };
+}
+
+function _getSubscriptionOrderFulfillment(
+  shopifyFulfillment: SubscriptionResponse['charges'][0]['shopifyOrder']['fulfillments'][0]
+): SubscriptionOrderFulfillment {
+  const { deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus } = shopifyFulfillment;
+  return {
+    deliveredAt,
+    estimatedDeliveryAt,
+    inTransitAt,
+    displayStatus
+  };
+}
+
+function _getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionOrder {
+  const { id, scheduled_at, processed_at, shopifyOrder, line_items, currency } = rechargeCharge;
+  const fulfillments =
+    shopifyOrder?.fulfillments?.map((shopifyFulfillment) => _getSubscriptionOrderFulfillment(shopifyFulfillment)) ?? [];
+  const fulfillment = fulfillments[0];
+  const status = _getSubscriptionOrderStatus(rechargeCharge);
+  const { shippingAddress } = shopifyOrder ?? {};
+
+  return {
+    id,
+    chargeId: id,
+    ...status,
+    chargeScheduledAt: scheduled_at ?? null,
+    chargeProcessedAt: processed_at ?? null,
+    fulfillmentScheduledAt: fulfillment?.estimatedDeliveryAt ?? null,
+    fulfillmentInTransitAt: fulfillment?.inTransitAt ?? null,
+    fulfillmentDeliveredAt: fulfillment?.deliveredAt ?? null,
+    shippingAddress: {
+      firstName: shippingAddress?.firstName ?? '',
+      lastName: shippingAddress?.lastName ?? '',
+      address1: shippingAddress?.address1 ?? '',
+      address2: shippingAddress?.address2 ?? '',
+      country: shippingAddress?.country ?? '',
+      city: shippingAddress?.city ?? '',
+      province: shippingAddress?.province ?? '',
+      zip: shippingAddress?.zip ?? '',
+      phone: shippingAddress?.phone,
+      company: shippingAddress?.company
+    },
+    lineItems: line_items?.map((lineItem) => _getSubscriptionOrderLineItem(lineItem, currency)) ?? [],
+    fulfillments
+  };
+}
+
+function _getSubscription(rechargeSubscription: SubscriptionResponse): AnySubscription {
   const {
     id,
     customer_id,
@@ -182,6 +377,7 @@ function _getSubscription(rechargeSubscription: SubscriptionResponse): Subscript
     charges
   } = rechargeSubscription;
   const paymentMethod = address?.include?.payment_methods?.[0];
+  const unitPrice = _getSubscriptionPrice(price, presentment_currency);
 
   return {
     id: id,
@@ -192,14 +388,24 @@ function _getSubscription(rechargeSubscription: SubscriptionResponse): Subscript
     updatedAt: updated_at,
     address: _getSubscriptionAddress(address),
     paymentMethod: _getSubscriptionPaymentMethod(paymentMethod),
-    price: _getSubscriptionPrice(price, presentment_currency, quantity),
     quantity,
+    unitPrice,
+    price: {
+      ...unitPrice,
+      amount: unitPrice.amount * quantity
+    },
     interval: _getSubscriptionInterval(order_interval_unit),
     intervalCount: Number(order_interval_frequency),
+    intervalOptions: rechargeProduct.subscription_defaults.order_interval_frequency_options,
     product: _getSubscriptionProduct(shopifyProductVariant, presentment_currency, rechargeProduct),
-    next_charge_scheduled_at,
-    charges,
-    intervalOptions: rechargeProduct.subscription_defaults.order_interval_frequency_options
+    productVariant: _getSubscriptionProductVariant(
+      shopifyProductVariant.product,
+      shopifyProductVariant,
+      presentment_currency,
+      rechargeProduct
+    ),
+    nextChargeScheduledAt: next_charge_scheduled_at,
+    orders: charges.map(_getSubscriptionOrder)
   };
 }
 
@@ -211,7 +417,7 @@ export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse) {
   return response.paymentMethods.map(_getSubscriptionPaymentMethod);
 }
 
-export function getSubscription(response: GetMySubscriptionQueryResponse): Subscription {
+export function getSubscription(response: GetMySubscriptionQueryResponse): AnySubscription {
   if (!response?.subscription) {
     return null;
   }
@@ -219,7 +425,7 @@ export function getSubscription(response: GetMySubscriptionQueryResponse): Subsc
   return _getSubscription(response.subscription);
 }
 
-export function getSubscriptionList(response: GetMySubscriptionListQueryResponse): Subscription[] {
+export function getSubscriptionList(response: GetMySubscriptionListQueryResponse): AnySubscription[] {
   if (!response?.subscriptions) {
     return null;
   }

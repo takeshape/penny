@@ -1,13 +1,13 @@
 import { isFuture } from 'date-fns';
 import { useState } from 'react';
-import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 import { ReportIssueForm } from '../Actions/ReportIssueForm';
 import { SkipForm } from '../Actions/SkipForm';
 import { UnskipForm } from '../Actions/UnskipForm';
 
 interface OrderItemActionsProps {
-  subscription: Subscription;
-  order: RechargeCharge;
+  subscription: AnySubscription;
+  order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -17,9 +17,9 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
   const [isSkipOpen, setIsSkipOpen] = useState(false);
 
   switch (order.status) {
-    case 'SKIPPED': {
+    case 'CHARGE_SKIPPED': {
       return (
-        isFuture(new Date(order.scheduled_at)) && (
+        isFuture(new Date(order.chargeScheduledAt)) && (
           <>
             <button
               id="unskip"
@@ -41,7 +41,7 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
       );
     }
 
-    case 'QUEUED': {
+    case 'CHARGE_QUEUED': {
       return (
         <>
           <button

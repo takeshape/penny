@@ -7,11 +7,11 @@ import { useForm } from 'react-hook-form';
 import { SkipChargeMutationResponse, SkipChargeMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { SkipChargeMutation } from '../../queries';
-import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
 export interface SkipFormProps extends ModalProps {
-  subscription: Subscription;
-  order: RechargeCharge;
+  subscription: AnySubscription;
+  order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -75,7 +75,7 @@ export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscrip
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
                 Your order will not be processed on{' '}
-                <strong className="text-black">{format(new Date(order.scheduled_at), 'PPP')}</strong>.
+                <strong className="text-black">{format(new Date(order.chargeScheduledAt), 'PPP')}</strong>.
               </p>
               <p>Would you like to continue?</p>
             </div>
@@ -91,7 +91,7 @@ export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscrip
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Skip it"
-        disableSubmit={order.status !== 'QUEUED'}
+        disableSubmit={order.status !== 'CHARGE_QUEUED'}
       />
     </ModalForm>
   );

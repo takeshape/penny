@@ -10,9 +10,9 @@ import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } fro
 import { countries } from 'utils/countries/countries';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UpdateMyAddressMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 interface ShippingAddressFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
