@@ -17,9 +17,6 @@ export interface CancelSubscriptionFormValues {
   confirm: boolean;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const CancelSubscriptionForm = ({
   isOpen,
   onClose,

@@ -13,26 +13,7 @@ import { useAuthenticatedMutation } from 'utils/takeshape';
 import { formatPrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionProductVariant } from '../../types';
-
-function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
-  return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});
-}
-
-function toSelections(formOptions: Record<string, string>): ProductVariantSelection[] {
-  return Object.entries(formOptions).map(([name, value]) => ({ name, value }));
-}
-
-function getVariant(variants: SubscriptionProductVariant[], options: ProductVariantSelection[]) {
-  return variants.find((variant) => {
-    let isVariant = true;
-
-    for (const opt of options) {
-      isVariant = isVariant && variant.options.findIndex((o) => o.name === opt.name && o.value === opt.value) > -1;
-    }
-
-    return isVariant;
-  });
-}
+import { getVariant, toFormOptions, toSelections } from '../../utils';
 
 interface ProductOptionsPriceProps extends Pick<ProductOptionsFormProps, 'subscription' | 'variants'> {
   control: Control<ProductOptionsFormValues, any>;
@@ -76,9 +57,6 @@ interface ProductOptionsFormValues {
   quantity: number;
 }
 
-/**
- * TODO Handle errors
- */
 export const ProductOptionsForm = ({
   subscription,
   variants,

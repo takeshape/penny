@@ -21,9 +21,6 @@ type ShippingAddressFormValues = Pick<
   'address1' | 'address2' | 'city' | 'countryCode' | 'firstName' | 'lastName' | 'phone' | 'province' | 'zip'
 >;
 
-/**
- * TODO Handle errors
- */
 export const ShippingAddressForm = ({
   isOpen,
   onClose,

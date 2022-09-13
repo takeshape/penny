@@ -25,7 +25,6 @@ export interface OrderNowFormValues {
 }
 
 /**
- * TODO Handle submit errors
  * TODO Ideally we'd use this: https://developer.rechargepayments.com/2021-11/charges/charge_process but it requires a
  * pro acct
  */

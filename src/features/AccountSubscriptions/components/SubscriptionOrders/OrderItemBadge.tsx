@@ -1,13 +1,12 @@
 import { format } from 'date-fns';
 import classNames from 'utils/classNames';
-import { AnySubscription, SubscriptionOrder } from '../../types';
+import { SubscriptionOrder } from '../../types';
 
 interface OrderItemBadgeProps {
-  subscription: AnySubscription;
   order: SubscriptionOrder;
 }
 
-export const OrderItemBadge = ({ subscription, order }: OrderItemBadgeProps) => {
+export const OrderItemBadge = ({ order }: OrderItemBadgeProps) => {
   let badgeText = '';
   let badgeClasses = '';
 

@@ -37,7 +37,7 @@ export const OrderItemHeader = ({ subscription, order }: OrderItemHeaderProps) =
       </h2>
       <div className="ml-auto sm:ml-0 space-y-5 md:flex-1 md:min-w-0 sm:flex sm:items-baseline sm:justify-between sm:space-y-0">
         <p className="text-sm font-medium text-body-500">
-          <OrderItemBadge subscription={subscription} order={order} />
+          <OrderItemBadge order={order} />
         </p>
       </div>
     </>

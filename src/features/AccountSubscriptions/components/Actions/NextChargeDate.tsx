@@ -60,9 +60,6 @@ interface NextChargeDateFormValues {
   nextChargeDate: string;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const NextChargeDateForm = ({
   isOpen,
   onClose,

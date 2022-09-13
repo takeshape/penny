@@ -19,9 +19,6 @@ export interface SkipFormValues {
   confirm: boolean;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscriptions }: UnskipFormProps) => {
   const {
     handleSubmit,
