@@ -2,7 +2,7 @@ import { CreditCard } from 'components/Payments/CreditCard';
 import { format } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { formatPrice } from 'utils/text';
-import { ActiveSubscription, RefetchSubscriptions } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { formatDeliverySchedule, getOrders } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';
 import { DeliveryFrequencyForm } from '../Actions/DeliveryFrequencyForm';
@@ -14,7 +14,7 @@ import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
 
 export interface ManageSubscriptionProps {
-  subscription: ActiveSubscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
   refetchSubscriptionList: RefetchSubscriptions;
 }
