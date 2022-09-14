@@ -35,10 +35,10 @@ export const paymentMethods: PaymentMethod[] = [
         lines: {
           nodes: [
             {
-              variantTitle: 'Basic T-Shirt',
+              variantTitle: 'An Exceptional T-Shirt',
               // @ts-expect-error
               variantImage: {
-                url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+                url: '/images/placeholders/t-shirt-man-right.png',
                 altText: '',
                 height: 500,
                 width: 500
@@ -86,7 +86,7 @@ export const paymentMethods: PaymentMethod[] = [
               variantTitle: 'Basic T-Shirt',
               // @ts-expect-error
               variantImage: {
-                url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+                url: '/images/placeholders/t-shirt-man-right.png',
                 height: 500,
                 width: 500,
                 altText: ''
@@ -106,7 +106,7 @@ export const paymentMethods: PaymentMethod[] = [
               variantTitle: 'Basic T-Shirt',
               // @ts-expect-error
               variantImage: {
-                url: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-02.jpg',
+                url: '/images/placeholders/t-shirt-man-right.png',
                 height: 500,
                 width: 500,
                 altText: ''

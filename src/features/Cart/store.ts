@@ -31,7 +31,7 @@ const addToCartInputToCartItem = ({ product, variant, price, attributes }: AddTo
     variantId: variant.id,
     variantName: variant.name,
     attributesKey: getAttributesKey(attributes),
-    attributes: attributes.length === 0 ? null : attributes,
+    attributes: attributes?.length && attributes?.length === 0 ? null : attributes,
     data: {
       price
     }

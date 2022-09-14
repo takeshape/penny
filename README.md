@@ -17,19 +17,19 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-kwb1w1v3y-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1662997266518-75897.report.html) |
+| [Path: /](https://penny-ho31ezxle-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1663105704781-84965.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://penny-kwb1w1v3y-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1662997266865-6156.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /product/__lighthouse](https://penny-ho31ezxle-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1663105705218-2052.report.html) |
+| 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://penny-kwb1w1v3y-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1662997267353-86883.report.html) |
+| [Path: /collection/__lighthouse](https://penny-ho31ezxle-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1663105705543-10534.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
@@ -89,7 +89,6 @@ Here are the frameworks, language and styling options we went with for this buil
 
 - [Next.js](https://nextjs.org/) to build the pages and bundle the frontend application
 - [NextAuth](https://next-auth.js.org/) for user authentication against TakeShape and Shopify
-- [Tailwind UI](https://tailwindui.com/) for attractive components that are easy to customize
 - [TypeScript](https://www.typescriptlang.org/) for type safety and documentation
 - [Apollo Client](https://www.apollographql.com/docs/react/) for efficient GraphQL queries against TakeShape
 - [Jotai](https://jotai.org/) for optimized component state management
@@ -169,9 +168,6 @@ Here are the steps for getting started with this project:
 - Save the key somewhere. Later, you must either set it as the value of the `NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY`
   environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
   hosting provider's UI.
-
-- Do the same process, but this time create a key with `webhook` permissions. The environment variable for this key will
-  be `TAKESHAPE_WEBHOOK_API_KEY`.
 
 3. Get your TakeShape project's API Endpoint. Here's how:
 
