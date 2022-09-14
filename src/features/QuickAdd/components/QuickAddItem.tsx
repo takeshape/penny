@@ -6,7 +6,8 @@ import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
 import { QuickAddProduct } from '../types';
 
@@ -18,21 +19,36 @@ export interface QuickAddItemProps {
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
   let { variantOptions, hasStock } = product;
 
-  const colors = variantOptions.find((opt) => opt.name.toLowerCase() === 'color');
-  const sizes = variantOptions.find((opt) => opt.name.toLowerCase() === 'size');
+  const initialVariant = useMemo(
+    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
+    [hasStock, product.variants]
+  );
 
-  const initialColor = colors.values.find((v) => v.hasStock) ?? colors.values[0];
-  const [selectedColor, setSelectedColor] = useState(initialColor.value);
-  const initialSize = sizes.values.find((v) => v.hasStock) ?? sizes.values[0];
-  const [selectedSize, setSelectedSize] = useState(initialSize.value);
+  const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
+    useVariantOption({
+      name: 'Color',
+      variant: initialVariant,
+      options: variantOptions
+    });
 
-  const initialVariant = getVariant(product.variants, [
-    { name: 'Color', value: selectedColor },
-    { name: 'Size', value: selectedSize }
-  ]);
+  const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
+    useVariantOption({
+      name: 'Size',
+      variant: initialVariant,
+      options: variantOptions
+    });
 
-  const [selectedVariant, setSelectedVariant] = useState(initialVariant);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
+
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
+
+  const selectedVariant = useMemo(() => {
+    if (selections.length) {
+      return getVariant(product.variants, selections);
+    }
+
+    return product.variants[0];
+  }, [product, selections]);
 
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
@@ -52,13 +68,8 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
   );
 
   useEffect(() => {
-    const variant = getVariant(product.variants, [
-      { name: 'Color', value: selectedColor },
-      { name: 'Size', value: selectedSize }
-    ]);
-    setSelectedVariant(variant);
-    setSelectedPrice(variant.prices[0]);
-  }, [product.variants, selectedColor, selectedSize]);
+    setSelectedPrice(selectedVariant.prices[0]);
+  }, [selectedVariant]);
 
   return (
     <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
@@ -79,7 +90,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             Product information
           </h3>
 
-          <ProductPrice price={selectedPrice} hasStock={hasStock} size="small" />
+          <ProductPrice price={selectedPrice} isAvailable={selectedVariant.available} size="small" />
         </section>
 
         <section aria-labelledby="options-heading" className="mt-10">
@@ -91,7 +102,12 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             {/* Colors */}
             <div>
               <h4 className="text-sm text-body-900 font-medium">Color</h4>
-              <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
+              <ProductColorSelect
+                value={selectedColorValue}
+                onChange={setSelectedColor}
+                option={colors}
+                selections={selections}
+              />
             </div>
 
             {/* Sizes */}
@@ -103,7 +119,13 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
                 </a>
               </div>
 
-              <ProductSizeSelect size="small" value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
+              <ProductSizeSelect
+                size="small"
+                value={selectedSizeValue}
+                onChange={setSelectedSize}
+                option={sizes}
+                selections={selections}
+              />
             </div>
 
             {hasStock && selectedVariant.prices.length > 1 && (

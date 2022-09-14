@@ -1526,48 +1526,119 @@ export const quickAddProduct: QuickAddProduct = {
           value: 'XXS',
           name: 'XXS',
           hasStock: false,
+          hasStockFor: [],
           description: 'The very smallest size'
         },
         {
           value: 'XS',
           name: 'XS',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'A fairly small size'
         },
         {
           value: 'S',
           name: 'S',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'A small size'
         },
         {
           value: 'M',
           name: 'M',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'Just about right for everybody'
         },
         {
           value: 'L',
           name: 'L',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'Getting bigger'
         },
         {
           value: 'XL',
           name: 'XL',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'And bigger...'
         },
         {
           value: '2XL',
           name: '2XL',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'Whoa, so big'
         },
         {
           value: '3XL',
           name: '3XL',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            }
+          ],
           description: 'No way!'
         }
       ]
@@ -1580,6 +1651,24 @@ export const quickAddProduct: QuickAddProduct = {
           value: 'Black',
           name: 'Black',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Size',
+              value: 'XS'
+            },
+            {
+              name: 'Size',
+              value: 'S'
+            },
+            {
+              name: 'Size',
+              value: 'M'
+            },
+            {
+              name: 'Size',
+              value: 'L'
+            }
+          ],
           class: 'bg-gray-900',
           selectedClass: 'ring-gray-900',
           colorBg: '#111827'
@@ -1588,6 +1677,24 @@ export const quickAddProduct: QuickAddProduct = {
           value: 'Gray',
           name: 'Gray',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Size',
+              value: 'XS'
+            },
+            {
+              name: 'Size',
+              value: 'S'
+            },
+            {
+              name: 'Size',
+              value: 'M'
+            },
+            {
+              name: 'Size',
+              value: 'L'
+            }
+          ],
           class: 'bg-gray-200',
           selectedClass: 'ring-gray-400',
           colorBg: '#333333'
@@ -1596,6 +1703,24 @@ export const quickAddProduct: QuickAddProduct = {
           value: 'White',
           name: 'White',
           hasStock: true,
+          hasStockFor: [
+            {
+              name: 'Size',
+              value: 'XS'
+            },
+            {
+              name: 'Size',
+              value: 'S'
+            },
+            {
+              name: 'Size',
+              value: 'M'
+            },
+            {
+              name: 'Size',
+              value: 'L'
+            }
+          ],
           class: 'bg-white',
           selectedClass: 'ring-gray-400',
           colorBg: '#ffffff'

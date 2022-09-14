@@ -1,15 +1,16 @@
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/24/solid';
 import Breadcrumbs, { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import NextImage from 'components/NextImage';
+import ProductPrice from 'components/Product/ProductPrice';
 import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSelectWithDescription';
 import Stars from 'components/Stars/Stars';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
+import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
-import { formatPrice } from 'utils/text';
 
 export interface ProductWithImageProps {
   product: ProductType;
@@ -24,18 +25,30 @@ export const ProductWithImage = ({
   breadcrumbs,
   showReviewsLink
 }: ProductWithImageProps) => {
-  const { priceMin, name, descriptionHtml, featuredImage, variantOptions } = product;
+  const { priceMin, name, descriptionHtml, featuredImage, variantOptions, hasStock } = product;
 
-  const sizes = variantOptions.find((opt) => opt.name.toLowerCase() === 'size');
+  const initialVariant = useMemo(
+    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
+    [hasStock, product.variants]
+  );
 
-  const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
-  const [selectedSize, setSelectedSize] = useState(initialSize?.value);
+  const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
+    useVariantOption({
+      name: 'Size',
+      variant: initialVariant,
+      options: variantOptions
+    });
 
-  const initialVariant = selectedSize
-    ? getVariant(product.variants, [{ name: 'Size', value: selectedSize }])
-    : product.variants[0];
+  const selections = useMemo(() => [selectedSize].filter((x) => x), [selectedSize]);
 
-  const [selectedVariant, setSelectedVariant] = useState(initialVariant);
+  const selectedVariant = useMemo(() => {
+    if (selections.length) {
+      return getVariant(product.variants, selections);
+    }
+
+    return product.variants[0];
+  }, [product, selections]);
+
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 
   const addToCart = useSetAtom(addToCartAtom);
@@ -57,15 +70,8 @@ export const ProductWithImage = ({
   );
 
   useEffect(() => {
-    const variant = selectedSize
-      ? getVariant(
-          product.variants,
-          [selectedSize && { name: 'Size', value: selectedSize }].filter((x) => x)
-        )
-      : product.variants[0];
-    setSelectedVariant(variant);
-    setSelectedPrice(variant.prices[0]);
-  }, [product.variants, selectedSize]);
+    setSelectedPrice(selectedVariant.prices[0]);
+  }, [selectedVariant]);
 
   return (
     <div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:pt-24 sm:pb-32 sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
@@ -82,7 +88,7 @@ export const ProductWithImage = ({
           </h2>
 
           <div className="flex items-center">
-            <p className="text-lg text-body-900 sm:text-xl">{formatPrice(priceMin.currencyCode, priceMin.amount)}</p>
+            <ProductPrice price={selectedPrice} isAvailable={selectedVariant.available} size="large" />
 
             <div className="ml-4 pl-4 border-l border-body-300">
               <h2 className="sr-only">Reviews</h2>
@@ -137,9 +143,10 @@ export const ProductWithImage = ({
               {sizes && (
                 <ProductSizeSelectWithDescription
                   label="Size"
-                  value={selectedSize}
+                  value={selectedSizeValue}
                   onChange={setSelectedSize}
-                  options={sizes.values}
+                  option={sizes}
+                  selections={selections}
                 />
               )}
             </div>

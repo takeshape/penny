@@ -1321,14 +1321,149 @@ export const productPageProduct: ProductPageProduct = {
       name: 'Size',
       id: 'gid://shopify/ProductOption/8766172332132',
       values: [
-        { value: 'XXS', name: 'XXS', hasStock: false, description: 'The very smallest size' },
-        { value: 'XS', name: 'XS', hasStock: true, description: 'A fairly small size' },
-        { value: 'S', name: 'S', hasStock: true, description: 'A small size' },
-        { value: 'M', name: 'M', hasStock: true, description: 'Just about right for everybody' },
-        { value: 'L', name: 'L', hasStock: true, description: 'Getting bigger' },
-        { value: 'XL', name: 'XL', hasStock: true, description: 'And bigger...' },
-        { value: '2XL', name: '2XL', hasStock: true, description: 'Whoa, so big' },
-        { value: '3XL', name: '3XL', hasStock: true, description: 'No way!' }
+        {
+          value: 'XXS',
+          name: 'XXS',
+          hasStockFor: [],
+          hasStock: false,
+          description: 'The very smallest size'
+        },
+        {
+          value: 'XS',
+          name: 'XS',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'A fairly small size'
+        },
+        {
+          value: 'S',
+          name: 'S',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'A small size'
+        },
+        {
+          value: 'M',
+          name: 'M',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'Just about right for everybody'
+        },
+        {
+          value: 'L',
+          name: 'L',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'Getting bigger'
+        },
+        {
+          value: 'XL',
+          name: 'XL',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'And bigger...'
+        },
+        {
+          value: '2XL',
+          name: '2XL',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'Whoa, so big'
+        },
+        {
+          value: '3XL',
+          name: '3XL',
+          hasStockFor: [
+            {
+              name: 'Color',
+              value: 'Black'
+            },
+            {
+              name: 'Color',
+              value: 'Gray'
+            },
+            {
+              name: 'Color',
+              value: 'White'
+            }
+          ],
+          hasStock: true,
+          description: 'No way!'
+        }
       ]
     },
     {
@@ -1338,6 +1473,32 @@ export const productPageProduct: ProductPageProduct = {
         {
           value: 'Black',
           name: 'Black',
+          hasStockFor: [
+            {
+              name: 'Size',
+              value: 'S'
+            },
+            {
+              name: 'Size',
+              value: 'M'
+            },
+            {
+              name: 'Size',
+              value: 'L'
+            },
+            {
+              name: 'Size',
+              value: 'XL'
+            },
+            {
+              name: 'Size',
+              value: '2XL'
+            },
+            {
+              name: 'Size',
+              value: '3XL'
+            }
+          ],
           hasStock: true,
           class: 'bg-gray-900',
           selectedClass: 'ring-gray-900',
@@ -1346,6 +1507,36 @@ export const productPageProduct: ProductPageProduct = {
         {
           value: 'Gray',
           name: 'Gray',
+          hasStockFor: [
+            {
+              name: 'Size',
+              value: 'XS'
+            },
+            {
+              name: 'Size',
+              value: 'S'
+            },
+            {
+              name: 'Size',
+              value: 'M'
+            },
+            {
+              name: 'Size',
+              value: 'L'
+            },
+            {
+              name: 'Size',
+              value: 'XL'
+            },
+            {
+              name: 'Size',
+              value: '2XL'
+            },
+            {
+              name: 'Size',
+              value: '3XL'
+            }
+          ],
           hasStock: true,
           class: 'bg-gray-200',
           selectedClass: 'ring-gray-400',
@@ -1354,6 +1545,36 @@ export const productPageProduct: ProductPageProduct = {
         {
           value: 'White',
           name: 'White',
+          hasStockFor: [
+            {
+              name: 'Size',
+              value: 'XS'
+            },
+            {
+              name: 'Size',
+              value: 'S'
+            },
+            {
+              name: 'Size',
+              value: 'M'
+            },
+            {
+              name: 'Size',
+              value: 'L'
+            },
+            {
+              name: 'Size',
+              value: 'XL'
+            },
+            {
+              name: 'Size',
+              value: '2XL'
+            },
+            {
+              name: 'Size',
+              value: '3XL'
+            }
+          ],
           hasStock: true,
           class: 'bg-white',
           selectedClass: 'ring-gray-400',
@@ -1412,18 +1633,48 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'S',
             name: 'S',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
             description: 'A small size'
           },
           {
             value: 'M',
             name: 'M',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
             description: 'Just about right for everybody'
           },
           {
             value: 'L',
             name: 'L',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
             description: 'Getting bigger'
           }
         ]
@@ -1436,6 +1687,20 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'Black',
             name: 'Black',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              }
+            ],
             class: 'bg-gray-900',
             selectedClass: 'ring-gray-900',
             colorBg: '#111827'
@@ -1444,6 +1709,20 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'White',
             name: 'White',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              }
+            ],
             class: 'bg-white',
             selectedClass: 'ring-gray-400',
             colorBg: '#ffffff'
@@ -1487,49 +1766,144 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
           {
             value: 'XXS',
             name: 'XXS',
-            hasStock: null,
+            hasStockFor: [],
+            hasStock: false,
             description: 'The very smallest size'
           },
           {
             value: 'XS',
             name: 'XS',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'A fairly small size'
           },
           {
             value: 'S',
             name: 'S',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'A small size'
           },
           {
             value: 'M',
             name: 'M',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'Just about right for everybody'
           },
           {
             value: 'L',
             name: 'L',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'Getting bigger'
           },
           {
             value: 'XL',
             name: 'XL',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'And bigger...'
           },
           {
             value: '2XL',
             name: '2XL',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'Whoa, so big'
           },
           {
             value: '3XL',
             name: '3XL',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Gray'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            hasStock: true,
             description: 'No way!'
           }
         ]
@@ -1541,7 +1915,33 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
           {
             value: 'Black',
             name: 'Black',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              },
+              {
+                name: 'Size',
+                value: 'XL'
+              },
+              {
+                name: 'Size',
+                value: '2XL'
+              },
+              {
+                name: 'Size',
+                value: '3XL'
+              }
+            ],
+            hasStock: true,
             class: 'bg-gray-900',
             selectedClass: 'ring-gray-900',
             colorBg: '#111827'
@@ -1549,7 +1949,37 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
           {
             value: 'Gray',
             name: 'Gray',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'XS'
+              },
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              },
+              {
+                name: 'Size',
+                value: 'XL'
+              },
+              {
+                name: 'Size',
+                value: '2XL'
+              },
+              {
+                name: 'Size',
+                value: '3XL'
+              }
+            ],
+            hasStock: true,
             class: 'bg-gray-200',
             selectedClass: 'ring-gray-400',
             colorBg: '#333333'
@@ -1557,7 +1987,37 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
           {
             value: 'White',
             name: 'White',
-            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'XS'
+              },
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              },
+              {
+                name: 'Size',
+                value: 'XL'
+              },
+              {
+                name: 'Size',
+                value: '2XL'
+              },
+              {
+                name: 'Size',
+                value: '3XL'
+              }
+            ],
+            hasStock: true,
             class: 'bg-white',
             selectedClass: 'ring-gray-400',
             colorBg: '#ffffff'
@@ -1595,13 +2055,81 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasStock: true,
     variantOptions: [
       {
+        name: 'Size',
+        id: 'gid://shopify/ProductOption/8728583471204',
+        values: [
+          {
+            value: 'S',
+            name: 'S',
+            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            description: 'A small size'
+          },
+          {
+            value: 'M',
+            name: 'M',
+            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            description: 'Just about right for everybody'
+          },
+          {
+            value: 'L',
+            name: 'L',
+            hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'White'
+              }
+            ],
+            description: 'Getting bigger'
+          }
+        ]
+      },
+      {
         name: 'Color',
-        id: 'gid://shopify/ProductOption/8728584126564',
+        id: 'gid://shopify/ProductOption/8766561222756',
         values: [
           {
             value: 'Black',
             name: 'Black',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              }
+            ],
             class: 'bg-gray-900',
             selectedClass: 'ring-gray-900',
             colorBg: '#111827'
@@ -1610,41 +2138,23 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'White',
             name: 'White',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'S'
+              },
+              {
+                name: 'Size',
+                value: 'M'
+              },
+              {
+                name: 'Size',
+                value: 'L'
+              }
+            ],
             class: 'bg-white',
             selectedClass: 'ring-gray-400',
             colorBg: '#ffffff'
-          },
-          {
-            value: 'Red',
-            name: 'Red',
-            hasStock: null,
-            class: 'bg-red-500',
-            selectedClass: 'ring-red-300',
-            colorBg: 'red'
-          }
-        ]
-      },
-      {
-        name: 'Size',
-        id: 'gid://shopify/ProductOption/8749149356132',
-        values: [
-          {
-            value: 'S',
-            name: 'S',
-            hasStock: null,
-            description: 'A small size'
-          },
-          {
-            value: 'M',
-            name: 'M',
-            hasStock: null,
-            description: 'Just about right for everybody'
-          },
-          {
-            value: 'L',
-            name: 'L',
-            hasStock: null,
-            description: 'Getting bigger'
           }
         ]
       }
@@ -1686,36 +2196,96 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'XXS',
             name: 'XXS',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Heather Gray'
+              }
+            ],
             description: 'The very smallest size'
           },
           {
             value: 'XS',
             name: 'XS',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Heather Gray'
+              }
+            ],
             description: 'A fairly small size'
           },
           {
             value: 'S',
             name: 'S',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Heather Gray'
+              }
+            ],
             description: 'A small size'
           },
           {
             value: 'M',
             name: 'M',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Heather Gray'
+              }
+            ],
             description: 'Just about right for everybody'
           },
           {
             value: 'L',
             name: 'L',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Heather Gray'
+              }
+            ],
             description: 'Getting bigger'
           },
           {
             value: 'XL',
             name: 'XL',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Color',
+                value: 'Black'
+              },
+              {
+                name: 'Color',
+                value: 'Heather Gray'
+              }
+            ],
             description: 'And bigger...'
           }
         ]
@@ -1728,6 +2298,16 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'Black',
             name: 'Black',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'XS'
+              },
+              {
+                name: 'Size',
+                value: 'XL'
+              }
+            ],
             class: 'bg-gray-900',
             selectedClass: 'ring-gray-900',
             colorBg: '#111827'
@@ -1736,6 +2316,16 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
             value: 'Heather Gray',
             name: 'Heather Grey',
             hasStock: null,
+            hasStockFor: [
+              {
+                name: 'Size',
+                value: 'XS'
+              },
+              {
+                name: 'Size',
+                value: 'XL'
+              }
+            ],
             bgColor: 'bg-gray-400',
             selectedColor: 'ring-gray-400',
             colorBg: '#777777'

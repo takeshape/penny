@@ -70,6 +70,7 @@ export type ProductVariantOptionValue = {
   value: string;
   name: string;
   hasStock: boolean | null;
+  hasStockFor: ProductVariantSelection[];
 } & Record<string, unknown>;
 
 export type ProductVariantOption = {
