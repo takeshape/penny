@@ -1,18 +1,17 @@
 import NextImage from 'components/NextImage';
-import { formatRechargePrice } from 'utils/text';
-import { RechargeCharge, RefetchSubscriptions, Subscription, SubscriptionSelectedVariant } from '../../types';
+import { formatPrice } from 'utils/text';
+import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 import { OrderItemActions } from './OrderItemActions';
 import { OrderItemHeader } from './OrderItemHeader';
 
 export interface OrderItemProps {
-  subscription: Subscription;
-  order: RechargeCharge;
-  variant: SubscriptionSelectedVariant;
+  subscription: AnySubscription;
+  order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
-export const OrderItem = ({ subscription, order, variant, refetchSubscriptions }: OrderItemProps) => {
-  const product = order.line_items.find((lineItem) => lineItem.subscription_id === subscription.id);
+export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderItemProps) => {
+  const { product, productVariant, quantity, price } = order.lineItems[0];
 
   return (
     <>
@@ -26,16 +25,16 @@ export const OrderItem = ({ subscription, order, variant, refetchSubscriptions }
             <NextImage
               width={100}
               height={100}
-              src={variant.product.featuredImage.url}
+              src={product.image.url}
               className="flex-none w-20 h-20 rounded-md object-center object-cover sm:w-24 sm:h-24"
-              alt={variant.product.featuredImage.altText}
+              alt={product.image.altText}
             />
             <div className="pt-1.5 min-w-0 flex-1 sm:pt-0">
-              <h3 className="font-medium text-body-900">{product.title}</h3>
-              <p className="text-sm text-body-500">{product.variant_title}</p>
-              <p className="text-sm text-body-500">Quantity: {product.quantity}</p>
+              <h3 className="font-medium text-body-900">{product.name}</h3>
+              <p className="text-sm text-body-500">{productVariant.name}</p>
+              <p className="text-sm text-body-500">Quantity: {quantity}</p>
               <p className="mt-1 font-medium text-body-900">
-                {formatRechargePrice(subscription.presentment_currency, product.price, product.quantity)}
+                {formatPrice(price.currencyCode, price.amount, quantity)}
               </p>
             </div>
           </div>

@@ -21,7 +21,7 @@ import { SetNextChargeDateMutationResponse, SetNextChargeDateMutationVariables }
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { SetNextChargeDateMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 
 function getMonth(forDate) {
   const now = new Date();
@@ -52,7 +52,7 @@ function getMonth(forDate) {
 }
 
 export interface NextChargeDateFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -60,9 +60,6 @@ interface NextChargeDateFormValues {
   nextChargeDate: string;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const NextChargeDateForm = ({
   isOpen,
   onClose,
@@ -76,7 +73,7 @@ export const NextChargeDateForm = ({
     formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<NextChargeDateFormValues>();
 
-  const [month, setMonth] = useState(getMonth(new Date(subscription.next_charge_scheduled_at)));
+  const [month, setMonth] = useState(getMonth(new Date(subscription.nextChargeScheduledAt)));
 
   const handlePrevMonth = useCallback(() => {
     setMonth(getMonth(subMonths(month.start, 1)));
@@ -102,9 +99,9 @@ export const NextChargeDateForm = ({
 
   const resetState = useCallback(() => {
     reset({
-      nextChargeDate: format(new Date(subscription.next_charge_scheduled_at), 'yyyy-MM-dd')
+      nextChargeDate: format(new Date(subscription.nextChargeScheduledAt), 'yyyy-MM-dd')
     });
-  }, [reset, subscription.next_charge_scheduled_at]);
+  }, [reset, subscription.nextChargeScheduledAt]);
 
   // Set initial values
   useEffect(() => resetState(), [resetState]);

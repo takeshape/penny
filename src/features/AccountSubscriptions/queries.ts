@@ -19,7 +19,10 @@ const AddressFragment = gql`
 const ChargeFragment = gql`
   fragment Charge on Recharge_Charge {
     id
+    created_at
     scheduled_at
+    processed_at
+    updated_at
     line_items {
       images {
         small
@@ -28,19 +31,32 @@ const ChargeFragment = gql`
       quantity
       shopify_product_id
       shopify_variant_id
-      subscription_id
       title
       variant_title
     }
     currency
     status
-    address_id
     shopifyOrder {
       processedAt
+      shippingAddress {
+        firstName
+        lastName
+        address1
+        address2
+        company
+        city
+        province
+        provinceCode
+        country
+        zip
+        phone
+      }
       fulfillments(first: 10) {
+        updatedAt
         deliveredAt
-        displayStatus
+        estimatedDeliveryAt
         inTransitAt
+        displayStatus
         fulfillmentLineItems(first: 10) {
           edges {
             node {
@@ -80,6 +96,7 @@ const SubscriptionFragment = gql`
       ...Charge
     }
     address {
+      id
       first_name
       last_name
       address1
@@ -114,8 +131,18 @@ const SubscriptionFragment = gql`
 const ShopifyProductVariantFragment = gql`
   fragment ShopifyProductVariant on Shopify_ProductVariant {
     id
-    title
+    availableForSale
+    compareAtPrice
+    image {
+      width
+      height
+      url
+    }
     price
+    inventoryPolicy
+    sellableOnlineQuantity
+    sku
+    title
     selectedOptions {
       name
       value
@@ -126,6 +153,7 @@ const ShopifyProductVariantFragment = gql`
       title
       description
       descriptionHtml
+      totalInventory
       featuredImage {
         id
         url(transform: { maxWidth: 800, maxHeight: 800, preferredContentType: WEBP })
@@ -177,20 +205,6 @@ const ShopifyProductVariantFragment = gql`
 export const GetMyPaymentMethodsQuery = gql`
   query GetMyPaymentMethodsQuery {
     paymentMethods: Recharge_getMyPaymentMethods {
-      id
-      payment_details {
-        brand
-        exp_month
-        exp_year
-        last4
-      }
-    }
-  }
-`;
-
-export const GetMyAddressPaymentMethodsQuery = gql`
-  query GetMyAddressPaymentMethodsQuery($addressId: String!) {
-    paymentMethods: Recharge_getMyAddressPaymentMethods(addressId: $addressId) {
       id
       payment_details {
         brand

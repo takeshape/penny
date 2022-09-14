@@ -7,11 +7,11 @@ import { useForm } from 'react-hook-form';
 import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UnskipChargeMutation } from '../../queries';
-import { RechargeCharge, RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
 export interface UnskipFormProps extends ModalProps {
-  subscription: Subscription;
-  order: RechargeCharge;
+  subscription: AnySubscription;
+  order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -19,9 +19,6 @@ export interface SkipFormValues {
   confirm: boolean;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscriptions }: UnskipFormProps) => {
   const {
     handleSubmit,
@@ -72,7 +69,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
             <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
               <p className="mb-4">
                 Your order will be processed normally on{' '}
-                <strong className="text-black">{format(new Date(order.scheduled_at), 'PP')}</strong>.
+                <strong className="text-black">{format(new Date(order.chargeScheduledAt), 'PPP')}</strong>.
               </p>
               <p>Would you like to continue?</p>
             </div>

@@ -9,7 +9,7 @@ const NextImage = (props: ImageProps & { src: string }) => {
     return <img alt="" {...props} />;
   }
 
-  return <NextBaseImage {...props} />;
+  return <NextBaseImage {...props} alt={props.alt ?? ''} />;
 };
 
 export default NextImage;

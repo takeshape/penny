@@ -1,35 +1,27 @@
 import { format } from 'date-fns';
-import { shopifyGidToId } from 'transforms/shopify';
 import classNames from 'utils/classNames';
-import { RechargeCharge, Subscription } from '../../types';
+import { SubscriptionOrder } from '../../types';
 
 interface OrderItemBadgeProps {
-  subscription: Subscription;
-  order: RechargeCharge;
+  order: SubscriptionOrder;
 }
 
-export const OrderItemBadge = ({ subscription, order }: OrderItemBadgeProps) => {
+export const OrderItemBadge = ({ order }: OrderItemBadgeProps) => {
   let badgeText = '';
   let badgeClasses = '';
 
-  const subscriptionFulfillment = order.shopifyOrder?.fulfillments.find((fulfillment) =>
-    fulfillment.fulfillmentLineItems.edges.find(
-      (edge) => shopifyGidToId(edge.node.lineItem.variant.id) === subscription.shopify_variant_id
-    )
-  );
-
-  if (subscriptionFulfillment?.deliveredAt) {
-    badgeText = `Delivered on ${format(new Date(subscriptionFulfillment.deliveredAt), 'PPP')}`;
+  if (order.fulfillmentDeliveredAt) {
+    badgeText = `Delivered on ${format(new Date(order.fulfillmentDeliveredAt), 'PPP')}`;
     badgeClasses = 'bg-green-100 text-green-800';
-  } else if (order.status === 'SUCCESS') {
-    badgeText = order.shopifyOrder?.processedAt
-      ? `Processed on ${format(new Date(order.shopifyOrder.processedAt), 'PPP')}`
+  } else if (order.status === 'CHARGE_SUCCESS') {
+    badgeText = order.chargeProcessedAt
+      ? `Processed on ${format(new Date(order.chargeProcessedAt), 'PPP')}`
       : 'Processed';
     badgeClasses = 'bg-green-100 text-green-800';
-  } else if (order.status === 'SKIPPED') {
+  } else if (order.status === 'CHARGE_SKIPPED') {
     badgeText = `Skipped`;
     badgeClasses = 'bg-gray-100 text-gray-800';
-  } else if (order.status === 'QUEUED') {
+  } else if (order.status === 'CHARGE_QUEUED') {
     badgeText = `Scheduled`;
     badgeClasses = 'bg-blue-100 text-blue-800';
   } else {
