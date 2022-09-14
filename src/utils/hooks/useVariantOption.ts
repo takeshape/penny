@@ -8,9 +8,9 @@ export interface VariantOptionHookProps {
 }
 
 export interface VariantOptionHookData {
-  selectedValue: string;
-  selected: ProductVariantSelection;
-  option: ProductVariantOption;
+  selectedValue?: string;
+  selected?: ProductVariantSelection;
+  option?: ProductVariantOption;
 }
 
 export function useVariantOption({
@@ -24,18 +24,18 @@ export function useVariantOption({
   );
 
   const initialVariantOptionValue = useMemo(
-    () => variant.options.find((o) => o.name.toLowerCase() === name.toLowerCase()).value,
+    () => variant.options?.find((o) => o.name.toLowerCase() === name.toLowerCase())?.value,
     [name, variant.options]
   );
 
   const initialVariantOption = useMemo(
-    () => variantOption?.values.find((v) => v.value === initialVariantOptionValue),
+    () => initialVariantOptionValue && variantOption?.values.find((v) => v.value === initialVariantOptionValue),
     [initialVariantOptionValue, variantOption?.values]
   );
 
-  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption?.value ?? '');
+  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption?.value);
 
-  const selected = useMemo(() => ({ name, value: selectedValue }), [name, selectedValue]);
+  const selected = useMemo(() => selectedValue && { name, value: selectedValue }, [name, selectedValue]);
 
   return [setSelectedOptionValue, { selectedValue, selected, option: variantOption }];
 }

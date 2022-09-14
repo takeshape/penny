@@ -39,7 +39,7 @@ export const ProductWithImage = ({
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedSize], [selectedSize]);
+  const selections = useMemo(() => [selectedSize].filter((x) => x), [selectedSize]);
 
   const selectedVariant = useMemo(() => {
     if (selections.length) {

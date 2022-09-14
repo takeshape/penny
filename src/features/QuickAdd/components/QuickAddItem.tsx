@@ -38,7 +38,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedColor, selectedSize], [selectedColor, selectedSize]);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
 
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 

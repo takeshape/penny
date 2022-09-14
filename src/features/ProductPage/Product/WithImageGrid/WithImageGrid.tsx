@@ -52,7 +52,7 @@ export const ProductWithImageGrid = ({
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedColor, selectedSize], [selectedColor, selectedSize]);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
 
   const selectedVariant = useMemo(() => {
     if (selections.length) {
