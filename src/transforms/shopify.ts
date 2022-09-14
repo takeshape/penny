@@ -206,7 +206,7 @@ function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_Pro
     quantityAvailable: sellableOnlineQuantity,
     currentlyNotInStock: sellableOnlineQuantity === 0 && inventoryPolicy == 'CONTINUE',
     sku,
-    options: selectedOptions
+    options: selectedOptions.map(({ name, value }) => ({ name, value }))
   };
 }
 
@@ -241,16 +241,23 @@ export function getProductVariantOptions(
         name,
         id,
         values: values.map((value) => {
-          const hasStock =
-            variants?.some((variant) => {
-              if (variant.options.find((o) => o.value === value)) {
-                return variant.available;
-              }
-            }) ?? null;
+          const hasStockFor =
+            variants
+              ?.filter((v) => {
+                if (v.options.find((o) => o.value === value)) {
+                  return v.available;
+                }
+              })
+              ?.flatMap((v) => {
+                return v.options.filter((o) => o.value !== value);
+              }) ?? [];
+
+          const hasStock = hasStockFor.length > 0;
 
           return {
             value,
             name: value,
+            hasStockFor,
             hasStock,
             ...productOptions?.[name.toLowerCase()]?.[value.toLowerCase()]
           };
@@ -459,7 +466,7 @@ function getStorefrontProductVariant(
     quantityAvailable,
     currentlyNotInStock,
     sku,
-    options: selectedOptions
+    options: selectedOptions.map(({ name, value }) => ({ name, value }))
   };
 }
 

@@ -6,15 +6,16 @@ import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
 import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
-import { Product as ProductType } from 'types/product';
+import { Product as TProduct } from 'types/product';
 import { ReviewHighlights } from 'types/review';
+import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
 import { FeaturedReviews } from './FeaturedReviews';
 import { ImageGallery } from './ImageGallery';
 import { ReviewsCallout } from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
-  product: ProductType;
+  product: TProduct;
   reviewHighlights?: ReviewHighlights;
   breadcrumbs: Breadcrumb[];
   showFeaturedReviews: boolean;
@@ -32,30 +33,40 @@ export const ProductWithImageGrid = ({
 }: PropsWithChildren<ProductWithImageGridProps>) => {
   const { name, descriptionHtml, images, variantOptions, hasStock } = product;
 
-  const colors = useMemo(() => variantOptions.find((opt) => opt.name.toLowerCase() === 'color'), [variantOptions]);
-  const initialColor = colors?.values.find((v) => v.hasStock) ?? colors?.values[0] ?? null;
-  const [selectedColor, setSelectedColor] = useState(initialColor?.value ?? '');
+  const initialVariant = useMemo(
+    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
+    [hasStock, product.variants]
+  );
 
-  const sizes = useMemo(() => variantOptions.find((opt) => opt.name.toLowerCase() === 'size'), [variantOptions]);
-  const initialSize = sizes?.values.find((v) => v.hasStock) ?? sizes?.values[0] ?? null;
-  const [selectedSize, setSelectedSize] = useState(initialSize?.value);
+  const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
+    useVariantOption({
+      name: 'Color',
+      variant: initialVariant,
+      options: variantOptions
+    });
+
+  const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
+    useVariantOption({
+      name: 'Size',
+      variant: initialVariant,
+      options: variantOptions
+    });
+
+  const selections = useMemo(() => [selectedColor, selectedSize], [selectedColor, selectedSize]);
 
   const selectedVariant = useMemo(() => {
-    if (selectedColor && selectedSize) {
-      return getVariant(product.variants, [
-        { name: 'Color', value: selectedColor },
-        { name: 'Size', value: selectedSize }
-      ]);
+    if (selections.length) {
+      return getVariant(product.variants, selections);
     }
 
     return product.variants[0];
-  }, [product, selectedColor, selectedSize]);
+  }, [product, selections]);
 
   const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
 
   useEffect(() => {
     setSelectedPrice(selectedVariant.prices[0]);
-  }, [selectedVariant, selectedColor, selectedSize]);
+  }, [selectedVariant]);
 
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
@@ -107,7 +118,12 @@ export const ProductWithImageGrid = ({
             {colors && (
               <div>
                 <h3 className="text-sm text-body-900 font-medium">Color</h3>
-                <ProductColorSelect value={selectedColor} onChange={setSelectedColor} options={colors.values} />
+                <ProductColorSelect
+                  value={selectedColorValue}
+                  onChange={setSelectedColor}
+                  option={colors}
+                  selections={selections}
+                />
               </div>
             )}
 
@@ -120,7 +136,12 @@ export const ProductWithImageGrid = ({
                   </a>
                 </div>
 
-                <ProductSizeSelect value={selectedSize} onChange={setSelectedSize} options={sizes.values} />
+                <ProductSizeSelect
+                  value={selectedSizeValue}
+                  onChange={setSelectedSize}
+                  option={sizes}
+                  selections={selections}
+                />
               </div>
             )}
 
@@ -135,7 +156,7 @@ export const ProductWithImageGrid = ({
             )}
 
             <button
-              disabled={!hasStock}
+              disabled={!selectedVariant.available}
               onClick={handleAddToCart}
               className="mt-10 w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
