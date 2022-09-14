@@ -8,21 +8,18 @@ import { UpdateDeliveryFrequencyMutationResponse, UpdateDeliveryFrequencyMutatio
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UpdateDeliveryFrequencyMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 
 export interface DeliveryFrequencyFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
 export interface DeliveryFrequencyFormValues {
-  deliveryScheduleIntervalCount: string;
+  intervalCount: string;
 }
 
-/**
- * TODO Handle submit errors
- */
 export const DeliveryFrequencyForm = ({
   isOpen,
   onClose,
@@ -45,29 +42,29 @@ export const DeliveryFrequencyForm = ({
     async (formData: DeliveryFrequencyFormValues) => {
       await updateDeliveryFrequency({
         variables: {
-          frequency: formData.deliveryScheduleIntervalCount.toString(),
-          unit: subscription.order_interval_unit,
+          frequency: formData.intervalCount,
+          unit: subscription.interval.toLowerCase(),
           subscriptionId: subscription.id
         }
       });
       await refetchSubscriptions();
       onClose();
     },
-    [onClose, refetchSubscriptions, subscription.id, subscription.order_interval_unit, updateDeliveryFrequency]
+    [onClose, refetchSubscriptions, subscription.id, subscription.interval, updateDeliveryFrequency]
   );
 
   const resetState = useCallback(
     () =>
       reset({
-        deliveryScheduleIntervalCount: subscription.order_interval_frequency
+        intervalCount: String(subscription.intervalCount)
       }),
-    [reset, subscription.order_interval_frequency]
+    [reset, subscription.intervalCount]
   );
 
   // Set initial values
   useEffect(() => resetState(), [resetState]);
 
-  const { order_interval_frequency_options } = subscription.rechargeProduct.subscription_defaults;
+  const { intervalOptions } = subscription;
 
   return (
     <ModalForm
@@ -85,22 +82,20 @@ export const DeliveryFrequencyForm = ({
 
         <div className="mx-auto w-full rounded-2xl bg-white py-2">
           <Controller
-            name="deliveryScheduleIntervalCount"
+            name="intervalCount"
             control={control}
             render={({ field }) => (
               <RadioGroup {...field}>
                 <RadioGroup.Label className="sr-only">Delivery schedule</RadioGroup.Label>
                 <div className="bg-white rounded-md -space-y-px">
-                  {order_interval_frequency_options.map((option, optionIdx) => (
+                  {intervalOptions.map((option, optionIdx) => (
                     <RadioGroup.Option
                       key={option}
                       value={option}
                       className={({ checked }) =>
                         classNames(
                           optionIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
-                          optionIdx === order_interval_frequency_options.length - 1
-                            ? 'rounded-bl-md rounded-br-md'
-                            : '',
+                          optionIdx === intervalOptions.length - 1 ? 'rounded-bl-md rounded-br-md' : '',
                           checked ? 'bg-accent-50 border-accent-200 z-10' : 'border-body-200',
                           'relative border p-4 flex cursor-pointer focus:outline-none'
                         )
@@ -128,8 +123,8 @@ export const DeliveryFrequencyForm = ({
                             >
                               Every{' '}
                               {formatDeliverySchedule({
-                                order_interval_unit: subscription.order_interval_unit,
-                                order_interval_frequency: option
+                                interval: subscription.interval,
+                                intervalCount: Number(option)
                               })}
                             </RadioGroup.Label>
                           </span>

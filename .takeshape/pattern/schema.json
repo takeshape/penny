@@ -7275,6 +7275,54 @@
         }
       }
     },
+    "Recharge_ChargeLineItem": {
+      "id": "Recharge_ChargeLineItem",
+      "title": "Recharge_ChargeLineItem",
+      "name": "Recharge_ChargeLineItem",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "images": {
+            "type": "object",
+            "properties": {
+              "large": {
+                "type": "string"
+              },
+              "medium": {
+                "type": "string"
+              },
+              "small": {
+                "type": "string"
+              },
+              "original": {
+                "type": "string"
+              }
+            }
+          },
+          "quantity": {
+            "type": "integer"
+          },
+          "subscription_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "variant_title": {
+            "type": "string"
+          },
+          "shopify_product_id": {
+            "type": "string"
+          },
+          "shopify_variant_id": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "Recharge_Charge": {
       "id": "Recharge_Charge",
       "title": "Recharge_Charge",
@@ -7285,53 +7333,22 @@
           "id": {
             "type": "string"
           },
+          "created_at": {
+            "type": "string"
+          },
           "scheduled_at": {
+            "type": "string"
+          },
+          "processed_at": {
+            "type": "string"
+          },
+          "updated_at": {
             "type": "string"
           },
           "line_items": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "images": {
-                  "type": "object",
-                  "properties": {
-                    "large": {
-                      "type": "string"
-                    },
-                    "medium": {
-                      "type": "string"
-                    },
-                    "small": {
-                      "type": "string"
-                    },
-                    "original": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "quantity": {
-                  "type": "integer"
-                },
-                "subscription_id": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "variant_title": {
-                  "type": "string"
-                },
-                "shopify_product_id": {
-                  "type": "string"
-                },
-                "shopify_variant_id": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "string"
-                }
-              }
+              "@ref": "recharge:ChargeLineItem"
             }
           },
           "currency": {

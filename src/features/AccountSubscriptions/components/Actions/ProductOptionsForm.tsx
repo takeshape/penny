@@ -6,39 +6,14 @@ import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Control, Controller, useForm, useWatch } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
-import { ProductVariantSelection } from 'types/product';
+import { ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from 'types/takeshape';
 import classNames from 'utils/classNames';
 import { useAuthenticatedMutation } from 'utils/takeshape';
-import { formatRechargePrice } from 'utils/text';
+import { formatPrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
-import {
-  RefetchSubscriptions,
-  Subscription,
-  SubscriptionProductVariants,
-  SubscriptionSelectedVariant
-} from '../../types';
-
-function toFormOptions(selections: ProductVariantSelection[]): Record<string, string> {
-  return selections.reduce((formOptions, { name, value }) => ({ ...formOptions, [name]: value }), {});
-}
-
-function toSelections(formOptions: Record<string, string>): ProductVariantSelection[] {
-  return Object.entries(formOptions).map(([name, value]) => ({ name, value }));
-}
-
-function getVariant(variants: SubscriptionProductVariants, options: ProductVariantSelection[]) {
-  return variants.find((variant) => {
-    let isVariant = true;
-
-    for (const opt of options) {
-      isVariant =
-        isVariant && variant.selectedOptions.findIndex((o) => o.name === opt.name && o.value === opt.value) > -1;
-    }
-
-    return isVariant;
-  });
-}
+import { AnySubscription, RefetchSubscriptions, SubscriptionProductVariant } from '../../types';
+import { getVariant, toFormOptions, toSelections } from '../../utils';
 
 interface ProductOptionsPriceProps extends Pick<ProductOptionsFormProps, 'subscription' | 'variants'> {
   control: Control<ProductOptionsFormValues, any>;
@@ -56,14 +31,13 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
   });
 
   const variant = getVariant(variants, toSelections(options));
-  const amount = variant.price * ((100 - subscription.rechargeProduct.discount_amount) / 100);
 
   return (
     <div className="bg-body-600 text-white rounded-md py-2">
       <p className="grid grid-cols-2 px-4 font-medium text-lg">
         <span className="inline-block">Price</span>
         <span className="inline-block ml-auto">
-          {formatRechargePrice(subscription.presentment_currency, amount, quantity)}
+          {formatPrice(variant.price.currencyCode, variant.price.amount, quantity)}
         </span>
       </p>
     </div>
@@ -71,9 +45,9 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
 };
 
 export interface ProductOptionsFormProps extends ModalProps {
-  subscription: Subscription;
-  variants: SubscriptionProductVariants;
-  variantOptions: SubscriptionSelectedVariant['product']['options'];
+  subscription: AnySubscription;
+  variants: SubscriptionProductVariant[];
+  variantOptions: ProductVariantOption[];
   currentSelections: ProductVariantSelection[];
   refetchSubscriptions: RefetchSubscriptions;
 }
@@ -83,9 +57,6 @@ interface ProductOptionsFormValues {
   quantity: number;
 }
 
-/**
- * TODO Handle errors
- */
 export const ProductOptionsForm = ({
   subscription,
   variants,
@@ -176,8 +147,8 @@ export const ProductOptionsForm = ({
                           <div className="bg-white rounded-md -space-y-px">
                             {option.values.map((value, valueIdx) => (
                               <RadioGroup.Option
-                                key={value}
-                                value={value}
+                                key={value.value}
+                                value={value.value}
                                 className={({ checked }) =>
                                   classNames(
                                     valueIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '',
@@ -207,7 +178,7 @@ export const ProductOptionsForm = ({
                                           'block text-sm font-medium'
                                         )}
                                       >
-                                        {value}
+                                        {value.name}
                                       </RadioGroup.Label>
                                     </span>
                                   </>

@@ -10,9 +10,9 @@ import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } fro
 import { countries } from 'utils/countries/countries';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UpdateMyAddressMutation } from '../../queries';
-import { RefetchSubscriptions, Subscription } from '../../types';
+import { AnySubscription, RefetchSubscriptions } from '../../types';
 interface ShippingAddressFormProps extends ModalProps {
-  subscription: Subscription;
+  subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
 }
 
@@ -21,9 +21,6 @@ type ShippingAddressFormValues = Pick<
   'address1' | 'address2' | 'city' | 'countryCode' | 'firstName' | 'lastName' | 'phone' | 'province' | 'zip'
 >;
 
-/**
- * TODO Handle errors
- */
 export const ShippingAddressForm = ({
   isOpen,
   onClose,
@@ -55,13 +52,13 @@ export const ShippingAddressForm = ({
       await updateMyAddress({
         variables: {
           ...formData,
-          addressId: subscription.address_id
+          addressId: subscription.address.id
         }
       });
       await refetchSubscriptions();
       onClose();
     },
-    [updateMyAddress, onClose, refetchSubscriptions, subscription.address_id]
+    [updateMyAddress, onClose, refetchSubscriptions, subscription.address.id]
   );
 
   // Use countryCode here because inconsistent...
@@ -79,8 +76,8 @@ export const ShippingAddressForm = ({
     () =>
       reset({
         ...subscription.address,
-        firstName: subscription.address.first_name,
-        lastName: subscription.address.last_name,
+        firstName: subscription.address.firstName,
+        lastName: subscription.address.lastName,
         countryCode: countries.find((country) => country.name === subscription.address.country).iso2 ?? 'US'
       }),
     [reset, subscription.address]

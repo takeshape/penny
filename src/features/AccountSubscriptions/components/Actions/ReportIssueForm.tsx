@@ -8,10 +8,10 @@ import { useSession } from 'next-auth/react';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { shopifyGidToId } from 'transforms/shopify';
-import { RechargeCharge } from '../../types';
+import { SubscriptionOrder } from '../../types';
 
 export interface ReportIssueFormProps extends ModalProps {
-  order: RechargeCharge;
+  order: SubscriptionOrder;
 }
 
 export interface ReportIssueFormValues {
