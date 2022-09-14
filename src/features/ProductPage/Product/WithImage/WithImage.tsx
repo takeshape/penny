@@ -1,6 +1,7 @@
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/24/solid';
 import Breadcrumbs, { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
 import NextImage from 'components/NextImage';
+import ProductPrice from 'components/Product/ProductPrice';
 import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSelectWithDescription';
 import Stars from 'components/Stars/Stars';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
@@ -10,7 +11,6 @@ import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
-import { formatPrice } from 'utils/text';
 
 export interface ProductWithImageProps {
   product: ProductType;
@@ -88,7 +88,7 @@ export const ProductWithImage = ({
           </h2>
 
           <div className="flex items-center">
-            <p className="text-lg text-body-900 sm:text-xl">{formatPrice(priceMin.currencyCode, priceMin.amount)}</p>
+            <ProductPrice price={selectedPrice} isAvailable={selectedVariant.available} size="large" />
 
             <div className="ml-4 pl-4 border-l border-body-300">
               <h2 className="sr-only">Reviews</h2>

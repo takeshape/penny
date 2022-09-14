@@ -4,16 +4,16 @@ import { formatPrice } from 'utils/text';
 
 export interface ProductPriceProps {
   price: ProductPriceOption;
-  hasStock: boolean;
+  isAvailable: boolean;
   size: 'small' | 'large';
 }
 
-export const ProductPrice = ({ price, hasStock, size }: ProductPriceProps) => {
+export const ProductPrice = ({ price, isAvailable, size }: ProductPriceProps) => {
   const { currencyCode, amount } = price;
 
   const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-body-900');
 
-  if (hasStock) {
+  if (isAvailable) {
     return <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>;
   }
 

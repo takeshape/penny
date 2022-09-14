@@ -90,7 +90,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             Product information
           </h3>
 
-          <ProductPrice price={selectedPrice} hasStock={hasStock} size="small" />
+          <ProductPrice price={selectedPrice} isAvailable={selectedVariant.available} size="small" />
         </section>
 
         <section aria-labelledby="options-heading" className="mt-10">

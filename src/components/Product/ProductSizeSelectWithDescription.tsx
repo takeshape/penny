@@ -34,17 +34,19 @@ export const ProductSizeSelectWithDescription = ({
       <RadioGroup.Label className="block text-sm font-medium text-form-700">{label}</RadioGroup.Label>
       <div className={`mt-1 ${gridClasses}`}>
         {option.values.map((optionValue) => {
-          const disabled = !optionValue.hasStock || !hasStockFor(optionValue);
+          const isDisabled = !optionValue.hasStock;
+          const isSoftDisabled = !hasStockFor(optionValue);
           return (
             <RadioGroup.Option
               as="div"
               key={optionValue.value}
               value={optionValue.value}
-              disabled={disabled}
+              disabled={isDisabled}
               className={({ active }) =>
                 classNames(
                   active ? 'ring-2 ring-accent-500' : '',
-                  'relative block border border-form-300 bg-background rounded-lg p-4 cursor-pointer focus:outline-none'
+                  isDisabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                  'relative block border border-form-300 bg-background rounded-lg p-4 focus:outline-none'
                 )
               }
             >
@@ -60,6 +62,7 @@ export const ProductSizeSelectWithDescription = ({
                     className={classNames(
                       active ? 'border' : 'border-2',
                       checked ? 'border-accent-500' : 'border-transparent',
+                      isSoftDisabled && 'bg-form-300',
                       'absolute -inset-px rounded-lg pointer-events-none'
                     )}
                     aria-hidden="true"

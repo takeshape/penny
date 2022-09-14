@@ -36,17 +36,19 @@ export const ProductSizeSelect = ({
       <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
       <div className={wrapperStyles}>
         {option.values.map((optionValue) => {
-          const disabled = !optionValue.hasStock || !hasStockFor(optionValue);
+          const isDisabled = !optionValue.hasStock;
+          const isSoftDisabled = !hasStockFor(optionValue);
           return (
             <RadioGroup.Option
               key={optionValue.value}
               value={optionValue.value}
-              disabled={!optionValue.hasStock || !hasStockFor(optionValue)}
+              disabled={isDisabled}
               className={({ active }) =>
                 classNames(
-                  disabled
-                    ? 'bg-form-50 text-form-200 cursor-not-allowed'
+                  isSoftDisabled || isDisabled
+                    ? 'bg-form-50 text-form-200'
                     : 'bg-background shadow-sm text-form-900 cursor-pointer',
+                  isDisabled ? 'cursor-not-allowed' : 'cursor-pointer',
                   active ? 'ring-2 ring-accent-500' : '',
                   buttonStyles
                 )
@@ -55,7 +57,7 @@ export const ProductSizeSelect = ({
               {({ active, checked }) => (
                 <>
                   <RadioGroup.Label as="span">{optionValue.name}</RadioGroup.Label>
-                  {optionValue.hasStock ? (
+                  {!isDisabled ? (
                     <span
                       className={classNames(
                         active ? 'border' : 'border-2',

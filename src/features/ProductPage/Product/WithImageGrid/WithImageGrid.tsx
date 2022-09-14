@@ -106,7 +106,7 @@ export const ProductWithImageGrid = ({
         <div className="mt-4 lg:mt-0 lg:row-span-3">
           <h2 className="sr-only">Product information</h2>
 
-          <ProductPrice price={selectedPrice} hasStock={hasStock} size="large" />
+          <ProductPrice price={selectedPrice} isAvailable={selectedVariant.available} size="large" />
 
           {reviewHighlights && (
             <div className="mt-6">

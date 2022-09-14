@@ -19,18 +19,20 @@ export const ProductColorSelect = ({ value, onChange, option, selections }: Prod
       <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
       <div className="flex items-center space-x-3">
         {option.values.map((optionValue) => {
-          const disabled = !optionValue.hasStock || !hasStockFor(optionValue);
+          const isDisabled = !optionValue.hasStock;
+          const isSoftDisabled = !hasStockFor(optionValue);
+
           return (
             <RadioGroup.Option
               key={optionValue.value}
               value={optionValue.value}
-              disabled={disabled}
+              disabled={isDisabled}
               className={({ active, checked }) =>
                 classNames(
                   optionValue.selectedClass,
                   active && checked ? 'ring ring-offset-1' : '',
                   !active && checked ? 'ring-2' : '',
-                  disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+                  isDisabled ? 'cursor-not-allowed' : 'cursor-pointer',
                   '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center focus:outline-none'
                 )
               }
@@ -40,7 +42,11 @@ export const ProductColorSelect = ({ value, onChange, option, selections }: Prod
               </RadioGroup.Label>
               <span
                 aria-hidden="true"
-                className={classNames(optionValue.class, 'h-8 w-8 border border-body border-opacity-10 rounded-full')}
+                className={classNames(
+                  optionValue.class,
+                  'h-8 w-8 border border-body border-opacity-10 rounded-full',
+                  isSoftDisabled && 'opacity-50'
+                )}
               />
             </RadioGroup.Option>
           );
