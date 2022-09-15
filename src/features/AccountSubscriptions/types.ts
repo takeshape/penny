@@ -81,12 +81,18 @@ export type SubscriptionOrderLineItem = {
   };
 };
 
+export type SubscriptionTrackingInfo = {
+  url: string;
+  number: string;
+  company: string;
+};
+
 export type SubscriptionOrderFulfillment = {
-  deliveredAt: string;
-  estimatedDeliveryAt: string;
-  inTransitAt: string;
   displayStatus: Shopify_FulfillmentDisplayStatus;
-  // TODO Add tracking info
+  deliveredAt?: string;
+  estimatedDeliveryAt?: string;
+  inTransitAt?: string;
+  trackingInfo?: SubscriptionTrackingInfo;
 };
 
 export type SubscriptionOrder = {

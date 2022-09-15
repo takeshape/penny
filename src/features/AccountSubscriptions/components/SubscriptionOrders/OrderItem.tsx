@@ -11,6 +11,7 @@ export interface OrderItemProps {
 }
 
 export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderItemProps) => {
+  const { trackingInfo } = order.fulfillments?.[0] ?? {};
   const { product, productVariant, quantity, price } = order.lineItems[0];
 
   return (
@@ -36,6 +37,11 @@ export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderIt
               <p className="mt-1 font-medium text-body-900">
                 {formatPrice(price.currencyCode, price.amount, quantity)}
               </p>
+              {trackingInfo && (
+                <div>
+                  {trackingInfo.company} {trackingInfo.number}
+                </div>
+              )}
             </div>
           </div>
           <div className="mt-6 space-y-4 sm:mt-0 sm:ml-6 sm:flex-none sm:w-40">

@@ -226,8 +226,9 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'FULFILLED':
     case 'READY_FOR_PICKUP':
       return {
-        // User doesn't care
-        status: 'CHARGE_SUCCESS',
+        // The most basic state at which tracking info should be available.
+        // Manual fulfillment might provide tracking info here.
+        status: 'FULFILLMENT_FULFILLED',
         statusAt: updatedAt
       };
 
@@ -259,7 +260,7 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'NOT_DELIVERED':
       return {
         status: 'FULFILLMENT_NOT_DELIVERED',
-        statusAt: deliveredAt
+        statusAt: deliveredAt ?? updatedAt
       };
 
     case 'CANCELED':
@@ -312,12 +313,21 @@ function getSubscriptionOrderLineItem(
 function getSubscriptionOrderFulfillment(
   shopifyFulfillment: SubscriptionResponse['charges'][0]['shopifyOrder']['fulfillments'][0]
 ): SubscriptionOrderFulfillment {
-  const { deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus } = shopifyFulfillment;
+  const { deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus, trackingInfo } = shopifyFulfillment;
+  const tracking = trackingInfo[0];
+
   return {
     deliveredAt,
     estimatedDeliveryAt,
     inTransitAt,
-    displayStatus
+    displayStatus,
+    trackingInfo: tracking
+      ? {
+          url: tracking.url ?? '',
+          number: tracking.number ?? '',
+          company: tracking.company ?? ''
+        }
+      : null
   };
 }
 
