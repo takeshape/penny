@@ -1,6 +1,6 @@
 import { StorefrontChild } from 'features/Storefront/types';
 
-type OffersProps = StorefrontChild & { __typename: 'OffersComponent' };
+export type OffersProps = StorefrontChild & { __typename: 'OffersComponent' };
 
 export const Offers = ({ offers }: OffersProps) => {
   if (!offers) return null;

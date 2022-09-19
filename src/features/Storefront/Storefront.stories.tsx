@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { productCategoryCollection } from 'features/ProductCategory/fixtures';
 import { _BackgroundImage } from 'features/Storefront/BackgroundImage/BackgroundImage.stories';
 import { _Collection } from 'features/Storefront/Collection/Collection.stories';
 import { _Collections } from 'features/Storefront/Collections/Collections.stories';
@@ -18,10 +17,10 @@ const Template: ComponentStory<typeof Storefront> = (args) => <Storefront {...ar
 
 export const _Storefront = Template.bind({});
 _Storefront.args = {
-  items: productCategoryCollection.items,
   storefront: {
     components: [
-      { __typename: 'OffersComponent', ..._Offers.args },
+      // Seemingly irresolvable type errors with this one
+      { __typename: 'OffersComponent', ..._Offers.args } as any,
       { __typename: 'HeroComponent', ..._Hero.args },
       { __typename: 'CollectionComponent', ..._Collection.args },
       { __typename: 'CollectionsComponent', ..._Collections.args },
