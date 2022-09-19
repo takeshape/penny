@@ -18,7 +18,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": "src",
-    "strict": false
+    "strict": false,
+    "strictBindCallApply": true
   },
   "include": [
     "next-env.d.ts",

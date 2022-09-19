@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountFormMarketing } from './AccountFormMarketing';
 import fixtures from './queries.fixtures.json';
@@ -8,7 +8,7 @@ const Meta: ComponentMeta<typeof AccountFormMarketing> = {
   component: AccountFormMarketing
 };
 
-const Template = (args) => <AccountFormMarketing {...args} />;
+const Template: ComponentStory<typeof AccountFormMarketing> = () => <AccountFormMarketing />;
 
 export const NotReady = Template.bind({});
 NotReady.parameters = {

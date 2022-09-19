@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { navigationResponse } from '../queries.fixtures';
@@ -35,7 +35,7 @@ const Meta: ComponentMeta<typeof NavigationTop> = {
   }
 };
 
-const Template = (args) => <NavigationTop {...args} />;
+const Template: ComponentStory<typeof NavigationTop> = (args) => <NavigationTop {...args} />;
 
 export const _Mobile = Template.bind({});
 _Mobile.args = {

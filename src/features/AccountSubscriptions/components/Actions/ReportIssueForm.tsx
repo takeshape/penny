@@ -11,7 +11,7 @@ import { shopifyGidToId } from 'transforms/shopify';
 import { SubscriptionOrder } from '../../types';
 
 export interface ReportIssueFormProps extends ModalProps {
-  order: SubscriptionOrder;
+  order: Pick<SubscriptionOrder, 'id'>;
 }
 
 export interface ReportIssueFormValues {

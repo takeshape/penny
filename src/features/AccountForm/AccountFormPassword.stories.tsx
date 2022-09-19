@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountFormPassword } from './AccountFormPassword';
 import fixtures from './queries.fixtures.json';
@@ -8,7 +8,7 @@ const Meta: ComponentMeta<typeof AccountFormPassword> = {
   component: AccountFormPassword
 };
 
-const Template = (args) => <AccountFormPassword {...args} />;
+const Template: ComponentStory<typeof AccountFormPassword> = () => <AccountFormPassword />;
 
 export const Success = Template.bind({});
 Success.parameters = {

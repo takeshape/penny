@@ -1,16 +1,17 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { TrackingInfo } from './TrackingInfo';
+import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
+import { DeliveryDetails } from './DeliveryDetails';
 
-const Meta: ComponentMeta<typeof TrackingInfo> = {
-  title: 'Features / Account Subscriptions / Actions / Tracking Info',
-  component: TrackingInfo,
+const Meta: ComponentMeta<typeof DeliveryDetails> = {
+  title: 'Features / Account Subscriptions / Actions / Delivery Details',
+  component: DeliveryDetails,
   parameters: {
     layout: 'centered'
   }
 };
 
-const Template: ComponentStory<typeof TrackingInfo> = (args) => (
-  <TrackingInfo isOpen={true} onClose={() => {}} onReportIssue={() => {}} {...args} />
+const Template: ComponentStory<typeof DeliveryDetails> = (args) => (
+  <DeliveryDetails isOpen={true} onClose={() => {}} onReportIssue={() => {}} {...args} />
 );
 
 const shippingAddress = {
@@ -33,7 +34,7 @@ const fulfillments = [
     deliveredAt: '2022-09-13T17:08:22Z',
     estimatedDeliveryAt: '2022-09-13T17:08:22Z',
     inTransitAt: '2022-09-13T17:08:22Z',
-    displayStatus: 'FULFILLED',
+    displayStatus: 'FULFILLED' as Shopify_FulfillmentDisplayStatus,
     trackingInfo: {
       url: 'https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=1234567891',
       number: '1234567891',
@@ -42,14 +43,19 @@ const fulfillments = [
   }
 ];
 
+const order = {
+  id: '123',
+  fulfillments,
+  shippingAddress,
+  statusAt: '2022-09-15T10:10:00.000Z'
+};
+
 export const FulfillmentUnknown = Template.bind({});
 
 FulfillmentUnknown.args = {
   order: {
-    status: 'FULFILLMENT_UNKNOWN',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_UNKNOWN'
   }
 };
 
@@ -57,10 +63,8 @@ export const FulfillmentAttemptedDelivery = Template.bind({});
 
 FulfillmentAttemptedDelivery.args = {
   order: {
-    status: 'FULFILLMENT_ATTEMPTED_DELIVERY',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_ATTEMPTED_DELIVERY'
   }
 };
 
@@ -68,10 +72,8 @@ export const FulfillmentDelivered = Template.bind({});
 
 FulfillmentDelivered.args = {
   order: {
-    status: 'FULFILLMENT_DELIVERED',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_DELIVERED'
   }
 };
 
@@ -79,10 +81,8 @@ export const FulfillmentFailure = Template.bind({});
 
 FulfillmentFailure.args = {
   order: {
-    status: 'FULFILLMENT_FAILURE',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_FAILURE'
   }
 };
 
@@ -90,10 +90,8 @@ export const FulfillmentCanceled = Template.bind({});
 
 FulfillmentCanceled.args = {
   order: {
-    status: 'FULFILLMENT_CANCELED',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_CANCELED'
   }
 };
 
@@ -101,10 +99,8 @@ export const FulfillmentFulfilled = Template.bind({});
 
 FulfillmentFulfilled.args = {
   order: {
-    status: 'FULFILLMENT_FULFILLED',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_FULFILLED'
   }
 };
 
@@ -112,10 +108,8 @@ export const FulfillmentInTransit = Template.bind({});
 
 FulfillmentInTransit.args = {
   order: {
-    status: 'FULFILLMENT_IN_TRANSIT',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_IN_TRANSIT'
   }
 };
 
@@ -123,10 +117,8 @@ export const FulfillmentNotDelivered = Template.bind({});
 
 FulfillmentNotDelivered.args = {
   order: {
-    status: 'FULFILLMENT_NOT_DELIVERED',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_NOT_DELIVERED'
   }
 };
 
@@ -134,10 +126,8 @@ export const FulfillmentOutForDelivery = Template.bind({});
 
 FulfillmentOutForDelivery.args = {
   order: {
-    status: 'FULFILLMENT_OUT_FOR_DELIVERY',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    shippingAddress,
-    fulfillments
+    ...order,
+    status: 'FULFILLMENT_OUT_FOR_DELIVERY'
   }
 };
 

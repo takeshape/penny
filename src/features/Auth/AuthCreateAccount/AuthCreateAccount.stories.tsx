@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { AuthCreateAccount } from './AuthCreateAccount';
 
@@ -12,7 +12,7 @@ const Meta: ComponentMeta<typeof AuthCreateAccount> = {
   }
 };
 
-const Template = (args) => <AuthCreateAccount {...args} />;
+const Template: ComponentStory<typeof AuthCreateAccount> = (args) => <AuthCreateAccount {...args} />;
 
 export const Success = Template.bind({});
 Success.parameters = {

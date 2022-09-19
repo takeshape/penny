@@ -17,8 +17,6 @@ export default Meta;
 export const _Pagination = Template.bind({});
 _Pagination.args = {
   pagination: {
-    pageCount: 10,
-    currentPage: 3,
     setCurrentPage: action('Set Current Page')
   }
 };

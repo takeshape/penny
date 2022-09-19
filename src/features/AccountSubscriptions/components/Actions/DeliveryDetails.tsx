@@ -5,12 +5,12 @@ import { format } from 'date-fns';
 import { getOrderStatusDisplay } from 'features/AccountSubscriptions/utils';
 import { SubscriptionOrder } from '../../types';
 
-export interface TrackingInfoProps extends ModalProps {
+export interface DeliveryDetailsProps extends ModalProps {
   order: Pick<SubscriptionOrder, 'shippingAddress' | 'status' | 'fulfillments'>;
   onReportIssue: () => void;
 }
 
-export const TrackingInfo = ({ isOpen, onClose, onReportIssue, order }: TrackingInfoProps) => {
+export const DeliveryDetails = ({ isOpen, onClose, onReportIssue, order }: DeliveryDetailsProps) => {
   const { shippingAddress, status } = order;
   const { trackingInfo, deliveredAt, estimatedDeliveryAt, inTransitAt } = order.fulfillments?.[0] ?? {};
   const displayStatus = getOrderStatusDisplay(status);

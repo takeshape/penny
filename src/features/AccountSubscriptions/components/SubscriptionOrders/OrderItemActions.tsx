@@ -1,9 +1,9 @@
 import { isFuture } from 'date-fns';
 import { useState } from 'react';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
+import { DeliveryDetails } from '../Actions/DeliveryDetails';
 import { ReportIssueForm } from '../Actions/ReportIssueForm';
 import { SkipForm } from '../Actions/SkipForm';
-import { TrackingInfo } from '../Actions/TrackingInfo';
 import { UnskipForm } from '../Actions/UnskipForm';
 
 interface OrderItemActionsProps {
@@ -91,7 +91,7 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
           >
             Delivery details
           </button>
-          <TrackingInfo
+          <DeliveryDetails
             isOpen={isTrackingInfoOpen}
             onClose={() => setIsTrackingInfoOpen(false)}
             order={order}

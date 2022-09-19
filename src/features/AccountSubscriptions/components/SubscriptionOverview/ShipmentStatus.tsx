@@ -1,12 +1,13 @@
 import { format } from 'date-fns';
-import { TrackingInfo } from 'features/AccountSubscriptions/components/Actions/TrackingInfo';
+import { DeliveryDetails } from 'features/AccountSubscriptions/components/Actions/DeliveryDetails';
+import { ReportIssueForm } from 'features/AccountSubscriptions/components/Actions/ReportIssueForm';
 import { getOrderStatusDisplay } from 'features/AccountSubscriptions/utils';
 import { useState } from 'react';
 import { SubscriptionOrder } from '../../types';
 
 export interface ShipmentStatusProps {
   heading?: string;
-  order: Pick<SubscriptionOrder, 'status' | 'statusAt' | 'fulfillments' | 'shippingAddress'>;
+  order: Pick<SubscriptionOrder, 'id' | 'status' | 'statusAt' | 'fulfillments' | 'shippingAddress'>;
 }
 
 function getTrackingInfo(order: Pick<SubscriptionOrder, 'status' | 'fulfillments'>) {
@@ -30,7 +31,8 @@ export const ShipmentStatus = ({ heading, order }: ShipmentStatusProps) => {
   const displayStatus = getOrderStatusDisplay(status);
   const prep = status === 'CHARGE_QUEUED' ? 'for' : 'on';
   const trackingInfo = getTrackingInfo(order);
-  const [isTrackingInfoOpen, setIsTrackingInfoOpen] = useState(false);
+  const [isDeliveryDetailsOpen, setIsDeliveryDetailsOpen] = useState(false);
+  const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
 
   return (
     <div>
@@ -46,19 +48,20 @@ export const ShipmentStatus = ({ heading, order }: ShipmentStatusProps) => {
           <div>
             <button
               className="text-sm font-medium text-accent-600 hover:text-accent-500"
-              onClick={() => setIsTrackingInfoOpen(true)}
+              onClick={() => setIsDeliveryDetailsOpen(true)}
             >
               Show delivery details
             </button>
-            <TrackingInfo
-              isOpen={isTrackingInfoOpen}
-              onClose={() => setIsTrackingInfoOpen(false)}
+            <DeliveryDetails
+              isOpen={isDeliveryDetailsOpen}
+              onClose={() => setIsDeliveryDetailsOpen(false)}
               order={order}
               onReportIssue={() => {
-                setIsTrackingInfoOpen(false);
-                // setIsReportIssueOpen(true);
+                setIsDeliveryDetailsOpen(false);
+                setIsReportIssueOpen(true);
               }}
             />
+            <ReportIssueForm isOpen={isReportIssueOpen} onClose={() => setIsReportIssueOpen(false)} order={order} />
           </div>
         )}
       </div>

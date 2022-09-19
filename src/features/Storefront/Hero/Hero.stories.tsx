@@ -18,7 +18,6 @@ _Hero.args = {
     "All the charts, datepickers, and notifications in the world can't beat checking off some items on a paper card.",
   buttonText: 'Shop Productivity',
   image: {
-    filename: 'home-page-02-hero-half-width.jpg',
     path: '06ccc3dc-a9da-4f5b-9142-5a104db52ee3/dev/0c3a5505-a306-40f0-aacd-af0f5b103219/home-page-02-hero-half-width.jpg'
   }
 };

@@ -26,7 +26,8 @@ _ProductPage.args = {
   component: 'withImageGrid',
   options: {
     showDetails: true,
-    showReviews: true,
+    showReviewsIo: true,
+    showTrustpilot: false,
     showRelatedProducts: true,
     showPolicies: true,
     showBreadcrumbs: true

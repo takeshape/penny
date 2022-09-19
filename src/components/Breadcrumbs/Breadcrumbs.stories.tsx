@@ -15,17 +15,17 @@ export const _Breadcrumbs = Template.bind({});
 _Breadcrumbs.args = {
   breadcrumbs: [
     {
-      id: 1,
+      id: '1',
       name: 'First',
       href: '#'
     },
     {
-      id: 2,
+      id: '2',
       name: 'Second',
       href: '#'
     },
     {
-      id: 3,
+      id: '3',
       name: 'Third',
       href: '#'
     }
