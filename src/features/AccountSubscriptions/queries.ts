@@ -328,19 +328,6 @@ export const SetNextChargeDateMutation = gql`
   }
 `;
 
-export const CreateOnetimeMutation = gql`
-  mutation CreateOnetimeMutation($addressId: String!, $productId: String!, $variantId: String!, $quantity: Int!) {
-    onetime: Recharge_createOnetime(
-      addressId: $addressId
-      productId: $productId
-      variantId: $variantId
-      quantity: $quantity
-    ) {
-      id
-    }
-  }
-`;
-
 export const UpdateDeliveryFrequencyMutation = gql`
   ${SubscriptionFragment}
   mutation UpdateDeliveryFrequencyMutation($subscriptionId: String!, $frequency: String!, $unit: String!) {
