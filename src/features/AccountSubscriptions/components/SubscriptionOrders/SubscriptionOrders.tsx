@@ -62,7 +62,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
         {isActive && nextQueuedOrder && (
           <>
             <div className="mt-12">
-              <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Next scheduled order</h3>
+              <h3 className="leading-6 font-medium text-body-600">Next scheduled order</h3>
             </div>
 
             <div className="mt-4 space-y-16">
@@ -79,7 +79,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
 
         {isActive && mostRecentOrder && (
           <div className="mt-12">
-            <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Most recent order</h3>
+            <h3 className="leading-6 font-medium text-body-600">Most recent order</h3>
           </div>
         )}
 
@@ -97,7 +97,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
 
         {isActive && skippedAndPastOrders.length > 0 && (
           <div className="mt-12">
-            <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Skipped and past orders</h3>
+            <h3 className="leading-6 font-medium text-body-600">Skipped and past orders</h3>
           </div>
         )}
 

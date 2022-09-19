@@ -1,3 +1,4 @@
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import { format } from 'date-fns';
@@ -32,15 +33,15 @@ export const TrackingInfo = ({ isOpen, onClose, onReportIssue, order }: Tracking
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
+      <div className=" w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
         <div className="sm:col-span-12 lg:col-span-12">
           <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Tracking info</h2>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Order delivery details.</p>
+            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">Delivery details</h2>
+            <p className="mt-1 max-w-2xl text-sm text-gray-500">Order delivery details and tracking info.</p>
           </div>
 
           <div className="mt-10">
-            <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">
+            <div className="md:h-[400px] overflow-y-scroll p-[1px] flex flex-col">
               <section aria-labelledby="tracking-info-content" className="flex flex-col h-full prose">
                 <div className="flex-grow grid sm:grid-cols-2 h-full font-medium text-body-600">
                   <div>
@@ -82,19 +83,16 @@ export const TrackingInfo = ({ isOpen, onClose, onReportIssue, order }: Tracking
                     </p>
                   </div>
                 </div>
-                <div className="text-center">
-                  <button
-                    onClick={onReportIssue}
-                    className="font-medium text-accent-600 hover:text-accent-500 cursor-pointer"
-                  >
-                    <span>Report an issue</span>
-                  </button>
-                </div>
               </section>
             </div>
           </div>
           <div className="mt-8 flex justify-end gap-2">
-            <Button color="primary" type="submit" onClick={onClose}>
+            <Button color="secondary" type="button" onClick={onReportIssue}>
+              <div className="flex flex-row gap-2 items-center justify-center">
+                <ExclamationTriangleIcon className="h-5 w-5" /> Report an Issue
+              </div>
+            </Button>
+            <Button color="primary" type="button" onClick={onClose}>
               Close
             </Button>
           </div>

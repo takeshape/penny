@@ -46,7 +46,7 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
                         onClick={() => setIsProductOptionsOpen(true)}
                         className="whitespace-nowrap text-sm font-medium text-accent-600 hover:text-accent-500"
                       >
-                        Update Product
+                        Update product
                       </button>
                     </div>
                   )}
@@ -59,16 +59,18 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
                         onClick={() => setIsPaymentMethodOpen(true)}
                         className="text-accent-600 hover:text-accent-500"
                       >
-                        Update Payment Method
+                        Update payment method
                       </button>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {mostRecentOrder !== undefined && <ShipmentStatus order={mostRecentOrder} />}
+              <div className="mt-6 font-medium flex flex-col gap-6">
+                {mostRecentOrder !== undefined && (
+                  <ShipmentStatus heading="Most recent order" order={mostRecentOrder} />
+                )}
                 {isActive && nextQueuedOrder !== undefined ? (
-                  <ShipmentStatus order={nextQueuedOrder} />
+                  <ShipmentStatus heading="Next queued order" order={nextQueuedOrder} />
                 ) : (
                   <div className="flex items-center mt-4 sm:mt-0">
                     <p className="text-sm font-medium text-gray-500">No upcoming orders</p>

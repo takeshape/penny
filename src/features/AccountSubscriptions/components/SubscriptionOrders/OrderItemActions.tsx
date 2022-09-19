@@ -29,7 +29,7 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
               onClick={() => setIsUnskipOpen(true)}
               className="w-full flex items-center justify-center py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full sm:flex-grow-0"
             >
-              Unskip
+              Unskip order
             </button>
             <UnskipForm
               isOpen={isUnskipOpen}
@@ -52,7 +52,7 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
             onClick={() => setIsSkipOpen(true)}
             className="w-full flex items-center justify-center py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full sm:flex-grow-0"
           >
-            Skip delivery
+            Skip order
           </button>
           <SkipForm
             isOpen={isSkipOpen}
@@ -89,7 +89,7 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
             onClick={() => setIsTrackingInfoOpen(true)}
             className="w-full flex items-center justify-center py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full sm:flex-grow-0"
           >
-            Tracking info
+            Delivery details
           </button>
           <TrackingInfo
             isOpen={isTrackingInfoOpen}
