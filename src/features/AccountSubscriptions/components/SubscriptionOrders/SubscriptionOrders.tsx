@@ -40,7 +40,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
                   onClick={() => setIsSkipNextOpen(true)}
                   className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full"
                 >
-                  Skip Next Order
+                  Skip next order
                 </button>
               )}
 
@@ -50,7 +50,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
                   onClick={() => setIsOrderNowOpen(true)}
                   className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full"
                 >
-                  Order Now
+                  Order now
                 </button>
               )}
             </div>

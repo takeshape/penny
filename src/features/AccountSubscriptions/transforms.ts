@@ -217,7 +217,7 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
       };
   }
 
-  const { updatedAt, inTransitAt, deliveredAt } = fulfillment;
+  const { updatedAt, inTransitAt, deliveredAt, trackingInfo } = fulfillment;
 
   switch (fulfillment.displayStatus) {
     case 'SUBMITTED':
@@ -225,11 +225,19 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'LABEL_VOIDED':
     case 'LABEL_PRINTED':
     case 'LABEL_PURCHASED':
-    case 'FULFILLED':
     case 'READY_FOR_PICKUP':
+    case 'FULFILLED':
+      // If we're in this early state and have no tracking info, keep at the
+      // CHARGE_SUCCESS state to only show relevant info to the user.
+      if (!trackingInfo) {
+        return {
+          status: 'CHARGE_SUCCESS',
+          statusAt: updated_at
+        };
+      }
+
+      // In the case of manual fulfillment it's possible this is the terminal state
       return {
-        // The most basic state at which tracking info should be available.
-        // Manual fulfillment might provide tracking info here.
         status: 'FULFILLMENT_FULFILLED',
         statusAt: updatedAt
       };
@@ -357,8 +365,8 @@ function getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]
     chargeCreatedAt: created_at,
     chargeScheduledAt: scheduled_at ?? null,
     chargeProcessedAt: processed_at ?? null,
-    fulfillmentCreatedAt: fulfillment.createdAt ?? null,
-    fulfillmentUpdatedAt: fulfillment.updatedAt ?? null,
+    fulfillmentCreatedAt: fulfillment?.createdAt ?? null,
+    fulfillmentUpdatedAt: fulfillment?.updatedAt ?? null,
     fulfillmentScheduledAt: fulfillment?.estimatedDeliveryAt ?? null,
     fulfillmentInTransitAt: fulfillment?.inTransitAt ?? null,
     fulfillmentDeliveredAt: fulfillment?.deliveredAt ?? null,

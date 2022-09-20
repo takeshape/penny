@@ -36,7 +36,7 @@ export const ShipmentStatus = ({ heading, order }: ShipmentStatusProps) => {
         <div className="flex-grow flex items-center">
           <displayStatus.Icon className={`${displayStatus.iconClasses} w-5 h-5`} aria-hidden="true" />
           <p className="ml-2 text-sm text-gray-900">
-            {displayStatus.text} {prep} <time dateTime={order.statusAt}>{format(new Date(order.statusAt), 'PP')}</time>
+            {displayStatus.text} {prep} <time dateTime={statusAt}>{format(new Date(statusAt), 'PP')}</time>
           </p>
         </div>
         {trackingInfo && (

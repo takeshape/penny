@@ -1,4 +1,5 @@
 import {
+  ArrowUturnLeftIcon,
   CheckCircleIcon,
   ClockIcon,
   ExclamationCircleIcon,
@@ -101,7 +102,7 @@ export function getOrderStatusDisplay(status: SubscriptionOrderStatus) {
       return {
         text: 'Payment refunded',
         classes: 'bg-gray-100 text-gray-800',
-        Icon: MinusCircleIcon,
+        Icon: ArrowUturnLeftIcon,
         iconClasses: 'text-gray-500'
       };
     case 'CHARGE_PENDING_MANUAL_PAYMENT':
@@ -135,9 +136,9 @@ export function getOrderStatusDisplay(status: SubscriptionOrderStatus) {
     case 'FULFILLMENT_FULFILLED':
       return {
         text: 'Order fulfilled',
-        classes: 'bg-blue-100 text-blue-800',
-        Icon: TruckIcon,
-        iconClasses: 'text-blue-500'
+        classes: 'bg-green-100 text-green-800',
+        Icon: CheckCircleIcon,
+        iconClasses: 'text-green-500'
       };
     case 'FULFILLMENT_FAILURE':
       return {
