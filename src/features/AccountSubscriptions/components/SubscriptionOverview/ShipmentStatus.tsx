@@ -14,16 +14,16 @@ export interface ShipmentStatusProps {
 }
 
 export const ShipmentStatus = ({ heading, order }: ShipmentStatusProps) => {
-  const { status } = order;
+  const { status, chargeScheduledAt } = order;
   const displayStatus = useMemo(() => getOrderStatusDisplay(status), [status]);
   const trackingInfo = useMemo(() => getOrderTrackingInfo(order), [order]);
 
   let prep = 'on';
   let statusAt = order.statusAt;
 
-  if (status === 'CHARGE_QUEUED') {
+  if (status === 'CHARGE_QUEUED' && chargeScheduledAt) {
     prep = 'for';
-    statusAt = order.chargeScheduledAt;
+    statusAt = chargeScheduledAt;
   }
 
   const [isDeliveryDetailsOpen, setIsDeliveryDetailsOpen] = useState(false);

@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
+import { SubscriptionOrder } from '../../types';
 import { ShipmentStatus } from './ShipmentStatus';
 
 const shippingAddress = {
@@ -32,10 +33,11 @@ const fulfillments = [
   }
 ];
 
-const order = {
+const order: Pick<SubscriptionOrder, 'id' | 'statusAt' | 'chargeScheduledAt' | 'fulfillments' | 'shippingAddress'> = {
   id: '123',
   fulfillments,
   shippingAddress,
+  chargeScheduledAt: '2022-09-15T10:10:00.000Z',
   statusAt: '2022-09-15T10:10:00.000Z'
 };
 

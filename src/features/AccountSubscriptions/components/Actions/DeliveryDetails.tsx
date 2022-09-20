@@ -3,7 +3,7 @@ import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import { format } from 'date-fns';
 import { SubscriptionOrder } from '../../types';
-import { getOrderStatusDisplay } from '../../utils';
+import { getOrderStatusDisplay, getOrderTrackingInfo } from '../../utils';
 
 export interface DeliveryDetailsProps extends ModalProps {
   order: Pick<SubscriptionOrder, 'shippingAddress' | 'status' | 'fulfillments'>;
@@ -12,22 +12,28 @@ export interface DeliveryDetailsProps extends ModalProps {
 
 export const DeliveryDetails = ({ isOpen, onClose, onReportIssue, order }: DeliveryDetailsProps) => {
   const { shippingAddress, status } = order;
-  const { trackingInfo, deliveredAt, estimatedDeliveryAt, inTransitAt } = order.fulfillments?.[0] ?? {};
+  const { deliveredAt, estimatedDeliveryAt, inTransitAt } = order.fulfillments?.[0] ?? {};
   const displayStatus = getOrderStatusDisplay(status);
+  const trackingInfo = getOrderTrackingInfo(order);
 
   let notesText1 = '';
   let notesText2 = '';
 
   if (inTransitAt) {
-    notesText1 = `In transit at ${format(new Date(estimatedDeliveryAt), 'PPP')}`;
+    notesText1 = `In transit as of ${format(new Date(estimatedDeliveryAt), 'PPPpp')}.`;
   }
 
   if (estimatedDeliveryAt) {
-    notesText2 = `Estimated delivery on ${format(new Date(estimatedDeliveryAt), 'PPP')}`;
+    notesText2 = `Estimated delivery on ${format(new Date(estimatedDeliveryAt), 'PPP')}.`;
   }
 
   if (deliveredAt) {
-    notesText1 = `Delivered ${format(new Date(deliveredAt), 'PPPpp')}`;
+    notesText1 = `Delivered ${format(new Date(deliveredAt), 'PPPpp')}.`;
+    notesText2 = '';
+  }
+
+  if (status === 'FULFILLMENT_NOT_DELIVERED') {
+    notesText1 = `Something went wrong and your order was not delivered.`;
     notesText2 = '';
   }
 
@@ -43,7 +49,7 @@ export const DeliveryDetails = ({ isOpen, onClose, onReportIssue, order }: Deliv
           <div className="mt-10">
             <div className="md:h-[400px] overflow-y-scroll p-[1px] flex flex-col">
               <section aria-labelledby="tracking-info-content" className="flex flex-col h-full prose">
-                <div className="flex-grow grid sm:grid-cols-2 h-full font-medium text-body-600">
+                <div className="flex-grow grid sm:grid-cols-2 h-full text-body-600">
                   <div>
                     <h4>Status</h4>
                     <p>{displayStatus.text}</p>
@@ -63,8 +69,8 @@ export const DeliveryDetails = ({ isOpen, onClose, onReportIssue, order }: Deliv
                           </a>
                         </p>
                         {(notesText1 || notesText2) && <h4>Notes</h4>}
-                        {notesText1 && <p>{notesText1}</p>}
-                        {notesText2 && <p>{notesText2}</p>}
+                        {notesText1 && <p className="m-0 mb-2 text-sm">{notesText1}</p>}
+                        {notesText2 && <p className="m-0 text-sm">{notesText2}</p>}
                       </>
                     )}
                   </div>
