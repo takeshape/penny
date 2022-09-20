@@ -1,9 +1,9 @@
 import { format } from 'date-fns';
-import { DeliveryDetails } from 'features/AccountSubscriptions/components/Actions/DeliveryDetails';
-import { ReportIssueForm } from 'features/AccountSubscriptions/components/Actions/ReportIssueForm';
-import { getOrderStatusDisplay, getOrderTrackingInfo } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
 import { SubscriptionOrder } from '../../types';
+import { getOrderStatusDisplay, getOrderTrackingInfo } from '../../utils';
+import { DeliveryDetails } from '../Actions/DeliveryDetails';
+import { ReportIssueForm } from '../Actions/ReportIssueForm';
 
 export interface ShipmentStatusProps {
   heading?: string;

@@ -2,8 +2,8 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import Button from 'components/Button/Button';
 import { Modal, ModalProps } from 'components/Modal/Modal';
 import { format } from 'date-fns';
-import { getOrderStatusDisplay } from 'features/AccountSubscriptions/utils';
 import { SubscriptionOrder } from '../../types';
+import { getOrderStatusDisplay } from '../../utils';
 
 export interface DeliveryDetailsProps extends ModalProps {
   order: Pick<SubscriptionOrder, 'shippingAddress' | 'status' | 'fulfillments'>;

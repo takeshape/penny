@@ -1,11 +1,11 @@
 import NextImage from 'components/NextImage';
 import { CreditCard } from 'components/Payments/CreditCard';
-import { PaymentMethodForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodForm';
-import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
-import { getOrders } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
 import { getProductUrl } from 'transforms/shopify';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
+import { getOrders } from '../../utils';
+import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
+import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShipmentStatus } from './ShipmentStatus';
 
 export interface SubscriptionOverviewProps {
@@ -14,13 +14,12 @@ export interface SubscriptionOverviewProps {
 }
 
 export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: SubscriptionOverviewProps) => {
-  const isActive = subscription.status === 'ACTIVE';
+  const { status, orders, product, productVariant } = subscription;
+  const isActive = status === 'ACTIVE';
+  const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getOrders(orders), [orders]);
+
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
-
-  const { product, productVariant } = subscription;
-
-  const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getOrders(subscription.orders), [subscription.orders]);
 
   return (
     <>
