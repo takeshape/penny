@@ -13,6 +13,7 @@ const Template: ComponentStory<typeof Sale> = (args) => <Sale {...args} />;
 
 export const _Sale = Template.bind({});
 _Sale.args = {
+  __typename: 'SaleComponent',
   primaryText: 'Get 25% off during our one-time sale',
   secondaryText:
     "Most of our products are limited releases that won't come back. Get your favorite items while they're in stock.",

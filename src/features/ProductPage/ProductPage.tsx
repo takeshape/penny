@@ -15,7 +15,7 @@ export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showB
     trustpilotReviewList: TrustpilotReviewList;
     trustpilotSummary: TrustpilotSummary;
   } & DetailsProps & {
-    options: ProductPageOptions;
+    options: Omit<ProductPageOptions, 'component'>;
   };
 
 export const ProductPage = ({

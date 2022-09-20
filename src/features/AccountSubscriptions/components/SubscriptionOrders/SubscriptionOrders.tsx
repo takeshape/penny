@@ -1,9 +1,9 @@
-import { OrderNowForm } from 'features/AccountSubscriptions/components/Actions/OrderNowForm';
-import { SkipForm } from 'features/AccountSubscriptions/components/Actions/SkipForm';
-import { OrderItem } from 'features/AccountSubscriptions/components/SubscriptionOrders/OrderItem';
 import { useMemo, useState } from 'react';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { getOrders } from '../../utils';
+import { OrderNowForm } from '../Actions/OrderNowForm';
+import { SkipForm } from '../Actions/SkipForm';
+import { OrderItem } from '../SubscriptionOrders/OrderItem';
 
 export interface SubscriptionOrdersProps {
   subscription: AnySubscription;
@@ -11,17 +11,15 @@ export interface SubscriptionOrdersProps {
 }
 
 export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: SubscriptionOrdersProps) => {
-  const { status } = subscription;
-
+  const { status, orders } = subscription;
   const isActive = status === 'ACTIVE';
+  const { mostRecentOrder, nextOrder, nextQueuedOrder, skippedAndPastOrders } = useMemo(
+    () => getOrders(orders),
+    [orders]
+  );
 
   const [isSkipNextOpen, setIsSkipNextOpen] = useState(false);
   const [isOrderNowOpen, setIsOrderNowOpen] = useState(false);
-
-  const { mostRecentOrder, nextOrder, nextQueuedOrder, skippedAndPastOrders } = useMemo(
-    () => getOrders(subscription.orders),
-    [subscription.orders]
-  );
 
   return (
     <>
@@ -42,7 +40,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
                   onClick={() => setIsSkipNextOpen(true)}
                   className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full"
                 >
-                  Skip Next Order
+                  Skip next order
                 </button>
               )}
 
@@ -52,7 +50,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
                   onClick={() => setIsOrderNowOpen(true)}
                   className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full"
                 >
-                  Order Now
+                  Order now
                 </button>
               )}
             </div>
@@ -62,7 +60,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
         {isActive && nextQueuedOrder && (
           <>
             <div className="mt-12">
-              <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Next scheduled order</h3>
+              <h3 className="leading-6 font-medium text-body-600">Next scheduled order</h3>
             </div>
 
             <div className="mt-4 space-y-16">
@@ -79,7 +77,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
 
         {isActive && mostRecentOrder && (
           <div className="mt-12">
-            <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Most recent order</h3>
+            <h3 className="leading-6 font-medium text-body-600">Most recent order</h3>
           </div>
         )}
 
@@ -97,7 +95,7 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
 
         {isActive && skippedAndPastOrders.length > 0 && (
           <div className="mt-12">
-            <h3 className="text-sm uppercase leading-6 font-bold text-body-900">Skipped and past orders</h3>
+            <h3 className="leading-6 font-medium text-body-600">Skipped and past orders</h3>
           </div>
         )}
 

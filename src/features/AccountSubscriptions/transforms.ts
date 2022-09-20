@@ -159,20 +159,22 @@ type SubscriptionChargeStatus = {
 };
 
 function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionChargeStatus {
-  const { updated_at, created_at, shopifyOrder } = rechargeCharge;
+  const { updated_at, shopifyOrder } = rechargeCharge;
   const fulfillment = shopifyOrder?.fulfillments?.[0];
 
   switch (rechargeCharge.status) {
     case 'QUEUED':
       return {
         status: 'CHARGE_QUEUED',
-        statusAt: created_at
+        // And order can leave and re-enter the queued state
+        statusAt: updated_at
       };
     case 'SKIPPED':
       return {
         status: 'CHARGE_SKIPPED',
         statusAt: updated_at
       };
+    // Unclear what this status is or how it is entered
     case 'CANCELLED':
       return {
         status: 'CHARGE_CANCELLED',
@@ -215,7 +217,7 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
       };
   }
 
-  const { updatedAt, inTransitAt, deliveredAt } = fulfillment;
+  const { updatedAt, inTransitAt, deliveredAt, trackingInfo } = fulfillment;
 
   switch (fulfillment.displayStatus) {
     case 'SUBMITTED':
@@ -223,11 +225,20 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'LABEL_VOIDED':
     case 'LABEL_PRINTED':
     case 'LABEL_PURCHASED':
-    case 'FULFILLED':
     case 'READY_FOR_PICKUP':
+    case 'FULFILLED':
+      // If we're in this early state and have no tracking info, keep at the
+      // CHARGE_SUCCESS state to only show relevant info to the user.
+      if (!trackingInfo) {
+        return {
+          status: 'CHARGE_SUCCESS',
+          statusAt: updated_at
+        };
+      }
+
+      // In the case of manual fulfillment it's possible this is the terminal state
       return {
-        // User doesn't care
-        status: 'CHARGE_SUCCESS',
+        status: 'FULFILLMENT_FULFILLED',
         statusAt: updatedAt
       };
 
@@ -235,6 +246,8 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'IN_TRANSIT':
       return {
         status: 'FULFILLMENT_IN_TRANSIT',
+        // When the fulfillment enters this state, inTransitAt should fix the
+        // time this status was entered.
         statusAt: inTransitAt ?? updatedAt
       };
 
@@ -253,13 +266,16 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'DELIVERED':
       return {
         status: 'FULFILLMENT_DELIVERED',
+        // This is a terminal event, statusAt should not change
         statusAt: deliveredAt
       };
 
     case 'NOT_DELIVERED':
       return {
         status: 'FULFILLMENT_NOT_DELIVERED',
-        statusAt: deliveredAt
+        // This is a terminal event, statusAt should not change. Unknown if
+        // deliveredAt will actually convey this info.
+        statusAt: deliveredAt ?? updatedAt
       };
 
     case 'CANCELED':
@@ -312,17 +328,29 @@ function getSubscriptionOrderLineItem(
 function getSubscriptionOrderFulfillment(
   shopifyFulfillment: SubscriptionResponse['charges'][0]['shopifyOrder']['fulfillments'][0]
 ): SubscriptionOrderFulfillment {
-  const { deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus } = shopifyFulfillment;
+  const { createdAt, updatedAt, deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus, trackingInfo } =
+    shopifyFulfillment;
+  const tracking = trackingInfo[0];
+
   return {
+    createdAt,
+    updatedAt,
     deliveredAt,
     estimatedDeliveryAt,
     inTransitAt,
-    displayStatus
+    displayStatus,
+    trackingInfo: tracking
+      ? {
+          url: tracking.url ?? '',
+          number: tracking.number ?? '',
+          company: tracking.company ?? ''
+        }
+      : null
   };
 }
 
 function getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionOrder {
-  const { id, scheduled_at, processed_at, shopifyOrder, line_items, currency } = rechargeCharge;
+  const { id, updated_at, created_at, scheduled_at, processed_at, shopifyOrder, line_items, currency } = rechargeCharge;
   const fulfillments =
     shopifyOrder?.fulfillments?.map((shopifyFulfillment) => getSubscriptionOrderFulfillment(shopifyFulfillment)) ?? [];
   const fulfillment = fulfillments[0];
@@ -333,8 +361,12 @@ function getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]
     id,
     chargeId: id,
     ...status,
+    chargeUpdatedAt: updated_at,
+    chargeCreatedAt: created_at,
     chargeScheduledAt: scheduled_at ?? null,
     chargeProcessedAt: processed_at ?? null,
+    fulfillmentCreatedAt: fulfillment?.createdAt ?? null,
+    fulfillmentUpdatedAt: fulfillment?.updatedAt ?? null,
     fulfillmentScheduledAt: fulfillment?.estimatedDeliveryAt ?? null,
     fulfillmentInTransitAt: fulfillment?.inTransitAt ?? null,
     fulfillmentDeliveredAt: fulfillment?.deliveredAt ?? null,

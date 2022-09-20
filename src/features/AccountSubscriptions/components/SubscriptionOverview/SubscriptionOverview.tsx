@@ -1,100 +1,12 @@
-import { CheckCircleIcon, ClockIcon, MinusCircleIcon, TruckIcon } from '@heroicons/react/24/solid';
 import NextImage from 'components/NextImage';
 import { CreditCard } from 'components/Payments/CreditCard';
-import { format } from 'date-fns';
-import { PaymentMethodForm } from 'features/AccountSubscriptions/components/Actions/PaymentMethodForm';
-import { ProductOptionsForm } from 'features/AccountSubscriptions/components/Actions/ProductOptionsForm';
-import { getOrders } from 'features/AccountSubscriptions/utils';
 import { useMemo, useState } from 'react';
 import { getProductUrl } from 'transforms/shopify';
-import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
-
-interface ShipmentStatusProps {
-  subscription: AnySubscription;
-  order: SubscriptionOrder;
-}
-
-const RecentShipmentStatus = ({ order }: ShipmentStatusProps) => {
-  if (order.fulfillmentDeliveredAt) {
-    return (
-      <div className="flex items-center">
-        <CheckCircleIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-900">
-          Last delivered on{' '}
-          <time dateTime={order.fulfillmentDeliveredAt}>{format(new Date(order.fulfillmentDeliveredAt), 'PP')}</time>
-        </p>
-      </div>
-    );
-  }
-
-  if (order.status === 'FULFILLMENT_OUT_FOR_DELIVERY') {
-    return (
-      <div className="flex items-center">
-        <TruckIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-900">Last order is out for delivery</p>
-      </div>
-    );
-  }
-
-  if (order.fulfillmentInTransitAt) {
-    return (
-      <div className="flex items-center">
-        <TruckIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-900">
-          Shipped on{' '}
-          <time dateTime={order.fulfillmentInTransitAt}>{format(new Date(order.fulfillmentInTransitAt), 'PP')}</time>
-        </p>
-      </div>
-    );
-  }
-
-  if (order.chargeProcessedAt) {
-    return (
-      <div className="flex items-center">
-        <CheckCircleIcon className="w-5 h-5 text-green-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-500">
-          Processed on <time dateTime={order.chargeProcessedAt}>{format(new Date(order.chargeProcessedAt), 'PP')}</time>
-        </p>
-      </div>
-    );
-  }
-
-  if (order.status === 'CHARGE_CANCELLED') {
-    return (
-      <div className="flex items-center">
-        <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-900">Last ordered was canceled</p>
-      </div>
-    );
-  }
-
-  return null;
-};
-
-const NextShipmentStatus = ({ order }: ShipmentStatusProps) => {
-  if (order.status === 'CHARGE_QUEUED') {
-    return (
-      <div className="flex items-center mt-4 sm:mt-0">
-        <ClockIcon className="w-5 h-5 text-blue-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-500">
-          Next order scheduled for{' '}
-          <time dateTime={order.chargeScheduledAt}>{format(new Date(order.chargeScheduledAt), 'PP')}</time>
-        </p>
-      </div>
-    );
-  }
-
-  if (order.status === 'CHARGE_SKIPPED') {
-    return (
-      <div className="flex items-center mt-4 sm:mt-0">
-        <MinusCircleIcon className="w-5 h-5 text-gray-500" aria-hidden="true" />
-        <p className="ml-2 text-sm font-medium text-gray-500">Next order is skipped</p>
-      </div>
-    );
-  }
-
-  return null;
-};
+import { AnySubscription, RefetchSubscriptions } from '../../types';
+import { getOrders } from '../../utils';
+import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
+import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
+import { ShipmentStatus } from './ShipmentStatus';
 
 export interface SubscriptionOverviewProps {
   subscription: AnySubscription;
@@ -102,13 +14,12 @@ export interface SubscriptionOverviewProps {
 }
 
 export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: SubscriptionOverviewProps) => {
-  const isActive = subscription.status === 'ACTIVE';
+  const { status, orders, product, productVariant } = subscription;
+  const isActive = status === 'ACTIVE';
+  const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getOrders(orders), [orders]);
+
   const [isProductOptionsOpen, setIsProductOptionsOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
-
-  const { product, productVariant } = subscription;
-
-  const { mostRecentOrder, nextQueuedOrder } = useMemo(() => getOrders(subscription.orders), [subscription.orders]);
 
   return (
     <>
@@ -134,7 +45,7 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
                         onClick={() => setIsProductOptionsOpen(true)}
                         className="whitespace-nowrap text-sm font-medium text-accent-600 hover:text-accent-500"
                       >
-                        Update Product
+                        Update product
                       </button>
                     </div>
                   )}
@@ -147,18 +58,18 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
                         onClick={() => setIsPaymentMethodOpen(true)}
                         className="text-accent-600 hover:text-accent-500"
                       >
-                        Update Payment Method
+                        Update payment method
                       </button>
                     </div>
                   </div>
                 )}
               </div>
-              <div className="mt-6 font-medium grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="mt-6 font-medium flex flex-col gap-6">
                 {mostRecentOrder !== undefined && (
-                  <RecentShipmentStatus subscription={subscription} order={mostRecentOrder} />
+                  <ShipmentStatus heading="Most recent order" order={mostRecentOrder} />
                 )}
                 {isActive && nextQueuedOrder !== undefined ? (
-                  <NextShipmentStatus subscription={subscription} order={nextQueuedOrder} />
+                  <ShipmentStatus heading="Next queued order" order={nextQueuedOrder} />
                 ) : (
                   <div className="flex items-center mt-4 sm:mt-0">
                     <p className="text-sm font-medium text-gray-500">No upcoming orders</p>

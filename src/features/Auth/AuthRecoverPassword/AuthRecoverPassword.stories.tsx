@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { graphql } from 'msw';
 import { AuthRecoverPassword } from './AuthRecoverPassword';
 
@@ -7,7 +7,7 @@ const Meta: ComponentMeta<typeof AuthRecoverPassword> = {
   component: AuthRecoverPassword
 };
 
-const Template = (args) => <AuthRecoverPassword {...args} />;
+const Template: ComponentStory<typeof AuthRecoverPassword> = (args) => <AuthRecoverPassword {...args} />;
 
 export const Success = Template.bind({});
 Success.parameters = {

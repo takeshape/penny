@@ -17,8 +17,6 @@ _ProductCategory.args = {
   header: { text: { primary: productCategoryCollection.name, secondary: productCategoryCollection.descriptionHtml } },
   items: productCategoryCollection.items,
   pagination: {
-    hasNextPage: productCategoryCollection.pageInfo.hasNextPage,
-    hasPreviousPage: productCategoryCollection.pageInfo.hasPreviousPage,
     setCurrentPage: () => {}
   }
 };

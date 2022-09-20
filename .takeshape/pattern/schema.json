@@ -1856,7 +1856,7 @@
             }
           },
           {
-            "if": "!isEmpty($claims.custom.customer_access_token)",
+            "if": "!isEmpty($resolvers.customer)",
             "id": "subscriptions",
             "name": "rest:get",
             "service": "recharge",

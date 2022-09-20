@@ -1,7 +1,7 @@
 import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import CardPanel from 'components/Card/Panel/Panel';
-import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
 import { AccountSubscription } from './AccountSubscription';
+import { EndedSubscription } from './components/EndedSubscription';
 import { SubscriptionSkeleton } from './components/SubscriptionSkeleton';
 import { AnySubscription, RefetchSubscriptions } from './types';
 import { isActiveSubscription, isEndedSubscription } from './utils';

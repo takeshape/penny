@@ -12,8 +12,8 @@ const Meta: ComponentMeta<typeof BackgroundImage> = {
 
 const Template: ComponentStory<typeof BackgroundImage> = (args) => (
   <BackgroundImage {...args}>
-    <Sale {..._Sale.args} />
-    <Testimonials {..._Testimonials.args} />
+    <Sale {...(_Sale.args as any)} />
+    <Testimonials {...(_Testimonials.args as any)} />
   </BackgroundImage>
 );
 

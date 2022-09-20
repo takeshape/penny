@@ -17,7 +17,6 @@ const Template: ComponentStory<typeof FormToggleWithLabel> = (args) => {
 
 export const RightLabel = Template.bind({});
 RightLabel.args = {
-  id: 'switch',
   name: 'switch',
   labelPrimary: 'Toggle Me',
   labelSecondary: 'It‘s fun!',
@@ -26,7 +25,6 @@ RightLabel.args = {
 
 export const LeftLabel = Template.bind({});
 LeftLabel.args = {
-  id: 'switch',
   name: 'switch',
   labelPrimary: 'Toggle Me',
   labelSecondary: 'It‘s fun!',
@@ -36,7 +34,6 @@ LeftLabel.args = {
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-  id: 'switch',
   name: 'switch',
   labelPrimary: 'Toggle Me',
   labelSecondary: 'It‘s fun!',

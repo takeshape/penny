@@ -1,3 +1,11 @@
+import {
+  ArrowUturnLeftIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  ExclamationCircleIcon,
+  MinusCircleIcon,
+  TruckIcon
+} from '@heroicons/react/24/solid';
 import { isFuture, isPast, isToday } from 'date-fns';
 import { ProductVariantSelection } from 'types/product';
 import {
@@ -5,6 +13,7 @@ import {
   AnySubscription,
   EndedSubscription,
   SubscriptionOrder,
+  SubscriptionOrderStatus,
   SubscriptionProductVariant
 } from './types';
 
@@ -64,4 +73,152 @@ export function getVariant(variants: SubscriptionProductVariant[], options: Prod
 
     return isVariant;
   });
+}
+
+export function getOrderStatusDisplay(status: SubscriptionOrderStatus) {
+  switch (status) {
+    case 'CHARGE_QUEUED':
+      return {
+        text: 'Scheduled',
+        classes: 'bg-blue-100 text-blue-800',
+        Icon: ClockIcon,
+        iconClasses: 'text-blue-500'
+      };
+    case 'CHARGE_SKIPPED':
+      return {
+        text: 'Skipped',
+        classes: 'bg-gray-100 text-gray-800',
+        Icon: MinusCircleIcon,
+        iconClasses: 'text-gray-500'
+      };
+    case 'CHARGE_CANCELLED':
+      return {
+        text: 'Canceled',
+        classes: 'bg-gray-100 text-gray-800',
+        Icon: MinusCircleIcon,
+        iconClasses: 'text-gray-500'
+      };
+    case 'CHARGE_REFUNDED':
+      return {
+        text: 'Payment refunded',
+        classes: 'bg-gray-100 text-gray-800',
+        Icon: ArrowUturnLeftIcon,
+        iconClasses: 'text-gray-500'
+      };
+    case 'CHARGE_PENDING_MANUAL_PAYMENT':
+      return {
+        text: 'Payment pending',
+        classes: 'bg-gray-100 text-gray-800',
+        Icon: ClockIcon,
+        iconClasses: 'text-gray-500'
+      };
+    case 'CHARGE_PENDING':
+      return {
+        text: 'Payment pending',
+        classes: 'bg-gray-100 text-gray-800',
+        Icon: ClockIcon,
+        iconClasses: 'text-gray-500'
+      };
+    case 'CHARGE_ERROR':
+      return {
+        text: 'Payment error',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+    case 'CHARGE_SUCCESS':
+      return {
+        text: 'Payment successful',
+        classes: 'bg-green-100 text-green-800',
+        Icon: CheckCircleIcon,
+        iconClasses: 'text-green-500'
+      };
+    case 'FULFILLMENT_FULFILLED':
+      return {
+        text: 'Order fulfilled',
+        classes: 'bg-green-100 text-green-800',
+        Icon: CheckCircleIcon,
+        iconClasses: 'text-green-500'
+      };
+    case 'FULFILLMENT_FAILURE':
+      return {
+        text: 'Delivery failed',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+    case 'FULFILLMENT_CANCELED':
+      return {
+        text: 'Delivery canceled',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+    case 'FULFILLMENT_IN_TRANSIT':
+      return {
+        text: 'In transit',
+        classes: 'bg-blue-100 text-blue-800',
+        Icon: TruckIcon,
+        iconClasses: 'text-blue-500'
+      };
+    case 'FULFILLMENT_OUT_FOR_DELIVERY':
+      return {
+        text: 'Out for delivery',
+        classes: 'bg-blue-100 text-blue-800',
+        Icon: TruckIcon,
+        iconClasses: 'text-blue-500'
+      };
+    case 'FULFILLMENT_ATTEMPTED_DELIVERY':
+      return {
+        text: 'Delivery attempted',
+        classes: 'bg-orange-100 text-orange-800',
+        Icon: TruckIcon,
+        iconClasses: 'text-orange-500'
+      };
+    case 'FULFILLMENT_DELIVERED':
+      return {
+        text: 'Delivered',
+        classes: 'bg-green-100 text-green-800',
+        Icon: CheckCircleIcon,
+        iconClasses: 'text-green-500'
+      };
+    case 'FULFILLMENT_NOT_DELIVERED':
+      return {
+        text: 'Not delivered',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+
+    case 'CHARGE_UNKNOWN':
+      return {
+        text: 'Charge status unknown',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+    case 'FULFILLMENT_UNKNOWN':
+      return {
+        text: 'Fulfillment status unknown',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+
+    default:
+      return {
+        text: 'Unknown',
+        classes: 'bg-red-100 text-red-800',
+        Icon: ExclamationCircleIcon,
+        iconClasses: 'text-red-500'
+      };
+  }
+}
+
+export function getOrderTrackingInfo(order: Pick<SubscriptionOrder, 'status' | 'fulfillments'>) {
+  if (order.status.startsWith('FULFILLMENT_')) {
+    return order.fulfillments?.[0]?.trackingInfo;
+  }
+
+  return null;
 }

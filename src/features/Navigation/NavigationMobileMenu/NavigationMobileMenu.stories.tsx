@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 import { isMobileMenuOpenAtom } from 'store';
 import { navigationResponse } from '../queries.fixtures';
@@ -27,7 +27,7 @@ const Meta: ComponentMeta<typeof NavigationMobileMenu> = {
   }
 };
 
-const Template = (args) => <NavigationMobileMenu {...args} />;
+const Template: ComponentStory<typeof NavigationMobileMenu> = (args) => <NavigationMobileMenu {...args} />;
 
 export const _Open = Template.bind({});
 _Open.parameters = {
@@ -41,7 +41,6 @@ _Open.parameters = {
   }
 };
 _Open.args = {
-  message: navigation.message,
   sections: navigation.sections,
   currencies: navigation.currencies
 };

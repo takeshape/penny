@@ -53,7 +53,7 @@ export const ManageSubscription = ({
                 onClick={() => setIsSkipNextOpen(true)}
                 className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full"
               >
-                Skip Next Order
+                Skip next order
               </button>
             )}
 
@@ -63,7 +63,7 @@ export const ManageSubscription = ({
                 onClick={() => setIsOrderNowOpen(true)}
                 className="self-start py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full"
               >
-                Order Now
+                Order now
               </button>
             )}
           </div>
@@ -227,7 +227,7 @@ export const ManageSubscription = ({
                 onClick={() => setIsCancelSubscriptionOpen(true)}
                 className="ml-auto bg-body-100 py-2 px-2.5 rounded-md shadow-sm text-sm font-medium text-body-600 hover:bg-body-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
               >
-                Cancel Subscription
+                Cancel subscription
               </button>
             </div>
           </dl>

@@ -1,8 +1,8 @@
-import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
-import { EndedSubscription } from 'features/AccountSubscriptions/components/EndedSubscription';
 import { useCallback, useState } from 'react';
 import { GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables } from 'types/takeshape';
 import { useAuthenticatedClient } from 'utils/takeshape';
+import { ActiveSubscription } from './components/ActiveSubscription';
+import { EndedSubscription } from './components/EndedSubscription';
 import { GetMySubscriptionQuery } from './queries';
 import { getSubscription } from './transforms';
 import { AnySubscription, RefetchSubscriptions } from './types';

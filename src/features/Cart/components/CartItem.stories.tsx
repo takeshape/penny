@@ -1,7 +1,10 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { atom } from 'jotai';
 import fixtures from '../Cart.fixtures.json';
+import { CartItem as TCartItem } from '../types';
 import { CartItem } from './CartItem';
+
+const cartItems = fixtures.cartItems as TCartItem[];
 
 const Meta: ComponentMeta<typeof CartItem> = {
   title: 'Features / Cart / Components / Cart Item',
@@ -22,22 +25,22 @@ const Meta: ComponentMeta<typeof CartItem> = {
   }
 };
 
-const Template = (args) => <CartItem {...args} />;
+const Template: ComponentStory<typeof CartItem> = (args) => <CartItem {...args} />;
 
 export const OneTimePurchase = Template.bind({});
 OneTimePurchase.args = {
-  atom: atom(fixtures.cartItems[0])
+  atom: atom(cartItems[0])
 };
 
 export const RecurringPurchase = Template.bind({});
 RecurringPurchase.args = {
-  atom: atom(fixtures.cartItems[1])
+  atom: atom(cartItems[1])
 };
 
 export const PlaceholderImage = Template.bind({});
 PlaceholderImage.args = {
   atom: atom({
-    ...fixtures.cartItems[0],
+    ...cartItems[0],
     imageSrc: '/images/default-product-image.webp'
   })
 };
@@ -45,7 +48,7 @@ PlaceholderImage.args = {
 export const LongName = Template.bind({});
 LongName.args = {
   atom: atom({
-    ...fixtures.cartItems[0],
+    ...cartItems[0],
     name: 'Super Special Awesome Magic Rainbow Coat'
   })
 };
@@ -53,7 +56,7 @@ LongName.args = {
 export const LongPrice = Template.bind({});
 LongPrice.args = {
   atom: atom({
-    ...fixtures.cartItems[0],
+    ...cartItems[0],
     name: 'Super Special Awesome Magic Rainbow Coat',
     unitAmount: 6969420
   })

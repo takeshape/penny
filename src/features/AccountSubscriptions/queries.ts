@@ -51,12 +51,18 @@ const ChargeFragment = gql`
         zip
         phone
       }
-      fulfillments(first: 10) {
+      fulfillments(first: 1) {
+        createdAt
         updatedAt
         deliveredAt
         estimatedDeliveryAt
         inTransitAt
         displayStatus
+        trackingInfo {
+          url
+          number
+          company
+        }
         fulfillmentLineItems(first: 10) {
           edges {
             node {
@@ -262,10 +268,9 @@ export const GetMySubscriptionListQuery = gql`
 `;
 
 export const CancelSubscriptionMutation = gql`
-  ${SubscriptionFragment}
   mutation CancelSubscriptionMutation($id: String!) {
     subscription: Recharge_cancelMySubscription(id: $id) {
-      ...Subscription
+      id
     }
   }
 `;
@@ -320,36 +325,33 @@ export const UpdateMyAddressMutation = gql`
 `;
 
 export const SetNextChargeDateMutation = gql`
-  ${SubscriptionFragment}
   mutation SetNextChargeDateMutation($subscriptionId: String!, $date: String!) {
     subscription: Recharge_setMyNextChargeDate(subscriptionId: $subscriptionId, date: $date) {
-      ...Subscription
+      id
     }
   }
 `;
 
 export const UpdateDeliveryFrequencyMutation = gql`
-  ${SubscriptionFragment}
   mutation UpdateDeliveryFrequencyMutation($subscriptionId: String!, $frequency: String!, $unit: String!) {
     subscription: Recharge_updateMyDeliveryFrequency(
       subscriptionId: $subscriptionId
       frequency: $frequency
       unit: $unit
     ) {
-      ...Subscription
+      id
     }
   }
 `;
 
 export const UpdateProductOptionsMutation = gql`
-  ${SubscriptionFragment}
   mutation UpdateProductOptionsMutation($subscriptionId: String!, $variantId: String, $quantity: String) {
     subscription: Recharge_updateMyProductOptions(
       subscriptionId: $subscriptionId
       variantId: $variantId
       quantity: $quantity
     ) {
-      ...Subscription
+      id
     }
   }
 `;

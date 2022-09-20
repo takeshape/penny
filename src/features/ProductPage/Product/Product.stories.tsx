@@ -3,8 +3,8 @@ import { productPageProduct, productPageReviewHighlights } from '../fixtures';
 import { Product } from './Product';
 
 const breadcrumbs = [
-  { id: 1, name: 'Men', href: '#' },
-  { id: 2, name: 'Clothing', href: '#' }
+  { id: '1', name: 'Men', href: '#' },
+  { id: '2', name: 'Clothing', href: '#' }
 ];
 
 const Meta: ComponentMeta<typeof Product> = {

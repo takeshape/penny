@@ -16,7 +16,7 @@ export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderIt
   return (
     <>
       <div className="space-y-1 flex items-baseline md:space-y-0 sm:space-x-4">
-        <OrderItemHeader subscription={subscription} order={order} />
+        <OrderItemHeader order={order} />
       </div>
 
       <div className="mt-2 -mb-6 flow-root border-t border-body-200 divide-y divide-body-200">

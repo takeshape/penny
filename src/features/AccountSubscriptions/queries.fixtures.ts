@@ -76,23 +76,57 @@ export const getMySubscriptionListResponse = {
           currency: 'USD',
           status: 'SUCCESS',
           shopifyOrder: {
-            processedAt: '2022-09-13T19:11:48Z',
+            processedAt: '2022-09-07T15:33:20Z',
             shippingAddress: {
               firstName: 'Michael',
               lastName: 'Shick',
-              address1: '156 Kent Street',
-              address2: 'Apt 2',
+              address1: '112 West 34th Street',
+              address2: '',
               company: null,
-              city: 'Brooklyn',
+              city: 'New York',
               province: 'New York',
               provinceCode: 'NY',
               country: 'United States',
 
-              zip: '11222',
+              zip: '10120',
               phone: null,
               __typename: 'Shopify_MailingAddress'
             },
-            fulfillments: [],
+            fulfillments: [
+              {
+                updatedAt: '2022-09-13T17:08:22Z',
+                deliveredAt: null,
+                estimatedDeliveryAt: null,
+                inTransitAt: null,
+                displayStatus: 'FULFILLED',
+                trackingInfo: [
+                  {
+                    url: 'https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=1234567891',
+                    number: '1234567891',
+                    company: 'USPS'
+                  }
+                ],
+                fulfillmentLineItems: {
+                  edges: [
+                    {
+                      node: {
+                        lineItem: {
+                          variant: {
+                            id: 'gid://shopify/ProductVariant/40184079581284',
+                            __typename: 'Shopify_ProductVariant'
+                          },
+                          __typename: 'Shopify_LineItem'
+                        },
+                        __typename: 'Shopify_FulfillmentLineItem'
+                      },
+                      __typename: 'Shopify_FulfillmentLineItemEdge'
+                    }
+                  ],
+                  __typename: 'Shopify_FulfillmentLineItemConnection'
+                },
+                __typename: 'Shopify_Fulfillment'
+              }
+            ],
             __typename: 'Shopify_Order'
           },
           __typename: 'Recharge_Charge'
@@ -649,6 +683,13 @@ export const getMySubscriptionListResponse = {
                 estimatedDeliveryAt: null,
                 inTransitAt: null,
                 displayStatus: 'FULFILLED',
+                trackingInfo: [
+                  {
+                    url: 'https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=1234567891',
+                    number: '1234567891',
+                    company: 'USPS'
+                  }
+                ],
                 fulfillmentLineItems: {
                   edges: [
                     {
