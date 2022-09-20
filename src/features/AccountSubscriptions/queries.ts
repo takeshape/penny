@@ -52,6 +52,7 @@ const ChargeFragment = gql`
         phone
       }
       fulfillments(first: 1) {
+        createdAt
         updatedAt
         deliveredAt
         estimatedDeliveryAt

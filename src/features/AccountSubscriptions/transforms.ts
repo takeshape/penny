@@ -159,14 +159,14 @@ type SubscriptionChargeStatus = {
 };
 
 function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionChargeStatus {
-  const { updated_at, created_at, shopifyOrder } = rechargeCharge;
+  const { updated_at, created_at, shopifyOrder, scheduled_at } = rechargeCharge;
   const fulfillment = shopifyOrder?.fulfillments?.[0];
 
   switch (rechargeCharge.status) {
     case 'QUEUED':
       return {
         status: 'CHARGE_QUEUED',
-        statusAt: created_at
+        statusAt: scheduled_at ?? created_at
       };
     case 'SKIPPED':
       return {
@@ -313,10 +313,13 @@ function getSubscriptionOrderLineItem(
 function getSubscriptionOrderFulfillment(
   shopifyFulfillment: SubscriptionResponse['charges'][0]['shopifyOrder']['fulfillments'][0]
 ): SubscriptionOrderFulfillment {
-  const { deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus, trackingInfo } = shopifyFulfillment;
+  const { createdAt, updatedAt, deliveredAt, estimatedDeliveryAt, inTransitAt, displayStatus, trackingInfo } =
+    shopifyFulfillment;
   const tracking = trackingInfo[0];
 
   return {
+    createdAt,
+    updatedAt,
     deliveredAt,
     estimatedDeliveryAt,
     inTransitAt,
@@ -332,7 +335,7 @@ function getSubscriptionOrderFulfillment(
 }
 
 function getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionOrder {
-  const { id, scheduled_at, processed_at, shopifyOrder, line_items, currency } = rechargeCharge;
+  const { id, updated_at, created_at, scheduled_at, processed_at, shopifyOrder, line_items, currency } = rechargeCharge;
   const fulfillments =
     shopifyOrder?.fulfillments?.map((shopifyFulfillment) => getSubscriptionOrderFulfillment(shopifyFulfillment)) ?? [];
   const fulfillment = fulfillments[0];
@@ -343,8 +346,12 @@ function getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]
     id,
     chargeId: id,
     ...status,
+    chargeUpdatedAt: updated_at,
+    chargeCreatedAt: created_at,
     chargeScheduledAt: scheduled_at ?? null,
     chargeProcessedAt: processed_at ?? null,
+    fulfillmentCreatedAt: fulfillment.createdAt ?? null,
+    fulfillmentUpdatedAt: fulfillment.updatedAt ?? null,
     fulfillmentScheduledAt: fulfillment?.estimatedDeliveryAt ?? null,
     fulfillmentInTransitAt: fulfillment?.inTransitAt ?? null,
     fulfillmentDeliveredAt: fulfillment?.deliveredAt ?? null,

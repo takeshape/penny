@@ -88,6 +88,8 @@ export type SubscriptionTrackingInfo = {
 };
 
 export type SubscriptionOrderFulfillment = {
+  createdAt: string;
+  updatedAt: string;
   displayStatus: Shopify_FulfillmentDisplayStatus;
   deliveredAt?: string;
   estimatedDeliveryAt?: string;
@@ -100,9 +102,13 @@ export type SubscriptionOrder = {
   chargeId: string;
   chargeScheduledAt?: string;
   chargeProcessedAt?: string;
+  chargeUpdatedAt: string;
+  chargeCreatedAt: string;
   fulfillmentDeliveredAt?: string;
   fulfillmentInTransitAt?: string;
   fulfillmentScheduledAt?: string;
+  fulfillmentUpdatedAt?: string;
+  fulfillmentCreatedAt?: string;
   status: SubscriptionOrderStatus;
   statusAt: string;
   shippingAddress: SubscriptionShippingAddress;
