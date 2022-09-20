@@ -147,6 +147,7 @@ export function getProductVariantPriceOptions(
       hasDiscount: false,
       discountAmount: 0,
       discountType: 'PERCENTAGE',
+      intervalId: `DAY_0`,
       interval: 'DAY',
       intervalCount: 0,
       amountBeforeDiscount: amount,
@@ -161,12 +162,15 @@ export function getProductVariantPriceOptions(
       .concat(
         sellingPlans.map((plan) => {
           // TODO Don't know what happened to these types
-          const subscriptionInterval = getSubscriptionInterval(plan.billingPolicy as any);
+          const { interval, intervalCount, maxCycles, minCycles, anchor } = getSubscriptionInterval(
+            plan.billingPolicy as any
+          );
           const discount = getDiscount(amount, plan.pricingPolicies[0]);
+          const name = `${intervalCount} ${interval.toLowerCase()} subscription`;
 
           return {
-            id: `${id}_${subscriptionInterval.interval}_${subscriptionInterval.intervalCount}`,
-            name: discount.hasDiscount ? 'Subscribe & Save' : 'Subscribe',
+            id: `${id}_${interval}_${intervalCount}`,
+            name,
             merchandiseId: id,
             subscriptionId: plan.id,
             // This will only ever be 'percentage'
@@ -174,11 +178,12 @@ export function getProductVariantPriceOptions(
             discountType: discount.type,
             discountAmount: discount.amount,
             // Recharge forces each product to have the same interval for all sub options
-            interval: subscriptionInterval.interval,
-            intervalCount: subscriptionInterval.intervalCount,
-            intervalMaxCycles: subscriptionInterval.maxCycles ?? null,
-            intervalMinCycles: subscriptionInterval.minCycles ?? null,
-            intervalAnchor: subscriptionInterval.anchor ?? null,
+            intervalId: `${interval}_${intervalCount}`,
+            interval: interval,
+            intervalCount: intervalCount,
+            intervalMaxCycles: maxCycles ?? null,
+            intervalMinCycles: minCycles ?? null,
+            intervalAnchor: anchor ?? null,
             amountBeforeDiscount: amount,
             amount: discount.amountAfterDiscount,
             currencyCode: defaultCurrency
@@ -394,6 +399,7 @@ export function getStorefrontProductVariantPriceOptions(
   if (!requiresSellingPlan) {
     prices.push({
       id: `${id}_DAY_0`,
+      intervalId: `DAY_0`,
       name: 'One-time purchase',
       merchandiseId: id,
       hasDiscount: false,
@@ -413,19 +419,21 @@ export function getStorefrontProductVariantPriceOptions(
     prices = prices
       .concat(
         sellingPlans.map((plan) => {
-          const subscriptionInterval = getStorefrontSubscriptionInterval(plan.options[0]);
+          const { interval, intervalCount } = getStorefrontSubscriptionInterval(plan.options[0]);
           const discount = getStorefrontDiscount(amount, plan.priceAdjustments[0]);
+          const name = `${intervalCount} ${interval.toLowerCase()} subscription`;
 
           return {
-            id: `${id}_${subscriptionInterval.interval}_${subscriptionInterval.intervalCount}`,
-            name: discount.hasDiscount ? 'Subscribe & Save' : 'Subscribe',
+            id: `${id}_${interval}_${intervalCount}`,
+            name,
             merchandiseId: id,
             subscriptionId: plan.id,
             hasDiscount: discount.hasDiscount,
             discountType: discount.type,
             discountAmount: discount.amount,
-            interval: subscriptionInterval.interval,
-            intervalCount: subscriptionInterval.intervalCount,
+            intervalId: `${interval}_${intervalCount}`,
+            interval: interval,
+            intervalCount: intervalCount,
             amountBeforeDiscount: amount,
             amount: discount.amountAfterDiscount,
             currencyCode: defaultCurrency

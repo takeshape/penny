@@ -65,8 +65,11 @@ export const ProductWithImageGrid = ({
   const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
 
   useEffect(() => {
-    setSelectedPrice(selectedVariant.prices[0]);
-  }, [selectedVariant]);
+    const price =
+      selectedVariant.prices.find((price) => price.intervalId === selectedPrice.intervalId) ??
+      selectedVariant.prices[0];
+    setSelectedPrice(price);
+  }, [selectedPrice.intervalId, selectedVariant]);
 
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);

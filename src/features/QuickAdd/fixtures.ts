@@ -39,13 +39,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670162020_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670162020',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -53,13 +54,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670162020_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670162020',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -67,6 +69,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -101,13 +104,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670194788_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670194788',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -115,13 +119,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670194788_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670194788',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -129,6 +134,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -163,13 +169,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670227556_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670227556',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -177,13 +184,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670227556_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670227556',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -191,6 +199,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -225,13 +234,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670260324_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670260324',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -239,13 +249,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670260324_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670260324',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -253,6 +264,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -287,13 +299,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670293092_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670293092',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -301,13 +314,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670293092_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670293092',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -315,6 +329,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -349,13 +364,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670325860_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670325860',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -363,13 +379,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670325860_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670325860',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -377,6 +394,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -411,13 +429,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670358628_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670358628',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -425,13 +444,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670358628_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670358628',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -439,6 +459,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -473,13 +494,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670391396_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670391396',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -487,13 +509,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670391396_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670391396',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -501,6 +524,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -535,13 +559,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670424164_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670424164',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -549,13 +574,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670424164_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670424164',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -563,6 +589,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -597,13 +624,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670456932_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670456932',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -611,13 +639,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670456932_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670456932',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -625,6 +654,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -659,13 +689,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670489700_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670489700',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -673,13 +704,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670489700_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670489700',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -687,6 +719,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -721,13 +754,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670555236_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670555236',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -735,13 +769,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670555236_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670555236',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -749,6 +784,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -783,13 +819,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670588004_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670588004',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -797,13 +834,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670588004_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670588004',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -811,6 +849,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -845,13 +884,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670620772_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670620772',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -859,13 +899,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670620772_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670620772',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -873,6 +914,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -907,13 +949,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670653540_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670653540',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -921,13 +964,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670653540_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670653540',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -935,6 +979,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -969,13 +1014,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670686308_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670686308',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -983,13 +1029,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670686308_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670686308',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -997,6 +1044,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -1031,13 +1079,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670719076_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670719076',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1045,13 +1094,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670719076_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670719076',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1059,6 +1109,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -1093,13 +1144,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670751844_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670751844',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1107,13 +1159,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670751844_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670751844',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1121,6 +1174,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -1155,13 +1209,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670784612_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670784612',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1169,13 +1224,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670784612_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670784612',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1183,6 +1239,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -1217,13 +1274,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670817380_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670817380',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1231,13 +1289,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670817380_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670817380',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1245,6 +1304,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -1279,13 +1339,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 19200,
           amount: 19200,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670850148_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670850148',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1293,13 +1354,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670850148_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670850148',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1307,6 +1369,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 19200,
           amount: 17280,
           currencyCode: 'USD'
@@ -1341,13 +1404,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 20000,
           amount: 20000,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670882916_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670882916',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1355,13 +1419,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670882916_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670882916',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1369,6 +1434,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
@@ -1403,13 +1469,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 20000,
           amount: 20000,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670915684_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670915684',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1417,13 +1484,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670915684_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670915684',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1431,6 +1499,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
@@ -1465,13 +1534,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountType: 'PERCENTAGE',
           interval: 'DAY',
           intervalCount: 0,
+          intervalId: 'DAY_0',
           amountBeforeDiscount: 20000,
           amount: 20000,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670981220_DAY_30',
-          name: 'Subscribe & Save',
+          name: '30 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670981220',
           subscriptionId: 'gid://shopify/SellingPlan/3034021988',
           hasDiscount: true,
@@ -1479,13 +1549,14 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 30,
+          intervalId: 'DAY_30',
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
         },
         {
           id: 'gid://shopify/ProductVariant/40234670981220_DAY_90',
-          name: 'Subscribe & Save',
+          name: '90 day subscription',
           merchandiseId: 'gid://shopify/ProductVariant/40234670981220',
           subscriptionId: 'gid://shopify/SellingPlan/3073048676',
           hasDiscount: true,
@@ -1493,6 +1564,7 @@ export const quickAddProduct: QuickAddProduct = {
           discountAmount: 10,
           interval: 'DAY',
           intervalCount: 90,
+          intervalId: 'DAY_90',
           amountBeforeDiscount: 20000,
           amount: 18000,
           currencyCode: 'USD'
