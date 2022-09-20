@@ -1,36 +1,31 @@
 import { format } from 'date-fns';
 import { DeliveryDetails } from 'features/AccountSubscriptions/components/Actions/DeliveryDetails';
 import { ReportIssueForm } from 'features/AccountSubscriptions/components/Actions/ReportIssueForm';
-import { getOrderStatusDisplay } from 'features/AccountSubscriptions/utils';
-import { useState } from 'react';
+import { getOrderStatusDisplay, getOrderTrackingInfo } from 'features/AccountSubscriptions/utils';
+import { useMemo, useState } from 'react';
 import { SubscriptionOrder } from '../../types';
 
 export interface ShipmentStatusProps {
   heading?: string;
-  order: Pick<SubscriptionOrder, 'id' | 'status' | 'statusAt' | 'fulfillments' | 'shippingAddress'>;
-}
-
-function getTrackingInfo(order: Pick<SubscriptionOrder, 'status' | 'fulfillments'>) {
-  switch (order.status) {
-    case 'FULFILLMENT_ATTEMPTED_DELIVERY':
-    case 'FULFILLMENT_DELIVERED':
-    case 'FULFILLMENT_FAILURE':
-    case 'FULFILLMENT_CANCELED':
-    case 'FULFILLMENT_FULFILLED':
-    case 'FULFILLMENT_IN_TRANSIT':
-    case 'FULFILLMENT_NOT_DELIVERED':
-    case 'FULFILLMENT_OUT_FOR_DELIVERY':
-      return order.fulfillments?.[0]?.trackingInfo;
-    default:
-      return null;
-  }
+  order: Pick<
+    SubscriptionOrder,
+    'id' | 'status' | 'statusAt' | 'chargeScheduledAt' | 'fulfillments' | 'shippingAddress'
+  >;
 }
 
 export const ShipmentStatus = ({ heading, order }: ShipmentStatusProps) => {
   const { status } = order;
-  const displayStatus = getOrderStatusDisplay(status);
-  const prep = status === 'CHARGE_QUEUED' ? 'for' : 'on';
-  const trackingInfo = getTrackingInfo(order);
+  const displayStatus = useMemo(() => getOrderStatusDisplay(status), [status]);
+  const trackingInfo = useMemo(() => getOrderTrackingInfo(order), [order]);
+
+  let prep = 'on';
+  let statusAt = order.statusAt;
+
+  if (status === 'CHARGE_QUEUED') {
+    prep = 'for';
+    statusAt = order.chargeScheduledAt;
+  }
+
   const [isDeliveryDetailsOpen, setIsDeliveryDetailsOpen] = useState(false);
   const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);
 

@@ -18,6 +18,7 @@ const shippingAddress = {
 
 const fulfillments = [
   {
+    createdAt: '2022-09-13T17:08:22Z',
     updatedAt: '2022-09-13T17:08:22Z',
     deliveredAt: '2022-09-13T17:08:22Z',
     estimatedDeliveryAt: '2022-09-13T17:08:22Z',

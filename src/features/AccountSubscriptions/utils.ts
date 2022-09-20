@@ -213,3 +213,11 @@ export function getOrderStatusDisplay(status: SubscriptionOrderStatus) {
       };
   }
 }
+
+export function getOrderTrackingInfo(order: Pick<SubscriptionOrder, 'status' | 'fulfillments'>) {
+  if (order.status.startsWith('FULFILLMENT_')) {
+    return order.fulfillments?.[0]?.trackingInfo;
+  }
+
+  return null;
+}

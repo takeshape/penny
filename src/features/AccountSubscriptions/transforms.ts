@@ -159,20 +159,22 @@ type SubscriptionChargeStatus = {
 };
 
 function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charges'][0]): SubscriptionChargeStatus {
-  const { updated_at, created_at, shopifyOrder, scheduled_at } = rechargeCharge;
+  const { updated_at, shopifyOrder } = rechargeCharge;
   const fulfillment = shopifyOrder?.fulfillments?.[0];
 
   switch (rechargeCharge.status) {
     case 'QUEUED':
       return {
         status: 'CHARGE_QUEUED',
-        statusAt: scheduled_at ?? created_at
+        // And order can leave and re-enter the queued state
+        statusAt: updated_at
       };
     case 'SKIPPED':
       return {
         status: 'CHARGE_SKIPPED',
         statusAt: updated_at
       };
+    // Unclear what this status is or how it is entered
     case 'CANCELLED':
       return {
         status: 'CHARGE_CANCELLED',
@@ -236,6 +238,8 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'IN_TRANSIT':
       return {
         status: 'FULFILLMENT_IN_TRANSIT',
+        // When the fulfillment enters this state, inTransitAt should fix the
+        // time this status was entered.
         statusAt: inTransitAt ?? updatedAt
       };
 
@@ -254,12 +258,15 @@ function getSubscriptionOrderStatus(rechargeCharge: SubscriptionResponse['charge
     case 'DELIVERED':
       return {
         status: 'FULFILLMENT_DELIVERED',
+        // This is a terminal event, statusAt should not change
         statusAt: deliveredAt
       };
 
     case 'NOT_DELIVERED':
       return {
         status: 'FULFILLMENT_NOT_DELIVERED',
+        // This is a terminal event, statusAt should not change. Unknown if
+        // deliveredAt will actually convey this info.
         statusAt: deliveredAt ?? updatedAt
       };
 
