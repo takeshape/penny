@@ -47,7 +47,7 @@ export const ProductPriceSelect = ({ value, onChange, options }: ProductPriceSel
                     as="span"
                     className={classNames(checked ? 'text-accent-900' : 'text-form-900', 'ml-3 font-medium')}
                   >
-                    {price.name} {price.hasDiscount && `(${formatDiscount(price)})`}
+                    {price.name} {price.hasDiscount && `(save ${formatDiscount(price)})`}
                   </RadioGroup.Label>
                 </span>
                 <RadioGroup.Description
