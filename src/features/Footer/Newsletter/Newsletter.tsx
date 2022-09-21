@@ -4,7 +4,8 @@ import Button from 'components/Button/Button';
 import Captcha from 'components/Captcha';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { defaultKlaviyoListId } from 'config';
-import { useCallback, useState } from 'react';
+import { FormEventHandler, useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { NewsletterEmailSubmissionResponse, NewsletterEmailSubmissionVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 import { EmailSubmissionMutation } from './queries';
@@ -15,6 +16,10 @@ export interface NewsletterProps {
     secondary?: string;
     button?: string;
   };
+}
+
+interface NewsletterFormValues {
+  email: string;
 }
 
 export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
@@ -38,20 +43,25 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
     }
   );
 
+  const { handleSubmit, register } = useForm<NewsletterFormValues>();
+
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-      const email = event.currentTarget.elements['email-address'].value;
+  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    (e) => {
+      e.preventDefault();
       executeRecaptcha((recaptchaToken) => {
-        if (email) {
-          setLoading(true);
-          mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
-        }
+        handleSubmit(async ({ email }: NewsletterFormValues) => {
+          if (email) {
+            setLoading(true);
+            mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
+          }
+        })().catch(() => {
+          // Swallow errors and handle them through Apollo
+        });
       });
     },
-    [executeRecaptcha, mutateFn]
+    [executeRecaptcha, handleSubmit, mutateFn]
   );
 
   return (
@@ -60,16 +70,13 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
         <h3 className="text-sm font-semibold text-body-400 tracking-wider uppercase">{text.primary}</h3>
       )}
       {text?.secondary && <p className="mt-4 text-base text-body-500">{text.secondary}</p>}
-      <form className="mt-4 sm:flex" onSubmit={handleSubmit}>
+      <form className="mt-4 sm:flex" onSubmit={onSubmit}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>
         <input
-          type="email"
-          name="email-address"
-          id="email-address"
+          {...register('email', { required: true })}
           autoComplete="email"
-          required
           className="appearance-none min-w-0 w-full bg-background border border-form-300 rounded-md shadow-sm py-2 px-4 text-base text-form-900 placeholder-form-500 focus:outline-none focus:ring-accent-500 focus:border-accent-500 focus:placeholder-form-400"
           placeholder="Enter your email"
         />

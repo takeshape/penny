@@ -28,5 +28,5 @@ export type NavigationSection = {
 export type Navigation = {
   message: NavigationMessage;
   sections: NavigationSection[];
-  currencies: NavigationCurrency[];
+  currencies: typeof currencyList;
 };

@@ -6,7 +6,7 @@ import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSele
 import Stars from 'components/Stars/Stars';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
@@ -54,7 +54,7 @@ export const ProductWithImage = ({
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
-  const handleAddToCart = useCallback(
+  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
 

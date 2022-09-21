@@ -1,7 +1,7 @@
 // via https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
 import { useMemo } from 'react';
 
-const range = (start, end) => {
+const range = (start: number, end: number) => {
   let length = end - start + 1;
   /*
   	Create an array of certain length and set the elements within it from
@@ -10,9 +10,15 @@ const range = (start, end) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
+interface UsePaginationHookProps {
+  pageCount: number;
+  siblingCount: number;
+  currentPage: number;
+}
+
 const DOTS = '…';
 
-export const usePagination = ({ pageCount, siblingCount = 1, currentPage }) => {
+export const usePagination = ({ pageCount, siblingCount = 1, currentPage }: UsePaginationHookProps) => {
   const paginationRange = useMemo(() => {
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
     const totalPageNumbers = siblingCount + 5;

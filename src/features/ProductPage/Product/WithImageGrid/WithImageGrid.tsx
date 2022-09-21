@@ -5,7 +5,7 @@ import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { Product as TProduct } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
@@ -74,7 +74,7 @@ export const ProductWithImageGrid = ({
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
-  const handleAddToCart = useCallback(
+  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
 

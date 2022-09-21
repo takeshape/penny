@@ -3,7 +3,6 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
-import { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
@@ -15,17 +14,14 @@ export interface AuthSignInForm {
   password: string;
   rememberMe: boolean;
 }
-
-export type ErrorTypes = SignInErrorTypes | 'CheckoutSessionRequired';
-
 export interface AuthSignInProps {
   signIn: typeof signIn;
   callbackUrl: string;
-  error?: ErrorTypes;
+  error?: string;
   useMultipass: boolean;
 }
 
-export const errors: Record<ErrorTypes, string> = {
+export const errors: Record<string, string> = {
   Signin: 'Try signing in with a different account.',
   OAuthSignin: 'Try signing in with a different account.',
   OAuthCallback: 'Try signing in with a different account.',

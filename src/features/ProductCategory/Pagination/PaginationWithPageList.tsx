@@ -33,7 +33,7 @@ export const PaginationWithPageList = ({
             <PaginationLink
               key={`page-${pageNumber}`}
               current={pageNumber === currentPage}
-              onClick={() => setCurrentPage(pageNumber, currentPage)}
+              onClick={() => setCurrentPage(pageNumber as number, currentPage)}
             >
               {pageNumber}
             </PaginationLink>
