@@ -5,7 +5,7 @@ import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AccountPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AccountPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Account' }}>
       <AccountFormProfile />

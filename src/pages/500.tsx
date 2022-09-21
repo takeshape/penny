@@ -5,7 +5,7 @@ import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
-const NotFoundPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const NotFoundPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Server Error' }}>
       <Wrapper>

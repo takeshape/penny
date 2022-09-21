@@ -19,12 +19,12 @@ import {
 import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const CollectionPage: NextPage = ({
+const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   noindex,
   navigation,
   footer,
   collection
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}) => {
   const { isFallback } = useRouter();
 
   if (isFallback) {

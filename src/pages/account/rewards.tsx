@@ -7,7 +7,7 @@ import { InferGetStaticPropsType, NextPage } from 'next';
 import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
 
-const AccountRewardsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AccountRewardsPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
   const { data } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse>(GetMyLoyaltyCardQuery);
 
   if (!data) {

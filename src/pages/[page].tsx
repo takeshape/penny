@@ -13,7 +13,7 @@ import { getSingle } from 'utils/types';
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
-const PagePage: NextPage = ({ navigation, footer, page }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const PagePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer, page }) => {
   const router = useRouter();
 
   if (router.isFallback) {
