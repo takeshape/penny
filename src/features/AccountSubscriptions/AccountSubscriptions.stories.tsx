@@ -7,7 +7,6 @@ import {
   sendMyUpdatePaymentEmailMutation,
   updateMyPaymentMethodResponse
 } from './queries.fixtures';
-import { getSubscriptionList } from './transforms';
 
 const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   title: 'Features / Account Subscriptions',
@@ -17,16 +16,11 @@ const Meta: ComponentMeta<typeof AccountSubscriptions> = {
   }
 };
 
-const Template: ComponentStory<typeof AccountSubscriptions> = () => (
-  <AccountSubscriptions
-    subscriptions={getSubscriptionList(getMySubscriptionListResponse as any)}
-    refetchSubscriptionList={async () => {}}
-  />
-);
+const Template: ComponentStory<typeof AccountSubscriptions> = () => <AccountSubscriptions />;
 
-export const _AccountSubscriptions = Template.bind({});
+export const Default = Template.bind({});
 
-_AccountSubscriptions.parameters = {
+Default.parameters = {
   msw: {
     handlers: {
       subscriptions: [
@@ -46,6 +40,26 @@ _AccountSubscriptions.parameters = {
         }),
         graphql.mutation('UpdateMyPaymentMethodMutation', (req, res, ctx) => {
           return res(ctx.delay(1000), ctx.data(updateMyPaymentMethodResponse));
+        })
+      ]
+    }
+  }
+};
+
+export const LoadingError = Template.bind({});
+
+LoadingError.parameters = {
+  msw: {
+    handlers: {
+      subscriptions: [
+        graphql.query('GetMySubscriptionListQuery', (req, res, ctx) => {
+          return res(
+            ctx.errors([
+              {
+                message: `Status Code: 404 Response Body: {"errors":["shopify_customer_id not found"]}\n","locations":[{"line":219,"column":3}],"path":["subscriptions"],"type":"GraphQLError"`
+              }
+            ])
+          );
         })
       ]
     }

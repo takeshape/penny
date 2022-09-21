@@ -1,6 +1,7 @@
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
+import { useSubscriptionRefetch } from 'features/AccountSubscriptions/hooks';
 import { Fragment } from 'react';
 import classNames from 'utils/classNames';
 import { formatPrice } from 'utils/text';
@@ -24,15 +25,15 @@ const navigationItems = [
 
 export interface ActiveSubscriptionProps {
   subscription: AnySubscription;
-  refetchSubscription: RefetchSubscriptions;
   refetchSubscriptionList: RefetchSubscriptions;
 }
 
 export const ActiveSubscription = ({
-  subscription,
-  refetchSubscription,
+  subscription: initialSubscription,
   refetchSubscriptionList
 }: ActiveSubscriptionProps) => {
+  const [refetchSubscription, { data: subscription }] = useSubscriptionRefetch({ subscription: initialSubscription });
+
   return (
     <Tab.Group>
       <h3 className="sr-only" id={subscription.id.toString()}>

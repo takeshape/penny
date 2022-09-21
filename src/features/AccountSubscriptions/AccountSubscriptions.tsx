@@ -1,66 +1,58 @@
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
+import Alert from 'components/Alert/Alert';
 import CardPanel from 'components/Card/Panel/Panel';
-import { AccountSubscription } from './AccountSubscription';
+import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
+import { useMemo } from 'react';
+import { GetMySubscriptionListQueryResponse } from 'types/takeshape';
+import { useAuthenticatedQuery } from 'utils/takeshape';
 import { EndedSubscription } from './components/EndedSubscription';
+import { NoSubscriptions } from './components/NoSubscriptions';
+import { SubscriptionItem, SubscriptionList, SubscriptionListWrapper } from './components/SubscriptionList';
 import { SubscriptionSkeleton } from './components/SubscriptionSkeleton';
-import { AnySubscription, RefetchSubscriptions } from './types';
+import { GetMySubscriptionListQuery } from './queries';
+import { getSubscriptionList } from './transforms';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
-export interface AccountSubscriptionsProps {
-  subscriptions: AnySubscription[];
-  refetchSubscriptionList: RefetchSubscriptions;
-}
+export const AccountSubscriptions = () => {
+  const { data, refetch, error } =
+    useAuthenticatedQuery<GetMySubscriptionListQueryResponse>(GetMySubscriptionListQuery);
 
-export const AccountSubscriptions = ({ subscriptions, refetchSubscriptionList }: AccountSubscriptionsProps) => {
+  const subscriptions = useMemo(() => getSubscriptionList(data), [data]);
+  const activeSubscriptions = useMemo(() => subscriptions?.filter(isActiveSubscription) ?? [], [subscriptions]);
+  const endedSubscriptions = useMemo(() => subscriptions?.filter(isEndedSubscription) ?? [], [subscriptions]);
+
+  if (error) {
+    return <Alert status="error" primaryText="Error loading subscriptions" secondaryText={error.message} />;
+  }
+
   if (!subscriptions) {
     return (
       <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
-        <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
-          <div className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border">
+        <SubscriptionListWrapper>
+          <SubscriptionItem>
             <SubscriptionSkeleton />
-          </div>
-        </div>
+          </SubscriptionItem>
+        </SubscriptionListWrapper>
       </CardPanel>
     );
   }
-
-  const activeSubscriptions = subscriptions.filter(isActiveSubscription) ?? [];
-  const endedSubscriptions = subscriptions.filter(isEndedSubscription) ?? [];
 
   return (
     <>
       <CardPanel primaryText="Subscriptions" secondaryText="View and manage your subscriptions and upcoming orders.">
         {activeSubscriptions?.length > 0 ? (
-          <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
-            {activeSubscriptions.map((subscription) => (
-              <div
-                key={subscription.id}
-                className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
-              >
-                <AccountSubscription subscription={subscription} refetchSubscriptionList={refetchSubscriptionList} />
-              </div>
-            ))}
-          </div>
+          <SubscriptionList subscriptions={activeSubscriptions}>
+            {(subscription) => <ActiveSubscription subscription={subscription} refetchSubscriptionList={refetch} />}
+          </SubscriptionList>
         ) : (
-          <div className="relative block w-full p-12 text-center">
-            <ArrowPathIcon className="mx-auto h-12 w-12 text-body-400" />
-            <span className="mt-2 block text-sm font-medium text-body-900">No active subscriptions</span>
-          </div>
+          <NoSubscriptions />
         )}
       </CardPanel>
 
       {endedSubscriptions?.length > 0 && (
         <CardPanel primaryText="Past Subscriptions" secondaryText="Expired or canceled subscriptions.">
-          <div className="max-w-2xl mx-auto space-y-8 sm:px-4 lg:max-w-4xl lg:px-0">
-            {endedSubscriptions.map((subscription) => (
-              <div
-                key={subscription.id}
-                className="bg-background border-t border-b border-body-200 shadow-sm sm:rounded-lg sm:border"
-              >
-                <EndedSubscription subscription={subscription} />
-              </div>
-            ))}
-          </div>
+          <SubscriptionList subscriptions={endedSubscriptions}>
+            {(subscription) => <EndedSubscription subscription={subscription} />}
+          </SubscriptionList>
         </CardPanel>
       )}
     </>
