@@ -16,8 +16,8 @@ import {
   AuthCustomerQuery
 } from 'features/Auth/queries.storefront';
 import logger from 'logger';
-import { NextApiRequest, NextApiResponse } from 'next';
-import NextAuth from 'next-auth';
+import { NextApiHandler } from 'next';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { parseCookies, setCookie } from 'nookies';
@@ -58,7 +58,7 @@ const withAllAccess = createNextAuthAllAccess({
   ]
 });
 
-const nextAuthConfig = {
+const nextAuthConfig: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
     signOut: '/auth/signout',
@@ -137,7 +137,7 @@ const nextAuthConfig = {
     async jwt({ token, user, account, profile }) {
       if (user) {
         const { email } = user;
-        let { shopifyCustomerAccessToken } = user;
+        let shopifyCustomerAccessToken = user.shopifyCustomerAccessToken as string | undefined;
 
         if (!shopifyCustomerAccessToken && shopifyUseMultipass) {
           let firstName;
@@ -223,7 +223,7 @@ const nextAuthConfig = {
   }
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = async (req, res) => {
   const cookies = parseCookies({ req });
   const rememberMe = cookies['remember-me'] ?? req.body.rememberMe;
   const maxAge = rememberMe === 'false' ? sessionMaxAgeForgetMe : sessionMaxAgeRememberMe;

@@ -21,7 +21,7 @@ export interface ProductCategoryWithCollectionProps {
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
   const { push } = useRouter();
 
-  const parsePath = useCallback((asPath) => parseRouterPath(collection, asPath), [collection]);
+  const parsePath = useCallback((asPath: string) => parseRouterPath(collection, asPath), [collection]);
   const getVariables = useCallback(
     (parsedPath: PaginationDataHookParsedPath) => {
       const variables =
@@ -69,7 +69,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
 
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
-    (toPage) => {
+    (toPage: number) => {
       const nextPage = currentPath.page + toPage;
       const isPreviousPage = toPage < 0;
       const cachedNextPage = cachedPageData.current.get(nextPage);

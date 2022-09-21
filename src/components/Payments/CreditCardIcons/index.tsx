@@ -1,6 +1,8 @@
 // From here: https://github.com/aaronfagan/svg-credit-card-payment-icons/tree/main/flat-rounded
 
-export const AlipayIcon = ({ className }) => (
+import { SVGProps } from 'react';
+
+export const AlipayIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"
@@ -35,7 +37,7 @@ export const AlipayIcon = ({ className }) => (
   </svg>
 );
 
-export const AmexIcon = ({ className }) => (
+export const AmexIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"
@@ -57,7 +59,7 @@ export const AmexIcon = ({ className }) => (
   </svg>
 );
 
-export const DinersClubIcon = ({ className }) => (
+export const DinersClubIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"
@@ -87,7 +89,7 @@ export const DinersClubIcon = ({ className }) => (
   </svg>
 );
 
-export const DiscoverIcon = ({ className }) => (
+export const DiscoverIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg width="780" height="500" viewBox="0 0 780 500" xmlns="http://www.w3.org/2000/svg" className={className}>
     <g fillRule="evenodd">
       <path
@@ -106,7 +108,7 @@ export const DiscoverIcon = ({ className }) => (
   </svg>
 );
 
-export const GenericIcon = ({ className }) => (
+export const GenericIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"
@@ -139,7 +141,7 @@ export const GenericIcon = ({ className }) => (
   </svg>
 );
 
-export const MastercardIcon = ({ className }) => (
+export const MastercardIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"
@@ -175,7 +177,7 @@ export const MastercardIcon = ({ className }) => (
   </svg>
 );
 
-export const PaypalIcon = ({ className }) => (
+export const PaypalIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"
@@ -217,7 +219,7 @@ export const PaypalIcon = ({ className }) => (
   </svg>
 );
 
-export const VisaIcon = ({ className }) => (
+export const VisaIcon = ({ className }: SVGProps<SVGSVGElement>) => (
   <svg
     width="780"
     height="500"

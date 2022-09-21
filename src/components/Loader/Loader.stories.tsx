@@ -1,15 +1,17 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { Loader } from './Loader';
 
-export default {
+const Meta: ComponentMeta<typeof Loader> = {
   title: 'Components / Loader',
   component: Loader,
   parameters: {
     layout: 'centered'
   },
   decorators: [(Story) => <div className="relative z-10">{Story()}</div>]
-} as ComponentMeta<typeof Loader>;
+};
 
-const Template = (args) => <Loader {...args} />;
+const Template: ComponentStory<typeof Loader> = (args) => <Loader {...args} />;
 
 export const _Loader = Template.bind({});
+
+export default Meta;

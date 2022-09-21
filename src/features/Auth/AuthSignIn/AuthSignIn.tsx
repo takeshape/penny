@@ -16,14 +16,16 @@ export interface AuthSignInForm {
   rememberMe: boolean;
 }
 
+export type ErrorTypes = SignInErrorTypes | 'CheckoutSessionRequired';
+
 export interface AuthSignInProps {
   signIn: typeof signIn;
   callbackUrl: string;
-  error?: string;
+  error?: ErrorTypes;
   useMultipass: boolean;
 }
 
-export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string> = {
+export const errors: Record<ErrorTypes, string> = {
   Signin: 'Try signing in with a different account.',
   OAuthSignin: 'Try signing in with a different account.',
   OAuthCallback: 'Try signing in with a different account.',

@@ -1,7 +1,9 @@
+import { SVGProps } from 'react';
+
 interface SocialItem {
   name: string;
   href: string;
-  icon: (props) => JSX.Element;
+  icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
 }
 
 export interface SocialProps {

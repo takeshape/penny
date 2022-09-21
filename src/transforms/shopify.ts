@@ -13,8 +13,6 @@ import {
   ProductCategoryShopifyCollectionQueryResponse,
   ProductPageShopifyProductResponse,
   Shopify_MoneyV2,
-  Shopify_SellingPlanInterval,
-  Shopify_SellingPlanPricingPolicyAdjustmentType,
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy
 } from 'types/takeshape';
@@ -33,7 +31,7 @@ type Shopify_ProductOption = ProductPageShopifyProductResponse['product']['optio
 
 function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
   switch (adjustmentType) {
-    case Shopify_SellingPlanPricingPolicyAdjustmentType.Price: {
+    case 'PRICE': {
       const newAmount = Number((adjustmentValue as Shopify_MoneyV2).amount) * 100;
 
       return {
@@ -44,7 +42,7 @@ function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopif
       };
     }
 
-    case Shopify_SellingPlanPricingPolicyAdjustmentType.FixedAmount: {
+    case 'FIXED_AMOUNT': {
       const discountAmount = Number((adjustmentValue as Shopify_MoneyV2).amount) * 100;
       const amountAfterDiscount = amount - discountAmount;
 
@@ -56,7 +54,7 @@ function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopif
       };
     }
 
-    case Shopify_SellingPlanPricingPolicyAdjustmentType.Percentage:
+    case 'PERCENTAGE':
     default: {
       const discountAmount = (adjustmentValue as Shopify_SellingPlanPricingPolicyPercentageValue).percentage ?? 0;
       const discountAmountOff = Math.round(amount * (discountAmount / 100));
@@ -90,22 +88,22 @@ function getSubscriptionInterval({
   };
 
   switch (interval) {
-    case Shopify_SellingPlanInterval.Week:
+    case 'WEEK':
       return {
         ...subscriptionInterval,
         interval: 'WEEK' as const
       };
-    case Shopify_SellingPlanInterval.Month:
+    case 'MONTH':
       return {
         ...subscriptionInterval,
         interval: 'MONTH' as const
       };
-    case Shopify_SellingPlanInterval.Year:
+    case 'YEAR':
       return {
         ...subscriptionInterval,
         interval: 'YEAR' as const
       };
-    case Shopify_SellingPlanInterval.Day:
+    case 'DAY':
     default:
       return {
         ...subscriptionInterval,
@@ -161,10 +159,8 @@ export function getProductVariantPriceOptions(
     prices = prices
       .concat(
         sellingPlans.map((plan) => {
-          // TODO Don't know what happened to these types
-          const { interval, intervalCount, maxCycles, minCycles, anchor } = getSubscriptionInterval(
-            plan.billingPolicy as any
-          );
+          const { interval, intervalCount, maxCycles, minCycles, anchors } =
+            plan.billingPolicy as Shopify_SellingPlanRecurringBillingPolicy;
           const discount = getDiscount(amount, plan.pricingPolicies[0]);
           const name = `${intervalCount} ${interval.toLowerCase()} subscription`;
 
@@ -183,7 +179,7 @@ export function getProductVariantPriceOptions(
             intervalCount: intervalCount,
             intervalMaxCycles: maxCycles ?? null,
             intervalMinCycles: minCycles ?? null,
-            intervalAnchor: anchor ?? null,
+            intervalAnchors: anchors ?? null,
             amountBeforeDiscount: amount,
             amount: discount.amountAfterDiscount,
             currencyCode: defaultCurrency

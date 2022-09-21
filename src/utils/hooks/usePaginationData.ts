@@ -99,7 +99,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
   }, [loadPage, setCurrentPage, currentPath]);
 
   const loadNextPage = useCallback(
-    async (cursor) => {
+    async (cursor: string) => {
       const page = currentPath.page + 1;
       setIsLoadingNextPage(true);
 

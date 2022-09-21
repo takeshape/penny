@@ -9,7 +9,7 @@ import NextLink from 'components/NextLink';
 import { BackgroundDots } from 'features/Contact/components/BackgroundDots';
 import { useCreateTicket } from 'features/Contact/useCreateTicket';
 import { useSession } from 'next-auth/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -64,7 +64,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
     [createTicket]
   );
 
-  const handleFormSubmit = useCallback(
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
       executeRecaptcha((recaptchaToken) => {

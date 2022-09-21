@@ -1,6 +1,7 @@
 import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing';
-import { render } from '@testing-library/react';
+import { render, RenderOptions } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
+import { PropsWithChildren, ReactElement } from 'react';
 
 const mockUseRouterReturnValue = {
   query: {},
@@ -22,7 +23,7 @@ jest.mock('next/dist/client/router', () => ({
   useRouter: () => mockUseRouterReturnValue
 }));
 
-const AllTheProviders = ({ children }) => {
+const AllTheProviders = ({ children }: PropsWithChildren) => {
   return (
     <SessionProvider session={{ expires: '2050-10-05T14:48:00.000Z' }} refetchInterval={0}>
       <MockedApolloProvider>{children}</MockedApolloProvider>
@@ -30,7 +31,8 @@ const AllTheProviders = ({ children }) => {
   );
 };
 
-const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: ReactElement, options: Partial<RenderOptions>) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from '@testing-library/react';
 export { customRender as render };

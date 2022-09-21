@@ -18,8 +18,11 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": "src",
-    "strict": false,
-    "strictBindCallApply": true
+    "strict": true,
+    "strictNullChecks": false,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false
   },
   "include": [
     "next-env.d.ts",

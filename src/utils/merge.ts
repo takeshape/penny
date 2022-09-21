@@ -1,10 +1,10 @@
 /**
  * Deep merge that concatenates arrays from https://stackoverflow.com/a/48218209
  */
-export function mergeDeep<TObject>(...objects: TObject[]) {
-  const isObject = (obj) => obj && typeof obj === 'object';
+export function mergeDeep<TObject extends object>(...objects: TObject[]) {
+  const isObject = (obj: unknown) => obj && typeof obj === 'object';
 
-  return objects.reduce((prev, obj) => {
+  return objects.reduce((prev: any, obj: any) => {
     Object.keys(obj).forEach((key) => {
       const pVal = prev[key];
       const oVal = obj[key];

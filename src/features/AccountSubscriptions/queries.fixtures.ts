@@ -1,10 +1,11 @@
 import {
   GetMyPaymentMethodsQueryResponse,
+  GetMySubscriptionListQueryResponse,
   SendMyUpdatePaymentEmailMutationResponse,
   UpdateMyPaymentMethodMutationResponse
 } from 'types/takeshape';
 
-export const getMySubscriptionListResponse = {
+export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse = {
   subscriptions: [
     {
       id: '281367264',
@@ -94,6 +95,7 @@ export const getMySubscriptionListResponse = {
             },
             fulfillments: [
               {
+                createdAt: '2022-09-13T17:08:22Z',
                 updatedAt: '2022-09-13T17:08:22Z',
                 deliveredAt: null,
                 estimatedDeliveryAt: null,
@@ -678,6 +680,7 @@ export const getMySubscriptionListResponse = {
             },
             fulfillments: [
               {
+                createdAt: '2022-09-13T17:08:22Z',
                 updatedAt: '2022-09-13T17:08:22Z',
                 deliveredAt: null,
                 estimatedDeliveryAt: null,

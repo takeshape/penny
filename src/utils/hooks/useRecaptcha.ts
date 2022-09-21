@@ -6,7 +6,7 @@ export const useRecaptcha = <T>() => {
   const callbackRef = useRef<(recaptchaToken: string) => void>();
   const recaptchaRef = useRef<ReCAPTCHA>();
 
-  const executeRecaptcha = useCallback((callback) => {
+  const executeRecaptcha = useCallback((callback: (status: string) => void) => {
     if (recaptchaSiteKey) {
       callbackRef.current = callback;
       recaptchaRef.current.execute();

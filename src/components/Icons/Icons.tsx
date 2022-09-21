@@ -1,6 +1,7 @@
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
+import { SVGProps } from 'react';
 
-export const Facebook = (props) => (
+export const Facebook = (props: SVGProps<SVGSVGElement>) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
     <path
       fillRule="evenodd"
@@ -10,7 +11,7 @@ export const Facebook = (props) => (
   </svg>
 );
 
-export const Instagram = (props) => (
+export const Instagram = (props: SVGProps<SVGSVGElement>) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
     <path
       fillRule="evenodd"
@@ -20,13 +21,13 @@ export const Instagram = (props) => (
   </svg>
 );
 
-export const Twitter = (props) => (
+export const Twitter = (props: SVGProps<SVGSVGElement>) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
     <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
   </svg>
 );
 
-export const GitHub = (props) => (
+export const GitHub = (props: SVGProps<SVGSVGElement>) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
     <path
       fillRule="evenodd"
@@ -36,7 +37,7 @@ export const GitHub = (props) => (
   </svg>
 );
 
-export const Dribbble = (props) => (
+export const Dribbble = (props: SVGProps<SVGSVGElement>) => (
   <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
     <path
       fillRule="evenodd"
@@ -46,7 +47,7 @@ export const Dribbble = (props) => (
   </svg>
 );
 
-export const DefaultReviewer = (props) => (
+export const DefaultReviewer = (props: SVGProps<HTMLDivElement>) => (
   <div className="bg-body-300 rounded-full p-2 h-12 w-12" {...props}>
     <ChatBubbleLeftRightIcon className="text-body-100 h-full w-full" />
   </div>
