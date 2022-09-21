@@ -14,40 +14,40 @@ function getFulfillmentStatus(
   updatedAt: string
 ): FulfillmentStatus {
   switch (status) {
-    case Shopify_FulfillmentDisplayStatus.Confirmed:
-    case Shopify_FulfillmentDisplayStatus.LabelPrinted:
-    case Shopify_FulfillmentDisplayStatus.LabelPurchased:
-    case Shopify_FulfillmentDisplayStatus.LabelVoided:
-    case Shopify_FulfillmentDisplayStatus.Submitted:
+    case 'CONFIRMED':
+    case 'LABEL_PRINTED':
+    case 'LABEL_PURCHASED':
+    case 'LABEL_VOIDED':
+    case 'SUBMITTED':
       return {
         label: 'Order Processing',
         color: 'gray',
         text: 'Processing on',
         date: updatedAt
       };
-    case Shopify_FulfillmentDisplayStatus.AttemptedDelivery:
-    case Shopify_FulfillmentDisplayStatus.Fulfilled:
-    case Shopify_FulfillmentDisplayStatus.InTransit:
-    case Shopify_FulfillmentDisplayStatus.MarkedAsFulfilled:
-    case Shopify_FulfillmentDisplayStatus.OutForDelivery:
-    case Shopify_FulfillmentDisplayStatus.ReadyForPickup:
+    case 'ATTEMPTED_DELIVERY':
+    case 'FULFILLED':
+    case 'IN_TRANSIT':
+    case 'MARKED_AS_FULFILLED':
+    case 'OUT_FOR_DELIVERY':
+    case 'READY_FOR_PICKUP':
       return {
         label: 'Shipped',
         color: 'green',
         text: 'Estimated delivery on',
         date: estimatedDeliveryAt ?? updatedAt
       };
-    case Shopify_FulfillmentDisplayStatus.Delivered:
-    case Shopify_FulfillmentDisplayStatus.PickedUp:
+    case 'DELIVERED':
+    case 'PICKED_UP':
       return {
         label: 'Delivered',
         color: 'accent',
         text: 'Delivered at',
         date: deliveredAt ?? updatedAt
       };
-    case Shopify_FulfillmentDisplayStatus.Canceled:
-    case Shopify_FulfillmentDisplayStatus.Failure:
-    case Shopify_FulfillmentDisplayStatus.NotDelivered:
+    case 'CANCELED':
+    case 'FAILURE':
+    case 'NOT_DELIVERED':
       return {
         label: 'Failed Delivery',
         color: 'red',
@@ -57,7 +57,7 @@ function getFulfillmentStatus(
   }
 }
 
-export function getTrackingUrl(carrier, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
+export function getTrackingUrl(carrier: string, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
   switch (carrier) {
     case 'USPS':
       return `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`;

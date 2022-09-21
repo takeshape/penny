@@ -23,7 +23,7 @@ import { useAuthenticatedMutation } from 'utils/takeshape';
 import { SetNextChargeDateMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 
-function getMonth(forDate) {
+function getMonth(forDate: Date) {
   const now = new Date();
 
   const monthStart = startOfMonth(forDate);

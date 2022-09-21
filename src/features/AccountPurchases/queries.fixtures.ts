@@ -1,4 +1,6 @@
-export const myPurchasesResponse = {
+import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+
+export const myPurchasesResponse: GetMyAdminCustomerOrdersQueryResponse = {
   customer: {
     __typename: 'Shopify_Customer',
     orders: {

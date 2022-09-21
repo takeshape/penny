@@ -8,13 +8,13 @@ const shippingAddress = {
   lastName: 'Shick',
   address1: '112 West 34th Street',
   address2: '',
-  company: null,
+  company: '',
   city: 'New York',
   province: 'New York',
   provinceCode: 'NY',
   country: 'United States',
   zip: '10120',
-  phone: null
+  phone: ''
 };
 
 const fulfillments = [
