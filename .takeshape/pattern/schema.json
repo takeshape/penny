@@ -7004,7 +7004,13 @@
               "last4": {
                 "type": "string"
               }
-            }
+            },
+            "required": [
+              "brand",
+              "exp_month",
+              "exp_year",
+              "last4"
+            ]
           },
           "payment_type": {
             "type": "string"
@@ -7018,7 +7024,17 @@
           "updated_at": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "id",
+          "customer_id",
+          "created_at",
+          "payment_details",
+          "payment_type",
+          "status",
+          "status_reason",
+          "updated_at"
+        ]
       }
     },
     "Recharge_CreateNotificationResponse": {
@@ -7228,7 +7244,33 @@
               }
             }
           }
-        }
+        },
+        "required": [
+          "id",
+          "charge_interval_frequency",
+          "created_at",
+          "customer_id",
+          "email",
+          "is_prepaid",
+          "is_skippable",
+          "is_swappable",
+          "order_interval_frequency",
+          "order_interval_unit",
+          "presentment_currency",
+          "price",
+          "product_title",
+          "quantity",
+          "recharge_product_id",
+          "shopify_product_id",
+          "sku_override",
+          "status",
+          "updated_at",
+          "variant_title",
+          "address",
+          "charges",
+          "rechargeProduct",
+          "shopifyProductVariant"
+        ]
       }
     },
     "Recharge_ChargeLineItem": {
@@ -7276,7 +7318,17 @@
           "price": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "images",
+          "quantity",
+          "subscription_id",
+          "title",
+          "variant_title",
+          "shopify_product_id",
+          "shopify_variant_id",
+          "price"
+        ]
       }
     },
     "Recharge_Charge": {
@@ -7349,7 +7401,15 @@
           "address_id": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "scheduled_at",
+          "updated_at",
+          "line_items",
+          "currency"
+        ]
       }
     },
     "Recharge_Address": {
@@ -7369,6 +7429,9 @@
             "type": "string"
           },
           "city": {
+            "type": "string"
+          },
+          "company": {
             "type": "string"
           },
           "country": {
@@ -7403,7 +7466,17 @@
               }
             }
           }
-        }
+        },
+        "required": [
+          "id",
+          "address1",
+          "address2",
+          "city",
+          "first_name",
+          "last_name",
+          "province",
+          "zip"
+        ]
       }
     },
     "Recharge_Product": {
@@ -7428,9 +7501,17 @@
                   "type": "string"
                 }
               }
-            }
+            },
+            "required": [
+              "order_interval_frequency_options"
+            ]
           }
-        }
+        },
+        "required": [
+          "id",
+          "discount_amount",
+          "subscription_defaults"
+        ]
       }
     },
     "Recharge_Onetime": {

@@ -1,3 +1,4 @@
+import { Object } from 'ts-toolbelt';
 import { Merge } from 'type-fest';
 import { ProductCore, ProductImage, ProductPrice, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { GetMySubscriptionQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
@@ -12,8 +13,8 @@ export type SubscriptionAddress = {
   province: string;
   zip: string;
   country: string;
-  phone?: string;
-  company?: string;
+  phone: string | null;
+  company: string | null;
 };
 
 export type SubscriptionShippingAddress = Omit<SubscriptionAddress, 'id'>;
@@ -90,25 +91,25 @@ export type SubscriptionTrackingInfo = {
 export type SubscriptionOrderFulfillment = {
   createdAt: string;
   updatedAt: string;
-  displayStatus: Shopify_FulfillmentDisplayStatus;
-  deliveredAt?: string;
-  estimatedDeliveryAt?: string;
-  inTransitAt?: string;
-  trackingInfo?: SubscriptionTrackingInfo;
+  displayStatus: Shopify_FulfillmentDisplayStatus | null;
+  deliveredAt: string | null;
+  estimatedDeliveryAt: string | null;
+  inTransitAt: string | null;
+  trackingInfo: SubscriptionTrackingInfo | null;
 };
 
 export type SubscriptionOrder = {
   id: string;
   chargeId: string;
-  chargeScheduledAt?: string;
-  chargeProcessedAt?: string;
+  chargeScheduledAt: string | null;
+  chargeProcessedAt: string | null;
   chargeUpdatedAt: string;
   chargeCreatedAt: string;
-  fulfillmentDeliveredAt?: string;
-  fulfillmentInTransitAt?: string;
-  fulfillmentScheduledAt?: string;
-  fulfillmentUpdatedAt?: string;
-  fulfillmentCreatedAt?: string;
+  fulfillmentDeliveredAt: string | null;
+  fulfillmentInTransitAt: string | null;
+  fulfillmentScheduledAt: string | null;
+  fulfillmentUpdatedAt: string | null;
+  fulfillmentCreatedAt: string | null;
   status: SubscriptionOrderStatus;
   statusAt: string;
   shippingAddress: SubscriptionShippingAddress;
@@ -144,15 +145,15 @@ export type Subscription = {
   status: SubscriptionStatus;
   createdAt: string;
   updatedAt: string;
-  cancelledAt: string;
-  nextChargeScheduledAt: string;
+  cancelledAt: string | null;
+  nextChargeScheduledAt: string | null;
   unitPrice: SubscriptionPrice;
   price: SubscriptionPrice;
   interval: SubscriptionInterval;
   intervalCount: number;
   intervalOptions: string[];
   address: SubscriptionAddress;
-  paymentMethod?: SubscriptionPaymentMethod;
+  paymentMethod: SubscriptionPaymentMethod | null;
   product: SubscriptionProduct;
   productVariant: SubscriptionProductVariant;
   quantity: number;
@@ -163,5 +164,15 @@ export type ActiveSubscription = Subscription & { status: 'ACTIVE' };
 export type EndedSubscription = Subscription & { status: 'CANCELLED' | 'EXPIRED' };
 
 export type RefetchSubscriptions = () => Promise<any>;
-export type SubscriptionResponse = GetMySubscriptionQueryResponse['subscription'];
 export type AnySubscription = ActiveSubscription | EndedSubscription;
+
+export type ResponseSubscription = NonNullable<Object.Path<GetMySubscriptionQueryResponse, ['subscription']>>;
+export type ResponseCharge = NonNullable<Object.Path<ResponseSubscription, ['charges', 0]>>;
+export type ResponseLineItem = NonNullable<Object.Path<ResponseCharge, ['line_items', 0]>>;
+export type ResponseFulfillment = NonNullable<Object.Path<ResponseCharge, ['shopifyOrder', 'fulfillments', 0]>>;
+export type ResponseRechargeProduct = NonNullable<Object.Path<ResponseSubscription, ['rechargeProduct']>>;
+export type ResponseProductVariant = NonNullable<Object.Path<ResponseSubscription, ['shopifyProductVariant']>>;
+export type ResponseProduct = NonNullable<Object.Path<ResponseProductVariant, ['product']>>;
+export type ResponseProductProductVariant = NonNullable<Object.Path<ResponseProduct, ['variant', 'nodes', 0]>>;
+export type ResponseAddress = NonNullable<Object.Path<ResponseSubscription, ['address']>>;
+export type ResponsePaymentMethod = NonNullable<Object.Path<ResponseAddress, ['include', 'payment_methods', 0]>>;

@@ -113,7 +113,7 @@ function getSubscriptionInterval({
 }
 
 export function createImageGetter(defaultAltText: string) {
-  return (shopifyImage?: Pick<Shopify_Image, 'height' | 'width' | 'url' | 'altText'>): ProductImage => {
+  return (shopifyImage?: Pick<Shopify_Image, 'height' | 'width' | 'url' | 'altText'> | null): ProductImage => {
     const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
     return {
       height,
