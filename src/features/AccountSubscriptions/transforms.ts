@@ -387,7 +387,7 @@ function getSubscriptionOrder(rechargeCharge: SubscriptionResponse['charges'][0]
   };
 }
 
-function getSubscriptionItem(rechargeSubscription: SubscriptionResponse): AnySubscription {
+function getSubscriptionItem(rechargeSubscription: NonNullable<SubscriptionResponse>): AnySubscription {
   const {
     id,
     customer_id,
@@ -447,7 +447,7 @@ export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse) {
   return response.paymentMethods.map(getSubscriptionPaymentMethod);
 }
 
-export function getSubscription(response: GetMySubscriptionQueryResponse): AnySubscription {
+export function getSubscription(response: GetMySubscriptionQueryResponse): AnySubscription | null {
   if (!response?.subscription) {
     return null;
   }
@@ -455,7 +455,9 @@ export function getSubscription(response: GetMySubscriptionQueryResponse): AnySu
   return getSubscriptionItem(response.subscription);
 }
 
-export function getSubscriptionList(response: GetMySubscriptionListQueryResponse): AnySubscription[] {
+export function getSubscriptionList(
+  response: GetMySubscriptionListQueryResponse | undefined
+): AnySubscription[] | null {
   if (!response?.subscriptions) {
     return null;
   }

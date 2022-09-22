@@ -2,7 +2,7 @@ import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
 import { GetMyAdminCustomerOrdersQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
 import { Fulfillment, FulfillmentStatus, LineItem, Order } from './types';
 
-type Shopify_Customer = GetMyAdminCustomerOrdersQueryResponse['customer'];
+type Shopify_Customer = NonNullable<GetMyAdminCustomerOrdersQueryResponse['customer']>;
 export type Shopify_Order = Shopify_Customer['orders']['edges'][0]['node'];
 export type Shopify_LineItem = Shopify_Order['lineItems']['edges'][0]['node'];
 export type Shopify_Fulfillment = Shopify_Order['fulfillments'][0];
@@ -114,10 +114,10 @@ export function getOrder(order?: Shopify_Order): Order {
   };
 }
 
-export function getLineItems(order?: Shopify_Order): LineItem[] {
-  return order?.lineItems?.edges.map((edge) => getLineItem(edge.node));
+export function getLineItems(order?: Shopify_Order): LineItem[] | null {
+  return order?.lineItems?.edges?.map((edge) => getLineItem(edge.node)) ?? null;
 }
 
-export function getOrders(customer?: Shopify_Customer): Order[] {
-  return customer?.orders.edges.map(({ node }) => getOrder(node));
+export function getOrders(customer?: Shopify_Customer): Order[] | null {
+  return customer?.orders?.edges?.map(({ node }) => getOrder(node)) ?? null;
 }
