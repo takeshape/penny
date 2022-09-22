@@ -204,7 +204,7 @@ export const PaymentMethodForm = ({
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Change payment method"
-        disableSubmit={paymentMethods?.length < 2}
+        disableSubmit={(paymentMethods?.length ?? 0) < 2}
       />
     </ModalForm>
   );

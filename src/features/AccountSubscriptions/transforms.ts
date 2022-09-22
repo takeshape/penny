@@ -7,6 +7,7 @@ import {
   GetMySubscriptionQueryResponse
 } from 'types/takeshape';
 import { capitalize } from 'utils/text';
+import { isDefined } from 'utils/types';
 import {
   AnySubscription,
   ResponseAddress,
@@ -453,12 +454,12 @@ function getSubscriptionItem(rechargeSubscription: ResponseSubscription): AnySub
   };
 }
 
-export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse) {
+export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse | undefined) {
   if (!response?.paymentMethods) {
     return null;
   }
 
-  return response.paymentMethods.map(getSubscriptionPaymentMethod);
+  return response.paymentMethods.map(getSubscriptionPaymentMethod).filter(isDefined);
 }
 
 export function getSubscription(response: GetMySubscriptionQueryResponse): AnySubscription | null {

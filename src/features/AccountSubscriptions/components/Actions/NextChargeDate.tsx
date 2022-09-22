@@ -45,6 +45,7 @@ function getMonth(forDate: Date) {
     name: format(monthStart, 'MMMM'),
     days: dates.map((d) => ({
       date: format(d, 'yyyy-MM-dd'),
+      dayNumber: format(d, 'd'),
       isCurrentMonth: isSameMonth(d, forDate),
       isToday: isSameDay(d, now)
     }))
@@ -73,7 +74,13 @@ export const NextChargeDateForm = ({
     formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<NextChargeDateFormValues>();
 
-  const [month, setMonth] = useState(getMonth(new Date(subscription.nextChargeScheduledAt)));
+  const { nextChargeScheduledAt } = subscription;
+
+  if (!nextChargeScheduledAt) {
+    throw new Error('Invalid subscription provided');
+  }
+
+  const [month, setMonth] = useState(getMonth(new Date(nextChargeScheduledAt)));
 
   const handlePrevMonth = useCallback(() => {
     setMonth(getMonth(subMonths(month.start, 1)));
@@ -99,9 +106,9 @@ export const NextChargeDateForm = ({
 
   const resetState = useCallback(() => {
     reset({
-      nextChargeDate: format(new Date(subscription.nextChargeScheduledAt), 'yyyy-MM-dd')
+      nextChargeDate: format(new Date(nextChargeScheduledAt), 'yyyy-MM-dd')
     });
-  }, [reset, subscription.nextChargeScheduledAt]);
+  }, [reset, nextChargeScheduledAt]);
 
   // Set initial values
   useEffect(() => resetState(), [resetState]);
@@ -166,8 +173,8 @@ export const NextChargeDateForm = ({
                     className={({ checked }) =>
                       classNames(
                         'text-body-900 hover:bg-body-100 focus:z-10 rounded-lg cursor-pointer',
-                        (checked || day.isToday) && 'font-semibold',
-                        !day.isCurrentMonth && 'cursor-default hover:bg-transparent'
+                        checked || day.isToday ? 'font-semibold' : '',
+                        !day.isCurrentMonth ? 'cursor-default hover:bg-transparent' : ''
                       )
                     }
                   >
@@ -178,11 +185,11 @@ export const NextChargeDateForm = ({
                             dateTime={day.date}
                             className={classNames(
                               'mx-auto flex items-center justify-center py-2.5 rounded-lg',
-                              checked && 'bg-accent-600 text-white',
-                              day.isToday && !checked && 'bg-body-300'
+                              checked ? 'bg-accent-600 text-white' : '',
+                              day.isToday && !checked ? 'bg-body-300' : ''
                             )}
                           >
-                            {day.date.split('-').pop().replace(/^0/, '')}
+                            {day.dayNumber}
                           </time>
                         )}
                       </>

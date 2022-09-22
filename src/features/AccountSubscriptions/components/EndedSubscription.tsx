@@ -34,12 +34,14 @@ export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
 
       <div className="flex items-center p-4 border-b border-body-200 sm:p-6 sm:grid sm:grid-cols-4 sm:gap-x-6">
         <dl className="flex-1 grid grid-cols-2 gap-x-6 text-sm sm:col-span-3 sm:grid-cols-3 lg:col-span-2">
-          <div>
-            <dt className="font-medium text-body-900">Date ended</dt>
-            <dd className="mt-1 text-body-500">
-              <time dateTime={subscription.cancelledAt}>{format(new Date(subscription.cancelledAt), 'PP')}</time>
-            </dd>
-          </div>
+          {subscription.cancelledAt && (
+            <div>
+              <dt className="font-medium text-body-900">Date ended</dt>
+              <dd className="mt-1 text-body-500">
+                <time dateTime={subscription.cancelledAt}>{format(new Date(subscription.cancelledAt), 'PP')}</time>
+              </dd>
+            </div>
+          )}
         </dl>
 
         <Menu as="div" className="relative flex justify-end lg:hidden">

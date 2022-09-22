@@ -11,7 +11,7 @@ const Meta: ComponentMeta<typeof DeliveryDetails> = {
 };
 
 const Template: ComponentStory<typeof DeliveryDetails> = (args) => (
-  <DeliveryDetails isOpen={true} onClose={() => {}} onReportIssue={() => {}} {...args} />
+  <DeliveryDetails order={args.order} isOpen={true} onClose={() => {}} onReportIssue={() => {}} />
 );
 
 const shippingAddress = {

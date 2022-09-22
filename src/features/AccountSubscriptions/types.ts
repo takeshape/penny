@@ -101,7 +101,7 @@ export type SubscriptionOrderFulfillment = {
 export type SubscriptionOrder = {
   id: string;
   chargeId: string;
-  chargeScheduledAt: string | null;
+  chargeScheduledAt: string;
   chargeProcessedAt: string | null;
   chargeUpdatedAt: string;
   chargeCreatedAt: string;

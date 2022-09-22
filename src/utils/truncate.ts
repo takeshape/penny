@@ -13,7 +13,7 @@ export const truncate = (str: string, options: TruncateOptions = {}) => {
   return (
     str
       .slice(0, length - omission.length)
-      .split(separator)
+      .split(separator ?? ' ')
       .reduce((previous, current, index, array) => {
         if (Boolean(separator) && index === array.length - 1) {
           return previous;

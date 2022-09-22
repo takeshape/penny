@@ -20,13 +20,17 @@ export function useSubscriptionRefetch({
   const [data, setData] = useState(subscription);
 
   const refetch = useCallback(async () => {
-    const updatedSubscription = await client.query<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>({
+    const response = await client.query<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>({
       query: GetMySubscriptionQuery,
       variables: { id: subscription.id },
       fetchPolicy: 'network-only'
     });
 
-    setData(getSubscription(updatedSubscription.data));
+    const updatedSubscription = getSubscription(response.data);
+
+    if (updatedSubscription) {
+      setData(updatedSubscription);
+    }
   }, [client, subscription.id]);
 
   return [refetch, { data }];
