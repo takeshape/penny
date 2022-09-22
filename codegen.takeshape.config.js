@@ -19,7 +19,9 @@ module.exports = {
       config: {
         omitOperationSuffix: true,
         operationResultSuffix: 'Response',
-        enumsAsTypes: true
+        enumsAsTypes: true,
+        avoidOptionals: true
+        // maybeValue: 'T | undefined'
       }
     }
   }

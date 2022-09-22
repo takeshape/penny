@@ -19,9 +19,6 @@
     "jsx": "preserve",
     "baseUrl": "src",
     "strict": true,
-    "strictNullChecks": false,
-    "strictBindCallApply": true,
-    "strictFunctionTypes": true,
     "strictPropertyInitialization": false
   },
   "include": [
