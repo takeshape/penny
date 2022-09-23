@@ -29,7 +29,7 @@ export const AlertAction = ({ text, status, onClick }: AlertActionProps) => {
   );
 };
 
-export const AlertActions = ({ actions, status }: Pick<AlertProps, 'status' | 'actions'>) => {
+export const AlertActions = ({ actions, status }: Required<Pick<AlertProps, 'status' | 'actions'>>) => {
   return (
     <div className="mt-4">
       <div className="-mx-2 -my-1.5 flex ">

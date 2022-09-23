@@ -1,6 +1,6 @@
 import { getNavigationLink } from 'transforms/navigation';
 import { FooterQueryResponse, NavigationSectionsLinkProperty } from 'types/takeshape';
-import { isDefined } from 'utils/types';
+import { isNotNullish } from 'utils/types';
 
 export function getFooter(response: FooterQueryResponse) {
   const footer = response?.footer;
@@ -18,7 +18,7 @@ export function getFooter(response: FooterQueryResponse) {
           ...section,
           links: section?.links
             ?.map((link) => getNavigationLink(link as NavigationSectionsLinkProperty))
-            .filter(isDefined)
+            .filter(isNotNullish)
         })) ?? []
     }
   };

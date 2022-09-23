@@ -7,7 +7,7 @@ import {
   GetMySubscriptionQueryResponse
 } from 'types/takeshape';
 import { capitalize } from 'utils/text';
-import { isDefined } from 'utils/types';
+import { isNotNullish } from 'utils/types';
 import {
   AnySubscription,
   ResponseAddress,
@@ -459,7 +459,7 @@ export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse | u
     return null;
   }
 
-  return response.paymentMethods.map(getSubscriptionPaymentMethod).filter(isDefined);
+  return response.paymentMethods.map(getSubscriptionPaymentMethod).filter(isNotNullish);
 }
 
 export function getSubscription(response: GetMySubscriptionQueryResponse): AnySubscription | null {

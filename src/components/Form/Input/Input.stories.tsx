@@ -35,7 +35,8 @@ Required.args = {
 export const Error: ComponentStory<typeof FormInput> = (args) => {
   const { control, setError } = useForm();
   setError('input', { type: 'min', message: 'Needs at least 6 characters' });
-  return <FormInput control={control} name="input" {...args} />;
+  args.name = args.name ?? 'input';
+  return <FormInput control={control} {...args} />;
 };
 Error.args = {
   id: 'input',

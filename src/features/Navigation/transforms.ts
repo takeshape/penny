@@ -1,22 +1,49 @@
 import { currencyList } from 'config';
 import { getNavigationLink } from 'transforms/navigation';
+import { Object } from 'ts-toolbelt';
 import { NavigationQueryResponse, NavigationSectionsLinkProperty } from 'types/takeshape';
+import { isNotNullish } from 'utils/types';
 import { Navigation, NavigationSection } from './types';
 
-export function getNavigationLinksSections(response: NavigationQueryResponse): NavigationSection[] {
-  return response.navigation.sections.map((section) => ({
-    name: section.name,
-    link: getNavigationLink(section.link as NavigationSectionsLinkProperty),
-    subsections: section.subsections
-      ? section.subsections.map((subsection) => ({
-          name: subsection.name,
-          links: subsection.links.map((link) => getNavigationLink(link as NavigationSectionsLinkProperty))
-        }))
-      : null
-  }));
+function getNavigationLinksSections(
+  sections: Object.Path<NavigationQueryResponse, ['navigation', 'sections']>
+): NavigationSection[] | null {
+  if (!sections) {
+    return null;
+  }
+
+  return sections
+    .map((section) => {
+      if (!section) {
+        return null;
+      }
+
+      return {
+        name: section.name,
+        link: getNavigationLink(section.link as NavigationSectionsLinkProperty),
+        subsections: section.subsections
+          ? section.subsections
+              .map((subsection) => {
+                if (!subsection) {
+                  return null;
+                }
+
+                return {
+                  name: subsection.name,
+                  links:
+                    subsection.links
+                      ?.map((link) => getNavigationLink(link as NavigationSectionsLinkProperty))
+                      .filter(isNotNullish) ?? []
+                };
+              })
+              .filter(isNotNullish)
+          : []
+      };
+    })
+    .filter(isNotNullish);
 }
 
-export function getNavigation(response: NavigationQueryResponse): Navigation {
+export function getNavigation(response: NavigationQueryResponse): Navigation | null {
   const navigation = response?.navigation;
 
   if (!navigation) {
@@ -24,8 +51,8 @@ export function getNavigation(response: NavigationQueryResponse): Navigation {
   }
 
   return {
-    message: navigation.messageHtml.replace(/<\/?p>/g, ''),
-    sections: getNavigationLinksSections(response),
+    message: navigation.messageHtml?.replace(/<\/?p>/g, '') ?? '',
+    sections: getNavigationLinksSections(response?.navigation?.sections) ?? [],
     currencies: [...currencyList]
   };
 }

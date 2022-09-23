@@ -31,7 +31,8 @@ Required.args = {
 export const Error: ComponentStory<typeof FormTextarea> = (args) => {
   const { control, setError } = useForm();
   setError('textarea', { type: 'required', message: 'This field is required' });
-  return <FormTextarea control={control} name="input" {...args} />;
+  args.name = args.name ?? 'input';
+  return <FormTextarea control={control} {...args} />;
 };
 Error.args = {
   ...Basic.args,
