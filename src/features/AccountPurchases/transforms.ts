@@ -1,14 +1,17 @@
-import { getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import { GetMyAdminCustomerOrdersQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
-import { Fulfillment, FulfillmentStatus, LineItem, Order } from './types';
-
-type Shopify_Customer = NonNullable<GetMyAdminCustomerOrdersQueryResponse['customer']>;
-export type Shopify_Order = Shopify_Customer['orders']['edges'][0]['node'];
-export type Shopify_LineItem = Shopify_Order['lineItems']['edges'][0]['node'];
-export type Shopify_Fulfillment = Shopify_Order['fulfillments'][0];
+import { createImageGetter, getProductUrl, shopifyGidToId } from 'transforms/shopify';
+import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+import {
+  Fulfillment,
+  FulfillmentStatus,
+  LineItem,
+  Order,
+  ResponseFulfillment,
+  ResponseOrder,
+  ResponseOrderLineItem
+} from './types';
 
 function getFulfillmentStatus(
-  status: Shopify_FulfillmentDisplayStatus,
+  status: ResponseFulfillment['displayStatus'],
   deliveredAt: string,
   estimatedDeliveryAt: string,
   updatedAt: string
@@ -54,10 +57,17 @@ function getFulfillmentStatus(
         text: 'Errored at',
         date: updatedAt
       };
+    default:
+      return {
+        label: 'Unknown delivery status',
+        color: 'red',
+        text: 'Unknown at',
+        date: updatedAt
+      };
   }
 }
 
-export function getTrackingUrl(carrier: string, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
+function getTrackingUrl(carrier: string | null, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
   switch (carrier) {
     case 'USPS':
       return `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`;
@@ -73,7 +83,7 @@ export function getTrackingUrl(carrier: string, trackingNumber = 'XXXXXXXXXXXXXX
   }
 }
 
-export function getFulfillment(fulfillment: Shopify_Fulfillment): Fulfillment {
+export function getFulfillment(fulfillment: ResponseFulfillment): Fulfillment {
   return {
     status: getFulfillmentStatus(
       fulfillment.displayStatus,
@@ -82,42 +92,48 @@ export function getFulfillment(fulfillment: Shopify_Fulfillment): Fulfillment {
       fulfillment.updatedAt
     ),
     trackingInfo: fulfillment.trackingInfo.map((tracking) => ({
-      company: tracking.company,
-      number: tracking.number,
-      trackingUrl: getTrackingUrl(tracking.company, tracking.number)
+      company: tracking.company ?? '',
+      number: tracking.number ?? '',
+      trackingUrl: tracking.url
     }))
   };
 }
 
-export function getLineItem(lineItem: Shopify_LineItem): LineItem {
+export function getLineItem(lineItem: ResponseOrderLineItem): LineItem {
+  const getImage = createImageGetter('');
+
   return {
     id: lineItem.id,
     name: lineItem.name,
-    product: {
+    product: lineItem.product && {
       url: getProductUrl(lineItem.product.handle),
       id: lineItem.product.id
     },
-    image: lineItem.image,
+    image: getImage(lineItem.image),
     price: lineItem.originalTotalSet.shopMoney,
     quantity: lineItem.quantity
   };
 }
 
-export function getOrder(order?: Shopify_Order): Order {
+export function getOrder(order: ResponseOrder): Order {
   return {
     id: shopifyGidToId(order.id),
     status: order.displayFulfillmentStatus,
     createdAt: order.createdAt,
     totalPrice: order.totalPriceSet.shopMoney,
-    lineItems: order.lineItems.edges.map((edge) => getLineItem(edge.node)),
+    lineItems: order.lineItems.edges.map(({ node }) => getLineItem(node)),
     fulfillments: order.fulfillments.map(getFulfillment)
   };
 }
 
-export function getLineItems(order?: Shopify_Order): LineItem[] | null {
-  return order?.lineItems?.edges?.map((edge) => getLineItem(edge.node)) ?? null;
+export function getLineItems(order: ResponseOrder): LineItem[] {
+  return order.lineItems.edges.map(({ node }) => getLineItem(node));
 }
 
-export function getOrders(customer?: Shopify_Customer): Order[] | null {
-  return customer?.orders?.edges?.map(({ node }) => getOrder(node)) ?? null;
+export function getOrders(response: GetMyAdminCustomerOrdersQueryResponse | undefined): Order[] | null {
+  if (!response?.customer?.orders) {
+    return null;
+  }
+
+  return response.customer.orders.edges.map(({ node }) => getOrder(node));
 }

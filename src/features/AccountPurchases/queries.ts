@@ -54,6 +54,7 @@ export const GetMyAdminCustomerOrdersQuery = gql`
               trackingInfo {
                 company
                 number
+                url
               }
               fulfillmentLineItems(first: 10) {
                 edges {

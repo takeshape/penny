@@ -31,6 +31,10 @@ export const AccountFormPassword = () => {
 
   const onSubmit = useCallback(
     async ({ password }: AccountFormPasswordForm) => {
+      if (!session) {
+        return;
+      }
+
       await updateCustomer({
         variables: {
           customerAccessToken: session.shopifyCustomerAccessToken as string,

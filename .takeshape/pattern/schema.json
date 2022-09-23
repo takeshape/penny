@@ -4737,7 +4737,12 @@
               }
             }
           }
-        }
+        },
+        "required": [
+          "listId",
+          "listName",
+          "subscribed"
+        ]
       }
     },
     "GetListMembersInput": {

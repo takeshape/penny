@@ -1,7 +1,7 @@
-import { Object } from 'ts-toolbelt';
 import { Merge } from 'type-fest';
 import { ProductCore, ProductImage, ProductPrice, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { GetMySubscriptionQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
+import { NonNullablePath } from 'types/util';
 
 export type SubscriptionAddress = {
   id: string;
@@ -166,13 +166,13 @@ export type EndedSubscription = Subscription & { status: 'CANCELLED' | 'EXPIRED'
 export type RefetchSubscriptions = () => Promise<any>;
 export type AnySubscription = ActiveSubscription | EndedSubscription;
 
-export type ResponseSubscription = NonNullable<Object.Path<GetMySubscriptionQueryResponse, ['subscription']>>;
-export type ResponseCharge = NonNullable<Object.Path<ResponseSubscription, ['charges', 0]>>;
-export type ResponseLineItem = NonNullable<Object.Path<ResponseCharge, ['line_items', 0]>>;
-export type ResponseFulfillment = NonNullable<Object.Path<ResponseCharge, ['shopifyOrder', 'fulfillments', 0]>>;
-export type ResponseRechargeProduct = NonNullable<Object.Path<ResponseSubscription, ['rechargeProduct']>>;
-export type ResponseProductVariant = NonNullable<Object.Path<ResponseSubscription, ['shopifyProductVariant']>>;
-export type ResponseProduct = NonNullable<Object.Path<ResponseProductVariant, ['product']>>;
-export type ResponseProductProductVariant = NonNullable<Object.Path<ResponseProduct, ['variant', 'nodes', 0]>>;
-export type ResponseAddress = NonNullable<Object.Path<ResponseSubscription, ['address']>>;
-export type ResponsePaymentMethod = NonNullable<Object.Path<ResponseAddress, ['include', 'payment_methods', 0]>>;
+export type ResponseSubscription = NonNullablePath<GetMySubscriptionQueryResponse, ['subscription']>;
+export type ResponseCharge = NonNullablePath<ResponseSubscription, ['charges', 0]>;
+export type ResponseLineItem = NonNullablePath<ResponseCharge, ['line_items', 0]>;
+export type ResponseFulfillment = NonNullablePath<ResponseCharge, ['shopifyOrder', 'fulfillments', 0]>;
+export type ResponseRechargeProduct = NonNullablePath<ResponseSubscription, ['rechargeProduct']>;
+export type ResponseProductVariant = NonNullablePath<ResponseSubscription, ['shopifyProductVariant']>;
+export type ResponseProduct = NonNullablePath<ResponseProductVariant, ['product']>;
+export type ResponseProductProductVariant = NonNullablePath<ResponseProduct, ['variant', 'nodes', 0]>;
+export type ResponseAddress = NonNullablePath<ResponseSubscription, ['address']>;
+export type ResponsePaymentMethod = NonNullablePath<ResponseAddress, ['include', 'payment_methods', 0]>;

@@ -20,7 +20,12 @@ module.exports = {
         omitOperationSuffix: true,
         operationResultSuffix: 'Response',
         enumsAsTypes: true,
-        avoidOptionals: true
+        avoidOptionals: {
+          field: true,
+          inputValue: false,
+          object: true,
+          defaultValue: true
+        }
       }
     }
   }

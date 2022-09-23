@@ -16,14 +16,15 @@ import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront'
 import { CustomerAddressUpdateMutation, CustomerQuery } from './queries.storefront';
 
 interface AccountFormAddressForm {
-  firstName: string;
-  lastName: string;
-  address1: string;
-  address2: string;
-  country: string;
-  city: string;
-  province: string;
-  zip: string;
+  firstName: string | null;
+  lastName: string | null;
+  address1: string | null;
+  address2: string | null;
+  country: string | null;
+  city: string | null;
+  province: string | null;
+  zip: string | null;
+  company: string | null;
 }
 
 export const AccountFormAddress = () => {
@@ -46,13 +47,27 @@ export const AccountFormAddress = () => {
     CustomerAddressUpdateMutationVariables
   >(CustomerAddressUpdateMutation);
 
-  const timer = useRef<NodeJS.Timer>(null);
+  const timer: { current: NodeJS.Timeout | null } = useRef(null);
 
   const onSubmit = useCallback(
-    async ({ firstName, lastName, address1, address2, country, city, province, zip }: AccountFormAddressForm) => {
+    async ({
+      firstName,
+      lastName,
+      address1,
+      address2,
+      country,
+      city,
+      province,
+      zip,
+      company
+    }: AccountFormAddressForm) => {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
+      }
+
+      if (!session || !customerData?.customer?.defaultAddress) {
+        return;
       }
 
       await setCustomerAddressPayload({
@@ -66,7 +81,9 @@ export const AccountFormAddress = () => {
             country,
             city,
             province,
-            zip
+            zip,
+            company,
+            phone: ''
           },
           id: customerData.customer.defaultAddress.id
         }
@@ -107,7 +124,7 @@ export const AccountFormAddress = () => {
   }, [isSubmitSuccessful, reset]);
 
   const watchCountry = watch('country', 'United States');
-  const selectedCountry = watchCountry && countries.find((c) => c.name === watchCountry);
+  const selectedCountry = watchCountry ? countries.find((c) => c.name === watchCountry) : null;
 
   const isReady = Boolean(customerData);
   const error =
@@ -153,6 +170,18 @@ export const AccountFormAddress = () => {
           rules={{
             required: 'This field is required'
           }}
+          className="col-span-6 sm:col-span-3"
+        />
+
+        <FormInput
+          control={control}
+          disabled={!isReady}
+          name="company"
+          id="company"
+          label="Company"
+          autoComplete="organization"
+          defaultValue=""
+          type="text"
           className="col-span-6 sm:col-span-3"
         />
 

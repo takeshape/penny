@@ -26,7 +26,7 @@ export const AccountPurchaseList = () => {
   const { data, loading, networkStatus } =
     useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse>(GetMyAdminCustomerOrdersQuery);
 
-  const orders = getOrders(data?.customer);
+  const orders = getOrders(data);
 
   if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
     return (
@@ -47,9 +47,7 @@ export const AccountPurchaseList = () => {
           Recent orders
         </h2>
         <div className="space-y-4 min-h-40">
-          {orders.map((order) => (
-            <PurchaseOrder key={order.id} order={order} />
-          ))}
+          {orders && orders.map((order) => <PurchaseOrder key={order.id} order={order} />)}
         </div>
       </section>
     </div>
