@@ -4,10 +4,10 @@ import ReCAPTCHA from 'react-google-recaptcha';
 
 export const useRecaptcha = <T>() => {
   const callbackRef = useRef<(recaptchaToken: string) => void>();
-  const recaptchaRef = useRef<ReCAPTCHA>();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const executeRecaptcha = useCallback((callback: (status: string) => void) => {
-    if (recaptchaSiteKey) {
+    if (recaptchaSiteKey && recaptchaRef.current) {
       callbackRef.current = callback;
       recaptchaRef.current.execute();
     } else {
@@ -17,8 +17,8 @@ export const useRecaptcha = <T>() => {
     }
   }, []);
 
-  const handleRecaptchaChange = useCallback((recaptchaToken: string) => {
-    if (callbackRef.current) {
+  const handleRecaptchaChange = useCallback((recaptchaToken: string | null) => {
+    if (recaptchaToken && callbackRef.current) {
       callbackRef.current(recaptchaToken);
     }
   }, []);

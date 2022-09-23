@@ -477,6 +477,5 @@ export function getSubscriptionList(
     return null;
   }
 
-  // @ts-expect-error https://app.shortcut.com/takeshape/story/9871/make-array-items-in-query-responses-non-nullable-by-default
   return response.subscriptions.map(getSubscriptionItem);
 }

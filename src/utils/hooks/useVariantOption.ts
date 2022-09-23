@@ -29,13 +29,13 @@ export function useVariantOption({
   );
 
   const initialVariantOption = useMemo(
-    () => initialVariantOptionValue && variantOption?.values.find((v) => v.value === initialVariantOptionValue),
+    () => (initialVariantOptionValue ? variantOption?.values.find((v) => v.value === initialVariantOptionValue) : null),
     [initialVariantOptionValue, variantOption?.values]
   );
 
-  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption?.value);
+  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption?.value ?? '');
 
-  const selected = useMemo(() => selectedValue && { name, value: selectedValue }, [name, selectedValue]);
+  const selected = useMemo(() => ({ name, value: selectedValue }), [name, selectedValue]);
 
   return [setSelectedOptionValue, { selectedValue, selected, option: variantOption }];
 }

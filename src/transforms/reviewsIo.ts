@@ -1,3 +1,4 @@
+// @ts-nocheck Need support for non-nullable in OpenAPI specs all the nullable props here make this unsafe.
 import { Review, ReviewStats } from 'types/review';
 import { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
 

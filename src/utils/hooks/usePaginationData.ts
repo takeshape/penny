@@ -61,6 +61,10 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
   const cachedPageData = useRef<Map<number, T>>(new Map([[currentPath.page, initialPageData]]));
   const currentPageData = useMemo(() => cachedPageData.current.get(currentPage), [currentPage]);
 
+  if (!currentPageData) {
+    throw new Error('Could not load currentPageData');
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
@@ -137,7 +141,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
       isSamePageData(currentPageData, cachedPage) &&
       !isLoadingNextPage
     ) {
-      loadNextPage(cachedPage.pageInfo.endCursor);
+      loadNextPage(cachedPage.pageInfo.endCursor ?? '');
     }
   }, [
     currentPath.page,

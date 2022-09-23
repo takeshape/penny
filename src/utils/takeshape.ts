@@ -29,7 +29,7 @@ export function createAnonymousTakeshapeApolloClient() {
 
 export function useAuthenticatedClient() {
   const { data: session } = useSession();
-  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>(null);
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
   useEffect(() => {
     if (session) {
@@ -37,7 +37,7 @@ export function useAuthenticatedClient() {
       setClient(
         createClient({
           uri: takeshapeApiUrl,
-          accessToken: clientToken?.accessToken,
+          accessToken: clientToken?.accessToken ?? '',
           accessTokenHeader: 'Authorization',
           accessTokenPrefix: 'Bearer'
         })

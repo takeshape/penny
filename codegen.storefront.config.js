@@ -21,7 +21,6 @@ module.exports = {
         operationResultSuffix: 'Response',
         enumsAsTypes: true,
         avoidOptionals: true
-        // maybeValue: 'T | undefined'
       }
     }
   }

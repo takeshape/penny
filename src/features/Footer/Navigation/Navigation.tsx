@@ -13,7 +13,7 @@ const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => 
 );
 
 interface NavigationSectionProps {
-  name?: string;
+  name?: string | null;
   items?: NavigationItemProps[];
   links?: NavigationItemProps[];
 }

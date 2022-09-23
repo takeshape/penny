@@ -4900,7 +4900,10 @@
             "title": "Sections",
             "@mapping": "takeshape:local:FooterNavigation.RcAzYGCEA"
           }
-        }
+        },
+        "required": [
+          "sections"
+        ]
       }
     },
     "FooterNewsletter": {
@@ -4920,7 +4923,10 @@
             "title": "Text",
             "@mapping": "takeshape:local:FooterNewsletter.lJadcfQQm"
           }
-        }
+        },
+        "required": [
+          "text"
+        ]
       }
     },
     "Footer": {
@@ -4946,7 +4952,11 @@
             "@ref": "local:FooterNewsletter",
             "@mapping": "takeshape:local:Footer.kmSZztbAu"
           }
-        }
+        },
+        "required": [
+          "navigation",
+          "newsletter"
+        ]
       }
     },
     "Shopify_Product": {

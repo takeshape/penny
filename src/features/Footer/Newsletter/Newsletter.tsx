@@ -11,10 +11,10 @@ import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 import { EmailSubmissionMutation } from './queries';
 
 export interface NewsletterProps {
-  text?: {
-    primary?: string;
-    secondary?: string;
-    button?: string;
+  text: {
+    primary: string | null;
+    secondary: string | null;
+    button: string | null;
   };
 }
 

@@ -7,11 +7,14 @@ import { Navigation } from 'features/Navigation/types';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 interface Cache {
-  footer?: FooterProps;
-  navigation?: Navigation;
+  footer: FooterProps | null;
+  navigation: Navigation | null;
 }
 
-const cache: Cache = {};
+const cache: Cache = {
+  footer: null,
+  navigation: null
+};
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
