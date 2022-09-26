@@ -51,8 +51,8 @@ function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): Prod
 }
 
 export function getCollectionPageInfo(
-  response: ProductCategoryShopifyCollectionQueryResponse
-): ProductCategoryCollection['pageInfo'] {
+  response?: ProductCategoryShopifyCollectionQueryResponse
+): ProductCategoryCollection['pageInfo'] | null {
   const collection = response?.collection;
 
   if (!collection) {
@@ -62,10 +62,10 @@ export function getCollectionPageInfo(
   return collection.products.pageInfo;
 }
 
-function getCollectionParent(collection: ProductCategoryShopifyCollection): ProductCategoryCollectionParent {
-  const parent = collection.takeshape.parent;
+function getCollectionParent(collection: ProductCategoryShopifyCollection): ProductCategoryCollectionParent | null {
+  const parent = collection?.takeshape?.parent;
 
-  if (!parent) {
+  if (!parent?.shopifyCollection?.id) {
     return null;
   }
 
@@ -76,7 +76,9 @@ function getCollectionParent(collection: ProductCategoryShopifyCollection): Prod
   };
 }
 
-export function getCollection(response: ProductCategoryShopifyCollectionQueryResponse): ProductCategoryCollection {
+export function getCollection(
+  response?: ProductCategoryShopifyCollectionQueryResponse
+): ProductCategoryCollection | null {
   const collection = response?.collection;
 
   if (!collection) {

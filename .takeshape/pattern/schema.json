@@ -680,7 +680,7 @@
       "authenticationType": "searchParams",
       "options": {
         "endpoint": "https://api.reviews.io/",
-        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/main/specs/reviews.io/v0.1.0-2.yml",
+        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/main/specs/reviews.io/v0.1.0-3.yml",
         "useRestfulNames": true
       }
     },
@@ -6547,7 +6547,8 @@
         },
         "required": [
           "title",
-          "slug"
+          "slug",
+          "sections"
         ]
       }
     },

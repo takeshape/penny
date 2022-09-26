@@ -8,7 +8,7 @@ import {
 import { QuickAddQueryResponse } from 'types/storefront';
 import { QuickAddProduct } from './types';
 
-export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
+export function getProduct(response: QuickAddQueryResponse): QuickAddProduct | null {
   const shopifyProduct = response?.product;
 
   if (!shopifyProduct) {
@@ -32,7 +32,7 @@ export function getProduct(response: QuickAddQueryResponse): QuickAddProduct {
     variants,
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroups.nodes.length > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
+    hasStock: (shopifyProduct.totalInventory ?? 0) > 0,
     variantOptions: getProductVariantOptions(shopifyProduct.options, variants)
   };
 }

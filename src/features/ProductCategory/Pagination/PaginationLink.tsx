@@ -17,7 +17,7 @@ export const PaginationLink = ({
   const handleClick: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onClick();
+      onClick?.();
     },
     [onClick]
   );

@@ -9,6 +9,7 @@ import {
   Shopify_Collection,
   Shopify_CollectionConnection
 } from 'types/takeshape';
+import { NonNullablePath } from 'types/util';
 
 export type ProductCategoryShopifyCollectionHandleNode = Pick<Shopify_Collection, 'id' | 'handle'>;
 export type ProductCategoryShopifyCollectionHandleConnection = Pick<Shopify_CollectionConnection, 'pageInfo'> & {
@@ -17,7 +18,7 @@ export type ProductCategoryShopifyCollectionHandleConnection = Pick<Shopify_Coll
 
 export type ProductCategoryShopifyCollection = ProductCategoryShopifyCollectionQueryResponse['collection'];
 
-export type ProductCategoryShopifyProduct = ProductCategoryShopifyCollection['products']['nodes'][0];
+export type ProductCategoryShopifyProduct = NonNullablePath<ProductCategoryShopifyCollection, ['products', 'nodes', 0]>;
 
 export type ProductCategoryReviewsIoReviews = Pick<ReviewsIo_ListProductReviewsResponse, 'stats'>;
 

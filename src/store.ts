@@ -11,4 +11,4 @@ export const isSearchOpenAtom = atom(false);
 export const isMobileMenuOpenAtom = atom(false);
 
 /* Notification */
-export const notificationAtom = atomWithReset<NotificationMessage>({ title: '', body: '' });
+export const notificationAtom = atomWithReset<NotificationMessage>({ title: '', body: '', status: 'info' });

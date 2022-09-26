@@ -6,7 +6,7 @@ import { Navigation } from './Navigation';
 import { navigationResponse } from './queries.fixtures';
 import { getNavigation } from './transforms';
 
-const navigation = getNavigation(navigationResponse);
+const navigation = getNavigation(navigationResponse)!;
 
 const Meta: ComponentMeta<typeof Navigation> = {
   title: 'Features / Navigation',

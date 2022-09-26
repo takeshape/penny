@@ -201,7 +201,6 @@ export const productPageProduct: ProductPageProduct = {
   priceMin: { amount: 19200, currencyCode: 'USD' },
   priceMax: { amount: 20000, currencyCode: 'USD' },
   variantsCount: 24,
-  lineItemAttributes: null,
   variants: [
     {
       id: 'gid://shopify/ProductVariant/40234670162020',

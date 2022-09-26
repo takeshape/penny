@@ -10,6 +10,7 @@ import {
   Shopify_ProductConnection
 } from 'types/takeshape';
 import { TrustpilotReviewList } from 'types/trustpilot';
+import { NonNullablePath } from 'types/util';
 
 export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
 export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConnection, 'pageInfo'> & {
@@ -18,7 +19,10 @@ export type ProductPageShopifyProductHandleConnection = Pick<Shopify_ProductConn
 
 export type ProductPageShopifyProduct = ProductPageShopifyProductResponse['product'];
 
-export type ProductPageRelatedProductsShopifyProduct = ProductPageRelatedProductsQueryResponse['products'][0];
+export type ProductPageRelatedProductsShopifyProduct = NonNullablePath<
+  ProductPageRelatedProductsQueryResponse,
+  ['products', 0]
+>;
 
 export type ProductPageRelatedProductsProduct = ProductBase;
 
@@ -73,7 +77,6 @@ export type ProductPageProduct = SetRequired<
   | 'hasOneTimePurchaseOption'
   | 'hasSubscriptionPurchaseOption'
   | 'hasStock'
-  | 'lineItemAttributes'
 >;
 export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
 export type ProductPageReviewsReviewList = ReviewList;

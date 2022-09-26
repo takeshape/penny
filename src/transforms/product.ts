@@ -1,7 +1,9 @@
 import { ProductLineItemAttribute } from 'types/product';
 import { LineItemAttributes } from 'types/takeshape';
 
-export function getProductLineItemAttributes(lineItemProperties?: LineItemAttributes): ProductLineItemAttribute[] {
+export function getProductLineItemAttributes(
+  lineItemProperties?: LineItemAttributes
+): ProductLineItemAttribute[] | null {
   if (!lineItemProperties) {
     return null;
   }

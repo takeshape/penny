@@ -84,7 +84,10 @@ export const Filters = (props: PropsWithChildren<FiltersProps>) => {
   const setFilter = useCallback(
     (filter: string, value: string, checked: boolean): void => {
       const newFilters = { ...filters };
-      newFilters[filter].find((filterOption) => filterOption.value === value).checked = checked;
+      const selectedFilter = newFilters[filter].find((filterOption) => filterOption.value === value);
+      if (selectedFilter) {
+        selectedFilter.checked = checked;
+      }
       setFilters(newFilters);
     },
     [filters, setFilters]

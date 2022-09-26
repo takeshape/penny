@@ -2,7 +2,7 @@
 import { Review, ReviewStats } from 'types/review';
 import { ReviewsIo_ListProductReviewsResponseStatsProperty, ReviewsIo_ProductReview } from 'types/takeshape';
 
-export function getReview(review: ReviewsIo_ProductReview): Review {
+export function getReview(review: ReviewsIo_ProductReview | null): Review {
   const { product_review_id, rating, title, review: body, date_created, timeago, reviewer } = review;
   const dateCreated = `${date_created.replace(' ', 'T')}.000Z`;
   return {
@@ -23,7 +23,7 @@ export function getReview(review: ReviewsIo_ProductReview): Review {
   };
 }
 
-export function getStats(stats?: ReviewsIo_ListProductReviewsResponseStatsProperty): ReviewStats {
+export function getStats(stats: ReviewsIo_ListProductReviewsResponseStatsProperty | null): ReviewStats {
   return {
     average: stats?.average ?? null,
     count: stats?.count ?? 0

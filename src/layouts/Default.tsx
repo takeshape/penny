@@ -11,8 +11,8 @@ import { PropsWithChildren } from 'react';
 
 export interface LayoutProps {
   seo?: NextSeoProps;
-  navigation: NavigationProps;
-  footer: FooterProps;
+  navigation: NavigationProps | null;
+  footer: FooterProps | null;
 }
 
 export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<LayoutProps>) => {
@@ -22,7 +22,7 @@ export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<
         <Seo {...seo} />
 
         <SearchModal />
-        <Navigation {...navigation} />
+        {navigation && <Navigation {...navigation} />}
 
         <main id="content" className="flex flex-col grow bg-background">
           {children}
@@ -32,7 +32,7 @@ export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<
         <QuickAddWithData />
         <Notification />
 
-        <Footer {...footer} />
+        {footer && <Footer {...footer} />}
       </div>
     </CartProvider>
   );

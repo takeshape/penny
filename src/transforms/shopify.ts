@@ -287,7 +287,6 @@ type StorefrontProductVariant = Pick<
   Storefront.ProductVariant,
   | 'id'
   | 'title'
-  | 'image'
   | 'availableForSale'
   | 'currentlyNotInStock'
   | 'selectedOptions'
@@ -295,7 +294,8 @@ type StorefrontProductVariant = Pick<
   | 'quantityAvailable'
   | 'priceV2'
 > & {
-  description?: Pick<Storefront.Metafield, 'type' | 'value'>;
+  image?: Pick<Storefront.ProductVariant, 'image'>;
+  description?: Pick<Storefront.Metafield, 'type' | 'value'> | null;
   sellingPlanAllocations: {
     nodes: {
       sellingPlan: Pick<Storefront.SellingPlan, 'id' | 'options' | 'priceAdjustments'>;

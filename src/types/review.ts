@@ -17,7 +17,7 @@ export type Review = {
 };
 
 export type ReviewStats = {
-  average: number;
+  average: number | null;
   count: number;
 };
 

@@ -11,6 +11,7 @@ const Template: ComponentStory<typeof Page> = (args) => <Page {...args} />;
 export const _Page = Template.bind({});
 _Page.args = {
   page: {
+    _id: '111',
     title: 'Foo',
     sections: [
       { __typename: 'PageSectionTitle', heading: 'Heading', subheading: 'Subheading', label: 'Label' },
