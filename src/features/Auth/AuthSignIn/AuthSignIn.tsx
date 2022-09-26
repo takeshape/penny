@@ -54,7 +54,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
   const signupLink = useMemo(() => {
     let href = '/auth/create';
     if (router.query.callbackUrl) {
-      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl))}`;
+      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl) ?? '')}`;
     }
     return href;
   }, [router]);
@@ -73,7 +73,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            {hasErrors && <Alert status="error" primaryText={errorMessage} />}
+            {hasErrors && errorMessage && <Alert status="error" primaryText={errorMessage} />}
 
             <FormInput
               className="sm:col-span-2"

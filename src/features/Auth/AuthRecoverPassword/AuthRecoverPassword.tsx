@@ -42,7 +42,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   );
 
   const hasData = Boolean(recoverPasswordData);
-  const hasErrors = recoverPasswordData?.customerRecover?.customerUserErrors?.length > 0;
+  const hasErrors = (recoverPasswordData?.customerRecover?.customerUserErrors?.length ?? 0) > 0;
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -58,7 +58,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={recoverPasswordData.customerRecover.customerUserErrors.map((e) => e.message)}
+                secondaryText={recoverPasswordData?.customerRecover?.customerUserErrors.map((e) => e.message)}
               />
             )}
 

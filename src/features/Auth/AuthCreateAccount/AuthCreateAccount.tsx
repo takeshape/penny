@@ -24,7 +24,7 @@ export interface AuthCreateAccountProps {
   useMultipass: boolean;
 }
 
-function getErrorMessage(error: ApolloError) {
+function getErrorMessage(error?: ApolloError) {
   if (!error) {
     return null;
   }

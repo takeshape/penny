@@ -145,6 +145,7 @@ export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse =
         zip: '11222',
         country: 'United States',
         phone: '+19193600095',
+        company: null,
         include: {
           payment_methods: [
             {
@@ -757,6 +758,7 @@ export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse =
         zip: '10120',
         country: 'United States',
         phone: '+19193600095',
+        company: null,
         include: {
           payment_methods: [
             {
@@ -1113,6 +1115,7 @@ export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse =
         zip: '11222',
         country: 'United States',
         phone: '+19193600095',
+        company: null,
         include: {
           payment_methods: [
             {

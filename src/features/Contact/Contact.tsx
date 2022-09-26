@@ -56,7 +56,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
           recaptchaToken
         }
       });
-      const { id } = result.data.createTicket;
+      const { id } = result.data?.createTicket ?? {};
       if (id) {
         setSuccess(`Thank you for reaching out! Created ticket #${id}.`);
       }
@@ -78,7 +78,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
 
   // Set initial values
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user?.name && session?.user?.email) {
       reset({
         firstName: session.user.name.split(' ')[0],
         lastName: session.user.name.split(' ')[1],

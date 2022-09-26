@@ -3,7 +3,7 @@ import { Session } from 'next-auth';
 import { ProductPriceOption } from 'types/product';
 import { CartCreateMutationVariables, CartLineInput } from 'types/storefront';
 
-export const getCartVariables = (items: CartItem[], session?: Session) => {
+export const getCartVariables = (items: CartItem[], session: Session | null) => {
   const createCartVariables: CartCreateMutationVariables = {
     input: {
       attributes: [
@@ -23,7 +23,7 @@ export const getCartVariables = (items: CartItem[], session?: Session) => {
     }
   };
 
-  if (session) {
+  if (session?.user) {
     createCartVariables.input.buyerIdentity = {
       email: session.user.email,
       customerAccessToken: session.shopifyCustomerAccessToken as string

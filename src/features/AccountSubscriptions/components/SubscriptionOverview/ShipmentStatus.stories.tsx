@@ -127,11 +127,8 @@ export const ChargeUnknown = Template.bind({});
 
 ChargeUnknown.args = {
   order: {
-    status: 'CHARGE_UNKNOWN',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    id: '123',
-    fulfillments,
-    shippingAddress
+    ...order,
+    status: 'CHARGE_UNKNOWN'
   }
 };
 

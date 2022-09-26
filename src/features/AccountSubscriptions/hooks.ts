@@ -20,6 +20,10 @@ export function useSubscriptionRefetch({
   const [data, setData] = useState(subscription);
 
   const refetch = useCallback(async () => {
+    if (!client) {
+      return;
+    }
+
     const response = await client.query<GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables>({
       query: GetMySubscriptionQuery,
       variables: { id: subscription.id },
