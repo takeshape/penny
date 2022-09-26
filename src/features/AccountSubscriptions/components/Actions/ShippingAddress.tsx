@@ -63,14 +63,14 @@ export const ShippingAddressForm = ({
 
   // Use countryCode here because inconsistent...
   const watchCountry = watch('countryCode', 'US');
-  const selectedCountry = watchCountry && countries.find((c) => c.iso2 === watchCountry);
+  const selectedCountry = watchCountry ? countries.find((c) => c.iso2 === watchCountry) : null;
 
   useEffect(() => {
     const selectedProvince = getValues().province;
-    if (selectedCountry.states.find((state) => state.name === selectedProvince) === undefined) {
-      setValue('province', selectedCountry.states[0].name);
+    if (selectedCountry?.states.find((state) => state.name === selectedProvince) === undefined) {
+      setValue('province', selectedCountry?.states[0].name ?? countries[0].states[0].name);
     }
-  }, [getValues, selectedCountry.states, setValue, watchCountry]);
+  }, [getValues, selectedCountry?.states, setValue, watchCountry]);
 
   const resetState = useCallback(
     () =>
@@ -78,7 +78,7 @@ export const ShippingAddressForm = ({
         ...subscription.address,
         firstName: subscription.address.firstName,
         lastName: subscription.address.lastName,
-        countryCode: countries.find((country) => country.name === subscription.address.country).iso2 ?? 'US'
+        countryCode: countries.find((country) => country.name === subscription.address.country)?.iso2 ?? 'US'
       }),
     [reset, subscription.address]
   );

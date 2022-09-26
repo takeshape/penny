@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { getOrder, Shopify_Order } from '../../transforms';
+import { getOrder } from '../../transforms';
+import { ResponseOrder } from '../../types';
 import { PurchaseOrder } from './Order';
 import fixtures from './Order.fixtures.json';
 import { OrderSkeleton } from './OrderSkeleton';
@@ -16,12 +17,12 @@ const Template: ComponentStory<typeof PurchaseOrder> = (args) => <PurchaseOrder 
 
 export const Fulfilled = Template.bind({});
 Fulfilled.args = {
-  order: getOrder(fixtures.fulfilled as Shopify_Order)
+  order: getOrder(fixtures.fulfilled as ResponseOrder)
 };
 
 export const Unfulfilled = Template.bind({});
 Unfulfilled.args = {
-  order: getOrder(fixtures.unfulfilled as Shopify_Order)
+  order: getOrder(fixtures.unfulfilled as unknown as ResponseOrder)
 };
 
 export const Skeleton = () => <OrderSkeleton />;

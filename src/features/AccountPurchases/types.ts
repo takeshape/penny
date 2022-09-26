@@ -30,7 +30,7 @@ export interface LineItem {
     url: string;
     height?: number;
     width?: number;
-    altText?: string;
+    altText: string;
   } | null;
   price: {
     currencyCode: string;

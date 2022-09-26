@@ -34,10 +34,14 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
 
   const handleFormSubmit = useCallback(
     async ({ message }: ReportIssueFormValues) => {
+      if (!session?.user) {
+        return;
+      }
+
       createTicket({
         variables: {
-          name: session.user.name,
-          email: session.user.email,
+          name: session.user.name ?? 'Unknown',
+          email: session.user.email ?? 'no-user@site.test',
           message: `From: ${session.user.name}
 Order ID: ${orderId}
 ${message}`
@@ -76,7 +80,7 @@ ${message}`
 
         {createTicketResponse && (
           <div className="h-full font-medium flex flex-col items-center justify-center text-center text-body-600">
-            <p className="mb-4">Created ticket #{createTicketResponse.createTicket.id}</p>
+            <p className="mb-4">Created ticket #{createTicketResponse.createTicket?.id ?? 'unknown'}</p>
             <p>We&apos;ll be in touch soon.</p>
           </div>
         )}

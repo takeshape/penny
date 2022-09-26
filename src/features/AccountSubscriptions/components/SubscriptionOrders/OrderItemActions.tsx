@@ -20,27 +20,25 @@ export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: 
 
   switch (order.status) {
     case 'CHARGE_SKIPPED': {
-      return (
-        isFuture(new Date(order.chargeScheduledAt)) && (
-          <>
-            <button
-              id="unskip"
-              type="button"
-              onClick={() => setIsUnskipOpen(true)}
-              className="w-full flex items-center justify-center py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full sm:flex-grow-0"
-            >
-              Unskip order
-            </button>
-            <UnskipForm
-              isOpen={isUnskipOpen}
-              onClose={() => setIsUnskipOpen(false)}
-              subscription={subscription}
-              order={order}
-              refetchSubscriptions={refetchSubscriptions}
-            />
-          </>
-        )
-      );
+      return isFuture(new Date(order.chargeScheduledAt)) ? (
+        <>
+          <button
+            id="unskip"
+            type="button"
+            onClick={() => setIsUnskipOpen(true)}
+            className="w-full flex items-center justify-center py-2 px-2.5 border border-transparent rounded-md shadow-sm text-sm font-medium bg-body-200 text-body-900 hover:bg-body-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 sm:w-full sm:flex-grow-0"
+          >
+            Unskip order
+          </button>
+          <UnskipForm
+            isOpen={isUnskipOpen}
+            onClose={() => setIsUnskipOpen(false)}
+            subscription={subscription}
+            order={order}
+            refetchSubscriptions={refetchSubscriptions}
+          />
+        </>
+      ) : null;
     }
 
     case 'CHARGE_QUEUED': {

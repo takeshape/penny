@@ -20,6 +20,7 @@
               "url": "https://cdn.shopify.com/s/files/1/0579/6744/4068/products/blouse.jpg?v=1650570192",
               "height": 1058,
               "width": 820,
+              "altText": "foo",
               "__typename": "Shopify_Image"
             },
             "name": "Elegant Blouse",
@@ -121,6 +122,7 @@
               "url": "https://cdn.shopify.com/s/files/1/0579/6744/4068/products/DALL_E2022-08-1312.02.50-Aphotographofamanwearingaplainwhitet-shirtstaringofftotherightwithhisfaceandtorsointheframe._500x500.png.webp?v=1660406577",
               "height": 1088,
               "width": 840,
+              "altText": "foo",
               "__typename": "Shopify_Image"
             },
             "name": "Basic Tee 6-Pack - XS / Black",

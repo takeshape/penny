@@ -120,7 +120,8 @@ export const myPurchasesResponse: GetMyAdminCustomerOrdersQueryResponse = {
                   {
                     __typename: 'Shopify_FulfillmentTrackingInfo',
                     company: 'FedEx',
-                    number: 'abc123xyz'
+                    number: 'abc123xyz',
+                    url: 'https://google.com'
                   }
                 ],
                 fulfillmentLineItems: {
@@ -226,7 +227,8 @@ export const myPurchasesResponse: GetMyAdminCustomerOrdersQueryResponse = {
                   {
                     __typename: 'Shopify_FulfillmentTrackingInfo',
                     company: 'USPS',
-                    number: '12345'
+                    number: '12345',
+                    url: 'https://google.com'
                   }
                 ],
                 fulfillmentLineItems: {

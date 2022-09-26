@@ -29,7 +29,7 @@ import { getPaymentMethods } from '../../transforms';
 import { RefetchSubscriptions } from '../../types';
 
 export interface PaymentMethodFormProps extends ModalProps {
-  defaultPaymentMethodId: string;
+  defaultPaymentMethodId?: string;
   addressId: string;
   refetchSubscriptions: RefetchSubscriptions;
 }
@@ -85,7 +85,7 @@ export const PaymentMethodForm = ({
   );
 
   const handleAddPaymentMethod = useCallback(() => {
-    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId } });
+    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId ?? '' } });
     setIsPaymentMethodAdded(true);
   }, [defaultPaymentMethodId, sendUpdatePaymentEmail]);
 

@@ -42,7 +42,7 @@ export type SubscriptionProductVariant = {
 export type SubscriptionProduct = ProductCore & {
   descriptionHtml: string;
   variants: SubscriptionProductVariant[];
-  variantOptions?: ProductVariantOption[];
+  variantOptions: ProductVariantOption[];
 };
 
 export enum SubscriptionOrderStatusEnum {

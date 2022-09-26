@@ -91,6 +91,11 @@ export const ProductOptionsForm = ({
   const handleFormSubmit = useCallback(
     async ({ options, quantity }: ProductOptionsFormValues) => {
       const variant = getVariant(variants, toSelections(options));
+
+      if (!variant) {
+        throw new Error('Could not find variant');
+      }
+
       await updateProductOptions({
         variables: {
           subscriptionId: subscription.id,
