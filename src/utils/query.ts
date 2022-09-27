@@ -1,6 +1,5 @@
 import {
   ApolloCache,
-  ApolloClient,
   DefaultContext,
   DocumentNode,
   FetchResult,
@@ -9,7 +8,6 @@ import {
   MutationFunctionOptions,
   MutationHookOptions,
   MutationResult,
-  NormalizedCacheObject,
   OperationVariables,
   QueryHookOptions,
   QueryResult,
@@ -51,17 +49,12 @@ export type MutationTupleWithTranformData<
 /**
  * A convenience hook, uses a provided Apollo Client and supports transform fns.
  */
-export function useWrappedQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
-  client: ApolloClient<NormalizedCacheObject> | undefined,
+export function useQueryWithTransform<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: QueryHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ): QueryResultWithTransformData<TData, TVariables, TDataTransformed> {
-  const result = useQuery(query, {
-    ...options,
-    skip: !client,
-    client
-  });
+  const result = useQuery(query, options);
 
   if (transform.data) {
     (result as QueryResultWithTransformData<TData, TVariables, TDataTransformed>).transformedData = transform.data(
@@ -75,16 +68,12 @@ export function useWrappedQuery<TData, TVariables = OperationVariables, TDataTra
 /**
  * A convenience hook, uses a provided Apollo Client and supports transform fns.
  */
-export function useWrappedLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
-  client: ApolloClient<NormalizedCacheObject> | undefined,
+export function useLazyQueryWithTransform<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: LazyQueryHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ): LazyQueryResultTupleWithTransformData<TData, TVariables, TDataTransformed> {
-  const [execFn, result] = useLazyQuery(query, {
-    ...options,
-    client
-  });
+  const [execFn, result] = useLazyQuery(query, options);
 
   if (transform.data) {
     (result as QueryResultWithTransformData<TData, TVariables, TDataTransformed>).transformedData = transform.data(
@@ -98,16 +87,12 @@ export function useWrappedLazyQuery<TData, TVariables = OperationVariables, TDat
 /**
  * A convenience hook, uses a provided Apollo Client and supports transform fns.
  */
-export function useWrappedMutation<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
-  client: ApolloClient<NormalizedCacheObject> | undefined,
+export function useMutationWithTransform<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: MutationHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ): MutationTupleWithTranformData<TData, TVariables, TDataTransformed> {
-  const [execFn, result] = useMutation(query, {
-    ...options,
-    client
-  });
+  const [execFn, result] = useMutation(query, options);
 
   if (transform.data) {
     (result as MutationResultWithTransformData<TData, TDataTransformed>).transformedData = transform.data(result.data);

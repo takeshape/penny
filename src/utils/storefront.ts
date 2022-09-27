@@ -10,7 +10,7 @@ import { shopifyStorefrontToken, shopifyStorefrontUrl } from 'config';
 import { JsonValue } from 'type-fest';
 import { QueryHookTransformOptions } from 'types/query';
 import { createClient } from 'utils/apollo/client';
-import { useWrappedLazyQuery, useWrappedMutation, useWrappedQuery } from 'utils/query';
+import { useLazyQueryWithTransform, useMutationWithTransform, useQueryWithTransform } from 'utils/query';
 
 const client = createClient({
   uri: shopifyStorefrontUrl,
@@ -24,7 +24,14 @@ export function useStorefrontQuery<TData, TVariables = OperationVariables, TData
   options: QueryHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
-  return useWrappedQuery(client, query, options, transform);
+  return useQueryWithTransform(
+    query,
+    {
+      ...options,
+      client
+    },
+    transform
+  );
 }
 
 export function useStorefrontLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
@@ -32,7 +39,14 @@ export function useStorefrontLazyQuery<TData, TVariables = OperationVariables, T
   options: LazyQueryHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
-  return useWrappedLazyQuery(client, query, options, transform);
+  return useLazyQueryWithTransform(
+    query,
+    {
+      ...options,
+      client
+    },
+    transform
+  );
 }
 
 export function useStorefrontMutation<TData, TVariables, TDataTransformed = JsonValue>(
@@ -40,5 +54,12 @@ export function useStorefrontMutation<TData, TVariables, TDataTransformed = Json
   options: MutationHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
-  return useWrappedMutation(client, query, options, transform);
+  return useMutationWithTransform(
+    query,
+    {
+      ...options,
+      client
+    },
+    transform
+  );
 }

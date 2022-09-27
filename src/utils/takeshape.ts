@@ -19,7 +19,7 @@ import {
   QueryHookTransformOptions
 } from 'types/query';
 import { createClient } from 'utils/apollo/client';
-import { useWrappedLazyQuery, useWrappedMutation, useWrappedQuery } from 'utils/query';
+import { useLazyQueryWithTransform, useMutationWithTransform, useQueryWithTransform } from 'utils/query';
 import { createStaticClient } from './apollo/client';
 
 export function createAnonymousTakeshapeApolloClient() {
@@ -64,7 +64,15 @@ export function useAuthenticatedQuery<TData, TVariables = OperationVariables, TD
 ) {
   const client = useAuthenticatedClient();
 
-  return useWrappedQuery(client, query, options, transform);
+  return useQueryWithTransform(
+    query,
+    {
+      ...options,
+      skip: !client,
+      client
+    },
+    transform
+  );
 }
 
 /**
@@ -79,7 +87,14 @@ export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables
 ): LazyQueryResultTupleWithTransformData<TData, TVariables, TDataTransformed> {
   const client = useAuthenticatedClient();
 
-  return useWrappedLazyQuery(client, query, options, transform);
+  return useLazyQueryWithTransform(
+    query,
+    {
+      ...options,
+      client
+    },
+    transform
+  );
 }
 
 /**
@@ -94,5 +109,5 @@ export function useAuthenticatedMutation<TData, TVariables = OperationVariables,
 ): MutationTupleWithTranformData<TData, TVariables, TDataTransformed> {
   const client = useAuthenticatedClient();
 
-  return useWrappedMutation(client, query, options, transform);
+  return useMutationWithTransform(query, { ...options, client }, transform);
 }
