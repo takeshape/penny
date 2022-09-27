@@ -4,6 +4,7 @@ import {
   googleClientSecret,
   sessionMaxAgeForgetMe,
   sessionMaxAgeRememberMe,
+  shopifyMultipassSecret,
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
   shopifyUseMultipass,
@@ -18,6 +19,7 @@ import {
 import logger from 'logger';
 import { NextApiHandler } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
+import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { parseCookies, setCookie } from 'nookies';
@@ -58,6 +60,82 @@ const withAllAccess = createNextAuthAllAccess({
   ]
 });
 
+const providers: Provider[] = [
+  CredentialsProvider({
+    id: 'shopify',
+    name: 'Shopify',
+    credentials: {
+      email: { label: 'Email', type: 'email' },
+      password: { label: 'Password', type: 'password' }
+    },
+    async authorize(credentials) {
+      if (!credentials) {
+        logger.error('Credentials signin failure');
+        throw new Error('MISSING_CREDENTIALS');
+      }
+
+      const { email, password } = credentials;
+
+      const { data: accessTokenData } = await shopifyClient.mutate<
+        AuthCustomerAccessTokenCreateMutationResponse,
+        AuthCustomerAccessTokenCreateMutationVariables
+      >({
+        mutation: AuthCustomerAccessTokenCreateMutation,
+        variables: {
+          input: {
+            email,
+            password
+          }
+        }
+      });
+
+      const { customerUserErrors, customerAccessToken } = accessTokenData?.accessTokenCreate ?? {};
+
+      if (customerUserErrors?.length || !customerAccessToken?.accessToken) {
+        const error = customerUserErrors?.[0];
+
+        logger.error(
+          {
+            email,
+            errors: customerUserErrors
+          },
+          'Credentials signin failure'
+        );
+
+        throw new Error(error?.code ?? 'UNKNOWN');
+      }
+
+      const { accessToken: shopifyCustomerAccessToken } = customerAccessToken;
+
+      if (shopifyCustomerAccessToken) {
+        return {
+          email,
+          shopifyCustomerAccessToken
+        };
+      }
+
+      logger.error(
+        {
+          email,
+          errors: [{ message: 'Unable to sign customer in' }]
+        },
+        'Credentials signin failure'
+      );
+
+      return null;
+    }
+  })
+];
+
+if (shopifyUseMultipass) {
+  providers.push(
+    GoogleProvider({
+      clientId: googleClientId,
+      clientSecret: googleClientSecret
+    })
+  );
+}
+
 const nextAuthConfig: NextAuthOptions = {
   pages: {
     signIn: '/auth/signin',
@@ -67,85 +145,26 @@ const nextAuthConfig: NextAuthOptions = {
   session: {
     maxAge: sessionMaxAgeRememberMe
   },
-  providers: [
-    shopifyUseMultipass &&
-      GoogleProvider({
-        clientId: googleClientId,
-        clientSecret: googleClientSecret
-      }),
-    CredentialsProvider({
-      id: 'shopify',
-      name: 'Shopify',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
-      },
-      async authorize({ email, password }) {
-        const { data: accessTokenData } = await shopifyClient.mutate<
-          AuthCustomerAccessTokenCreateMutationResponse,
-          AuthCustomerAccessTokenCreateMutationVariables
-        >({
-          mutation: AuthCustomerAccessTokenCreateMutation,
-          variables: {
-            input: {
-              email,
-              password
-            }
-          }
-        });
-
-        const {
-          accessTokenCreate: { customerUserErrors, customerAccessToken }
-        } = accessTokenData;
-
-        if (customerUserErrors && customerUserErrors.length) {
-          const error = customerUserErrors[0];
-
-          logger.error(
-            {
-              email,
-              errors: customerUserErrors
-            },
-            'Credentials signin failure'
-          );
-
-          throw new Error(error.code);
-        }
-
-        const { accessToken: shopifyCustomerAccessToken } = customerAccessToken;
-
-        if (shopifyCustomerAccessToken) {
-          return {
-            email,
-            shopifyCustomerAccessToken
-          };
-        }
-
-        logger.error(
-          {
-            email,
-            errors: [{ message: 'Unable to sign customer in' }]
-          },
-          'Credentials signin failure'
-        );
-
-        return null;
-      }
-    })
-  ],
+  providers,
   callbacks: {
     async jwt({ token, user, account, profile }) {
       if (user) {
         const { email } = user;
+
+        if (!email) {
+          logger.error('Signin missing email');
+          throw new Error('MISSING_EMAIL');
+        }
+
         let shopifyCustomerAccessToken = user.shopifyCustomerAccessToken as string | undefined;
 
-        if (!shopifyCustomerAccessToken && shopifyUseMultipass) {
+        if (!shopifyCustomerAccessToken && shopifyUseMultipass && shopifyMultipassSecret) {
           let firstName;
           let lastName;
 
-          if (account.provider === 'google') {
-            firstName = profile.given_name;
-            lastName = profile.family_name;
+          if (account?.provider === 'google') {
+            firstName = profile?.given_name;
+            lastName = profile?.family_name;
           }
 
           const multipassToken = createMultipassToken({
@@ -164,11 +183,11 @@ const nextAuthConfig: NextAuthOptions = {
             }
           });
 
-          const {
-            accessTokenCreate: { customerUserErrors, customerAccessToken }
-          } = accessTokenData;
+          const { customerUserErrors, customerAccessToken } = accessTokenData?.accessTokenCreate ?? {};
 
-          if (customerUserErrors && customerUserErrors.length) {
+          if (customerUserErrors?.length || !customerAccessToken?.accessToken) {
+            const error = customerUserErrors?.[0];
+
             logger.error(
               {
                 email,
@@ -177,10 +196,20 @@ const nextAuthConfig: NextAuthOptions = {
               'Multipass signin failure'
             );
 
-            throw new Error(customerUserErrors[0].code);
+            throw new Error(error?.code ?? 'UNKNOWN');
           }
 
           shopifyCustomerAccessToken = customerAccessToken.accessToken;
+        }
+
+        if (!shopifyCustomerAccessToken) {
+          logger.error(
+            {
+              email
+            },
+            'Signin failure'
+          );
+          throw new Error('NO_ACCESS_TOKEN');
         }
 
         // Fetch the customer data to enhance the token
@@ -193,7 +222,7 @@ const nextAuthConfig: NextAuthOptions = {
           }
         );
 
-        const { firstName, lastName, displayName, id } = customerData.customer;
+        const { firstName, lastName, displayName, id } = customerData.customer ?? {};
 
         return {
           sub: id,

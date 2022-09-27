@@ -22,10 +22,6 @@ export type MultipassCustomerData = {
 } & Record<string, unknown>;
 
 export function createMultipassToken(customerData: MultipassCustomerData) {
-  if (!shopifyMultipassSecret) {
-    return null;
-  }
-
   const keyMaterial = crypto.createHash('sha256').update(shopifyMultipassSecret).digest();
   const encryptionKey = keyMaterial.slice(0, blockSize);
   const signingKey = keyMaterial.slice(blockSize, 32);
