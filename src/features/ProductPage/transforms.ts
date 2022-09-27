@@ -2,6 +2,7 @@ import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
 import { enableReviewsIo, enableTrustpilot } from 'config/ecommerce';
 import formatRelative from 'date-fns/formatRelative';
+import { GetStaticPathsResult } from 'next';
 import { getProductLineItemAttributes } from 'transforms/product';
 import { getReview, getStats } from 'transforms/reviewsIo';
 import {
@@ -42,7 +43,7 @@ import {
 
 type Shopify_Collection = ProductPageShopifyProductResponse['product']['collections']['nodes'][0];
 
-export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct {
+export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct | null {
   const shopifyProduct = response?.product;
 
   if (!shopifyProduct) {
@@ -248,7 +249,9 @@ export function getPageOptions(response: ProductPageShopifyProductResponse): Pro
   };
 }
 
-export function getProductPageParams(response: ProductPageShopifyProductHandlesQueryResponse) {
+export function getProductPageParams(
+  response: ProductPageShopifyProductHandlesQueryResponse
+): GetStaticPathsResult['paths'] | null {
   const nodes = response?.products?.nodes;
 
   if (!nodes) {

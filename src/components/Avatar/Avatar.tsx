@@ -1,7 +1,7 @@
 import NextImage from 'components/NextImage';
 
 export interface AvatarProps {
-  src?: string;
+  src: string | null;
   alt?: string;
   size?: number;
   fallback: JSX.Element;

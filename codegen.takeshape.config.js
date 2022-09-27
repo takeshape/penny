@@ -23,8 +23,8 @@ module.exports = {
         avoidOptionals: {
           field: true,
           inputValue: false,
-          object: true,
-          defaultValue: true
+          object: false,
+          defaultValue: false
         }
       }
     }

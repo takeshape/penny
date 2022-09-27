@@ -1,6 +1,5 @@
 import { useLazyQuery } from '@apollo/client';
-import { trustpilotReviewsPerPage } from 'config/ecommerce';
-import { trustpilotBusinessUnit } from 'config/trustpilot';
+import { trustpilotReviewsPerPage } from 'config';
 import { TrustpilotProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
 import { getTrustpilotProductReviewsPage } from 'features/ProductPage/transforms';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -29,14 +28,9 @@ export const TrustpilotWithData = ({ sku, trustpilotSummary, trustpilotReviewLis
   >(TrustpilotProductPageReviewPageQuery);
 
   useEffect(() => {
-    if (!trustpilotBusinessUnit) {
-      return;
-    }
-
     if (currentPage !== 1) {
       loadReviews({
         variables: {
-          businessUnit: trustpilotBusinessUnit,
           sku,
           page: currentPage,
           perPage: trustpilotReviewsPerPage

@@ -31,6 +31,12 @@ export const getStaticProps = async () => {
     throw new Error(`Failed to get storefront, received message ${error.message}`);
   }
 
+  if (!storefront) {
+    return {
+      notFound: true
+    };
+  }
+
   return {
     revalidate: homepageRevalidationTtl,
     props: {

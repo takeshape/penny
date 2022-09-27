@@ -16,7 +16,7 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 const PagePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer, page }) => {
   const router = useRouter();
 
-  if (router.isFallback) {
+  if (router.isFallback || !page) {
     return (
       <Layout navigation={navigation} footer={footer} seo={{ title: 'Page is loading...' }}>
         <PageLoader />
@@ -32,7 +32,11 @@ const PagePage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ na
 };
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const slug = getSingle(params.page);
+  const slug = getSingle(params?.page);
+
+  if (!slug) {
+    throw new Error(`Invalid props params`);
+  }
 
   const { navigation, footer } = await getLayoutData();
 
@@ -54,7 +58,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
-      key: page._id,
+      key: page?._id,
       navigation,
       footer,
       page
@@ -68,6 +72,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
 
   const params = getPageParams(data);
+
+  if (!params) {
+    throw new Error('Invalid path params');
+  }
 
   return {
     paths: params,

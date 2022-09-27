@@ -783,7 +783,7 @@
       "serviceType": "rest",
       "authenticationType": "searchParams",
       "options": {
-        "endpoint": "https://api.trustpilot.com"
+        "endpoint": "https://api.trustpilot.com/v1/product-reviews/business-units/62ed495079f2770a09852bf0"
       }
     }
   },
@@ -1547,10 +1547,6 @@
       "args": {
         "type": "object",
         "properties": {
-          "businessUnit": {
-            "type": "string",
-            "description": "The BusinessUnitId that owns the products."
-          },
           "page": {
             "type": "integer",
             "description": "The page to retrieve. If the page number requested is higher than the available number of pages an empty array will be returned.\nConstraints: The allowed range is minimum: 1, maximum: 2147483647\nDefault value: 1"
@@ -1595,25 +1591,12 @@
             },
             "description": "A comma-separated list of attribute ids"
           }
-        },
-        "required": [
-          "businessUnit"
-        ]
+        }
       },
       "resolver": {
         "name": "rest:get",
         "service": "trustpilot",
-        "path": {
-          "ops": [
-            {
-              "path": "businessUnit",
-              "mapping": "$args.businessUnit"
-            }
-          ],
-          "serialize": {
-            "template": "/v1/product-reviews/business-units/{businessUnit}/reviews"
-          }
-        },
+        "path": "/reviews",
         "searchParams": {
           "ops": [
             {
@@ -5102,10 +5085,6 @@
                 "@args": {
                   "type": "object",
                   "properties": {
-                    "businessUnit": {
-                      "type": "string",
-                      "description": "The BusinessUnitId that owns the products."
-                    },
                     "page": {
                       "type": "integer",
                       "description": "The page to retrieve. If the page number requested is higher than the available number of pages an empty array will be returned.\nConstraints: The allowed range is minimum: 1, maximum: 2147483647\nDefault value: 1"
@@ -5143,25 +5122,12 @@
                       },
                       "description": "A comma-separated list of attribute ids"
                     }
-                  },
-                  "required": [
-                    "businessUnit"
-                  ]
+                  }
                 },
                 "@resolver": {
                   "name": "rest:get",
                   "service": "trustpilot",
-                  "path": {
-                    "ops": [
-                      {
-                        "path": "businessUnit",
-                        "mapping": "$args.businessUnit"
-                      }
-                    ],
-                    "serialize": {
-                      "template": "/v1/product-reviews/business-units/{businessUnit}/reviews"
-                    }
-                  },
+                  "path": "/reviews",
                   "searchParams": {
                     "ops": [
                       {
@@ -5216,32 +5182,10 @@
               },
               "trustpilotReviewsSummary": {
                 "@ref": "local:TrustpilotProductReviewsSummary",
-                "@args": {
-                  "type": "object",
-                  "properties": {
-                    "businessUnit": {
-                      "type": "string",
-                      "description": "The BusinessUnitId that owns the products."
-                    }
-                  },
-                  "required": [
-                    "businessUnit"
-                  ]
-                },
                 "@resolver": {
                   "name": "rest:get",
                   "service": "trustpilot",
-                  "path": {
-                    "ops": [
-                      {
-                        "path": "businessUnit",
-                        "mapping": "$args.businessUnit"
-                      }
-                    ],
-                    "serialize": {
-                      "template": "/v1/product-reviews/business-units/{businessUnit}"
-                    }
-                  },
+                  "path": "/",
                   "searchParams": {
                     "ops": [
                       {

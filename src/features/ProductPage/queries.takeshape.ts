@@ -16,12 +16,7 @@ export const ProductPageShopifyProductHandlesQuery = gql`
 `;
 
 export const ProductPageShopifyProductQuery = gql`
-  query ProductPageShopifyProduct(
-    $handle: String!
-    $reviewsPerPage: Int
-    $trustpilotReviewsPerPage: Int
-    $trustpilotBusinessUnit: String!
-  ) {
+  query ProductPageShopifyProduct($handle: String!, $reviewsPerPage: Int, $trustpilotReviewsPerPage: Int) {
     product: productByHandleWithTtl(handle: $handle) {
       id
       handle
@@ -30,7 +25,7 @@ export const ProductPageShopifyProductQuery = gql`
       descriptionHtml
       tags
       requiresSellingPlan
-      trustpilotReviews(businessUnit: $trustpilotBusinessUnit, perPage: $trustpilotReviewsPerPage) {
+      trustpilotReviews(perPage: $trustpilotReviewsPerPage) {
         productReviews {
           content
           stars
@@ -43,7 +38,7 @@ export const ProductPageShopifyProductQuery = gql`
           rel
         }
       }
-      trustpilotReviewsSummary(businessUnit: $trustpilotBusinessUnit) {
+      trustpilotReviewsSummary {
         starsAverage
         numberOfReviews {
           total
@@ -295,8 +290,8 @@ export const ProductPageReviewPageQuery = gql`
 `;
 
 export const TrustpilotProductPageReviewPageQuery = gql`
-  query TrustpilotProductPageReviewPageQuery($businessUnit: String!, $sku: [String!], $page: Int!, $perPage: Int!) {
-    reviewData: getTrustpilotProductReviews(businessUnit: $businessUnit, sku: $sku, page: $page, perPage: $perPage) {
+  query TrustpilotProductPageReviewPageQuery($sku: [String!], $page: Int!, $perPage: Int!) {
+    reviewData: getTrustpilotProductReviews(sku: $sku, page: $page, perPage: $perPage) {
       productReviews {
         content
         stars

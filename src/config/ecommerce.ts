@@ -13,10 +13,6 @@ export const defaultProductImage = {
   width: 480,
   altText: 'Default product image'
 };
-export const enableReviewsIo = true;
-export const reviewsIoReviewsPerPage = 3;
-export const enableTrustpilot = false;
-export const trustpilotReviewsPerPage = 3;
 
 /* Collections */
 export const collectionsPageSize = 12;

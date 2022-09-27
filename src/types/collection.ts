@@ -26,6 +26,6 @@ export type CollectionBase<T> = {
   items?: T[];
   pageInfo?: CollectionPageInfo;
   seo?: CollectionSeo;
-  parent?: CollectionParent;
-  breadcrumbTitle?: string;
+  parent: CollectionParent | null;
+  breadcrumbTitle: string | null;
 };

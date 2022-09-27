@@ -5,6 +5,7 @@ export * from './klaviyo';
 export * from './lighthouse';
 export * from './recaptcha';
 export * from './revalidation';
+export * from './reviews';
 export * from './seo';
 export * from './shopify';
 export * from './site';

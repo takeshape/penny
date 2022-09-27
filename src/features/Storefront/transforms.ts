@@ -56,7 +56,9 @@ export function getCollection(component: StorefrontCollectionComponent): Storefr
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getCollectionItem(node)),
-    pageInfo: collection.products.pageInfo
+    pageInfo: collection.products.pageInfo,
+    parent: null,
+    breadcrumbTitle: null
   };
 }
 

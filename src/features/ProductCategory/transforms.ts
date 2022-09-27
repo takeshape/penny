@@ -16,9 +16,9 @@ import {
   ProductCategoryShopifyProduct
 } from './types';
 
-function getReviews(reviewsIoReviews: ProductCategoryReviewsIoReviews) {
+function getReviews(reviewsIoReviews: ProductCategoryReviewsIoReviews | null) {
   return {
-    stats: getStats(reviewsIoReviews.stats)
+    stats: getStats(reviewsIoReviews?.stats ?? null)
   };
 }
 
@@ -95,7 +95,7 @@ export function getCollection(
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getProductListItem(node)),
     pageInfo: collection.products.pageInfo,
-    breadcrumbTitle: collection.takeshape.breadcrumbTitle,
+    breadcrumbTitle: collection.takeshape?.breadcrumbTitle ?? null,
     parent: getCollectionParent(collection)
   };
 }

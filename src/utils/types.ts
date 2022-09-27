@@ -1,10 +1,11 @@
 /**
  * Turn a maybe array into a single param, preserving types.
  */
-export function getSingle<T>(param?: T | T[]): T | undefined {
+export function getSingle<T>(param: T | T[]): T {
   if (Array.isArray(param)) {
     return param[0];
   }
+
   return param;
 }
 

@@ -3,7 +3,7 @@ export type ReviewReviewer = {
   lastName: string;
   verifiedBuyer: string;
   address: string;
-  imageUrl: string;
+  imageUrl: string | null;
 };
 
 export type Review = {
