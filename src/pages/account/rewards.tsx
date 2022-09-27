@@ -1,5 +1,7 @@
 import { AccountLoyaltyCard } from 'features/AccountLoyaltyCard/AccountLoyaltyCard';
 import { GetMyLoyaltyCardQuery } from 'features/AccountLoyaltyCard/queries';
+import { getLoyaltyCard } from 'features/AccountLoyaltyCard/transforms';
+import { LoyaltyCard } from 'features/AccountLoyaltyCard/types';
 import { AccountReferrals } from 'features/AccountReferrals/AccountReferrals';
 import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
@@ -8,20 +10,20 @@ import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
 
 const AccountRewardsPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
-  const { data } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse>(GetMyLoyaltyCardQuery);
+  const { transformedData: loyaltyCard } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse, {}, LoyaltyCard>(
+    GetMyLoyaltyCardQuery,
+    {},
+    { data: getLoyaltyCard }
+  );
 
-  if (!data) {
+  if (!loyaltyCard) {
     return null;
   }
 
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Rewards' }}>
       <AccountReferrals />
-      <AccountLoyaltyCard
-        code={data?.loyaltyCard.code}
-        loyalty_card={data?.loyaltyCard.loyalty_card}
-        assets={data?.loyaltyCard.assets}
-      />
+      {loyaltyCard && <AccountLoyaltyCard loyaltyCard={loyaltyCard} />}
     </Layout>
   );
 };

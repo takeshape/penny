@@ -6,16 +6,20 @@ import {
   NormalizedCacheObject,
   OperationVariables,
   QueryHookOptions,
-  TypedDocumentNode,
-  useLazyQuery,
-  useMutation,
-  useQuery
+  TypedDocumentNode
 } from '@apollo/client';
 import { getClientToken } from '@takeshape/next-auth-all-access/react';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { JsonValue } from 'type-fest';
+import {
+  LazyQueryResultTupleWithTransformData,
+  MutationTupleWithTranformData,
+  QueryHookTransformOptions
+} from 'types/query';
 import { createClient } from 'utils/apollo/client';
+import { useWrappedLazyQuery, useWrappedMutation, useWrappedQuery } from 'utils/query';
 import { createStaticClient } from './apollo/client';
 
 export function createAnonymousTakeshapeApolloClient() {
@@ -53,16 +57,14 @@ export function useAuthenticatedClient() {
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
+export function useAuthenticatedQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: QueryHookOptions<TData, TVariables> = {}
+  options: QueryHookOptions<TData, TVariables> = {},
+  transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
   const client = useAuthenticatedClient();
-  return useQuery(query, {
-    ...options,
-    skip: !client,
-    client
-  });
+
+  return useWrappedQuery(client, query, options, transform);
 }
 
 /**
@@ -70,15 +72,14 @@ export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables>(
+export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: LazyQueryHookOptions<TData, TVariables> = {}
-) {
+  options: LazyQueryHookOptions<TData, TVariables> = {},
+  transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
+): LazyQueryResultTupleWithTransformData<TData, TVariables, TDataTransformed> {
   const client = useAuthenticatedClient();
-  return useLazyQuery(query, {
-    ...options,
-    client
-  });
+
+  return useWrappedLazyQuery(client, query, options, transform);
 }
 
 /**
@@ -86,13 +87,12 @@ export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedMutation<TData, TVariables = OperationVariables>(
+export function useAuthenticatedMutation<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: MutationHookOptions<TData, TVariables> = {}
-) {
+  options: MutationHookOptions<TData, TVariables> = {},
+  transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
+): MutationTupleWithTranformData<TData, TVariables, TDataTransformed> {
   const client = useAuthenticatedClient();
-  return useMutation(query, {
-    ...options,
-    client
-  });
+
+  return useWrappedMutation(client, query, options, transform);
 }

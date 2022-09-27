@@ -4,13 +4,13 @@ import {
   MutationHookOptions,
   OperationVariables,
   QueryHookOptions,
-  TypedDocumentNode,
-  useLazyQuery,
-  useMutation,
-  useQuery
+  TypedDocumentNode
 } from '@apollo/client';
 import { shopifyStorefrontToken, shopifyStorefrontUrl } from 'config';
+import { JsonValue } from 'type-fest';
+import { QueryHookTransformOptions } from 'types/query';
 import { createClient } from 'utils/apollo/client';
+import { useWrappedLazyQuery, useWrappedMutation, useWrappedQuery } from 'utils/query';
 
 const client = createClient({
   uri: shopifyStorefrontUrl,
@@ -19,32 +19,26 @@ const client = createClient({
   accessTokenPrefix: ''
 });
 
-export function useStorefrontQuery<TData, TVariables = OperationVariables>(
+export function useStorefrontQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: QueryHookOptions<TData, TVariables> = {}
+  options: QueryHookOptions<TData, TVariables> = {},
+  transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
-  return useQuery(query, {
-    ...options,
-    client
-  });
+  return useWrappedQuery(client, query, options, transform);
 }
 
-export function useStorefrontLazyQuery<TData, TVariables = OperationVariables>(
+export function useStorefrontLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: LazyQueryHookOptions<TData, TVariables> = {}
+  options: LazyQueryHookOptions<TData, TVariables> = {},
+  transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
-  return useLazyQuery(query, {
-    ...options,
-    client
-  });
+  return useWrappedLazyQuery(client, query, options, transform);
 }
 
-export function useStorefrontMutation<TData, TVariables>(
+export function useStorefrontMutation<TData, TVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: MutationHookOptions<TData, TVariables> = {}
+  options: MutationHookOptions<TData, TVariables> = {},
+  transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
 ) {
-  return useMutation(query, {
-    ...options,
-    client
-  });
+  return useWrappedMutation(client, query, options, transform);
 }

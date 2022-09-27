@@ -1,21 +1,22 @@
 import CardPanel from 'components/Card/Panel/Panel';
 import Image from 'components/NextImage';
-import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
+import { LoyaltyCard } from './types';
 
-export type AccountLoyaltyCardProps = NonNullablePath<GetMyLoyaltyCardQueryResponse, ['loyaltyCard']>;
+export type AccountLoyaltyCardProps = {
+  loyaltyCard: LoyaltyCard;
+};
 
-export const AccountLoyaltyCard = ({ code, loyalty_card, assets }: AccountLoyaltyCardProps) => {
+export const AccountLoyaltyCard = ({ loyaltyCard }: AccountLoyaltyCardProps) => {
   return (
-    <CardPanel primaryText="Deluxe ™️ Membership">
+    <CardPanel primaryText="Penny Membership">
       <div>
-        <div>{assets?.qr?.url && <Image src={assets.qr.url} alt="QR Code" height={84} width={84} />}</div>
+        <div>{loyaltyCard.qr && <Image src={loyaltyCard.qr.url} alt="QR Code" height={84} width={84} />}</div>
       </div>
       <dl>
         <dt className="font-bold text-body-900 text-sm uppercase">Member Code</dt>
-        <dd className="font-mono text-body-900 mb-1 tracking-widest">{code}</dd>
+        <dd className="font-mono text-body-900 mb-1 tracking-widest">{loyaltyCard.code}</dd>
         <dt className="font-bold text-body-900 text-sm uppercase">Balance</dt>
-        <dd className="font-mono text-body-900 mb-1 tracking-widest">{loyalty_card?.balance ?? 0} points</dd>
+        <dd className="font-mono text-body-900 mb-1 tracking-widest">{loyaltyCard.stats.balance} points</dd>
       </dl>
     </CardPanel>
   );
