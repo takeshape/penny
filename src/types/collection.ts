@@ -1,8 +1,8 @@
 export type CollectionPageInfo = {
-  endCursor?: string;
+  endCursor: string | null;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
-  startCursor?: string;
+  startCursor: string | null;
 };
 
 export type CollectionSeo = {

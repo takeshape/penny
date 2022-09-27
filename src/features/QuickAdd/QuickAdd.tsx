@@ -6,7 +6,7 @@ import { QuickAddProduct } from './types';
 export interface QuickAddProps {
   isOpen: boolean;
   onClose: () => void;
-  product?: QuickAddProduct;
+  product: QuickAddProduct | null;
 }
 
 export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {

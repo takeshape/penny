@@ -41,7 +41,7 @@ function getCollectionItem(shopifyProduct: StorefrontCollectionComponentProduct)
   };
 }
 
-export function getCollection(component: StorefrontCollectionComponent): StorefrontCollection {
+export function getCollection(component: StorefrontCollectionComponent): StorefrontCollection | null {
   const collection = component?.collection?.shopifyCollection;
 
   if (!collection) {

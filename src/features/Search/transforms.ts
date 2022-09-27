@@ -1,5 +1,6 @@
 import { createImageGetter, getProductUrl } from 'transforms/shopify';
 import { SearchShopifyProductsResponse } from 'types/takeshape';
+import { isNotNullish } from 'utils/types';
 import { SearchItem, SearchItemProduct, SearchShopifyProduct } from './types';
 
 function getProduct(shopifyProduct: SearchShopifyProduct): SearchItemProduct {
@@ -26,8 +27,8 @@ export function getSearchList(response: SearchShopifyProductsResponse): SearchIt
   const results = response?.search?.results;
 
   if (!results) {
-    return null;
+    return [];
   }
 
-  return results.map((item) => item.__typename === 'Shopify_Product' && getItem(item));
+  return results.map((item) => (item.__typename === 'Shopify_Product' ? getItem(item) : null)).filter(isNotNullish);
 }

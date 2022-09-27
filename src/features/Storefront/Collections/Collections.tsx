@@ -20,15 +20,17 @@ export const Collections = ({ collections }: CollectionsProps) => {
           <div className="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-6">
             {collections.map(({ description, href, name, image }) => (
               <div key={name} className="group relative">
-                <div className="w-full h-80 bg-background rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
-                  <NextImage
-                    alt={image.description ?? ''}
-                    src={getImageUrl(image)}
-                    height={500}
-                    width={500}
-                    className="w-full h-full object-center object-cover"
-                  />
-                </div>
+                {image && (
+                  <div className="w-full h-80 bg-background rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
+                    <NextImage
+                      alt={image.description ?? ''}
+                      src={getImageUrl(image)}
+                      height={500}
+                      width={500}
+                      className="w-full h-full object-center object-cover"
+                    />
+                  </div>
+                )}
 
                 <h3 className="mt-6 text-sm text-body-500">
                   <NextLink href={href}>

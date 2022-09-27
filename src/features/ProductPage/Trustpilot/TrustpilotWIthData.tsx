@@ -26,20 +26,24 @@ export const TrustpilotWithData = ({ sku, trustpilotSummary, trustpilotReviewLis
   const [loadReviews, { data: pageData, error }] = useLazyQuery<
     TrustpilotProductPageReviewPageQueryResponse,
     TrustpilotProductPageReviewPageQueryVariables
-  >(TrustpilotProductPageReviewPageQuery, {
-    variables: {
-      businessUnit: trustpilotBusinessUnit,
-      sku,
-      page: currentPage,
-      perPage: trustpilotReviewsPerPage
-    }
-  });
+  >(TrustpilotProductPageReviewPageQuery);
 
   useEffect(() => {
-    if (currentPage !== 1) {
-      loadReviews();
+    if (!trustpilotBusinessUnit) {
+      return;
     }
-  }, [currentPage, loadReviews]);
+
+    if (currentPage !== 1) {
+      loadReviews({
+        variables: {
+          businessUnit: trustpilotBusinessUnit,
+          sku,
+          page: currentPage,
+          perPage: trustpilotReviewsPerPage
+        }
+      });
+    }
+  }, [currentPage, loadReviews, sku]);
 
   // Our product query has the first page of reviews, so use that if we're on page 1.
   // Otherwise we query for the requested page.

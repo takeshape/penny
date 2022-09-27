@@ -12,7 +12,7 @@ import { ReviewsRollup } from './ReviewsRollup';
 export interface ReviewsProps {
   stats: ProductPageReviewsStats;
   items: ProductPageReviewsReview[];
-  rollup: ProductPageReviewsRollup[];
+  rollup?: ProductPageReviewsRollup[];
   currentPage: number;
   totalPages: number;
   onPreviousPage: MouseEventHandler;

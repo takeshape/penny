@@ -26,7 +26,7 @@ export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWit
   }, [loadProducts]);
 
   const loadingProducts = useMemo(() => Array(limit).fill(undefined) as ProductPageRelatedProductsProduct[], [limit]);
-  const products = useMemo(() => !error && getRelatedProductList(data, limit), [data, error, limit]);
+  const products = useMemo(() => (!error ? getRelatedProductList(data, limit) : null), [data, error, limit]);
 
   if (error) {
     return null;

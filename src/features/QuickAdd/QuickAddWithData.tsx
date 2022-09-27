@@ -26,7 +26,7 @@ export const QuickAddWithData = () => {
     }
   }, [loading, loadProduct, quickAdd?.productHandle, error]);
 
-  const product = useMemo(() => data && getProduct(data), [data]);
+  const product = useMemo(() => getProduct(data), [data]);
 
   return <QuickAdd isOpen={Boolean(quickAdd)} onClose={() => resetQuickAdd()} product={product} />;
 };

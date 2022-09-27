@@ -11,15 +11,17 @@ export const BackgroundImage = ({ image, children }: PropsWithChildren<Backgroun
       {/* Decorative background image and gradient */}
       <div aria-hidden="true" className="absolute inset-0">
         <div className="absolute inset-0 max-w-7xl mx-auto overflow-hidden xl:px-8">
-          <div className="w-full h-full">
-            <NextImage
-              src={getImageUrl(image)}
-              alt={image.description ?? ''}
-              className="w-full h-full object-center object-cover"
-              height={1000}
-              width={1000}
-            />
-          </div>
+          {image && (
+            <div className="w-full h-full">
+              <NextImage
+                src={getImageUrl(image)}
+                alt={image.description ?? ''}
+                className="w-full h-full object-center object-cover"
+                height={1000}
+                width={1000}
+              />
+            </div>
+          )}
         </div>
         <div className="absolute inset-0 bg-background bg-opacity-75" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background" />

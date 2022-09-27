@@ -8,7 +8,9 @@ export type CollectionProps = StorefrontChild & { __typename?: 'CollectionCompon
 export const Collection = (props: CollectionProps) => {
   const collection = getCollection(props);
 
-  if (!(collection.items ?? collection.items.length)) return null;
+  if (!collection?.items?.length) {
+    return null;
+  }
 
   return (
     <section aria-labelledby="trending-heading" className="bg-background">

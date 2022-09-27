@@ -8,7 +8,7 @@ import {
 import { QuickAddQueryResponse } from 'types/storefront';
 import { QuickAddProduct } from './types';
 
-export function getProduct(response: QuickAddQueryResponse): QuickAddProduct | null {
+export function getProduct(response?: QuickAddQueryResponse): QuickAddProduct | null {
   const shopifyProduct = response?.product;
 
   if (!shopifyProduct) {

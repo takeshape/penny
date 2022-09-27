@@ -284,9 +284,9 @@ function getRelatedProduct(
 }
 
 export function getRelatedProductList(
-  response: ProductPageRelatedProductsQueryResponse,
+  response?: ProductPageRelatedProductsQueryResponse,
   limit = 0
-): ProductPageRelatedProductsProduct[] {
+): ProductPageRelatedProductsProduct[] | null {
   let products = response?.products;
 
   if (!products) {
