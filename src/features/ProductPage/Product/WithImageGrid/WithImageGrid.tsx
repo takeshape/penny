@@ -33,10 +33,16 @@ export const ProductWithImageGrid = ({
 }: PropsWithChildren<ProductWithImageGridProps>) => {
   const { name, descriptionHtml, images, variantOptions, hasStock } = product;
 
-  const initialVariant = useMemo(
-    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
-    [hasStock, product.variants]
-  );
+  const initialVariant = useMemo(() => {
+    if (hasStock) {
+      return product.variants.find((variant) => variant.available);
+    }
+    return product.variants[0];
+  }, [hasStock, product.variants]);
+
+  if (!initialVariant) {
+    throw new Error('Could not find initial variant');
+  }
 
   const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
     useVariantOption({
@@ -58,9 +64,12 @@ export const ProductWithImageGrid = ({
     if (selections.length) {
       return getVariant(product.variants, selections);
     }
-
     return product.variants[0];
   }, [product, selections]);
+
+  if (!selectedVariant) {
+    throw new Error('No selected variant found');
+  }
 
   const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
 

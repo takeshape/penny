@@ -8,8 +8,8 @@ export interface VariantOptionHookProps {
 }
 
 export interface VariantOptionHookData {
-  selectedValue?: string;
-  selected?: ProductVariantSelection;
+  selectedValue: string;
+  selected: ProductVariantSelection;
   option?: ProductVariantOption;
 }
 
@@ -23,17 +23,29 @@ export function useVariantOption({
     [name, options]
   );
 
+  if (!variantOption) {
+    throw new Error('Invalid variant name');
+  }
+
   const initialVariantOptionValue = useMemo(
     () => variant.options?.find((o) => o.name.toLowerCase() === name.toLowerCase())?.value,
     [name, variant.options]
   );
 
+  if (!initialVariantOptionValue) {
+    throw new Error('Invalid variant option name');
+  }
+
   const initialVariantOption = useMemo(
-    () => (initialVariantOptionValue ? variantOption?.values.find((v) => v.value === initialVariantOptionValue) : null),
+    () => variantOption?.values.find((v) => v.value === initialVariantOptionValue),
     [initialVariantOptionValue, variantOption?.values]
   );
 
-  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption?.value ?? '');
+  if (!initialVariantOption) {
+    throw new Error('Invalid variant option');
+  }
+
+  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption.value);
 
   const selected = useMemo(() => ({ name, value: selectedValue }), [name, selectedValue]);
 

@@ -11,6 +11,7 @@ import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
+import { isNotNullish } from 'utils/types';
 
 export interface ProductWithImageProps {
   product: ProductType;
@@ -25,12 +26,18 @@ export const ProductWithImage = ({
   breadcrumbs,
   showReviewsLink
 }: ProductWithImageProps) => {
-  const { priceMin, name, descriptionHtml, featuredImage, variantOptions, hasStock } = product;
+  const { name, descriptionHtml, featuredImage, variantOptions, hasStock } = product;
 
-  const initialVariant = useMemo(
-    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
-    [hasStock, product.variants]
-  );
+  const initialVariant = useMemo(() => {
+    if (hasStock) {
+      return product.variants.find((variant) => variant.available);
+    }
+    return product.variants[0];
+  }, [hasStock, product.variants]);
+
+  if (!initialVariant) {
+    throw new Error('Could not find initial variant');
+  }
 
   const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
     useVariantOption({
@@ -39,13 +46,12 @@ export const ProductWithImage = ({
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedSize].filter((x) => x), [selectedSize]);
+  const selections = useMemo(() => [selectedSize].filter(isNotNullish), [selectedSize]);
 
   const selectedVariant = useMemo(() => {
     if (selections.length) {
       return getVariant(product.variants, selections);
     }
-
     return product.variants[0];
   }, [product, selections]);
 
@@ -53,6 +59,10 @@ export const ProductWithImage = ({
 
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
+
+  if (!selectedVariant) {
+    throw new Error('No selected variant found');
+  }
 
   const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
@@ -97,7 +107,7 @@ export const ProductWithImage = ({
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <div>
-                  <Stars rating={reviewHighlights.stats.average} />
+                  <Stars rating={reviewHighlights.stats.average ?? 0} />
                   <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
                 </div>
                 {showReviewsLink ? (

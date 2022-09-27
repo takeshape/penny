@@ -97,7 +97,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 
   const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
     if (!handle) {
-      throw new Error('Invalid props params');
+      throw new Error('Invalid getStaticProps params');
     }
 
     return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({

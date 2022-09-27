@@ -27,7 +27,7 @@ const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
 }) => {
   const { isFallback } = useRouter();
 
-  if (isFallback) {
+  if (isFallback || !collection) {
     return (
       <Layout navigation={navigation} footer={footer} seo={{ title: 'Collection is loading...' }}>
         <PageLoader />
@@ -51,7 +51,11 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const { navigation, footer } = await getLayoutData();
 
-  let [handle, _page, cursor, direction] = params.collection;
+  if (!params?.collection) {
+    throw new Error('Invalid getStaticProps params');
+  }
+
+  let [handle, _page, cursor, direction] = params?.collection;
 
   if (lighthouseCollectionHandle && handle === lighthouseHandle) {
     handle = lighthouseCollectionHandle;
@@ -91,7 +95,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
-      key: collection.id,
+      key: collection?.id,
       // Don't index lighthouse test urls
       noindex: handle === lighthouseHandle,
       navigation,
@@ -105,23 +109,34 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let paths: ReturnType<typeof getCollectionPageParams> = [];
 
   let hasNextPage = true;
-  let endCursor: string;
+  let endCursor: string | undefined;
 
   while (hasNextPage) {
+    let variables: ProductCategoryShopifyCollectionHandlesVariables = {
+      first: 50
+    };
+
+    if (endCursor) {
+      variables.after = endCursor;
+    }
+
     const { data } = await apolloClient.query<
       ProductCategoryShopifyCollectionHandlesResponse,
       ProductCategoryShopifyCollectionHandlesVariables
     >({
       query: ProductCategoryShopifyCollectionHandles,
-      variables: {
-        first: 50,
-        after: endCursor
-      }
+      variables
     });
 
-    paths = [...paths, ...getCollectionPageParams(data)];
-    hasNextPage = data.collections.pageInfo.hasNextPage;
-    endCursor = data.collections.pageInfo.endCursor;
+    const pagePaths = getCollectionPageParams(data);
+
+    if (!pagePaths) {
+      throw new Error('Could not generate paths');
+    }
+
+    paths = [...paths, ...pagePaths];
+    hasNextPage = data.collections?.pageInfo.hasNextPage ?? false;
+    endCursor = data.collections?.pageInfo.endCursor ?? undefined;
   }
 
   // Add the lighthouse testing path, if configured
