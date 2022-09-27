@@ -16,7 +16,7 @@ import { isNotNullish } from 'utils/types';
 export interface ProductWithImageProps {
   product: ProductType;
   reviewHighlights: ReviewHighlights;
-  breadcrumbs: Breadcrumb[];
+  breadcrumbs: Breadcrumb[] | null;
   showReviewsLink: boolean;
 }
 

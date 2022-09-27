@@ -16,8 +16,8 @@ import { ReviewsCallout } from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
   product: TProduct;
-  reviewHighlights?: ReviewHighlights;
-  breadcrumbs: Breadcrumb[];
+  reviewHighlights: ReviewHighlights | null;
+  breadcrumbs: Breadcrumb[] | null;
   showFeaturedReviews: boolean;
   showBreadcrumbs: boolean;
   showReviewsLink: boolean;

@@ -88,3 +88,8 @@ export type ProductPageReviewsStats = ReviewStats;
 export type TrustpilotProductPageReviewsReviewList = TrustpilotReviewList;
 
 export type ProductPageBreadcrumbs = Breadcrumb[];
+
+export type ResponseCollection = NonNullablePath<
+  ProductPageShopifyProductResponse,
+  ['product', 'collections', 'nodes', 0]
+>;
