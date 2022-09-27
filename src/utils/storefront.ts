@@ -8,9 +8,13 @@ import {
 } from '@apollo/client';
 import { shopifyStorefrontToken, shopifyStorefrontUrl } from 'config';
 import { JsonValue } from 'type-fest';
-import { QueryHookTransformOptions } from 'types/query';
 import { createClient } from 'utils/apollo/client';
-import { useLazyQueryWithTransform, useMutationWithTransform, useQueryWithTransform } from 'utils/query';
+import {
+  QueryHookTransformOptions,
+  useLazyQueryWithTransform,
+  useMutationWithTransform,
+  useQueryWithTransform
+} from 'utils/query';
 
 const client = createClient({
   uri: shopifyStorefrontUrl,

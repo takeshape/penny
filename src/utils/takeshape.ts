@@ -13,13 +13,13 @@ import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { JsonValue } from 'type-fest';
-import {
-  LazyQueryResultTupleWithTransformData,
-  MutationTupleWithTranformData,
-  QueryHookTransformOptions
-} from 'types/query';
 import { createClient } from 'utils/apollo/client';
-import { useLazyQueryWithTransform, useMutationWithTransform, useQueryWithTransform } from 'utils/query';
+import {
+  QueryHookTransformOptions,
+  useLazyQueryWithTransform,
+  useMutationWithTransform,
+  useQueryWithTransform
+} from 'utils/query';
 import { createStaticClient } from './apollo/client';
 
 export function createAnonymousTakeshapeApolloClient() {
@@ -84,7 +84,7 @@ export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: LazyQueryHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
-): LazyQueryResultTupleWithTransformData<TData, TVariables, TDataTransformed> {
+) {
   const client = useAuthenticatedClient();
 
   return useLazyQueryWithTransform(
@@ -106,7 +106,7 @@ export function useAuthenticatedMutation<TData, TVariables = OperationVariables,
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: MutationHookOptions<TData, TVariables> = {},
   transform: QueryHookTransformOptions<TData, TDataTransformed> = {}
-): MutationTupleWithTranformData<TData, TVariables, TDataTransformed> {
+) {
   const client = useAuthenticatedClient();
 
   return useMutationWithTransform(query, { ...options, client }, transform);
