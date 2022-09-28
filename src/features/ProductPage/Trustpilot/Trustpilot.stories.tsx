@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { trustpilotPageData, trustpilotPageDataEmpty, trustpilotSummary, trustpilotSummaryEmpty } from '../fixtures';
+import { trustpilotPageData, trustpilotPageDataEmpty } from '../fixtures';
 import { Trustpilot } from './Trustpilot';
 
 const Meta: ComponentMeta<typeof Trustpilot> = {
@@ -12,7 +12,6 @@ const Template: ComponentStory<typeof Trustpilot> = (args) => <Trustpilot {...ar
 export const Loading = Template.bind({});
 
 Loading.args = {
-  trustpilotSummary: trustpilotSummary,
   error: false,
   currentPageData: null,
   currentPage: 1,
@@ -31,7 +30,6 @@ export const Success = Template.bind({});
 
 Success.args = {
   ...Loading.args,
-  trustpilotSummary: trustpilotSummary,
   currentPageData: trustpilotPageData
 };
 
@@ -39,7 +37,6 @@ export const Empty = Template.bind({});
 
 Empty.args = {
   ...Loading.args,
-  trustpilotSummary: trustpilotSummaryEmpty,
   currentPageData: trustpilotPageDataEmpty
 };
 

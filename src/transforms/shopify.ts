@@ -1,5 +1,4 @@
 import { defaultCurrency, defaultProductImage, productOptions } from 'config';
-import { ProductCategoryShopifyCollection } from 'features/ProductCategory/types';
 import {
   ProductImage,
   ProductPrice,
@@ -10,26 +9,50 @@ import {
 } from 'types/product';
 import * as Storefront from 'types/storefront';
 import {
-  ProductCategoryShopifyCollectionQueryResponse,
-  ProductPageShopifyProductResponse,
+  Maybe,
   Shopify_MoneyV2,
+  Shopify_Product,
+  Shopify_ProductOption,
+  Shopify_ProductVariant,
+  Shopify_SellingPlanPricingPolicy,
   Shopify_SellingPlanPricingPolicyPercentageValue,
-  Shopify_SellingPlanRecurringBillingPolicy
+  Shopify_SellingPlanRecurringBillingPolicy,
+  Shopify_Seo
 } from 'types/takeshape';
 
-type Shopify_Image =
-  ProductCategoryShopifyCollectionQueryResponse['collection']['products']['nodes'][0]['featuredImage'];
+type Image = { height: Maybe<number>; width: Maybe<number>; altText: Maybe<string>; url: string };
 
-type Shopify_SellingPlanPricingPolicy =
-  ProductPageShopifyProductResponse['product']['sellingPlanGroups']['edges'][0]['node']['sellingPlans']['edges'][0]['node']['pricingPolicies'][0];
+type AdminSellingPlanPricingPolicy = Pick<Shopify_SellingPlanPricingPolicy, 'adjustmentType' | 'adjustmentValue'>;
+type AdminProductOption = Pick<Shopify_ProductOption, 'id' | 'name' | 'values'>;
+type AdminProductVariant = Pick<
+  Shopify_ProductVariant,
+  | 'id'
+  | 'title'
+  | 'availableForSale'
+  | 'selectedOptions'
+  | 'sku'
+  | 'sellableOnlineQuantity'
+  | 'inventoryPolicy'
+  | 'price'
+> & {
+  image?: Storefront.Image;
+  description?: Pick<Storefront.Metafield, 'type' | 'value'> | null;
+  sellingPlanAllocations: {
+    nodes: {
+      sellingPlan: Pick<Storefront.SellingPlan, 'id' | 'options' | 'priceAdjustments'>;
+    }[];
+  };
+};
+type AdminProduct = Pick<
+  Shopify_Product,
+  'requiresSellingPlan' | 'sellingPlanGroups' | 'sellingPlanGroupCount' | 'title'
+> & {
+  variants: {
+    nodes: AdminProductVariant[];
+  };
+};
 
-type Shopify_Product = ProductPageShopifyProductResponse['product'];
-
-type Shopify_ProductVariant = ProductPageShopifyProductResponse['product']['variants']['nodes'][0];
-
-type Shopify_ProductOption = ProductPageShopifyProductResponse['product']['options'][0];
-
-function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopify_SellingPlanPricingPolicy) {
+function getDiscount(amount: number, { adjustmentType, adjustmentValue }: AdminSellingPlanPricingPolicy) {
   switch (adjustmentType) {
     case 'PRICE': {
       const newAmount = Number((adjustmentValue as Shopify_MoneyV2).amount) * 100;
@@ -113,27 +136,26 @@ function getSubscriptionInterval({
 }
 
 export function createImageGetter(defaultAltText: string) {
-  return (shopifyImage?: Pick<Shopify_Image, 'height' | 'width' | 'url' | 'altText'> | null): ProductImage => {
+  return (shopifyImage?: Image | null): ProductImage => {
     const { height, width, url, altText } = shopifyImage ?? defaultProductImage;
     return {
-      height,
+      height: height ?? 0,
       url,
-      width,
+      width: width ?? 0,
       altText: altText ?? defaultAltText
     };
   };
 }
 
 export function getProductVariantPriceOptions(
-  shopifyProduct: Shopify_Product,
-  shopifyVariant: Shopify_ProductVariant
+  shopifyProduct: AdminProduct,
+  shopifyVariant: AdminProductVariant
 ): ProductPriceOption[] {
   // variant.contextualPricing would be better for a true multi-currency site
   const { id, price } = shopifyVariant;
   const amount = Number(price) * 100;
 
-  const { requiresSellingPlan, sellingPlanGroups, sellingPlanGroupCount } =
-    shopifyProduct as ProductPageShopifyProductResponse['product'];
+  const { requiresSellingPlan, sellingPlanGroups, sellingPlanGroupCount } = shopifyProduct;
 
   let prices: ProductPriceOption[] = [];
 
@@ -192,7 +214,7 @@ export function getProductVariantPriceOptions(
   return prices;
 }
 
-function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_ProductVariant): ProductVariant {
+function getVariant(shopifyProduct: AdminProduct, shopifyVariant: AdminProductVariant): ProductVariant {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
   const { id, title, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
     shopifyVariant;
@@ -206,15 +228,13 @@ function getVariant(shopifyProduct: Shopify_Product, shopifyVariant: Shopify_Pro
     image: getImage(image),
     quantityAvailable: sellableOnlineQuantity,
     currentlyNotInStock: sellableOnlineQuantity === 0 && inventoryPolicy == 'CONTINUE',
-    sku,
+    sku: sku ?? shopifyGidToId(id),
     options: selectedOptions.map(({ name, value }) => ({ name, value }))
   };
 }
 
-export function getProductVariants(shopifyProduct: Shopify_Product): ProductVariant[] {
-  return (shopifyProduct as ProductPageShopifyProductResponse['product']).variants.nodes.map((node) =>
-    getVariant(shopifyProduct, node)
-  );
+export function getProductVariants(shopifyProduct: AdminProduct): ProductVariant[] {
+  return shopifyProduct.variants.nodes.map((node) => getVariant(shopifyProduct, node));
 }
 
 export function getPrice(price: Pick<Shopify_MoneyV2, 'amount' | 'currencyCode'>): ProductPrice {
@@ -224,16 +244,17 @@ export function getPrice(price: Pick<Shopify_MoneyV2, 'amount' | 'currencyCode'>
   };
 }
 
-export function getSeo(shopifyProduct: Shopify_Product | ProductCategoryShopifyCollection): ProductSeo {
+export function getSeo(
+  shopifyObject: Pick<Shopify_Seo, 'title' | 'description'> & { seo: Pick<Shopify_Seo, 'title' | 'description'> }
+): ProductSeo {
   return {
-    title: (shopifyProduct as ProductPageShopifyProductResponse['product']).seo?.title ?? shopifyProduct.title,
-    description:
-      (shopifyProduct as ProductPageShopifyProductResponse['product']).seo?.description ?? shopifyProduct.description
+    title: shopifyObject.seo?.title ?? shopifyObject.title ?? '',
+    description: shopifyObject.seo?.description ?? shopifyObject.description ?? ''
   };
 }
 
 export function getProductVariantOptions(
-  options: Pick<Shopify_ProductOption, 'name' | 'id' | 'values'>[],
+  options: AdminProductOption[],
   variants?: Pick<ProductVariant, 'options' | 'available'>[]
 ) {
   return (
@@ -294,7 +315,7 @@ type StorefrontProductVariant = Pick<
   | 'quantityAvailable'
   | 'priceV2'
 > & {
-  image?: Pick<Storefront.ProductVariant, 'image'>;
+  image?: Storefront.Image;
   description?: Pick<Storefront.Metafield, 'type' | 'value'> | null;
   sellingPlanAllocations: {
     nodes: {
@@ -350,10 +371,10 @@ function getStorefrontDiscount(amount: number, { adjustmentValue }: Storefront.S
 
 function getStorefrontSubscriptionInterval({ value }: Storefront.SellingPlanOption) {
   // Example: '30 Day(s)'
-  const [, intervalCount, interval] = value.match(/(\d+)\s(\w+)/);
+  const [, intervalCount, interval] = value?.match(/(\d+)\s(\w+)/) ?? ['', '', ''];
 
   const subscriptionInterval = {
-    intervalCount: Number(intervalCount)
+    intervalCount: Number(intervalCount ?? 0)
   };
 
   switch (interval.toUpperCase()) {
@@ -467,9 +488,9 @@ function getStorefrontProductVariant(
     prices: getStorefrontProductVariantPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale || currentlyNotInStock,
     image: shopifyVariant.image && getImage(image),
-    quantityAvailable,
+    quantityAvailable: quantityAvailable ?? 0,
     currentlyNotInStock,
-    sku,
+    sku: sku ?? shopifyGidToId(id),
     options: selectedOptions.map(({ name, value }) => ({ name, value }))
   };
 }

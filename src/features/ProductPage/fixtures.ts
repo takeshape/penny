@@ -1,5 +1,4 @@
 import { ReviewList } from 'types/review';
-import { TrustpilotReviewList } from 'types/trustpilot';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -2424,7 +2423,13 @@ export const trustpilotPageData: ReviewList = {
   hasNextPage: true
 };
 
-export const trustpilotPageDataEmpty: TrustpilotReviewList = {
+export const trustpilotPageDataEmpty: ReviewList = {
+  stats: {
+    average: 0,
+    count: 0
+  },
+  perPage: 0,
+  totalPages: 0,
   items: [],
-  nextPage: false
+  hasNextPage: false
 };
