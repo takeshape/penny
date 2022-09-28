@@ -1,5 +1,35 @@
 import { gql } from '@apollo/client';
 
+const ReviewsIoFragment = gql`
+  fragment ReviewsIoReviews on ReviewsIo_ListProductReviewsResponse {
+    stats {
+      average
+      count
+    }
+    reviews {
+      data {
+        product_review_id
+        rating
+        title
+        review
+        date_created
+        timeago
+        reviewer {
+          first_name
+          last_name
+          verified_buyer
+          address
+          profile_picture
+          gravatar
+        }
+      }
+      per_page
+      current_page
+      total
+    }
+  }
+`;
+
 export const ProductPageShopifyProductHandlesQuery = gql`
   query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
     products: productsWithTtl(first: $first, after: $after, sortKey: ID) {
@@ -16,6 +46,7 @@ export const ProductPageShopifyProductHandlesQuery = gql`
 `;
 
 export const ProductPageShopifyProductQuery = gql`
+  ${ReviewsIoFragment}
   query ProductPageShopifyProduct($handle: String!, $reviewsPerPage: Int, $trustpilotReviewsPerPage: Int) {
     product: productByHandleWithTtl(handle: $handle) {
       id
@@ -27,6 +58,7 @@ export const ProductPageShopifyProductQuery = gql`
       requiresSellingPlan
       trustpilotReviews(perPage: $trustpilotReviewsPerPage) {
         productReviews {
+          id
           content
           stars
           createdAt
@@ -42,6 +74,11 @@ export const ProductPageShopifyProductQuery = gql`
         starsAverage
         numberOfReviews {
           total
+          fiveStars
+          fourStars
+          threeStars
+          twoStars
+          oneStar
         }
       }
       takeshape {
@@ -120,31 +157,7 @@ export const ProductPageShopifyProductQuery = gql`
         }
       }
       reviews(per_page: $reviewsPerPage) {
-        stats {
-          average
-          count
-        }
-        reviews {
-          data {
-            product_review_id
-            rating
-            title
-            review
-            date_created
-            timeago
-            reviewer {
-              first_name
-              last_name
-              verified_buyer
-              address
-              profile_picture
-              gravatar
-            }
-          }
-          per_page
-          current_page
-          total
-        }
+        ...ReviewsIoReviews
       }
       featuredImage {
         id
@@ -267,32 +280,19 @@ export const ProductPageShopifyProductQuery = gql`
 `;
 
 export const ProductPageReviewPageQuery = gql`
+  ${ReviewsIoFragment}
   query ProductPageReviewPageQuery($sku: String!, $page: Int!, $perPage: Int!) {
     reviewData: ReviewsIo_listProductReviews(sku: $sku, page: $page, per_page: $perPage) {
-      ratings
-      reviews {
-        data {
-          reviewer {
-            profile_picture
-            gravatar
-            first_name
-            last_name
-            verified_buyer
-          }
-          title
-          rating
-          review
-          date_created
-        }
-      }
+      ...ReviewsIoReviews
     }
   }
 `;
 
 export const TrustpilotProductPageReviewPageQuery = gql`
   query TrustpilotProductPageReviewPageQuery($sku: [String!], $page: Int!, $perPage: Int!) {
-    reviewData: getTrustpilotProductReviews(sku: $sku, page: $page, perPage: $perPage) {
+    reviews: Trustpilot_listProductReviews(sku: $sku, page: $page, perPage: $perPage) {
       productReviews {
+        id
         content
         stars
         createdAt
@@ -302,6 +302,22 @@ export const TrustpilotProductPageReviewPageQuery = gql`
       }
       links {
         rel
+      }
+    }
+    summary: Trustpilot_getProductReviewsSummary(sku: $sku) {
+      starsAverage
+      numberOfReviews {
+        total
+        fiveStars
+        fourStars
+        threeStars
+        twoStars
+        oneStar
+      }
+      links {
+        rel
+        href
+        method
       }
     }
   }

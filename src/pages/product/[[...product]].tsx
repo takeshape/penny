@@ -20,8 +20,7 @@ import {
   getProductPageParams,
   getProductReviews,
   getReviewHighlights,
-  getTrustpilotProductReviews,
-  getTrustpilotReviewsSummary
+  getTrustpilotProductReviews
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
 import { getLayoutData } from 'layouts/getLayoutData';
@@ -46,7 +45,6 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   reviewHighlights,
   reviewList,
   trustpilotReviewList,
-  trustpilotSummary,
   details,
   policies,
   breadcrumbs
@@ -75,7 +73,6 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         reviewHighlights={reviewHighlights}
         reviewList={reviewList}
         trustpilotReviewList={trustpilotReviewList}
-        trustpilotSummary={trustpilotSummary}
         details={details}
         policies={policies}
         reviewsPerPage={reviewsIoReviewsPerPage}
@@ -131,7 +128,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       reviewHighlights: getReviewHighlights(data),
       reviewList: getProductReviews(data),
       trustpilotReviewList: getTrustpilotProductReviews(data),
-      trustpilotSummary: getTrustpilotReviewsSummary(data),
       details: getDetails(data),
       policies: getPolicies(data),
       breadcrumbs: getBreadcrumbs(data)

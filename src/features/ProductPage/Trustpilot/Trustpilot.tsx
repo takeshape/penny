@@ -2,7 +2,7 @@ import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import NextImage from 'components/NextImage';
 import Link from 'next/link';
-import { TrustpilotReviewList, TrustpilotSummary } from 'types/trustpilot';
+import { ReviewList } from 'types/review';
 import { TrustpilotLoading } from './TrustpilotLoading';
 import { TrustpilotStars } from './TrustpilotStars';
 
@@ -10,16 +10,15 @@ export const readOnlyReviews = true;
 export const useReviewsFromProductQuery = false;
 
 export interface TrustpilotProps {
-  trustpilotSummary: TrustpilotSummary;
   error: boolean;
-  currentPageData: TrustpilotReviewList | null;
+  currentPageData: ReviewList | null;
   currentPage: number;
   handleNext: () => void;
   handlePrevious: () => void;
 }
 
-export const Trustpilot = (props: TrustpilotProps) => {
-  const { trustpilotSummary, error, currentPageData, currentPage, handleNext, handlePrevious } = props;
+export const Trustpilot = ({ error, currentPageData, currentPage, handleNext, handlePrevious }: TrustpilotProps) => {
+  const { stats } = currentPageData ?? {};
 
   if (error) {
     return <Alert status="warn" primaryText="Could not load Trustpilot reviews." />;
@@ -29,14 +28,14 @@ export const Trustpilot = (props: TrustpilotProps) => {
     <section id="reviews" aria-labelledby="reviews-heading" className="bg-background">
       <div className="grid grid-cols-2 gap-1 mb-6">
         <div className="flex items-center">
-          {trustpilotSummary.average && (
+          {stats?.average && (
             <>
-              <TrustpilotStars stars={trustpilotSummary.average} width={200} />
-              <span className="text-2xl font-bold pl-4 pr-2 inline-block">{trustpilotSummary.average}</span> / 5
+              <TrustpilotStars stars={stats.average} width={200} />
+              <span className="text-2xl font-bold pl-4 pr-2 inline-block">{stats.average}</span> / 5
               <span className="text-body-500 pl-2 pr-2"> • </span>
             </>
           )}
-          <span className="font-bold pr-1">{trustpilotSummary.total}</span> reviews
+          <span className="font-bold pr-1">{stats?.count}</span> reviews
         </div>
         <div className="text-right">
           <Link href="https://trustpilot.com">
@@ -50,7 +49,7 @@ export const Trustpilot = (props: TrustpilotProps) => {
           </Link>
         </div>
       </div>
-      {trustpilotSummary.average && (
+      {stats?.average && (
         <>
           <hr />
           {!currentPageData && <TrustpilotLoading />}
@@ -59,11 +58,11 @@ export const Trustpilot = (props: TrustpilotProps) => {
               {currentPageData.items.map((item) => (
                 <div key={item.id} className="mt-3 mb-4">
                   <div className="grid grid-cols-2 gap-1 mb-2">
-                    <div>{item.consumer.displayName}</div>
+                    <div>{item.reviewer.name}</div>
                     <div className="text-right">{item.createdAt}</div>
                   </div>
-                  <TrustpilotStars stars={item.stars} width={125} />
-                  <div className="mt-2">{item.content}</div>
+                  <TrustpilotStars stars={item.rating} width={125} />
+                  <div className="mt-2">{item.body}</div>
                   <hr className="mt-4" />
                 </div>
               ))}
@@ -79,7 +78,7 @@ export const Trustpilot = (props: TrustpilotProps) => {
           </Button>
           <Button
             className="h-8 px-4 text-sm"
-            disabled={!currentPageData || !currentPageData.nextPage}
+            disabled={!currentPageData || !currentPageData.hasNextPage}
             onClick={handleNext}
           >
             Next

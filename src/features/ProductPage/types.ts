@@ -3,12 +3,7 @@ import { SetRequired } from 'type-fest';
 import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
 import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
-import {
-  ProductPageShopifyProductResponse,
-  ReviewsIo_ListProductReviewsResponse,
-  Shopify_Product,
-  Shopify_ProductConnection
-} from 'types/takeshape';
+import { ProductPageShopifyProductResponse, Shopify_Product, Shopify_ProductConnection } from 'types/takeshape';
 import { TrustpilotReviewList } from 'types/trustpilot';
 import { NonNullablePath } from 'types/util';
 
@@ -30,7 +25,7 @@ export type ProductPageDetail = {
   image: {
     url: string;
     altText: string;
-  };
+  } | null;
   description: string;
 };
 
@@ -46,7 +41,7 @@ export type ProductPagePolicy = {
   image: {
     url: string;
     altText: string;
-  };
+  } | null;
   description: string;
   name: string;
 };
@@ -78,7 +73,10 @@ export type ProductPageProduct = SetRequired<
   | 'hasSubscriptionPurchaseOption'
   | 'hasStock'
 >;
-export type ProductPageReviewsIoReviews = ReviewsIo_ListProductReviewsResponse;
+
+export type ResponseReviewsIoReviewList = NonNullablePath<ProductPageShopifyProductResponse, ['product', 'reviews']>;
+export type ResponseReviewsIoReview = NonNullablePath<ResponseReviewsIoReviewList, [0]>;
+
 export type ProductPageReviewsReviewList = ReviewList;
 export type ProductPageReviewsReview = Review;
 export type ProductPageReviewHighlights = ReviewHighlights;

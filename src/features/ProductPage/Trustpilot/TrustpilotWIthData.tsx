@@ -1,13 +1,12 @@
-import { useLazyQuery } from '@apollo/client';
 import { trustpilotReviewsPerPage } from 'config';
 import { TrustpilotProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
-import { getTrustpilotProductReviewsPage } from 'features/ProductPage/transforms';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReviewList } from 'types/review';
 import {
   TrustpilotProductPageReviewPageQueryResponse,
   TrustpilotProductPageReviewPageQueryVariables
 } from 'types/takeshape';
-import { TrustpilotReviewList, TrustpilotSummary } from 'types/trustpilot';
+import { useLazyQueryWithTransform } from 'utils/query';
 import { Trustpilot } from './Trustpilot';
 
 export const readOnlyReviews = true;
@@ -15,16 +14,16 @@ export const useReviewsFromProductQuery = false;
 
 export interface TrustpilotProps {
   sku: string;
-  trustpilotReviewList: TrustpilotReviewList;
-  trustpilotSummary: TrustpilotSummary;
+  reviewList: ReviewList;
 }
 
-export const TrustpilotWithData = ({ sku, trustpilotSummary, trustpilotReviewList }: TrustpilotProps) => {
+export const TrustpilotWithData = ({ sku, reviewList }: TrustpilotProps) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [loadReviews, { data: pageData, error }] = useLazyQuery<
+  const [loadReviews, { transformedData: pageData, error }] = useLazyQueryWithTransform<
     TrustpilotProductPageReviewPageQueryResponse,
-    TrustpilotProductPageReviewPageQueryVariables
+    TrustpilotProductPageReviewPageQueryVariables,
+    ReviewList
   >(TrustpilotProductPageReviewPageQuery);
 
   useEffect(() => {
@@ -43,11 +42,11 @@ export const TrustpilotWithData = ({ sku, trustpilotSummary, trustpilotReviewLis
   // Otherwise we query for the requested page.
   const currentPageData = useMemo(() => {
     if (currentPage === 1) {
-      return trustpilotReviewList;
+      return reviewList;
     }
 
-    return pageData ? getTrustpilotProductReviewsPage(pageData) : null;
-  }, [currentPage, pageData, trustpilotReviewList]);
+    return pageData ?? null;
+  }, [currentPage, pageData, reviewList]);
 
   const handleNext = useCallback(() => {
     setCurrentPage(currentPage + 1);
@@ -61,7 +60,6 @@ export const TrustpilotWithData = ({ sku, trustpilotSummary, trustpilotReviewLis
 
   return (
     <Trustpilot
-      trustpilotSummary={trustpilotSummary}
       error={Boolean(error)}
       currentPageData={currentPageData}
       currentPage={currentPage}

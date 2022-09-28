@@ -1,18 +1,14 @@
 export type ReviewReviewer = {
-  firstName: string;
-  lastName: string;
-  verifiedBuyer: string;
-  address: string;
+  name: string;
   imageUrl: string | null;
 };
 
 export type Review = {
-  id: number;
+  id: string;
   rating: number;
   title: string;
   body: string;
   createdAt: string;
-  timeAgo: string;
   reviewer: ReviewReviewer;
 };
 
@@ -30,9 +26,10 @@ export type ReviewList = {
   stats: ReviewStats;
   rollup?: ReviewRollup[];
   perPage: number;
-  currentPage: number;
+  currentPage?: number;
   totalPages: number;
   items: Review[];
+  hasNextPage: boolean;
 };
 
 export type ReviewHighlights = {

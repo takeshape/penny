@@ -3,7 +3,7 @@ import { LineItemAttributes } from 'types/takeshape';
 import { isNotNullish } from 'utils/types';
 
 export function getProductLineItemAttributes(
-  lineItemProperties?: LineItemAttributes
+  lineItemProperties: Pick<LineItemAttributes, 'attributes'> | null
 ): ProductLineItemAttribute[] | null {
   if (!lineItemProperties) {
     return null;

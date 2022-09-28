@@ -1543,7 +1543,7 @@
       "shape": "PaginatedList<LineItemAttributes>",
       "description": "Returns a list LineItemAttributes in natural order."
     },
-    "getTrustpilotProductReviews": {
+    "Trustpilot_listProductReviews": {
       "args": {
         "type": "object",
         "properties": {
@@ -1643,6 +1643,42 @@
         }
       },
       "shape": "TrustpilotProductReviews"
+    },
+    "Trustpilot_getProductReviewsSummary": {
+      "args": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The sku of the product. Optional only if productUrl is provided."
+          }
+        }
+      },
+      "resolver": {
+        "name": "rest:get",
+        "service": "trustpilot",
+        "path": "/",
+        "searchParams": {
+          "ops": [
+            {
+              "path": "sku",
+              "mapping": "$args.sku"
+            }
+          ]
+        },
+        "options": {
+          "retry": {
+            "limit": 10,
+            "statusCode": [
+              429
+            ]
+          }
+        }
+      },
+      "shape": "TrustpilotProductReviewsSummary"
     },
     "Recharge_getMyPaymentMethods": {
       "resolver": {
@@ -6780,7 +6816,11 @@
                     "displayName": {
                       "type": "string"
                     }
-                  }
+                  },
+                  "required": [
+                    "id",
+                    "displayName"
+                  ]
                 },
                 "language": {
                   "type": "string"
@@ -6797,7 +6837,14 @@
                     "@ref": "local:TrustpilotAttachment"
                   }
                 }
-              }
+              },
+              "required": [
+                "id",
+                "createdAt",
+                "stars",
+                "content",
+                "consumer"
+              ]
             }
           },
           "links": {
@@ -6806,7 +6853,11 @@
               "@ref": "local:TrustpilotLink"
             }
           }
-        }
+        },
+        "required": [
+          "productReviews",
+          "links"
+        ]
       }
     },
     "TrustpilotAttributeRating": {
@@ -6907,10 +6958,10 @@
               "oneStar": {
                 "type": "integer"
               },
-              "twoStar": {
+              "twoStars": {
                 "type": "integer"
               },
-              "threeStar": {
+              "threeStars": {
                 "type": "integer"
               },
               "fourStars": {
@@ -6919,7 +6970,15 @@
               "fiveStars": {
                 "type": "integer"
               }
-            }
+            },
+            "required": [
+              "total",
+              "oneStar",
+              "twoStars",
+              "threeStars",
+              "fourStars",
+              "fiveStars"
+            ]
           },
           "links": {
             "type": "array",
@@ -6927,7 +6986,12 @@
               "@ref": "local:TrustpilotLink"
             }
           }
-        }
+        },
+        "required": [
+          "starsAverage",
+          "numberOfReviews",
+          "links"
+        ]
       }
     },
     "Recharge_PaymentMethod": {

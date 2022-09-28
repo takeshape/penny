@@ -1,10 +1,9 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
 import { enableReviewsIo, enableTrustpilot } from 'config';
-import formatRelative from 'date-fns/formatRelative';
 import { GetStaticPathsResult } from 'next';
 import { getProductLineItemAttributes } from 'transforms/product';
-import { getReview, getStats } from 'transforms/reviewsIo';
+import { getReview, getReviewList, getStats } from 'transforms/reviewsIo';
 import {
   createImageGetter,
   getCollectionUrl,
@@ -14,17 +13,17 @@ import {
   getProductVariants,
   getSeo
 } from 'transforms/shopify';
+import { getReviewList as getTrustpilotReviewList } from 'transforms/trustpilot';
 import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
 import {
   ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
   Shopify_MoneyV2,
-  TrustpilotProductPageReviewPageQueryResponse,
-  TrustpilotProductReviews,
-  TrustpilotProductReviewsSummary
+  TrustpilotProductPageReviewPageQueryResponse
 } from 'types/takeshape';
-import { TrustpilotSummary } from 'types/trustpilot';
+import { DeepRequired } from 'types/util';
+import { isNotNullish } from 'utils/types';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -36,10 +35,8 @@ import {
   ProductPageRelatedProductsProduct,
   ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
-  ProductPageReviewsIoReviews,
   ProductPageReviewsReviewList,
-  ResponseCollection,
-  TrustpilotProductPageReviewsReviewList
+  ResponseCollection
 } from './types';
 
 export function getProduct(response: ProductPageShopifyProductResponse): ProductPageProduct | null {
@@ -71,38 +68,7 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: shopifyProduct.totalInventory > 0,
     variantOptions: getProductVariantOptions(shopifyProduct.options, variants),
-    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape.lineItemAttributes)
-  };
-}
-
-export function getReviewList(
-  reviewsioReviews?: Pick<ProductPageReviewsIoReviews, 'stats' | 'reviews'>
-): ProductPageReviewsReviewList {
-  const { stats, reviews } = reviewsioReviews ?? {};
-
-  return {
-    stats: getStats(stats),
-    currentPage: reviews?.current_page ?? null,
-    totalPages: reviews?.total && reviews?.per_page ? Math.ceil(reviews.total / reviews.per_page) : null,
-    perPage: reviews?.per_page ?? null,
-    items: reviews?.data?.map(getReview) ?? []
-  };
-}
-
-export function getTrustpilotReviewList(reviews: TrustpilotProductReviews): TrustpilotProductPageReviewsReviewList {
-  return {
-    items: reviews.productReviews.map((review) => {
-      return {
-        id: `${review.consumer.displayName}-${review.createdAt}`,
-        createdAt: formatRelative(new Date(review.createdAt), Date.now()),
-        stars: review.stars,
-        content: review.content,
-        consumer: {
-          displayName: review.consumer.displayName
-        }
-      };
-    }),
-    nextPage: reviews.links.some((link) => link.rel === 'next-page')
+    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape?.lineItemAttributes ?? null) ?? []
   };
 }
 
@@ -118,47 +84,26 @@ export function getProductReviewsPage(
   return getReviewList(reviews);
 }
 
-export function getTrustpilotSummary(summaryData: TrustpilotProductReviewsSummary): TrustpilotSummary {
-  const total = summaryData.numberOfReviews.total;
-
-  return {
-    average: total === 0 ? null : summaryData.starsAverage,
-    total
-  };
-}
-
 export function getTrustpilotProductReviewsPage(
   response?: TrustpilotProductPageReviewPageQueryResponse
-): TrustpilotProductPageReviewsReviewList | null {
-  const reviews = response?.reviewData;
-
-  if (!reviews) {
+): ProductPageReviewsReviewList | null {
+  if (!response?.reviews) {
     return null;
   }
 
-  return getTrustpilotReviewList(reviews);
+  const { summary, reviews } = response;
+  return getTrustpilotReviewList(reviews, summary);
 }
 
 export function getTrustpilotProductReviews(
   response?: ProductPageShopifyProductResponse
-): TrustpilotProductPageReviewsReviewList | null {
-  const reviews = response?.product?.trustpilotReviews;
-
-  if (!reviews) {
+): ProductPageReviewsReviewList | null {
+  if (!response?.product?.trustpilotReviews) {
     return null;
   }
 
-  return getTrustpilotReviewList(reviews);
-}
-
-export function getTrustpilotReviewsSummary(response?: ProductPageShopifyProductResponse): TrustpilotSummary | null {
-  const summary = response?.product?.trustpilotReviewsSummary;
-
-  if (!summary) {
-    return null;
-  }
-
-  return getTrustpilotSummary(summary);
+  const { trustpilotReviewsSummary, trustpilotReviews } = response?.product ?? {};
+  return getTrustpilotReviewList(trustpilotReviews, trustpilotReviewsSummary);
 }
 
 export function getProductReviews(response?: ProductPageShopifyProductResponse): ProductPageReviewsReviewList | null {
@@ -175,12 +120,16 @@ export function getReviewHighlights(response: ProductPageShopifyProductResponse)
   const { stats, reviews } = response?.product?.reviews ?? {};
 
   return {
-    stats: getStats(stats),
-    featured: reviews?.data?.slice(0, 5).map(getReview) ?? []
+    stats: getStats(stats ?? null),
+    featured:
+      reviews?.data
+        ?.slice(0, 5)
+        .map((review) => review && getReview(review))
+        .filter(isNotNullish) ?? []
   };
 }
 
-export function getPolicies(response: ProductPageShopifyProductResponse): ProductPagePolicies | null {
+export function getPolicies(response: ProductPageShopifyProductResponse | null): ProductPagePolicies | null {
   const policies = response?.product?.takeshape?.policies;
 
   if (!policies) {
@@ -189,17 +138,19 @@ export function getPolicies(response: ProductPageShopifyProductResponse): Produc
 
   return {
     policies: policies.policies.map<ProductPagePolicy>((policy) => ({
-      name: policy.nameHtml.replace(/<\/?p>/g, ''),
-      description: policy.descriptionHtml.replace(/<\/?p>/g, ''),
-      image: {
-        url: getImageUrl(policy.image.path),
-        altText: policy.image.description ?? ''
-      }
+      name: policy?.nameHtml?.replace(/<\/?p>/g, '') ?? '',
+      description: policy?.descriptionHtml?.replace(/<\/?p>/g, '') ?? '',
+      image: policy?.image?.path
+        ? {
+            url: getImageUrl(policy.image.path),
+            altText: policy.image.description ?? ''
+          }
+        : null
     }))
   };
 }
 
-export function getDetails(response: ProductPageShopifyProductResponse): ProductPageDetails | null {
+export function getDetails(response: ProductPageShopifyProductResponse | null): ProductPageDetails | null {
   const details = response?.product?.takeshape?.details;
 
   if (!details) {
@@ -209,16 +160,19 @@ export function getDetails(response: ProductPageShopifyProductResponse): Product
   return {
     text: {
       // Using canvas fields to support inline tags only
-      primary: details.text.primaryHtml.replace(/<\/?p>/g, ''),
-      secondary: details.text.secondaryHtml.replace(/<\/?p>/g, '')
+      primary: details.text?.primaryHtml?.replace(/<\/?p>/g, '') ?? '',
+      secondary: details.text?.secondaryHtml?.replace(/<\/?p>/g, '') ?? ''
     },
-    details: details.details.map((detail) => ({
-      image: {
-        url: getImageUrl(detail.image.path),
-        altText: detail.image.description ?? ''
-      },
-      description: detail.descriptionHtml.replace(/<\/?p>/g, '')
-    }))
+    details:
+      details.details.map((detail) => ({
+        image: detail.image?.path
+          ? {
+              url: getImageUrl(detail.image.path),
+              altText: detail.image.description ?? ''
+            }
+          : null,
+        description: detail.descriptionHtml?.replace(/<\/?p>/g, '') ?? ''
+      })) ?? []
   };
 }
 
@@ -313,8 +267,10 @@ export function getRelatedProductList(
     .slice(0, limit);
 }
 
-function collectionHasParent(collection: ResponseCollection) {
-  return Boolean(collection.takeshape?.parent);
+function isChildCollection(
+  collection: ResponseCollection
+): collection is DeepRequired<ResponseCollection, ['takeshape', 'parent', 'shopifyCollection']> {
+  return Boolean(collection.takeshape?.parent?.shopifyCollection);
 }
 
 function collectionHasTypeEquals(collection: ResponseCollection) {
@@ -338,20 +294,20 @@ export function getBreadcrumbs(response: ProductPageShopifyProductResponse): Pro
 
   // 1. (BEST) HAS PARENT & HAS RULES & HAS TYPE EQUALS & HAS HIGHEST PRODUCT COUNT
   let match = sortedCollections.find((collection) => {
-    return collectionHasParent(collection) && collectionHasTypeEquals(collection);
+    return isChildCollection(collection) && collectionHasTypeEquals(collection);
   });
 
   if (!match) {
     // 2. HAS PARENT & HAS RULES & HAS HIGHEST PRODUCT COUNT
     match = sortedCollections.find((collection) => {
-      return collectionHasParent(collection) && collectionHasRules(collection);
+      return isChildCollection(collection) && collectionHasRules(collection);
     });
   }
 
   if (!match) {
     // 3. HAS PARENT & HAS HIGHEST PRODUCT COUNT
     match = sortedCollections.find((collection) => {
-      return collectionHasParent(collection);
+      return isChildCollection(collection);
     });
   }
 
@@ -380,7 +336,7 @@ export function getBreadcrumbs(response: ProductPageShopifyProductResponse): Pro
 
   const breadcrumbs: ProductPageBreadcrumbs = [];
 
-  if (collectionHasParent(match)) {
+  if (isChildCollection(match)) {
     breadcrumbs.push({
       id: match.takeshape.parent.shopifyCollection.id,
       name: match.takeshape.parent.breadcrumbTitle ?? match.takeshape.parent.shopifyCollection.title,
@@ -392,7 +348,7 @@ export function getBreadcrumbs(response: ProductPageShopifyProductResponse): Pro
     ...breadcrumbs,
     {
       id: match.id,
-      name: match.takeshape.breadcrumbTitle ?? match.title,
+      name: match.takeshape?.breadcrumbTitle ?? match.title,
       href: getCollectionUrl(match.handle)
     },
     {
