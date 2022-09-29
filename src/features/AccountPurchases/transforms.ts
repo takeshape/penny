@@ -130,7 +130,7 @@ export function getLineItems(order: ResponseOrder): LineItem[] {
   return order.lineItems.edges.map(({ node }) => getLineItem(node));
 }
 
-export function getOrders(response: GetMyAdminCustomerOrdersQueryResponse | undefined): Order[] | null {
+export function getOrders(response?: GetMyAdminCustomerOrdersQueryResponse | null): Order[] | null {
   if (!response?.customer?.orders) {
     return null;
   }

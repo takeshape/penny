@@ -454,7 +454,7 @@ function getSubscriptionItem(rechargeSubscription: ResponseSubscription): AnySub
   };
 }
 
-export function getPaymentMethods(response: GetMyPaymentMethodsQueryResponse | undefined) {
+export function getPaymentMethods(response?: GetMyPaymentMethodsQueryResponse | null) {
   if (!response?.paymentMethods) {
     return null;
   }
@@ -470,9 +470,7 @@ export function getSubscription(response: GetMySubscriptionQueryResponse): AnySu
   return getSubscriptionItem(response.subscription);
 }
 
-export function getSubscriptionList(
-  response: GetMySubscriptionListQueryResponse | undefined
-): AnySubscription[] | null {
+export function getSubscriptionList(response?: GetMySubscriptionListQueryResponse | null): AnySubscription[] | null {
   if (!response?.subscriptions) {
     return null;
   }

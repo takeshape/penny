@@ -1,6 +1,7 @@
 import Alert from 'components/Alert/Alert';
 import CardPanel from 'components/Card/Panel/Panel';
 import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
+import { AnySubscription } from 'features/AccountSubscriptions/types';
 import { useMemo } from 'react';
 import { GetMySubscriptionListQueryResponse } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
@@ -13,10 +14,14 @@ import { getSubscriptionList } from './transforms';
 import { isActiveSubscription, isEndedSubscription } from './utils';
 
 export const AccountSubscriptions = () => {
-  const { data, refetch, error } =
-    useAuthenticatedQuery<GetMySubscriptionListQueryResponse>(GetMySubscriptionListQuery);
+  const {
+    transformedData: subscriptions,
+    refetch,
+    error
+  } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse, {}, AnySubscription[]>(GetMySubscriptionListQuery, {
+    transform: { data: getSubscriptionList }
+  });
 
-  const subscriptions = useMemo(() => getSubscriptionList(data), [data]);
   const activeSubscriptions = useMemo(() => subscriptions?.filter(isActiveSubscription) ?? [], [subscriptions]);
   const endedSubscriptions = useMemo(() => subscriptions?.filter(isEndedSubscription) ?? [], [subscriptions]);
 

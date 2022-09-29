@@ -26,7 +26,7 @@ import {
   UpdateMyPaymentMethodMutation
 } from '../../queries';
 import { getPaymentMethods } from '../../transforms';
-import { RefetchSubscriptions } from '../../types';
+import { RefetchSubscriptions, SubscriptionPaymentMethod } from '../../types';
 
 export interface PaymentMethodFormProps extends ModalProps {
   defaultPaymentMethodId?: string;
@@ -58,10 +58,11 @@ export const PaymentMethodForm = ({
 
   const [isPaymentMethodAdded, setIsPaymentMethodAdded] = useState(false);
 
-  const [getMyPaymentMethods, { data: paymentMethodsResponse }] = useAuthenticatedLazyQuery<
+  const [getMyPaymentMethods, { transformedData: paymentMethods }] = useAuthenticatedLazyQuery<
     GetMyPaymentMethodsQueryResponse,
-    GetMyPaymentMethodsQueryVariables
-  >(GetMyPaymentMethodsQuery);
+    GetMyPaymentMethodsQueryVariables,
+    SubscriptionPaymentMethod[]
+  >(GetMyPaymentMethodsQuery, { transform: { data: getPaymentMethods } });
 
   const [sendUpdatePaymentEmail] = useAuthenticatedMutation<
     SendMyUpdatePaymentEmailMutationResponse,
@@ -72,8 +73,6 @@ export const PaymentMethodForm = ({
     UpdateMyPaymentMethodMutationResponse,
     UpdateMyPaymentMethodMutationVariables
   >(UpdateMyPaymentMethodMutation);
-
-  const paymentMethods = getPaymentMethods(paymentMethodsResponse);
 
   const handleFormSubmit = useCallback(
     async ({ paymentMethodId }: PaymentMethodFormValues) => {
