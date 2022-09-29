@@ -203,6 +203,7 @@ export const ProductPageShopifyProductQuery = gql`
             width
             height
             url
+            altText
           }
           price
           inventoryPolicy
@@ -223,52 +224,49 @@ export const ProductPageShopifyProductQuery = gql`
       }
       sellingPlanGroupCount
       sellingPlanGroups(first: 1) {
-        edges {
-          node {
-            sellingPlans(first: 5) {
-              edges {
-                node {
-                  id
-                  options
-                  pricingPolicies {
-                    ... on Shopify_SellingPlanFixedPricingPolicy {
-                      adjustmentType
-                      adjustmentValue {
-                        ... on Shopify_MoneyV2 {
-                          currencyCode
-                          amount
-                        }
-                        ... on Shopify_SellingPlanPricingPolicyPercentageValue {
-                          percentage
-                        }
-                      }
+        nodes {
+          sellingPlans(first: 5) {
+            nodes {
+              id
+              options
+              pricingPolicies {
+                ... on Shopify_SellingPlanFixedPricingPolicy {
+                  adjustmentType
+                  adjustmentValue {
+                    ... on Shopify_MoneyV2 {
+                      currencyCode
+                      amount
                     }
-                    ... on Shopify_SellingPlanRecurringPricingPolicy {
-                      adjustmentType
-                      adjustmentValue {
-                        ... on Shopify_MoneyV2 {
-                          currencyCode
-                          amount
-                        }
-                        ... on Shopify_SellingPlanPricingPolicyPercentageValue {
-                          percentage
-                        }
-                      }
+                    ... on Shopify_SellingPlanPricingPolicyPercentageValue {
+                      percentage
                     }
                   }
-                  billingPolicy {
-                    ... on Shopify_SellingPlanRecurringBillingPolicy {
-                      anchors {
-                        day
-                        month
-                        type
-                      }
-                      maxCycles
-                      minCycles
-                      intervalCount
-                      interval
+                }
+                ... on Shopify_SellingPlanRecurringPricingPolicy {
+                  adjustmentType
+                  adjustmentValue {
+                    ... on Shopify_MoneyV2 {
+                      currencyCode
+                      amount
+                    }
+                    ... on Shopify_SellingPlanPricingPolicyPercentageValue {
+                      percentage
                     }
                   }
+                }
+              }
+              billingPolicy {
+                ... on Shopify_SellingPlanRecurringBillingPolicy {
+                  anchors {
+                    day
+                    month
+                    type
+                    cutoffDay
+                  }
+                  maxCycles
+                  minCycles
+                  intervalCount
+                  interval
                 }
               }
             }
