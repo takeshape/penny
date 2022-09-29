@@ -6,14 +6,17 @@ export interface TruncateOptions {
 
 export const truncate = (str: string, options: TruncateOptions = {}) => {
   const { length = 30, separator, omission = '...' } = options;
+
   if (str.length < length) {
     return str;
   }
+
   const matches = typeof separator === 'object' ? Array.from(str.matchAll(separator)) : undefined;
+
   return (
     str
       .slice(0, length - omission.length)
-      .split(separator ?? ' ')
+      .split(separator ?? '')
       .reduce((previous, current, index, array) => {
         if (Boolean(separator) && index === array.length - 1) {
           return previous;
