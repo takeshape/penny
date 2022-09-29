@@ -93,6 +93,7 @@ Here are the frameworks, language and styling options we went with for this buil
 - [Apollo Client](https://www.apollographql.com/docs/react/) for efficient GraphQL queries against TakeShape
 - [Jotai](https://jotai.org/) for optimized component state management
 - [Storybook](https://storybook.js.org/) for rapid UI prototyping and review
+- [Tailwind CSS](https://tailwindcss.com/) for beautiful styles.
 
 ### Continuous Integration
 
