@@ -49,7 +49,11 @@ type ShopifyAdminSellingPlan = Pick<Shopify_SellingPlan, 'id' | 'options'> & {
   >;
 };
 
-type ShopifyAdminProduct = Pick<Shopify_Product, 'requiresSellingPlan' | 'sellingPlanGroupCount' | 'title'> & {
+type ShopifyAdminProduct = Pick<
+  Shopify_Product,
+  'requiresSellingPlan' | 'sellingPlanGroupCount' | 'title' | 'hasOnlyDefaultVariant'
+> & {
+  featuredImage?: ShopifyImage | null;
   sellingPlanGroups: {
     nodes: {
       sellingPlans: {
@@ -100,48 +104,6 @@ function getDiscount(amount: number, { adjustmentType, adjustmentValue }: Shopif
         hasDiscount: amount !== amountAfterDiscount
       };
     }
-  }
-}
-
-function getSubscriptionInterval({
-  interval,
-  intervalCount,
-  maxCycles,
-  minCycles,
-  anchors
-}: Pick<
-  Shopify_SellingPlanRecurringBillingPolicy,
-  'interval' | 'intervalCount' | 'maxCycles' | 'minCycles' | 'anchors'
->) {
-  const subscriptionInterval = {
-    anchor: anchors[0],
-    intervalCount,
-    maxCycles,
-    minCycles
-  };
-
-  switch (interval) {
-    case 'WEEK':
-      return {
-        ...subscriptionInterval,
-        interval: 'WEEK' as const
-      };
-    case 'MONTH':
-      return {
-        ...subscriptionInterval,
-        interval: 'MONTH' as const
-      };
-    case 'YEAR':
-      return {
-        ...subscriptionInterval,
-        interval: 'YEAR' as const
-      };
-    case 'DAY':
-    default:
-      return {
-        ...subscriptionInterval,
-        interval: 'DAY' as const
-      };
   }
 }
 
@@ -226,20 +188,25 @@ export function getProductVariantPriceOptions(
 
 function getVariant(shopifyProduct: ShopifyAdminProduct, shopifyVariant: ShopifyAdminProductVariant): ProductVariant {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
-  const { id, title, image, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } =
-    shopifyVariant;
+  const { hasOnlyDefaultVariant } = shopifyProduct;
+  const { id, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } = shopifyVariant;
+
+  const title = hasOnlyDefaultVariant ? shopifyProduct.title : shopifyVariant.title;
+  const image = hasOnlyDefaultVariant ? shopifyProduct.featuredImage : shopifyVariant.image;
+  const options = hasOnlyDefaultVariant ? [] : selectedOptions.map(({ name, value }) => ({ name, value }));
 
   return {
     id,
     name: title,
-    description: title, // use a metafield
+    // TODO use a metafield
+    description: title,
     prices: getProductVariantPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
     image: getImage(image),
     quantityAvailable: sellableOnlineQuantity,
     currentlyNotInStock: sellableOnlineQuantity === 0 && inventoryPolicy == 'CONTINUE',
     sku: sku ?? shopifyGidToId(id),
-    options: selectedOptions.map(({ name, value }) => ({ name, value }))
+    options
   };
 }
 
@@ -267,6 +234,11 @@ export function getProductVariantOptions(
   options: ShopifyAdminProductOption[],
   variants?: Pick<ProductVariant, 'options' | 'available'>[]
 ) {
+  // No options if there is only one variant
+  if (!variants || variants.length < 2) {
+    return [];
+  }
+
   return (
     options?.map(({ name, id, values }) => {
       return {
@@ -325,7 +297,7 @@ type ShopifyStorefrontProductVariant = Pick<
   | 'quantityAvailable'
   | 'priceV2'
 > & {
-  image?: Storefront.Image;
+  image?: ShopifyImage | null;
   description?: Pick<Storefront.Metafield, 'type' | 'value'> | null;
   sellingPlanAllocations: {
     nodes: {
@@ -336,7 +308,8 @@ type ShopifyStorefrontProductVariant = Pick<
   };
 };
 
-type ShopifyStorefrontProduct = Pick<Storefront.Product, 'requiresSellingPlan'> & {
+type ShopifyStorefrontProduct = Pick<Storefront.Product, 'title' | 'requiresSellingPlan'> & {
+  featuredImage?: ShopifyImage | null;
   variants: {
     nodes: ShopifyStorefrontProductVariant[];
   };
@@ -478,23 +451,26 @@ export function getStorefrontProductVariantPriceOptions(
   return prices;
 }
 
+/**
+ * Apparently the only way to match the admin boolean
+ */
+function getHasOnlyDefaultVariant({ variants }: ShopifyStorefrontProduct) {
+  return variants.nodes.length === 1 && variants.nodes[0].title === 'Default Title';
+}
+
 function getStorefrontProductVariant(
   shopifyProduct: ShopifyStorefrontProduct,
   shopifyVariant: ShopifyStorefrontProductVariant
 ): ProductVariant {
   const getImage = createImageGetter(`Image of ${shopifyVariant.title}`);
+  const hasOnlyDefaultVariant = getHasOnlyDefaultVariant(shopifyProduct);
 
-  const {
-    id,
-    title,
-    description,
-    image,
-    availableForSale,
-    currentlyNotInStock,
-    selectedOptions,
-    sku,
-    quantityAvailable
-  } = shopifyVariant;
+  const { id, description, availableForSale, currentlyNotInStock, selectedOptions, sku, quantityAvailable } =
+    shopifyVariant;
+
+  const title = hasOnlyDefaultVariant ? shopifyProduct.title : shopifyVariant.title;
+  const image = hasOnlyDefaultVariant ? shopifyProduct.featuredImage : shopifyVariant.image;
+  const options = hasOnlyDefaultVariant ? [] : selectedOptions.map(({ name, value }) => ({ name, value }));
 
   return {
     id,
@@ -502,11 +478,11 @@ function getStorefrontProductVariant(
     description: description?.value ?? title,
     prices: getStorefrontProductVariantPriceOptions(shopifyProduct, shopifyVariant),
     available: availableForSale || currentlyNotInStock,
-    image: shopifyVariant.image && getImage(image),
+    image: getImage(image),
     quantityAvailable: quantityAvailable ?? 0,
     currentlyNotInStock,
     sku: sku ?? shopifyGidToId(id),
-    options: selectedOptions.map(({ name, value }) => ({ name, value }))
+    options
   };
 }
 

@@ -56,6 +56,7 @@ export const ProductPageShopifyProductQuery = gql`
       descriptionHtml
       tags
       requiresSellingPlan
+      totalInventory
       trustpilotReviews(perPage: $trustpilotReviewsPerPage) {
         productReviews {
           id
@@ -192,8 +193,7 @@ export const ProductPageShopifyProductQuery = gql`
         description
       }
       publishedAt
-      totalVariants
-      totalInventory
+      hasOnlyDefaultVariant
       variants(first: 50) {
         nodes {
           id

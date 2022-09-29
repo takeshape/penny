@@ -99,7 +99,7 @@ export const Reviews = ({
           </div>
         </div>
 
-        {totalPages && (
+        {totalPages > 0 && (
           <div className="mt-12 flex items-center lg:col-start-6 lg:col-span-7 text-body-900">
             <div className="mr-2">
               Page {currentPage} of {totalPages}

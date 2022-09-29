@@ -61,7 +61,7 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     images: shopifyProduct.images?.edges?.map(({ node }) => getImage(node)) ?? [getImage()],
     priceMin: getPrice(shopifyProduct.priceRangeV2.minVariantPrice),
     priceMax: getPrice(shopifyProduct.priceRangeV2.maxVariantPrice),
-    variantsCount: shopifyProduct.totalVariants,
+    variantsCount: variants.length,
     variants,
     seo: getSeo(shopifyProduct),
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,

@@ -5,9 +5,9 @@ import classNames from 'utils/classNames';
 import { useHasStockFor } from 'utils/hooks/useHasStockFor';
 
 export interface ProductColorSelectProps {
-  value: string;
+  value: string | null;
   option: ProductVariantOption;
-  onChange: Dispatch<SetStateAction<string>>;
+  onChange: Dispatch<SetStateAction<string | null>>;
   selections: ProductVariantSelection[];
 }
 

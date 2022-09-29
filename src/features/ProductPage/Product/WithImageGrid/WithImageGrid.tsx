@@ -10,6 +10,7 @@ import { Product as TProduct } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
+import { isNotNullish } from 'utils/types';
 import { FeaturedReviews } from './FeaturedReviews';
 import { ImageGallery } from './ImageGallery';
 import { ReviewsCallout } from './ReviewsCallout';
@@ -58,7 +59,7 @@ export const ProductWithImageGrid = ({
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter(isNotNullish), [selectedColor, selectedSize]);
 
   const selectedVariant = useMemo(() => {
     if (selections.length) {
