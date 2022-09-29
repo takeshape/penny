@@ -25,7 +25,7 @@ export function getReview(review: TrustpilotReview): Review {
   return {
     id,
     rating: stars,
-    title: content,
+    title: null,
     body: content,
     createdAt: new Date(createdAt).toISOString(),
     reviewer: {

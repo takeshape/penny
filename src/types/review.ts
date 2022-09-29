@@ -6,7 +6,7 @@ export type ReviewReviewer = {
 export type Review = {
   id: string;
   rating: number;
-  title: string;
+  title: string | null;
   body: string;
   createdAt: string;
   reviewer: ReviewReviewer;
