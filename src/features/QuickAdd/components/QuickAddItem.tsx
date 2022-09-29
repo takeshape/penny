@@ -9,6 +9,7 @@ import { useSetAtom } from 'jotai';
 import { ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
+import { isNotNullish } from 'utils/types';
 import { QuickAddProduct } from '../types';
 
 export interface QuickAddItemProps {
@@ -44,7 +45,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter(isNotNullish), [selectedColor, selectedSize]);
 
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 
