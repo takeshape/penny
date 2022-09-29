@@ -5,7 +5,7 @@ export interface TruncateOptions {
 }
 
 export const truncate = (str: string, options: TruncateOptions = {}) => {
-  const { length = 30, separator, omission = '...' } = options;
+  const { length = 30, separator = '', omission = '...' } = options;
 
   if (str.length < length) {
     return str;
@@ -16,7 +16,7 @@ export const truncate = (str: string, options: TruncateOptions = {}) => {
   return (
     str
       .slice(0, length - omission.length)
-      .split(separator ?? '')
+      .split(separator)
       .reduce((previous, current, index, array) => {
         if (Boolean(separator) && index === array.length - 1) {
           return previous;
@@ -25,7 +25,7 @@ export const truncate = (str: string, options: TruncateOptions = {}) => {
           return current;
         }
 
-        const concatenated = previous + (matches ? matches[index - 1][0] : separator ?? '') + current;
+        const concatenated = previous + (matches ? matches[index - 1][0] : separator) + current;
         if (concatenated.length < length) {
           return concatenated;
         }
