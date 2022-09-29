@@ -251,20 +251,19 @@ function getRelatedProduct(
   };
 }
 
-export function getRelatedProductList(
-  response?: ProductPageRelatedProductsQueryResponse,
-  limit = 0
-): ProductPageRelatedProductsProduct[] | null {
-  let products = response?.products;
+export function getRelatedProductList(limit = 0) {
+  return (response?: ProductPageRelatedProductsQueryResponse | null): ProductPageRelatedProductsProduct[] | null => {
+    let products = response?.products;
 
-  if (!products) {
-    return null;
-  }
+    if (!products) {
+      return null;
+    }
 
-  return products
-    .map((node) => getRelatedProduct(node))
-    .filter((product) => product.hasStock)
-    .slice(0, limit);
+    return products
+      .map((node) => getRelatedProduct(node))
+      .filter((product) => product.hasStock)
+      .slice(0, limit);
+  };
 }
 
 function isChildCollection(

@@ -12,8 +12,7 @@ import { useAuthenticatedQuery } from 'utils/takeshape';
 const AccountRewardsPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
   const { transformedData: loyaltyCard } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse, {}, LoyaltyCard>(
     GetMyLoyaltyCardQuery,
-    {},
-    { data: getLoyaltyCard }
+    { transform: { data: getLoyaltyCard } }
   );
 
   if (!loyaltyCard) {
