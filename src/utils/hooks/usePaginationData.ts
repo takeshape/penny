@@ -3,14 +3,14 @@ import logger from 'logger';
 import { useRouter } from 'next/router';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-export type PaginationDataHookParsedPath = { page: number; cursor: string; direction: 'before' | 'after' };
+export type PaginationDataHookParsedPath = { page: number; cursor: string | null; direction: 'before' | 'after' };
 
 export type PaginationDataHookPageData = {
   pageInfo: {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor?: string;
-    endCursor?: string;
+    startCursor: string | null;
+    endCursor: string | null;
   };
 };
 
@@ -21,7 +21,7 @@ export type PaginationDataHookResultTuple<T> = [
     isLoadingPage: boolean;
     isLoadingNextPage: boolean;
     currentPage: number;
-    cachedPageData: RefObject<Map<number, T>>;
+    cachedPageData: RefObject<Map<number, T | null>>;
     currentPageData: T;
   }
 ];
@@ -31,7 +31,7 @@ export interface PaginationDataHooksOptions<T extends PaginationDataHookPageData
   query: DocumentNode;
   getVariables: (parsedPath: PaginationDataHookParsedPath) => Record<string, unknown>;
   initialPageData: T;
-  getPageData: (data: T) => T;
+  getPageData: (data: T) => T | null;
   isSamePageData: (a: T, b: T) => boolean;
   noPrefetch?: boolean;
 }
@@ -58,8 +58,12 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
   const [isLoadingNextPage, setIsLoadingNextPage] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(currentPath.page);
-  const cachedPageData = useRef<Map<number, T>>(new Map([[currentPath.page, initialPageData]]));
+  const cachedPageData = useRef<Map<number, T | null>>(new Map([[currentPath.page, initialPageData]]));
   const currentPageData = useMemo(() => cachedPageData.current.get(currentPage), [currentPage]);
+
+  if (!currentPageData) {
+    throw new Error('Could not load currentPageData');
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,7 +103,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
   }, [loadPage, setCurrentPage, currentPath]);
 
   const loadNextPage = useCallback(
-    async (cursor) => {
+    async (cursor: string) => {
       const page = currentPath.page + 1;
       setIsLoadingNextPage(true);
 
@@ -137,7 +141,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
       isSamePageData(currentPageData, cachedPage) &&
       !isLoadingNextPage
     ) {
-      loadNextPage(cachedPage.pageInfo.endCursor);
+      loadNextPage(cachedPage.pageInfo.endCursor ?? '');
     }
   }, [
     currentPath.page,

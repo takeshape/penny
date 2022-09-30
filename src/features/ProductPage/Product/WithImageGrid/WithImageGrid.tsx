@@ -5,19 +5,20 @@ import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react';
+import { PropsWithChildren, ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { Product as TProduct } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
+import { isNotNullish } from 'utils/types';
 import { FeaturedReviews } from './FeaturedReviews';
 import { ImageGallery } from './ImageGallery';
 import { ReviewsCallout } from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
   product: TProduct;
-  reviewHighlights?: ReviewHighlights;
-  breadcrumbs: Breadcrumb[];
+  reviewHighlights: ReviewHighlights | null;
+  breadcrumbs: Breadcrumb[] | null;
   showFeaturedReviews: boolean;
   showBreadcrumbs: boolean;
   showReviewsLink: boolean;
@@ -33,10 +34,16 @@ export const ProductWithImageGrid = ({
 }: PropsWithChildren<ProductWithImageGridProps>) => {
   const { name, descriptionHtml, images, variantOptions, hasStock } = product;
 
-  const initialVariant = useMemo(
-    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
-    [hasStock, product.variants]
-  );
+  const initialVariant = useMemo(() => {
+    if (hasStock) {
+      return product.variants.find((variant) => variant.available);
+    }
+    return product.variants[0];
+  }, [hasStock, product.variants]);
+
+  if (!initialVariant) {
+    throw new Error('Could not find initial variant');
+  }
 
   const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
     useVariantOption({
@@ -52,15 +59,18 @@ export const ProductWithImageGrid = ({
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter(isNotNullish), [selectedColor, selectedSize]);
 
   const selectedVariant = useMemo(() => {
     if (selections.length) {
       return getVariant(product.variants, selections);
     }
-
     return product.variants[0];
   }, [product, selections]);
+
+  if (!selectedVariant) {
+    throw new Error('No selected variant found');
+  }
 
   const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
 
@@ -74,7 +84,7 @@ export const ProductWithImageGrid = ({
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
-  const handleAddToCart = useCallback(
+  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
 

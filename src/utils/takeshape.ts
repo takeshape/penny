@@ -1,21 +1,24 @@
 import {
   ApolloClient,
   DocumentNode,
-  LazyQueryHookOptions,
-  MutationHookOptions,
   NormalizedCacheObject,
   OperationVariables,
-  QueryHookOptions,
-  TypedDocumentNode,
-  useLazyQuery,
-  useMutation,
-  useQuery
+  TypedDocumentNode
 } from '@apollo/client';
 import { getClientToken } from '@takeshape/next-auth-all-access/react';
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { JsonValue } from 'type-fest';
 import { createClient } from 'utils/apollo/client';
+import {
+  LazyQueryHookWithTransformOptions,
+  MutationHookWithTransformOptions,
+  QueryHookWithTranformOptions,
+  useLazyQueryWithTransform,
+  useMutationWithTransform,
+  useQueryWithTransform
+} from 'utils/query';
 import { createStaticClient } from './apollo/client';
 
 export function createAnonymousTakeshapeApolloClient() {
@@ -29,7 +32,7 @@ export function createAnonymousTakeshapeApolloClient() {
 
 export function useAuthenticatedClient() {
   const { data: session } = useSession();
-  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>(null);
+  const [client, setClient] = useState<ApolloClient<NormalizedCacheObject>>();
 
   useEffect(() => {
     if (session) {
@@ -37,7 +40,7 @@ export function useAuthenticatedClient() {
       setClient(
         createClient({
           uri: takeshapeApiUrl,
-          accessToken: clientToken?.accessToken,
+          accessToken: clientToken?.accessToken ?? '',
           accessTokenHeader: 'Authorization',
           accessTokenPrefix: 'Bearer'
         })
@@ -53,12 +56,13 @@ export function useAuthenticatedClient() {
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
+export function useAuthenticatedQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: QueryHookOptions<TData, TVariables> = {}
+  options: QueryHookWithTranformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
   const client = useAuthenticatedClient();
-  return useQuery(query, {
+
+  return useQueryWithTransform(query, {
     ...options,
     skip: !client,
     client
@@ -70,12 +74,13 @@ export function useAuthenticatedQuery<TData, TVariables = OperationVariables>(
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables>(
+export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: LazyQueryHookOptions<TData, TVariables> = {}
+  options: LazyQueryHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
   const client = useAuthenticatedClient();
-  return useLazyQuery(query, {
+
+  return useLazyQueryWithTransform(query, {
     ...options,
     client
   });
@@ -86,13 +91,11 @@ export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedMutation<TData, TVariables = OperationVariables>(
+export function useAuthenticatedMutation<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: MutationHookOptions<TData, TVariables> = {}
+  options: MutationHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
   const client = useAuthenticatedClient();
-  return useMutation(query, {
-    ...options,
-    client
-  });
+
+  return useMutationWithTransform(query, { ...options, client });
 }

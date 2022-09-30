@@ -17,7 +17,7 @@ const Meta: ComponentMeta<typeof AuthSignIn> = {
   }
 };
 
-const Template = (args) => <AuthSignIn {...args} />;
+const Template: ComponentStory<typeof AuthSignIn> = (args) => <AuthSignIn {...args} />;
 
 /**
  * TODO: When we can mock mutations we might want to show more states.

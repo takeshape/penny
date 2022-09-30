@@ -20,7 +20,7 @@ export const DeliveryDetails = ({ isOpen, onClose, onReportIssue, order }: Deliv
   let notesText2 = '';
 
   if (inTransitAt) {
-    notesText1 = `In transit as of ${format(new Date(estimatedDeliveryAt), 'PPPpp')}.`;
+    notesText1 = `In transit as of ${format(new Date(inTransitAt), 'PPPpp')}.`;
   }
 
   if (estimatedDeliveryAt) {

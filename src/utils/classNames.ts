@@ -1,5 +1,7 @@
-export function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+import { isString } from 'utils/types';
+
+export function classNames(...classes: (string | boolean | null | undefined)[]): string {
+  return classes.filter(Boolean).filter(isString).join(' ');
 }
 
 export default classNames;

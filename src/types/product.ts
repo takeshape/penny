@@ -82,7 +82,7 @@ export type ProductVariantOption = {
 
 export type ProductLineItemAttribute = {
   key: string;
-  values?: string[];
+  values: string[] | null;
 };
 
 export type ProductCore = {

@@ -1,3 +1,6 @@
+import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+import { NonNullablePath } from 'types/util';
+
 export type OrderStatus =
   | 'UNFULFILLED'
   | 'PARTIALLY_FULFILLED'
@@ -22,13 +25,13 @@ export interface LineItem {
   product: {
     id: string;
     url: string;
-  };
+  } | null;
   image: {
     url: string;
     height?: number;
     width?: number;
-    altText?: string;
-  };
+    altText: string;
+  } | null;
   price: {
     currencyCode: string;
     amount: number;
@@ -58,3 +61,8 @@ export interface Order {
   lineItems: LineItem[];
   fulfillments: Fulfillment[];
 }
+
+export type ResponseCustomer = NonNullablePath<GetMyAdminCustomerOrdersQueryResponse, ['customer']>;
+export type ResponseOrder = NonNullablePath<ResponseCustomer, ['orders', 'edges', 0, 'node']>;
+export type ResponseOrderLineItem = NonNullablePath<ResponseOrder, ['lineItems', 'edges', 0, 'node']>;
+export type ResponseFulfillment = NonNullablePath<ResponseOrder, ['fulfillments', 0]>;

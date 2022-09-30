@@ -3,7 +3,7 @@ import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AccountPurchasesPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AccountPurchasesPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Purchases' }}>
       <AccountPurchaseList />

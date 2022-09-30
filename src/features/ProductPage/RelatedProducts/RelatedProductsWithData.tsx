@@ -12,12 +12,16 @@ export interface RelatedProductsWithDataProps {
 }
 
 export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWithDataProps) => {
-  const [loadProducts, { data, error }] = useStorefrontLazyQuery<
+  const [loadProducts, { transformedData, error }] = useStorefrontLazyQuery<
     ProductPageRelatedProductsQueryResponse,
-    ProductPageRelatedProductsQueryVariables
+    ProductPageRelatedProductsQueryVariables,
+    ProductPageRelatedProductsProduct[]
   >(ProductPageRelatedProductsQuery, {
     variables: {
       productId
+    },
+    transform: {
+      data: getRelatedProductList(limit)
     }
   });
 
@@ -26,11 +30,10 @@ export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWit
   }, [loadProducts]);
 
   const loadingProducts = useMemo(() => Array(limit).fill(undefined) as ProductPageRelatedProductsProduct[], [limit]);
-  const products = useMemo(() => !error && getRelatedProductList(data, limit), [data, error, limit]);
 
   if (error) {
     return null;
   }
 
-  return <RelatedProducts products={products ?? loadingProducts} />;
+  return <RelatedProducts products={transformedData ?? loadingProducts} />;
 };

@@ -26,15 +26,13 @@ export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
             <div className="h-12 w-12">
               <Avatar
                 src={review.reviewer.imageUrl}
-                alt={`${review.reviewer.firstName} ${review.reviewer.lastName}.`}
+                alt={`Avatar of ${review.reviewer.name}`}
                 fallback={<DefaultReviewer />}
               />
             </div>
 
             <div className="ml-4 sm:ml-0 sm:mt-4">
-              <p className="text-sm font-medium text-body-900">
-                {review.reviewer.firstName} {review.reviewer.lastName}
-              </p>
+              <p className="text-sm font-medium text-body-900">{review.reviewer.name}</p>
               <Stars rating={review.rating} />
             </div>
           </div>

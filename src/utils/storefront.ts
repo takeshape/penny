@@ -1,16 +1,15 @@
-import {
-  DocumentNode,
-  LazyQueryHookOptions,
-  MutationHookOptions,
-  OperationVariables,
-  QueryHookOptions,
-  TypedDocumentNode,
-  useLazyQuery,
-  useMutation,
-  useQuery
-} from '@apollo/client';
+import { DocumentNode, OperationVariables, TypedDocumentNode } from '@apollo/client';
 import { shopifyStorefrontToken, shopifyStorefrontUrl } from 'config';
+import { JsonValue } from 'type-fest';
 import { createClient } from 'utils/apollo/client';
+import {
+  LazyQueryHookWithTransformOptions,
+  MutationHookWithTransformOptions,
+  QueryHookWithTranformOptions,
+  useLazyQueryWithTransform,
+  useMutationWithTransform,
+  useQueryWithTransform
+} from 'utils/query';
 
 const client = createClient({
   uri: shopifyStorefrontUrl,
@@ -19,31 +18,31 @@ const client = createClient({
   accessTokenPrefix: ''
 });
 
-export function useStorefrontQuery<TData, TVariables = OperationVariables>(
+export function useStorefrontQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: QueryHookOptions<TData, TVariables> = {}
+  options: QueryHookWithTranformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
-  return useQuery(query, {
+  return useQueryWithTransform(query, {
     ...options,
     client
   });
 }
 
-export function useStorefrontLazyQuery<TData, TVariables = OperationVariables>(
+export function useStorefrontLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: LazyQueryHookOptions<TData, TVariables> = {}
+  options: LazyQueryHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
-  return useLazyQuery(query, {
+  return useLazyQueryWithTransform(query, {
     ...options,
     client
   });
 }
 
-export function useStorefrontMutation<TData, TVariables>(
+export function useStorefrontMutation<TData, TVariables, TDataTransformed = JsonValue>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: MutationHookOptions<TData, TVariables> = {}
+  options: MutationHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
-  return useMutation(query, {
+  return useMutationWithTransform(query, {
     ...options,
     client
   });

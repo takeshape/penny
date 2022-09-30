@@ -30,8 +30,8 @@ const addToCartInputToCartItem = ({ product, variant, price, attributes }: AddTo
     intervalCount: price.intervalCount ?? 0,
     variantId: variant.id,
     variantName: variant.name,
-    attributesKey: getAttributesKey(attributes),
-    attributes: attributes?.length && attributes?.length === 0 ? null : attributes,
+    attributesKey: attributes && getAttributesKey(attributes),
+    attributes: (attributes?.length ?? 0) === 0 ? undefined : attributes,
     data: {
       price
     }
@@ -50,7 +50,7 @@ export const addToCartAtom = atom<null, AddToCartInput>(null, (get, set, input) 
       i.interval === itemToAdd.interval &&
       i.intervalCount === itemToAdd.intervalCount &&
       i.variantId === itemToAdd.variantId &&
-      i.attributesKey === getAttributesKey(itemToAdd.attributes)
+      i.attributesKey === (itemToAdd.attributes && getAttributesKey(itemToAdd.attributes))
     );
   });
 

@@ -1,8 +1,8 @@
 export type CollectionPageInfo = {
-  endCursor?: string;
+  endCursor: string | null;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
-  startCursor?: string;
+  startCursor: string | null;
 };
 
 export type CollectionSeo = {
@@ -26,6 +26,6 @@ export type CollectionBase<T> = {
   items?: T[];
   pageInfo?: CollectionPageInfo;
   seo?: CollectionSeo;
-  parent?: CollectionParent;
-  breadcrumbTitle?: string;
+  parent: CollectionParent | null;
+  breadcrumbTitle: string | null;
 };

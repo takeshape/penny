@@ -9,7 +9,7 @@ const SignUpPage: NextPage = () => {
 
   return (
     <Layout seo={{ title: 'Reset Password' }}>
-      <AuthRecoverPassword callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/auth/signin'} />
+      <AuthRecoverPassword callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/auth/signin'} />
     </Layout>
   );
 };

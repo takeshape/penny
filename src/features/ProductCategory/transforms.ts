@@ -16,9 +16,9 @@ import {
   ProductCategoryShopifyProduct
 } from './types';
 
-function getReviews(reviewsIoReviews: ProductCategoryReviewsIoReviews) {
+function getReviews(reviewsIoReviews: ProductCategoryReviewsIoReviews | null) {
   return {
-    stats: getStats(reviewsIoReviews.stats)
+    stats: getStats(reviewsIoReviews?.stats ?? null)
   };
 }
 
@@ -51,8 +51,8 @@ function getProductListItem(shopifyProduct: ProductCategoryShopifyProduct): Prod
 }
 
 export function getCollectionPageInfo(
-  response: ProductCategoryShopifyCollectionQueryResponse
-): ProductCategoryCollection['pageInfo'] {
+  response?: ProductCategoryShopifyCollectionQueryResponse
+): ProductCategoryCollection['pageInfo'] | null {
   const collection = response?.collection;
 
   if (!collection) {
@@ -62,10 +62,10 @@ export function getCollectionPageInfo(
   return collection.products.pageInfo;
 }
 
-function getCollectionParent(collection: ProductCategoryShopifyCollection): ProductCategoryCollectionParent {
-  const parent = collection.takeshape.parent;
+function getCollectionParent(collection: ProductCategoryShopifyCollection): ProductCategoryCollectionParent | null {
+  const parent = collection?.takeshape?.parent;
 
-  if (!parent) {
+  if (!parent?.shopifyCollection?.id) {
     return null;
   }
 
@@ -76,7 +76,9 @@ function getCollectionParent(collection: ProductCategoryShopifyCollection): Prod
   };
 }
 
-export function getCollection(response: ProductCategoryShopifyCollectionQueryResponse): ProductCategoryCollection {
+export function getCollection(
+  response?: ProductCategoryShopifyCollectionQueryResponse
+): ProductCategoryCollection | null {
   const collection = response?.collection;
 
   if (!collection) {
@@ -93,7 +95,7 @@ export function getCollection(response: ProductCategoryShopifyCollectionQueryRes
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getProductListItem(node)),
     pageInfo: collection.products.pageInfo,
-    breadcrumbTitle: collection.takeshape.breadcrumbTitle,
+    breadcrumbTitle: collection.takeshape?.breadcrumbTitle ?? null,
     parent: getCollectionParent(collection)
   };
 }

@@ -35,7 +35,8 @@ Required.args = {
 export const Error: ComponentStory<typeof FormPhoneInput> = (args) => {
   const { control, setError } = useForm();
   setError('input', { type: 'validate', message: '' });
-  return <FormPhoneInput control={control} name="input" {...args} />;
+  args.name = args.name ?? 'input';
+  return <FormPhoneInput control={control} {...args} />;
 };
 Error.args = {
   id: 'input',

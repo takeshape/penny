@@ -1,4 +1,6 @@
 import { GetStorefrontQueryResponse } from 'types/takeshape';
+import { NonNullablePath } from 'types/util';
+import { isNotNullish } from 'utils/types';
 import { BackgroundImage } from './BackgroundImage/BackgroundImage';
 import { Collection } from './Collection/Collection';
 import { Collections } from './Collections/Collections';
@@ -45,9 +47,10 @@ function storefrontChildToComponent() {
 }
 
 export interface StorefrontProps {
-  storefront: GetStorefrontQueryResponse['storefront'];
+  storefront: NonNullablePath<GetStorefrontQueryResponse, ['storefront']>;
 }
 
 export const Storefront = ({ storefront }: StorefrontProps) => {
-  return <div className="bg-background">{storefront.components.map(storefrontChildToComponent())}</div>;
+  const components = storefront.components?.filter(isNotNullish).map(storefrontChildToComponent());
+  return <div className="bg-background">{components}</div>;
 };

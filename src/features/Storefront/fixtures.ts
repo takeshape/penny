@@ -38,13 +38,13 @@ export const storefrontCollectionComponent: CollectionProps = {
               __typename: 'Shopify_ProductPriceRangeV2',
               maxVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
+
                 currencyCode: 'USD',
                 amount: '31.0'
               },
               minVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
+
                 currencyCode: 'USD',
                 amount: '29.0'
               }
@@ -92,13 +92,13 @@ export const storefrontCollectionComponent: CollectionProps = {
               __typename: 'Shopify_ProductPriceRangeV2',
               maxVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
+
                 currencyCode: 'USD',
                 amount: '200.0'
               },
               minVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
+
                 currencyCode: 'USD',
                 amount: '192.0'
               }
@@ -144,13 +144,13 @@ export const storefrontCollectionComponent: CollectionProps = {
               __typename: 'Shopify_ProductPriceRangeV2',
               maxVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
+
                 currencyCode: 'USD',
                 amount: '29.99'
               },
               minVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
+
                 currencyCode: 'USD',
                 amount: '29.99'
               }
@@ -198,13 +198,11 @@ export const storefrontCollectionComponent: CollectionProps = {
               __typename: 'Shopify_ProductPriceRangeV2',
               maxVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
                 currencyCode: 'USD',
                 amount: '140.0'
               },
               minVariantPrice: {
                 __typename: 'Shopify_MoneyV2',
-                // @ts-expect-error
                 currencyCode: 'USD',
                 amount: '140.0'
               }

@@ -1,4 +1,6 @@
-export const myPurchasesResponse = {
+import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+
+export const myPurchasesResponse: GetMyAdminCustomerOrdersQueryResponse = {
   customer: {
     __typename: 'Shopify_Customer',
     orders: {
@@ -118,7 +120,8 @@ export const myPurchasesResponse = {
                   {
                     __typename: 'Shopify_FulfillmentTrackingInfo',
                     company: 'FedEx',
-                    number: 'abc123xyz'
+                    number: 'abc123xyz',
+                    url: 'https://google.com'
                   }
                 ],
                 fulfillmentLineItems: {
@@ -224,7 +227,8 @@ export const myPurchasesResponse = {
                   {
                     __typename: 'Shopify_FulfillmentTrackingInfo',
                     company: 'USPS',
-                    number: '12345'
+                    number: '12345',
+                    url: 'https://google.com'
                   }
                 ],
                 fulfillmentLineItems: {

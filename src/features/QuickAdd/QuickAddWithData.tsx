@@ -1,20 +1,23 @@
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { QuickAddQueryResponse, QuickAddQueryVariables } from 'types/storefront';
 import { useStorefrontLazyQuery } from 'utils/storefront';
 import { QuickAddQuery } from './queries.storefront';
 import { QuickAdd } from './QuickAdd';
 import { quickAddAtom } from './store';
 import { getProduct } from './transforms';
+import { QuickAddProduct } from './types';
 
 export const QuickAddWithData = () => {
   const quickAdd = useAtomValue(quickAddAtom);
   const resetQuickAdd = useResetAtom(quickAddAtom);
 
-  const [loadProduct, { data, loading, error }] = useStorefrontLazyQuery<QuickAddQueryResponse, QuickAddQueryVariables>(
-    QuickAddQuery
-  );
+  const [loadProduct, { transformedData, loading, error }] = useStorefrontLazyQuery<
+    QuickAddQueryResponse,
+    QuickAddQueryVariables,
+    QuickAddProduct
+  >(QuickAddQuery, { transform: { data: getProduct } });
 
   useEffect(() => {
     if (quickAdd?.productHandle && !loading && !error) {
@@ -26,7 +29,5 @@ export const QuickAddWithData = () => {
     }
   }, [loading, loadProduct, quickAdd?.productHandle, error]);
 
-  const product = useMemo(() => data && getProduct(data), [data]);
-
-  return <QuickAdd isOpen={Boolean(quickAdd)} onClose={() => resetQuickAdd()} product={product} />;
+  return <QuickAdd isOpen={Boolean(quickAdd)} onClose={() => resetQuickAdd()} product={transformedData ?? null} />;
 };

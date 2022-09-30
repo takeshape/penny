@@ -1,44 +1,38 @@
 import { Modal, ModalProps } from 'components/Modal/Modal';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { format } from 'date-fns';
-import { shopifyGidToId } from 'transforms/shopify';
-import { PaymentMethod, SubscriptionContract } from 'types/paymentMethod';
+import { PaymentMethod } from 'types/paymentMethod';
 
-import classNames from 'utils/classNames';
+// export const SubscriptionStatus = ({ status }: Pick<SubscriptionContract, 'status'>) => {
+//   let badgeText = '';
+//   let badgeClasses = '';
 
-export const SubscriptionStatus = ({ status }: Pick<SubscriptionContract, 'status'>) => {
-  let badgeText = '';
-  let badgeClasses = '';
+//   switch (status) {
+//     case 'ACTIVE':
+//       badgeText = `Active`;
+//       badgeClasses = 'bg-green-100 text-green-800';
+//       break;
 
-  switch (status) {
-    case 'ACTIVE':
-      badgeText = `Active`;
-      badgeClasses = 'bg-green-100 text-green-800';
-      break;
+//     case 'FAILED':
+//       badgeText = `Failed`;
+//       badgeClasses = 'bg-red-100 text-red-800';
+//       break;
 
-    case 'FAILED':
-      badgeText = `Failed`;
-      badgeClasses = 'bg-red-100 text-red-800';
-      break;
+//     case 'EXPIRED':
+//     case 'CANCELLED':
+//     case 'PAUSED':
+//     default:
+//       badgeText = `Ended`;
+//       badgeClasses = 'bg-gray-100 text-gray-800';
+//       break;
+//   }
 
-    case 'EXPIRED':
-    case 'CANCELLED':
-    case 'PAUSED':
-    default:
-      badgeText = `Ended`;
-      badgeClasses = 'bg-gray-100 text-gray-800';
-      break;
-  }
-
-  return (
-    <span
-      className={classNames(badgeClasses, 'inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium ')}
-    >
-      {badgeText}
-    </span>
-  );
-};
+//   return (
+//     <span
+//       className={classNames(badgeClasses, 'inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium ')}
+//     >
+//       {badgeText}
+//     </span>
+//   );
+// };
 
 export interface ViewSubscriptionsProps extends ModalProps {
   paymentMethod: PaymentMethod;
@@ -71,7 +65,7 @@ export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscr
             </tr>
           </thead>
           <tbody className="border-b border-gray-200 divide-y divide-gray-200 text-sm sm:border-t">
-            {paymentMethod.subscriptionContracts.map((subscription) => (
+            {/* {paymentMethod.subscriptionContracts.map((subscription) => (
               <tr key={subscription.id}>
                 <td className="py-6 pr-8">
                   <div className="flex items-center">
@@ -100,7 +94,7 @@ export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscr
                   </NextLink>
                 </td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>

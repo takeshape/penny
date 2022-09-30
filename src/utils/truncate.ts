@@ -5,11 +5,14 @@ export interface TruncateOptions {
 }
 
 export const truncate = (str: string, options: TruncateOptions = {}) => {
-  const { length = 30, separator, omission = '...' } = options;
+  const { length = 30, separator = '', omission = '...' } = options;
+
   if (str.length < length) {
     return str;
   }
+
   const matches = typeof separator === 'object' ? Array.from(str.matchAll(separator)) : undefined;
+
   return (
     str
       .slice(0, length - omission.length)
@@ -22,7 +25,7 @@ export const truncate = (str: string, options: TruncateOptions = {}) => {
           return current;
         }
 
-        const concatenated = previous + (matches ? matches[index - 1][0] : separator ?? '') + current;
+        const concatenated = previous + (matches ? matches[index - 1][0] : separator) + current;
         if (concatenated.length < length) {
           return concatenated;
         }

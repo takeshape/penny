@@ -1,10 +1,11 @@
 import {
   GetMyPaymentMethodsQueryResponse,
+  GetMySubscriptionListQueryResponse,
   SendMyUpdatePaymentEmailMutationResponse,
   UpdateMyPaymentMethodMutationResponse
 } from 'types/takeshape';
 
-export const getMySubscriptionListResponse = {
+export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse = {
   subscriptions: [
     {
       id: '281367264',
@@ -94,6 +95,7 @@ export const getMySubscriptionListResponse = {
             },
             fulfillments: [
               {
+                createdAt: '2022-09-13T17:08:22Z',
                 updatedAt: '2022-09-13T17:08:22Z',
                 deliveredAt: null,
                 estimatedDeliveryAt: null,
@@ -143,6 +145,7 @@ export const getMySubscriptionListResponse = {
         zip: '11222',
         country: 'United States',
         phone: '+19193600095',
+        company: null,
         include: {
           payment_methods: [
             {
@@ -678,6 +681,7 @@ export const getMySubscriptionListResponse = {
             },
             fulfillments: [
               {
+                createdAt: '2022-09-13T17:08:22Z',
                 updatedAt: '2022-09-13T17:08:22Z',
                 deliveredAt: null,
                 estimatedDeliveryAt: null,
@@ -754,6 +758,7 @@ export const getMySubscriptionListResponse = {
         zip: '10120',
         country: 'United States',
         phone: '+19193600095',
+        company: null,
         include: {
           payment_methods: [
             {
@@ -1110,6 +1115,7 @@ export const getMySubscriptionListResponse = {
         zip: '11222',
         country: 'United States',
         phone: '+19193600095',
+        company: null,
         include: {
           payment_methods: [
             {

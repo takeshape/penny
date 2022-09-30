@@ -19,7 +19,7 @@ interface ProductOptionsPriceProps extends Pick<ProductOptionsFormProps, 'subscr
   control: Control<ProductOptionsFormValues, any>;
 }
 
-const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptionsPriceProps) => {
+const ProductOptionsPrice = ({ control, variants }: ProductOptionsPriceProps) => {
   const options = useWatch({
     control,
     name: 'options'
@@ -31,6 +31,10 @@ const ProductOptionsPrice = ({ control, subscription, variants }: ProductOptions
   });
 
   const variant = getVariant(variants, toSelections(options));
+
+  if (!variant) {
+    throw new Error('Invalid variant');
+  }
 
   return (
     <div className="bg-body-600 text-white rounded-md py-2">
@@ -87,6 +91,11 @@ export const ProductOptionsForm = ({
   const handleFormSubmit = useCallback(
     async ({ options, quantity }: ProductOptionsFormValues) => {
       const variant = getVariant(variants, toSelections(options));
+
+      if (!variant) {
+        throw new Error('Could not find variant');
+      }
+
       await updateProductOptions({
         variables: {
           subscriptionId: subscription.id,

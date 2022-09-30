@@ -8,7 +8,7 @@ import { InferGetStaticPropsType, NextPage } from 'next';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const IndexPage: NextPage = ({ navigation, footer, storefront }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer, storefront }) => {
   return (
     <Layout navigation={navigation} footer={footer}>
       <Storefront storefront={storefront} />
@@ -29,6 +29,12 @@ export const getStaticProps = async () => {
 
   if (error) {
     throw new Error(`Failed to get storefront, received message ${error.message}`);
+  }
+
+  if (!storefront) {
+    return {
+      notFound: true
+    };
   }
 
   return {

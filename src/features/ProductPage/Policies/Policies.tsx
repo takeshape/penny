@@ -14,13 +14,15 @@ export const Policies = ({ policies }: PoliciesProps) => {
       <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8">
         {policies.policies.map((policy) => (
           <div key={policy.name}>
-            <NextImage
-              src={policy.image.url}
-              alt={policy.image.altText}
-              height={200}
-              width={200}
-              className="h-24 w-auto"
-            />
+            {policy.image && (
+              <NextImage
+                src={policy.image.url}
+                alt={policy.image.altText}
+                height={200}
+                width={200}
+                className="h-24 w-auto"
+              />
+            )}
             <h3 className="mt-6 text-base font-medium text-body-900">{policy.name}</h3>
             <p className="mt-3 text-base text-body-500">{policy.description}</p>
           </div>

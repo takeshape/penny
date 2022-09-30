@@ -20,7 +20,8 @@ const Template: ComponentStory<typeof BackgroundImage> = (args) => (
 export const _BackgroundImage = Template.bind({});
 _BackgroundImage.args = {
   image: {
-    path: '06ccc3dc-a9da-4f5b-9142-5a104db52ee3/dev/36829c6c-5112-4c6c-91a6-34b251fb565c/home-page-02-sale-full-width.jpg'
+    path: '06ccc3dc-a9da-4f5b-9142-5a104db52ee3/dev/36829c6c-5112-4c6c-91a6-34b251fb565c/home-page-02-sale-full-width.jpg',
+    description: ''
   }
 };
 

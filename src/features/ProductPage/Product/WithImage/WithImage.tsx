@@ -6,16 +6,17 @@ import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSele
 import Stars from 'components/Stars/Stars';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
+import { isNotNullish } from 'utils/types';
 
 export interface ProductWithImageProps {
   product: ProductType;
   reviewHighlights: ReviewHighlights;
-  breadcrumbs: Breadcrumb[];
+  breadcrumbs: Breadcrumb[] | null;
   showReviewsLink: boolean;
 }
 
@@ -25,12 +26,18 @@ export const ProductWithImage = ({
   breadcrumbs,
   showReviewsLink
 }: ProductWithImageProps) => {
-  const { priceMin, name, descriptionHtml, featuredImage, variantOptions, hasStock } = product;
+  const { name, descriptionHtml, featuredImage, variantOptions, hasStock } = product;
 
-  const initialVariant = useMemo(
-    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
-    [hasStock, product.variants]
-  );
+  const initialVariant = useMemo(() => {
+    if (hasStock) {
+      return product.variants.find((variant) => variant.available);
+    }
+    return product.variants[0];
+  }, [hasStock, product.variants]);
+
+  if (!initialVariant) {
+    throw new Error('Could not find initial variant');
+  }
 
   const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
     useVariantOption({
@@ -39,13 +46,12 @@ export const ProductWithImage = ({
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedSize].filter((x) => x), [selectedSize]);
+  const selections = useMemo(() => [selectedSize].filter(isNotNullish), [selectedSize]);
 
   const selectedVariant = useMemo(() => {
     if (selections.length) {
       return getVariant(product.variants, selections);
     }
-
     return product.variants[0];
   }, [product, selections]);
 
@@ -54,7 +60,11 @@ export const ProductWithImage = ({
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
-  const handleAddToCart = useCallback(
+  if (!selectedVariant) {
+    throw new Error('No selected variant found');
+  }
+
+  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
 
@@ -79,7 +89,7 @@ export const ProductWithImage = ({
   return (
     <div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:pt-24 sm:pb-32 sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
       <div className="lg:max-w-lg lg:self-end">
-        <Breadcrumbs breadcrumbs={breadcrumbs} />
+        {breadcrumbs && <Breadcrumbs breadcrumbs={breadcrumbs} />}
 
         <div className="mt-4">
           <h1 className="text-3xl font-extrabold tracking-tight text-body-900 sm:text-4xl">{name}</h1>
@@ -97,7 +107,7 @@ export const ProductWithImage = ({
               <h2 className="sr-only">Reviews</h2>
               <div className="flex items-center">
                 <div>
-                  <Stars rating={reviewHighlights.stats.average} />
+                  <Stars rating={reviewHighlights.stats.average ?? 0} />
                   <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
                 </div>
                 {showReviewsLink ? (

@@ -5,7 +5,7 @@ import Layout from 'layouts/Account';
 import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 
-const AccountPaymentsPage: NextPage = ({ navigation, footer }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const AccountPaymentsPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
   return (
     <Layout navigation={navigation} footer={footer} seo={{ title: 'Payment Methods' }}>
       <AccountPayments paymentMethods={getPaymentMethods(paymentMethods)} />

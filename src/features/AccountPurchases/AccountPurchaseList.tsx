@@ -5,6 +5,7 @@ import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
 import { GetMyAdminCustomerOrdersQuery } from './queries';
 import { getOrders } from './transforms';
+import { Order } from './types';
 
 const Empty = () => (
   <div className="p-4 sm:p-6 flex flex-col items-center gap-2 text-body-500">
@@ -23,10 +24,13 @@ const Header = () => (
 );
 
 export const AccountPurchaseList = () => {
-  const { data, loading, networkStatus } =
-    useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse>(GetMyAdminCustomerOrdersQuery);
-
-  const orders = getOrders(data?.customer);
+  const {
+    transformedData: orders,
+    loading,
+    networkStatus
+  } = useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse, {}, Order[]>(GetMyAdminCustomerOrdersQuery, {
+    transform: { data: getOrders }
+  });
 
   if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
     return (
@@ -47,9 +51,7 @@ export const AccountPurchaseList = () => {
           Recent orders
         </h2>
         <div className="space-y-4 min-h-40">
-          {orders.map((order) => (
-            <PurchaseOrder key={order.id} order={order} />
-          ))}
+          {orders && orders.map((order) => <PurchaseOrder key={order.id} order={order} />)}
         </div>
       </section>
     </div>

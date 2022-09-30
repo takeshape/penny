@@ -12,7 +12,7 @@ export const ReviewsCallout = ({ stats, showReviewsLink }: ReviewsCalloutProps) 
       <h3 className="sr-only">Reviews</h3>
       <div className="flex items-center">
         <div className="flex items-center">
-          <Stars rating={stats.average} />
+          <Stars rating={stats.average ?? 0} />
         </div>
         <p className="sr-only">{stats.average} out of 5 stars</p>
         {showReviewsLink ? (

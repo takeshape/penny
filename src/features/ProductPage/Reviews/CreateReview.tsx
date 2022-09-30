@@ -4,7 +4,7 @@ import Button from 'components/Button/Button';
 import Textarea from 'components/Form/Textarea/Textarea';
 import { Star } from 'components/Stars/Stars';
 import { Fragment, useCallback, useMemo } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateMyProductReviewMutationResponse, CreateMyProductReviewMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 import { CreateMyProductReviewMutation } from '../queries.takeshape';
@@ -40,7 +40,7 @@ export const CreateReview = (props: ReviewsProps) => {
     CreateMyProductReviewMutationVariables
   >(CreateMyProductReviewMutation);
 
-  const submitCallback = useCallback(
+  const submitCallback: SubmitHandler<CreateReviewForm> = useCallback(
     async (formValues) => {
       const { review, rating } = formValues;
 
@@ -57,11 +57,11 @@ export const CreateReview = (props: ReviewsProps) => {
     [createProductReview, sku]
   );
 
-  const success = createProductReviewResponse?.result.success ?? false;
+  const success = createProductReviewResponse?.result?.success ?? false;
 
   const error = useMemo(() => {
-    return mutationError ?? createProductReviewResponse?.result.success === false;
-  }, [createProductReviewResponse?.result.success, mutationError]);
+    return mutationError ?? createProductReviewResponse?.result?.success === false;
+  }, [createProductReviewResponse?.result?.success, mutationError]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);

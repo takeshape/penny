@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { ReactEventHandler, useCallback } from 'react';
 
 export interface PaginationLinkProps {
   onClick?: () => void;
@@ -14,10 +14,10 @@ export const PaginationLink = ({
   href,
   children
 }: React.PropsWithChildren<PaginationLinkProps>) => {
-  const handleClick = useCallback(
+  const handleClick: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
-      onClick();
+      onClick?.();
     },
     [onClick]
   );

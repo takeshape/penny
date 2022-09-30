@@ -4,7 +4,7 @@ import { ProductCategoryProductListItem } from '../types';
 import { GridItem } from './components/GridItem';
 
 export interface ProductGridProps {
-  items: ProductCategoryProductListItem[];
+  items: (ProductCategoryProductListItem | null)[];
 }
 
 export const ProductGrid = ({ items }: PropsWithChildren<ProductGridProps>) => {

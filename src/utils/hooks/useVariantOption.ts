@@ -8,16 +8,16 @@ export interface VariantOptionHookProps {
 }
 
 export interface VariantOptionHookData {
-  selectedValue?: string;
-  selected?: ProductVariantSelection;
-  option?: ProductVariantOption;
+  selectedValue: string | null;
+  selected: ProductVariantSelection | undefined;
+  option: ProductVariantOption | undefined;
 }
 
 export function useVariantOption({
   name,
   variant,
   options
-}: VariantOptionHookProps): [Dispatch<SetStateAction<string>>, VariantOptionHookData] {
+}: VariantOptionHookProps): [Dispatch<SetStateAction<string | null>>, VariantOptionHookData] {
   const variantOption = useMemo(
     () => options.find((opt) => opt.name.toLowerCase() === name.toLowerCase()),
     [name, options]
@@ -29,13 +29,17 @@ export function useVariantOption({
   );
 
   const initialVariantOption = useMemo(
-    () => initialVariantOptionValue && variantOption?.values.find((v) => v.value === initialVariantOptionValue),
+    () => variantOption?.values.find((v) => v.value === initialVariantOptionValue),
     [initialVariantOptionValue, variantOption?.values]
   );
 
-  const [selectedValue, setSelectedOptionValue] = useState(initialVariantOption?.value);
+  const [selectedValue, setSelectedOptionValue] = useState<string | null>(initialVariantOption?.value ?? null);
 
-  const selected = useMemo(() => selectedValue && { name, value: selectedValue }, [name, selectedValue]);
+  const selected = useMemo(() => {
+    if (selectedValue) {
+      return { name, value: selectedValue };
+    }
+  }, [name, selectedValue]);
 
   return [setSelectedOptionValue, { selectedValue, selected, option: variantOption }];
 }

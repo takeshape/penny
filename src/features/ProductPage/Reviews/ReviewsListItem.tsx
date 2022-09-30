@@ -13,14 +13,12 @@ export const ReviewsListItem = ({ item }: ReviewsListItemProps) => {
       <div className="flex items-center">
         <Avatar
           src={item.reviewer.imageUrl}
-          alt={`${item.reviewer.firstName} ${item.reviewer.lastName}.`}
+          alt={`Avatar image of ${item.reviewer.name}`}
           fallback={<DefaultReviewer />}
         />
 
         <div className="ml-4">
-          <h4 className="text-sm font-bold text-body-900">
-            {item.reviewer.firstName} {item.reviewer.lastName}
-          </h4>
+          <h4 className="text-sm font-bold text-body-900">{item.reviewer.name}</h4>
           <Stars rating={item.rating} />
           <p className="sr-only">{item.rating} out of 5 stars</p>
         </div>

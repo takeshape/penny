@@ -5,7 +5,7 @@ import { navigationResponse } from '../queries.fixtures';
 import { getNavigation } from '../transforms';
 import { NavigationMobileMenu } from './NavigationMobileMenu';
 
-const navigation = getNavigation(navigationResponse);
+const navigation = getNavigation(navigationResponse)!;
 
 const Meta: ComponentMeta<typeof NavigationMobileMenu> = {
   title: 'Features / Navigation / Navigation Mobile Menu',

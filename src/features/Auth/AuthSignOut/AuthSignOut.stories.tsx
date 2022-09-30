@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { AuthSignOut } from './AuthSignOut';
 
 const Meta: ComponentMeta<typeof AuthSignOut> = {
@@ -11,7 +11,7 @@ const Meta: ComponentMeta<typeof AuthSignOut> = {
   }
 };
 
-const Template = (args) => <AuthSignOut {...args} />;
+const Template: ComponentStory<typeof AuthSignOut> = (args) => <AuthSignOut {...args} />;
 
 export const SignOut = Template.bind({});
 

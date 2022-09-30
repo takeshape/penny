@@ -35,7 +35,7 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
                 <StarIcon
                   key={rating}
                   className={classNames(
-                    reviews.stats.average > rating ? 'text-yellow-400' : 'text-body-200',
+                    (reviews.stats.average ?? 0) > rating ? 'text-yellow-400' : 'text-body-200',
                     'flex-shrink-0 h-5 w-5'
                   )}
                   aria-hidden="true"

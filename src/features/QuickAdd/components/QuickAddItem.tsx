@@ -6,9 +6,10 @@ import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useSetAtom } from 'jotai';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { useVariantOption } from 'utils/hooks/useVariantOption';
 import { getVariant } from 'utils/products';
+import { isNotNullish } from 'utils/types';
 import { QuickAddProduct } from '../types';
 
 export interface QuickAddItemProps {
@@ -19,10 +20,16 @@ export interface QuickAddItemProps {
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
   let { variantOptions, hasStock } = product;
 
-  const initialVariant = useMemo(
-    () => (hasStock ? product.variants.find((variant) => variant.available) : product.variants[0]),
-    [hasStock, product.variants]
-  );
+  const initialVariant = useMemo(() => {
+    if (hasStock) {
+      return product.variants.find((variant) => variant.available);
+    }
+    return product.variants[0];
+  }, [hasStock, product.variants]);
+
+  if (!initialVariant) {
+    throw new Error('Could not find initial variant');
+  }
 
   const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
     useVariantOption({
@@ -38,7 +45,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
       options: variantOptions
     });
 
-  const selections = useMemo(() => [selectedColor, selectedSize].filter((x) => x), [selectedColor, selectedSize]);
+  const selections = useMemo(() => [selectedColor, selectedSize].filter(isNotNullish), [selectedColor, selectedSize]);
 
   const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
 
@@ -46,14 +53,17 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
     if (selections.length) {
       return getVariant(product.variants, selections);
     }
-
     return product.variants[0];
   }, [product, selections]);
+
+  if (!selectedVariant) {
+    throw new Error('No selected variant found');
+  }
 
   const addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
-  const handleAddToCart = useCallback(
+  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
     (e) => {
       e.preventDefault();
       addToCart({
@@ -103,33 +113,37 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
 
           <form>
             {/* Colors */}
-            <div>
-              <h4 className="text-sm text-body-900 font-medium">Color</h4>
-              <ProductColorSelect
-                value={selectedColorValue}
-                onChange={setSelectedColor}
-                option={colors}
-                selections={selections}
-              />
-            </div>
+            {colors && (
+              <div>
+                <h4 className="text-sm text-body-900 font-medium">Color</h4>
+                <ProductColorSelect
+                  value={selectedColorValue}
+                  onChange={setSelectedColor}
+                  option={colors}
+                  selections={selections}
+                />
+              </div>
+            )}
 
             {/* Sizes */}
-            <div className="mt-10">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm text-body-900 font-medium">Size</h4>
-                <a href="#" className="text-sm font-medium text-accent-600 hover:text-accent-500">
-                  Size guide
-                </a>
-              </div>
+            {sizes && (
+              <div className="mt-10">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm text-body-900 font-medium">Size</h4>
+                  <a href="#" className="text-sm font-medium text-accent-600 hover:text-accent-500">
+                    Size guide
+                  </a>
+                </div>
 
-              <ProductSizeSelect
-                size="small"
-                value={selectedSizeValue}
-                onChange={setSelectedSize}
-                option={sizes}
-                selections={selections}
-              />
-            </div>
+                <ProductSizeSelect
+                  size="small"
+                  value={selectedSizeValue}
+                  onChange={setSelectedSize}
+                  option={sizes}
+                  selections={selections}
+                />
+              </div>
+            )}
 
             {hasStock && selectedVariant.prices.length > 1 && (
               <div className="mt-10">

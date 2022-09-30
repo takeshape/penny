@@ -33,7 +33,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order, refetchSubs
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting, isSubmitted, isSubmitSuccessful }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<OrderNowFormValues>({
     defaultValues: {
       confirm: true

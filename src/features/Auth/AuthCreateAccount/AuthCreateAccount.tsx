@@ -6,7 +6,7 @@ import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { signIn } from 'next-auth/react';
-import { useCallback, useEffect, useRef } from 'react';
+import { FormEventHandler, useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { CreateCustomerMutationResponse, CreateCustomerMutationVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -24,7 +24,7 @@ export interface AuthCreateAccountProps {
   useMultipass: boolean;
 }
 
-function getErrorMessage(error: ApolloError) {
+function getErrorMessage(error?: ApolloError) {
   if (!error) {
     return null;
   }
@@ -58,7 +58,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
 
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
-  const onSubmit = useCallback(
+  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
       executeRecaptcha((recaptchaToken) => {

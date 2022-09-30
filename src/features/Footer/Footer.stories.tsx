@@ -8,16 +8,16 @@ const Meta: ComponentMeta<typeof Footer> = {
   component: Footer
 };
 
-const Template: ComponentStory<typeof Footer> = () => <Footer />;
+const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
 
 export const _Footer = Template.bind({});
+
+_Footer.args = GetFooterQueryData.footer;
+
 _Footer.parameters = {
   msw: {
     handlers: {
       newsletter: [
-        graphql.query('GetFooter', (req, res, ctx) => {
-          return res(ctx.data(GetFooterQueryData));
-        }),
         graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
           return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
         })

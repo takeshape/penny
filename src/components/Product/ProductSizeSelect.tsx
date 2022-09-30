@@ -5,8 +5,8 @@ import classNames from 'utils/classNames';
 import { useHasStockFor } from 'utils/hooks/useHasStockFor';
 
 export interface ProductSizeSelectProps {
-  value: string;
-  onChange: Dispatch<SetStateAction<string>>;
+  value: string | null;
+  onChange: Dispatch<SetStateAction<string | null>>;
   option: ProductVariantOption;
   selections: ProductVariantSelection[];
   size?: 'large' | 'small';

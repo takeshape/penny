@@ -9,7 +9,7 @@ import NextLink from 'components/NextLink';
 import { BackgroundDots } from 'features/Contact/components/BackgroundDots';
 import { useCreateTicket } from 'features/Contact/useCreateTicket';
 import { useSession } from 'next-auth/react';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -56,7 +56,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
           recaptchaToken
         }
       });
-      const { id } = result.data.createTicket;
+      const { id } = result.data?.createTicket ?? {};
       if (id) {
         setSuccess(`Thank you for reaching out! Created ticket #${id}.`);
       }
@@ -64,7 +64,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
     [createTicket]
   );
 
-  const handleFormSubmit = useCallback(
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
       executeRecaptcha((recaptchaToken) => {
@@ -78,7 +78,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
 
   // Set initial values
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user?.name && session?.user?.email) {
       reset({
         firstName: session.user.name.split(' ')[0],
         lastName: session.user.name.split(' ')[1],

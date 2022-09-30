@@ -13,16 +13,12 @@ export const defaultProductImage = {
   width: 480,
   altText: 'Default product image'
 };
-export const enableReviewsIo = true;
-export const reviewsIoReviewsPerPage = 3;
-export const enableTrustpilot = false;
-export const trustpilotReviewsPerPage = 3;
 
 /* Collections */
 export const collectionsPageSize = 12;
 
 /* Product Options - LUTs to decorate options */
-export const productOptions = {
+export const productOptions: Record<string, Record<string, Record<string, string>>> = {
   color: {
     white: { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400', colorBg: '#ffffff' },
     gray: { name: 'Gray', class: 'bg-gray-200', selectedClass: 'ring-gray-400', colorBg: '#333333' },

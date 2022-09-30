@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { ProductVariantSelection } from 'types/product';
+import { ProductVariantOptionValue, ProductVariantSelection } from 'types/product';
 
 export interface HasStockForHookProps {
   name: string;
@@ -8,7 +8,7 @@ export interface HasStockForHookProps {
 
 export function useHasStockFor({ name, selections }: HasStockForHookProps) {
   const hasStockFor = useCallback(
-    (optionValue) => {
+    (optionValue: ProductVariantOptionValue) => {
       return selections.every((selection) => {
         if (selection.name == name) {
           return true;

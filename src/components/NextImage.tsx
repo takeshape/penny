@@ -6,7 +6,7 @@ import NextBaseImage, { ImageProps } from 'next/future/image';
 const NextImage = (props: ImageProps & { src: string }) => {
   if (isStorybook || isTest) {
     // eslint-disable-next-line @next/next/no-img-element
-    return <img alt="" {...props} />;
+    return <img {...props} alt={props.alt ?? ''} />;
   }
 
   return <NextBaseImage {...props} alt={props.alt ?? ''} />;

@@ -3,11 +3,11 @@ import crypto from 'node:crypto';
 
 const blockSize = 16;
 
-function toUrlSafe(token) {
+function toUrlSafe(token: string) {
   return token.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 
-function signData(signingKey: Buffer, data) {
+function signData(signingKey: Buffer, data: Buffer) {
   return crypto.createHmac('sha256', signingKey).update(data).digest();
 }
 
@@ -22,10 +22,6 @@ export type MultipassCustomerData = {
 } & Record<string, unknown>;
 
 export function createMultipassToken(customerData: MultipassCustomerData) {
-  if (!shopifyMultipassSecret) {
-    return null;
-  }
-
   const keyMaterial = crypto.createHash('sha256').update(shopifyMultipassSecret).digest();
   const encryptionKey = keyMaterial.slice(0, blockSize);
   const signingKey = keyMaterial.slice(blockSize, 32);

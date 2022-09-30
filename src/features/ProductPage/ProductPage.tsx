@@ -1,22 +1,22 @@
 import Wrapper from 'components/Wrapper/Content';
 import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWIthData';
 import { shopifyGidToId } from 'transforms/shopify';
-import { TrustpilotReviewList, TrustpilotSummary } from 'types/trustpilot';
-import { Details, DetailsProps } from './Details/Details';
-import { Policies, PoliciesProps } from './Policies/Policies';
+import { ReviewList } from 'types/review';
+import { Details } from './Details/Details';
+import { Policies } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
 import { RelatedProductsWithData } from './RelatedProducts/RelatedProductsWithData';
-import { ReviewsWithData, ReviewsWithDataProps } from './Reviews/ReviewsWithData';
-import { ProductPageOptions } from './types';
+import { ReviewsWithData } from './Reviews/ReviewsWithData';
+import { ProductPageDetails, ProductPageOptions, ProductPagePolicies } from './types';
 
-export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> &
-  PoliciesProps &
-  Omit<ReviewsWithDataProps, 'sku' | 'productName'> & {
-    trustpilotReviewList: TrustpilotReviewList;
-    trustpilotSummary: TrustpilotSummary;
-  } & DetailsProps & {
-    options: Omit<ProductPageOptions, 'component'>;
-  };
+export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> & {
+  reviewsPerPage?: number;
+  reviewList: ReviewList | null;
+  trustpilotReviewList: ReviewList | null;
+  options: Omit<ProductPageOptions, 'component'>;
+  details: ProductPageDetails | null;
+  policies: ProductPagePolicies | null;
+};
 
 export const ProductPage = ({
   product,
@@ -27,7 +27,6 @@ export const ProductPage = ({
   policies,
   reviewList,
   trustpilotReviewList,
-  trustpilotSummary,
   breadcrumbs,
   reviewsPerPage
 }: ProductPageProps) => {
@@ -54,20 +53,16 @@ export const ProductPage = ({
       </div>
       <div className="bg-background">
         <Wrapper>
-          {showReviewsIo && (
+          {showReviewsIo && reviewList && (
             <ReviewsWithData
               productName={product.name}
               sku={shopifyGidToId(product.id)}
               reviewList={reviewList}
-              reviewsPerPage={reviewsPerPage}
+              reviewsPerPage={reviewsPerPage ?? 5}
             />
           )}
-          {showTrustpilot && (
-            <TrustpilotWithData
-              sku={shopifyGidToId(product.id)}
-              trustpilotReviewList={trustpilotReviewList}
-              trustpilotSummary={trustpilotSummary}
-            />
+          {showTrustpilot && trustpilotReviewList && (
+            <TrustpilotWithData sku={shopifyGidToId(product.id)} reviewList={trustpilotReviewList} />
           )}
           {showRelatedProducts && <RelatedProductsWithData limit={4} productId={product.id} />}
         </Wrapper>

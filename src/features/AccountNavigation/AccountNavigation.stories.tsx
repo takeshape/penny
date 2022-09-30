@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { AccountNavigation } from './AccountNavigation';
 
 const Meta: ComponentMeta<typeof AccountNavigation> = {
@@ -6,7 +6,7 @@ const Meta: ComponentMeta<typeof AccountNavigation> = {
   component: AccountNavigation
 };
 
-const Template = (args) => <AccountNavigation {...args} />;
+const Template: ComponentStory<typeof AccountNavigation> = () => <AccountNavigation />;
 
 export const _AccountNavigation = Template.bind({});
 

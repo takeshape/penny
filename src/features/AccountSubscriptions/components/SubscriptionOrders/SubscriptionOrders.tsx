@@ -112,13 +112,15 @@ export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: Subsc
 
       {isActive && nextOrder && (
         <>
-          <SkipForm
-            isOpen={isSkipNextOpen}
-            onClose={() => setIsSkipNextOpen(false)}
-            subscription={subscription}
-            order={nextQueuedOrder}
-            refetchSubscriptions={refetchSubscriptions}
-          />
+          {nextQueuedOrder && (
+            <SkipForm
+              isOpen={isSkipNextOpen}
+              onClose={() => setIsSkipNextOpen(false)}
+              subscription={subscription}
+              order={nextQueuedOrder}
+              refetchSubscriptions={refetchSubscriptions}
+            />
+          )}
           <OrderNowForm
             isOpen={isOrderNowOpen}
             onClose={() => setIsOrderNowOpen(false)}

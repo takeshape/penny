@@ -13,7 +13,7 @@ const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => 
 );
 
 interface NavigationSectionProps {
-  name?: string;
+  name?: string | null;
   items?: NavigationItemProps[];
   links?: NavigationItemProps[];
 }
@@ -21,13 +21,15 @@ interface NavigationSectionProps {
 const NavigationSection = (props: PropsWithChildren<NavigationSectionProps>) => (
   <>
     <h3 className="text-sm font-semibold text-body-400 tracking-wider uppercase">{props.name}</h3>
-    <ul role="list" className="mt-4 space-y-4">
-      {props.links.map((item) => (
-        <li key={item.name}>
-          <NavigationItem {...item} />
-        </li>
-      ))}
-    </ul>
+    {props.links && (
+      <ul role="list" className="mt-4 space-y-4">
+        {props.links.map((item) => (
+          <li key={item.name}>
+            <NavigationItem {...item} />
+          </li>
+        ))}
+      </ul>
+    )}
   </>
 );
 
@@ -38,7 +40,12 @@ export interface NavigationProps {
 export const Navigation = (props: React.PropsWithChildren<NavigationProps>) => {
   const { sections } = props;
   const navigationItems = useMemo(() => {
-    const items = [];
+    const items: JSX.Element[] = [];
+
+    if (!sections) {
+      return items;
+    }
+
     for (let i = 0; i < sections?.length ?? 0; i += 2) {
       const item0 = sections[i];
       const item1 = sections[i + 1];
@@ -55,6 +62,7 @@ export const Navigation = (props: React.PropsWithChildren<NavigationProps>) => {
         </div>
       );
     }
+
     return items;
   }, [sections]);
   return <div className="grid grid-cols-2 gap-8 xl:col-span-2">{navigationItems}</div>;

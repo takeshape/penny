@@ -71,12 +71,16 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
 );
 
 const SectionLink = ({ section }: { section: NavigationSection }) => (
-  <NextLink
-    className="flex items-center text-sm font-medium text-primary-700 hover:text-primary-800"
-    href={section.link.href}
-  >
-    {section.name}
-  </NextLink>
+  <>
+    {section.link && (
+      <NextLink
+        className="flex items-center text-sm font-medium text-primary-700 hover:text-primary-800"
+        href={section.link.href}
+      >
+        {section.name}
+      </NextLink>
+    )}
+  </>
 );
 
 export const TopLinks = ({ sections }: Pick<Navigation, 'sections'>) => {

@@ -11,7 +11,7 @@ const Template: ComponentStory<typeof Navigation> = (args) => <Navigation {...ar
 
 export const _Navigation = Template.bind({});
 _Navigation.args = {
-  sections: GetFooterQueryData.footer.navigation.sections
+  sections: GetFooterQueryData.footer.navigation!.sections
 };
 
 export default Meta;

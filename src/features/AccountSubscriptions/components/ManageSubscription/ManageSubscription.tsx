@@ -82,21 +82,23 @@ export const ManageSubscription = ({
             </div>
 
             {/* Next charge */}
-            <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-              <dt className="text-sm font-medium text-body-500">Order schedule</dt>
-              <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
-                <div className="flex-grow">{format(new Date(subscription.nextChargeScheduledAt), 'PPP')}</div>
-                <div className="ml-4 flex-shrink-0 flex space-x-4">
-                  <button
-                    type="button"
-                    onClick={() => setIsNextChargeDateOpen(true)}
-                    className="bg-white rounded-md font-medium text-accent-600 hover:text-accent-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
-                  >
-                    Update
-                  </button>
-                </div>
-              </dd>
-            </div>
+            {subscription.nextChargeScheduledAt && (
+              <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
+                <dt className="text-sm font-medium text-body-500">Order schedule</dt>
+                <dd className="mt-1 flex text-sm text-body-900 sm:mt-0 sm:col-span-2">
+                  <div className="flex-grow">{format(new Date(subscription.nextChargeScheduledAt), 'PPP')}</div>
+                  <div className="ml-4 flex-shrink-0 flex space-x-4">
+                    <button
+                      type="button"
+                      onClick={() => setIsNextChargeDateOpen(true)}
+                      className="bg-white rounded-md font-medium text-accent-600 hover:text-accent-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </dd>
+              </div>
+            )}
 
             {/* Delivery frequency */}
             <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
@@ -265,21 +267,25 @@ export const ManageSubscription = ({
         onClose={() => setIsShippingAddressOpen(false)}
       />
 
-      <SkipForm
-        isOpen={isSkipNextOpen}
-        onClose={() => setIsSkipNextOpen(false)}
-        subscription={subscription}
-        order={nextQueuedOrder}
-        refetchSubscriptions={refetchSubscriptions}
-      />
+      {nextQueuedOrder && (
+        <SkipForm
+          isOpen={isSkipNextOpen}
+          onClose={() => setIsSkipNextOpen(false)}
+          subscription={subscription}
+          order={nextQueuedOrder}
+          refetchSubscriptions={refetchSubscriptions}
+        />
+      )}
 
-      <OrderNowForm
-        isOpen={isOrderNowOpen}
-        onClose={() => setIsOrderNowOpen(false)}
-        subscription={subscription}
-        order={nextOrder}
-        refetchSubscriptions={refetchSubscriptions}
-      />
+      {nextOrder && (
+        <OrderNowForm
+          isOpen={isOrderNowOpen}
+          onClose={() => setIsOrderNowOpen(false)}
+          subscription={subscription}
+          order={nextOrder}
+          refetchSubscriptions={refetchSubscriptions}
+        />
+      )}
 
       <CancelSubscriptionForm
         isOpen={isCancelSubscriptionOpen}
@@ -291,7 +297,7 @@ export const ManageSubscription = ({
       <PaymentMethodForm
         isOpen={isPaymentMethodOpen}
         onClose={() => setIsPaymentMethodOpen(false)}
-        defaultPaymentMethodId={subscription.paymentMethod.id}
+        defaultPaymentMethodId={subscription.paymentMethod?.id}
         addressId={subscription.address.id}
         refetchSubscriptions={refetchSubscriptions}
       />

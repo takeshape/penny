@@ -21,7 +21,7 @@ export const ModalForm = ({
   children
 }: PropsWithChildren<ModalFormProps>) => {
   useEffect(() => {
-    let closeTimer;
+    let closeTimer: ReturnType<typeof setTimeout>;
 
     if (isSubmitSuccessful && isOpen) {
       closeTimer = setTimeout(() => onClose(), autoCloseDelay ?? 2000);

@@ -112,6 +112,7 @@ const SubscriptionFragment = gql`
       zip
       country
       phone
+      company
       include {
         payment_methods {
           id
@@ -143,6 +144,7 @@ const ShopifyProductVariantFragment = gql`
       width
       height
       url
+      altText
     }
     price
     inventoryPolicy
@@ -186,6 +188,7 @@ const ShopifyProductVariantFragment = gql`
             width
             height
             url
+            altText
           }
           price
           inventoryPolicy

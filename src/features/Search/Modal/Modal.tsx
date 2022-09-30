@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import Loader from 'components/Loader/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { Fragment, useCallback, useEffect } from 'react';
+import { ChangeEventHandler, Fragment, useCallback, useEffect } from 'react';
 import { isSearchOpenAtom } from 'store';
 import { replaceState } from 'utils/history';
 import { getSingle } from 'utils/types';
@@ -32,7 +32,7 @@ export const Modal = () => {
   }, [router.isReady]);
 
   // Only trigger this on queries, router is a side-effect
-  const onQueryChange = useCallback(
+  const onQueryChange: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
       setQuery(e.target.value);
       replaceState(`?search=${e.target.value}`);
@@ -41,7 +41,7 @@ export const Modal = () => {
   );
 
   const onSelectResult = useCallback(
-    (productUrl) => {
+    (productUrl: string) => {
       setIsSearchOpen(false);
       setQuery('');
       router.push(productUrl);

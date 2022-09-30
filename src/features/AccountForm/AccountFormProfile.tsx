@@ -15,10 +15,10 @@ import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront'
 import { CustomerQuery, CustomerUpdateMutation } from './queries.storefront';
 
 interface AccountFormProfileForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  phone: string | null;
 }
 
 export const AccountFormProfile = () => {
@@ -40,13 +40,17 @@ export const AccountFormProfile = () => {
     CustomerUpdateMutationVariables
   >(CustomerUpdateMutation);
 
-  const timer = useRef<NodeJS.Timer>(null);
+  const timer: { current: NodeJS.Timeout | null } = useRef(null);
 
   const onSubmit = useCallback(
     async ({ firstName, lastName, email, phone }: AccountFormProfileForm) => {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
+      }
+
+      if (!session) {
+        return;
       }
 
       await updateCustomer({

@@ -1,6 +1,7 @@
 import { Merge } from 'type-fest';
 import { ProductCore, ProductImage, ProductPrice, ProductVariantOption, ProductVariantSelection } from 'types/product';
 import { GetMySubscriptionQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
+import { NonNullablePath } from 'types/util';
 
 export type SubscriptionAddress = {
   id: string;
@@ -12,8 +13,8 @@ export type SubscriptionAddress = {
   province: string;
   zip: string;
   country: string;
-  phone?: string;
-  company?: string;
+  phone: string | null;
+  company: string | null;
 };
 
 export type SubscriptionShippingAddress = Omit<SubscriptionAddress, 'id'>;
@@ -41,7 +42,7 @@ export type SubscriptionProductVariant = {
 export type SubscriptionProduct = ProductCore & {
   descriptionHtml: string;
   variants: SubscriptionProductVariant[];
-  variantOptions?: ProductVariantOption[];
+  variantOptions: ProductVariantOption[];
 };
 
 export enum SubscriptionOrderStatusEnum {
@@ -90,25 +91,25 @@ export type SubscriptionTrackingInfo = {
 export type SubscriptionOrderFulfillment = {
   createdAt: string;
   updatedAt: string;
-  displayStatus: Shopify_FulfillmentDisplayStatus;
-  deliveredAt?: string;
-  estimatedDeliveryAt?: string;
-  inTransitAt?: string;
-  trackingInfo?: SubscriptionTrackingInfo;
+  displayStatus: Shopify_FulfillmentDisplayStatus | null;
+  deliveredAt: string | null;
+  estimatedDeliveryAt: string | null;
+  inTransitAt: string | null;
+  trackingInfo: SubscriptionTrackingInfo | null;
 };
 
 export type SubscriptionOrder = {
   id: string;
   chargeId: string;
-  chargeScheduledAt?: string;
-  chargeProcessedAt?: string;
+  chargeScheduledAt: string;
+  chargeProcessedAt: string | null;
   chargeUpdatedAt: string;
   chargeCreatedAt: string;
-  fulfillmentDeliveredAt?: string;
-  fulfillmentInTransitAt?: string;
-  fulfillmentScheduledAt?: string;
-  fulfillmentUpdatedAt?: string;
-  fulfillmentCreatedAt?: string;
+  fulfillmentDeliveredAt: string | null;
+  fulfillmentInTransitAt: string | null;
+  fulfillmentScheduledAt: string | null;
+  fulfillmentUpdatedAt: string | null;
+  fulfillmentCreatedAt: string | null;
   status: SubscriptionOrderStatus;
   statusAt: string;
   shippingAddress: SubscriptionShippingAddress;
@@ -144,15 +145,15 @@ export type Subscription = {
   status: SubscriptionStatus;
   createdAt: string;
   updatedAt: string;
-  cancelledAt: string;
-  nextChargeScheduledAt: string;
+  cancelledAt: string | null;
+  nextChargeScheduledAt: string | null;
   unitPrice: SubscriptionPrice;
   price: SubscriptionPrice;
   interval: SubscriptionInterval;
   intervalCount: number;
   intervalOptions: string[];
   address: SubscriptionAddress;
-  paymentMethod?: SubscriptionPaymentMethod;
+  paymentMethod: SubscriptionPaymentMethod | null;
   product: SubscriptionProduct;
   productVariant: SubscriptionProductVariant;
   quantity: number;
@@ -163,5 +164,15 @@ export type ActiveSubscription = Subscription & { status: 'ACTIVE' };
 export type EndedSubscription = Subscription & { status: 'CANCELLED' | 'EXPIRED' };
 
 export type RefetchSubscriptions = () => Promise<any>;
-export type SubscriptionResponse = GetMySubscriptionQueryResponse['subscription'];
 export type AnySubscription = ActiveSubscription | EndedSubscription;
+
+export type ResponseSubscription = NonNullablePath<GetMySubscriptionQueryResponse, ['subscription']>;
+export type ResponseCharge = NonNullablePath<ResponseSubscription, ['charges', 0]>;
+export type ResponseLineItem = NonNullablePath<ResponseCharge, ['line_items', 0]>;
+export type ResponseFulfillment = NonNullablePath<ResponseCharge, ['shopifyOrder', 'fulfillments', 0]>;
+export type ResponseRechargeProduct = NonNullablePath<ResponseSubscription, ['rechargeProduct']>;
+export type ResponseProductVariant = NonNullablePath<ResponseSubscription, ['shopifyProductVariant']>;
+export type ResponseProduct = NonNullablePath<ResponseProductVariant, ['product']>;
+export type ResponseProductProductVariant = NonNullablePath<ResponseProduct, ['variant', 'nodes', 0]>;
+export type ResponseAddress = NonNullablePath<ResponseSubscription, ['address']>;
+export type ResponsePaymentMethod = NonNullablePath<ResponseAddress, ['include', 'payment_methods', 0]>;

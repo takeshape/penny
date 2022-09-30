@@ -16,7 +16,7 @@ export function useSearch({
 }: UseSearchProps): [boolean, string, SearchItem[], Dispatch<string>] {
   const [search, { loading, data }] = useLazyQuery(graphqlQuery);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<SearchItem[]>([]);
   const debouncedQuery = useDebounce(query, 200);
 
   useEffect(() => {

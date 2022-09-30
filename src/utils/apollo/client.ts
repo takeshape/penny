@@ -84,7 +84,7 @@ function createApolloClient({
   });
 }
 
-const staticClientCache = {};
+const staticClientCache: Record<string, ApolloClient<NormalizedCacheObject>> = {};
 
 /**
  * The static client is used during static generation. Existing clients will be

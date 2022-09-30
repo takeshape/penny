@@ -103,7 +103,7 @@ export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: Sub
           />
 
           <PaymentMethodForm
-            defaultPaymentMethodId={subscription.paymentMethod.id}
+            defaultPaymentMethodId={subscription.paymentMethod?.id}
             addressId={subscription.address.id}
             refetchSubscriptions={refetchSubscriptions}
             isOpen={isPaymentMethodOpen}

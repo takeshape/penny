@@ -41,7 +41,7 @@ function getCollectionItem(shopifyProduct: StorefrontCollectionComponentProduct)
   };
 }
 
-export function getCollection(component: StorefrontCollectionComponent): StorefrontCollection {
+export function getCollection(component: StorefrontCollectionComponent): StorefrontCollection | null {
   const collection = component?.collection?.shopifyCollection;
 
   if (!collection) {
@@ -56,7 +56,9 @@ export function getCollection(component: StorefrontCollectionComponent): Storefr
     description: collection.description,
     descriptionHtml: collection.descriptionHtml,
     items: collection.products.nodes.map((node) => getCollectionItem(node)),
-    pageInfo: collection.products.pageInfo
+    pageInfo: collection.products.pageInfo,
+    parent: null,
+    breadcrumbTitle: null
   };
 }
 

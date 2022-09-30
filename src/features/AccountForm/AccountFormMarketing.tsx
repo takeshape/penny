@@ -63,13 +63,17 @@ export const AccountFormMarketing = () => {
     UnsubscribeMyEmailFromNewsletterMutationVariables
   >(UnsubscribeMyEmailFromNewsletterMutation);
 
-  const timer = useRef<NodeJS.Timer>(null);
+  const timer: { current: NodeJS.Timeout | null } = useRef(null);
 
   const onSubmit = useCallback(
     async ({ acceptsMarketing, newsletters }: AccountFormMarketingForm) => {
       if (timer.current) {
         clearTimeout(timer.current);
         timer.current = null;
+      }
+
+      if (!session) {
+        return;
       }
 
       if (dirtyFields.acceptsMarketing) {

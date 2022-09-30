@@ -8,13 +8,13 @@ const shippingAddress = {
   lastName: 'Shick',
   address1: '112 West 34th Street',
   address2: '',
-  company: null,
+  company: '',
   city: 'New York',
   province: 'New York',
   provinceCode: 'NY',
   country: 'United States',
   zip: '10120',
-  phone: null
+  phone: ''
 };
 
 const fulfillments = [
@@ -127,11 +127,8 @@ export const ChargeUnknown = Template.bind({});
 
 ChargeUnknown.args = {
   order: {
-    status: 'CHARGE_UNKNOWN',
-    statusAt: '2022-09-15T10:10:00.000Z',
-    id: '123',
-    fulfillments,
-    shippingAddress
+    ...order,
+    status: 'CHARGE_UNKNOWN'
   }
 };
 

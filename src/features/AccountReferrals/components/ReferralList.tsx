@@ -15,7 +15,7 @@ export interface ReferralListProps {
   referrals: ReferralListItemProps[];
 }
 
-export const ReferralList = ({ referrals }) => {
+export const ReferralList = ({ referrals }: ReferralListProps) => {
   return (
     <ul className="list-none">
       {referrals.map((referral) => (

@@ -3,7 +3,6 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
-import { SignInErrorTypes } from 'next-auth/core/pages/signin';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
@@ -15,7 +14,6 @@ export interface AuthSignInForm {
   password: string;
   rememberMe: boolean;
 }
-
 export interface AuthSignInProps {
   signIn: typeof signIn;
   callbackUrl: string;
@@ -23,7 +21,7 @@ export interface AuthSignInProps {
   useMultipass: boolean;
 }
 
-export const errors: Record<SignInErrorTypes | 'CheckoutSessionRequired', string> = {
+export const errors: Record<string, string> = {
   Signin: 'Try signing in with a different account.',
   OAuthSignin: 'Try signing in with a different account.',
   OAuthCallback: 'Try signing in with a different account.',
@@ -56,7 +54,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
   const signupLink = useMemo(() => {
     let href = '/auth/create';
     if (router.query.callbackUrl) {
-      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl))}`;
+      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl) ?? '')}`;
     }
     return href;
   }, [router]);
@@ -75,7 +73,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            {hasErrors && <Alert status="error" primaryText={errorMessage} />}
+            {hasErrors && errorMessage && <Alert status="error" primaryText={errorMessage} />}
 
             <FormInput
               className="sm:col-span-2"

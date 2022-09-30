@@ -26,10 +26,10 @@ import {
   UpdateMyPaymentMethodMutation
 } from '../../queries';
 import { getPaymentMethods } from '../../transforms';
-import { RefetchSubscriptions } from '../../types';
+import { RefetchSubscriptions, SubscriptionPaymentMethod } from '../../types';
 
 export interface PaymentMethodFormProps extends ModalProps {
-  defaultPaymentMethodId: string;
+  defaultPaymentMethodId?: string;
   addressId: string;
   refetchSubscriptions: RefetchSubscriptions;
 }
@@ -58,10 +58,11 @@ export const PaymentMethodForm = ({
 
   const [isPaymentMethodAdded, setIsPaymentMethodAdded] = useState(false);
 
-  const [getMyPaymentMethods, { data: paymentMethodsResponse }] = useAuthenticatedLazyQuery<
+  const [getMyPaymentMethods, { transformedData: paymentMethods }] = useAuthenticatedLazyQuery<
     GetMyPaymentMethodsQueryResponse,
-    GetMyPaymentMethodsQueryVariables
-  >(GetMyPaymentMethodsQuery);
+    GetMyPaymentMethodsQueryVariables,
+    SubscriptionPaymentMethod[]
+  >(GetMyPaymentMethodsQuery, { transform: { data: getPaymentMethods } });
 
   const [sendUpdatePaymentEmail] = useAuthenticatedMutation<
     SendMyUpdatePaymentEmailMutationResponse,
@@ -73,8 +74,6 @@ export const PaymentMethodForm = ({
     UpdateMyPaymentMethodMutationVariables
   >(UpdateMyPaymentMethodMutation);
 
-  const paymentMethods = getPaymentMethods(paymentMethodsResponse);
-
   const handleFormSubmit = useCallback(
     async ({ paymentMethodId }: PaymentMethodFormValues) => {
       await updatePaymentMethod({ variables: { paymentMethodId, addressId } });
@@ -85,7 +84,7 @@ export const PaymentMethodForm = ({
   );
 
   const handleAddPaymentMethod = useCallback(() => {
-    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId } });
+    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId ?? '' } });
     setIsPaymentMethodAdded(true);
   }, [defaultPaymentMethodId, sendUpdatePaymentEmail]);
 
@@ -204,7 +203,7 @@ export const PaymentMethodForm = ({
         onCancel={onClose}
         className="mt-8 flex justify-end gap-2"
         submitText="Change payment method"
-        disableSubmit={paymentMethods?.length < 2}
+        disableSubmit={(paymentMethods?.length ?? 0) < 2}
       />
     </ModalForm>
   );

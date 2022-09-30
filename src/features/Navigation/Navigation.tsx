@@ -1,11 +1,11 @@
 import { Fragment } from 'react';
 import { NavigationMobileMenu } from './NavigationMobileMenu/NavigationMobileMenu';
 import { NavigationTop } from './NavigationTop/NavigationTop';
-import { Navigation as NavigationType } from './types';
+import { Navigation as TNavigation } from './types';
 
-export interface NavigationProps extends NavigationType {}
+export interface NavigationProps extends TNavigation {}
 
-export const Navigation = ({ message, sections, currencies }) => {
+export const Navigation = ({ message, sections, currencies }: NavigationProps) => {
   return (
     <Fragment>
       <NavigationMobileMenu sections={sections} currencies={currencies} />

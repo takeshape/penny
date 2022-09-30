@@ -13,7 +13,7 @@ const SignUpPage: NextPage = () => {
     <Layout seo={{ title: 'Sign In' }}>
       <AuthSignIn
         signIn={signIn}
-        callbackUrl={query.callbackUrl ? getSingle(query.callbackUrl) : '/'}
+        callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/'}
         error={query.error ? getSingle(query.error) : ''}
         useMultipass={shopifyUseMultipass}
       />

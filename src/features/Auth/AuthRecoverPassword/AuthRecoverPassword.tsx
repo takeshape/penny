@@ -5,7 +5,7 @@ import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { useCallback } from 'react';
+import { FormEventHandler, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { RecoverCustomerPasswordMutationResponse, RecoverCustomerPasswordMutationVariables } from 'types/takeshape';
 import { useRecaptcha } from 'utils/hooks/useRecaptcha';
@@ -29,7 +29,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
   const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
 
-  const onSubmit = useCallback(
+  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
       executeRecaptcha((recaptchaToken) => {
@@ -42,7 +42,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   );
 
   const hasData = Boolean(recoverPasswordData);
-  const hasErrors = recoverPasswordData?.customerRecover?.customerUserErrors?.length > 0;
+  const hasErrors = (recoverPasswordData?.customerRecover?.customerUserErrors?.length ?? 0) > 0;
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -58,7 +58,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={recoverPasswordData.customerRecover.customerUserErrors.map((e) => e.message)}
+                secondaryText={recoverPasswordData?.customerRecover?.customerUserErrors.map((e) => e.message)}
               />
             )}
 

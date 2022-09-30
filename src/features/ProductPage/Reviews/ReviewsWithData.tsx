@@ -1,9 +1,10 @@
 import { useLazyQuery } from '@apollo/client';
 import { ProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
 import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
-import { getProductReviewsPage, getReviewList } from 'features/ProductPage/transforms';
+import { getProductReviewsPage } from 'features/ProductPage/transforms';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getReviewList } from 'transforms/reviewsIo';
 import { Review } from 'types/review';
 import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
@@ -17,10 +18,10 @@ export interface ReviewsWithDataProps {
 }
 
 export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }: ReviewsWithDataProps) => {
-  const { stats, rollup, items, currentPage: initialPage, totalPages } = reviewList ?? getReviewList();
+  const { stats, rollup, items, currentPage: initialPage, totalPages } = reviewList ?? getReviewList(null);
 
   const { isReady, query } = useRouter();
-  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [currentPage, setCurrentPage] = useState(initialPage ?? 0);
   const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
 
   const [loadReviews, { data: pageData, loading, error }] = useLazyQuery<
@@ -53,7 +54,7 @@ export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }
       return items;
     }
 
-    return pageData ? getProductReviewsPage(pageData).items : loadingItems;
+    return (pageData && getProductReviewsPage(pageData)?.items) ?? loadingItems;
   }, [currentPage, items, loading, loadingItems, pageData]);
 
   const handleNext = useCallback(() => {

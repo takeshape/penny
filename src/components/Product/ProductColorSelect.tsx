@@ -5,9 +5,9 @@ import classNames from 'utils/classNames';
 import { useHasStockFor } from 'utils/hooks/useHasStockFor';
 
 export interface ProductColorSelectProps {
-  value: string;
+  value: string | null;
   option: ProductVariantOption;
-  onChange: Dispatch<SetStateAction<string>>;
+  onChange: Dispatch<SetStateAction<string | null>>;
   selections: ProductVariantSelection[];
 }
 
@@ -29,7 +29,7 @@ export const ProductColorSelect = ({ value, onChange, option, selections }: Prod
               disabled={isDisabled}
               className={({ active, checked }) =>
                 classNames(
-                  optionValue.selectedClass,
+                  (optionValue?.selectedClass as string) ?? '',
                   active && checked ? 'ring ring-offset-1' : '',
                   !active && checked ? 'ring-2' : '',
                   isDisabled ? 'cursor-not-allowed' : 'cursor-pointer',
@@ -43,7 +43,7 @@ export const ProductColorSelect = ({ value, onChange, option, selections }: Prod
               <span
                 aria-hidden="true"
                 className={classNames(
-                  optionValue.class,
+                  (optionValue?.class as string) ?? '',
                   'h-8 w-8 border border-body border-opacity-10 rounded-full',
                   isSoftDisabled && 'opacity-50'
                 )}

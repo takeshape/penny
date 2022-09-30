@@ -6,7 +6,7 @@ export interface AddPaymentMethodProps {
   customerId: string;
 }
 
-export const AddPaymentMethod = ({ customerId }) => {
+export const AddPaymentMethod = ({ customerId }: AddPaymentMethodProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

@@ -21,7 +21,7 @@ export interface ProductCategoryWithCollectionProps {
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
   const { push } = useRouter();
 
-  const parsePath = useCallback((asPath) => parseRouterPath(collection, asPath), [collection]);
+  const parsePath = useCallback((asPath: string) => parseRouterPath(collection, asPath), [collection]);
   const getVariables = useCallback(
     (parsedPath: PaginationDataHookParsedPath) => {
       const variables =
@@ -69,10 +69,10 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
 
   // Handle page change requests
   const handleSetCurrentPage = useCallback(
-    (toPage) => {
+    (toPage: number) => {
       const nextPage = currentPath.page + toPage;
       const isPreviousPage = toPage < 0;
-      const cachedNextPage = cachedPageData.current.get(nextPage);
+      const cachedNextPage = cachedPageData.current?.get(nextPage);
 
       let nextUrl;
 
@@ -88,11 +88,11 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
     [cachedPageData, currentPageData, currentPath.page, push]
   );
 
-  let items: ProductCategoryProductListItem[];
+  let items: ProductCategoryProductListItem[] = [];
 
   if (isLoadingPage) {
     items = Array(pageSize).fill(undefined) as unknown as ProductCategoryProductListItem[];
-  } else {
+  } else if (currentPageData.items) {
     items = currentPageData.items;
   }
 
@@ -108,8 +108,8 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
         header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
         items={items}
         pagination={{
-          nextPageUrl: isLoadingPage || isLoadingNextPage ? null : nextPageUrl,
-          previousPageUrl: isLoadingPage ? null : previousPageUrl,
+          nextPageUrl: isLoadingPage || isLoadingNextPage || !nextPageUrl ? undefined : nextPageUrl,
+          previousPageUrl: isLoadingPage || !previousPageUrl ? undefined : previousPageUrl,
           setCurrentPage: handleSetCurrentPage
         }}
       />
