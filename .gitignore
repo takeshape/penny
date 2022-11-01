@@ -38,6 +38,7 @@ yarn-error.log*
 # takeshape
 .graphqlconfig
 .takeshaperc
+.current-branch-url
 
 # cypress
 /cypress/videos
