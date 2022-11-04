@@ -24,7 +24,6 @@ import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { parseCookies, setCookie } from 'nookies';
-import path from 'path';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
   AuthCustomerAccessTokenCreateMutationVariables,
@@ -49,7 +48,7 @@ console.log('before withAllAccess');
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
-  jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
+  jwksPath: './keys/jwks.json',
   clients: [
     {
       id: 'takeshape',

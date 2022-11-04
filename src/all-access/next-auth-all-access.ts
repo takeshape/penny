@@ -19,7 +19,7 @@ function nextAuthAllAccessHandler(options: HandlerOptions, nextAuth: NextApiHand
     route = (Array.isArray(route) ? route : [route]).join('/');
 
     switch (route) {
-      case 'all-access/jwkson': {
+      case 'all-access/jwks.json': {
         jwksHandler(options, req, res);
         return;
       }
