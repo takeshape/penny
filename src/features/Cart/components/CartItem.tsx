@@ -32,8 +32,8 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
           <div className="flex justify-between text-base font-medium text-body-900">
             <div>
               <h3>
-                <Link href={href}>
-                  <a className="font-medium text-primary-900 hover:text-accent-900">{name}</a>
+                <Link href={href} className="font-medium text-primary-900 hover:text-accent-900">
+                  {name}
                 </Link>
               </h3>
               <p className="mt-1 text-sm text-body-500">{variantName}</p>
