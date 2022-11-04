@@ -1,3 +1,4 @@
+import createNextAuthAllAccess from 'all-access';
 import {
   googleClientId,
   googleClientSecret,
@@ -6,7 +7,9 @@ import {
   shopifyMultipassSecret,
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
-  shopifyUseMultipass
+  shopifyUseMultipass,
+  takeshapeAuthAudience,
+  takeshapeAuthIssuer
 } from 'config';
 import {
   AuthCustomerAccessTokenCreateMutation,
@@ -21,6 +24,7 @@ import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { parseCookies, setCookie } from 'nookies';
+import path from 'path';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
   AuthCustomerAccessTokenCreateMutationVariables,
@@ -40,22 +44,22 @@ const shopifyClient = createClient({
   accessTokenPrefix: ''
 });
 
-// const withAllAccess = createNextAuthAllAccess({
-//   issuer: takeshapeAuthIssuer,
-//   jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
-//   clients: [
-//     {
-//       id: 'takeshape',
-//       audience: takeshapeAuthAudience,
-//       expiration: '6h',
-//       allowedClaims: ['name', 'email', 'sub', 'shopifyCustomerAccessToken'],
-//       renameClaims: {
-//         shopifyCustomerAccessToken: 'https://takeshape.io/customer_access_token',
-//         displayName: 'name'
-//       }
-//     }
-//   ]
-// });
+const withAllAccess = createNextAuthAllAccess({
+  issuer: takeshapeAuthIssuer,
+  jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
+  clients: [
+    {
+      id: 'takeshape',
+      audience: takeshapeAuthAudience,
+      expiration: '6h',
+      allowedClaims: ['name', 'email', 'sub', 'shopifyCustomerAccessToken'],
+      renameClaims: {
+        shopifyCustomerAccessToken: 'https://takeshape.io/customer_access_token',
+        displayName: 'name'
+      }
+    }
+  ]
+});
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -236,16 +240,13 @@ const nextAuthConfig: NextAuthOptions = {
       return token;
     },
     async session({ session, user, token }) {
-      // eslint-disable-next-line no-console
-      console.log({ session, user, token });
-
       const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {
         ...session,
         user: {
-          ...user,
-          id: sub ?? user?.id ?? 'unknown',
+          ...session.user,
+          id: sub ?? session.user?.email ?? 'unknown',
           firstName,
           lastName,
           shopifyCustomerAccessToken
@@ -272,9 +273,9 @@ const handler: NextApiHandler = async (req, res) => {
     maxAge
   };
 
-  // const nextAuth = withAllAccess(NextAuth, nextAuthConfig);
+  const nextAuth = withAllAccess(NextAuth, nextAuthConfig);
 
-  return await NextAuth(nextAuthConfig)(req, res);
+  return await nextAuth(req, res);
 };
 
 export default withSentry(handler);
