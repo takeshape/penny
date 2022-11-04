@@ -1,4 +1,4 @@
-import createNextAuthAllAccess from 'all-access';
+import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import {
   googleClientId,
   googleClientSecret,
@@ -44,15 +44,8 @@ const shopifyClient = createClient({
   accessTokenPrefix: ''
 });
 
-// Get Vercel to include the file in the deploy
-// fs.readFileSync(path.join(process.cwd(), './keys/jwks.json'));
-
-// eslint-disable-next-line no-console
-console.log('before withAllAccess', jwks);
-
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
-  // jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
   jwks,
   clients: [
     {
@@ -67,9 +60,6 @@ const withAllAccess = createNextAuthAllAccess({
     }
   ]
 });
-
-// eslint-disable-next-line no-console
-console.log('after withAllAccess');
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -161,9 +151,6 @@ const nextAuthConfig: NextAuthOptions = {
   providers,
   callbacks: {
     async jwt({ token, user, account, profile }): Promise<JWT> {
-      // eslint-disable-next-line no-console
-      console.log('jwt', token);
-
       if (user) {
         const { email } = user;
 
@@ -253,8 +240,6 @@ const nextAuthConfig: NextAuthOptions = {
       return token;
     },
     async session({ session, user, token }) {
-      // eslint-disable-next-line no-console
-      console.log('session', session);
       const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {
