@@ -240,13 +240,16 @@ const nextAuthConfig: NextAuthOptions = {
       return token;
     },
     async session({ session, user, token }) {
+      // eslint-disable-next-line no-console
+      console.log({ session, user, token });
+
       const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {
         ...session,
         user: {
           ...user,
-          id: sub ?? user.id,
+          id: sub ?? user?.id ?? 'unknown',
           firstName,
           lastName,
           shopifyCustomerAccessToken
