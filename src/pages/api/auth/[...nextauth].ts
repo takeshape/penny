@@ -44,6 +44,9 @@ const shopifyClient = createClient({
   accessTokenPrefix: ''
 });
 
+// eslint-disable-next-line no-console
+console.log('before withAllAccess');
+
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
   jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
@@ -60,6 +63,9 @@ const withAllAccess = createNextAuthAllAccess({
     }
   ]
 });
+
+// eslint-disable-next-line no-console
+console.log('after withAllAccess');
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -151,6 +157,9 @@ const nextAuthConfig: NextAuthOptions = {
   providers,
   callbacks: {
     async jwt({ token, user, account, profile }): Promise<JWT> {
+      // eslint-disable-next-line no-console
+      console.log('jwt', token);
+
       if (user) {
         const { email } = user;
 
@@ -240,6 +249,8 @@ const nextAuthConfig: NextAuthOptions = {
       return token;
     },
     async session({ session, user, token }) {
+      // eslint-disable-next-line no-console
+      console.log('session', session);
       const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {
@@ -250,7 +261,8 @@ const nextAuthConfig: NextAuthOptions = {
           firstName,
           lastName,
           shopifyCustomerAccessToken
-        }
+        },
+        shopifyCustomerAccessToken
       };
     }
   }
