@@ -7,11 +7,9 @@ export const SignedIn = () => {
   return (
     <>
       <div className="flex-1 items-center hidden lg:flex">
-        <Link href="/account">
-          <a className="-m-2 p-2 text-primary-400 hover:text-primary-500">
-            <span className="sr-only">Account</span>
-            <SolidUserIcon className="w-6 h-6" aria-hidden="true" />
-          </a>
+        <Link href="/account" className="-m-2 p-2 text-primary-400 hover:text-primary-500">
+          <span className="sr-only">Account</span>
+          <SolidUserIcon className="w-6 h-6" aria-hidden="true" />
         </Link>
       </div>
     </>
