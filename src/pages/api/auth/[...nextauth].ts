@@ -16,6 +16,7 @@ import {
   AuthCustomerAccessTokenCreateWithMultipassMutation,
   AuthCustomerQuery
 } from 'features/Auth/queries.storefront';
+import jwks from 'keys/jwks.json';
 import logger from 'logger';
 import { NextApiHandler } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
@@ -48,7 +49,7 @@ console.log('before withAllAccess');
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
-  jwksPath: './keys/jwks.json',
+  jwks,
   clients: [
     {
       id: 'takeshape',

@@ -12,6 +12,7 @@ export interface Client {
 export interface NextAuthAllAccessOptions {
   clients: Client[];
   jwksPath?: string;
+  jwks: any;
   privateKey?: string;
   issuer?: string;
 }
