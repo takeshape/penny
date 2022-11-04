@@ -1,5 +1,6 @@
 import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import type { NextAuthOptions } from 'next-auth';
+import fs from 'node:fs';
 import { createSessionCallback } from './callbacks';
 import jwksHandler from './handlers/jwks';
 import openidConfigurationHandler from './handlers/openid-configuration';
@@ -40,15 +41,14 @@ function nextAuthAllAccessHandler(options: HandlerOptions, nextAuth: NextApiHand
  * access tokens into the session object.
  */
 function nextAuthAllAccess(options: NextAuthAllAccessOptions) {
-  // const jwks = options.jwks ?? process.env['ALLACCESS_JWKS_PATH'];
-  const jwks = options.jwks;
+  const jwksPath = options.jwksPath ?? process.env['ALLACCESS_JWKS_PATH'];
   const privateKey = options.privateKey ?? process.env['ALLACCESS_PRIVATE_KEY'];
 
-  if (!jwks || !privateKey) {
+  if (!jwksPath || !privateKey) {
     throw new Error('JWKS file path and private key are required');
   }
 
-  // const jwks = JSON.parse(fs.readFileSync(jwksPath, 'utf-8')) as unknown;
+  const jwks = JSON.parse(fs.readFileSync(jwksPath, 'utf-8')) as unknown;
 
   if (!isJsonWebKeySet(jwks)) {
     throw new Error('JWKS file is invalid');

@@ -16,7 +16,6 @@ import {
   AuthCustomerAccessTokenCreateWithMultipassMutation,
   AuthCustomerQuery
 } from 'features/Auth/queries.storefront';
-import jwks from 'keys/jwks.json';
 import logger from 'logger';
 import { NextApiHandler } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
@@ -24,6 +23,8 @@ import { JWT } from 'next-auth/jwt';
 import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import fs from 'node:fs';
+import path from 'node:path';
 import { parseCookies, setCookie } from 'nookies';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
@@ -44,12 +45,15 @@ const shopifyClient = createClient({
   accessTokenPrefix: ''
 });
 
+// Get Vercel to include the file in the deploy
+fs.readFileSync(path.join(process.cwd(), './keys/jwks.json'));
+
 // eslint-disable-next-line no-console
 console.log('before withAllAccess');
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
-  jwks,
+  jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
   clients: [
     {
       id: 'takeshape',
