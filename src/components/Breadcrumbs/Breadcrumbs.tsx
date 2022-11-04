@@ -16,8 +16,8 @@ const Breadcrumbs = (props: React.PropsWithChildren<BreadcrumbsProps>) => (
       {props.breadcrumbs.map((breadcrumb, breadcrumbIdx) => (
         <li key={breadcrumb.id}>
           <div className="flex items-center text-sm">
-            <Link href={breadcrumb.href}>
-              <a className="font-medium text-primary-500 hover:text-primary-900">{breadcrumb.name}</a>
+            <Link href={breadcrumb.href} className="font-medium text-primary-500 hover:text-primary-900">
+              {breadcrumb.name}
             </Link>
             {breadcrumbIdx !== props.breadcrumbs.length - 1 ? (
               <svg

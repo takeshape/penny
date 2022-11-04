@@ -24,7 +24,9 @@ export const Collection = (props: CollectionProps) => {
             href={collection.url}
             className="hidden sm:block text-sm font-semibold text-accent-600 hover:text-accent-500"
           >
-            See everything<span aria-hidden="true"> &rarr;</span>
+            <span>
+              See everything<span aria-hidden="true"> &rarr;</span>
+            </span>
           </NextLink>
         </div>
         <div className="mt-8 relative">
@@ -44,7 +46,9 @@ export const Collection = (props: CollectionProps) => {
 
         <div className="mt-12 px-4 sm:hidden">
           <NextLink href={collection.url} className="text-sm font-semibold text-accent-600 hover:text-accent-500">
-            See everything<span aria-hidden="true"> &rarr;</span>
+            <span>
+              See everything<span aria-hidden="true"> &rarr;</span>
+            </span>
           </NextLink>
         </div>
       </div>

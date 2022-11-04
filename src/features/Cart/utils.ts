@@ -23,10 +23,10 @@ export const getCartVariables = (items: CartItem[], session: Session | null) => 
     }
   };
 
-  if (session?.user) {
+  if (session?.user?.shopifyCustomerAccessToken) {
     createCartVariables.input.buyerIdentity = {
       email: session.user.email,
-      customerAccessToken: session.shopifyCustomerAccessToken as string
+      customerAccessToken: session.user.shopifyCustomerAccessToken
     };
   }
 

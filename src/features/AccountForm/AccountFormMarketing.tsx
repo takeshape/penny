@@ -76,10 +76,10 @@ export const AccountFormMarketing = () => {
         return;
       }
 
-      if (dirtyFields.acceptsMarketing) {
+      if (dirtyFields.acceptsMarketing && session?.user?.shopifyCustomerAccessToken) {
         await updateCustomer({
           variables: {
-            customerAccessToken: session.shopifyCustomerAccessToken as string,
+            customerAccessToken: session.user.shopifyCustomerAccessToken,
             customer: { acceptsMarketing }
           }
         });
@@ -106,10 +106,10 @@ export const AccountFormMarketing = () => {
 
   // Load the customer
   useEffect(() => {
-    if (session?.shopifyCustomerAccessToken) {
+    if (session?.user?.shopifyCustomerAccessToken) {
       loadCustomer({
         variables: {
-          customerAccessToken: session.shopifyCustomerAccessToken as string
+          customerAccessToken: session.user.shopifyCustomerAccessToken
         }
       });
     }

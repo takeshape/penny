@@ -34,8 +34,10 @@ export const Collections = ({ collections }: CollectionsProps) => {
 
                 <h3 className="mt-6 text-sm text-body-500">
                   <NextLink href={href}>
-                    <span className="absolute inset-0" />
-                    {name}
+                    <span>
+                      <span className="absolute inset-0" />
+                      {name}
+                    </span>
                   </NextLink>
                 </h3>
                 <p className="text-base font-semibold text-primary-900">{description}</p>

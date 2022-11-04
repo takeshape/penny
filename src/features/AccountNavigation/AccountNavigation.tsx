@@ -7,8 +7,8 @@ import {
   TagIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline';
+import NextLink from 'components/NextLink';
 import { signOut } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 import classNames from 'utils/classNames';
@@ -58,7 +58,7 @@ export const AccountNavigation = () => {
     <aside className="w-full">
       <nav className="space-y-1">
         {items.map((item) => (
-          <Link key={item.name} href={item.href}>
+          <NextLink key={item.name} href={item.href}>
             <button
               className={classNames(
                 item.current
@@ -79,7 +79,7 @@ export const AccountNavigation = () => {
               />
               <span className="truncate">{item.name}</span>
             </button>
-          </Link>
+          </NextLink>
         ))}
         <button
           onClick={handleLogout}

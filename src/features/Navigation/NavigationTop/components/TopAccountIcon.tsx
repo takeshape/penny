@@ -1,18 +1,18 @@
 import { UserIcon } from '@heroicons/react/24/outline';
 import { UserIcon as SolidUserIcon } from '@heroicons/react/24/solid';
+import NextLink from 'components/NextLink';
 import { signIn, useSession } from 'next-auth/react';
-import Link from 'next/link';
 
 export const SignedIn = () => {
   return (
     <>
       <div className="flex-1 items-center hidden lg:flex">
-        <Link href="/account">
-          <a className="-m-2 p-2 text-primary-400 hover:text-primary-500">
+        <NextLink href="/account" className="-m-2 p-2 text-primary-400 hover:text-primary-500">
+          <span>
             <span className="sr-only">Account</span>
             <SolidUserIcon className="w-6 h-6" aria-hidden="true" />
-          </a>
-        </Link>
+          </span>
+        </NextLink>
       </div>
     </>
   );

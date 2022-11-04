@@ -8,8 +8,8 @@ const NextLink = ({ children, href, ...props }: AnchorHTMLAttributes<HTMLAnchorE
   }
 
   return (
-    <Link href={href}>
-      <a {...props}>{children}</a>
+    <Link href={href} {...props}>
+      {children}
     </Link>
   );
 };
