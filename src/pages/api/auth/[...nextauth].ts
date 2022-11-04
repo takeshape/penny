@@ -23,8 +23,6 @@ import { JWT } from 'next-auth/jwt';
 import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import fs from 'node:fs';
-import path from 'node:path';
 import { parseCookies, setCookie } from 'nookies';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
@@ -37,6 +35,7 @@ import {
 import { withSentry } from 'utils/api/withSentry';
 import { createClient } from 'utils/apollo/client';
 import { createMultipassToken } from 'utils/multipass';
+import jwks from '../../../../keys/jwks.json';
 
 const shopifyClient = createClient({
   uri: shopifyStorefrontUrl,
@@ -46,14 +45,15 @@ const shopifyClient = createClient({
 });
 
 // Get Vercel to include the file in the deploy
-fs.readFileSync(path.join(process.cwd(), './keys/jwks.json'));
+// fs.readFileSync(path.join(process.cwd(), './keys/jwks.json'));
 
 // eslint-disable-next-line no-console
 console.log('before withAllAccess');
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
-  jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
+  // jwksPath: path.resolve(process.cwd(), './keys/jwks.json'),
+  jwks,
   clients: [
     {
       id: 'takeshape',

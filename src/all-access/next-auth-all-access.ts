@@ -41,14 +41,21 @@ function nextAuthAllAccessHandler(options: HandlerOptions, nextAuth: NextApiHand
  * access tokens into the session object.
  */
 function nextAuthAllAccess(options: NextAuthAllAccessOptions) {
+  const _jwks = options.jwks;
   const jwksPath = options.jwksPath ?? process.env['ALLACCESS_JWKS_PATH'];
   const privateKey = options.privateKey ?? process.env['ALLACCESS_PRIVATE_KEY'];
 
-  if (!jwksPath || !privateKey) {
+  if (!(jwksPath && !_jwks) || !privateKey) {
     throw new Error('JWKS file path and private key are required');
   }
 
-  const jwks = JSON.parse(fs.readFileSync(jwksPath, 'utf-8')) as unknown;
+  let jwks;
+
+  if (jwksPath) {
+    jwks = JSON.parse(fs.readFileSync(jwksPath, 'utf-8')) as unknown;
+  } else {
+    jwks = _jwks;
+  }
 
   if (!isJsonWebKeySet(jwks)) {
     throw new Error('JWKS file is invalid');
