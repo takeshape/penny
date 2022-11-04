@@ -12,7 +12,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
           <Popover.Button
             className={classNames(
               open ? 'border-accent-600 text-accent-600' : 'border-transparent text-primary-700 hover:text-primary-800',
-              'relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px'
+              'outline-none relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px'
             )}
           >
             {section.name}
@@ -36,7 +36,7 @@ const SectionWithPopover = ({ section }: { section: NavigationSection }) => (
               <div className="max-w-7xl mx-auto px-8 pt-10">
                 {section.link && (
                   <NextLink href={section.link.href} className="text-primary-700 hover:text-primary-800">
-                    Shop all {section.name}
+                    <span>Shop all {section.name}</span>
                   </NextLink>
                 )}
                 <div className="grid grid-cols-4 items-start gap-y-10 gap-x-8 pt-10 pb-12">

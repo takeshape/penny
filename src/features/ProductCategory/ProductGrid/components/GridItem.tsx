@@ -23,8 +23,10 @@ export const GridItem = ({ product, reviews, priority }: GridItemProps) => {
       <div className="pt-10 pb-4 text-center">
         <h3 className="text-sm font-medium text-primary-900">
           <NextLink href={product.url}>
-            <span aria-hidden="true" className="absolute inset-0" />
-            {product.name}
+            <span>
+              <span aria-hidden="true" className="absolute inset-0" />
+              {product.name}
+            </span>
           </NextLink>
         </h3>
         {reviews?.stats.average ? (

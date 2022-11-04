@@ -1,7 +1,7 @@
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import NextImage from 'components/NextImage';
+import NextLink from 'components/NextLink';
 import { PrimitiveAtom, useAtom } from 'jotai';
-import Link from 'next/link';
 import { Fragment } from 'react';
 import { formatPrice, pluralizeText } from 'utils/text';
 import { CartItem as CartItemType } from '../types';
@@ -32,9 +32,9 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
           <div className="flex justify-between text-base font-medium text-body-900">
             <div>
               <h3>
-                <Link href={href} className="font-medium text-primary-900 hover:text-accent-900">
+                <NextLink href={href} className="font-medium text-primary-900 hover:text-accent-900">
                   {name}
-                </Link>
+                </NextLink>
               </h3>
               <p className="mt-1 text-sm text-body-500">{variantName}</p>
             </div>

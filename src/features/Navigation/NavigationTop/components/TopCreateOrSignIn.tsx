@@ -1,5 +1,5 @@
+import NextLink from 'components/NextLink';
 import { signIn, useSession } from 'next-auth/react';
-import Link from 'next/link';
 
 export const TopCreateOrSignIn = () => {
   const { status } = useSession();
@@ -10,9 +10,9 @@ export const TopCreateOrSignIn = () => {
 
   return (
     <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-      <Link href="/auth/create" className="text-sm font-medium text-inverted hover:text-primary-100 cursor-pointer">
+      <NextLink href="/auth/create" className="text-sm font-medium text-inverted hover:text-primary-100 cursor-pointer">
         Create an account
-      </Link>
+      </NextLink>
       <span className="h-6 w-px bg-primary-600" aria-hidden="true" />
       <a
         href={`/api/auth/signin`}

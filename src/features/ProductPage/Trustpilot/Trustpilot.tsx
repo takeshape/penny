@@ -1,7 +1,7 @@
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import NextImage from 'components/NextImage';
-import Link from 'next/link';
+import NextLink from 'components/NextLink';
 import { ReviewList } from 'types/review';
 import { TrustpilotLoading } from './TrustpilotLoading';
 import { TrustpilotStars } from './TrustpilotStars';
@@ -38,7 +38,7 @@ export const Trustpilot = ({ error, currentPageData, currentPage, handleNext, ha
           <span className="font-bold pr-1">{stats?.count}</span> reviews
         </div>
         <div className="text-right">
-          <Link href="https://trustpilot.com">
+          <NextLink href="https://trustpilot.com">
             <NextImage
               className="inline cursor-pointer"
               src="/images/trustpilot/Trustpilot_brandmark_gr-blk-RGB.png"
@@ -46,7 +46,7 @@ export const Trustpilot = ({ error, currentPageData, currentPage, handleNext, ha
               height={100}
               width={150}
             />
-          </Link>
+          </NextLink>
         </div>
       </div>
       {stats?.average && (

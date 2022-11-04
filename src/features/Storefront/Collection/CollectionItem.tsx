@@ -26,8 +26,10 @@ export const CollectionItem = ({ product }: CollectionItemProps) => {
           {colors && <p className="text-sm text-body-500">{colors.values[0].name}</p>}
           <h3 className="mt-1 font-semibold text-primary-900">
             <NextLink href={product.url}>
-              <span className="absolute inset-0" />
-              {product.name}
+              <span>
+                <span className="absolute inset-0" />
+                {product.name}
+              </span>
             </NextLink>
           </h3>
           <p className="mt-1 text-body-900">{formatPrice(product.priceMin.currencyCode, product.priceMin.amount)}</p>
