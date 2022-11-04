@@ -25,7 +25,10 @@ jest.mock('next/dist/client/router', () => ({
 
 const AllTheProviders = ({ children }: PropsWithChildren) => {
   return (
-    <SessionProvider session={{ expires: '2050-10-05T14:48:00.000Z' }} refetchInterval={0}>
+    <SessionProvider
+      session={{ expires: '2050-10-05T14:48:00.000Z', user: { id: 'abc', shopifyCustomerAccessToken: 'abc' } }}
+      refetchInterval={0}
+    >
       <MockedApolloProvider>{children}</MockedApolloProvider>
     </SessionProvider>
   );

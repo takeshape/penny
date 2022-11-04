@@ -49,13 +49,13 @@ export const AccountFormProfile = () => {
         timer.current = null;
       }
 
-      if (!session) {
+      if (!session?.user?.shopifyCustomerAccessToken) {
         return;
       }
 
       await updateCustomer({
         variables: {
-          customerAccessToken: session.shopifyCustomerAccessToken as string,
+          customerAccessToken: session.user.shopifyCustomerAccessToken,
           customer: { firstName, lastName, email, phone }
         }
       });
@@ -65,10 +65,10 @@ export const AccountFormProfile = () => {
 
   // Load the customer
   useEffect(() => {
-    if (session?.shopifyCustomerAccessToken) {
+    if (session?.user?.shopifyCustomerAccessToken) {
       loadCustomer({
         variables: {
-          customerAccessToken: session.shopifyCustomerAccessToken as string
+          customerAccessToken: session.user.shopifyCustomerAccessToken
         }
       });
     }

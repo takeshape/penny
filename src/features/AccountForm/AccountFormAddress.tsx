@@ -66,13 +66,13 @@ export const AccountFormAddress = () => {
         timer.current = null;
       }
 
-      if (!session || !customerData?.customer?.defaultAddress) {
+      if (!session?.user?.shopifyCustomerAccessToken || !customerData?.customer?.defaultAddress) {
         return;
       }
 
       await setCustomerAddressPayload({
         variables: {
-          customerAccessToken: session.shopifyCustomerAccessToken as string,
+          customerAccessToken: session.user.shopifyCustomerAccessToken,
           address: {
             firstName,
             lastName,
@@ -94,10 +94,10 @@ export const AccountFormAddress = () => {
 
   // Load the customer
   useEffect(() => {
-    if (session?.shopifyCustomerAccessToken) {
+    if (session?.user?.shopifyCustomerAccessToken) {
       loadCustomer({
         variables: {
-          customerAccessToken: session.shopifyCustomerAccessToken as string
+          customerAccessToken: session.user.shopifyCustomerAccessToken
         }
       });
     }

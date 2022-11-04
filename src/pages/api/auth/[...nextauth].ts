@@ -19,6 +19,7 @@ import {
 import logger from 'logger';
 import { NextApiHandler } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
@@ -109,6 +110,8 @@ const providers: Provider[] = [
 
       if (shopifyCustomerAccessToken) {
         return {
+          // Temporary ID
+          id: email,
           email,
           shopifyCustomerAccessToken
         };
@@ -147,7 +150,7 @@ const nextAuthConfig: NextAuthOptions = {
   },
   providers,
   callbacks: {
-    async jwt({ token, user, account, profile }) {
+    async jwt({ token, user, account, profile }): Promise<JWT> {
       if (user) {
         const { email } = user;
 
@@ -156,7 +159,7 @@ const nextAuthConfig: NextAuthOptions = {
           throw new Error('MISSING_EMAIL');
         }
 
-        let shopifyCustomerAccessToken = user.shopifyCustomerAccessToken as string | undefined;
+        let shopifyCustomerAccessToken = user.shopifyCustomerAccessToken;
 
         if (!shopifyCustomerAccessToken && shopifyUseMultipass && shopifyMultipassSecret) {
           let firstName;
@@ -236,17 +239,18 @@ const nextAuthConfig: NextAuthOptions = {
 
       return token;
     },
-    async session({ session, token }) {
-      const { firstName, lastName, shopifyCustomerAccessToken } = token;
+    async session({ session, user, token }) {
+      const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {
         ...session,
         user: {
-          ...session.user,
+          ...user,
+          id: sub ?? user.id,
           firstName,
-          lastName
-        },
-        shopifyCustomerAccessToken
+          lastName,
+          shopifyCustomerAccessToken
+        }
       };
     }
   }
