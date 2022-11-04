@@ -45,7 +45,7 @@ function nextAuthAllAccess(options: NextAuthAllAccessOptions) {
   const jwksPath = options.jwksPath ?? process.env['ALLACCESS_JWKS_PATH'];
   const privateKey = options.privateKey ?? process.env['ALLACCESS_PRIVATE_KEY'];
 
-  if (!(jwksPath && !_jwks) || !privateKey) {
+  if ((!jwksPath && !_jwks) || !privateKey) {
     throw new Error('JWKS file path and private key are required');
   }
 

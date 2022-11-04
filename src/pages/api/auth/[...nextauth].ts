@@ -48,7 +48,7 @@ const shopifyClient = createClient({
 // fs.readFileSync(path.join(process.cwd(), './keys/jwks.json'));
 
 // eslint-disable-next-line no-console
-console.log('before withAllAccess');
+console.log('before withAllAccess', jwks);
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
