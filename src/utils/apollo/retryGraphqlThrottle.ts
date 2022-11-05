@@ -1,4 +1,5 @@
 import { ApolloError, ApolloQueryResult } from '@apollo/client';
+import logger from 'logger';
 import { sleep } from '../sleep';
 
 const maxAttempts = 15;
@@ -19,7 +20,9 @@ export const retryGraphqlThrottle = async <T>(
       // Exponential backoff with jitter
       const backoff = backoffBase * 2 ** attempt;
       const jitter = Math.random() * jitterBase;
-      await sleep(Math.round(backoff + jitter));
+      const delay = Math.round(backoff + jitter);
+      await sleep(delay);
+      logger.info(`Retrying throttled request (${delay}ms): ${attempt} / ${maxAttempts}`);
       return await retryGraphqlThrottle(execute, attempt + 1);
     } else {
       throw e;

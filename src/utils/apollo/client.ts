@@ -39,7 +39,8 @@ function createApolloClient({
   const withError = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
       graphQLErrors.forEach(({ message, locations, path, extensions }) =>
-        logger.error(`[GraphQL error]: ${message}`, {
+        logger.error({
+          message: `[GraphQL error]: ${message}`,
           path,
           locations,
           extensions
@@ -53,7 +54,9 @@ function createApolloClient({
         window.location.href = '/api/auth/signin?error=SessionRequired';
       }
 
-      logger.error(`[Network error]: ${networkError}`);
+      logger.error({
+        message: `[Network error]: ${networkError}`
+      });
     }
   });
 
