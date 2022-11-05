@@ -1,7 +1,7 @@
 import { ApolloError, ApolloQueryResult } from '@apollo/client';
 import { sleep } from '../sleep';
 
-const backoffBase = 100;
+const backoffBase = 500;
 const jitterBase = 10000;
 
 // Shopify may throttle in a GraphQL error rather than 429. As a result
