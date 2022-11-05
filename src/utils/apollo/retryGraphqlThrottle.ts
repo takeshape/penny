@@ -1,7 +1,7 @@
 import { ApolloError, ApolloQueryResult } from '@apollo/client';
 import { sleep } from '../sleep';
 
-const delayMultiplier = 30;
+const delayMultiplier = 50;
 
 // Shopify may throttle in a GraphQL error rather than 429. As a result
 // it bypasses RetryLink. Apollo onError can catch it but isn't suited for
