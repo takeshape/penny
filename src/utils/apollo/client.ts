@@ -58,7 +58,7 @@ function createApolloClient({
       if (hasThrottled) {
         // eslint-disable-next-line no-console
         console.log('------------THROTTLED');
-        forward(operation);
+        return forward(operation);
       }
     }
 
