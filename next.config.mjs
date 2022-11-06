@@ -128,7 +128,10 @@ const nextConfig = {
       }
     ]
   },
-  swcMinify: true
+  swcMinify: true,
+  experimental: {
+    appDir: true
+  }
 };
 
 const withPlugins = (plugins, config) => () =>

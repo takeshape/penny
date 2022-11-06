@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsdk": "./node_modules/typescript/lib",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -48,5 +48,6 @@
   "[json]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "typescript.preferences.importModuleSpecifier": "non-relative"
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

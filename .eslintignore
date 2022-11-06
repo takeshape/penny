@@ -8,3 +8,4 @@ package-lock.json
 !.jest
 public/sw.*
 public/workbox-*
+generated/*.json
