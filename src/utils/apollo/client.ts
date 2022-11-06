@@ -4,16 +4,14 @@
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
-import { RetryLink } from '@apollo/client/link/retry';
+// import { RetryLink } from '@apollo/client/link/retry';
 import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from 'config';
 import logger from 'logger';
+import { RetryLink } from './RetryLink';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
 
-const maxAttempts = 10;
-const backoffBase = 100;
-const jitterBase = 1000;
 export interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
   accessToken: string;
@@ -39,27 +37,16 @@ function createApolloClient({
     return { token: accessToken };
   });
 
-  const withError = onError(({ graphQLErrors, networkError, forward, operation }) => {
+  const withError = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
-      let hasThrottled = false;
-      graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+      graphQLErrors.forEach(({ message, locations, path, extensions }) =>
         logger.error({
           message: `[GraphQL error]: ${message}`,
           path,
           locations,
           extensions
-        });
-
-        if (message === 'Throttled') {
-          hasThrottled = true;
-        }
-      });
-
-      if (hasThrottled) {
-        // eslint-disable-next-line no-console
-        console.log('------------THROTTLED');
-        return forward(operation);
-      }
+        })
+      );
     }
 
     if (networkError) {
@@ -89,44 +76,19 @@ function createApolloClient({
   });
 
   const retryLink = new RetryLink({
-    attempts: (count, operation, error) => {
-      // eslint-disable-next-line no-console
-      console.log('retryLink.attempts', count, error);
-
-      if (count > maxAttempts) {
-        logger.info({ message: 'max retry attempts reached', count });
-        return false;
+    attempts: {
+      retryIf: (error, _operation) => {
+        // eslint-disable-next-line no-console
+        console.log('retryIf');
+        return error.statusCode === 429;
       }
-
-      if (error.statusCode === 429) {
-        logger.info({ message: 'status code 429, retrying', count });
-        return true;
-      }
-
-      // Shopify throttled message
-      if (error.response.message === 'Throttled') {
-        logger.info({ message: 'Throttled message, retrying', count });
-        return true;
-      }
-
-      return false;
-    },
-    delay: (count) => {
-      // eslint-disable-next-line no-console
-      console.log('retryLink.delay', count);
-
-      const backoff = backoffBase * 2 ** count;
-      const jitter = Math.random() * jitterBase;
-      const delay = Math.round(backoff + jitter);
-      logger.info(`Retrying throttled request (${delay}ms): ${count} / ${maxAttempts}`);
-      return delay;
     }
   });
 
   const httpLinkWithoutTypeName = ApolloLink.from([httpLink]);
 
   return new ApolloClient<NormalizedCacheObject>({
-    link: ApolloLink.from([retryLink, withError, withToken, authLink.concat(httpLinkWithoutTypeName)]),
+    link: ApolloLink.from([retryLink, withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
     cache: new InMemoryCache(),
     ssrMode
   });
