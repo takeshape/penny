@@ -1,4 +1,5 @@
 # Penny
+
 ![penny-color-logo](https://user-images.githubusercontent.com/127962/200186866-0c2fe7d4-089a-4e53-a801-d9802796a33c.svg)
 
 An e-commerce starter kit by TakeShape.
