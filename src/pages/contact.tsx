@@ -1,9 +1,8 @@
-import { pageRevalidationTtl } from 'config';
 import { Contact } from 'features/Contact/Contact';
 import Layout from 'layouts/Default';
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 
-const ContactPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = () => {
+const ContactPage: NextPage = () => {
   return (
     <Layout seo={{ title: 'Contact' }}>
       <Contact
@@ -15,12 +14,6 @@ const ContactPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ()
       />
     </Layout>
   );
-};
-
-export const getStaticProps = async () => {
-  return {
-    revalidate: pageRevalidationTtl
-  };
 };
 
 export default ContactPage;
