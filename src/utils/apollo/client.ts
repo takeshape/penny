@@ -78,8 +78,16 @@ function createApolloClient({
   const retryLink = new RetryLink({
     attempts: {
       retryIf: (error, _operation) => {
-        // eslint-disable-next-line no-console
-        console.log(error);
+        if (Array.isArray(error)) {
+          let hasThrottled = false;
+          error.forEach(({ message }) => {
+            if (message === 'Throttled') {
+              hasThrottled = true;
+            }
+          });
+          logger.info(`Retrying throttled request`);
+          return hasThrottled;
+        }
         return error.statusCode === 429;
       }
     }
