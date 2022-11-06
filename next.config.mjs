@@ -1,4 +1,5 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import { withSentryConfig } from '@sentry/nextjs';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
