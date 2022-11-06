@@ -5,7 +5,6 @@
   "scripts": {
     "prebuild": "npm run graphql:typegen",
     "build": "next build",
-    "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
