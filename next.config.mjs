@@ -1,5 +1,4 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
-import { withSentryConfig } from '@sentry/nextjs';
 import withPwa from 'next-pwa';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
@@ -145,9 +144,9 @@ export default withPlugins(
     withPwa({
       dest: 'public',
       disable: process.env.NODE_ENV === 'development'
-    }),
-    (config) =>
-      SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
+    })
+    // (config) =>
+    //   SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
   ],
   nextConfig
 );
