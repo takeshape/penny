@@ -60,9 +60,6 @@ yarn-error.log*
 src/types/takeshape.ts
 src/types/storefront.ts
 
-# Generated data
-src/generated/*.json
-
 # PWA
 /public/sw.*
 /public/workbox-*
