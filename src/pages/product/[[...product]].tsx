@@ -23,7 +23,6 @@ import {
   getTrustpilotProductReviews
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
-import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -32,15 +31,12 @@ import {
   ProductPageShopifyProductResponse,
   ProductPageShopifyProductVariables
 } from 'types/takeshape';
-import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
 const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   noindex,
   options,
-  navigation,
-  footer,
   product,
   reviewHighlights,
   reviewList,
@@ -53,18 +49,14 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   if (isFallback || !product) {
     return (
-      <Layout navigation={navigation} footer={footer} seo={{ title: 'Product is loading...' }}>
+      <Layout seo={{ title: 'Product is loading...' }}>
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout
-      navigation={navigation}
-      footer={footer}
-      seo={{ title: product.seo.title, description: product.seo.description, noindex }}
-    >
+    <Layout seo={{ title: product.seo.title, description: product.seo.description, noindex }}>
       <ProductPageComponent
         component={options.component}
         options={options}
@@ -84,27 +76,26 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const { navigation, footer } = await getLayoutData();
-
   let handle = getSingle(params?.product);
 
   if (lighthouseProductHandle && handle === lighthouseHandle) {
     handle = lighthouseProductHandle;
   }
 
-  const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
-    if (!handle) {
-      throw new Error('Invalid getStaticProps params');
-    }
+  if (!handle) {
+    throw new Error('Invalid getStaticProps params');
+  }
 
-    return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
-      query: ProductPageShopifyProductQuery,
-      variables: {
-        handle,
-        reviewsPerPage: reviewsIoReviewsPerPage,
-        trustpilotReviewsPerPage: trustpilotReviewsPerPage
-      }
-    });
+  const { data, error } = await apolloClient.query<
+    ProductPageShopifyProductResponse,
+    ProductPageShopifyProductVariables
+  >({
+    query: ProductPageShopifyProductQuery,
+    variables: {
+      handle,
+      reviewsPerPage: reviewsIoReviewsPerPage,
+      trustpilotReviewsPerPage: trustpilotReviewsPerPage
+    }
   });
 
   if (error) {
@@ -121,8 +112,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       key: product?.id,
       // Don't index lighthouse test urls
       noindex: handle === lighthouseHandle,
-      navigation,
-      footer,
       product,
       options: getPageOptions(data),
       reviewHighlights: getReviewHighlights(data),

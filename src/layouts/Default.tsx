@@ -1,8 +1,10 @@
 import Seo from 'components/Seo';
 import { Cart } from 'features/Cart/Cart';
 import { CartProvider } from 'features/Cart/CartProvider';
-import { Footer, FooterProps } from 'features/Footer/Footer';
-import { Navigation, NavigationProps } from 'features/Navigation/Navigation';
+import footerData from 'features/Footer/data.preval';
+import { Footer } from 'features/Footer/Footer';
+import navigationData from 'features/Navigation/data.preval';
+import { Navigation } from 'features/Navigation/Navigation';
 import { Notification } from 'features/Notification/Notification';
 import { QuickAddWithData } from 'features/QuickAdd/QuickAddWithData';
 import SearchModal from 'features/Search/Modal/Modal';
@@ -11,18 +13,16 @@ import { PropsWithChildren } from 'react';
 
 export interface LayoutProps {
   seo?: NextSeoProps;
-  navigation: NavigationProps | null;
-  footer: FooterProps | null;
 }
 
-export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<LayoutProps>) => {
+export const Layout = ({ children, seo }: PropsWithChildren<LayoutProps>) => {
   return (
     <CartProvider>
       <div className="flex flex-col min-h-screen">
         <Seo {...seo} />
 
         <SearchModal />
-        {navigation && <Navigation {...navigation} />}
+        {navigationData && <Navigation {...navigationData} />}
 
         <main id="content" className="flex flex-col grow bg-background">
           {children}
@@ -32,7 +32,7 @@ export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<
         <QuickAddWithData />
         <Notification />
 
-        {footer && <Footer {...footer} />}
+        {footerData && <Footer {...footerData} />}
       </div>
     </CartProvider>
   );

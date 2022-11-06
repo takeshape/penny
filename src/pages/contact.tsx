@@ -1,12 +1,10 @@
-import { pageRevalidationTtl } from 'config';
 import { Contact } from 'features/Contact/Contact';
 import Layout from 'layouts/Default';
-import { getLayoutData } from 'layouts/getLayoutData';
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 
-const ContactPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
+const ContactPage: NextPage = () => {
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: 'Contact' }}>
+    <Layout seo={{ title: 'Contact' }}>
       <Contact
         text={{
           primary: 'Get in touch',
@@ -16,17 +14,6 @@ const ContactPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
       />
     </Layout>
   );
-};
-
-export const getStaticProps = async () => {
-  const { navigation, footer } = await getLayoutData();
-  return {
-    revalidate: pageRevalidationTtl,
-    props: {
-      navigation,
-      footer
-    }
-  };
 };
 
 export default ContactPage;

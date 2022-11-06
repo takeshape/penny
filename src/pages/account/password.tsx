@@ -1,19 +1,13 @@
 import { AccountFormPassword } from 'features/AccountForm/AccountFormPassword';
 import Layout from 'layouts/Account';
-import { getLayoutData } from 'layouts/getLayoutData';
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 
-const AccountPasswordPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
+const AccountPasswordPage: NextPage = () => {
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: 'Password' }}>
+    <Layout seo={{ title: 'Password' }}>
       <AccountFormPassword />
     </Layout>
   );
-};
-
-export const getStaticProps = async () => {
-  const { navigation, footer } = await getLayoutData();
-  return { props: { navigation, footer } };
 };
 
 export default AccountPasswordPage;
