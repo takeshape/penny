@@ -9,6 +9,8 @@ An e-commerce starter kit by TakeShape.
 The easiest way to know if a tool is right for you is to see it in action. Check out the store now at
 https://penny-demo.takeshape.io/.
 
+Deployed on Netlify: https://penny-ecommerce.netlify.app Deployed on Vercel: https://penny-ecommerce.vercel.app
+
 You can clone this repo with git to run the Next.js frontend locally (`git clone https://github.com/takeshape/penny`).
 To connect it to a GraphQL backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern`
 directory. [The instructions section of this README will teach you how to do that](#instructions).
@@ -218,7 +220,10 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 4. Select the **Save** button at the top-right of the OpenID service page.
 
 5. Now set up your environment variables. You can either do this in the `.env` file in your Next.js project's directory,
-   or [in your hosting provider's UI](https://vercel.com/docs/concepts/projects/environment-variables).
+   or in your hosting provider's UI.
+
+- [Vercel](https://vercel.com/docs/concepts/projects/environment-variables)
+- [Netlify](https://docs.netlify.com/environment-variables/overview/)
 
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
@@ -694,13 +699,8 @@ your queries and responses fully typed, and can develop efficiently and safely.
 
 ### Choosing a hosting platform
 
-When building this project, we chose [Vercel](https://vercel.com/) to host the frontend.
-
 [Vercel is the company that created Next.js](https://nextjs.org/), and they have useful github workflow tools for
-projects like this. We integrated
-[their deploy preview functionality](https://vercel.com/docs/concepts/git/vercel-for-github) into our workflow, which
-allowed Vercel to generate a preview build of the site for every pull request we created. That allowed us to see what
-the PR's changes would look like in production before we merged them to our main branch.
+projects like this.
 
 To learn more about deploying with Vercel, [check out their comprehensive guide](https://nextjs.org/docs/deployment).
 
@@ -709,6 +709,8 @@ offer [a similar deploy preview tool](https://docs.netlify.com/site-deploys/depl
 
 To learn more about deploying with Netlify,
 [check out their comprehensive guide](https://docs.netlify.com/integrations/frameworks/next-js/).
+
+Both services offer preview deployments, which we've enabled on our PRs.
 
 # GitHub Actions
 
