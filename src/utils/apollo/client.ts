@@ -79,22 +79,31 @@ function createApolloClient({
 
   const retryLink = new RetryLink({
     attempts: (count, operation, error) => {
+      // eslint-disable-next-line no-console
+      console.log('retryLink.attempts', count, error);
+
       if (count > maxAttempts) {
+        logger.info({ message: 'max retry attempts reached', count });
         return false;
       }
 
       if (error.statusCode === 429) {
+        logger.info({ message: 'status code 429, retrying', count });
         return true;
       }
 
       // Shopify throttled message
       if (error.response.message === 'Throttled') {
+        logger.info({ message: 'Throttled message, retrying', count });
         return true;
       }
 
       return false;
     },
     delay: (count) => {
+      // eslint-disable-next-line no-console
+      console.log('retryLink.delay', count);
+
       const backoff = backoffBase * 2 ** count;
       const jitter = Math.random() * jitterBase;
       const delay = Math.round(backoff + jitter);
