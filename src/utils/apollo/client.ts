@@ -39,16 +39,27 @@ function createApolloClient({
     return { token: accessToken };
   });
 
-  const withError = onError(({ graphQLErrors, networkError }) => {
+  const withError = onError(({ graphQLErrors, networkError, forward, operation }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, locations, path, extensions }) =>
+      let hasThrottled = false;
+      graphQLErrors.forEach(({ message, locations, path, extensions }) => {
         logger.error({
           message: `[GraphQL error]: ${message}`,
           path,
           locations,
           extensions
-        })
-      );
+        });
+
+        if (message === 'Throttled') {
+          hasThrottled = true;
+        }
+      });
+
+      if (hasThrottled) {
+        // eslint-disable-next-line no-console
+        console.log('------------THROTTLED');
+        forward(operation);
+      }
     }
 
     if (networkError) {
@@ -115,7 +126,7 @@ function createApolloClient({
   const httpLinkWithoutTypeName = ApolloLink.from([httpLink]);
 
   return new ApolloClient<NormalizedCacheObject>({
-    link: ApolloLink.from([withError, retryLink, withToken, authLink.concat(httpLinkWithoutTypeName)]),
+    link: ApolloLink.from([retryLink, withError, withToken, authLink.concat(httpLinkWithoutTypeName)]),
     cache: new InMemoryCache(),
     ssrMode
   });
