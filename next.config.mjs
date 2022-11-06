@@ -142,6 +142,11 @@ const nextConfig = {
     });
 
     return config;
+  },
+  experimental: {
+    // Try to avoid throttling
+    // workerThreads: false,
+    // cpus: 1
   }
 };
 
