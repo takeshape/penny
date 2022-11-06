@@ -1,6 +1,5 @@
 # Penny
-
-![penny-logo](https://user-images.githubusercontent.com/277401/184440759-05acd25e-6adc-453e-b5a2-ccb6811549e0.png)
+![penny-color-logo](https://user-images.githubusercontent.com/127962/200186866-0c2fe7d4-089a-4e53-a801-d9802796a33c.svg)
 
 An e-commerce starter kit by TakeShape.
 
@@ -21,19 +20,19 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-bukejjfjq-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667701096373-49518.report.html) |
+| [Path: /](https://penny-l5ayuifot-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667757669606-73303.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://penny-bukejjfjq-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667701097070-71701.report.html) |
+| [Path: /product/__lighthouse](https://penny-l5ayuifot-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667757670206-23951.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://penny-bukejjfjq-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667701097484-88952.report.html) |
+| [Path: /collection/__lighthouse](https://penny-l5ayuifot-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667757670599-94093.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
