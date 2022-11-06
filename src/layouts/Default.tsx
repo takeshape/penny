@@ -2,7 +2,7 @@ import Seo from 'components/Seo';
 import { Cart } from 'features/Cart/Cart';
 import { CartProvider } from 'features/Cart/CartProvider';
 import footerData from 'features/Footer/data.preval';
-import { Footer, FooterProps } from 'features/Footer/Footer';
+import { Footer } from 'features/Footer/Footer';
 import navigationData from 'features/Navigation/data.preval';
 import { Navigation } from 'features/Navigation/Navigation';
 import { Notification } from 'features/Notification/Notification';
@@ -13,10 +13,9 @@ import { PropsWithChildren } from 'react';
 
 export interface LayoutProps {
   seo?: NextSeoProps;
-  footer: FooterProps | null;
 }
 
-export const Layout = ({ children, footer, seo }: PropsWithChildren<LayoutProps>) => {
+export const Layout = ({ children, seo }: PropsWithChildren<LayoutProps>) => {
   return (
     <CartProvider>
       <div className="flex flex-col min-h-screen">

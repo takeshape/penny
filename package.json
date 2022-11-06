@@ -5,12 +5,12 @@
   "scripts": {
     "prebuild": "npm run graphql:typegen",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "dev": "next dev",
     "export": "next build && next export",
-    "generate:shared-data": "dotenv -e .env.local -e .env ./scripts/generate-shared-data.mjs",
     "graphql:typegen": "npm run graphql:typegen:takeshape && npm run graphql:typegen:storefront",
     "graphql:typegen:storefront": "graphql-codegen --config ./codegen.storefront.config.js",
     "graphql:typegen:takeshape": "graphql-codegen --config ./codegen.takeshape.config.js",
@@ -37,7 +37,6 @@
     "card-validator": "^8.1.1",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
-    "graphql-request": "^5.0.0",
     "imask": "^6.4.3",
     "jotai": "^1.9.1",
     "next": "^13.0.2",
@@ -56,10 +55,8 @@
     "react-imask": "^6.4.3",
     "react-phone-number-input": "^3.2.12",
     "react-star-ratings": "^2.3.0",
-    "server-only": "^0.0.1",
     "sharp": "^0.31.2",
-    "slug": "^8.2.2",
-    "ts-toolbelt": "^9.6.0"
+    "slug": "^8.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
@@ -92,7 +89,6 @@
     "babel-jest": "^29.2.2",
     "babel-loader": "^9.1.0",
     "cypress": "^10.11.0",
-    "dotenv-cli": "^6.0.0",
     "eslint": "^8.26.0",
     "eslint-config-next": "^13.0.2",
     "eslint-config-prettier": "^8.5.0",
@@ -111,13 +107,15 @@
     "storybook-addon-jotai": "^0.0.6",
     "storybook-addon-next-router": "^4.0.1",
     "tailwindcss": "^3.2.1",
+    "ts-toolbelt": "^9.6.0",
     "type-fest": "^3.1.0",
     "typescript": "^4.8.4",
     "webpack": "^5.74.0"
   },
+  "packageManager": "npm@8.19.2",
   "engines": {
     "node": "16",
-    "npm": ">=7"
+    "npm": "8"
   },
   "msw": {
     "workerDirectory": "mocks"

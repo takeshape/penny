@@ -2,12 +2,11 @@ import { ErrorMessage } from 'components/Error/ErrorMessage';
 import NextLink from 'components/NextLink';
 import Wrapper from 'components/Wrapper/Content';
 import Layout from 'layouts/Default';
-import { getLayoutData } from 'layouts/getLayoutData';
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 
-const NotFoundPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
+const NotFoundPage: NextPage = () => {
   return (
-    <Layout footer={footer} seo={{ title: 'Server Error' }}>
+    <Layout seo={{ title: 'Server Error' }}>
       <Wrapper>
         <ErrorMessage
           headline="404 error"
@@ -24,11 +23,6 @@ const NotFoundPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = (
       </Wrapper>
     </Layout>
   );
-};
-
-export const getStaticProps = async () => {
-  const { navigation, footer } = await getLayoutData();
-  return { props: { navigation, footer } };
 };
 
 export default NotFoundPage;

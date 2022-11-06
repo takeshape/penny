@@ -3,14 +3,13 @@ import { GetStorefrontQuery } from 'features/Storefront/queries';
 import { Storefront } from 'features/Storefront/Storefront';
 import { getStorefront } from 'features/Storefront/transforms';
 import Layout from 'layouts/Default';
-import { getLayoutData } from 'layouts/getLayoutData';
 import { InferGetStaticPropsType, NextPage } from 'next';
 import { GetStorefrontQueryResponse } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ footer, storefront }) => {
+const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ storefront }) => {
   return (
-    <Layout footer={footer}>
+    <Layout>
       <Storefront storefront={storefront} />
     </Layout>
   );
@@ -19,8 +18,6 @@ const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ f
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async () => {
-  const { footer } = await getLayoutData();
-
   const { data, error } = await apolloClient.query<GetStorefrontQueryResponse>({
     query: GetStorefrontQuery
   });
@@ -40,7 +37,6 @@ export const getStaticProps = async () => {
   return {
     revalidate: homepageRevalidationTtl,
     props: {
-      footer,
       storefront
     }
   };

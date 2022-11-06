@@ -7,7 +7,6 @@ import {
 } from 'features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
 import Layout from 'layouts/Default';
-import { getLayoutData } from 'layouts/getLayoutData';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import {
@@ -18,24 +17,19 @@ import {
 } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  noindex,
-  navigation,
-  footer,
-  collection
-}) => {
+const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ noindex, collection }) => {
   const { isFallback } = useRouter();
 
   if (isFallback || !collection) {
     return (
-      <Layout footer={footer} seo={{ title: 'Collection is loading...' }}>
+      <Layout seo={{ title: 'Collection is loading...' }}>
         <PageLoader />
       </Layout>
     );
   }
 
   return (
-    <Layout footer={footer} seo={{ title: collection.seo.title, description: collection.seo.description, noindex }}>
+    <Layout seo={{ title: collection.seo.title, description: collection.seo.description, noindex }}>
       <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
     </Layout>
   );
@@ -44,8 +38,6 @@ const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  const { navigation, footer } = await getLayoutData();
-
   if (!params?.collection) {
     throw new Error('Invalid getStaticProps params');
   }
@@ -69,16 +61,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
           after: cursor
         };
 
-  // const { data, error } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
-  //   return apolloClient.query<
-  //     ProductCategoryShopifyCollectionQueryResponse,
-  //     ProductCategoryShopifyCollectionQueryVariables
-  //   >({
-  //     query: ProductCategoryShopifyCollectionQuery,
-  //     variables
-  //   });
-  // });
-
   const { data, error } = await apolloClient.query<
     ProductCategoryShopifyCollectionQueryResponse,
     ProductCategoryShopifyCollectionQueryVariables
@@ -101,8 +83,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       key: collection?.id,
       // Don't index lighthouse test urls
       noindex: handle === lighthouseHandle,
-      navigation,
-      footer,
       collection
     }
   };

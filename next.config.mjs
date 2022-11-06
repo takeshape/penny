@@ -2,13 +2,9 @@ import createBundleAnalyzer from '@next/bundle-analyzer';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
-const require = createRequire(import.meta.url);
-
-// const withNextPluginPreval = createNextPluginPreval();
-
-// console.log(withNextPluginPreval);
-
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+
+const require = createRequire(import.meta.url);
 
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -135,16 +131,9 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
-  // experimental: {
-  //   appDir: true
-  // },
   webpack: (config) => {
-    // const webpackConfig = nextConfig.webpack?.(config, options) || config;
+    // Unable to use the next-plugin-preval config directly for some reason, mjs?
     const rules = config.module?.rules;
-
-    if (!rules) {
-      throw new Error('Next Plugin Preval could not find webpack rules. Please file an issue.');
-    }
 
     rules.push({
       test: /\.preval\.(t|j)sx?$/,
@@ -162,14 +151,13 @@ const withPlugins = (plugins, config) => () =>
 
 export default withPlugins(
   [
-    // withNextPluginPreval,
     withBundleAnalyzer,
     withPwa({
       dest: 'public',
       disable: process.env.NODE_ENV === 'development'
-    })
-    // (config) =>
-    //   SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
+    }),
+    (config) =>
+      SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
   ],
   nextConfig
 );
