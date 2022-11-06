@@ -76,16 +76,20 @@ function createApolloClient({
   });
 
   const retryLink = new RetryLink({
+    delay: {
+      initial: 1000,
+      max: 10,
+      jitter: true
+    },
     attempts: {
       retryIf: (error, _operation) => {
         if (Array.isArray(error)) {
-          let hasThrottled = false;
-          error.forEach(({ message }) => {
-            if (message === 'Throttled') {
-              hasThrottled = true;
-            }
-          });
-          logger.info(`Retrying throttled request`);
+          let hasThrottled = error.some(({ message }) => message === 'Throttled');
+
+          if (hasThrottled) {
+            logger.info(`Retrying throttled request`);
+          }
+
           return hasThrottled;
         }
         return error.statusCode === 429;
