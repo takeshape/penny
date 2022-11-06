@@ -1,8 +1,8 @@
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import preval from 'next-plugin-preval';
 import { createStaticClient } from 'utils/apollo/client';
-import { NavigationQuery } from './queries';
-import { getNavigation } from './transforms';
+import { FooterQuery } from './queries';
+import { getFooter } from './transforms';
 
 const apolloClient = createStaticClient({
   uri: takeshapeApiUrl,
@@ -13,9 +13,9 @@ const apolloClient = createStaticClient({
 
 export async function getNavigationData() {
   const { data } = await apolloClient.query({
-    query: NavigationQuery
+    query: FooterQuery
   });
-  return getNavigation(data);
+  return getFooter(data);
 }
 
 export default preval(getNavigationData());

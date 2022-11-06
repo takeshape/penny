@@ -16,7 +16,6 @@ import {
   ProductCategoryShopifyCollectionQueryResponse,
   ProductCategoryShopifyCollectionQueryVariables
 } from 'types/takeshape';
-import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
@@ -70,14 +69,22 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
           after: cursor
         };
 
-  const { data, error } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
-    return apolloClient.query<
-      ProductCategoryShopifyCollectionQueryResponse,
-      ProductCategoryShopifyCollectionQueryVariables
-    >({
-      query: ProductCategoryShopifyCollectionQuery,
-      variables
-    });
+  // const { data, error } = await retryGraphqlThrottle<ProductCategoryShopifyCollectionQueryResponse>(async () => {
+  //   return apolloClient.query<
+  //     ProductCategoryShopifyCollectionQueryResponse,
+  //     ProductCategoryShopifyCollectionQueryVariables
+  //   >({
+  //     query: ProductCategoryShopifyCollectionQuery,
+  //     variables
+  //   });
+  // });
+
+  const { data, error } = await apolloClient.query<
+    ProductCategoryShopifyCollectionQueryResponse,
+    ProductCategoryShopifyCollectionQueryVariables
+  >({
+    query: ProductCategoryShopifyCollectionQuery,
+    variables
   });
 
   if (error) {

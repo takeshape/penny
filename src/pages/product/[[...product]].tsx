@@ -32,7 +32,6 @@ import {
   ProductPageShopifyProductResponse,
   ProductPageShopifyProductVariables
 } from 'types/takeshape';
-import { retryGraphqlThrottle } from 'utils/apollo/retryGraphqlThrottle';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
@@ -88,19 +87,35 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     handle = lighthouseProductHandle;
   }
 
-  const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
-    if (!handle) {
-      throw new Error('Invalid getStaticProps params');
-    }
+  if (!handle) {
+    throw new Error('Invalid getStaticProps params');
+  }
 
-    return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
-      query: ProductPageShopifyProductQuery,
-      variables: {
-        handle,
-        reviewsPerPage: reviewsIoReviewsPerPage,
-        trustpilotReviewsPerPage: trustpilotReviewsPerPage
-      }
-    });
+  // const { data, error } = await retryGraphqlThrottle<ProductPageShopifyProductResponse>(async () => {
+  //   if (!handle) {
+  //     throw new Error('Invalid getStaticProps params');
+  //   }
+
+  //   return apolloClient.query<ProductPageShopifyProductResponse, ProductPageShopifyProductVariables>({
+  //     query: ProductPageShopifyProductQuery,
+  //     variables: {
+  //       handle,
+  //       reviewsPerPage: reviewsIoReviewsPerPage,
+  //       trustpilotReviewsPerPage: trustpilotReviewsPerPage
+  //     }
+  //   });
+  // });
+
+  const { data, error } = await apolloClient.query<
+    ProductPageShopifyProductResponse,
+    ProductPageShopifyProductVariables
+  >({
+    query: ProductPageShopifyProductQuery,
+    variables: {
+      handle,
+      reviewsPerPage: reviewsIoReviewsPerPage,
+      trustpilotReviewsPerPage: trustpilotReviewsPerPage
+    }
   });
 
   if (error) {

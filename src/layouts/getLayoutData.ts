@@ -1,8 +1,6 @@
 import { FooterProps } from 'features/Footer/Footer';
-import { FooterQuery } from 'features/Footer/queries';
-import { getFooter } from 'features/Footer/transforms';
 import { Navigation } from 'features/Navigation/types';
-import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+// import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 interface Cache {
   footer: FooterProps | null;
@@ -14,15 +12,15 @@ const cache: Cache = {
   navigation: null
 };
 
-const apolloClient = createAnonymousTakeshapeApolloClient();
+// const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export async function getLayoutData() {
-  if (!cache.footer) {
-    const { data } = await apolloClient.query({
-      query: FooterQuery
-    });
-    cache.footer = getFooter(data);
-  }
+  // if (!cache.footer) {
+  //   const { data } = await apolloClient.query({
+  //     query: FooterQuery
+  //   });
+  //   cache.footer = getFooter(data);
+  // }
 
   // if (!cache.navigation) {
   //   const { data } = await apolloClient.query({

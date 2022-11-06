@@ -11,6 +11,9 @@ import logger from 'logger';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
 
+const maxAttempts = 10;
+const backoffBase = 100;
+const jitterBase = 1000;
 export interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
   accessToken: string;
@@ -75,10 +78,28 @@ function createApolloClient({
   });
 
   const retryLink = new RetryLink({
-    attempts: {
-      retryIf: (error, _operation) => {
-        return error.statusCode === 429;
+    attempts: (count, operation, error) => {
+      if (count > maxAttempts) {
+        return false;
       }
+
+      if (error.statusCode === 429) {
+        return true;
+      }
+
+      // Shopify throttled message
+      if (error.response.message === 'Throttled') {
+        return true;
+      }
+
+      return false;
+    },
+    delay: (count) => {
+      const backoff = backoffBase * 2 ** count;
+      const jitter = Math.random() * jitterBase;
+      const delay = Math.round(backoff + jitter);
+      logger.info(`Retrying throttled request (${delay}ms): ${count} / ${maxAttempts}`);
+      return delay;
     }
   });
 
