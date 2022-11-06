@@ -128,7 +128,12 @@ const nextConfig = {
       }
     ]
   },
-  swcMinify: true
+  swcMinify: true,
+  experimental: {
+    // Try to avoid throttling
+    workerThreads: false,
+    cpus: 1
+  }
 };
 
 const withPlugins = (plugins, config) => () =>
