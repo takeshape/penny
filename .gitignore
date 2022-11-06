@@ -61,7 +61,7 @@ src/types/takeshape.ts
 src/types/storefront.ts
 
 # Generated data
-src/generated
+src/generated/*.json
 
 # PWA
 /public/sw.*
