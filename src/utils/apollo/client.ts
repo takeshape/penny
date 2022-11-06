@@ -115,7 +115,7 @@ function createApolloClient({
   const httpLinkWithoutTypeName = ApolloLink.from([httpLink]);
 
   return new ApolloClient<NormalizedCacheObject>({
-    link: ApolloLink.from([retryLink, withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
+    link: ApolloLink.from([withError, retryLink, withToken, authLink.concat(httpLinkWithoutTypeName)]),
     cache: new InMemoryCache(),
     ssrMode
   });
