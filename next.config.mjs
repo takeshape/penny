@@ -135,9 +135,9 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
-  experimental: {
-    appDir: true
-  },
+  // experimental: {
+  //   appDir: true
+  // },
   webpack: (config) => {
     // const webpackConfig = nextConfig.webpack?.(config, options) || config;
     const rules = config.module?.rules;

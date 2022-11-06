@@ -2,7 +2,7 @@ import Seo from 'components/Seo';
 import { Cart } from 'features/Cart/Cart';
 import { CartProvider } from 'features/Cart/CartProvider';
 import { Footer, FooterProps } from 'features/Footer/Footer';
-import { Navigation, NavigationProps } from 'features/Navigation/Navigation';
+import { Navigation } from 'features/Navigation/Navigation';
 import { Notification } from 'features/Notification/Notification';
 import { QuickAddWithData } from 'features/QuickAdd/QuickAddWithData';
 import SearchModal from 'features/Search/Modal/Modal';
@@ -11,18 +11,17 @@ import { PropsWithChildren } from 'react';
 
 export interface LayoutProps {
   seo?: NextSeoProps;
-  navigation: NavigationProps | null;
   footer: FooterProps | null;
 }
 
-export const Layout = ({ children, navigation, footer, seo }: PropsWithChildren<LayoutProps>) => {
+export const Layout = ({ children, footer, seo }: PropsWithChildren<LayoutProps>) => {
   return (
     <CartProvider>
       <div className="flex flex-col min-h-screen">
         <Seo {...seo} />
 
         <SearchModal />
-        {navigation && <Navigation {...navigation} />}
+        <Navigation />
 
         <main id="content" className="flex flex-col grow bg-background">
           {children}
