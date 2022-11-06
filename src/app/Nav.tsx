@@ -1,8 +1,7 @@
-import { sharedData } from 'generated';
 import 'server-only';
+import data from './data.preval';
 
 export function Nav() {
-  const data = sharedData;
   return (
     <nav>
       <ul>

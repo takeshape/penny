@@ -1,5 +1,12 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import { createRequire } from 'module';
 import withPwa from 'next-pwa';
+
+const require = createRequire(import.meta.url);
+
+// const withNextPluginPreval = createNextPluginPreval();
+
+// console.log(withNextPluginPreval);
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
@@ -130,6 +137,21 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     appDir: true
+  },
+  webpack: (config) => {
+    // const webpackConfig = nextConfig.webpack?.(config, options) || config;
+    const rules = config.module?.rules;
+
+    if (!rules) {
+      throw new Error('Next Plugin Preval could not find webpack rules. Please file an issue.');
+    }
+
+    rules.push({
+      test: /\.preval\.(t|j)sx?$/,
+      loader: require.resolve('next-plugin-preval/loader')
+    });
+
+    return config;
   }
 };
 
@@ -140,6 +162,7 @@ const withPlugins = (plugins, config) => () =>
 
 export default withPlugins(
   [
+    // withNextPluginPreval,
     withBundleAnalyzer,
     withPwa({
       dest: 'public',
