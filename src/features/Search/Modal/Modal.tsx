@@ -15,10 +15,11 @@ import { ModalSearchItem } from './components/ModalSearchItem';
 
 export const Modal = () => {
   const router = useRouter();
-  const [loading, query, results, setQuery] = useSearch({
+  const { query, setQuery, results, loading } = useSearch({
     graphqlQuery: SearchShopifyProducts,
     resultsFn: getSearchList
   });
+
   const [isSearchOpen, setIsSearchOpen] = useAtom(isSearchOpenAtom);
 
   // This should only be called once, on page load, to avoid a loop
@@ -92,7 +93,13 @@ export const Modal = () => {
                   />
                 </div>
 
-                {results.length > 0 && (
+                {query.length > 1 && (results === null || loading) && (
+                  <div className="p-8 flex items-center justify-center">
+                    <Loader />
+                  </div>
+                )}
+
+                {results && results.length > 0 && (
                   <Combobox.Options static className="max-h-96 scroll-py-3 overflow-y-auto p-3">
                     {results.map((item) => (
                       <div key={item.product.id}>
@@ -102,17 +109,11 @@ export const Modal = () => {
                   </Combobox.Options>
                 )}
 
-                {query !== '' && results.length === 0 && !loading && (
+                {query.length > 1 && results?.length === 0 && !loading && (
                   <div className="py-14 px-6 text-center text-sm sm:px-14">
                     <ExclamationTriangleIcon className="mx-auto h-6 w-6 text-body-400" aria-hidden="true" />
                     <p className="mt-4 font-semibold text-body-900">No results found</p>
                     <p className="mt-2 text-body-500">We couldn’t find anything with that term. Please try again.</p>
-                  </div>
-                )}
-
-                {query !== '' && loading && (
-                  <div className="p-8 flex items-center justify-center">
-                    <Loader />
                   </div>
                 )}
               </Combobox>

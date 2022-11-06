@@ -10,20 +10,24 @@ export interface UseSearchProps {
   resultsFn: (data: any) => SearchItem[];
 }
 
-export function useSearch({
-  graphqlQuery,
-  resultsFn
-}: UseSearchProps): [boolean, string, SearchItem[], Dispatch<string>] {
+export interface UseSearch {
+  loading: boolean;
+  query: string;
+  results: SearchItem[] | null;
+  setQuery: Dispatch<string>;
+}
+
+export function useSearch({ graphqlQuery, resultsFn }: UseSearchProps): UseSearch {
   const [search, { loading, data }] = useLazyQuery(graphqlQuery);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchItem[]>([]);
+  const [results, setResults] = useState<SearchItem[] | null>(null);
   const debouncedQuery = useDebounce(query, 200);
 
   useEffect(() => {
     if (debouncedQuery.length > 1) {
       search({ variables: { query: debouncedQuery } });
     } else {
-      setResults([]);
+      setResults(null);
     }
   }, [search, debouncedQuery, setResults]);
 
@@ -35,5 +39,5 @@ export function useSearch({
     setResults(resultsFn(data));
   }, [data, loading, resultsFn]);
 
-  return [loading, query, results, setQuery];
+  return { loading, query, results, setQuery };
 }
