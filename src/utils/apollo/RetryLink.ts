@@ -10,19 +10,24 @@ import {
 import { buildDelayFunction, DelayFunction, DelayFunctionOptions } from './delayFunction';
 import { buildRetryFunction, RetryFunction, RetryFunctionOptions } from './retryFunction';
 
-export namespace RetryLink {
-  export interface Options {
-    /**
-     * Configuration for the delay strategy to use, or a custom delay strategy.
-     */
-    delay?: DelayFunctionOptions | DelayFunction;
-
-    /**
-     * Configuration for the retry strategy to use, or a custom retry strategy.
-     */
-    attempts?: RetryFunctionOptions | RetryFunction;
-  }
+interface RetryOptions {
+  delay?: DelayFunctionOptions | DelayFunction;
+  attempts?: RetryFunctionOptions | RetryFunction;
 }
+
+// export namespace RetryLink {
+//   export interface Options {
+//     /**
+//      * Configuration for the delay strategy to use, or a custom delay strategy.
+//      */
+//     delay?: DelayFunctionOptions | DelayFunction;
+
+//     /**
+//      * Configuration for the retry strategy to use, or a custom retry strategy.
+//      */
+//     attempts?: RetryFunctionOptions | RetryFunction;
+//   }
+// }
 
 /**
  * Tracking and management of operations that may be (or currently are) retried.
@@ -206,9 +211,9 @@ export class RetryLink extends ApolloLink {
   private delayFor: DelayFunction;
   private retryIf: RetryFunction;
 
-  constructor(options?: RetryLink.Options) {
+  constructor(options?: RetryOptions) {
     super();
-    const { attempts, delay } = options || ({} as RetryLink.Options);
+    const { attempts, delay } = options || ({} as RetryOptions);
     this.delayFor = typeof delay === 'function' ? delay : buildDelayFunction(delay);
     this.retryIf = typeof attempts === 'function' ? attempts : buildRetryFunction(attempts);
   }
