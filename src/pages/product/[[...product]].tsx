@@ -60,11 +60,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   }
 
   return (
-    <Layout
-      navigation={navigation}
-      footer={footer}
-      seo={{ title: product.seo.title, description: product.seo.description, noindex }}
-    >
+    <Layout footer={footer} seo={{ title: product.seo.title, description: product.seo.description, noindex }}>
       <ProductPageComponent
         component={options.component}
         options={options}

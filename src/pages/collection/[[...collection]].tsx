@@ -36,11 +36,7 @@ const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
   }
 
   return (
-    <Layout
-      navigation={navigation}
-      footer={footer}
-      seo={{ title: collection.seo.title, description: collection.seo.description, noindex }}
-    >
+    <Layout footer={footer} seo={{ title: collection.seo.title, description: collection.seo.description, noindex }}>
       <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
     </Layout>
   );

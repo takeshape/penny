@@ -2,6 +2,7 @@ import Seo from 'components/Seo';
 import { Cart } from 'features/Cart/Cart';
 import { CartProvider } from 'features/Cart/CartProvider';
 import { Footer, FooterProps } from 'features/Footer/Footer';
+import navigationData from 'features/Navigation/data.preval';
 import { Navigation } from 'features/Navigation/Navigation';
 import { Notification } from 'features/Notification/Notification';
 import { QuickAddWithData } from 'features/QuickAdd/QuickAddWithData';
@@ -21,7 +22,7 @@ export const Layout = ({ children, footer, seo }: PropsWithChildren<LayoutProps>
         <Seo {...seo} />
 
         <SearchModal />
-        <Navigation />
+        {navigationData && <Navigation {...navigationData} />}
 
         <main id="content" className="flex flex-col grow bg-background">
           {children}
