@@ -79,7 +79,7 @@ function createApolloClient({
     attempts: {
       retryIf: (error, _operation) => {
         // eslint-disable-next-line no-console
-        console.log('retryIf');
+        console.log(error);
         return error.statusCode === 429;
       }
     }
