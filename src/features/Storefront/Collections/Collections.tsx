@@ -24,7 +24,7 @@ export const Collections = ({ collections }: CollectionsProps) => {
                   <div className="w-full h-80 bg-background rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
                     <NextImage
                       alt={image.description ?? ''}
-                      src={getImageUrl(image, { fm: 'webp', lossless: 'true' })}
+                      src={getImageUrl(image, { fm: 'jpg', q: '100' })}
                       height={500}
                       width={500}
                       className="w-full h-full object-center object-cover"
