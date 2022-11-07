@@ -25,7 +25,7 @@ export const Hero = ({ primaryText, secondaryText, buttonText, image }: HeroProp
         {image && (
           <div className="w-full h-48 sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:w-1/2 lg:h-full">
             <NextImage
-              src={getImageUrl(image)}
+              src={getImageUrl(image, { fm: 'webp', lossless: 'true' })}
               alt={image.description ?? ''}
               className="w-full h-full object-center object-cover"
               height={1000}

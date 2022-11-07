@@ -14,7 +14,7 @@ export const BackgroundImage = ({ image, children }: PropsWithChildren<Backgroun
           {image && (
             <div className="w-full h-full">
               <NextImage
-                src={getImageUrl(image)}
+                src={getImageUrl(image, { fm: 'webp', lossless: 'true' })}
                 alt={image.description ?? ''}
                 className="w-full h-full object-center object-cover"
                 height={1000}
