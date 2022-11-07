@@ -4,12 +4,17 @@
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
-import { RetryLink } from '@apollo/client/link/retry';
+// import { RetryLink } from '@apollo/client/link/retry';
 import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from 'config';
 import logger from 'logger';
+import { RetryLink } from './link/retry/RetryLink';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
+
+const maxAttempts = 10;
+const backoffBase = 500;
+const jitterBase = 10000;
 
 export interface InitializeApolloProps {
   initialCache?: NormalizedCacheObject;
@@ -75,8 +80,23 @@ function createApolloClient({
   });
 
   const retryLink = new RetryLink({
+    delay: (attempt) => {
+      const backoff = backoffBase * 2 ** attempt;
+      const jitter = Math.random() * jitterBase;
+      const delay = Math.round(backoff + jitter);
+      logger.info(`Retrying throttled request (${delay}ms): ${attempt} / ${maxAttempts}`);
+      return delay;
+    },
+    // delay: {
+    //   initial: 1000,
+    //   max: 10,
+    //   jitter: true
+    // },
     attempts: {
       retryIf: (error, _operation) => {
+        if (Array.isArray(error)) {
+          return error.some(({ message }) => message === 'Throttled');
+        }
         return error.statusCode === 429;
       }
     }

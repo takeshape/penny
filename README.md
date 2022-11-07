@@ -1,13 +1,15 @@
 # Penny
 
-![penny-logo](https://user-images.githubusercontent.com/277401/184440759-05acd25e-6adc-453e-b5a2-ccb6811549e0.png)
+![penny-color-logo](https://user-images.githubusercontent.com/127962/200186866-0c2fe7d4-089a-4e53-a801-d9802796a33c.svg)
 
 An e-commerce starter kit by TakeShape.
 
 <a href="https://app.takeshape.io/add-to-takeshape?repo=https://github.com/takeshape/penny/tree/main/.takeshape/pattern"><img alt="Deploy To TakeShape" src="https://camo.githubusercontent.com/1b580e3ce353d235bde0f376ca35b0fb26d685f3750a3013ae4b225dd3aaf344/68747470733a2f2f696d616765732e74616b6573686170652e696f2f32636363633832352d373062652d343331632d396261302d3130616233386563643361372f6465762f38653266376264612d306530382d346564652d613534362d3664663539626536613862622f4465706c6f79253230746f25323054616b65536861706525343032782e706e673f6175746f3d666f726d6174253243636f6d7072657373" width="205" height="38" data-canonical-src="https://images.takeshape.io/2cccc825-70be-431c-9ba0-10ab38ecd3a7/dev/8e2f7bda-0e08-4ede-a546-6df59be6a8bb/Deploy%20to%20TakeShape%402x.png?auto=format%2Ccompress" style="max-width:100%;"></a>
 
-The easiest way to know if a tool is right for you is to see it in action. Check out the store now at
-https://penny-demo.takeshape.io/.
+Check out the store now at https://penny-demo.takeshape.io/.
+
+- Deployed on Netlify: https://penny-ecommerce.netlify.app 
+- Deployed on Vercel: https://penny-ecommerce.vercel.app
 
 You can clone this repo with git to run the Next.js frontend locally (`git clone https://github.com/takeshape/penny`).
 To connect it to a GraphQL backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern`
@@ -19,19 +21,19 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-bukejjfjq-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667701096373-49518.report.html) |
+| [Path: /](https://penny-h1dom4fje-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667777092383-27409.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/__lighthouse](https://penny-bukejjfjq-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667701097070-71701.report.html) |
+| [Path: /product/__lighthouse](https://penny-h1dom4fje-takeshape.vercel.app/product/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667777092900-20692.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/__lighthouse](https://penny-bukejjfjq-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667701097484-88952.report.html) |
+| [Path: /collection/__lighthouse](https://penny-h1dom4fje-takeshape.vercel.app/collection/__lighthouse) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1667777093390-70484.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
@@ -218,7 +220,10 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 4. Select the **Save** button at the top-right of the OpenID service page.
 
 5. Now set up your environment variables. You can either do this in the `.env` file in your Next.js project's directory,
-   or [in your hosting provider's UI](https://vercel.com/docs/concepts/projects/environment-variables).
+   or in your hosting provider's UI.
+
+- [Vercel](https://vercel.com/docs/concepts/projects/environment-variables)
+- [Netlify](https://docs.netlify.com/environment-variables/overview/)
 
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
@@ -694,13 +699,8 @@ your queries and responses fully typed, and can develop efficiently and safely.
 
 ### Choosing a hosting platform
 
-When building this project, we chose [Vercel](https://vercel.com/) to host the frontend.
-
 [Vercel is the company that created Next.js](https://nextjs.org/), and they have useful github workflow tools for
-projects like this. We integrated
-[their deploy preview functionality](https://vercel.com/docs/concepts/git/vercel-for-github) into our workflow, which
-allowed Vercel to generate a preview build of the site for every pull request we created. That allowed us to see what
-the PR's changes would look like in production before we merged them to our main branch.
+projects like this.
 
 To learn more about deploying with Vercel, [check out their comprehensive guide](https://nextjs.org/docs/deployment).
 
@@ -709,6 +709,8 @@ offer [a similar deploy preview tool](https://docs.netlify.com/site-deploys/depl
 
 To learn more about deploying with Netlify,
 [check out their comprehensive guide](https://docs.netlify.com/integrations/frameworks/next-js/).
+
+Both services offer preview deployments, which we've enabled on our PRs.
 
 # GitHub Actions
 

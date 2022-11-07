@@ -1,8 +1,11 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
+import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+
+const require = createRequire(import.meta.url);
 
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -129,10 +132,21 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
+  webpack: (config) => {
+    // Unable to use the next-plugin-preval config directly for some reason, mjs?
+    const rules = config.module?.rules;
+
+    rules.push({
+      test: /\.preval\.(t|j)sx?$/,
+      loader: require.resolve('next-plugin-preval/loader')
+    });
+
+    return config;
+  },
   experimental: {
     // Try to avoid throttling
-    workerThreads: false,
-    cpus: 1
+    // workerThreads: false,
+    // cpus: 1
   }
 };
 

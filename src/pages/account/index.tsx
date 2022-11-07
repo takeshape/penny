@@ -2,22 +2,16 @@ import { AccountFormAddress } from 'features/AccountForm/AccountFormAddress';
 import { AccountFormMarketing } from 'features/AccountForm/AccountFormMarketing';
 import { AccountFormProfile } from 'features/AccountForm/AccountFormProfile';
 import Layout from 'layouts/Account';
-import { getLayoutData } from 'layouts/getLayoutData';
-import { InferGetStaticPropsType, NextPage } from 'next';
+import { NextPage } from 'next';
 
-const AccountPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ navigation, footer }) => {
+const AccountPage: NextPage = () => {
   return (
-    <Layout navigation={navigation} footer={footer} seo={{ title: 'Account' }}>
+    <Layout seo={{ title: 'Account' }}>
       <AccountFormProfile />
       <AccountFormAddress />
       <AccountFormMarketing />
     </Layout>
   );
-};
-
-export const getStaticProps = async () => {
-  const { navigation, footer } = await getLayoutData();
-  return { props: { navigation, footer } };
 };
 
 export default AccountPage;
