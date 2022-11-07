@@ -142,7 +142,7 @@ export function getPolicies(response: ProductPageShopifyProductResponse | null):
       description: policy?.descriptionHtml?.replace(/<\/?p>/g, '') ?? '',
       image: policy?.image?.path
         ? {
-            url: getImageUrl(policy.image.path),
+            url: getImageUrl(policy.image.path, { auto: 'format' }),
             altText: policy.image.description ?? ''
           }
         : null
