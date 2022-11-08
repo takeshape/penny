@@ -2,7 +2,6 @@ export * from './auth';
 export * from './contact';
 export * from './ecommerce';
 export * from './klaviyo';
-export * from './lighthouse';
 export * from './recaptcha';
 export * from './revalidation';
 export * from './reviews';

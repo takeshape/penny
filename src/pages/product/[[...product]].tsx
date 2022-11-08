@@ -1,11 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import {
-  lighthouseHandle,
-  lighthouseProductHandle,
-  pageRevalidationTtl,
-  reviewsIoReviewsPerPage,
-  trustpilotReviewsPerPage
-} from 'config';
+import { pageRevalidationTtl, reviewsIoReviewsPerPage, trustpilotReviewsPerPage } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageShopifyProductHandlesQuery,
@@ -35,7 +29,6 @@ import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 import { getSingle } from 'utils/types';
 
 const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  noindex,
   options,
   product,
   reviewHighlights,
@@ -56,7 +49,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   }
 
   return (
-    <Layout seo={{ title: product.seo.title, description: product.seo.description, noindex }}>
+    <Layout seo={{ title: product.seo.title, description: product.seo.description }}>
       <ProductPageComponent
         component={options.component}
         options={options}
@@ -77,10 +70,6 @@ const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   let handle = getSingle(params?.product);
-
-  if (lighthouseProductHandle && handle === lighthouseHandle) {
-    handle = lighthouseProductHandle;
-  }
 
   if (!handle) {
     throw new Error('Invalid getStaticProps params');
@@ -110,8 +99,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
       key: product?.id,
-      // Don't index lighthouse test urls
-      noindex: handle === lighthouseHandle,
       product,
       options: getPageOptions(data),
       reviewHighlights: getReviewHighlights(data),
@@ -156,11 +143,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths = [...paths, ...pagePaths];
     hasNextPage = data.products?.pageInfo.hasNextPage ?? false;
     endCursor = data.products?.pageInfo.endCursor ?? undefined;
-  }
-
-  // Add the lighthouse testing path, if configured
-  if (lighthouseProductHandle) {
-    paths.push({ params: { product: [lighthouseHandle] } });
   }
 
   return {
