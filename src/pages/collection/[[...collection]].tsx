@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import { collectionsPageSize, lighthouseCollectionHandle, lighthouseHandle, pageRevalidationTtl } from 'config';
+import { collectionsPageSize, pageRevalidationTtl } from 'config';
 import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionHandles,
@@ -17,7 +17,7 @@ import {
 } from 'types/takeshape';
 import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
-const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ noindex, collection }) => {
+const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ collection }) => {
   const { isFallback } = useRouter();
 
   if (isFallback || !collection) {
@@ -29,7 +29,7 @@ const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
   }
 
   return (
-    <Layout seo={{ title: collection.seo.title, description: collection.seo.description, noindex }}>
+    <Layout seo={{ title: collection.seo.title, description: collection.seo.description }}>
       <ProductCategoryWithCollection collection={collection} pageSize={collectionsPageSize} />
     </Layout>
   );
@@ -42,11 +42,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     throw new Error('Invalid getStaticProps params');
   }
 
-  let [handle, _page, cursor, direction] = params?.collection;
-
-  if (lighthouseCollectionHandle && handle === lighthouseHandle) {
-    handle = lighthouseCollectionHandle;
-  }
+  const [handle, _page, cursor, direction] = params?.collection;
 
   const variables =
     direction === 'before'
@@ -81,8 +77,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
       key: collection?.id,
-      // Don't index lighthouse test urls
-      noindex: handle === lighthouseHandle,
       collection
     }
   };
@@ -120,11 +114,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths = [...paths, ...pagePaths];
     hasNextPage = data.collections?.pageInfo.hasNextPage ?? false;
     endCursor = data.collections?.pageInfo.endCursor ?? undefined;
-  }
-
-  // Add the lighthouse testing path, if configured
-  if (lighthouseCollectionHandle) {
-    paths.push({ params: { collection: [lighthouseHandle] } });
   }
 
   return {

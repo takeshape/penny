@@ -142,7 +142,10 @@ export function getPolicies(response: ProductPageShopifyProductResponse | null):
       description: policy?.descriptionHtml?.replace(/<\/?p>/g, '') ?? '',
       image: policy?.image?.path
         ? {
-            url: getImageUrl(policy.image.path, { fm: 'webp', lossless: 'true' }),
+            url: getImageUrl(
+              policy.image.path,
+              !policy.image.path.endsWith('svg') ? { fm: 'webp', lossless: 'true' } : undefined
+            ),
             altText: policy.image.description ?? ''
           }
         : null
@@ -167,7 +170,10 @@ export function getDetails(response: ProductPageShopifyProductResponse | null): 
       details.details.map((detail) => ({
         image: detail.image?.path
           ? {
-              url: getImageUrl(detail.image.path, { fm: 'webp', lossless: 'true' }),
+              url: getImageUrl(
+                detail.image.path,
+                !detail.image.path.endsWith('svg') ? { fm: 'webp', lossless: 'true' } : undefined
+              ),
               altText: detail.image.description ?? ''
             }
           : null,

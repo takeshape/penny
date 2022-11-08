@@ -10,36 +10,32 @@ jobs:
     runs-on: ubuntu-latest
     env:
       LIGHTHOUSE_CONFIG: 'preview'
-      LIGHTHOUSE_URLS: |
-        ${{ github.event.deployment_status.target_url }}
-        ${{ github.event.deployment_status.target_url }}/product/__lighthouse
-        ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get PR number
-        id: pr
-        run: |
-          number=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
-          echo "number=$number" >>$GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get audit urls
+        id: audit-urls
+        uses: actions/github-script@v6.3.3
+        with:
+          script: |
+            const targetUrl = '${{ github.event.deployment_status.target_url }}';
+            const testPaths = require('./.lighthouse/testPaths.json') ?? [];
+            const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
+            core.setOutput("urls", [targetUrl, ...testUrls].join('\n'));
 
       - name: Audit URLs using Lighthouse
-        if: steps.pr.outputs.number != ''
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
         with:
-          urls: ${{ env.LIGHTHOUSE_URLS }}
+          urls: ${{ steps.audit-urls.outputs.urls }}
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
           runs: 5
 
       - name: Format Lighthouse score
-        if: always() && steps.pr.outputs.number != ''
         id: format_lighthouse_score
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.3.3
         with:
           script: |
             const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
@@ -53,12 +49,12 @@ jobs:
             core.setOutput("comment", comment);
 
       - name: Add Lighthouse stats as comment
-        if: always() && steps.pr.outputs.number != ''
-        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        if: always()
+        uses: mshick/add-pr-comment@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.pr.outputs.number }}
-          header: lighthouse
+          message-id: lighthouse
+          message-failure: |
+            ### ❌ Unable to get lighthouse scores
           message: ${{ steps.format_lighthouse_score.outputs.comment }}
 
   lighthouse-run-production:
@@ -82,11 +78,21 @@ jobs:
           token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
           ref: ${{ env.LIGHTHOUSE_BRANCH }}
 
+      - name: Get audit urls
+        id: audit-urls
+        uses: actions/github-script@v6.3.3
+        with:
+          script: |
+            const targetUrl = '${{ github.event.deployment_status.target_url }}';
+            const testPaths = require('./.lighthouse/testPaths.json') ?? [];
+            const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
+            core.setOutput("urls", [targetUrl, ...testUrls].join('\n'));
+
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
         with:
-          urls: ${{ env.LIGHTHOUSE_URLS }}
+          urls: ${{ steps.audit-urls.outputs.urls }}
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
@@ -94,7 +100,7 @@ jobs:
 
       - name: Format Lighthouse score
         id: format_lighthouse_score
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.3.3
         with:
           script: |
             const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
