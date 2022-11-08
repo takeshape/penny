@@ -23,7 +23,7 @@ jobs:
         with:
           script: |
             const targetUrl = '${{ github.event.deployment_status.target_url }}';
-            const testPaths = require('./.lighthouse/testPaths.js') ?? [];
+            const testPaths = require('./.lighthouse/testPaths.json') ?? [];
             const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
             console.log([targetUrl, ...testUrls]);
             core.setOutput("urls", [targetUrl, ...testUrls]);
