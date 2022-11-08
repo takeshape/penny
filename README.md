@@ -8,7 +8,7 @@ An e-commerce starter kit by TakeShape.
 
 Check out the store now at https://penny-demo.takeshape.io/.
 
-- Deployed on Netlify: https://penny-ecommerce.netlify.app 
+- Deployed on Netlify: https://penny-ecommerce.netlify.app
 - Deployed on Vercel: https://penny-ecommerce.vercel.app
 
 You can clone this repo with git to run the Next.js frontend locally (`git clone https://github.com/takeshape/penny`).
@@ -118,6 +118,8 @@ to keep error-free and performant.
 #### Performance Tests
 
 - [Lighthouse](https://web.dev/lighthouse-seo/) for SEO and browser performance metrics
+
+Set up your lighthouse testing paths in `.lighthouse/testPaths.json`. By default your homepage will be tested.
 
 **IMPORTANT**
 
