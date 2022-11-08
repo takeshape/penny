@@ -17,14 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get PR number
-        id: pr
-        run: |
-          number=$(gh pr list --search "${{ github.sha }}" --state open --json number --jq ".[0].number")
-          echo "number=$number" >>$GITHUB_OUTPUT
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Audit URLs using Lighthouse
         if: steps.pr.outputs.number != ''
         id: lighthouse_audit
@@ -53,12 +45,10 @@ jobs:
             core.setOutput("comment", comment);
 
       - name: Add Lighthouse stats as comment
-        if: always() && steps.pr.outputs.number != ''
-        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        if: always()
+        uses: mshick/add-pr-comment@v2
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.pr.outputs.number }}
-          header: lighthouse
+          message-id: lighthouse
           message: ${{ steps.format_lighthouse_score.outputs.comment }}
 
   lighthouse-run-production:
