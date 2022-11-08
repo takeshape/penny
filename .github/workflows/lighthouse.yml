@@ -19,14 +19,13 @@ jobs:
 
       - name: Get audit urls
         id: audit-urls
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.3.3
         with:
           script: |
             const targetUrl = '${{ github.event.deployment_status.target_url }}';
             const testPaths = require('./.lighthouse/testPaths.json') ?? [];
             const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
-            console.log([targetUrl, ...testUrls]);
-            core.setOutput("urls", [targetUrl, ...testUrls].join('\n\n'));
+            core.setOutput("urls", [targetUrl, ...testUrls].join('\n'));
 
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
@@ -41,7 +40,7 @@ jobs:
 
       - name: Format Lighthouse score
         id: format_lighthouse_score
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.3.3
         with:
           script: |
             const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
@@ -96,7 +95,7 @@ jobs:
 
       - name: Format Lighthouse score
         id: format_lighthouse_score
-        uses: actions/github-script@v6
+        uses: actions/github-script@v6.3.3
         with:
           script: |
             const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
