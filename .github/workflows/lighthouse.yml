@@ -17,11 +17,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get audit urls
+        id: audit-urls
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const targetUrl = '${{ github.event.deployment_status.target_url }}';
+            const testPaths = require('./.lighthouse/testPaths.js') ?? [];
+            const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
+            console.log([targetUrl, ...testUrls]);
+            core.setOutput("urls", [targetUrl, ...testUrls]);
+
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
         uses: treosh/lighthouse-ci-action@v9
         with:
-          urls: ${{ env.LIGHTHOUSE_URLS }}
+          # urls: ${{ env.LIGHTHOUSE_URLS }}
+          urls: ${{ steps.audit-urls.outputs.urls }}
           configPath: ./.lighthouse/lighthouserc.js
           uploadArtifacts: true
           temporaryPublicStorage: true
