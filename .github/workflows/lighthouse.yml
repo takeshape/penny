@@ -26,7 +26,7 @@ jobs:
             const testPaths = require('./.lighthouse/testPaths.json') ?? [];
             const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
             console.log([targetUrl, ...testUrls]);
-            core.setOutput("urls", [targetUrl, ...testUrls]);
+            core.setOutput("urls", [targetUrl, ...testUrls].join('\n\n'));
 
       - name: Audit URLs using Lighthouse
         id: lighthouse_audit
