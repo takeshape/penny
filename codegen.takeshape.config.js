@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const takeshapeApiUrl = process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;
+const takeshapeApiUrl = process.env.NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL || process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;
 const takeshapeAnonymousApiKey = process.env.NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY;
 
 module.exports = {

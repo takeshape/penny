@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "npm run graphql:typegen",
-    "build": "next build",
+    "prebuild": "./scripts/prebuild.sh",
+    "build": "export NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL=\"$(cat .current-branch-url)\" && npm run graphql:typegen && next build",
     "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
     "cypress:open": "cypress open",
@@ -30,6 +30,7 @@
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
     "@next/bundle-analyzer": "^13.0.2",
+    "@next/env": "^13.0.3",
     "@sentry/nextjs": "^7.17.4",
     "@takeshape/next-auth-all-access": "^0.3.3",
     "@takeshape/routing": "^8.241.4",
