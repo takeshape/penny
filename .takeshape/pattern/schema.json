@@ -740,17 +740,6 @@
     }
   },
   "services": {
-    "auth-0": {
-      "id": "auth-0",
-      "provider": "auth0",
-      "title": "auth0",
-      "serviceType": "authentication",
-      "authenticationType": "none",
-      "options": {
-        "domain": "dev-by9w1mxg.us.auth0.com",
-        "audience": "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/auth-0"
-      }
-    },
     "recharge": {
       "id": "recharge",
       "provider": "rest",
@@ -795,7 +784,7 @@
       "options": {
         "endpoint": "https://api.reviews.io/",
         "storeId": "www.markcatalano.net",
-        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/main/specs/reviews.io/v0.1.0-3.yml",
+        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/dde622465941025aef4cc32944d3ba1b3238f4ed/specs/reviews.io/v0.1.0-3.yml",
         "useRestfulNames": true
       }
     },
@@ -861,17 +850,6 @@
         "endpoint": "https://deluxe-sample-project.myshopify.com/api/2022-07/graphql.json"
       }
     },
-    "shopify-connect": {
-      "id": "shopify-connect",
-      "provider": "graphql",
-      "title": "ShopifyConnect",
-      "namespace": "ShopifyConnect",
-      "serviceType": "graphql",
-      "authenticationType": "bearer",
-      "options": {
-        "endpoint": "https://deluxe-sample-project.myshopify.com/admin/api/2022-07/graphql.json"
-      }
-    },
     "open-id": {
       "id": "open-id",
       "provider": "oidc",
@@ -883,19 +861,6 @@
         "issuer": "https://penny-ecommerce.vercel.app/",
         "audience": "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id",
         "idClaim": "sub"
-      },
-      "open-id-netlify": {
-        "id": "open-id-netlify",
-        "provider": "oidc",
-        "title": "OpenID (Netlify)",
-        "serviceType": "authentication",
-        "authenticationType": "none",
-        "options": {
-          "configurationUrl": "https://penny-ecommerce.netlify.app/api/auth/all-access/.well-known/openid-configuration",
-          "issuer": "https://penny-ecommerce.netlify.app/",
-          "audience": "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id-netlify",
-          "idClaim": "sub"
-        }
       }
     },
     "recaptcha": {
@@ -929,17 +894,6 @@
       "authenticationType": "searchParams",
       "options": {
         "endpoint": "https://api.trustpilot.com/v1/product-reviews/business-units/62ed495079f2770a09852bf0"
-      }
-    },
-    "ship-engine": {
-      "id": "ship-engine",
-      "provider": "rest",
-      "title": "Ship Engine",
-      "namespace": "Shipping",
-      "serviceType": "rest",
-      "authenticationType": "bearer",
-      "options": {
-        "endpoint": "https://api.shipengine.com"
       }
     }
   },
