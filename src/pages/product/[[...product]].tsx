@@ -1,5 +1,6 @@
 import PageLoader from 'components/PageLoader';
 import { pageRevalidationTtl, reviewsIoReviewsPerPage, trustpilotReviewsPerPage } from 'config';
+import { ProductJsonLd } from 'features/ProductPage/ProductJsonLd';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageShopifyProductHandlesQuery,
@@ -50,6 +51,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <Layout seo={{ title: product.seo.title, description: product.seo.description }}>
+      <ProductJsonLd product={product} reviewList={reviewList} trustpilotReviewList={trustpilotReviewList} />
       <ProductPageComponent
         component={options.component}
         options={options}
