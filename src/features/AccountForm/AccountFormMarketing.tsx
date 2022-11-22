@@ -37,7 +37,7 @@ export const AccountFormMarketing = () => {
     handleSubmit,
     control,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful, errors, dirtyFields }
+    formState: { isSubmitting, isSubmitSuccessful, errors, touchedFields }
   } = useForm<AccountFormMarketingForm>();
 
   const [loadCustomer, { data: customerData }] = useStorefrontLazyQuery<CustomerQueryResponse, CustomerQueryVariables>(
@@ -76,7 +76,7 @@ export const AccountFormMarketing = () => {
         return;
       }
 
-      if (dirtyFields.acceptsMarketing && session?.user?.shopifyCustomerAccessToken) {
+      if (touchedFields.acceptsMarketing && session?.user?.shopifyCustomerAccessToken) {
         await updateCustomer({
           variables: {
             customerAccessToken: session.user.shopifyCustomerAccessToken,
@@ -85,9 +85,9 @@ export const AccountFormMarketing = () => {
         });
       }
 
-      if (dirtyFields.newsletters) {
+      if (touchedFields.newsletters) {
         await Promise.all(
-          Object.keys(dirtyFields.newsletters).map((listId) => {
+          Object.keys(newsletters).map((listId) => {
             if (newsletters[listId]) {
               return subscribe({ variables: { list_id: listId } });
             } else {
@@ -101,7 +101,7 @@ export const AccountFormMarketing = () => {
         keepValues: true
       });
     },
-    [dirtyFields.acceptsMarketing, dirtyFields.newsletters, reset, updateCustomer, session, subscribe, unsubscribe]
+    [touchedFields.acceptsMarketing, touchedFields.newsletters, reset, updateCustomer, session, subscribe, unsubscribe]
   );
 
   // Load the customer
