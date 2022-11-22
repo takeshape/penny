@@ -7081,6 +7081,9 @@
                   "name": "rest:get",
                   "service": "trustpilot",
                   "path": "/",
+                  "options": {
+                    "ignoreErrors": true
+                  },
                   "searchParams": {
                     "ops": [
                       {

@@ -445,7 +445,12 @@ REVIEWS.io to any TakeShape project, [check out our docs](https://app.takeshape.
 
 ![A screenshot of the REVIEWS.io service page](./readme-images/reviewsio/service-page-reviewsio.png)
 
+4. Lastly, you'll need to enable Reviews.IO in `src/config/reviews.ts` by setting `enableReviewsIo` to `true`.
+
 ## Trustpilot
+
+Trustpilot reviews are enabled by default. If you do not want to use Trustpilot reviews, edit `src/config/reviews.ts`
+and set `enableTrustpilot` to `false`. Otherwise, proceed with the following steps to set up the service.
 
 You'll need the [Trustpilot Connect](https://business.trustpilot.com/plans#addons) add-on module to proceed. To check if
 you have it, check if "APIs" is available under Integrations > Developers in the
