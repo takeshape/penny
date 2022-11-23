@@ -1,3 +1,5 @@
+import { ErrorMessage } from 'components/Error/ErrorMessage';
+import Wrapper from 'components/Wrapper/Content';
 import { AccountLoyaltyCard } from 'features/AccountLoyaltyCard/AccountLoyaltyCard';
 import { GetMyLoyaltyCardQuery } from 'features/AccountLoyaltyCard/queries';
 import { getLoyaltyCard } from 'features/AccountLoyaltyCard/transforms';
@@ -9,10 +11,20 @@ import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
 import { useAuthenticatedQuery } from 'utils/takeshape';
 
 const AccountRewardsPage: NextPage = () => {
-  const { transformedData: loyaltyCard } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse, {}, LoyaltyCard>(
+  const { transformedData: loyaltyCard, error } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse, {}, LoyaltyCard>(
     GetMyLoyaltyCardQuery,
     { transform: { data: getLoyaltyCard } }
   );
+
+  if (error) {
+    return (
+      <Layout seo={{ title: 'Rewards' }}>
+        <Wrapper>
+          <ErrorMessage headline="API error" subhead="Could not fetch rewards" body="" />
+        </Wrapper>
+      </Layout>
+    );
+  }
 
   if (!loyaltyCard) {
     return null;
@@ -21,7 +33,7 @@ const AccountRewardsPage: NextPage = () => {
   return (
     <Layout seo={{ title: 'Rewards' }}>
       <AccountReferrals />
-      {loyaltyCard && <AccountLoyaltyCard loyaltyCard={loyaltyCard} />}
+      <AccountLoyaltyCard loyaltyCard={loyaltyCard} />
     </Layout>
   );
 };
