@@ -33,7 +33,7 @@ _ProductPage.args = {
   },
   product: productPageProduct,
   reviewHighlights: productPageReviewHighlights,
-  reviewList: productPageReviewList,
+  reviewsIoReviewList: productPageReviewList,
   details: productPageDetails,
   policies: productPagePolicies,
   breadcrumbs: productPageBreadcrumbs,
