@@ -11,7 +11,7 @@ import { ProductPageDetails, ProductPageOptions, ProductPagePolicies } from './t
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> & {
   reviewsPerPage?: number;
-  reviewList: ReviewList | null;
+  reviewsIoReviewList: ReviewList | null;
   trustpilotReviewList: ReviewList | null;
   options: Omit<ProductPageOptions, 'component'>;
   details: ProductPageDetails | null;
@@ -25,7 +25,7 @@ export const ProductPage = ({
   options,
   details,
   policies,
-  reviewList,
+  reviewsIoReviewList,
   trustpilotReviewList,
   breadcrumbs,
   reviewsPerPage
@@ -55,11 +55,11 @@ export const ProductPage = ({
       )}
       <div className="bg-background">
         <Wrapper>
-          {showReviewsIo && reviewList && (
+          {showReviewsIo && reviewsIoReviewList && (
             <ReviewsWithData
               productName={product.name}
               sku={shopifyGidToId(product.id)}
-              reviewList={reviewList}
+              reviewList={reviewsIoReviewList}
               reviewsPerPage={reviewsPerPage ?? 5}
             />
           )}

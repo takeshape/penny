@@ -106,7 +106,9 @@ export function getTrustpilotProductReviews(
   return getTrustpilotReviewList(trustpilotReviews, trustpilotReviewsSummary);
 }
 
-export function getProductReviews(response?: ProductPageShopifyProductResponse): ProductPageReviewsReviewList | null {
+export function getReviewsIoProductReviews(
+  response?: ProductPageShopifyProductResponse
+): ProductPageReviewsReviewList | null {
   const reviews = response?.product?.reviews;
 
   if (!reviews) {

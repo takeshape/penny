@@ -1,6 +1,6 @@
 import PageLoader from 'components/PageLoader';
 import { pageRevalidationTtl, reviewsIoReviewsPerPage, trustpilotReviewsPerPage } from 'config';
-import { ProductJsonLd } from 'features/ProductPage/ProductJsonLd';
+import { getProductJsonLdProps } from 'features/ProductPage/json-ld';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageShopifyProductHandlesQuery,
@@ -13,13 +13,15 @@ import {
   getPolicies,
   getProduct,
   getProductPageParams,
-  getProductReviews,
   getReviewHighlights,
+  getReviewsIoProductReviews,
   getTrustpilotProductReviews
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { ProductJsonLd } from 'next-seo';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import {
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductHandlesQueryVariables,
@@ -33,13 +35,20 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   options,
   product,
   reviewHighlights,
-  reviewList,
+  reviewsIoReviewList,
   trustpilotReviewList,
   details,
   policies,
   breadcrumbs
 }) => {
   const { isFallback } = useRouter();
+
+  const productJsonLdProps = useMemo(() => {
+    if (!product) {
+      return;
+    }
+    return getProductJsonLdProps({ product, reviewsIoReviewList, trustpilotReviewList });
+  }, [product, reviewsIoReviewList, trustpilotReviewList]);
 
   if (isFallback || !product) {
     return (
@@ -51,14 +60,14 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <Layout seo={{ title: product.seo.title, description: product.seo.description }}>
-      <ProductJsonLd product={product} reviewList={reviewList} trustpilotReviewList={trustpilotReviewList} />
+      {productJsonLdProps && <ProductJsonLd {...productJsonLdProps} />}
       <ProductPageComponent
         component={options.component}
         options={options}
         breadcrumbs={breadcrumbs}
         product={product}
         reviewHighlights={reviewHighlights}
-        reviewList={reviewList}
+        reviewsIoReviewList={reviewsIoReviewList}
         trustpilotReviewList={trustpilotReviewList}
         details={details}
         policies={policies}
@@ -104,7 +113,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       product,
       options: getPageOptions(data),
       reviewHighlights: getReviewHighlights(data),
-      reviewList: getProductReviews(data),
+      reviewsIoReviewList: getReviewsIoProductReviews(data),
       trustpilotReviewList: getTrustpilotProductReviews(data),
       details: getDetails(data),
       policies: getPolicies(data),
