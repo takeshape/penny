@@ -21,22 +21,22 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-hcr9g6uk1-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650905709-58740.report.html) |
+| [Path: /](https://penny-7pw94c8de-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669666703184-10593.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/basic-tee-6-pack](https://penny-hcr9g6uk1-takeshape.vercel.app/product/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650906108-3689.report.html) |
+| [Path: /product/basic-tee-6-pack](https://penny-7pw94c8de-takeshape.vercel.app/product/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669666704388-22534.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/men](https://penny-hcr9g6uk1-takeshape.vercel.app/collection/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650906687-6393.report.html) |
+| [Path: /collection/men](https://penny-7pw94c8de-takeshape.vercel.app/collection/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669666705160-67802.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
