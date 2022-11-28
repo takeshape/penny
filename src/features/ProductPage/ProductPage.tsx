@@ -38,19 +38,21 @@ export const ProductPage = ({
         <Product
           component={component}
           product={product}
-          reviewHighlights={reviewHighlights}
+          reviewHighlights={showReviewsIo ? reviewHighlights : null}
           showFeaturedReviews={!showReviewsIo}
           breadcrumbs={breadcrumbs}
           showBreadcrumbs={showBreadcrumbs}
           showReviewsLink={showReviewsIo}
         />
       </div>
-      <div className="bg-background">
-        <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
-          {details && showDetails && <Details details={details} />}
-          {policies && showPolicies && <Policies policies={policies} />}
+      {((details && showDetails) || (policies && showPolicies)) && (
+        <div className="bg-background">
+          <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
+            {details && showDetails && <Details details={details} />}
+            {policies && showPolicies && <Policies policies={policies} />}
+          </div>
         </div>
-      </div>
+      )}
       <div className="bg-background">
         <Wrapper>
           {showReviewsIo && reviewList && (

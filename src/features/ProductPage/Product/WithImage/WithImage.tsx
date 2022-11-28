@@ -15,7 +15,7 @@ import { isNotNullish } from 'utils/types';
 
 export interface ProductWithImageProps {
   product: ProductType;
-  reviewHighlights: ReviewHighlights;
+  reviewHighlights: ReviewHighlights | null;
   breadcrumbs: Breadcrumb[] | null;
   showReviewsLink: boolean;
 }
@@ -103,22 +103,24 @@ export const ProductWithImage = ({
           <div className="flex items-center">
             <ProductPrice price={selectedPrice} isAvailable={selectedVariant.available} size="large" />
 
-            <div className="ml-4 pl-4 border-l border-body-300">
-              <h2 className="sr-only">Reviews</h2>
-              <div className="flex items-center">
-                <div>
-                  <Stars rating={reviewHighlights.stats.average ?? 0} />
-                  <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
+            {reviewHighlights && (
+              <div className="ml-4 pl-4 border-l border-body-300">
+                <h2 className="sr-only">Reviews</h2>
+                <div className="flex items-center">
+                  <div>
+                    <Stars rating={reviewHighlights.stats.average ?? 0} />
+                    <p className="sr-only">{reviewHighlights.stats.average} out of 5 stars</p>
+                  </div>
+                  {showReviewsLink ? (
+                    <a href="#reviews" className="ml-2 text-sm text-accent-600 hover:text-accent-500">
+                      {reviewHighlights.stats.count} reviews
+                    </a>
+                  ) : (
+                    <p className="ml-2 text-sm text-body-500">{reviewHighlights.stats.count} reviews</p>
+                  )}
                 </div>
-                {showReviewsLink ? (
-                  <a href="#reviews" className="ml-2 text-sm text-accent-600 hover:text-accent-500">
-                    {reviewHighlights.stats.count} reviews
-                  </a>
-                ) : (
-                  <p className="ml-2 text-sm text-body-500">{reviewHighlights.stats.count} reviews</p>
-                )}
               </div>
-            </div>
+            )}
           </div>
 
           <div className="mt-4 space-y-6">

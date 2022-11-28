@@ -21,22 +21,22 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-4kuveekyw-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669222230637-86426.report.html) |
+| [Path: /](https://penny-hcr9g6uk1-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650905709-58740.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/basic-tee-6-pack](https://penny-4kuveekyw-takeshape.vercel.app/product/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669222231114-92410.report.html) |
+| [Path: /product/basic-tee-6-pack](https://penny-hcr9g6uk1-takeshape.vercel.app/product/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650906108-3689.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
+| 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/men](https://penny-4kuveekyw-takeshape.vercel.app/collection/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669222231514-9817.report.html) |
+| [Path: /collection/men](https://penny-hcr9g6uk1-takeshape.vercel.app/collection/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650906687-6393.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
+| 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
@@ -445,7 +445,12 @@ REVIEWS.io to any TakeShape project, [check out our docs](https://app.takeshape.
 
 ![A screenshot of the REVIEWS.io service page](./readme-images/reviewsio/service-page-reviewsio.png)
 
+4. Lastly, you'll need to enable Reviews.IO in `src/config/reviews.ts` by setting `enableReviewsIo` to `true`.
+
 ## Trustpilot
+
+Trustpilot reviews are enabled by default. If you do not want to use Trustpilot reviews, edit `src/config/reviews.ts`
+and set `enableTrustpilot` to `false`. Otherwise, proceed with the following steps to set up the service.
 
 You'll need the [Trustpilot Connect](https://business.trustpilot.com/plans#addons) add-on module to proceed. To check if
 you have it, check if "APIs" is available under Integrations > Developers in the
@@ -467,10 +472,11 @@ curl --request GET \
 
 - In the JSON response the business unit ID is the value for the `id` property.
 
-4. Edit your `.env` file and set your business unit ID as the value for `NEXT_PUBLIC_TRUSTPILOT_BUSINESS_UNIT`.
-5. Edit `src/config/ecommerce.ts` and set `enableTrustpilot` to `true`.
-6. On your TakeShape project's dashboard, navigate to the **Home** tab and select **Trustpilot** from the list of
+4. On your TakeShape project's dashboard, navigate to the **Home** tab and select **Trustpilot** from the list of
    services. You'll be taken to the **Generic REST** service page for **Trustpilot**.
+
+- In the **Endpoint** field, replace the example business unit ID at the end of the URL with your business unit ID. It
+  should look like this: `https://api.trustpilot.com/v1/product-reviews/business-units/YOUR_BUSINESS_UNIT_ID`
 
 - In the **Authentication Type** field, ensure **Query Parameter** is selected.
 
@@ -478,7 +484,7 @@ curl --request GET \
 
 - Select the **Save** button at the top-right of the page.
 
-7. After completing these steps, Trustpilot reviews for the matching SKU are shown on the product page.
+5. After completing these steps, Trustpilot reviews for the matching SKU are shown on the product page.
 
 ## ShipEngine
 
