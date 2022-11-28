@@ -11,8 +11,7 @@ import { ProductPageDetails, ProductPageOptions, ProductPagePolicies } from './t
 
 export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> & {
   reviewsPerPage?: number;
-  reviewsIoReviewList: ReviewList | null;
-  trustpilotReviewList: ReviewList | null;
+  reviewList: ReviewList | null;
   options: Omit<ProductPageOptions, 'component'>;
   details: ProductPageDetails | null;
   policies: ProductPagePolicies | null;
@@ -25,8 +24,7 @@ export const ProductPage = ({
   options,
   details,
   policies,
-  reviewsIoReviewList,
-  trustpilotReviewList,
+  reviewList,
   breadcrumbs,
   reviewsPerPage
 }: ProductPageProps) => {
@@ -55,16 +53,16 @@ export const ProductPage = ({
       )}
       <div className="bg-background">
         <Wrapper>
-          {showReviewsIo && reviewsIoReviewList && (
+          {showReviewsIo && reviewList?.publisher === 'REVIEWS.io' && (
             <ReviewsWithData
               productName={product.name}
               sku={shopifyGidToId(product.id)}
-              reviewList={reviewsIoReviewList}
+              reviewList={reviewList}
               reviewsPerPage={reviewsPerPage ?? 5}
             />
           )}
-          {showTrustpilot && trustpilotReviewList && (
-            <TrustpilotWithData sku={shopifyGidToId(product.id)} reviewList={trustpilotReviewList} />
+          {showTrustpilot && reviewList?.publisher === 'Trustpilot' && (
+            <TrustpilotWithData sku={shopifyGidToId(product.id)} reviewList={reviewList} />
           )}
           {showRelatedProducts && <RelatedProductsWithData limit={4} productId={product.id} />}
         </Wrapper>
