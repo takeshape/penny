@@ -10,7 +10,7 @@ const files = {
     dest: './.env'
   },
   envTest: {
-    src: './.env-example',
+    src: './.env.test-example',
     dest: './.env.test'
   },
   envLocal: {
