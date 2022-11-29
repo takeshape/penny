@@ -15,6 +15,7 @@ import {
   Shopify_ProductOption,
   Shopify_ProductVariant,
   Shopify_SellingPlan,
+  Shopify_SellingPlanFixedBillingPolicy,
   Shopify_SellingPlanPricingPolicy,
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy,
@@ -44,9 +45,9 @@ type ShopifyAdminProductVariant = Pick<
 };
 type ShopifyAdminSellingPlan = Pick<Shopify_SellingPlan, 'id' | 'options'> & {
   pricingPolicies: ShopifyAdminSellingPlanPricingPolicy[];
-  billingPolicy: Partial<
-    Pick<Shopify_SellingPlanRecurringBillingPolicy, 'maxCycles' | 'minCycles' | 'interval' | 'intervalCount'>
-  >;
+  billingPolicy:
+    | Partial<Pick<Shopify_SellingPlanRecurringBillingPolicy, 'maxCycles' | 'minCycles' | 'interval' | 'intervalCount'>>
+    | Partial<Shopify_SellingPlanFixedBillingPolicy>;
 };
 
 type ShopifyAdminProduct = Pick<
