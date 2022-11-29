@@ -2,8 +2,6 @@ import createBundleAnalyzer from '@next/bundle-analyzer';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
-
 const require = createRequire(import.meta.url);
 
 const withBundleAnalyzer = createBundleAnalyzer({
