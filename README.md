@@ -194,9 +194,25 @@ git clone https://github.com/takeshape/penny
 5. Navigate to the project directory in your local terminal and run the `npm install` command to install all
    dependencies.
 
-If you want to run this project locally, follow the instructions in the `.env.test` file.
+6. Set up your environment variables.
 
-The following instructions will help you configure all of the services this project uses.
+- Every project will contain a mix of variables defined in `.env` files and runtime variables defined in a hosting
+  provider.
+
+- Because many variables required to get a fully functional project you should ensure all your services are configured
+  before customizing the `.env` files. Take a look at the `.env` files now to get a sense of what you'll need before you
+  run the project, and take note of where the various keys and secrets live along the way.
+
+- Create your `.env` files:
+
+- `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
+  these are prefixed with `NEXT_PUBLIC`.
+
+- `.env.test` contains variables for only the test environment.
+
+- `.env.local` contains.
+
+> Warning! Never check secrets into your repo!
 
 ### NextAuth and OpenID
 
@@ -693,7 +709,8 @@ Google auth in Vercel preview environments, which use dynamic URLs. It is recomm
 ### Other environment variables
 
 1. Copy the `.env.local-example` file to `.env.local` and follow the instructions.
-2. Copy the `.env-example` file, overwriting the `.env` file, and follow the instructions.
+2. Copy the `.env.text-example` file, overwriting the `.env.text` file, and follow the instructions.
+3. Copy the `.env-example` file, overwriting the `.env` file, and follow the instructions.
 
 ## Type generation
 
@@ -722,7 +739,7 @@ Both services offer preview deployments, which we've enabled on our PRs.
 
 # GitHub Actions
 
-If you are using the included workflows you will get a great CI process, that includes:
+If you are using the included workflows you will get a great CI process that includes:
 
 - Unit tests on every PR
 - Cypress E2E Testing on every PR
