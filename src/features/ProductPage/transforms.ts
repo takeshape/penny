@@ -1,9 +1,11 @@
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
 import { enableReviewsIo, enableTrustpilot } from 'config';
+import { ProductProps } from 'features/ProductPage/Product/Product';
 import { GetStaticPathsResult } from 'next';
+import { ProductJsonLdProps } from 'next-seo';
 import { getProductLineItemAttributes } from 'transforms/product';
-import { getReview, getReviewList, getStats } from 'transforms/reviewsIo';
+import { getReview, getReviewList as getReviewsIoReviewList, getStats } from 'transforms/reviewsIo';
 import {
   createImageGetter,
   getCollectionUrl,
@@ -14,6 +16,7 @@ import {
   getSeo
 } from 'transforms/shopify';
 import { getReviewList as getTrustpilotReviewList } from 'transforms/trustpilot';
+import { ReviewList } from 'types/review';
 import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
 import {
   ProductPageReviewPageQueryResponse,
@@ -81,7 +84,7 @@ export function getProductReviewsPage(
     return null;
   }
 
-  return getReviewList(reviews);
+  return getReviewsIoReviewList(reviews);
 }
 
 export function getTrustpilotProductReviewsPage(
@@ -106,14 +109,16 @@ export function getTrustpilotProductReviews(
   return getTrustpilotReviewList(trustpilotReviews, trustpilotReviewsSummary);
 }
 
-export function getProductReviews(response?: ProductPageShopifyProductResponse): ProductPageReviewsReviewList | null {
+export function getReviewsIoProductReviews(
+  response?: ProductPageShopifyProductResponse
+): ProductPageReviewsReviewList | null {
   const reviews = response?.product?.reviews;
 
   if (!reviews) {
     return null;
   }
 
-  return getReviewList(reviews);
+  return getReviewsIoReviewList(reviews);
 }
 
 export function getReviewHighlights(response: ProductPageShopifyProductResponse): ProductPageReviewHighlights {
@@ -363,3 +368,39 @@ export function getBreadcrumbs(response: ProductPageShopifyProductResponse): Pro
     }
   ];
 }
+
+export type GetProductJsonLdPropsArgs = Pick<ProductProps, 'product'> & {
+  reviewList: ReviewList | null;
+};
+
+export const getProductJsonLdProps = ({ product, reviewList }: GetProductJsonLdPropsArgs): ProductJsonLdProps => {
+  let reviews;
+  let aggregateRating;
+  if (reviewList) {
+    reviews = reviewList.items.map((review) => ({
+      author: review.reviewer.name,
+      name: review.title,
+      reviewBody: review.body,
+      reviewRating: {
+        ratingValue: review.rating
+      },
+      datePublished: review.createdAt,
+      publisher: {
+        type: 'Organization',
+        name: reviewList.publisher
+      }
+    }));
+    aggregateRating = {
+      ratingValue: reviewList.stats.average,
+      ratingCount: reviewList.stats.count
+    };
+  }
+
+  return {
+    productName: product.name,
+    description: product.description,
+    images: product.images.map((image) => image.url),
+    reviews,
+    aggregateRating
+  };
+};
