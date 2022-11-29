@@ -33,7 +33,6 @@
     "@heroicons/react": "^2.0.13",
     "@next/bundle-analyzer": "^13.0.2",
     "@next/env": "^13.0.3",
-    "@sentry/nextjs": "^7.17.4",
     "@takeshape/next-auth-all-access": "^0.3.3",
     "@takeshape/routing": "^8.241.4",
     "abortcontroller-polyfill": "^1.7.5",
