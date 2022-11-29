@@ -21,22 +21,22 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-hcr9g6uk1-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650905709-58740.report.html) |
+| [Path: /](https://penny-14h4lraau-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669686047409-44397.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /product/basic-tee-6-pack](https://penny-hcr9g6uk1-takeshape.vercel.app/product/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650906108-3689.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /product/basic-tee-6-pack](https://penny-14h4lraau-takeshape.vercel.app/product/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669686047907-47778.report.html) |
+| 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collection/men](https://penny-hcr9g6uk1-takeshape.vercel.app/collection/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669650906687-6393.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /collection/men](https://penny-14h4lraau-takeshape.vercel.app/collection/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1669686048457-39332.report.html) |
+| 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
@@ -194,9 +194,28 @@ git clone https://github.com/takeshape/penny
 5. Navigate to the project directory in your local terminal and run the `npm install` command to install all
    dependencies.
 
-If you want to run this project locally, follow the instructions in the `.env.test` file.
+6. Set up your environment variables.
 
-The following instructions will help you configure all of the services this project uses.
+- Every project will contain a mix of variables defined in `.env` files and runtime variables defined in a hosting
+  provider.
+
+- Create your project's `.env` starter files. Run `npm run prepare-env`. This repo already contains some `.env` files
+  used for the demo, so you will be prompted to overwrite those files.
+
+- Because many variables are required to get a fully functional project you should ensure all your services are
+  configured before customizing the `.env` files. Take a look at the `.env` files now to get a sense of what you'll need
+  before you run the project, and take note of where the various keys and secrets live along the way.
+
+- `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
+  these are prefixed with `NEXT_PUBLIC`.
+
+- `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
+  contain all the secrets you need to get your local development environment running, as well as overrides for common
+  `.env` variables.
+
+- `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
+
+> Warning! Never check secrets into your repo!
 
 6. Add secrets needed for Github Actions. You can do this by going to your Github project settings then Secrets /
    Actions. You'll need the following secrets:
@@ -698,11 +717,6 @@ Because of how the Google OAuth2 service works, you cannot use wildcard callback
 Google auth in Vercel preview environments, which use dynamic URLs. It is recommended you unset
 `NEXT_PUBLIC_SHOPIFY_USE_MULTIPASS` for preview environments and configure it on a case-by-case basis.
 
-### Other environment variables
-
-1. Copy the `.env.local-example` file to `.env.local` and follow the instructions.
-2. Copy the `.env-example` file, overwriting the `.env` file, and follow the instructions.
-
 ## Type generation
 
 Your project is configured to generate types for the GraphQL APIs in use. Run `npm run graphql:typegen` before running
@@ -730,7 +744,7 @@ Both services offer preview deployments, which we've enabled on our PRs.
 
 # GitHub Actions
 
-If you are using the included workflows you will get a great CI process, that includes:
+If you are using the included workflows you will get a great CI process that includes:
 
 - Unit tests on every PR
 - Cypress E2E Testing on every PR

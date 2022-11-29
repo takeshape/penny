@@ -62,6 +62,7 @@ export function getReviewList(reviewsioReviews: ReviewsIoReviewList | null): Rev
     totalPages,
     perPage,
     items: reviews?.data?.map((review) => review && getReview(review)).filter(isNotNullish) ?? [],
-    hasNextPage: currentPage < totalPages
+    hasNextPage: currentPage < totalPages,
+    publisher: 'REVIEWS.io'
   };
 }

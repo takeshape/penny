@@ -6,7 +6,7 @@ import {
   productPagePolicies,
   productPageProduct,
   productPageReviewHighlights,
-  productPageReviewList,
+  productPageReviewsIoReviewList,
   trustpilotPageData
 } from './fixtures';
 import { ProductPage } from './ProductPage';
@@ -16,6 +16,8 @@ const Meta: ComponentMeta<typeof ProductPage> = {
   title: 'Features / Product Page',
   component: ProductPage
 };
+
+export default Meta;
 
 const Template: ComponentStory<typeof ProductPage> = (args) => <ProductPage {...args} />;
 
@@ -33,11 +35,10 @@ _ProductPage.args = {
   },
   product: productPageProduct,
   reviewHighlights: productPageReviewHighlights,
-  reviewList: productPageReviewList,
+  reviewList: productPageReviewsIoReviewList,
   details: productPageDetails,
   policies: productPagePolicies,
-  breadcrumbs: productPageBreadcrumbs,
-  trustpilotReviewList: trustpilotPageData
+  breadcrumbs: productPageBreadcrumbs
 };
 
 _ProductPage.parameters = {
@@ -52,4 +53,21 @@ _ProductPage.parameters = {
   }
 };
 
-export default Meta;
+export const _ProductPageWithTrustpilot = Template.bind({});
+
+_ProductPageWithTrustpilot.args = {
+  ..._ProductPage.args,
+  options: {
+    showDetails: true,
+    showReviewsIo: false,
+    showTrustpilot: true,
+    showRelatedProducts: true,
+    showPolicies: true,
+    showBreadcrumbs: true
+  },
+  reviewList: trustpilotPageData
+};
+
+_ProductPageWithTrustpilot.parameters = {
+  ..._ProductPage.parameters
+};
