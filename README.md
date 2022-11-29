@@ -199,18 +199,21 @@ git clone https://github.com/takeshape/penny
 - Every project will contain a mix of variables defined in `.env` files and runtime variables defined in a hosting
   provider.
 
-- Because many variables required to get a fully functional project you should ensure all your services are configured
-  before customizing the `.env` files. Take a look at the `.env` files now to get a sense of what you'll need before you
-  run the project, and take note of where the various keys and secrets live along the way.
+- Create your project's `.env` starter files. Run `npm run prepare-env`. This repo already contains some `.env` files
+  used for the demo, so you will be prompted to overwrite those files.
 
-- Create your `.env` files:
+- Because many variables are required to get a fully functional project you should ensure all your services are
+  configured before customizing the `.env` files. Take a look at the `.env` files now to get a sense of what you'll need
+  before you run the project, and take note of where the various keys and secrets live along the way.
 
 - `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
   these are prefixed with `NEXT_PUBLIC`.
 
-- `.env.test` contains variables for only the test environment.
+- `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
+  contain all the secrets you need to get your local development environment running, as well as overrides for common
+  `.env` variables.
 
-- `.env.local` contains.
+- `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
 
 > Warning! Never check secrets into your repo!
 
@@ -705,12 +708,6 @@ set the public env var `NEXT_PUBLIC_SHOPIFY_USE_MULTIPASS='true'`. Because we're
 Because of how the Google OAuth2 service works, you cannot use wildcard callback urls. This precludes the easy use of
 Google auth in Vercel preview environments, which use dynamic URLs. It is recommended you unset
 `NEXT_PUBLIC_SHOPIFY_USE_MULTIPASS` for preview environments and configure it on a case-by-case basis.
-
-### Other environment variables
-
-1. Copy the `.env.local-example` file to `.env.local` and follow the instructions.
-2. Copy the `.env.text-example` file, overwriting the `.env.text` file, and follow the instructions.
-3. Copy the `.env-example` file, overwriting the `.env` file, and follow the instructions.
 
 ## Type generation
 

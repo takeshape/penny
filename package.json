@@ -18,6 +18,7 @@
     "graphql:validate:storefront": "graphql-validate --config ./codegen.storefront.config.js",
     "graphql:validate:takeshape": "graphql-validate --config ./codegen.takeshape.config.js",
     "lint": "next lint",
+    "prepare-env": "./scripts/prepare-env.mjs",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "test": "jest",
