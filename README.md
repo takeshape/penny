@@ -335,7 +335,7 @@ configure these settings, stay in the **Checkout** section of the **Settings** m
   ![Select the Create an app button on the App development page.](/readme-images/create-app-button-readme-images.png)
 
 - You'll be taken to your app's settings page. Under the Overview tab, you'll see "Select your scopes to get started."
-  Select **Configure Storefront API scopes**.
+  Start with **Configure Storefront API scopes**.
 
   ![A screenshot of the app development page where you can select the Configure Storefront API scopes button.](/readme-images/configure-storefront-scopes-readme-images.png)
 
@@ -357,29 +357,29 @@ Then select **Save** at the top right of the page.
 - Now select the API credentials tab. You'll see a section titled **Access tokens**. Select the **Install app** button
   within this section (not the button at the top-right).
   ![A screenshot of the API credentials tab, where you can select the Install app button to install your app and enable the Storefront API.](/readme-images/access-tokens-install-app-readme-images.png)
-- You'll be returned to your app's settings page, where you can select the "API Credentials" tab again. You will now see
-  a **Storefront API access token**. Copy it and save it. You'll need it to configure Shopify Storefront in your
-  TakeShape project.
+- You will now see a **Storefront API access token**. Copy it and save it. You'll need it to configure Shopify
+  Storefront in your TakeShape project.
 
 ![A screenshot of the Storefront APi access token section](/readme-images/storefront-api-access-token-readme-images.png)
+
+- Go back to the Configuration tab for your app. At this point you have as Storefront API integration but no Admin API
+  integration. Next to Admin API integration click Configure.
+- Select all access scopes and click **Save**.
+- Go to the API credentials tab again. Now you can copy your "Admin API access token" and "API secret key". You'll need
+  these to configure the Shopify Admin API in your TakeShape project.
 
 #### Connecting the Shopify services to TakeShape
 
 To use Shopify with this project, you'll need to connect your Shopify Admin API and Shopify Storefront API as two
-separate services. The following instructions will help you connect your Shopify APIs to the Penny pattern, but you can
-[connect Shopify to any TakeShape project by following the Shopify guide in our docs](https://app.takeshape.io/docs/services/providers/shopify/).
+separate services. The Shopify app you made in the previous step will be used for both.
 
 ##### Connecting Shopify Admin
 
 - Navigate to your TakeShape project's dashboard and select the **Home** tab. Select the **Shopify** service.
 - Add your store's myshopify.com URL to the **myshopify.com URL** field. The format of the URL is your store's name +
   myshopify.com. `https://your-shop.myshopify.com`
-
-- Select **Save** and complete the setup flow in the Shopify browser tab that opens up. If you've already connected
-  TakeShape to this shop before, you may not have to do anything on Shopify.
-
-- After you complete the Shopify setup flow, you'll be taken to the API Indexing setup flow in TakeShape. Skip it. No
-  further configuration is needed for Shopify Admin.
+- Under Authentiaction, enter the Admin API access token and API secret key from the previous step.
+- Select **Save**
 
 ##### Connecting Shopify Storefront
 
@@ -391,10 +391,10 @@ separate services. The following instructions will help you connect your Shopify
 https://[STORE_NAME].myshopify.com/api/2022-04/graphql.json
 ```
 
-Here's what ours looked like when we set up this project in June of 2022:
+For example:
 
 ```
-https://deluxe-store.myshopify.com/api/2022-04/graphql.json
+https://example-store.myshopify.com/api/2022-04/graphql.json
 ```
 
 - For **Authentication Type**, select **Bearer Token**.
