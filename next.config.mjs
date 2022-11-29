@@ -1,5 +1,4 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
-import { withSentryConfig } from '@sentry/nextjs';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
@@ -161,9 +160,7 @@ export default withPlugins(
     withPwa({
       dest: 'public',
       disable: process.env.NODE_ENV === 'development'
-    }),
-    (config) =>
-      SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
+    })
   ],
   nextConfig
 );

@@ -1,8 +1,25 @@
-import { withSentry as actualWithSentry } from '@sentry/nextjs';
-import { NextApiHandler } from 'next';
+import * as Sentry from '@sentry/node';
+import { commitSha, sentryDsn, vercelEnv } from 'config';
+import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
+export function withSentry(handler: NextApiHandler) {
+  if (!sentryDsn) {
+    return handler;
+  }
 
-export const withSentry = (handler: NextApiHandler) => {
-  return SENTRY_DSN ? actualWithSentry(handler) : handler;
-};
+  return async (req: NextApiRequest, res: NextApiResponse) => {
+    if (sentryDsn) {
+      Sentry.init({
+        dsn: sentryDsn,
+        environment: vercelEnv,
+        release: commitSha
+      });
+
+      try {
+        handler(req, res);
+      } catch (e) {
+        Sentry.captureException(e);
+      }
+    }
+  };
+}
