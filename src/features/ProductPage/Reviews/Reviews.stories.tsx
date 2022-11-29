@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { productPageReviewList } from '../fixtures';
+import { productPageReviewsIoReviewList } from '../fixtures';
 import { Reviews } from './Reviews';
 
 const Meta: ComponentMeta<typeof Reviews> = {
@@ -13,6 +13,6 @@ const Meta: ComponentMeta<typeof Reviews> = {
 const Template: ComponentStory<typeof Reviews> = (args) => <Reviews {...args} />;
 
 export const _Reviews = Template.bind({});
-_Reviews.args = productPageReviewList;
+_Reviews.args = productPageReviewsIoReviewList;
 
 export default Meta;

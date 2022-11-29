@@ -22,6 +22,8 @@ export type ReviewRollup = {
   count: number;
 };
 
+export type ReviewPublisher = 'REVIEWS.io' | 'Trustpilot';
+
 export type ReviewList = {
   stats: ReviewStats;
   rollup?: ReviewRollup[];
@@ -30,6 +32,7 @@ export type ReviewList = {
   totalPages: number;
   items: Review[];
   hasNextPage: boolean;
+  publisher: ReviewPublisher;
 };
 
 export type ReviewHighlights = {

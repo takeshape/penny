@@ -54,6 +54,7 @@ export function getReviewList(
     totalPages: items.length ? Math.ceil(stats.count / items.length) : 0,
     perPage: items.length,
     items,
-    hasNextPage: links?.some((link) => link?.rel === 'next-page') ?? false
+    hasNextPage: links?.some((link) => link?.rel === 'next-page') ?? false,
+    publisher: 'Trustpilot'
   };
 }
