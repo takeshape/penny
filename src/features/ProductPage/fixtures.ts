@@ -6,8 +6,7 @@ import {
   ProductPagePolicies,
   ProductPageProduct,
   ProductPageRelatedProductsProduct,
-  ProductPageReviewHighlights,
-  ProductPageReviewsReviewList
+  ProductPageReviewHighlights
 } from './types';
 
 export const productPagePolicies: ProductPagePolicies = {
@@ -77,7 +76,7 @@ export const productPageDetails: ProductPageDetails = {
   ]
 };
 
-export const productPageReviewList: ProductPageReviewsReviewList = {
+export const productPageReviewsIoReviewList: ReviewList = {
   stats: { average: 4.6667, count: 3 },
   currentPage: 1,
   totalPages: 3,
@@ -108,7 +107,8 @@ export const productPageReviewList: ProductPageReviewsReviewList = {
       reviewer: { name: 'Ben Russel', imageUrl: null }
     }
   ],
-  hasNextPage: true
+  hasNextPage: true,
+  publisher: 'REVIEWS.io'
 };
 
 export const productPageReviewHighlights: ProductPageReviewHighlights = {
@@ -2420,7 +2420,8 @@ export const trustpilotPageData: ReviewList = {
       }
     }
   ],
-  hasNextPage: true
+  hasNextPage: true,
+  publisher: 'Trustpilot'
 };
 
 export const trustpilotPageDataEmpty: ReviewList = {
@@ -2431,5 +2432,6 @@ export const trustpilotPageDataEmpty: ReviewList = {
   perPage: 0,
   totalPages: 0,
   items: [],
-  hasNextPage: false
+  hasNextPage: false,
+  publisher: 'Trustpilot'
 };

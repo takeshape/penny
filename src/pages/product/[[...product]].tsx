@@ -11,13 +11,15 @@ import {
   getPageOptions,
   getPolicies,
   getProduct,
+  getProductJsonLdProps,
   getProductPageParams,
-  getProductReviews,
   getReviewHighlights,
+  getReviewsIoProductReviews,
   getTrustpilotProductReviews
 } from 'features/ProductPage/transforms';
 import Layout from 'layouts/Default';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { ProductJsonLd } from 'next-seo';
 import { useRouter } from 'next/router';
 import {
   ProductPageShopifyProductHandlesQueryResponse,
@@ -33,7 +35,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   product,
   reviewHighlights,
   reviewList,
-  trustpilotReviewList,
+  productJsonLdProps,
   details,
   policies,
   breadcrumbs
@@ -50,6 +52,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   return (
     <Layout seo={{ title: product.seo.title, description: product.seo.description }}>
+      {productJsonLdProps && <ProductJsonLd {...productJsonLdProps} />}
       <ProductPageComponent
         component={options.component}
         options={options}
@@ -57,7 +60,6 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         product={product}
         reviewHighlights={reviewHighlights}
         reviewList={reviewList}
-        trustpilotReviewList={trustpilotReviewList}
         details={details}
         policies={policies}
         reviewsPerPage={reviewsIoReviewsPerPage}
@@ -92,6 +94,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   }
 
   const product = getProduct(data);
+  const reviewList = getReviewsIoProductReviews(data) ?? getTrustpilotProductReviews(data);
 
   return {
     notFound: !Boolean(product),
@@ -102,8 +105,8 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
       product,
       options: getPageOptions(data),
       reviewHighlights: getReviewHighlights(data),
-      reviewList: getProductReviews(data),
-      trustpilotReviewList: getTrustpilotProductReviews(data),
+      reviewList,
+      productJsonLdProps: product ? getProductJsonLdProps({ product, reviewList }) : null,
       details: getDetails(data),
       policies: getPolicies(data),
       breadcrumbs: getBreadcrumbs(data)
