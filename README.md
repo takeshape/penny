@@ -127,7 +127,7 @@ If you have branch protections in place on your `main` branch you will need to i
 `PROTECTED_PUSH_TOKEN` that is a personal access token with the `repo` scopes and which is an admin on the project repo.
 
 If you are not using branch protection rules you can replace `${{ secrets.PROTECTED_PUSH_TOKEN }}` with
-`${{ secrest.GITHUB_TOKEN }}` in the `lighthouse.yml` workflow file.
+`${{ secrets.GITHUB_TOKEN }}` in the `lighthouse.yml` workflow file.
 
 #### Snapshots
 
@@ -216,6 +216,14 @@ git clone https://github.com/takeshape/penny
 - `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
 
 > Warning! Never check secrets into your repo!
+
+6. Add secrets needed for Github Actions. You can do this by going to your Github project settings then Secrets /
+   Actions. You'll need the following secrets:
+
+- `CHROMATIC_PROJECT_TOKEN` if using [Chromatic](https://www.chromatic.com/).
+- `TS_API_KEY` Use the `webhook` key from earlier.
+- `TS_AUTH_TOKEN` Can be created in your TakeShape project from the user menu under Access Tokens.
+- `TS_PROJECT_ID` Can be copied from your TakeShape project dashboard.
 
 ### NextAuth and OpenID
 

@@ -1,0 +1,24 @@
+name: 'Cleanup PR Branch'
+on: delete
+
+jobs:
+  cleanup-pr-branch:
+    name: 'Delete PR Branch on Delete'
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: install takeshape cli
+        run: |
+          npm install --quiet @takeshape/cli --global
+
+      - name: delete branch
+        run: takeshape branch delete --name ${{ github.event.ref }}
+        env:
+          TS_API_KEY: ${{ secrets.TS_API_KEY }}
+          TS_AUTH_TOKEN: ${{ secrets.TS_AUTH_TOKEN }}
+          TS_PROJECT_ID: ${{ secrets.TS_PROJECT_ID }}
