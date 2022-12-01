@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node';
-import { sentryDsn } from 'config';
+import { commitSha, sentryDsn, vercelEnv } from 'config';
 import logger from 'logger';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
@@ -7,6 +7,12 @@ export function withSentry(handler: NextApiHandler) {
   if (!sentryDsn) {
     return handler;
   }
+
+  Sentry.init({
+    dsn: sentryDsn,
+    environment: vercelEnv,
+    release: commitSha
+  });
 
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
