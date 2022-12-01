@@ -130,6 +130,14 @@ const nextConfig = {
   },
   swcMinify: true,
   webpack: (config) => {
+    // Sentry tree shaking
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: false,
+        __SENTRY_TRACING__: false
+      })
+    );
+
     // Unable to use the next-plugin-preval config directly for some reason, mjs?
     const rules = config.module?.rules;
 
