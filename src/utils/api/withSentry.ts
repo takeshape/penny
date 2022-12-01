@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { sentryDsn } from 'config';
+import logger from 'logger';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
 export function withSentry(handler: NextApiHandler) {
@@ -12,6 +13,7 @@ export function withSentry(handler: NextApiHandler) {
       return await handler(req, res);
     } catch (e) {
       Sentry.captureException(e);
+      logger.error(e);
       return res.status(500).json({ errors: [{ status: '500', title: 'Server error' }] });
     }
   };
