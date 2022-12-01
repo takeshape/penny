@@ -1,14 +1,14 @@
-const constants = require('./constants');
+const constants = require('../constants');
 
 module.exports = {
   ci: {
     collect: {
       extends: 'lighthouse:default',
       settings: {
-        formFactor: 'desktop',
-        throttling: constants.throttling.desktopFIOS,
-        screenEmulation: constants.screenEmulationMetrics.desktop,
-        emulatedUserAgent: constants.userAgents.desktop,
+        formFactor: 'mobile',
+        throttling: constants.throttling.mobileLTE,
+        screenEmulation: constants.screenEmulationMetrics.mobile,
+        emulatedUserAgent: constants.userAgents.mobile,
         // audits can be found here:
         // https://github.com/GoogleChrome/lighthouse/blob/eba2a4d19c5786dc37e993858ff4b663181f81e5/lighthouse-core/config/default-config.js#L174
         skipAudits: [

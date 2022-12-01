@@ -27,7 +27,7 @@ runs:
       uses: treosh/lighthouse-ci-action@v9
       with:
         urls: ${{ steps.audit-urls.outputs.urls }}
-        configPath: ./.lighthouse/lighthouserc.js
+        configPath: ./.lighthouse/profiles/${{ inputs.profile }}.js
         uploadArtifacts: true
         temporaryPublicStorage: true
         runs: 5

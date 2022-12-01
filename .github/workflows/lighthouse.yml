@@ -4,7 +4,7 @@ on:
   deployment_status:
 
 jobs:
-  lighthouse-run-preview:
+  lighthouse-run-preview-desktop:
     name: Audit (Preview)
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
@@ -21,7 +21,29 @@ jobs:
         if: always()
         uses: mshick/add-pr-comment@v2
         with:
-          message-id: lighthouse
+          message-id: lighthouse-desktop
+          message-failure: |
+            ### ❌ Unable to get lighthouse scores
+          message: ${{ steps.lighthouse.outputs.comment }}
+
+  lighthouse-run-preview-mobile:
+    name: Audit (Preview)
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Lighthouse
+        uses: ./.github/actions/run-lighthouse
+        id: lighthouse
+        with:
+          profile: mobile
+
+      - name: Add Lighthouse stats as comment
+        if: always()
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: lighthouse-mobile
           message-failure: |
             ### ❌ Unable to get lighthouse scores
           message: ${{ steps.lighthouse.outputs.comment }}
