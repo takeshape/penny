@@ -19,6 +19,7 @@ export function withSentry(handler: NextApiHandler) {
       return await handler(req, res);
     } catch (e) {
       Sentry.captureException(e);
+      await Sentry.flush(1000);
       logger.error(e);
       return res.status(500).json({ errors: [{ status: '500', title: 'Server error' }] });
     }
