@@ -159,7 +159,7 @@ To get started with TakeShape you need to perform these steps:
 2. [Deploy Penny to a new TakeShape Project](#deploy-penny-to-a-new-takeshape-project)
 3. [Configure Shopify Admin and Shopify Storefront services](#shopify-admin-and-shopify-storefront)
 4. Run `npm run dev` to try out Penny with only Shopify enabled
-5. Configure addition services and customize your Penny project!
+5. Configure additional services and customize your Penny project!
 
 
 ### Create a new Github repository for your Project 
