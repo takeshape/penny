@@ -129,7 +129,7 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
-  webpack: (config) => {
+  webpack: (config, { webpack }) => {
     // Sentry tree shaking
     config.plugins.push(
       new webpack.DefinePlugin({
