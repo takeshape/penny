@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node';
-import { commitSha, sentryDsn, vercelEnv } from 'config';
+import { sentryDsn } from 'config';
 import logger from 'logger';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
@@ -8,19 +8,13 @@ export function withSentry(handler: NextApiHandler) {
     return handler;
   }
 
-  Sentry.init({
-    dsn: sentryDsn,
-    environment: vercelEnv,
-    release: commitSha
-  });
-
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       return await handler(req, res);
     } catch (e) {
       Sentry.captureException(e);
-      await Sentry.flush(1000);
       logger.error(e);
+      await Sentry.flush(1000);
       return res.status(500).json({ errors: [{ status: '500', title: 'Server error' }] });
     }
   };
