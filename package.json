@@ -39,7 +39,6 @@
     "@takeshape/routing": "^8.241.4",
     "abortcontroller-polyfill": "^1.7.5",
     "card-validator": "^8.1.1",
-    "chalk": "^5.1.2",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
     "imask": "^6.4.3",
