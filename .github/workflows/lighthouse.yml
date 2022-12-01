@@ -12,7 +12,7 @@ jobs:
       LIGHTHOUSE_CONFIG: 'preview'
     steps:
       - name: Run Lighthouse
-        uses: .github/actions/run-lighthouse
+        uses: ./.github/actions/run-lighthouse
         id: lighthouse
         with:
           profile: desktop
