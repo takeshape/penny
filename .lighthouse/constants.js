@@ -44,13 +44,13 @@ const screenEmulationMetrics = {
   desktop: DESKTOP_EMULATION_METRICS
 };
 
-const MOTOG4_USERAGENT =
-  'Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4420.0 Mobile Safari/537.36 Chrome-Lighthouse';
+const MOBILE_USERAGENT =
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 16_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1 Chrome-Lighthouse';
 const DESKTOP_USERAGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4420.0 Safari/537.36 Chrome-Lighthouse';
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Chrome-Lighthouse';
 
 const userAgents = {
-  mobile: MOTOG4_USERAGENT,
+  mobile: MOBILE_USERAGENT,
   desktop: DESKTOP_USERAGENT
 };
 

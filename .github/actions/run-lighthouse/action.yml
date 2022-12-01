@@ -44,6 +44,8 @@ runs:
             links: ${{ steps.audit.outputs.links }}
           };
 
-          const comment = lighthouseCommentMaker({ lighthouseOutputs });
+          const profile = '${{ inputs.profile }}';
+
+          const comment = lighthouseCommentMaker({ profile, lighthouseOutputs });
           core.setOutput("comment", comment);
 
