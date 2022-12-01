@@ -11,6 +11,8 @@ jobs:
     env:
       LIGHTHOUSE_CONFIG: 'preview'
     steps:
+      - uses: actions/checkout@v3
+
       - name: Run Lighthouse
         uses: ./.github/actions/run-lighthouse
         id: lighthouse
