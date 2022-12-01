@@ -13,7 +13,7 @@ Check out the store now at https://penny-demo.takeshape.io/.
 
 You can clone this repo with git to run the Next.js frontend locally (`git clone https://github.com/takeshape/penny`).
 To connect it to a GraphQL backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern`
-directory. [The instructions section of this README will teach you how to do that](#instructions).
+directory. [The instructions section of this README will teach you how to do that](#getting-started).
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
@@ -153,9 +153,58 @@ In the next section, you'll find a screenshot of the finished store's homepage.
 
 ![A screenshot of the store's homepage.](/readme-images/store/homepage-in-browser.png)
 
-# Instructions
+# Getting Started
+To get started with TakeShape you need to perform these steps:
+1. [Create a new Github repository for your Project](#create-a-new-github-repository-for-your-project) and configure `.env`
+2. [Deploy Penny to a new TakeShape Project](#deploy-penny-to-a-new-takeshape-project)
+3. [Configure Shopify Admin and Shopify Storefront services](#shopify-admin-and-shopify-storefront)
+4. Run `npm run dev` to try out Penny with only Shopify enabled
+5. Configure additional services and customize your Penny project!
 
-Here are the steps for getting started with this project:
+
+### Create a new Github repository for your Project 
+
+1. Create a new repository using this repository as a template:
+
+![Use this template](/readme-images/use-this-template.png)
+
+2. Clone your new repository
+
+3. Navigate to the project directory in your local terminal and run the `npm install` command to install all
+   dependencies.
+
+4. Set up your environment variables.
+
+- Every project will contain a mix of variables defined in `.env` files and runtime variables defined in a hosting
+  provider.
+
+- Create your project's `.env` starter files. Run `npm run prepare-env`. This repo already contains some `.env` files
+  used for the demo, so you will be prompted to overwrite those files.
+
+- Because many variables are required to get a fully functional project you should ensure all your services are
+  configured before customizing the `.env` files. Take a look at the `.env` files now to get a sense of what you'll need
+  before you run the project, and take note of where the various keys and secrets live along the way.
+
+- `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
+  these are prefixed with `NEXT_PUBLIC`. This file **is** checked into your repo.
+
+- `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
+  contain all the secrets you need to get your local development environment running, as well as overrides for common
+  `.env` variables.
+
+- `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
+
+> Warning! Never check secrets into your repo!
+
+4. Add secrets needed for Github Actions. You can do this by going to your Github project settings then Secrets /
+   Actions. You'll need the following secrets:
+
+- `CHROMATIC_PROJECT_TOKEN` if using [Chromatic](https://www.chromatic.com/).
+- `TS_API_KEY` Use the `webhook` key from earlier.
+- `TS_AUTH_TOKEN` Can be created in your TakeShape project from the user menu under Access Tokens.
+- `TS_PROJECT_ID` Can be copied from your TakeShape project dashboard.
+
+### Deploy Penny to a new TakeShape Project
 
 1. Create a TakeShape project using the pattern in this repo. This button will deploy the project for you:
 
@@ -172,58 +221,17 @@ Here are the steps for getting started with this project:
 
 - Name the first API Key anything you want; just be sure to grant it `anonymous` permissions.
 
-- Save the key somewhere. Later, you must either set it as the value of the `NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY`
-  environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
-  hosting provider's UI.
+- Save the key in your `.env` file as `NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY`.
 
 3. Get your TakeShape project's API Endpoint. Here's how:
 
 - Navigate to the **Home** tab of your TakeShape project's dashboard in the web client. Scroll down to the **Useful
   Snippets** section, and copy the **API Endpoint** there.
 
-- Save the endpoint somewhere. Later, you must either set it as the value of the `NEXT_PUBLIC_TAKESHAPE_API_URL`
-  environment variable in your frontend project's `.env.local` file, or set it as an environment variable in your
-  hosting provider.
+- Save the endpoint in your `.env` file as `NEXT_PUBLIC_TAKESHAPE_API_URL`.
 
-4. Clone this repo:
+4. Commit changes to `.env`
 
-```bash
-git clone https://github.com/takeshape/penny
-```
-
-5. Navigate to the project directory in your local terminal and run the `npm install` command to install all
-   dependencies.
-
-6. Set up your environment variables.
-
-- Every project will contain a mix of variables defined in `.env` files and runtime variables defined in a hosting
-  provider.
-
-- Create your project's `.env` starter files. Run `npm run prepare-env`. This repo already contains some `.env` files
-  used for the demo, so you will be prompted to overwrite those files.
-
-- Because many variables are required to get a fully functional project you should ensure all your services are
-  configured before customizing the `.env` files. Take a look at the `.env` files now to get a sense of what you'll need
-  before you run the project, and take note of where the various keys and secrets live along the way.
-
-- `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
-  these are prefixed with `NEXT_PUBLIC`.
-
-- `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
-  contain all the secrets you need to get your local development environment running, as well as overrides for common
-  `.env` variables.
-
-- `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
-
-> Warning! Never check secrets into your repo!
-
-6. Add secrets needed for Github Actions. You can do this by going to your Github project settings then Secrets /
-   Actions. You'll need the following secrets:
-
-- `CHROMATIC_PROJECT_TOKEN` if using [Chromatic](https://www.chromatic.com/).
-- `TS_API_KEY` Use the `webhook` key from earlier.
-- `TS_AUTH_TOKEN` Can be created in your TakeShape project from the user menu under Access Tokens.
-- `TS_PROJECT_ID` Can be copied from your TakeShape project dashboard.
 
 ### NextAuth and OpenID
 
@@ -248,11 +256,7 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 
 4. Select the **Save** button at the top-right of the OpenID service page.
 
-5. Now set up your environment variables. You can either do this in the `.env` file in your Next.js project's directory,
-   or in your hosting provider's UI.
-
-- [Vercel](https://vercel.com/docs/concepts/projects/environment-variables)
-- [Netlify](https://docs.netlify.com/environment-variables/overview/)
+5.  Update your `.env` file in your Next.js project's directory with the following variables:
 
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
