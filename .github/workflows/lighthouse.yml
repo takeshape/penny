@@ -8,8 +8,6 @@ jobs:
     name: Audit (Preview)
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
-    env:
-      LIGHTHOUSE_CONFIG: 'preview'
     steps:
       - uses: actions/checkout@v3
 
