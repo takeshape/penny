@@ -374,10 +374,14 @@ export type GetProductJsonLdPropsArgs = Pick<ProductProps, 'product'> & {
 };
 
 export const getProductJsonLdProps = ({ product, reviewList }: GetProductJsonLdPropsArgs): ProductJsonLdProps => {
-  let reviews;
-  let aggregateRating;
+  const result: ProductJsonLdProps = {
+    productName: product.name,
+    description: product.description,
+    images: product.images.map((image) => image.url)
+  };
+
   if (reviewList) {
-    reviews = reviewList.items.map((review) => ({
+    result.reviews = reviewList.items.map((review) => ({
       author: review.reviewer.name,
       name: review.title,
       reviewBody: review.body,
@@ -390,17 +394,11 @@ export const getProductJsonLdProps = ({ product, reviewList }: GetProductJsonLdP
         name: reviewList.publisher
       }
     }));
-    aggregateRating = {
+    result.aggregateRating = {
       ratingValue: reviewList.stats.average,
       ratingCount: reviewList.stats.count
     };
   }
 
-  return {
-    productName: product.name,
-    description: product.description,
-    images: product.images.map((image) => image.url),
-    reviews,
-    aggregateRating
-  };
+  return result;
 };
