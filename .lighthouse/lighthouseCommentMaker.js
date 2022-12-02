@@ -19,7 +19,7 @@ ${scoreRow('PWA', summary.pwa)}
 function makeComment(profile, lighthouseOutputs) {
   const { manifest, links } = lighthouseOutputs;
 
-  let comment = `## ⚡️🏠 Lighthouse Report: ${profile}
+  let comment = `## Lighthouse Report: ${profile}
 
 | Category | Score |
 | -------- | ----- |
