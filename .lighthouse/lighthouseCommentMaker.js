@@ -16,10 +16,10 @@ ${scoreRow('PWA', summary.pwa)}
 `;
 }
 
-function makeComment(lighthouseOutputs) {
+function makeComment(profile, lighthouseOutputs) {
   const { manifest, links } = lighthouseOutputs;
 
-  let comment = `## ⚡️🏠 Lighthouse Report
+  let comment = `## Lighthouse Report: ${profile}
 
 | Category | Score |
 | -------- | ----- |
@@ -33,6 +33,6 @@ function makeComment(lighthouseOutputs) {
   return comment;
 }
 
-module.exports = ({ lighthouseOutputs }) => {
-  return makeComment(lighthouseOutputs);
+module.exports = ({ profile, lighthouseOutputs }) => {
+  return makeComment(profile, lighthouseOutputs);
 };

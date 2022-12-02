@@ -1,0 +1,51 @@
+name: 'Run Lighthouse'
+description: 'Runs a Lighthouse test.'
+inputs:
+  profile:
+    description: 'The Lighthouse profile to use.'
+    required: true
+    default: 'desktop'
+outputs:
+  comment:
+    description: "Formatted text suitable for a comment."
+    value: ${{ steps.format.outputs.comment }}
+runs:
+  using: composite
+  steps:
+    - name: Get audit urls
+      id: audit-urls
+      uses: actions/github-script@v6.3.3
+      with:
+        script: |
+          const targetUrl = '${{ github.event.deployment_status.target_url }}';
+          const testPaths = require('./.lighthouse/testPaths.json') ?? [];
+          const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
+          core.setOutput("urls", [targetUrl, ...testUrls].join('\n'));
+
+    - name: Audit URLs using Lighthouse
+      id: audit
+      uses: treosh/lighthouse-ci-action@v9
+      with:
+        urls: ${{ steps.audit-urls.outputs.urls }}
+        configPath: ./.lighthouse/profiles/${{ inputs.profile }}.js
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+        runs: 5
+
+    - name: Format Lighthouse score
+      id: format
+      uses: actions/github-script@v6.3.3
+      with:
+        script: |
+          const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
+
+          const lighthouseOutputs = {
+            manifest: ${{ steps.audit.outputs.manifest }},
+            links: ${{ steps.audit.outputs.links }}
+          };
+
+          const profile = '${{ inputs.profile }}';
+
+          const comment = lighthouseCommentMaker({ profile, lighthouseOutputs });
+          core.setOutput("comment", comment);
+
