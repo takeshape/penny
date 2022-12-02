@@ -4,73 +4,59 @@ on:
   deployment_status:
 
 jobs:
-  lighthouse-run-preview:
-    name: Audit (Preview)
+  lighthouse-run-preview-desktop:
+    name: Desktop Audit (Preview)
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     runs-on: ubuntu-latest
-    env:
-      LIGHTHOUSE_CONFIG: 'preview'
     steps:
       - uses: actions/checkout@v3
 
-      - name: Get audit urls
-        id: audit-urls
-        uses: actions/github-script@v6.3.3
+      - name: Run Lighthouse
+        uses: ./.github/actions/run-lighthouse
+        id: lighthouse
         with:
-          script: |
-            const targetUrl = '${{ github.event.deployment_status.target_url }}';
-            const testPaths = require('./.lighthouse/testPaths.json') ?? [];
-            const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
-            core.setOutput("urls", [targetUrl, ...testUrls].join('\n'));
-
-      - name: Audit URLs using Lighthouse
-        id: lighthouse_audit
-        uses: treosh/lighthouse-ci-action@v9
-        with:
-          urls: ${{ steps.audit-urls.outputs.urls }}
-          configPath: ./.lighthouse/lighthouserc.js
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          runs: 5
-
-      - name: Format Lighthouse score
-        id: format_lighthouse_score
-        uses: actions/github-script@v6.3.3
-        with:
-          script: |
-            const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
-
-            const lighthouseOutputs = {
-              manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
-              links: ${{ steps.lighthouse_audit.outputs.links }}
-            };
-
-            const comment = lighthouseCommentMaker({ lighthouseOutputs });
-            core.setOutput("comment", comment);
+          profile: desktop
 
       - name: Add Lighthouse stats as comment
         if: always()
         uses: mshick/add-pr-comment@v2
         with:
-          message-id: lighthouse
+          message-id: lighthouse-desktop
           message-failure: |
             ### ❌ Unable to get lighthouse scores
-          message: ${{ steps.format_lighthouse_score.outputs.comment }}
+          message: ${{ steps.lighthouse.outputs.comment }}
 
-  lighthouse-run-production:
-    name: Audit (Production)
+  lighthouse-run-preview-mobile:
+    name: Mobile Audit (Preview)
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Lighthouse
+        uses: ./.github/actions/run-lighthouse
+        id: lighthouse
+        with:
+          profile: mobile
+
+      - name: Add Lighthouse stats as comment
+        if: always()
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-id: lighthouse-mobile
+          message-failure: |
+            ### ❌ Unable to get lighthouse scores
+          message: ${{ steps.lighthouse.outputs.comment }}
+
+  lighthouse-run-production-desktop:
+    name: Desktop Audit (Production)
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
     runs-on: ubuntu-latest
     env:
-      LIGHTHOUSE_CONFIG: 'production'
       LIGHTHOUSE_BRANCH: 'main'
       LIGHTHOUSE_FILE: 'README.md'
       LIGHTHOUSE_BEGIN_TOKEN: '<!-- LIGHTHOUSE:BEGIN -->'
       LIGHTHOUSE_END_TOKEN: '<!-- LIGHTHOUSE:END -->'
-      LIGHTHOUSE_URLS: |
-        ${{ github.event.deployment_status.target_url }}
-        ${{ github.event.deployment_status.target_url }}/product/__lighthouse
-        ${{ github.event.deployment_status.target_url }}/collection/__lighthouse
     steps:
       - uses: actions/checkout@v3
         with:
@@ -78,40 +64,11 @@ jobs:
           token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
           ref: ${{ env.LIGHTHOUSE_BRANCH }}
 
-      - name: Get audit urls
-        id: audit-urls
-        uses: actions/github-script@v6.3.3
+      - name: Run Lighthouse
+        uses: ./.github/actions/run-lighthouse
+        id: lighthouse
         with:
-          script: |
-            const targetUrl = '${{ github.event.deployment_status.target_url }}';
-            const testPaths = require('./.lighthouse/testPaths.json') ?? [];
-            const testUrls = testPaths.map(testPath => `${targetUrl}${testPath}`);
-            core.setOutput("urls", [targetUrl, ...testUrls].join('\n'));
-
-      - name: Audit URLs using Lighthouse
-        id: lighthouse_audit
-        uses: treosh/lighthouse-ci-action@v9
-        with:
-          urls: ${{ steps.audit-urls.outputs.urls }}
-          configPath: ./.lighthouse/lighthouserc.js
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          runs: 5
-
-      - name: Format Lighthouse score
-        id: format_lighthouse_score
-        uses: actions/github-script@v6.3.3
-        with:
-          script: |
-            const lighthouseCommentMaker = require('./.lighthouse/lighthouseCommentMaker.js');
-
-            const lighthouseOutputs = {
-              manifest: ${{ steps.lighthouse_audit.outputs.manifest }},
-              links: ${{ steps.lighthouse_audit.outputs.links }}
-            };
-
-            const comment = lighthouseCommentMaker({ lighthouseOutputs });
-            core.setOutput("comment", comment);
+          profile: desktop
 
       - name: Add Lighthouse to README.md
         if: always()
@@ -120,7 +77,57 @@ jobs:
           end=$LIGHTHOUSE_END_TOKEN
           file=$LIGHTHOUSE_FILE
 
-          data="${{ steps.format_lighthouse_score.outputs.comment }}"
+          data="${{ steps.lighthouse.outputs.comment }}"
+
+          awk -i inplace \
+            -v begin="$begin" \
+            -v end="$end" \
+            -v data="$data" '$0~end{f=0} !f{print} $0~begin{print data;f=1}' \
+            "$file"
+
+      - name: Commit to repo
+        if: always()
+        uses: stefanzweifel/git-auto-commit-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.PROTECTED_PUSH_TOKEN }}
+        with:
+          commit_message: Lighthouse Score [skip ci]
+          skip_dirty_check: true
+          file_pattern: README.md
+          commit_user_name: lighthouse-action
+          commit_user_email: actions@github.com
+          commit_author: lighthouse-action <actions@github.com>
+
+  lighthouse-run-production-mobile:
+    name: Mobile Audit (Production)
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
+    runs-on: ubuntu-latest
+    env:
+      LIGHTHOUSE_BRANCH: 'main'
+      LIGHTHOUSE_FILE: 'README.md'
+      LIGHTHOUSE_BEGIN_TOKEN: '<!-- LIGHTHOUSE:BEGIN -->'
+      LIGHTHOUSE_END_TOKEN: '<!-- LIGHTHOUSE:END -->'
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Required due to branch protection rules - must be a repo admin
+          token: ${{ secrets.PROTECTED_PUSH_TOKEN }}
+          ref: ${{ env.LIGHTHOUSE_BRANCH }}
+
+      - name: Run Lighthouse
+        uses: ./.github/actions/run-lighthouse
+        id: lighthouse
+        with:
+          profile: mobile
+
+      - name: Add Lighthouse to README.md
+        if: always()
+        run: |
+          begin=$LIGHTHOUSE_BEGIN_TOKEN
+          end=$LIGHTHOUSE_END_TOKEN
+          file=$LIGHTHOUSE_FILE
+
+          data="${{ steps.lighthouse.outputs.comment }}"
 
           awk -i inplace \
             -v begin="$begin" \
