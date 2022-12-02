@@ -33,6 +33,6 @@ function makeComment(profile, lighthouseOutputs) {
   return comment;
 }
 
-module.exports = ({ lighthouseOutputs }) => {
+module.exports = ({ profile, lighthouseOutputs }) => {
   return makeComment(profile, lighthouseOutputs);
 };
