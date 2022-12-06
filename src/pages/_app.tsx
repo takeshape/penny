@@ -1,10 +1,19 @@
+import * as Sentry from '@sentry/react';
 import { ErrorBoundary } from 'components/Error/ErrorBoundary';
-import { seo, sessionRefetchInterval } from 'config';
+import { commitSha, sentryDsn, seo, sessionRefetchInterval, vercelEnv } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 import { AppContext, AppInitialProps } from 'next/app';
 import 'styles/globals.css';
+
+if (sentryDsn) {
+  Sentry.init({
+    dsn: sentryDsn,
+    environment: vercelEnv,
+    release: commitSha
+  });
+}
 
 export default function App({ Component, pageProps }: AppContext & AppInitialProps) {
   return (

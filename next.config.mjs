@@ -1,9 +1,6 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
-import { withSentryConfig } from '@sentry/nextjs';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
-
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 const require = createRequire(import.meta.url);
 
@@ -132,7 +129,15 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
-  webpack: (config) => {
+  webpack: (config, { webpack }) => {
+    // Sentry tree shaking
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        __SENTRY_DEBUG__: false,
+        __SENTRY_TRACING__: false
+      })
+    );
+
     // Unable to use the next-plugin-preval config directly for some reason, mjs?
     const rules = config.module?.rules;
 
@@ -161,9 +166,7 @@ export default withPlugins(
     withPwa({
       dest: 'public',
       disable: process.env.NODE_ENV === 'development'
-    }),
-    (config) =>
-      SENTRY_DSN ? withSentryConfig({ ...config, sentry: { hideSourceMaps: true } }, { silent: true }) : config
+    })
   ],
   nextConfig
 );
