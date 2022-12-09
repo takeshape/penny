@@ -127,14 +127,6 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                     <TopCartIcon />
                   </div>
                 </div>
-
-                <button
-                  onClick={() => {
-                    throw new Error('BOOM');
-                  }}
-                >
-                  BOOM
-                </button>
               </div>
             </div>
           </div>
