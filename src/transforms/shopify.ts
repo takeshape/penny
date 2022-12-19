@@ -272,7 +272,7 @@ export function getProductVariantOptions(
 }
 
 export function getProductUrl(handle: string) {
-  return `/product/${handle}`;
+  return `/products/${handle}`;
 }
 
 export function getCollectionUrl(handle: string) {
