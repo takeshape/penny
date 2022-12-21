@@ -8,18 +8,13 @@ const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
 });
 
+/**
+ * Add your own CSP here...
+ */
 // https://securityheaders.com
 const ContentSecurityPolicy = `
-  default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com/recaptcha/api.js https://www.gstatic.com;
-  child-src 'self';
-  style-src 'self' 'unsafe-inline';
-  object-src 'self' blob: data:;
-  media-src 'none';
-  img-src * blob: data:;
-  connect-src *;
-  font-src 'self';
-  frame-src https://www.google.com;
+  default-src * 'unsafe-inline' 'unsafe-eval';
+  script-src * 'unsafe-inline' 'unsafe-eval';
 `;
 
 const securityHeaders = [
