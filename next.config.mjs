@@ -9,9 +9,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 });
 
 // https://securityheaders.com
-const ContentSecurityPolicy = `
-  default-src 'self' 'unsafe-inline';
-`;
+const ContentSecurityPolicy = ``;
 
 const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
