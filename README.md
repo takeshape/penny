@@ -53,6 +53,7 @@ This starter project composes the following services into a unified GraphQL API:
 - Gorgias for customer support
 - Klaviyo for newsletter subscriptions
 - REVIEWS.io for product reviews
+- [Trustpilot](docs/trustpilot) for product reviews
 - Voucherify for customer loyalty rewards
 - Ship Engine for shipping management
 
