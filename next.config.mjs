@@ -10,16 +10,16 @@ const withBundleAnalyzer = createBundleAnalyzer({
 
 // https://securityheaders.com
 const ContentSecurityPolicy = `
-  default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.google.com/recaptcha/api.js https://www.gstatic.com;
-  child-src 'self';
-  style-src 'self' 'unsafe-inline';
-  object-src 'self' blob: data:;
-  media-src 'none';
+  default-src *;
+  script-src *;
+  child-src *;
+  style-src *;
+  object-src * blob: data:;
+  media-src *;
   img-src * blob: data:;
   connect-src *;
-  font-src 'self';
-  frame-src https://www.google.com;
+  font-src *;
+  frame-src *;
 `;
 
 const securityHeaders = [
