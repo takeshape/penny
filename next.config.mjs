@@ -10,7 +10,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 
 // https://securityheaders.com
 const ContentSecurityPolicy = `
-  default-src 'self';
+  default-src 'self' 'unsafe-inline';
 `;
 
 const securityHeaders = [
