@@ -13,7 +13,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
  */
 // https://securityheaders.com
 const ContentSecurityPolicy = `
-  script-src *;
+  script-src * data: blob: 'unsafe-inline' 'unsafe-eval';
 `;
 
 const securityHeaders = [
