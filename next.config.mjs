@@ -8,8 +8,13 @@ const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
 });
 
+/**
+ * Add your own CSP here...
+ */
 // https://securityheaders.com
-const ContentSecurityPolicy = ``;
+const ContentSecurityPolicy = `
+  script-src *;
+`;
 
 const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
