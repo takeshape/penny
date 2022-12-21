@@ -10,16 +10,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 
 // https://securityheaders.com
 const ContentSecurityPolicy = `
-  default-src *;
-  script-src *;
-  child-src *;
-  style-src *;
-  object-src * blob: data:;
-  media-src *;
-  img-src * blob: data:;
-  connect-src *;
-  font-src *;
-  frame-src *;
+  default-src 'self';
 `;
 
 const securityHeaders = [
