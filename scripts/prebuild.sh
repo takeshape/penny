@@ -4,7 +4,7 @@ then
   npm install --quiet -g @takeshape/cli
 
   # Main branch
-  if [ "$VERCEL_GIT_COMMIT_REF" == "main" ]; then
+  if [[ "$VERCEL_GIT_COMMIT_REF" == "main" ]]; then
     echo `takeshape branch tagVersion --tag ${VERCEL_GIT_COMMIT_SHA}` > .current-branch-url
 
   # There is a takeshape branch that matches this git branch
