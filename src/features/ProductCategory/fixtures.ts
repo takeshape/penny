@@ -2,7 +2,7 @@ import { ProductCategoryCollection } from './types';
 
 export const productCategoryCollection: ProductCategoryCollection = {
   id: 'gid://shopify/Collection/270097776740',
-  url: '/collection/men',
+  url: '/collections/men',
   handle: 'men',
   name: 'Men',
   description: 'Stuff for dudes and stuff.',

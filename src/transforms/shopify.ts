@@ -276,7 +276,7 @@ export function getProductUrl(handle: string) {
 }
 
 export function getCollectionUrl(handle: string) {
-  return `/collection/${handle}`;
+  return `/collections/${handle}`;
 }
 
 export function shopifyGidToId(gid: string): string {

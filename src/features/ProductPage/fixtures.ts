@@ -1631,12 +1631,12 @@ export const productPageBreadcrumbs: ProductPageBreadcrumbs = [
   {
     id: 'gid://shopify/Collection/270097776740',
     name: 'Men',
-    href: '/collection/men'
+    href: '/collections/men'
   },
   {
     id: 'gid://shopify/Collection/270340980836',
     name: 'Basic Tees',
-    href: '/collection/mens-basic-tees'
+    href: '/collections/mens-basic-tees'
   }
 ];
 
