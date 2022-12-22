@@ -21,20 +21,20 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-n7deywdlc-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671731783761-87638.report.html) |
+| [Path: /](https://penny-ejd54gblr-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671748445261-28463.report.html) |
 | 🟢 Performance | 98 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-n7deywdlc-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671731784464-15518.report.html) |
-| 🟢 Performance | 98 |
+| [Path: /products/basic-tee-6-pack](https://penny-ejd54gblr-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671748445860-91207.report.html) |
+| 🟢 Performance | 95 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-n7deywdlc-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671731784811-15484.report.html) |
-| 🟢 Performance | 99 |
+| [Path: /collections/men](https://penny-ejd54gblr-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671748446221-19341.report.html) |
+| 🟢 Performance | 96 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
