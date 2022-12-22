@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ ! -z "$VERCEL_GIT_COMMIT_REF" ] 
+if [[ -n "$VERCEL_GIT_COMMIT_REF" ]] 
 then
   npm install --quiet -g @takeshape/cli
 
