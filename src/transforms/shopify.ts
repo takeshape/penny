@@ -272,11 +272,11 @@ export function getProductVariantOptions(
 }
 
 export function getProductUrl(handle: string) {
-  return `/product/${handle}`;
+  return `/products/${handle}`;
 }
 
 export function getCollectionUrl(handle: string) {
-  return `/collection/${handle}`;
+  return `/collections/${handle}`;
 }
 
 export function shopifyGidToId(gid: string): string {

@@ -3,7 +3,7 @@ import { QuickAddProduct } from './types';
 export const quickAddProduct: QuickAddProduct = {
   id: 'gid://shopify/Product/6857243132004',
   handle: 'basic-tee-6-pack',
-  url: '/product/basic-tee-6-pack',
+  url: '/products/basic-tee-6-pack',
   name: 'Basic Tee 6-Pack',
   description:
     'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered... Highlights Hand cut and sewn locally Dyed with our proprietary colors Pre-washed & pre-shrunk Ultra-soft 100% cotton Details The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
