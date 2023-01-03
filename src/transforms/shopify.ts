@@ -280,12 +280,9 @@ export function getProductVariantOptions(
   );
 }
 
-export function getProductHasStock(
-  product: Pick<ShopifyAdminProduct, 'tracksInventory' | 'totalInventory' | 'status' | 'publishedOnCurrentPublication'>
-) {
-  const isAvailable = getProductIsAvailable(product);
+export function getProductHasStock(product: Pick<ShopifyAdminProduct, 'tracksInventory' | 'totalInventory'>) {
   const { tracksInventory, totalInventory } = product;
-  return isAvailable && (!tracksInventory || totalInventory > 0);
+  return !tracksInventory || totalInventory > 0;
 }
 
 export function getProductIsAvailable(product: Pick<ShopifyAdminProduct, 'status' | 'publishedOnCurrentPublication'>) {
