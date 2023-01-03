@@ -12,6 +12,7 @@ const StorefrontFragments = gql`
   fragment StorefrontProduct on Shopify_Product {
     id
     handle
+    status
     title
     description
     descriptionHtml

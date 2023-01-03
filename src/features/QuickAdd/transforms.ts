@@ -2,6 +2,7 @@ import {
   createImageGetter,
   getPrice,
   getProductHasStock,
+  getProductIsAvailable,
   getProductUrl,
   getProductVariantOptions,
   getProductVariants
@@ -33,7 +34,8 @@ export function getProduct(response?: QuickAddQueryResponse | null): QuickAddPro
     variants,
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroups.nodes.length > 0,
+    variantOptions: getProductVariantOptions(shopifyProduct.options, variants),
     hasStock: getProductHasStock(shopifyProduct),
-    variantOptions: getProductVariantOptions(shopifyProduct.options, variants)
+    isAvailable: getProductIsAvailable(shopifyProduct)
   };
 }

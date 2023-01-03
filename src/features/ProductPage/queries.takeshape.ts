@@ -52,6 +52,7 @@ export const ProductPageShopifyProductQuery = gql`
     product: productByHandleWithTtl(handle: $handle) {
       id
       handle
+      status
       title
       description
       descriptionHtml

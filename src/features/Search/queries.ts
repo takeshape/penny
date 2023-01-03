@@ -16,6 +16,7 @@ export const SearchShopifyProducts = gql`
         ... on Shopify_Product {
           id
           handle
+          status
           title
           description
           totalInventory

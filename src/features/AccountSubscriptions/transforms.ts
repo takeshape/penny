@@ -1,6 +1,12 @@
 import { getIsExpiringSoon } from 'components/Payments/utils';
 import { defaultProductImage } from 'config';
-import { createImageGetter, getProductHasStock, getProductUrl, getProductVariantOptions } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getProductHasStock,
+  getProductIsAvailable,
+  getProductUrl,
+  getProductVariantOptions
+} from 'transforms/shopify';
 import {
   GetMyPaymentMethodsQueryResponse,
   GetMySubscriptionListQueryResponse,
@@ -164,6 +170,7 @@ function getSubscriptionProduct(
     descriptionHtml: product.descriptionHtml,
     featuredImage: getImage(product.featuredImage),
     hasStock: getProductHasStock(product),
+    isAvailable: getProductIsAvailable(product),
     variants,
     variantOptions: getProductVariantOptions(product.options, variants)
   };

@@ -11,6 +11,7 @@ import {
   getCollectionUrl,
   getPrice,
   getProductHasStock,
+  getProductIsAvailable,
   getProductUrl,
   getProductVariantOptions,
   getProductVariants,
@@ -70,9 +71,10 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     seo: getSeo(shopifyProduct),
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: getProductHasStock(shopifyProduct),
     variantOptions: getProductVariantOptions(shopifyProduct.options, variants),
-    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape?.lineItemAttributes ?? null) ?? []
+    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape?.lineItemAttributes ?? null) ?? [],
+    hasStock: getProductHasStock(shopifyProduct),
+    isAvailable: getProductIsAvailable(shopifyProduct)
   };
 }
 
@@ -268,7 +270,8 @@ function getRelatedProduct(
     priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
     variantOptions: getProductVariantOptions(shopifyProduct.options),
     // This is a Storefront API product
-    hasStock: shopifyProduct.availableForSale
+    hasStock: shopifyProduct.availableForSale,
+    isAvailable: shopifyProduct.availableForSale
   };
 }
 

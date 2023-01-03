@@ -158,6 +158,7 @@ const ShopifyProductVariantFragment = gql`
     product {
       id
       handle
+      status
       title
       description
       descriptionHtml

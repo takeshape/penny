@@ -5,6 +5,7 @@ export const QuickAddQuery = gql`
     product: productByHandleWithTtl(handle: $handle) {
       id
       handle
+      status
       title
       description
       descriptionHtml
@@ -27,6 +28,7 @@ export const QuickAddQuery = gql`
         }
       }
       publishedAt
+      hasOnlyDefaultVariant
       publishedOnCurrentPublication
       tracksInventory
       totalInventory

@@ -59,6 +59,7 @@ type ShopifyAdminProduct = Pick<
   | 'tracksInventory'
   | 'totalInventory'
   | 'publishedOnCurrentPublication'
+  | 'status'
 > & {
   featuredImage?: ShopifyImage | null;
   sellingPlanGroups: {
@@ -280,10 +281,16 @@ export function getProductVariantOptions(
 }
 
 export function getProductHasStock(
-  product: Pick<ShopifyAdminProduct, 'tracksInventory' | 'totalInventory' | 'publishedOnCurrentPublication'>
+  product: Pick<ShopifyAdminProduct, 'tracksInventory' | 'totalInventory' | 'status' | 'publishedOnCurrentPublication'>
 ) {
-  const { publishedOnCurrentPublication, tracksInventory, totalInventory } = product;
-  return publishedOnCurrentPublication && (!tracksInventory || totalInventory > 0);
+  const isAvailable = getProductIsAvailable(product);
+  const { tracksInventory, totalInventory } = product;
+  return isAvailable && (!tracksInventory || totalInventory > 0);
+}
+
+export function getProductIsAvailable(product: Pick<ShopifyAdminProduct, 'status' | 'publishedOnCurrentPublication'>) {
+  const { status, publishedOnCurrentPublication } = product;
+  return status === 'ACTIVE' && publishedOnCurrentPublication;
 }
 
 export function getProductUrl(handle: string) {

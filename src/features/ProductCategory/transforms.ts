@@ -4,6 +4,7 @@ import {
   getCollectionUrl,
   getPrice,
   getProductHasStock,
+  getProductIsAvailable,
   getProductUrl,
   getSeo
 } from 'transforms/shopify';
@@ -46,6 +47,7 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
     hasStock: getProductHasStock(shopifyProduct),
+    isAvailable: getProductIsAvailable(shopifyProduct),
     variantOptions: []
   };
 }

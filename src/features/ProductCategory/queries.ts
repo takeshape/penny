@@ -42,6 +42,7 @@ const ProductCategoryFragments = gql`
   fragment ProductCategoryProduct on Shopify_Product {
     id
     handle
+    status
     title
     description
     descriptionHtml
