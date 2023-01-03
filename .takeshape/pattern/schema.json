@@ -833,9 +833,8 @@
       "authenticationType": "oauth2Bearer",
       "options": {
         "shop": "deluxe-sample-project",
-        "endpoint": "https://deluxe-sample-project.myshopify.com/admin/api/2022-07/graphql.json",
-        "shopifyPlus": false,
-        "legacyApp": true
+        "endpoint": "https://deluxe-sample-project.myshopify.com/admin/api/2022-10/graphql.json",
+        "shopifyPlus": true
       },
       "id": "shopify"
     },
@@ -847,7 +846,7 @@
       "serviceType": "graphql",
       "authenticationType": "bearer",
       "options": {
-        "endpoint": "https://deluxe-sample-project.myshopify.com/api/2022-07/graphql.json"
+        "endpoint": "https://deluxe-sample-project.myshopify.com/api/2022-10/graphql.json"
       }
     },
     "open-id": {

@@ -2,6 +2,7 @@ import {
   createImageGetter,
   getCollectionUrl,
   getPrice,
+  getProductHasStock,
   getProductUrl,
   getProductVariantOptions
 } from 'transforms/shopify';
@@ -30,7 +31,7 @@ function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): Store
     variantsCount: shopifyProduct.totalVariants,
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
+    hasStock: getProductHasStock(shopifyProduct),
     variantOptions: getProductVariantOptions(shopifyProduct.options)
   };
 }

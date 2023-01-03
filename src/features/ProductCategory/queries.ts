@@ -65,7 +65,9 @@ const ProductCategoryFragments = gql`
     }
     publishedAt
     totalVariants
+    tracksInventory
     totalInventory
+    publishedOnCurrentPublication
     sellingPlanGroupCount
     reviews {
       stats {

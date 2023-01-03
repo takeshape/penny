@@ -1,4 +1,4 @@
-import { createImageGetter, getProductUrl } from 'transforms/shopify';
+import { createImageGetter, getProductHasStock, getProductUrl } from 'transforms/shopify';
 import { SearchShopifyProductsResponse } from 'types/takeshape';
 import { isNotNullish } from 'utils/types';
 import { SearchItem, SearchItemProduct, SearchShopifyProduct } from './types';
@@ -13,7 +13,7 @@ function getProduct(shopifyProduct: SearchShopifyProduct): SearchItemProduct {
     name: shopifyProduct.title,
     description: shopifyProduct.description,
     featuredImage: getImage(shopifyProduct.featuredImage),
-    hasStock: shopifyProduct.totalInventory > 0
+    hasStock: getProductHasStock(shopifyProduct)
   };
 }
 

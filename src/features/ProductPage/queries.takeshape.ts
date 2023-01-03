@@ -32,7 +32,7 @@ const ReviewsIoFragment = gql`
 
 export const ProductPageShopifyProductHandlesQuery = gql`
   query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
-    products: productsWithTtl(first: $first, after: $after, sortKey: ID) {
+    products: productsWithTtl(first: $first, after: $after, sortKey: ID, query: "status:active") {
       pageInfo {
         hasNextPage
         endCursor
@@ -40,6 +40,7 @@ export const ProductPageShopifyProductHandlesQuery = gql`
       nodes {
         id
         handle
+        publishedOnCurrentPublication
       }
     }
   }
@@ -56,7 +57,9 @@ export const ProductPageShopifyProductQuery = gql`
       descriptionHtml
       tags
       requiresSellingPlan
+      publishedOnCurrentPublication
       totalInventory
+      tracksInventory
       trustpilotReviews(perPage: $trustpilotReviewsPerPage) {
         productReviews {
           id
@@ -197,6 +200,7 @@ export const ProductPageShopifyProductQuery = gql`
       variants(first: 50) {
         nodes {
           id
+          inventoryManagement
           availableForSale
           compareAtPrice
           image {

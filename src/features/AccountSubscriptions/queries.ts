@@ -161,7 +161,9 @@ const ShopifyProductVariantFragment = gql`
       title
       description
       descriptionHtml
+      tracksInventory
       totalInventory
+      publishedOnCurrentPublication
       featuredImage {
         id
         url(transform: { maxWidth: 800, maxHeight: 800, preferredContentType: WEBP })

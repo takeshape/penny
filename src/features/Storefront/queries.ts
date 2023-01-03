@@ -35,7 +35,9 @@ const StorefrontFragments = gql`
     }
     publishedAt
     totalVariants
+    tracksInventory
     totalInventory
+    publishedOnCurrentPublication
     sellingPlanGroupCount
     options {
       name

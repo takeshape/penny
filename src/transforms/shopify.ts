@@ -32,12 +32,12 @@ type ShopifyAdminProductVariant = Pick<
   Shopify_ProductVariant,
   | 'id'
   | 'title'
-  | 'availableForSale'
   | 'selectedOptions'
   | 'sku'
   | 'sellableOnlineQuantity'
   | 'inventoryPolicy'
   | 'price'
+  | 'inventoryManagement'
 > & {
   image?: ShopifyImage | null;
   description?: Pick<Storefront.Metafield, 'type' | 'value'> | null;
@@ -51,7 +51,13 @@ type ShopifyAdminSellingPlan = Pick<Shopify_SellingPlan, 'id' | 'options'> & {
 
 type ShopifyAdminProduct = Pick<
   Shopify_Product,
-  'requiresSellingPlan' | 'sellingPlanGroupCount' | 'title' | 'hasOnlyDefaultVariant'
+  | 'requiresSellingPlan'
+  | 'sellingPlanGroupCount'
+  | 'title'
+  | 'hasOnlyDefaultVariant'
+  | 'tracksInventory'
+  | 'totalInventory'
+  | 'publishedOnCurrentPublication'
 > & {
   featuredImage?: ShopifyImage | null;
   sellingPlanGroups: {
@@ -189,7 +195,7 @@ export function getProductVariantPriceOptions(
 function getVariant(shopifyProduct: ShopifyAdminProduct, shopifyVariant: ShopifyAdminProductVariant): ProductVariant {
   const getImage = createImageGetter(`Image of ${shopifyProduct.title}`);
   const { hasOnlyDefaultVariant } = shopifyProduct;
-  const { id, availableForSale, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy } = shopifyVariant;
+  const { id, sellableOnlineQuantity, selectedOptions, sku, inventoryPolicy, inventoryManagement } = shopifyVariant;
 
   const title = hasOnlyDefaultVariant ? shopifyProduct.title : shopifyVariant.title;
   const image = hasOnlyDefaultVariant ? shopifyProduct.featuredImage : shopifyVariant.image;
@@ -201,7 +207,8 @@ function getVariant(shopifyProduct: ShopifyAdminProduct, shopifyVariant: Shopify
     // TODO use a metafield
     description: title,
     prices: getProductVariantPriceOptions(shopifyProduct, shopifyVariant),
-    available: availableForSale && (sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE'),
+    // Should this variant show up for sale, multiple factors
+    available: sellableOnlineQuantity > 0 || inventoryPolicy === 'CONTINUE' || inventoryManagement === 'NOT_MANAGED',
     image: getImage(image),
     quantityAvailable: sellableOnlineQuantity,
     currentlyNotInStock: sellableOnlineQuantity === 0 && inventoryPolicy == 'CONTINUE',
@@ -269,6 +276,13 @@ export function getProductVariantOptions(
       };
     }) ?? []
   );
+}
+
+export function getProductHasStock(
+  product: Pick<ShopifyAdminProduct, 'tracksInventory' | 'totalInventory' | 'publishedOnCurrentPublication'>
+) {
+  const { publishedOnCurrentPublication, tracksInventory, totalInventory } = product;
+  return publishedOnCurrentPublication && (!tracksInventory || totalInventory > 0);
 }
 
 export function getProductUrl(handle: string) {
