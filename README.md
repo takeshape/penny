@@ -21,19 +21,19 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-n7deywdlc-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671731783761-87638.report.html) |
-| 🟢 Performance | 98 |
+| [Path: /](https://penny-inva4wb70-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1672763657152-12042.report.html) |
+| 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-n7deywdlc-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671731784464-15518.report.html) |
-| 🟢 Performance | 98 |
+| [Path: /products/basic-tee-6-pack](https://penny-inva4wb70-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1672763657893-8320.report.html) |
+| 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-n7deywdlc-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1671731784811-15484.report.html) |
+| [Path: /collections/men](https://penny-inva4wb70-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1672763658491-40068.report.html) |
 | 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
@@ -754,6 +754,14 @@ If you are using the included workflows you will get a great CI process that inc
 - Cypress E2E Testing on every PR
 - Storybook deploys and testing with Chromatic
 - Automated Lighthouse scores on every PR and on production deploys
+
+## Setting up continuous integration
+
+Add the following to your hosting platform's environment variables
+
+- TS_API_KEY (same as Github Actions secrets)
+- TS_AUTH_TOKEN (same as Github Actions secrets)
+- TS_PROJECT_ID (same as Github Actions secrets)
 
 ### IMPORTANT
 
