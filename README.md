@@ -755,6 +755,14 @@ If you are using the included workflows you will get a great CI process that inc
 - Storybook deploys and testing with Chromatic
 - Automated Lighthouse scores on every PR and on production deploys
 
+## Setting up continuous integration
+
+Add the following to your hosting platform's environment variables
+
+- TS_API_KEY (same as Github Actions secrets)
+- TS_AUTH_TOKEN (same as Github Actions secrets)
+- TS_PROJECT_ID (same as Github Actions secrets)
+
 ### IMPORTANT
 
 If you use the automated Lighthouse (Production) workflow, you must add the following to your Vercel
