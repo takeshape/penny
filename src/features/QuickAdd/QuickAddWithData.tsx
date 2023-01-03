@@ -1,9 +1,9 @@
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useEffect } from 'react';
-import { QuickAddQueryResponse, QuickAddQueryVariables } from 'types/storefront';
+import { QuickAddQueryResponse, QuickAddQueryVariables } from 'types/takeshape';
 import { useStorefrontLazyQuery } from 'utils/storefront';
-import { QuickAddQuery } from './queries.storefront';
+import { QuickAddQuery } from './queries';
 import { QuickAdd } from './QuickAdd';
 import { quickAddAtom } from './store';
 import { getProduct } from './transforms';

@@ -191,6 +191,9 @@ export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse =
         product: {
           id: 'gid://shopify/Product/6857243132004',
           handle: 'basic-tee-6-pack',
+          status: 'ACTIVE',
+          tracksInventory: true,
+          publishedOnCurrentPublication: true,
           title: 'An Exceptional Tee for Men',
           description:
             "This tee is the bee's knees. It is made of a proprietary blend of 12 herbs and spices. It will keep you warm when it's cold outside (down to -10º, guaranteed) and it will keep you cold when it's hot outside. It will pick you up when you're down and spin you all around. The Good Organic Synthetic Magical Colorful! Everything Else This shirt should not be washed, worn indoors, or slept-in. Significantly increases your change of developing hang nails. Tends to attract raccoons.",
@@ -804,6 +807,9 @@ export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse =
         product: {
           id: 'gid://shopify/Product/6827069505636',
           handle: 'mesh-gym-shorts',
+          status: 'ACTIVE',
+          tracksInventory: true,
+          publishedOnCurrentPublication: true,
           title: 'Mesh Gym Shorts',
           description:
             "Don't compromise on snack-carrying capacity with this lightweight and spacious bag. The drawstring top keeps all your favorite chips, crisps, fries, biscuits, crackers, and cookies secure.",
@@ -1161,6 +1167,9 @@ export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse =
         product: {
           id: 'gid://shopify/Product/6827069505636',
           handle: 'mesh-gym-shorts',
+          status: 'ACTIVE',
+          tracksInventory: true,
+          publishedOnCurrentPublication: true,
           title: 'Mesh Gym Shorts',
           description:
             "Don't compromise on snack-carrying capacity with this lightweight and spacious bag. The drawstring top keeps all your favorite chips, crisps, fries, biscuits, crackers, and cookies secure.",

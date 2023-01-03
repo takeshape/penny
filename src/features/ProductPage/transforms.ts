@@ -269,7 +269,7 @@ function getRelatedProduct(
     priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
     priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
     variantOptions: getProductVariantOptions(shopifyProduct.options),
-    // This is a Storefront API product
+    // This is a Storefront API product, limited options here
     hasStock: shopifyProduct.availableForSale,
     isAvailable: shopifyProduct.availableForSale
   };

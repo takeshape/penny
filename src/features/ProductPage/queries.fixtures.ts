@@ -34,7 +34,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '29.0'
         }
       },
-      totalInventory: 35,
+      availableForSale: true,
       publishedAt: '2022-04-21T19:45:16Z',
       options: [
         {
@@ -81,7 +81,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '29.99'
         }
       },
-      totalInventory: 39,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:29:56Z',
       options: [
         {
@@ -130,7 +130,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '140.0'
         }
       },
-      totalInventory: 64,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:29:54Z',
       options: [
         {
@@ -179,7 +179,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '100.0'
         }
       },
-      totalInventory: 104,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:29:54Z',
       options: [
         {
@@ -228,7 +228,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '40.0'
         }
       },
-      totalInventory: 32,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:29:57Z',
       options: [
         {
@@ -277,7 +277,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '299.95'
         }
       },
-      totalInventory: 89,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:29:59Z',
       options: [
         {
@@ -326,7 +326,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '119.95'
         }
       },
-      totalInventory: 34,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:29:59Z',
       options: [
         {
@@ -347,6 +347,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
       __typename: 'Product',
       id: 'gid://shopify/Product/6863399092324',
       handle: 'vans-old-skool-butterfly-true-white-black',
+      availableForSale: true,
       title: 'VANS | OLD SKOOL (BUTTERFLY) TRUE WHITE | BLACK',
       description:
         'Vans are a staple in skate culture and street style, and this skate sneaker is no exception. Introduced in 1977, the Vans Old Skool sneaker is a classic in the Vans collection. Full of attitude, the Old Skool is durable and lightweight, and can give the other boys in the collection a run for its money. Constructed from canvas, The Vans Old Skool features contrasting suede panels along the toe and heel, plus the iconic stripe along the side of the shoe, and sits over a chunky midsole.',
@@ -375,7 +376,6 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '129.95'
         }
       },
-      totalInventory: 50,
       publishedAt: '2022-06-29T16:30:00Z',
       options: [
         {
@@ -424,7 +424,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '129.95'
         }
       },
-      totalInventory: 77,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:30:00Z',
       options: [
         {
@@ -473,7 +473,7 @@ export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = 
           amount: '109.95'
         }
       },
-      totalInventory: 65,
+      availableForSale: true,
       publishedAt: '2022-06-29T16:30:00Z',
       options: [
         {
