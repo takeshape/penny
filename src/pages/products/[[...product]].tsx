@@ -1,5 +1,5 @@
 import PageLoader from 'components/PageLoader';
-import { pageRevalidationTtl, reviewsIoReviewsPerPage, trustpilotReviewsPerPage } from 'config';
+import { pageRevalidationTtl, reviewsPerPage } from 'config';
 import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
 import {
   ProductPageShopifyProductHandlesQuery,
@@ -62,7 +62,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
         reviewList={reviewList}
         details={details}
         policies={policies}
-        reviewsPerPage={reviewsIoReviewsPerPage}
+        reviewsPerPage={reviewsPerPage}
       />
     </Layout>
   );
@@ -84,8 +84,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     query: ProductPageShopifyProductQuery,
     variables: {
       handle,
-      reviewsPerPage: reviewsIoReviewsPerPage,
-      trustpilotReviewsPerPage: trustpilotReviewsPerPage
+      reviewsPerPage: reviewsPerPage
     }
   });
 

@@ -1,5 +1,5 @@
 import Wrapper from 'components/Wrapper/Content';
-import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWIthData';
+import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWithData';
 import { shopifyGidToId } from 'transforms/shopify';
 import { ReviewList } from 'types/review';
 import { Details } from './Details/Details';

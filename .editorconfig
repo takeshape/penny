@@ -7,7 +7,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[*.{js,jsx,mjs,ts,tsx,d.ts,json,css}]
+[*.{js,jsx,mjs,ts,tsx,d.ts,json,css,graphql}]
 indent_style = space
 indent_size = 2
 
