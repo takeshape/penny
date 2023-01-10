@@ -1,5 +1,13 @@
 import { getStats } from 'transforms/reviewsIo';
-import { createImageGetter, getCollectionUrl, getPrice, getProductUrl, getSeo } from 'transforms/shopify';
+import {
+  createImageGetter,
+  getCollectionUrl,
+  getPrice,
+  getProductHasStock,
+  getProductIsAvailable,
+  getProductUrl,
+  getSeo
+} from 'transforms/shopify';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionQueryResponse
@@ -38,7 +46,8 @@ function getProduct(shopifyProduct: ProductCategoryShopifyProduct): ProductCateg
     variantsCount: shopifyProduct.totalVariants,
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
+    hasStock: getProductHasStock(shopifyProduct),
+    isAvailable: getProductIsAvailable(shopifyProduct),
     variantOptions: []
   };
 }

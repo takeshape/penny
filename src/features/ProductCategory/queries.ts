@@ -42,6 +42,7 @@ const ProductCategoryFragments = gql`
   fragment ProductCategoryProduct on Shopify_Product {
     id
     handle
+    status
     title
     description
     descriptionHtml
@@ -65,7 +66,9 @@ const ProductCategoryFragments = gql`
     }
     publishedAt
     totalVariants
+    tracksInventory
     totalInventory
+    publishedOnCurrentPublication
     sellingPlanGroupCount
     reviews {
       stats {

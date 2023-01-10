@@ -154,6 +154,7 @@ export const productPageOptions: ProductPageOptions = {
 export const productPageProduct: ProductPageProduct = {
   id: 'gid://shopify/Product/6857243132004',
   handle: 'basic-tee-6-pack',
+  isAvailable: true,
   url: '/product/basic-tee-6-pack',
   name: 'Basic Tee 6-Pack',
   tags: ['Basic Tee', 'Men', 'T-Shirt Multipack'],
@@ -1666,6 +1667,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: true,
     hasSubscriptionPurchaseOption: false,
     hasStock: true,
+    isAvailable: true,
     variantOptions: [
       {
         name: 'Size',
@@ -1800,6 +1802,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: true,
     hasSubscriptionPurchaseOption: true,
     hasStock: true,
+    isAvailable: true,
     variantOptions: [
       {
         name: 'Size',
@@ -2095,6 +2098,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: false,
     hasSubscriptionPurchaseOption: true,
     hasStock: true,
+    isAvailable: true,
     variantOptions: [
       {
         name: 'Size',
@@ -2229,6 +2233,7 @@ export const productPageRelatedProducts: ProductPageRelatedProductsProduct[] = [
     hasOneTimePurchaseOption: true,
     hasSubscriptionPurchaseOption: false,
     hasStock: true,
+    isAvailable: true,
     variantOptions: [
       {
         name: 'Size',

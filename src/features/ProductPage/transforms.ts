@@ -10,6 +10,8 @@ import {
   createImageGetter,
   getCollectionUrl,
   getPrice,
+  getProductHasStock,
+  getProductIsAvailable,
   getProductUrl,
   getProductVariantOptions,
   getProductVariants,
@@ -69,9 +71,10 @@ export function getProduct(response: ProductPageShopifyProductResponse): Product
     seo: getSeo(shopifyProduct),
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
     variantOptions: getProductVariantOptions(shopifyProduct.options, variants),
-    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape?.lineItemAttributes ?? null) ?? []
+    lineItemAttributes: getProductLineItemAttributes(shopifyProduct.takeshape?.lineItemAttributes ?? null) ?? [],
+    hasStock: getProductHasStock(shopifyProduct),
+    isAvailable: getProductIsAvailable(shopifyProduct)
   };
 }
 
@@ -226,11 +229,19 @@ export function getProductPageParams(
     return null;
   }
 
-  return nodes.map((node) => ({
-    params: {
-      product: [node.handle]
-    }
-  }));
+  return nodes
+    .map((node) => {
+      if (!node.publishedOnCurrentPublication) {
+        return;
+      }
+
+      return {
+        params: {
+          product: [node.handle]
+        }
+      };
+    })
+    .filter(isNotNullish);
 }
 
 function getRelatedProduct(
@@ -250,7 +261,9 @@ function getRelatedProduct(
     priceMin: getPrice(shopifyProduct.priceRange.minVariantPrice as unknown as Shopify_MoneyV2),
     priceMax: getPrice(shopifyProduct.priceRange.maxVariantPrice as unknown as Shopify_MoneyV2),
     variantOptions: getProductVariantOptions(shopifyProduct.options),
-    hasStock: (shopifyProduct.totalInventory ?? 0) > 0
+    // This is a Storefront API product, limited options here
+    hasStock: shopifyProduct.availableForSale,
+    isAvailable: shopifyProduct.availableForSale
   };
 }
 

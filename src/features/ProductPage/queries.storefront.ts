@@ -25,7 +25,7 @@ export const ProductPageRelatedProductsQuery = gql`
           amount
         }
       }
-      totalInventory
+      availableForSale
       publishedAt
       options {
         name

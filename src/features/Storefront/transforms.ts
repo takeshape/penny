@@ -2,6 +2,8 @@ import {
   createImageGetter,
   getCollectionUrl,
   getPrice,
+  getProductHasStock,
+  getProductIsAvailable,
   getProductUrl,
   getProductVariantOptions
 } from 'transforms/shopify';
@@ -30,8 +32,9 @@ function getProduct(shopifyProduct: StorefrontCollectionComponentProduct): Store
     variantsCount: shopifyProduct.totalVariants,
     hasOneTimePurchaseOption: !shopifyProduct.requiresSellingPlan,
     hasSubscriptionPurchaseOption: shopifyProduct.sellingPlanGroupCount > 0,
-    hasStock: shopifyProduct.totalInventory > 0,
-    variantOptions: getProductVariantOptions(shopifyProduct.options)
+    variantOptions: getProductVariantOptions(shopifyProduct.options),
+    hasStock: getProductHasStock(shopifyProduct),
+    isAvailable: getProductIsAvailable(shopifyProduct)
   };
 }
 

@@ -3,6 +3,7 @@ import { QuickAddProduct } from './types';
 export const quickAddProduct: QuickAddProduct = {
   id: 'gid://shopify/Product/6857243132004',
   handle: 'basic-tee-6-pack',
+  isAvailable: true,
   url: '/products/basic-tee-6-pack',
   name: 'Basic Tee 6-Pack',
   description:

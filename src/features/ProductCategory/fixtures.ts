@@ -40,6 +40,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: true,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -77,6 +78,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: true,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -112,6 +114,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -149,6 +152,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -186,6 +190,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -223,6 +228,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -260,6 +266,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -297,6 +304,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -334,6 +342,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -371,6 +380,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -408,6 +418,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {
@@ -445,6 +456,7 @@ export const productCategoryCollection: ProductCategoryCollection = {
         hasOneTimePurchaseOption: true,
         hasSubscriptionPurchaseOption: false,
         hasStock: true,
+        isAvailable: true,
         variantOptions: []
       },
       reviews: {

@@ -93,6 +93,7 @@ export type ProductCore = {
   description: string;
   featuredImage: ProductImage;
   hasStock: boolean;
+  isAvailable: boolean;
 };
 
 export type ProductBase = ProductCore & {

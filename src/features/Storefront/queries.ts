@@ -12,6 +12,7 @@ const StorefrontFragments = gql`
   fragment StorefrontProduct on Shopify_Product {
     id
     handle
+    status
     title
     description
     descriptionHtml
@@ -35,7 +36,9 @@ const StorefrontFragments = gql`
     }
     publishedAt
     totalVariants
+    tracksInventory
     totalInventory
+    publishedOnCurrentPublication
     sellingPlanGroupCount
     options {
       name

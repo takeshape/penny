@@ -1,9 +1,9 @@
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useEffect } from 'react';
-import { QuickAddQueryResponse, QuickAddQueryVariables } from 'types/storefront';
-import { useStorefrontLazyQuery } from 'utils/storefront';
-import { QuickAddQuery } from './queries.storefront';
+import { QuickAddQueryResponse, QuickAddQueryVariables } from 'types/takeshape';
+import { useLazyQueryWithTransform } from 'utils/query';
+import { QuickAddQuery } from './queries';
 import { QuickAdd } from './QuickAdd';
 import { quickAddAtom } from './store';
 import { getProduct } from './transforms';
@@ -13,7 +13,7 @@ export const QuickAddWithData = () => {
   const quickAdd = useAtomValue(quickAddAtom);
   const resetQuickAdd = useResetAtom(quickAddAtom);
 
-  const [loadProduct, { transformedData, loading, error }] = useStorefrontLazyQuery<
+  const [loadProduct, { transformedData, loading, error }] = useLazyQueryWithTransform<
     QuickAddQueryResponse,
     QuickAddQueryVariables,
     QuickAddProduct

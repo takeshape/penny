@@ -96,7 +96,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const reviewList = getReviewsIoProductReviews(data) ?? getTrustpilotProductReviews(data);
 
   return {
-    notFound: !Boolean(product),
+    notFound: !Boolean(product) || !product?.isAvailable,
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes

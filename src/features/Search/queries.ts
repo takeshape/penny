@@ -16,9 +16,12 @@ export const SearchShopifyProducts = gql`
         ... on Shopify_Product {
           id
           handle
+          status
           title
           description
           totalInventory
+          tracksInventory
+          publishedOnCurrentPublication
           featuredImage {
             id
             url(transform: { maxWidth: 300, maxHeight: 300, preferredContentType: WEBP })
