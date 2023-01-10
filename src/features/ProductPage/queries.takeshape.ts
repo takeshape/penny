@@ -48,7 +48,7 @@ export const ProductPageShopifyProductHandlesQuery = gql`
 
 export const ProductPageShopifyProductQuery = gql`
   ${ReviewsIoFragment}
-  query ProductPageShopifyProduct($handle: String!, $reviewsPerPage: Int, $trustpilotReviewsPerPage: Int) {
+  query ProductPageShopifyProduct($handle: String!, $reviewsPerPage: Int) {
     product: productByHandleWithTtl(handle: $handle) {
       id
       handle
@@ -61,31 +61,6 @@ export const ProductPageShopifyProductQuery = gql`
       publishedOnCurrentPublication
       totalInventory
       tracksInventory
-      trustpilotReviews(perPage: $trustpilotReviewsPerPage) {
-        productReviews {
-          id
-          content
-          stars
-          createdAt
-          consumer {
-            displayName
-          }
-        }
-        links {
-          rel
-        }
-      }
-      trustpilotReviewsSummary {
-        starsAverage
-        numberOfReviews {
-          total
-          fiveStars
-          fourStars
-          threeStars
-          twoStars
-          oneStar
-        }
-      }
       takeshape {
         _id
         productComponent

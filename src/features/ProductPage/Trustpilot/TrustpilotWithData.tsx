@@ -1,4 +1,4 @@
-import { trustpilotReviewsPerPage } from 'config';
+import { reviewsPerPage } from 'config';
 import { TrustpilotProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ReviewList } from 'types/review';
@@ -32,7 +32,7 @@ export const TrustpilotWithData = ({ sku, reviewList }: TrustpilotProps) => {
         variables: {
           sku,
           page: currentPage,
-          perPage: trustpilotReviewsPerPage
+          perPage: reviewsPerPage
         }
       });
     }
