@@ -1,7 +1,7 @@
 import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
 import { AddToCartInput } from 'features/Cart/types';
 import { useSetAtom } from 'jotai';
-import { useCallback } from 'react';
+import { MouseEventHandler, useCallback } from 'react';
 
 export type AddToCartHookProps = AddToCartInput;
 
@@ -16,13 +16,18 @@ export function useAddToCart(
   const _addToCart = useSetAtom(addToCartAtom);
   const setIsCartOpen = useSetAtom(isCartOpenAtom);
 
-  const addToCart = useCallback(() => {
-    _addToCart(props);
+  const addToCart: MouseEventHandler<HTMLElement> = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    if (shouldOpenCart) {
-      setIsCartOpen(true);
-    }
-  }, [_addToCart, props, setIsCartOpen, shouldOpenCart]);
+      _addToCart(props);
+
+      if (shouldOpenCart) {
+        setIsCartOpen(true);
+      }
+    },
+    [_addToCart, props, setIsCartOpen, shouldOpenCart]
+  );
 
   return addToCart;
 }

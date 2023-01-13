@@ -126,7 +126,7 @@ export const ProductWithImage = ({
               <button
                 type="submit"
                 className="w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body-50 focus:ring-accent-500"
-                onClick={() => addToCart()}
+                onClick={addToCart}
               >
                 Add to cart
               </button>
