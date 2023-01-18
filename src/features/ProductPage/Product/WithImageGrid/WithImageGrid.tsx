@@ -3,20 +3,17 @@ import ProductColorSelect from 'components/Product/ProductColorSelect';
 import ProductPrice from 'components/Product/ProductPrice';
 import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
-import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
-import { useSetAtom } from 'jotai';
-import { PropsWithChildren, ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
-import { Product as TProduct } from 'types/product';
+import { PropsWithChildren } from 'react';
 import { ReviewHighlights } from 'types/review';
-import { useVariantOption } from 'utils/hooks/useVariantOption';
-import { getVariant } from 'utils/products';
-import { isNotNullish } from 'utils/types';
+import { useAddToCart } from 'utils/hooks/useAddToCart';
+import { useProduct } from 'utils/hooks/useProduct';
+import { ProductPageProduct } from '../../types';
 import { FeaturedReviews } from './FeaturedReviews';
 import { ImageGallery } from './ImageGallery';
 import { ReviewsCallout } from './ReviewsCallout';
 
 export interface ProductWithImageGridProps {
-  product: TProduct;
+  product: ProductPageProduct;
   reviewHighlights: ReviewHighlights | null;
   breadcrumbs: Breadcrumb[] | null;
   showFeaturedReviews: boolean;
@@ -32,74 +29,20 @@ export const ProductWithImageGrid = ({
   showBreadcrumbs,
   showReviewsLink
 }: PropsWithChildren<ProductWithImageGridProps>) => {
-  const { name, descriptionHtml, images, variantOptions, hasStock } = product;
+  const { name, descriptionHtml, images, hasStock } = product;
 
-  const initialVariant = useMemo(() => {
-    if (hasStock) {
-      return product.variants.find((variant) => variant.available);
-    }
-    return product.variants[0];
-  }, [hasStock, product.variants]);
+  const {
+    setSelectedColor,
+    selectedColor: { selectedValue: selectedColorValue, option: colors },
+    setSelectedSize,
+    selectedSize: { selectedValue: selectedSizeValue, option: sizes },
+    setSelectedPrice,
+    selectedPrice,
+    selectedVariant,
+    selections
+  } = useProduct({ product });
 
-  if (!initialVariant) {
-    throw new Error('Could not find initial variant');
-  }
-
-  const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
-    useVariantOption({
-      name: 'Color',
-      variant: initialVariant,
-      options: variantOptions
-    });
-
-  const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
-    useVariantOption({
-      name: 'Size',
-      variant: initialVariant,
-      options: variantOptions
-    });
-
-  const selections = useMemo(() => [selectedColor, selectedSize].filter(isNotNullish), [selectedColor, selectedSize]);
-
-  const selectedVariant = useMemo(() => {
-    if (selections.length) {
-      return getVariant(product.variants, selections);
-    }
-    return product.variants[0];
-  }, [product, selections]);
-
-  if (!selectedVariant) {
-    throw new Error('No selected variant found');
-  }
-
-  const [selectedPrice, setSelectedPrice] = useState(selectedVariant.prices[0]);
-
-  useEffect(() => {
-    const price =
-      selectedVariant.prices.find((price) => price.intervalId === selectedPrice.intervalId) ??
-      selectedVariant.prices[0];
-    setSelectedPrice(price);
-  }, [selectedPrice.intervalId, selectedVariant]);
-
-  const addToCart = useSetAtom(addToCartAtom);
-  const setIsCartOpen = useSetAtom(isCartOpenAtom);
-
-  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      addToCart({
-        product,
-        variant: selectedVariant,
-        price: selectedPrice,
-        // Provided by user input, e.g., a monogram component allowing the user to enter text
-        attributes: []
-      });
-
-      setIsCartOpen(true);
-    },
-    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen]
-  );
+  const addToCart = useAddToCart({ product, variant: selectedVariant, price: selectedPrice });
 
   return (
     <div className="pt-10 pb-18 sm:pt-16 sm:pb-24">
@@ -170,7 +113,7 @@ export const ProductWithImageGrid = ({
 
             <button
               disabled={!selectedVariant.available}
-              onClick={handleAddToCart}
+              onClick={addToCart}
               className="mt-10 w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               Add to cart

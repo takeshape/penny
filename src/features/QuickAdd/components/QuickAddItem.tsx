@@ -4,12 +4,8 @@ import ProductColorSelect from 'components/Product/ProductColorSelect';
 import ProductPrice from 'components/Product/ProductPrice';
 import ProductPriceSelect from 'components/Product/ProductPriceSelect';
 import ProductSizeSelect from 'components/Product/ProductSizeSelect';
-import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
-import { useSetAtom } from 'jotai';
-import { ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
-import { useVariantOption } from 'utils/hooks/useVariantOption';
-import { getVariant } from 'utils/products';
-import { isNotNullish } from 'utils/types';
+import { useAddToCart } from 'utils/hooks/useAddToCart';
+import { useProduct } from 'utils/hooks/useProduct';
 import { QuickAddProduct } from '../types';
 
 export interface QuickAddItemProps {
@@ -18,71 +14,20 @@ export interface QuickAddItemProps {
 }
 
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
-  let { variantOptions, hasStock } = product;
+  let { hasStock } = product;
 
-  const initialVariant = useMemo(() => {
-    if (hasStock) {
-      return product.variants.find((variant) => variant.available);
-    }
-    return product.variants[0];
-  }, [hasStock, product.variants]);
+  const {
+    setSelectedColor,
+    selectedColor: { selectedValue: selectedColorValue, option: colors },
+    setSelectedSize,
+    selectedSize: { selectedValue: selectedSizeValue, option: sizes },
+    setSelectedPrice,
+    selectedPrice,
+    selectedVariant,
+    selections
+  } = useProduct({ product });
 
-  if (!initialVariant) {
-    throw new Error('Could not find initial variant');
-  }
-
-  const [setSelectedColor, { selectedValue: selectedColorValue, selected: selectedColor, option: colors }] =
-    useVariantOption({
-      name: 'Color',
-      variant: initialVariant,
-      options: variantOptions
-    });
-
-  const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
-    useVariantOption({
-      name: 'Size',
-      variant: initialVariant,
-      options: variantOptions
-    });
-
-  const selections = useMemo(() => [selectedColor, selectedSize].filter(isNotNullish), [selectedColor, selectedSize]);
-
-  const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
-
-  const selectedVariant = useMemo(() => {
-    if (selections.length) {
-      return getVariant(product.variants, selections);
-    }
-    return product.variants[0];
-  }, [product, selections]);
-
-  if (!selectedVariant) {
-    throw new Error('No selected variant found');
-  }
-
-  const addToCart = useSetAtom(addToCartAtom);
-  const setIsCartOpen = useSetAtom(isCartOpenAtom);
-
-  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-      addToCart({
-        product,
-        variant: selectedVariant,
-        price: selectedPrice
-      });
-      setIsCartOpen(true);
-      onClose();
-    },
-    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen, onClose]
-  );
-
-  useEffect(() => {
-    const price =
-      selectedVariant.prices.find((price) => price.intervalId === selectedPrice.intervalId) ??
-      selectedVariant.prices[0];
-    setSelectedPrice(price);
-  }, [selectedPrice.intervalId, selectedVariant]);
+  const addToCart = useAddToCart({ product, variant: selectedVariant, price: selectedPrice });
 
   return (
     <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
@@ -156,7 +101,7 @@ export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
             )}
 
             <button
-              onClick={handleAddToCart}
+              onClick={addToCart}
               disabled={!hasStock}
               type="submit"
               className="mt-6 w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 disabled:bg-gray-300 disabled:cursor-not-allowed"

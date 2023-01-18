@@ -4,17 +4,13 @@ import NextImage from 'components/NextImage';
 import ProductPrice from 'components/Product/ProductPrice';
 import ProductSizeSelectWithDescription from 'components/Product/ProductSizeSelectWithDescription';
 import Stars from 'components/Stars/Stars';
-import { addToCartAtom, isCartOpenAtom } from 'features/Cart/store';
-import { useSetAtom } from 'jotai';
-import { ReactEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
-import { Product as ProductType } from 'types/product';
 import { ReviewHighlights } from 'types/review';
-import { useVariantOption } from 'utils/hooks/useVariantOption';
-import { getVariant } from 'utils/products';
-import { isNotNullish } from 'utils/types';
+import { useAddToCart } from 'utils/hooks/useAddToCart';
+import { useProduct } from 'utils/hooks/useProduct';
+import { ProductPageProduct } from '../../types';
 
 export interface ProductWithImageProps {
-  product: ProductType;
+  product: ProductPageProduct;
   reviewHighlights: ReviewHighlights | null;
   breadcrumbs: Breadcrumb[] | null;
   showReviewsLink: boolean;
@@ -26,65 +22,17 @@ export const ProductWithImage = ({
   breadcrumbs,
   showReviewsLink
 }: ProductWithImageProps) => {
-  const { name, descriptionHtml, featuredImage, variantOptions, hasStock } = product;
+  const { name, descriptionHtml, featuredImage } = product;
 
-  const initialVariant = useMemo(() => {
-    if (hasStock) {
-      return product.variants.find((variant) => variant.available);
-    }
-    return product.variants[0];
-  }, [hasStock, product.variants]);
+  const {
+    setSelectedSize,
+    selectedSize: { selectedValue: selectedSizeValue, option: sizes },
+    selectedPrice,
+    selectedVariant,
+    selections
+  } = useProduct({ product });
 
-  if (!initialVariant) {
-    throw new Error('Could not find initial variant');
-  }
-
-  const [setSelectedSize, { selectedValue: selectedSizeValue, selected: selectedSize, option: sizes }] =
-    useVariantOption({
-      name: 'Size',
-      variant: initialVariant,
-      options: variantOptions
-    });
-
-  const selections = useMemo(() => [selectedSize].filter(isNotNullish), [selectedSize]);
-
-  const selectedVariant = useMemo(() => {
-    if (selections.length) {
-      return getVariant(product.variants, selections);
-    }
-    return product.variants[0];
-  }, [product, selections]);
-
-  const [selectedPrice, setSelectedPrice] = useState(initialVariant.prices[0]);
-
-  const addToCart = useSetAtom(addToCartAtom);
-  const setIsCartOpen = useSetAtom(isCartOpenAtom);
-
-  if (!selectedVariant) {
-    throw new Error('No selected variant found');
-  }
-
-  const handleAddToCart: ReactEventHandler<HTMLElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-
-      addToCart({
-        product,
-        variant: selectedVariant,
-        price: selectedPrice
-      });
-
-      setIsCartOpen(true);
-    },
-    [addToCart, product, selectedVariant, selectedPrice, setIsCartOpen]
-  );
-
-  useEffect(() => {
-    const price =
-      selectedVariant.prices.find((price) => price.intervalId === selectedPrice.intervalId) ??
-      selectedVariant.prices[0];
-    setSelectedPrice(price);
-  }, [selectedPrice.intervalId, selectedVariant]);
+  const addToCart = useAddToCart({ product, variant: selectedVariant, price: selectedPrice });
 
   return (
     <div className="max-w-2xl mx-auto pt-16 pb-24 px-4 sm:pt-24 sm:pb-32 sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-2 lg:gap-x-8">
@@ -178,7 +126,7 @@ export const ProductWithImage = ({
               <button
                 type="submit"
                 className="w-full bg-accent-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-inverted hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-body-50 focus:ring-accent-500"
-                onClick={handleAddToCart}
+                onClick={addToCart}
               >
                 Add to cart
               </button>
