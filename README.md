@@ -530,8 +530,8 @@ Klaviyo to any TakeShape project, [check out our docs](https://app.takeshape.io/
 
 ## reCAPTCHA
 
-Here we describe how to use reCAPTCHA and TakeShape to protect specific queries from abuse. Penny is set up to use
-reCAPTCHA v2 and the Invisible reCAPTCHA badge option.
+Here we describe how to use reCAPTCHA and TakeShape to protect specific queries from abuse. Penny is configured to
+prevent abuse of the contact form, the newsletter signup form, and the account registration form.
 
 > Don't want to use reCAPTCHA? reCAPTCHA can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from
 > the env and removing any conditional resolver resolution from the schema that depends on reCAPTCHA, e.g.
@@ -545,16 +545,14 @@ reCAPTCHA v2 and the Invisible reCAPTCHA badge option.
 1. First, get your **Site Secret** from reCAPTCHA. If you need to create an account,
    [visit Google's ReCAPTCHA site registration page](https://www.google.com/recaptcha/admin/create).
 
-- [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and select your site. Select the
-  **Settings** gear icon at the top-right of the page ⚙.
+- [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and create your site (or select it, if you
+  already have one). It's important that you select `reCAPTCHA v2` and the `Invisible reCAPTCHA badge` option for Penny
+  to work as intended. Whitelist any domains you know you'll need at this time. Don't worry, this can be changed later.
 
-![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/select-site-recaptcha.png)
+![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/create-site-recaptcha.png)
 
 - On the **Settings** page, select the **reCAPTCHA keys** dropdown to reveal your **Site Key** and **Secret Key**. Copy
   them somewhere secure, or leave this tab open. You'll need them to connect reCAPTCHA to your TakeShape project.
-
-- Take note of the **Domains** field, and add any domains you know you'll need reCAPTCHA on at this time. You'll
-  probably need to return here from time-to-time as your project evolves.
 
 ![A screenshot of the Settings page in reCAPTCHA, where you can copy your site key for TakeShape.](/readme-images/reCAPTCHA/site-key-secret-key-recaptcha.png)
 
