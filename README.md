@@ -155,15 +155,17 @@ In the next section, you'll find a screenshot of the finished store's homepage.
 ![A screenshot of the store's homepage.](/readme-images/store/homepage-in-browser.png)
 
 # Getting Started
+
 To get started with TakeShape you need to perform these steps:
-1. [Create a new Github repository for your Project](#create-a-new-github-repository-for-your-project) and configure `.env`
+
+1. [Create a new Github repository for your Project](#create-a-new-github-repository-for-your-project) and configure
+   `.env`
 2. [Deploy Penny to a new TakeShape Project](#deploy-penny-to-a-new-takeshape-project)
 3. [Configure Shopify Admin and Shopify Storefront services](#shopify-admin-and-shopify-storefront)
 4. Run `npm run dev` to try out Penny with only Shopify enabled
 5. Configure additional services and customize your Penny project!
 
-
-### Create a new Github repository for your Project 
+### Create a new Github repository for your Project
 
 1. Create a new repository using this repository as a template:
 
@@ -233,7 +235,6 @@ To get started with TakeShape you need to perform these steps:
 
 4. Commit changes to `.env`
 
-
 ### NextAuth and OpenID
 
 This project uses NextAuth in combination with the `@takeshape/next-auth-all-access` package for user authentication. It
@@ -257,7 +258,7 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 
 4. Select the **Save** button at the top-right of the OpenID service page.
 
-5.  Update your `.env` file in your Next.js project's directory with the following variables:
+5. Update your `.env` file in your Next.js project's directory with the following variables:
 
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
@@ -529,35 +530,34 @@ Klaviyo to any TakeShape project, [check out our docs](https://app.takeshape.io/
 
 ## reCAPTCHA
 
-The following section describes how to connect reCAPTCHA to your Penny pattern in TakeShape using a generic REST
-provider. To learn how to connect ReCAPTCHA to any TakeShape project,
-[check out our docs on using a generic REST service](https://app.takeshape.io/docs/services/providers/rest).
+Here we describe how to use reCAPTCHA and TakeShape to protect specific queries from abuse. Penny is configured to
+prevent abuse of the contact form, the newsletter signup form, and the account registration form.
 
-> Don't want to use captcha? Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the
-> env. The Takeshape API will still require Captcha unless the Captcha compose step and
-> `"if": "$resolvers.recaptcha.success == true"` is removed from the relevant mutations in the project schema.
+> Don't want to use reCAPTCHA? reCAPTCHA can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from
+> the env and removing any conditional resolver resolution from the schema that depends on reCAPTCHA, e.g.
+> `"if": "$resolvers.recaptcha.success == true"`.
 > [Check out our docs on editing a TakeShape project schema](https://app.takeshape.io/docs/schema/editing).
 
 > Because reCAPTCHA is tied to a specific host in the Google settings you will either need to use a custom domain and
 > allow a wildcard subdomain for your preview builds, e.g., `*.mysite.com` allows `preview-acbiou43891239.mysite.com` or
-> use an environment that disables recaptcha for your preview builds and remove the step above from your TakeShape
-> project schema.
+> configure your project to disable reCAPTCHA for builds on domains you do not want to whitelist.
 
 1. First, get your **Site Secret** from reCAPTCHA. If you need to create an account,
-   [you can visit Google's ReCAPTCHA site registration page here](https://www.google.com/recaptcha/admin/create).
+   [visit Google's ReCAPTCHA site registration page](https://www.google.com/recaptcha/admin/create).
 
-- [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and select your site. Select the
-  **Settings** gear icon at the top-right of the page ⚙.
+- [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and create your site (or select it, if you
+  already have one). It's important that you select `reCAPTCHA v2` and the `Invisible reCAPTCHA badge` option for Penny
+  to work as intended. Whitelist any domains you know you'll need at this time. Don't worry, this can be changed later.
 
-![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/select-site-recaptcha.png)
+![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/create-site-recaptcha.png)
 
 - On the **Settings** page, select the **reCAPTCHA keys** dropdown to reveal your **Site Key** and **Secret Key**. Copy
   them somewhere secure, or leave this tab open. You'll need them to connect reCAPTCHA to your TakeShape project.
 
 ![A screenshot of the Settings page in reCAPTCHA, where you can copy your site key for TakeShape.](/readme-images/reCAPTCHA/site-key-secret-key-recaptcha.png)
 
-2. Create a `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` environment variable in your hosting provider or in your `.env`, and set
-   the value to your **Site Key** from the reCAPTCHA settings.
+2. Create a `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` environment variable in your hosting provider or in your `.env` file, and
+   set the value to your **Site Key** from the reCAPTCHA settings.
 
 3. Navigate to your TakeShape project's dashboard, select the **Home** tab and select **ReCAPTCHA** from the list of
    services. You'll be taken to the **ReCAPTCHA** service page.
