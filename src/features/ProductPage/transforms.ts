@@ -17,15 +17,13 @@ import {
   getProductVariants,
   getSeo
 } from 'transforms/shopify';
-import { getReviewList as getTrustpilotReviewList } from 'transforms/trustpilot';
 import { ReviewList } from 'types/review';
 import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
 import {
   ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
-  Shopify_MoneyV2,
-  TrustpilotProductPageReviewPageQueryResponse
+  Shopify_MoneyV2
 } from 'types/takeshape';
 import { DeepRequired } from 'types/util';
 import { isNotNullish } from 'utils/types';
