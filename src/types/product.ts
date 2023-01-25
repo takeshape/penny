@@ -36,7 +36,7 @@ export type ProductPriceOption = {
   currencyCode: ProductPriceCurrencyCode;
 };
 
-export type ProductPriceCurrencyCode = (typeof currencyList)[number];
+export type ProductPriceCurrencyCode = typeof currencyList[number];
 
 export type ProductPrice = {
   // in cents
