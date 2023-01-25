@@ -1,7 +1,6 @@
 import { Switch } from '@headlessui/react';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
-import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
 import FormTextarea from 'components/Form/Textarea/Textarea';
@@ -9,10 +8,10 @@ import NextLink from 'components/NextLink';
 import { BackgroundDots } from 'features/Contact/components/BackgroundDots';
 import { useCreateTicket } from 'features/Contact/useCreateTicket';
 import { useSession } from 'next-auth/react';
-import React, { FormEventHandler, useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import React, { useCallback, useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import classNames from 'utils/classNames';
-import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 
 export interface ContactForm {
   company?: string;
@@ -35,15 +34,15 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
   const { text } = props;
   const [agreed, setAgreed] = useState(false);
   const { handleSubmit, control, formState, reset } = useForm<ContactForm>({ mode: 'onBlur' });
-  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
+  const { executeRecaptcha } = useReCaptcha();
 
   const [success, setSuccess] = useState<string>();
   const [createTicket, { error }] = useCreateTicket();
   const { data: session } = useSession();
 
-  const onSubmit = useCallback(
-    async (formValues: ContactForm, recaptchaToken: string) => {
-      const { firstName, lastName, company, email, phoneNumber, message } = formValues;
+  const onSubmit: SubmitHandler<ContactForm> = useCallback(
+    async ({ firstName, lastName, company, email, phoneNumber, message }) => {
+      const recaptchaToken = await executeRecaptcha('contact');
 
       const result = await createTicket({
         variables: {
@@ -61,19 +60,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
         setSuccess(`Thank you for reaching out! Created ticket #${id}.`);
       }
     },
-    [createTicket]
-  );
-
-  const handleFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-      executeRecaptcha((recaptchaToken) => {
-        handleSubmit(async (contactForm: ContactForm) => {
-          await onSubmit(contactForm, recaptchaToken);
-        })();
-      });
-    },
-    [executeRecaptcha, handleSubmit, onSubmit]
+    [createTicket, executeRecaptcha]
   );
 
   // Set initial values
@@ -102,7 +89,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             action="#"
             method="POST"
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
-            onSubmit={handleFormSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <FormInput
               control={control}
@@ -209,7 +196,6 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
                 </div>
               </div>
             </div>
-            <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
             <div className="sm:col-span-2">
               {!success && !error && (
                 <Button

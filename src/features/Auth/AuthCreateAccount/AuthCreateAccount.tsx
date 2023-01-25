@@ -1,15 +1,14 @@
 import { ApolloError, useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
-import Captcha from 'components/Captcha';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { signIn } from 'next-auth/react';
-import { FormEventHandler, useCallback, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { useCallback, useEffect, useRef } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { CreateCustomerMutationResponse, CreateCustomerMutationVariables } from 'types/takeshape';
-import { useRecaptcha } from 'utils/hooks/useRecaptcha';
 import { CreateCustomerMutation } from '../queries';
 
 export interface AuthCreateAccountForm {
@@ -56,22 +55,16 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
     }
   }, [customerResponse, signIn, callbackUrl]);
 
-  const { executeRecaptcha, recaptchaRef, handleRecaptchaChange } = useRecaptcha();
+  const { executeRecaptcha } = useReCaptcha();
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    (e) => {
-      e.preventDefault();
-      executeRecaptcha((recaptchaToken) => {
-        handleSubmit(async ({ email, password }: AuthCreateAccountForm) => {
-          await setCustomerPayload({
-            variables: { input: { email, password, recaptchaToken } }
-          });
-        })().catch(() => {
-          // Swallow errors and handle them through Apollo
-        });
+  const onSubmit: SubmitHandler<AuthCreateAccountForm> = useCallback(
+    async ({ email, password }) => {
+      const recaptchaToken = await executeRecaptcha('create_account');
+      await setCustomerPayload({
+        variables: { input: { email, password, recaptchaToken } }
       });
     },
-    [executeRecaptcha, handleSubmit, setCustomerPayload]
+    [executeRecaptcha, setCustomerPayload]
   );
 
   const errorMessage = getErrorMessage(customerError);
@@ -89,7 +82,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={onSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {errorMessage && (
               <Alert
                 status="error"
@@ -146,11 +139,9 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               type="password"
               rules={{
                 required: 'This field is required',
-                validate: (value) => value === watched.current.password || 'The passwords do not match'
+                validate: (value: any) => value === watched.current.password || 'The passwords do not match'
               }}
             />
-
-            <Captcha recaptchaRef={recaptchaRef} handleRecaptchaChange={handleRecaptchaChange} />
 
             <Button
               disabled={formState.isSubmitting || (formState.isSubmitSuccessful && !customerError)}
