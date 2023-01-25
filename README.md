@@ -546,8 +546,8 @@ prevent abuse of the contact form, the newsletter signup form, and the account r
    [visit Google's ReCAPTCHA site registration page](https://www.google.com/recaptcha/admin/create).
 
 - [Log into Google's reCAPTCHA admin](https://www.google.com/recaptcha/admin) and create your site (or select it, if you
-  already have one). It's important that you select `reCAPTCHA v2` and the `Invisible reCAPTCHA badge` option for Penny
-  to work as intended. Whitelist any domains you know you'll need at this time. Don't worry, this can be changed later.
+  already have one). It's important that you select `reCAPTCHA v3` for Penny to work as intended. Whitelist any domains
+  you know you'll need at this time. Don't worry, this can be changed later.
 
 ![A screenshot of the reCAPTCHA admin page, where you can select your site.](/readme-images/reCAPTCHA/create-site-recaptcha.png)
 
