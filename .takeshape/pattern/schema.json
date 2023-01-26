@@ -3087,6 +3087,18 @@
                   "mapping": "$args.recaptchaToken"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "success",
+                  "mapping": "$currentResolver.success"
+                },
+                {
+                  "path": "userErrors[0].message",
+                  "mapping": "$currentResolver.error-codes[0]"
+                }
+              ]
             }
           },
           {
@@ -3130,17 +3142,17 @@
                   "value": "application/json"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "items",
+                  "mapping": "$currentResolver"
+                }
+              ]
             }
           }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "items",
-              "mapping": "$finalResolver"
-            }
-          ]
-        }
+        ]
       },
       "shape": "Klaviyo_AddMembersResponse"
     },
@@ -3552,7 +3564,7 @@
                   "mapping": "$currentResolver.success"
                 },
                 {
-                  "path": "userErrors[0].message",
+                  "path": "customerUserErrors[0].message",
                   "mapping": "$currentResolver.error-codes[0]"
                 }
               ]
@@ -3841,6 +3853,14 @@
                   "mapping": "$args.message"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.request"
+                }
+              ]
             }
           }
         ],
@@ -3848,7 +3868,7 @@
           "ops": [
             {
               "path": "$",
-              "mapping": "$finalResolver.request"
+              "mapping": "$finalResolver"
             }
           ]
         }
@@ -7413,6 +7433,12 @@
               "verified_email": {
                 "type": "boolean"
               }
+            }
+          },
+          "userErrors": {
+            "type": "array",
+            "items": {
+              "@ref": "local:UserError"
             }
           }
         }
