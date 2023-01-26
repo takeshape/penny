@@ -965,7 +965,12 @@
       }
     },
     "Recharge_getMySubscriptions": {
-      "shape": {"type": "array", "items": {"@ref": "recharge:Subscription"}},
+      "shape": {
+        "type": "array",
+        "items": {
+          "@ref": "recharge:Subscription"
+        }
+      },
       "resolver": {
         "compose": [
           {
@@ -996,7 +1001,9 @@
             "name": "rest:get",
             "service": "recharge",
             "path": "/subscriptions",
-            "options": {"ignoreErrors": true},
+            "options": {
+              "ignoreErrors": true
+            },
             "searchParams": {
               "ops": [
                 {
@@ -3069,6 +3076,7 @@
         "compose": [
           {
             "id": "recaptcha",
+            "if": "isEmpty($claims.email)",
             "name": "rest:post",
             "service": "recaptcha",
             "path": "/siteverify",
@@ -3083,6 +3091,7 @@
           },
           {
             "id": "klaviyoAddMembers",
+            "if": "$resolvers.recaptcha.success == true || !isEmpty($claims.email)",
             "name": "rest:post",
             "service": "klaviyo",
             "path": {
@@ -3444,6 +3453,7 @@
           },
           {
             "id": "shopifyCreateCustomer",
+            "if": "$resolvers.recaptcha.success == true",
             "name": "rest:post",
             "service": "shopify",
             "path": "/admin/api/2022-04/customers.json",
@@ -3526,6 +3536,7 @@
           },
           {
             "id": "shopifyCustomerRecover",
+            "if": "$resolvers.recaptcha.success == true",
             "name": "graphql:mutation",
             "service": "shopify-storefront",
             "fieldName": "customerRecover"
@@ -3668,175 +3679,6 @@
       },
       "shape": "ShopifyStorefront_CustomerAddressUpdatePayload"
     },
-    "createTicket": {
-      "description": "DEPRECATED",
-      "resolver": {
-        "compose": [
-          {
-            "id": "recaptcha",
-            "name": "rest:post",
-            "service": "recaptcha",
-            "path": "/siteverify",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "response",
-                  "mapping": "$args.recaptchaToken"
-                }
-              ]
-            }
-          },
-          {
-            "id": "createTicket",
-            "if": "$resolvers.recaptcha.success == true",
-            "name": "rest:post",
-            "service": "gorgias",
-            "path": "/tickets",
-            "json": {
-              "ops": [
-                {
-                  "path": "customer.email",
-                  "mapping": "$args.email"
-                },
-                {
-                  "path": "messages",
-                  "value": [
-                    {
-                      "channel": "email",
-                      "from_agent": false,
-                      "source": {
-                        "to": [
-                          {
-                            "address": "qw72eg20ez05v4dy@emails.gorgias.com"
-                          }
-                        ]
-                      },
-                      "via": "api"
-                    }
-                  ]
-                },
-                {
-                  "path": "messages[0].body_text",
-                  "mapping": "$args.message"
-                },
-                {
-                  "path": "messages[0].source.from.address",
-                  "mapping": "$args.email"
-                },
-                {
-                  "path": "messages[0].source.from.name",
-                  "mapping": "$args.name"
-                }
-              ]
-            }
-          }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$finalResolver"
-            }
-          ]
-        }
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "recaptchaToken": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "email",
-          "message",
-          "recaptchaToken"
-        ]
-      },
-      "shape": "CreateTicketResponse"
-    },
-    "createZendeskTicket": {
-      "description": "DEPRECATED",
-      "resolver": {
-        "compose": [
-          {
-            "id": "recaptcha",
-            "name": "rest:post",
-            "service": "recaptcha",
-            "path": "/siteverify",
-            "searchParams": {
-              "ops": [
-                {
-                  "path": "response",
-                  "mapping": "$args.recaptchaToken"
-                }
-              ]
-            }
-          },
-          {
-            "id": "createTicket",
-            "if": "$resolvers.recaptcha.success == true",
-            "name": "rest:post",
-            "service": "zendesk",
-            "path": "/api/v2/requests",
-            "json": {
-              "ops": [
-                {
-                  "path": "request.requester.name",
-                  "mapping": "$args.name"
-                },
-                {
-                  "path": "request.requester.email",
-                  "mapping": "$args.email"
-                },
-                {
-                  "path": "request.comment.body",
-                  "mapping": "$args.message"
-                }
-              ]
-            }
-          }
-        ],
-        "results": {
-          "ops": [
-            {
-              "path": "$",
-              "mapping": "$finalResolver.request"
-            }
-          ]
-        }
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "recaptchaToken": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "email",
-          "message",
-          "recaptchaToken"
-        ]
-      },
-      "shape": "CreateTicketResponse"
-    },
     "Gorgias_createTicket": {
       "resolver": {
         "compose": [
@@ -3915,6 +3757,21 @@
     "Zendesk_createTicket": {
       "resolver": {
         "compose": [
+          {
+            "id": "recaptcha",
+            "if": "isEmpty($claims.email)",
+            "name": "rest:post",
+            "service": "recaptcha",
+            "path": "/siteverify",
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "response",
+                  "mapping": "$args.recaptchaToken"
+                }
+              ]
+            }
+          },
           {
             "id": "createTicket",
             "if": "$resolvers.recaptcha.success == true || !isEmpty($claims.email)",
