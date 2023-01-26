@@ -3449,6 +3449,18 @@
                   "mapping": "$args.input.recaptchaToken"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "success",
+                  "mapping": "$currentResolver.success"
+                },
+                {
+                  "path": "userErrors[0].message",
+                  "mapping": "$currentResolver.error-codes[0]"
+                }
+              ]
             }
           },
           {
@@ -3530,6 +3542,18 @@
                 {
                   "path": "response",
                   "mapping": "$args.recaptchaToken"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "success",
+                  "mapping": "$currentResolver.success"
+                },
+                {
+                  "path": "userErrors[0].message",
+                  "mapping": "$currentResolver.error-codes[0]"
                 }
               ]
             }
@@ -3695,6 +3719,18 @@
                   "mapping": "$args.recaptchaToken"
                 }
               ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "success",
+                  "mapping": "$currentResolver.success"
+                },
+                {
+                  "path": "userErrors[0].message",
+                  "mapping": "$currentResolver.error-codes[0]"
+                }
+              ]
             }
           },
           {
@@ -3768,6 +3804,18 @@
                 {
                   "path": "response",
                   "mapping": "$args.recaptchaToken"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "success",
+                  "mapping": "$currentResolver.success"
+                },
+                {
+                  "path": "userErrors[0].message",
+                  "mapping": "$currentResolver.error-codes[0]"
                 }
               ]
             }
@@ -7305,6 +7353,19 @@
         ]
       }
     },
+    "UserError": {
+      "id": "UserError",
+      "name": "UserError",
+      "title": "UserError",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "CreateTicketResponse": {
       "id": "CreateTicketResponse",
       "name": "CreateTicketResponse",
@@ -7314,11 +7375,14 @@
         "properties": {
           "id": {
             "type": "integer"
+          },
+          "userErrors": {
+            "type": "array",
+            "items": {
+              "@ref": "local:UserError"
+            }
           }
-        },
-        "required": [
-          "id"
-        ]
+        }
       }
     },
     "CreateCustomerPayload": {
@@ -10186,6 +10250,29 @@
             "type": "string"
           }
         }
+      }
+    },
+    "Klaviyo_AddMembersResponse": {
+      "name": "Klaviyo_AddMembersResponse",
+      "title": "Klaviyo_AddMembersResponse",
+      "id": "Klaviyo_AddMembersResponse",
+      "schema": {
+        "extends": [
+          {
+            "@ref": "klaviyo:AddMembersResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "userErrors": {
+                "type": "array",
+                "items": {
+                  "@ref": "local:UserError"
+                }
+              }
+            }
+          }
+        ]
       }
     }
   },
