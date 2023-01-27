@@ -3,6 +3,7 @@ import { ErrorBoundary } from 'components/Error/ErrorBoundary';
 import { commitSha, sentryDsn, seo, sessionRefetchInterval, vercelEnv } from 'config';
 import ApolloProvider from 'features/Apollo/ApolloProvider';
 import { SessionProvider } from 'next-auth/react';
+import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import { DefaultSeo } from 'next-seo';
 import { AppContext, AppInitialProps } from 'next/app';
 import 'styles/globals.css';
@@ -18,16 +19,18 @@ if (sentryDsn) {
 export default function App({ Component, pageProps }: AppContext & AppInitialProps) {
   return (
     <ErrorBoundary>
-      <SessionProvider
-        session={pageProps.session}
-        refetchInterval={sessionRefetchInterval}
-        refetchOnWindowFocus={false}
-      >
-        <ApolloProvider pageProps={pageProps}>
-          <DefaultSeo {...seo} />
-          <Component {...pageProps} />
-        </ApolloProvider>
-      </SessionProvider>
+      <ReCaptchaProvider>
+        <SessionProvider
+          session={pageProps.session}
+          refetchInterval={sessionRefetchInterval}
+          refetchOnWindowFocus={false}
+        >
+          <ApolloProvider pageProps={pageProps}>
+            <DefaultSeo {...seo} />
+            <Component {...pageProps} />
+          </ApolloProvider>
+        </SessionProvider>
+      </ReCaptchaProvider>
     </ErrorBoundary>
   );
 }
