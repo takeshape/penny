@@ -7,6 +7,9 @@ import { AddToCartInput, CartItem, CartItemAttribute } from './types';
 export const isCartOpenAtom = atom(false);
 export const isCartCheckingOutAtom = atom(false);
 
+/* Discounts */
+export const cartDiscountCodeAtom = atomWithStorage<string | null>('discountCode', null);
+
 /* Cart Items */
 export const cartItemsAtom = atomWithStorage<CartItem[]>(cartLocalStorageKey, []);
 export const cartItemAtomsAtom = splitAtom(cartItemsAtom);
