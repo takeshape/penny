@@ -58,8 +58,8 @@ export const Notification = () => {
                     <StatusIcon status={status} size={6} />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-body-900">{title}</p>
-                    <p className="mt-1 text-sm text-body-500">{body}</p>
+                    <p className="text-sm font-medium text-body-900" dangerouslySetInnerHTML={{ __html: title }} />
+                    <p className="mt-1 text-sm text-body-500" dangerouslySetInnerHTML={{ __html: body }} />
                   </div>
                   <div className="ml-4 flex-shrink-0 flex">
                     <button

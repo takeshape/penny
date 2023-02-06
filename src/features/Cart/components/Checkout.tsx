@@ -8,7 +8,7 @@ import { useCallback, useEffect } from 'react';
 import { CartCreateMutationResponse, CartCreateMutationVariables } from 'types/storefront';
 import { useStorefrontMutation } from 'utils/storefront';
 import { CartCreateMutation } from '../queries.storefront';
-import { cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
+import { cartDiscountCodeAtom, cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
 import { getCartVariables } from '../utils';
 
 export const CartCheckout = () => {
@@ -18,6 +18,7 @@ export const CartCheckout = () => {
   const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
   const quantity = useAtomValue(cartQuantityAtom);
   const items = useAtomValue(cartItemsAtom);
+  const discountCode = useAtomValue(cartDiscountCodeAtom);
 
   const [setCartMutation, { data }] = useStorefrontMutation<CartCreateMutationResponse, CartCreateMutationVariables>(
     CartCreateMutation
@@ -31,9 +32,9 @@ export const CartCheckout = () => {
 
     setIsCartCheckingOut(true);
     setCartMutation({
-      variables: getCartVariables(items, session)
+      variables: getCartVariables(items, session, discountCode)
     });
-  }, [session, setIsCartCheckingOut, setCartMutation, items, push]);
+  }, [session, setIsCartCheckingOut, setCartMutation, items, discountCode, push]);
 
   useEffect(() => {
     const checkoutUrl = getCheckoutUrl(data);

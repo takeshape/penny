@@ -3,7 +3,7 @@ import { Session } from 'next-auth';
 import { ProductPriceOption } from 'types/product';
 import { CartCreateMutationVariables, CartLineInput } from 'types/storefront';
 
-export const getCartVariables = (items: CartItem[], session: Session | null) => {
+export const getCartVariables = (items: CartItem[], session: Session | null, discountCode: string | null) => {
   const createCartVariables: CartCreateMutationVariables = {
     input: {
       attributes: [
@@ -22,6 +22,10 @@ export const getCartVariables = (items: CartItem[], session: Session | null) => 
       )
     }
   };
+
+  if (discountCode) {
+    createCartVariables.input.discountCodes = [discountCode];
+  }
 
   if (session?.user?.shopifyCustomerAccessToken) {
     createCartVariables.input.buyerIdentity = {

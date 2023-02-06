@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import PageLoader from 'components/PageLoader';
 import { isStorybook } from 'config';
+import { CartDiscountCode } from 'features/Cart/components/DiscountCode';
 import { useAtom, useAtomValue } from 'jotai';
 import { Fragment } from 'react';
 import { CartItem } from './components/CartItem';
@@ -65,6 +66,8 @@ export const Cart = () => {
                         </div>
                       </div>
 
+                      <CartDiscountCode />
+
                       <div className="mt-8">
                         {items.length ? (
                           <div className="flow-root">
@@ -85,6 +88,7 @@ export const Cart = () => {
                     <div className="border-t border-body-200 py-6 px-4 sm:px-6">
                       <CartSubtotal />
                       <p className="mt-0.5 text-sm text-body-500">Shipping and taxes calculated at checkout.</p>
+
                       <div className="mt-6">
                         <CartCheckout />
                       </div>
