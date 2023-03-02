@@ -46,10 +46,10 @@ async function createBranch({ environment, branchName }) {
   return result;
 }
 
-const prefix = chalk.cyan('takeshape');
+const prefix = `${chalk.cyan('takeshape')} -`;
 
 function log(msg) {
-  console.log(`${prefix} - ${msg}`);
+  console.log(`${prefix} ${msg}`);
 }
 
 const questions = [
@@ -57,7 +57,7 @@ const questions = [
     type: 'confirm',
     prefix,
     name: 'shouldCreateBranch',
-    message: 'Would you like to create a new, matching API branch?',
+    message: 'Would you like to create a new API branch?',
     default: true
   }
 ];
@@ -76,7 +76,7 @@ inquirer.prompt(questions).then(async ({ shouldCreateBranch }) => {
     const result = await createBranch({ environment: DEVELOPMENT, branchName: headBranchName });
 
     if (result?.branch?.graphqlUrl) {
-      log('Created a new API branch:');
+      log(`Created a new API branch '${headBranchName}':`);
       log(result.branch.graphqlUrl);
       return;
     }
