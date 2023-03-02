@@ -1,9 +1,9 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
-import { setApiUrl } from './scripts/get-api-url.mjs';
+import { getTakeshapeBranch } from './scripts/get-branch.mjs';
 
-await setApiUrl();
+await getTakeshapeBranch();
 
 const require = createRequire(import.meta.url);
 
