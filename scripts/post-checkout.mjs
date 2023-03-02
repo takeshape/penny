@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
+import * as dotenv from 'dotenv';
+import { gql, request } from 'graphql-request';
 import inquirer from 'inquirer';
 import { simpleGit } from 'simple-git';
 
