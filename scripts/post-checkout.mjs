@@ -32,9 +32,11 @@ async function createBranch({ environment, branchName }) {
     url: takeshapeAdminUrl,
     document: createBranchMutation,
     variables: {
-      projectId: takeshapeProjectId,
-      environment,
-      branchName
+      input: {
+        projectId: takeshapeProjectId,
+        environment,
+        branchName
+      }
     },
     requestHeaders: {
       Authorization: `Bearer ${takeshapeApiKey}`
@@ -73,9 +75,9 @@ inquirer.prompt(questions).then(async ({ shouldCreateBranch }) => {
 
     const result = await createBranch({ environment: DEVELOPMENT, branchName: headBranchName });
 
-    if (result?.graphqlUrl) {
+    if (result?.branch?.graphqlUrl) {
       log('Created a new API branch:');
-      log(result?.graphqlUrl);
+      log(result.branch.graphqlUrl);
       return;
     }
 
