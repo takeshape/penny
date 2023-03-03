@@ -34,14 +34,17 @@ export function getClient({ apiKey }) {
   const client = new GraphQLClient(takeshapeAdminUrl, { headers: { Authorization: `Bearer ${apiKey}` } });
 
   return {
-    getBranch(variables) {
-      return client.request(getBranchQuery, variables);
+    async getBranch(variables) {
+      const { result } = await client.request(getBranchQuery, variables);
+      return result;
     },
-    tagBranch(variables) {
-      return client.request(tagBranchMutation, variables);
+    async tagBranch(variables) {
+      const { result } = await client.request(tagBranchMutation, variables);
+      return result;
     },
-    createBranch(variables) {
-      return client.request(createBranchMutation, variables);
+    async createBranch(variables) {
+      const { result } = await client.request(createBranchMutation, variables);
+      return result;
     }
   };
 }
