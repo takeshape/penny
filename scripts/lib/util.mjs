@@ -8,5 +8,5 @@ export function getProjectId() {
 export const logPrefix = `${chalk.cyan('takeshape')} -`;
 
 export function logWithPrefix(msg) {
-  console.log(`${prefix} ${msg}`);
+  console.log(`${logPrefix} ${msg}`);
 }
