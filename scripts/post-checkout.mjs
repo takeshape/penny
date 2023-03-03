@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import inquirer from 'inquirer';
 import { simpleGit } from 'simple-git';
 import { getClient } from './lib/takeshape-client.mjs';
-import { getProjectId, logWithPrefix as log } from './lib/util.mjs';
+import { getProjectId, logPrefix, logWithPrefix as log } from './lib/util.mjs';
 
 dotenv.config();
 dotenv.config({ path: '.env.local' });
@@ -17,7 +17,7 @@ const DEVELOPMENT = 'DEVELOPMENT';
 const questions = [
   {
     type: 'confirm',
-    prefix,
+    prefix: logPrefix,
     name: 'shouldCreateBranch',
     message: 'Would you like to create a new API branch?',
     default: true

@@ -5,7 +5,7 @@ export function getProjectId() {
   return takeshapeApiUrl.match(/project\/([a-z0-9-]+)/)[1];
 }
 
-const prefix = `${chalk.cyan('takeshape')} -`;
+export const logPrefix = `${chalk.cyan('takeshape')} -`;
 
 export function logWithPrefix(msg) {
   console.log(`${prefix} ${msg}`);
