@@ -6,9 +6,11 @@ fi
 
 if [ "$1" == "$2" ]; then
   # Test whether a remote for this branch exists
-  upstream=`git rev-parse --abbrev-ref --symbolic-full-name @{u}`
+  git rev-parse --abbrev-ref --symbolic-full-name @{u} || true
 
-  if [[ $upstream -eq 1 ]]; then
+  exit_status=$?
+
+  if [[ $exit_status -eq 1 ]]; then
     echo "Possible new branch creation detected"
 
     exec < /dev/tty
