@@ -5,9 +5,14 @@ if [[ "$3" == "0" ]]; then
 fi
 
 if [ "$1" == "$2" ]; then
-  echo "Possible new branch creation detected"
+  # Test whether a remote for this branch exists
+  upstream=`git rev-parse --abbrev-ref --symbolic-full-name @{u}`
 
-  exec < /dev/tty
+  if [[ $upstream -eq 1 ]]; then
+    echo "Possible new branch creation detected"
 
-  ./scripts/post-checkout.mjs
+    exec < /dev/tty
+
+    ./scripts/post-checkout.mjs
+  fi
 fi
