@@ -1,9 +1,11 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
-import { getTakeshapeBranchUrl } from './scripts/lib/branch-url.mjs';
+import { logWithPrefix } from './scripts/lib/util.mjs';
 
-const takeshapeApiBranchUrl = await getTakeshapeBranchUrl();
+if (process.env.NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL) {
+  logWithPrefix('Using branch API url');
+}
 
 const require = createRequire(import.meta.url);
 
@@ -102,10 +104,6 @@ const nextConfig = {
   reactStrictMode: true,
   eslint: {
     dirs: ['src']
-  },
-  publicRuntimeConfig: {
-    vercelEnv: process.env.VERCEL_ENV ?? 'development',
-    takeshapeApiBranchUrl
   },
   images: {
     minimumCacheTTL: 60,

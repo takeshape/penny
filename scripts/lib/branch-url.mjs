@@ -11,7 +11,7 @@ const vercelEnv = process.env.VERCEL_ENV;
 
 const git = simpleGit();
 
-async function getBranchUrlForLocal() {
+export async function getBranchUrlForLocal() {
   dotenv.config({ path: '.env.local' });
 
   const isRepo = await git.checkIsRepo();
@@ -38,7 +38,7 @@ async function getBranchUrlForLocal() {
   }
 }
 
-async function getBranchUrlForVercel() {
+export async function getBranchUrlForVercel() {
   const tagName = process.env.VERCEL_GIT_COMMIT_SHA;
   const apiKey = process.env.TAKESHAPE_API_KEY;
 
