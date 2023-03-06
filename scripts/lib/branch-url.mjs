@@ -7,11 +7,12 @@ dotenv.config();
 
 const PRODUCTION = 'PRODUCTION';
 const DEVELOPMENT = 'DEVELOPMENT';
+
 const vercelEnv = process.env.VERCEL_ENV;
 
 const git = simpleGit();
 
-export async function getBranchUrlForLocal() {
+export async function getBranchForLocal() {
   dotenv.config({ path: '.env.local' });
 
   const isRepo = await git.checkIsRepo();
@@ -25,20 +26,17 @@ export async function getBranchUrlForLocal() {
     const headBranchName = await git.revparse(['--abbrev-ref', 'HEAD']);
     const remoteOrigin = await git.remote(['show', 'origin']);
     const defaultBranchName = remoteOrigin.match(/HEAD branch: (.*)/)[1];
-    const environment = headBranchName === defaultBranchName ? PRODUCTION : DEVELOPMENT;
-    const branchName = environment === PRODUCTION ? '' : headBranchName;
 
-    let result = await takeshape.getBranch({ projectId, environment, branchName });
-
-    if (!result) {
-      result = await takeshape.getBranch({ projectId, environment: PRODUCTION });
+    if (headBranchName === defaultBranchName) {
+      // Default branch, do not need a branch URL
+      return;
     }
 
-    return result?.graphqlUrl;
+    return takeshape.getBranch({ projectId, environment: DEVELOPMENT, branchName: headBranchName });
   }
 }
 
-export async function getBranchUrlForVercel() {
+export async function tagBranchForVercel() {
   const tagName = process.env.VERCEL_GIT_COMMIT_SHA;
   const apiKey = process.env.TAKESHAPE_API_KEY;
 
@@ -47,30 +45,30 @@ export async function getBranchUrlForVercel() {
 
   if (vercelEnv === 'production') {
     const result = await takeshape.tagBranch({ projectId, environment: PRODUCTION, tagName });
-    return result?.branchVersion?.graphqlUrl;
+    return result?.branchVersion;
   }
 
   const branchName = process.env.VERCEL_GIT_COMMIT_REF;
   const result = await takeshape.tagBranch({ projectId, environment: DEVELOPMENT, branchName, tagName });
-  return result?.branchVersion?.graphqlUrl;
+  return result?.branchVersion;
 }
 
-export async function getTakeshapeBranchUrl() {
+export async function setProcessBranchUrl() {
   log('Getting branch url...');
 
-  let graphqlUrl;
+  let branch;
 
   if (vercelEnv) {
-    graphqlUrl = await getBranchUrlForVercel();
+    branch = await tagBranchForVercel();
   } else {
-    graphqlUrl = await getBranchUrlForLocal();
+    branch = await getBranchForLocal();
   }
 
-  if (graphqlUrl) {
-    log('Found branch url:');
-    log(graphqlUrl);
+  if (branch) {
+    log(`Found API branch '${branch.branchName}'`);
+    process.env.NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL = branch.graphqlUrl;
   } else {
-    log('No branch url found');
+    log('Using default production API branch');
   }
 
   return graphqlUrl;

@@ -33,7 +33,7 @@ inquirer.prompt(questions).then(async ({ shouldCreateBranch }) => {
     const defaultBranchName = remoteOrigin.match(/HEAD branch: (.*)/)[1];
 
     if (headBranchName === defaultBranchName) {
-      log('Cannot create a branch for the default branch');
+      log('Default production branch already exists');
       return;
     }
 
@@ -41,9 +41,8 @@ inquirer.prompt(questions).then(async ({ shouldCreateBranch }) => {
       input: { projectId, environment: DEVELOPMENT, branchName: headBranchName }
     });
 
-    if (result?.branch?.graphqlUrl) {
-      log(`Created a new API branch '${headBranchName}':`);
-      log(result.branch.graphqlUrl);
+    if (result?.branch) {
+      log(`Created a new API branch '${result.branch.branchName}'`);
       return;
     }
 

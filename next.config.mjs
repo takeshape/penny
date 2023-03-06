@@ -1,11 +1,10 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import { setProcessBranchUrl } from '@takeshape/nextjs';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
-import { logWithPrefix } from './scripts/lib/util.mjs';
 
-if (process.env.NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL) {
-  logWithPrefix('Using branch API url');
-}
+// Set the TakeShape branch URL
+await setProcessBranchUrl();
 
 const require = createRequire(import.meta.url);
 
