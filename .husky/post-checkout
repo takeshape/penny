@@ -5,6 +5,8 @@ if [[ "$3" == "0" ]]; then
 fi
 
 if [ "$1" == "$2" ]; then
+  set +e
+
   # Test whether a remote for this branch exists
   git rev-parse --abbrev-ref --symbolic-full-name @{u} || true
 
