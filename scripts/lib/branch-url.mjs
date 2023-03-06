@@ -11,7 +11,7 @@ const vercelEnv = process.env.VERCEL_ENV;
 
 const git = simpleGit();
 
-async function getTakeshapeBranchUrlForLocal() {
+async function getBranchUrlForLocal() {
   dotenv.config({ path: '.env.local' });
 
   const isRepo = await git.checkIsRepo();
@@ -38,7 +38,7 @@ async function getTakeshapeBranchUrlForLocal() {
   }
 }
 
-async function getTakeshapeBranchUrlForVercel() {
+async function getBranchUrlForVercel() {
   const tagName = process.env.VERCEL_GIT_COMMIT_SHA;
   const apiKey = process.env.TAKESHAPE_API_KEY;
 
@@ -61,9 +61,9 @@ export async function getTakeshapeBranchUrl() {
   let graphqlUrl;
 
   if (vercelEnv) {
-    graphqlUrl = await getTakeshapeBranchUrlForVercel();
+    graphqlUrl = await getBranchUrlForVercel();
   } else {
-    graphqlUrl = await getTakeshapeBranchUrlForLocal();
+    graphqlUrl = await getBranchUrlForLocal();
   }
 
   if (graphqlUrl) {
