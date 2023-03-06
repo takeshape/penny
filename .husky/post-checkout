@@ -11,8 +11,6 @@ if [ "$1" == "$2" ]; then
   output=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>&1) && exit_status=$? || exit_status=$?
 
   if [[ $exit_status -ne 0 ]]; then
-    echo "Possible new branch creation detected"
-
     exec < /dev/tty
 
     npm run --silent post-checkout
