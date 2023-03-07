@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: 'main'
 
       - name: Setup node.js
         uses: actions/setup-node@v3
@@ -24,6 +26,6 @@ jobs:
 
       - name: Delete branch
         run: |
-          takeshape-branch-delete --name ${{ github.event.ref }}
+          takeshape-delete-branch --name ${{ github.event.ref }}
         env:
           TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
