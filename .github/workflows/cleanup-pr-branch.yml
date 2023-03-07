@@ -26,6 +26,6 @@ jobs:
 
       - name: Delete branch
         run: |
-          takeshape-branch-delete --name ${{ github.event.ref }}
+          takeshape-delete-branch --name ${{ github.event.ref }}
         env:
           TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
