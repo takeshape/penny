@@ -1,5 +1,7 @@
 name: 'Cleanup PR Branch'
-on: delete
+
+on:
+  delete
 
 jobs:
   cleanup-pr-branch:
@@ -7,18 +9,23 @@ jobs:
     if: github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
-      - name: setup node.js
-        uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          node-version: '16'
+          ref: 'main'
 
-      - name: install takeshape cli
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'npm'
+
+      - name: Install TakeShape tools
         run: |
-          npm install --quiet @takeshape/cli --global
+          npm install --quiet @takeshape/nextjs --global
 
-      - name: delete branch
-        run: takeshape branch delete --name ${{ github.event.ref }}
+      - name: Delete branch
+        run: |
+          takeshape-branch-delete --name ${{ github.event.ref }}
         env:
-          TS_API_KEY: ${{ secrets.TS_API_KEY }}
-          TS_AUTH_TOKEN: ${{ secrets.TS_AUTH_TOKEN }}
-          TS_PROJECT_ID: ${{ secrets.TS_PROJECT_ID }}
+          TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
