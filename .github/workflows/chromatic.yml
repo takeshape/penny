@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+env:
+  HUSKY: 0
+
 jobs:
   chromatic-deployment:
     name: Deployment
@@ -28,6 +31,8 @@ jobs:
 
       - name: Install dependencies
         run: npm ci && npm run graphql:typegen
+        env:
+          TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
 
       - name: Publish to Chromatic
         uses: chromaui/action@v1
