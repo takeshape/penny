@@ -1,0 +1,30 @@
+name: Promote
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'npm'
+
+      - name: Install TakeShape tools
+        run: |
+          npm install --quiet @takeshape/nextjs --global
+
+      - name: Promote branch
+        run: |
+          takeshape-promote-branch --name ${{ github.event.ref }}
+        env:
+          TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
