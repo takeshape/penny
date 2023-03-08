@@ -765,3 +765,5 @@ bash scripts/ignore-build.sh
 
 - This project uses credit card icons from
   [svg-credit-card-payment-icons](https://github.com/aaronfagan/svg-credit-card-payment-icons/tree/main/flat-rounded)
+
+...
