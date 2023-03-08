@@ -147,8 +147,7 @@ We also used a few tools from TakeShape's ecosystem to simplify our workflow and
   provides JWKS-verifiable access tokens for third-party APIs.
 - [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — GraphQL query validation
   against your TakeShape API.
-
-In the next section, you'll find a screenshot of the finished store's homepage.
+- [@takeshape/nextjs](https://www.npmjs.com/package/@takeshape/nextjs) — Branch workflow and supporting utilties.
 
 # Screenshot
 
@@ -203,9 +202,8 @@ To get started with TakeShape you need to perform these steps:
    Actions. You'll need the following secrets:
 
 - `CHROMATIC_PROJECT_TOKEN` if using [Chromatic](https://www.chromatic.com/).
-- `TS_API_KEY` Use the `webhook` key from earlier.
-- `TS_AUTH_TOKEN` Can be created in your TakeShape project from the user menu under Access Tokens.
-- `TS_PROJECT_ID` Can be copied from your TakeShape project dashboard.
+- `TAKESHAPE_API_KEY` - Create a TakeShape personal access token (PAT) with access to your project and full branch
+  permissions.
 
 ### Deploy Penny to a new TakeShape Project
 
@@ -721,9 +719,31 @@ If you are using the included workflows you will get a great CI process that inc
 
 Add the following to your hosting platform's environment variables
 
-- TS_API_KEY (same as Github Actions secrets)
-- TS_AUTH_TOKEN (same as Github Actions secrets)
-- TS_PROJECT_ID (same as Github Actions secrets)
+- TAKESHAPE_API_TOKEN (same as Github Actions secrets)
+
+# TakeShape Branches
+
+TakeShape Branches allows you to create separate copies of your production API for use in your development process. This
+is great for multiple developers working on a project so they can all make changes to the production API that get merged
+intelligently and automatically. It can even be helpful for a solo developer who wants to prototype changes without
+affecting the production API.
+
+This project is set up to make working with TakeShape Branches easy and fully integrated into your workflow with the
+following features:
+
+- A git `post-checkout` hook that will prompt you to create a same-named TakeShape API branch whenever you create a new
+  branch.
+- A process by which the HEAD of you API branch URL is acquired before running your development site (`npm run dev`)
+- Providing versioned API URLs:
+  - For your PR, your preview site will use the API version and branch that matches your commit.
+  - For your CI process, your tests will run using the same branch that matches the commit.
+  - For your production site, it will always run with the exact API version that matches the commit which triggered the
+    build. **Any changes to your production API will not take effect on your production site until you run a new
+    build.**
+- Using GitHub Actions, it will deleting a TakeShape API branch after a PR is merged and the git branch is deleted.
+
+You can read more about our Branches feature and workflow in our
+[Work with Branches guide](https://app.takeshape.io/docs/get-started/branches/).
 
 ### IMPORTANT
 
