@@ -19,6 +19,10 @@ jobs:
       # Required for API access during typechecking
       TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
     steps:
+      -
+        name: Dump context
+        uses: crazy-max/ghaction-dump-context@v2
+
       - uses: actions/checkout@v3
 
       - name: Setup node
