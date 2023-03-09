@@ -18,17 +18,17 @@ jobs:
       NODE_ENV: test
       # Required for API access during typechecking
       TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
-      LOG_LEVEL: 'debug'
     steps:
       - uses: actions/checkout@v3
 
-      - name: setup node.js
+      - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: '.node-version'
           cache: 'npm'
 
-      - uses: actions/cache@v3
+      - name: Cache node_modules
+        uses: actions/cache@v3
         with:
           path: |
             ~/.npm
@@ -48,9 +48,13 @@ jobs:
 
       - name: Run eslint
         run: npm run lint
+        env:
+          LOG_LEVEL: 'debug'
 
       - name: Run graphql:validate
         run: npm run graphql:validate
 
       - name: Run tests
         run: npm test
+        env:
+          LOG_LEVEL: 'debug'
