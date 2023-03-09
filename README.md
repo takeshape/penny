@@ -731,6 +731,11 @@ affecting the production API.
 This project is set up to make working with TakeShape Branches easy and fully integrated into your workflow with the
 following features:
 
+## Branch creation
+
+When you run `npm install` a git hooks for `post-checkout` and `post-merge` are installed. Using the `post-checkout`
+hook here, a prompt will be presented whenever you run `git checkout -b my_new_branch`.
+
 - A git `post-checkout` hook that will prompt you to create a same-named TakeShape API branch whenever you create a new
   branch.
 - A process by which the HEAD of you API branch URL is acquired before running your development site (`npm run dev`)
