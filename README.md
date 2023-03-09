@@ -733,19 +733,51 @@ following features:
 
 ## Branch creation
 
-When you run `npm install` a git hooks for `post-checkout` and `post-merge` are installed. Using the `post-checkout`
-hook here, a prompt will be presented whenever you run `git checkout -b my_new_branch`.
+When you run `npm install` git hooks for `post-checkout` and `post-merge` are installed by
+[husky](https://typicode.github.io/husky/#/).
 
-- A git `post-checkout` hook that will prompt you to create a same-named TakeShape API branch whenever you create a new
-  branch.
-- A process by which the HEAD of you API branch URL is acquired before running your development site (`npm run dev`)
-- Providing versioned API URLs:
-  - For your PR, your preview site will use the API version and branch that matches your commit.
-  - For your CI process, your tests will run using the same branch that matches the commit.
-  - For your production site, it will always run with the exact API version that matches the commit which triggered the
-    build. **Any changes to your production API will not take effect on your production site until you run a new
-    build.**
-- Using GitHub Actions, it will deleting a TakeShape API branch after a PR is merged and the git branch is deleted.
+Using the `post-checkout` hook here, a prompt will be presented whenever you run `git checkout -b my_new_branch` in your
+terminal, and in non-interactive environments like VSCode the branch will be created automatically.
+
+When you run `npm run dev` you'll see `takeshape` prefixed logs, informing you of whether we found an API branch to use
+for the dev session. When in dev, the HEAD of your API branch is used.
+
+## PR Builds and CI
+
+When you open a PR on GitHub, your tests and your builds will all use the API branch if it is available. In this
+context, the specific API version, identified by a hash, will be used. This means that if you have a preview from
+earlier in your project and you made many schema changes through the PR process, the early builds will still access
+exactly the same API as at the time you pushed the code.
+
+Likewise your CI tests and other processes will run using the branched, versioned API.
+
+## PR Merging
+
+When the PR is done and ready to be merged another process will kick in. During the `prebuild` phase if we detect that a
+PR branch was merged and there is a matching API branch, that branch will be merged into your `production` API
+automatically, and the API branch will be deleted.
+
+## git Merges
+
+You can also merge your branches manually in git or VSCode. The `post-merge` git hook will fire and you'll be prompted
+(in terminal / TTY mode) to merge your API branch if you want to.
+
+## Production API is Versioned
+
+It's important to not that using this workflow in Penny your production branch is always using a versioned URL. That
+means you can make changes to you production HEAD, merging and doing other things, and none of the changes will take
+effect on your production site until you merge the commit and push to `main`.
+
+## Convenience Commands
+
+You can also run the various branch commands as npm scripts.
+
+- `npm run takeshape:create-branch`
+- `npm run takeshape:delete-branch`
+- `npm run takeshape:promote-branch`
+
+For more info on the available env vars and flags, review the docs for
+[shape-tools](https://github.com/takeshape/shape-tools).
 
 You can read more about our Branches feature and workflow in our
 [Work with Branches guide](https://app.takeshape.io/docs/get-started/branches/).
