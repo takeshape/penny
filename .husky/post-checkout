@@ -10,8 +10,14 @@ if [ "$1" == "$2" ]; then
   # Test whether a remote for this branch exists
   output=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>&1) && exit_status=$? || exit_status=$?
 
-  if [[ $exit_status -ne 0 ]]; then
+  if [[ $exit_status -eq 0 ]]; then
+    exit
+  fi
+
+  if sh -c ": >/dev/tty" >/dev/null 2>/dev/null; then
     exec < /dev/tty
-    npm run --silent takeshape:post-checkout-hook
+    npm run --silent takeshape:post-checkout-hook -- --tty
+  else
+    npm run --silent takeshape:post-checkout-hook -- --no-tty
   fi
 fi
