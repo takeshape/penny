@@ -1,5 +1,5 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
-import { setProcessBranchUrl } from '@takeshape/nextjs';
+import { setProcessBranchUrl } from '@takeshape/shape-tools';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
