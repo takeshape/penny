@@ -18,6 +18,7 @@ jobs:
       NODE_ENV: test
       # Required for API access during typechecking
       TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
+      LOG_LEVEL: 'debug'
     steps:
       - uses: actions/checkout@v3
 
