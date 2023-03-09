@@ -1,0 +1,4 @@
+#!/bin/sh
+
+exec < /dev/tty
+npm run --silent takeshape:post-merge-hook

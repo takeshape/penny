@@ -4,7 +4,7 @@ import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
 // Set the TakeShape branch URL
-await setProcessBranchUrl();
+await setProcessBranchUrl({ envVar: 'NEXT_PUBLIC_TAKESHAPE_API_URL' });
 
 const require = createRequire(import.meta.url);
 
