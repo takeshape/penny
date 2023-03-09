@@ -26,6 +26,6 @@ jobs:
 
       - name: Promote branch
         run: |
-          takeshape-promote-branch --name ${{ github.head_ref }}
+          shape promote-branch --name ${{ github.head_ref }}
         env:
           TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
