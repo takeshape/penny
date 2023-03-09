@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "shape promote-branch --lookup-pr --production-only",
+    "prebuild": "LOG_LEVEL=debug shape promote-branch --lookup-pr --production-only",
     "build": "npm run graphql:typegen && next build",
     "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
@@ -81,7 +81,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.8",
     "@takeshape/graphql-validate": "^1.0.0",
-    "@takeshape/shape-tools": "^0.6.1",
+    "@takeshape/shape-tools": "^0.6.2",
     "@testing-library/cypress": "^8.0.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
