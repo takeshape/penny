@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "export TAKESHAPE_LOG_LEVEL=debug shape promote-branch --lookup-pr --production-only",
+    "prebuild": "TAKESHAPE_LOG_LEVEL=debug shape promote-branch --lookup-pr --production-only",
     "build": "npm run graphql:typegen && next build",
     "postbuild": "next-sitemap",
     "build-storybook": "build-storybook",
