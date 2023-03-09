@@ -52,13 +52,9 @@ jobs:
 
       - name: Run eslint
         run: npm run lint
-        env:
-          LOG_LEVEL: 'debug'
 
       - name: Run graphql:validate
         run: npm run graphql:validate
 
       - name: Run tests
         run: npm test
-        env:
-          LOG_LEVEL: 'debug'
