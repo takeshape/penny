@@ -86,7 +86,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.8",
     "@takeshape/graphql-validate": "^1.0.0",
-    "@takeshape/shape-tools": "^0.6.3",
+    "@takeshape/shape-tools": "^0.6.4",
     "@testing-library/cypress": "^8.0.7",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
