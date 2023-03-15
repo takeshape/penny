@@ -125,7 +125,8 @@ Set up your lighthouse testing paths in `.lighthouse/testPaths.json`. By default
 **IMPORTANT**
 
 If you have branch protections in place on your `main` branch you will need to include a repo secret
-`PROTECTED_PUSH_TOKEN` that is a personal access token with the `repo` scopes and which is an admin on the project repo.
+`PROTECTED_PUSH_TOKEN` that is a GitHub personal access token (PAT) with the `repo` scopes and which is an admin on the
+project repo.
 
 If you are not using branch protection rules you can replace `${{ secrets.PROTECTED_PUSH_TOKEN }}` with
 `${{ secrets.GITHUB_TOKEN }}` in the `lighthouse.yml` workflow file.
@@ -202,8 +203,7 @@ To get started with TakeShape you need to perform these steps:
    Actions. You'll need the following secrets:
 
 - `CHROMATIC_PROJECT_TOKEN` if using [Chromatic](https://www.chromatic.com/).
-- `TAKESHAPE_API_KEY` - Create a TakeShape personal access token (PAT) with access to your project and full branch
-  permissions.
+- `TAKESHAPE_API_KEY` - Create a TakeShape API key with access to your project and full branch permissions.
 
 ### Deploy Penny to a new TakeShape Project
 
