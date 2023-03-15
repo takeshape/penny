@@ -4,7 +4,7 @@ Learn more about
 [editing an existing order with the GraphQL Admin API](https://shopify.dev/apps/fulfillment/order-management-apps/order-editing).
 
 Only the last 60 days' worth of orders from a store are accessible from the `Order` object by default. If you want to access older orders,
-then you need to [request access to all orders](https://shopify.dev/apps/auth/oauth#orders-permissions). If your app is granted
+then you need to [request access to all orders](https://shopify.dev/api/usage/access-scopes#orders-permissions). If your app is granted
 access, then you can add the `read_all_orders` scope to your app along with `read_orders` or `write_orders`.
 [Private apps](https://shopify.dev/apps/auth/basic-http) are not affected by this change and are automatically granted the scope.
 
@@ -180,7 +180,9 @@ type Shopify_Order implements Shopify_CommentEventSubject & Shopify_HasEvents & 
   """
   customerLocale: String
 
-  """A list of discounts that are applied to the order."""
+  """
+  A list of discounts that are applied to the order, not including order edits and refunds.
+  """
   discountApplications(
     """Returns up to the first `n` elements from the list."""
     first: Int
@@ -972,6 +974,7 @@ scalar FormattedString
 """
 Returns information about pagination in a connection, in accordance with the
 [Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).
+For more information, please read our [GraphQL Pagination Usage Guide](https://shopify.dev/api/usage/pagination-graphql).
 """
 type Shopify_PageInfo {
   """The cursor corresponding to the last node in edges."""
@@ -2001,9 +2004,9 @@ type Shopify_OrderApp {
 
 enum Shopify_OrderCancelReason {
   CUSTOMER
+  DECLINED
   FRAUD
   INVENTORY
-  DECLINED
   OTHER
 }
 
@@ -2416,14 +2419,92 @@ type Shopify_DiscountAllocation {
 }
 
 """
-Represents a fulfillment service. A fulfillment service is a third-party service that prepares and ships orders on behalf of the store owner.
+A **Fulfillment Service** is a third party warehouse that prepares and ships orders
+on behalf of the store owner. Fulfillment services charge a fee to package and ship items
+and update product inventory levels. Some well known fulfillment services with Shopify integrations
+include: Amazon, Shipwire, and Rakuten. When an app registers a new `FulfillmentService` on a store,
+Shopify automatically creates a `Location` that's associated to the fulfillment service.
+To learn more about fulfillment services, refer to
+[Manage fulfillments as a fulfillment service app](https://shopify.dev/apps/fulfillment/fulfillment-service-apps)
+guide.
+
+## Mutations
+
+You can work with the `FulfillmentService` object with the
+[fulfillmentServiceCreate](https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentServiceCreate),
+[fulfillmentServiceUpdate](https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentServiceUpdate),
+and [fulfillmentServiceDelete](https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentServiceDelete)
+mutations.
+
+## Hosted endpoints
+
+Fulfillment service providers integrate with Shopify by providing Shopify with a set of hosted endpoints that
+Shopify can query on certain conditions.
+These endpoints must have a common prefix, and this prefix should be supplied in the `callbackUrl` parameter
+in the
+[fulfillmentServiceCreate](https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentServiceCreate)
+mutation.
+
+- Shopify sends POST requests to the `<callbackUrl>/fulfillment_order_notification` endpoint
+  to notify the fulfillment service about fulfillment requests and fulfillment cancellation requests,
+  if `fulfillment_orders_opt_in` is set to `true`.
+
+  [As of the 2022-07 API version](https://shopify.dev/changelog/legacy-fulfillment-api-deprecation),
+  it's mandatory for a fulfillment service to follow a fulfillment order based workflow by
+  having `fulfillment_orders_opt_in` set to `true`,
+  hosting the `<callbackUrl>/fulfillment_order_notification` endpoint, and acting on fulfillment requests and cancellations.
+
+  For more information, refer to
+  [Receive fulfillment requests and cancellations](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments#step-2-receive-fulfillment-requests-and-cancellations).
+- Shopify sends GET requests to the `<callbackUrl>/fetch_tracking_numbers` endpoint to retrieve tracking numbers for orders,
+  if `trackingSupport` is set to `true`.
+
+  For more information, refer to
+  [Enable tracking support](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments#step-8-enable-tracking-support-optional).
+
+  Fulfillment services can also update tracking information with the
+  [fulfillmentTrackingInfoUpdateV2](https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentTrackingInfoUpdateV2) mutation,
+  rather than waiting for Shopify to ask for tracking numbers.
+- Shopify sends GET requests to the `<callbackUrl>/fetch_stock` endpoint to retrieve inventory levels,
+  if `inventoryManagement` is set to `true`.
+
+  For more information, refer to
+  [Sharing inventory levels with Shopify](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments#step-9-share-inventory-levels-with-shopify-optional).
+
+To make sure you have everything set up correctly, you can test the `callbackUrl`-prefixed endpoints
+in your development store.
+
+## Resources and webhooks
+
+There are a variety of objects and webhooks that enable a fulfillment service to work.
+To exchange fulfillment information with Shopify, fulfillment services use the
+[FulfillmentOrder](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder),
+[Fulfillment](https://shopify.dev/api/admin-graphql/latest/objects/Fulfillment) and
+[Order](https://shopify.dev/api/admin-graphql/latest/objects/Order) objects and related mutations.
+To act on fulfillment process events that happen on the Shopify side,
+besides awaiting calls to `callbackUrl`-prefixed endpoints,
+fulfillment services can subscribe to the
+[fulfillment order](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments#webhooks)
+and [order](https://shopify.dev/api/admin-rest/latest/resources/webhook)
+webhooks.
 """
 type Shopify_FulfillmentService {
-  """The callback URL the fulfillment service has registered for requests."""
+  """
+  The callback URL that the fulfillment service has registered for requests. The following considerations apply:
+  
+  - Shopify queries the `<callbackUrl>/fetch_tracking_numbers` endpoint to retrieve tracking numbers
+      for orders, if `trackingSupport` is set to `true`.
+  - Shopify queries the `<callbackUrl>/fetch_stock` endpoint to retrieve inventory levels,
+      if `inventoryManagement` is set to `true`.
+  - Shopify uses the `<callbackUrl>/fulfillment_order_notification` endpoint to send
+      [fulfillment and cancellation requests](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments#step-2-receive-fulfillment-requests-and-cancellations),
+      if the fulfillment service has opted in to the fulfillment order based workflow for managing fulfillments
+      (`fulfillmentOrdersOptIn` is set to `true`).
+  """
   callbackUrl: Url
 
   """
-  Whether the fulfillment service has opted into fulfillment order based requests.
+  Whether the fulfillment service uses the [fulfillment order based workflow](https://shopify.dev/apps/fulfillment/fulfillment-service-apps/manage-fulfillments) for managing fulfillments.
   """
   fulfillmentOrdersOptIn: Boolean!
 
@@ -2452,8 +2533,10 @@ type Shopify_FulfillmentService {
   """The name of the fulfillment service as seen by merchants."""
   serviceName: String!
 
-  """Shipping methods associated with the fulfillment service provider."""
-  shippingMethods: [Shopify_ShippingMethod!]!
+  """
+  Shipping methods associated with the fulfillment service provider. Applies only to Fulfill By Amazon fulfillment service.
+  """
+  shippingMethods: [Shopify_ShippingMethod!]! @deprecated(reason: "The Fulfillment by Amazon feature will no longer be supported from March 30, 2023. To continue using Amazon fulfillment, merchants need to set up a Multi-Channel Fulfillment solution recommended by Amazon: https://help.shopify.com/manual/shipping/fulfillment-services/amazon#activate-fulfillment-by-amazon")
 
   """Type associated with the fulfillment service."""
   type: Shopify_FulfillmentServiceType!
@@ -2998,6 +3081,7 @@ type Shopify_Customer implements Shopify_CommentEventSubject & Shopify_HasEvents
      - `return_status`
      - `risk_level`
      - `sales_channel`
+     - `sku`
      - `source_identifier`
      - `source_name`
      - `status`
@@ -3359,6 +3443,8 @@ An order that a merchant creates on behalf of a customer. Draft orders are usefu
 - Take pre-orders.
 - Save an order as a draft and resume working on it later.
 
+For Draft orders in multiple currencies `presentment_money` is the source of truth for what a customer is going to be charged and `shop_money` is an estimate of what the merchant might receive in their local currency.
+
 **Caution:** Only use this data if it's required for your app's functionality. Shopify will restrict [access to scopes](https://shopify.dev/api/usage/access-scopes) for apps that don't have a legitimate use for the associated data.
 """
 type Shopify_DraftOrder implements Shopify_CommentEventSubject & Shopify_HasEvents & Shopify_HasLocalizationExtensions & Shopify_HasMetafields & Shopify_LegacyInteroperability & Shopify_Node {
@@ -3684,7 +3770,9 @@ enum Shopify_DraftOrderStatus {
 }
 
 """
-Price rules are a set of conditions, including entitlements and prerequisites, that must be met in order for a discount code to apply. We recommend using the [Discount types](https://shopify.dev/api/examples/discounts) available in the GraphQL Admin API, which are intended to replace the GraphQL `PriceRule` object and REST Admin `PriceRule` and `DiscountCode` resources.
+Price rules are a set of conditions, including entitlements and prerequisites, that must be met in order for a discount code to apply.
+
+We recommend using the types and queries detailed at [Manage existing discounts](https://shopify.dev/apps/discounts/existing) instead. These will replace the GraphQL `PriceRule` object and REST Admin `PriceRule` and `DiscountCode` resources.
 """
 type Shopify_PriceRule implements Shopify_CommentEventSubject & Shopify_HasEvents & Shopify_LegacyInteroperability & Shopify_Node {
   """
@@ -4139,6 +4227,11 @@ type Shopify_CollectionEdge {
 
 type Shopify_Collection {
   """
+  The number of publications a resource is published to without feedback errors.
+  """
+  availablePublicationCount: Int!
+
+  """
   A single-line, text-only description of the collection, stripped of any HTML tags and formatting that were included in the description.
   """
   description(
@@ -4306,17 +4399,106 @@ type Shopify_Collection {
   """The number of products in the collection."""
   productsCount: Int!
 
+  """The number of publications a resource is published on."""
+  publicationCount(
+    """
+    Include only the resource's publications that are published. If false, then return all the resource's publications including future publications.
+    """
+    onlyPublished: Boolean = true
+  ): Int!
+
+  """The channels where the collection is published."""
+  publications(
+    """
+    Whether or not to return only the collection publications that are published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CollectionPublicationConnection! @deprecated(reason: "Use `resourcePublications` instead.")
+
   """Check to see whether the resource is published to a given channel."""
   publishedOnChannel(
     """The ID of the channel to check."""
     channelId: ID!
   ): Boolean! @deprecated(reason: "Use `publishedOnPublication` instead.")
 
+  """
+  Check to see whether the resource is published to the calling app's channel.
+  """
+  publishedOnCurrentChannel: Boolean! @deprecated(reason: "Use `publishedOnCurrentPublication` instead.")
+
+  """
+  Check to see whether the resource is published to the calling app's publication.
+  """
+  publishedOnCurrentPublication: Boolean!
+
   """Check to see whether the resource is published to a given publication."""
   publishedOnPublication(
     """The ID of the publication to check."""
     publicationId: ID!
   ): Boolean!
+
+  """The list of resources that are published to a publication."""
+  resourcePublications(
+    """
+    Whether to return only the resources that are currently published. If false, then also returns the resources that are scheduled to be published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationConnection!
+
+  """
+  The list of resources that are either published or staged to be published to a publication.
+  """
+  resourcePublicationsV2(
+    """
+    Whether to return only the resources that are currently published. If false, then also returns the resources that are scheduled or staged to be published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationV2Connection!
 
   """
   For a smart (automated) collection, specifies the rules that determine whether a product is included.
@@ -4355,6 +4537,42 @@ type Shopify_Collection {
     """Filters translations locale."""
     locale: String!
   ): [Shopify_PublishedTranslation!]!
+
+  """The list of channels that the resource is not published to."""
+  unpublishedChannels(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ChannelConnection! @deprecated(reason: "Use `unpublishedPublications` instead.")
+
+  """The list of publications that the resource is not published to."""
+  unpublishedPublications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PublicationConnection!
 
   """
   The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the collection was last modified.
@@ -4419,6 +4637,11 @@ type Shopify_ProductEdge {
 }
 
 type Shopify_Product implements TSSearchable {
+  """
+  The number of publications a resource is published to without feedback errors.
+  """
+  availablePublicationCount: Int!
+
   """The description of the product, complete with HTML formatting."""
   bodyHtml: String @deprecated(reason: "Use `descriptionHtml` instead.")
 
@@ -4704,8 +4927,57 @@ type Shopify_Product implements TSSearchable {
     reverse: Boolean = false
   ): Shopify_PrivateMetafieldConnection!
 
+  """A list of the channels where the product is published."""
+  productPublications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductPublicationConnection! @deprecated(reason: "Use `resourcePublications` instead.")
+
   """The product type specified by the merchant."""
   productType: String!
+
+  """The number of publications a resource is published on."""
+  publicationCount(
+    """
+    Include only the resource's publications that are published. If false, then return all the resource's publications including future publications.
+    """
+    onlyPublished: Boolean = true
+  ): Int!
+
+  """A list of the channels where the product is published."""
+  publications(
+    """
+    Return only the publications that are published. If false, then return all publications.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductPublicationConnection! @deprecated(reason: "Use `resourcePublications` instead.")
 
   """
   The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was published to the Online Store.
@@ -4717,6 +4989,16 @@ type Shopify_Product implements TSSearchable {
     """The ID of the channel to check."""
     channelId: ID!
   ): Boolean! @deprecated(reason: "Use `publishedOnPublication` instead.")
+
+  """
+  Check to see whether the resource is published to the calling app's channel.
+  """
+  publishedOnCurrentChannel: Boolean! @deprecated(reason: "Use `publishedOnCurrentPublication` instead.")
+
+  """
+  Check to see whether the resource is published to the calling app's publication.
+  """
+  publishedOnCurrentPublication: Boolean!
 
   """Check to see whether the resource is published to a given publication."""
   publishedOnPublication(
@@ -4733,6 +5015,54 @@ type Shopify_Product implements TSSearchable {
   The resource that is either published or staged to be published to the calling app's publication. Requires the `read_product_listings` scope.
   """
   resourcePublicationOnCurrentPublication: Shopify_ResourcePublicationV2
+
+  """The list of resources that are published to a publication."""
+  resourcePublications(
+    """
+    Whether to return only the resources that are currently published. If false, then also returns the resources that are scheduled to be published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationConnection!
+
+  """
+  The list of resources that are either published or staged to be published to a publication.
+  """
+  resourcePublicationsV2(
+    """
+    Whether to return only the resources that are currently published. If false, then also returns the resources that are scheduled or staged to be published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationV2Connection!
 
   """Count of selling plan groups associated with the product."""
   sellingPlanGroupCount: Int!
@@ -4801,6 +5131,42 @@ type Shopify_Product implements TSSearchable {
     """Filters translations locale."""
     locale: String!
   ): [Shopify_PublishedTranslation!]!
+
+  """The list of channels that the resource is not published to."""
+  unpublishedChannels(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ChannelConnection! @deprecated(reason: "Use `unpublishedPublications` instead.")
+
+  """The list of publications that the resource is not published to."""
+  unpublishedPublications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PublicationConnection!
 
   """
   The date and time when the product was last modified.
@@ -5122,7 +5488,52 @@ type Shopify_ProductPriceRange {
 }
 
 """
-A resource publication represents that a resource either has been published or will be published to a publication.
+An auto-generated type for paginating through multiple ProductPublications.
+"""
+type Shopify_ProductPublicationConnection {
+  """A list of edges."""
+  edges: [Shopify_ProductPublicationEdge!]!
+
+  """A list of the nodes contained in ProductPublicationEdge."""
+  nodes: [Shopify_ProductPublication!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ProductPublication and a cursor during pagination.
+"""
+type Shopify_ProductPublicationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ProductPublicationEdge."""
+  node: Shopify_ProductPublication!
+}
+
+"""Represents the channels where a product is published."""
+type Shopify_ProductPublication {
+  """The channel where the product was or is published."""
+  channel: Shopify_Channel!
+
+  """Whether the publication is published or not."""
+  isPublished: Boolean!
+
+  """The product that was or is going to be published on the channel."""
+  product: Shopify_Product!
+
+  """
+  The date that the product was or is going to be published on the channel.
+  """
+  publishDate: DateTime
+}
+
+"""
+A resource publication represents information about the publication of a resource.
+Unlike `ResourcePublication`, an instance of `ResourcePublicationV2` can't be unpublished. It must either be published or scheduled to be published.
+
+See [ResourcePublication](/api/admin-graphql/latest/objects/ResourcePublication) for more context.
 """
 type Shopify_ResourcePublicationV2 {
   """
@@ -5148,17 +5559,249 @@ Represents a resource that can be published to a channel.
 A publishable resource can be either a Product or Collection.
 """
 interface Shopify_Publishable {
+  """
+  The number of publications a resource is published to without feedback errors.
+  """
+  availablePublicationCount: Int!
+
+  """The number of publications a resource is published on."""
+  publicationCount(
+    """
+    Include only the resource's publications that are published. If false, then return all the resource's publications including future publications.
+    """
+    onlyPublished: Boolean = true
+  ): Int!
+
   """Check to see whether the resource is published to a given channel."""
   publishedOnChannel(
     """The ID of the channel to check."""
     channelId: ID!
   ): Boolean! @deprecated(reason: "Use `publishedOnPublication` instead.")
 
+  """
+  Check to see whether the resource is published to the calling app's channel.
+  """
+  publishedOnCurrentChannel: Boolean! @deprecated(reason: "Use `publishedOnCurrentPublication` instead.")
+
+  """
+  Check to see whether the resource is published to the calling app's publication.
+  """
+  publishedOnCurrentPublication: Boolean!
+
   """Check to see whether the resource is published to a given publication."""
   publishedOnPublication(
     """The ID of the publication to check."""
     publicationId: ID!
   ): Boolean!
+
+  """The list of resources that are published to a publication."""
+  resourcePublications(
+    """
+    Whether to return only the resources that are currently published. If false, then also returns the resources that are scheduled to be published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationConnection!
+
+  """
+  The list of resources that are either published or staged to be published to a publication.
+  """
+  resourcePublicationsV2(
+    """
+    Whether to return only the resources that are currently published. If false, then also returns the resources that are scheduled or staged to be published.
+    """
+    onlyPublished: Boolean = true
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationV2Connection!
+
+  """The list of channels that the resource is not published to."""
+  unpublishedChannels(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ChannelConnection! @deprecated(reason: "Use `unpublishedPublications` instead.")
+
+  """The list of publications that the resource is not published to."""
+  unpublishedPublications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PublicationConnection!
+}
+
+"""
+An auto-generated type for paginating through multiple ResourcePublications.
+"""
+type Shopify_ResourcePublicationConnection {
+  """A list of edges."""
+  edges: [Shopify_ResourcePublicationEdge!]!
+
+  """A list of the nodes contained in ResourcePublicationEdge."""
+  nodes: [Shopify_ResourcePublication!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ResourcePublication and a cursor during pagination.
+"""
+type Shopify_ResourcePublicationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ResourcePublicationEdge."""
+  node: Shopify_ResourcePublication!
+}
+
+"""
+A resource publication represents information about the publication of a resource.
+An instance of `ResourcePublication`, unlike `ResourcePublicationV2`, can be neither published or scheduled to be published.
+
+See [ResourcePublicationV2](/api/admin-graphql/latest/objects/ResourcePublicationV2) for more context.
+"""
+type Shopify_ResourcePublication {
+  """The channel the resource publication is published to."""
+  channel: Shopify_Channel! @deprecated(reason: "Use `publication` instead.")
+
+  """
+  Whether the resource publication is published. Also returns true if the resource publication is scheduled to be published.
+  If false, then the resource publication is neither published nor scheduled to be published.
+  """
+  isPublished: Boolean!
+
+  """The publication the resource publication is published to."""
+  publication: Shopify_Publication!
+
+  """
+  The date that the resource publication was or is going to be published to the publication.
+  If the product isn't published, then this field returns an epoch timestamp.
+  """
+  publishDate: DateTime!
+
+  """The resource published to the publication."""
+  publishable: Shopify_Publishable!
+}
+
+"""
+An auto-generated type for paginating through multiple ResourcePublicationV2s.
+"""
+type Shopify_ResourcePublicationV2Connection {
+  """A list of edges."""
+  edges: [Shopify_ResourcePublicationV2Edge!]!
+
+  """A list of the nodes contained in ResourcePublicationV2Edge."""
+  nodes: [Shopify_ResourcePublicationV2!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one ResourcePublicationV2 and a cursor during pagination.
+"""
+type Shopify_ResourcePublicationV2Edge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ResourcePublicationV2Edge."""
+  node: Shopify_ResourcePublicationV2!
+}
+
+"""An auto-generated type for paginating through multiple Channels."""
+type Shopify_ChannelConnection {
+  """A list of edges."""
+  edges: [Shopify_ChannelEdge!]!
+
+  """A list of the nodes contained in ChannelEdge."""
+  nodes: [Shopify_Channel!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Channel and a cursor during pagination.
+"""
+type Shopify_ChannelEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of ChannelEdge."""
+  node: Shopify_Channel!
+}
+
+"""An auto-generated type for paginating through multiple Publications."""
+type Shopify_PublicationConnection {
+  """A list of edges."""
+  edges: [Shopify_PublicationEdge!]!
+
+  """A list of the nodes contained in PublicationEdge."""
+  nodes: [Shopify_Publication!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one Publication and a cursor during pagination.
+"""
+type Shopify_PublicationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of PublicationEdge."""
+  node: Shopify_Publication!
 }
 
 """
@@ -5758,6 +6401,49 @@ enum Shopify_ProductCollectionSortKeys {
 }
 
 """
+An auto-generated type for paginating through multiple CollectionPublications.
+"""
+type Shopify_CollectionPublicationConnection {
+  """A list of edges."""
+  edges: [Shopify_CollectionPublicationEdge!]!
+
+  """A list of the nodes contained in CollectionPublicationEdge."""
+  nodes: [Shopify_CollectionPublication!]!
+
+  """Information to aid in pagination."""
+  pageInfo: Shopify_PageInfo!
+}
+
+"""
+An auto-generated type which holds one CollectionPublication and a cursor during pagination.
+"""
+type Shopify_CollectionPublicationEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of CollectionPublicationEdge."""
+  node: Shopify_CollectionPublication!
+}
+
+"""Represents the publications where a collection is published."""
+type Shopify_CollectionPublication {
+  """The channel where the collection will be published."""
+  channel: Shopify_Channel! @deprecated(reason: "Use `publication` instead.")
+
+  """The collection to be published on the publication."""
+  collection: Shopify_Collection!
+
+  """Whether the publication is published or not."""
+  isPublished: Boolean!
+
+  """The publication where the collection will be published."""
+  publication: Shopify_Publication!
+
+  """The date that the publication was or is going to be published."""
+  publishDate: DateTime!
+}
+
+"""
 The set of rules that are used to determine which products are included in the collection.
 """
 type Shopify_CollectionRuleSet {
@@ -6224,7 +6910,7 @@ type Shopify_AppDiscountType {
   """The App Bridge details for discount type configuration."""
   appBridge: Shopify_FunctionsAppBridge!
 
-  """The API key of the app providing the app discount type."""
+  """The client ID of the app providing the app discount type."""
   appKey: String!
 
   """A description of the app discount type."""
@@ -7513,8 +8199,17 @@ type Shopify_ProductVariant implements Shopify_HasMetafieldDefinitions & Shopify
   """
   displayName: String!
 
-  """The fulfillment service associated with the product."""
-  fulfillmentService: Shopify_FulfillmentService @deprecated(reason: "Multi-managed inventory introduced a [breaking change](https://shopify.dev/api/release-notes/2022-07#shipping-and-fulfillment) to this field, therefore this field will no longer be supported. Fulfillment services will all be opted into SKU sharing in 2023-04. To see all associated fulfillment services use [InventoryLevelConnection](https://shopify.dev/api/admin-graphql/latest/connections/InventoryLevelConnection#field-location-inventorylevels) and [InventoryLevel#location](https://shopify.dev/api/admin-graphql/latest/objects/InventoryLevel#field-inventorylevel-location).")
+  """
+  The fulfillment service that stocks a product variant.
+  
+  This is a third-party fulfillment service if the following conditions are met:
+  - The product variant is stocked by a single fulfillment service.
+  - The [FulfillmentService](/api/admin-graphql/latest/objects/FulfillmentService) is a third-party fulfillment service. Third-party fulfillment services don't have a handle with the value `manual`.
+  - The fulfillment service has not [opted into SKU sharing](/api/admin-graphql/latest/objects/FulfillmentService#field-fulfillmentservice-permitsskusharing).
+  
+  If the conditions aren't met, then the fulfillment service has the `manual` handle.
+  """
+  fulfillmentService: Shopify_FulfillmentService @deprecated(reason: "\nThe [relationship between a product variant and a fulfillment service was changed in the `2022-07` API version](/changelog/fulfillment-service-sku-sharing). A [ProductVariant](/api/admin-graphql/latest/objects/ProductVariant) can be stocked by multiple fulfillment services. As a result, we recommend that you use the [inventoryItem field](/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-inventoryitem) if you need to determine where a product variant is stocked.\n\nIf you need to determine whether a product is a gift card, then you should continue to use this field until an alternative is available.\n\nLearn more about [managing inventory quantities and states](/apps/fulfillment/inventory-management-apps/quantities-states).\n")
 
   """
   Whether changes to the fulfillment service for the product variant are allowed.
@@ -8502,7 +9197,7 @@ type Shopify_Shop implements Shopify_HasMetafields & Shopify_HasPublishedTransla
     for more information about using filters.
     """
     query: String
-  ): Shopify_FulfillmentOrderConnection!
+  ): Shopify_FulfillmentOrderConnection! @deprecated(reason: "Use `QueryRoot.fulfillmentOrders` instead.")
 
   """List of the shop's installed fulfillment services."""
   fulfillmentServices: [Shopify_FulfillmentService!]!
@@ -8749,6 +9444,7 @@ type Shopify_Shop implements Shopify_HasMetafields & Shopify_HasPublishedTransla
      - `return_status`
      - `risk_level`
      - `sales_channel`
+     - `sku`
      - `source_identifier`
      - `source_name`
      - `status`
@@ -8812,12 +9508,14 @@ type Shopify_Shop implements Shopify_HasMetafields & Shopify_HasPublishedTransla
 
     """
     Supported filter parameters:
+     - `combines_with`
      - `created_at`
      - `discount_type`
      - `ends_at`
      - `starts_at`
      - `status`
      - `times_used`
+     - `title`
      - `updated_at`
     
     See the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)
@@ -8949,20 +9647,28 @@ type Shopify_Shop implements Shopify_HasMetafields & Shopify_HasPublishedTransla
 
     """
     Supported filter parameters:
+     - `available_quantity`
      - `barcode`
      - `collection`
+     - `committed_quantity`
      - `delivery_profile_id`
      - `exclude_composite`
      - `gift_card`
+     - `incoming_quantity`
      - `inventory_quantity`
      - `location_id`
      - `managed`
      - `managed_by`
+     - `on_hand_quantity`
+     - `option1`
+     - `option2`
+     - `option3`
      - `product_id`
      - `product_status`
      - `product_type`
      - `publishable_status`
      - `published_status`
+     - `reserved_quantity`
      - `sku`
      - `tag`
      - `tag_not`
@@ -9012,6 +9718,7 @@ type Shopify_Shop implements Shopify_HasMetafields & Shopify_HasPublishedTransla
      - `gift_card`
      - `has_only_composites`
      - `has_only_default_variant`
+     - `has_variant_with_components`
      - `id`
      - `inventory_total`
      - `is_price_reduced`
@@ -9040,6 +9747,9 @@ type Shopify_Shop implements Shopify_HasMetafields & Shopify_HasPublishedTransla
     """
     savedSearchId: ID
   ): Shopify_ProductConnection! @deprecated(reason: "Use `QueryRoot.products`.")
+
+  """The number of publications for the shop."""
+  publicationCount: Int!
 
   """
   The shop's limits for specific resources. For example, the maximum number ofvariants allowed per product, or the maximum number of locations allowed.
@@ -9226,29 +9936,6 @@ type Shopify_AvailableChannelDefinitionsByChannel {
 
   """The name of the channel."""
   channelName: String!
-}
-
-"""An auto-generated type for paginating through multiple Channels."""
-type Shopify_ChannelConnection {
-  """A list of edges."""
-  edges: [Shopify_ChannelEdge!]!
-
-  """A list of the nodes contained in ChannelEdge."""
-  nodes: [Shopify_Channel!]!
-
-  """Information to aid in pagination."""
-  pageInfo: Shopify_PageInfo!
-}
-
-"""
-An auto-generated type which holds one Channel and a cursor during pagination.
-"""
-type Shopify_ChannelEdge {
-  """A cursor for use in pagination."""
-  cursor: String!
-
-  """The item at the end of ChannelEdge."""
-  node: Shopify_Channel!
 }
 
 """An auto-generated type for paginating through multiple SavedSearches."""
@@ -9802,18 +10489,18 @@ type Shopify_SearchResult {
 }
 
 enum Shopify_SearchResultType {
-  ORDER
   CUSTOMER
+  DRAFT_ORDER
   PRODUCT
+  COLLECTION
+  FILE
   ONLINE_STORE_PAGE
   ONLINE_STORE_BLOG
   ONLINE_STORE_ARTICLE
-  COLLECTION
-  DRAFT_ORDER
+  URL_REDIRECT
   PRICE_RULE
   DISCOUNT_REDEEM_CODE
-  FILE
-  URL_REDIRECT
+  ORDER
 }
 
 """
@@ -10482,7 +11169,9 @@ type Shopify_InventoryItem implements Shopify_LegacyInteroperability & Shopify_N
   """
   trackedEditable: Shopify_EditableProperty!
 
-  """Unit cost associated with the inventory item."""
+  """
+  Unit cost associated with the inventory item. Note: the user must have "View product costs" permission granted in order to access this field once product granular permissions are enabled.
+  """
   unitCost: Shopify_MoneyV2
 
   """The date and time when the inventory item was updated."""
@@ -11312,6 +12001,10 @@ type Shopify_MetafieldStorefrontVisibility implements Shopify_LegacyInteroperabi
 }
 
 """
+<div class="note"><h4>Theme app extensions</h4>
+  <p>Your app might not pass App Store review if it uses script tags instead of theme app extensions. All new apps, and apps that integrate with Online Store 2.0 themes, should use theme app extensions, such as app blocks or app embed blocks. Script tags are an alternative you can use with only vintage themes. <a href="/apps/online-store#what-integration-method-should-i-use" target="_blank">Learn more</a>.</p></div>
+
+
 A script tag represents remote JavaScript code that is loaded into the pages of a shop's storefront or the order status page of checkout.
 """
 type Shopify_ScriptTag implements Shopify_LegacyInteroperability & Shopify_Node {
@@ -11906,6 +12599,135 @@ enum Shopify_AppPublicCategory {
 }
 
 """
+A channel represents an app where you sell a group of products and collections.
+A channel can be a platform or marketplace such as Facebook or Pinterest, an online store, or POS.
+"""
+type Shopify_Channel implements Shopify_Node {
+  """The underlying app used by the channel."""
+  app: Shopify_App!
+
+  """
+  The collection publications for the list of collections published to the channel.
+  """
+  collectionPublicationsV3(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationConnection!
+
+  """The list of collections published to the channel."""
+  collections(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_CollectionConnection!
+
+  """The unique identifier for the channel."""
+  handle: String! @deprecated(reason: "Use `id` instead.")
+
+  """Whether the collection is available to the channel."""
+  hasCollection(
+    """The collection ID to check."""
+    id: ID!
+  ): Boolean!
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The name of the channel."""
+  name: String!
+
+  """
+  The menu items for the channel, which also appear as submenu items in the left navigation sidebar in the Shopify admin.
+  """
+  navigationItems: [Shopify_NavigationItem!]! @deprecated(reason: "Use [AppInstallation.navigationItems](\n          https://shopify.dev/api/admin-graphql/current/objects/AppInstallation#field-appinstallation-navigationitems) instead.")
+
+  """Home page for the channel."""
+  overviewPath: Url @deprecated(reason: "Use [AppInstallation.launchUrl](\n          https://shopify.dev/api/admin-graphql/current/objects/AppInstallation#field-appinstallation-launchurl) instead.")
+
+  """The product publications for the products published to the channel."""
+  productPublications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductPublicationConnection! @deprecated(reason: "Use `productPublicationsV3` instead.")
+
+  """
+  The product publications for the list of products published to the channel.
+  """
+  productPublicationsV3(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ResourcePublicationConnection!
+
+  """The list of products published to the channel."""
+  products(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ProductConnection!
+
+  """Whether the channel supports future publishing."""
+  supportsFuturePublishing: Boolean!
+}
+
+"""
 A shipping profile. In Shopify, a shipping profile is a set of shipping rates scoped to a set of products or variants that can be shipped from selected locations to zones.
 """
 type Shopify_DeliveryProfile implements Shopify_Node {
@@ -12304,167 +13126,6 @@ type Shopify_MailingAddress implements Shopify_Node {
 
   """The zip or postal code of the address."""
   zip: String
-}
-
-"""
-A channel represents an app where you sell a group of products and collections.
-A channel can be a platform or marketplace such as Facebook or Pinterest, an online store, or POS.
-"""
-type Shopify_Channel implements Shopify_Node {
-  """The underlying app used by the channel."""
-  app: Shopify_App!
-
-  """
-  The collection publications for the list of collections published to the channel.
-  """
-  collectionPublicationsV3(
-    """Returns up to the first `n` elements from the list."""
-    first: Int
-
-    """Returns the elements that come after the specified cursor."""
-    after: String
-
-    """Returns up to the last `n` elements from the list."""
-    last: Int
-
-    """Returns the elements that come before the specified cursor."""
-    before: String
-
-    """Reverse the order of the underlying list."""
-    reverse: Boolean = false
-  ): Shopify_ResourcePublicationConnection!
-
-  """The list of collections published to the channel."""
-  collections(
-    """Returns up to the first `n` elements from the list."""
-    first: Int
-
-    """Returns the elements that come after the specified cursor."""
-    after: String
-
-    """Returns up to the last `n` elements from the list."""
-    last: Int
-
-    """Returns the elements that come before the specified cursor."""
-    before: String
-
-    """Reverse the order of the underlying list."""
-    reverse: Boolean = false
-  ): Shopify_CollectionConnection!
-
-  """The unique identifier for the channel."""
-  handle: String! @deprecated(reason: "Use `id` instead.")
-
-  """Whether the collection is available to the channel."""
-  hasCollection(
-    """The collection ID to check."""
-    id: ID!
-  ): Boolean!
-
-  """A globally-unique identifier."""
-  id: ID!
-
-  """The name of the channel."""
-  name: String!
-
-  """
-  The menu items for the channel, which also appear as submenu items in the left navigation sidebar in the Shopify admin.
-  """
-  navigationItems: [Shopify_NavigationItem!]! @deprecated(reason: "Use [AppInstallation.navigationItems](\n          https://shopify.dev/api/admin-graphql/current/objects/AppInstallation#field-appinstallation-navigationitems) instead.")
-
-  """Home page for the channel."""
-  overviewPath: Url @deprecated(reason: "Use [AppInstallation.launchUrl](\n          https://shopify.dev/api/admin-graphql/current/objects/AppInstallation#field-appinstallation-launchurl) instead.")
-
-  """
-  The product publications for the list of products published to the channel.
-  """
-  productPublicationsV3(
-    """Returns up to the first `n` elements from the list."""
-    first: Int
-
-    """Returns the elements that come after the specified cursor."""
-    after: String
-
-    """Returns up to the last `n` elements from the list."""
-    last: Int
-
-    """Returns the elements that come before the specified cursor."""
-    before: String
-
-    """Reverse the order of the underlying list."""
-    reverse: Boolean = false
-  ): Shopify_ResourcePublicationConnection!
-
-  """The list of products published to the channel."""
-  products(
-    """Returns up to the first `n` elements from the list."""
-    first: Int
-
-    """Returns the elements that come after the specified cursor."""
-    after: String
-
-    """Returns up to the last `n` elements from the list."""
-    last: Int
-
-    """Returns the elements that come before the specified cursor."""
-    before: String
-
-    """Reverse the order of the underlying list."""
-    reverse: Boolean = false
-  ): Shopify_ProductConnection!
-
-  """Whether the channel supports future publishing."""
-  supportsFuturePublishing: Boolean!
-}
-
-"""
-An auto-generated type for paginating through multiple ResourcePublications.
-"""
-type Shopify_ResourcePublicationConnection {
-  """A list of edges."""
-  edges: [Shopify_ResourcePublicationEdge!]!
-
-  """A list of the nodes contained in ResourcePublicationEdge."""
-  nodes: [Shopify_ResourcePublication!]!
-
-  """Information to aid in pagination."""
-  pageInfo: Shopify_PageInfo!
-}
-
-"""
-An auto-generated type which holds one ResourcePublication and a cursor during pagination.
-"""
-type Shopify_ResourcePublicationEdge {
-  """A cursor for use in pagination."""
-  cursor: String!
-
-  """The item at the end of ResourcePublicationEdge."""
-  node: Shopify_ResourcePublication!
-}
-
-"""
-A resource publication represents that a resource has been published to a publication.
-"""
-type Shopify_ResourcePublication {
-  """The channel the resource publication is published to."""
-  channel: Shopify_Channel! @deprecated(reason: "Use `publication` instead.")
-
-  """
-  Whether the resource publication is published. Also returns true if the resource publication is scheduled to be published.
-  If false, then the resource publication is neither published nor scheduled to be published.
-  """
-  isPublished: Boolean!
-
-  """The publication the resource publication is published to."""
-  publication: Shopify_Publication!
-
-  """
-  The date that the resource publication was or is going to be published to the publication.
-  """
-  publishDate: DateTime!
-
-  """The resource published to the publication."""
-  publishable: Shopify_Publishable!
 }
 
 """Contains the information for a given sales channel."""
@@ -14088,7 +14749,20 @@ To learn how to build a fulfillment app, refer to [Fulfillment apps](https://sho
 """
 type Shopify_FulfillmentOrder implements Shopify_Node {
   """
-  The fulfillment order's assigned location. This is the location expected to perform fulfillment.
+  The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
+  
+  The fulfillment order's assigned location might change in the following cases:
+  
+  - The fulfillment order has been entirely moved to a new location. For example, the [fulfillmentOrderMove](
+    https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+    ) mutation has been called, and you see the original fulfillment order in the [movedFulfillmentOrder](
+    https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove#field-fulfillmentordermovepayload-movedfulfillmentorder
+    ) field within the mutation's response.
+  - Work on the fulfillment order has not yet begun, which means that the fulfillment order has the
+      [OPEN](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-open),
+      [SCHEDULED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-scheduled), or
+      [ON_HOLD](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-onhold)
+      status, and the shop's location properties might be undergoing edits (for example, in the Shopify admin).
   """
   assignedLocation: Shopify_FulfillmentOrderAssignedLocation!
 
@@ -14174,7 +14848,7 @@ type Shopify_FulfillmentOrder implements Shopify_Node {
   ): Shopify_FulfillmentOrderLocationForMoveConnection!
 
   """
-  A list of requests sent by the merchant to the fulfillment service for this fulfillment order.
+  A list of requests sent by the merchant or an order management app to the fulfillment service for the fulfillment order.
   """
   merchantRequests(
     """The kind of request the merchant sent."""
@@ -14210,8 +14884,40 @@ type Shopify_FulfillmentOrder implements Shopify_Node {
 }
 
 """
-Represents the assigned location of a fulfillment order, which is a snapshot of the location
-at which the fulfillment order was created. The assigned location is expected to perform fulfillment.
+The fulfillment order's assigned location. This is the location where the fulfillment is expected to happen.
+
+ The fulfillment order's assigned location might change in the following cases:
+
+  - The fulfillment order has been entirely moved to a new location. For example, the [fulfillmentOrderMove](
+    https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+    ) mutation has been called, and you see the original fulfillment order in the [movedFulfillmentOrder](
+    https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove#field-fulfillmentordermovepayload-movedfulfillmentorder
+    ) field within the mutation's response.
+
+  - Work on the fulfillment order has not yet begun, which means that the fulfillment order has the
+      [OPEN](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-open),
+      [SCHEDULED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-scheduled), or
+      [ON_HOLD](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-onhold)
+      status, and the shop's location properties might be undergoing edits (for example, in the Shopify admin).
+
+If the [fulfillmentOrderMove](
+https://shopify.dev/api/admin-graphql/latest/mutations/fulfillmentOrderMove
+) mutation has moved the fulfillment order's line items to a new location,
+but hasn't moved the fulfillment order instance itself, then the original fulfillment order's assigned location
+doesn't change.
+This happens if the fulfillment order is being split during the move, or if all line items can be moved
+to an existing fulfillment order at a new location.
+
+Once the fulfillment order has been taken into work or canceled,
+which means that the fulfillment order has the
+[IN_PROGRESS](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-inprogress),
+[CLOSED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-closed),
+[CANCELLED](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-cancelled), or
+[INCOMPLETE](https://shopify.dev/api/admin-graphql/latest/enums/FulfillmentOrderStatus#value-incomplete)
+status, `FulfillmentOrderAssignedLocation` acts as a snapshot of the shop's location content.
+Up-to-date shop's location data may be queried through [location](
+  https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderAssignedLocation#field-fulfillmentorderassignedlocation-location
+) connection.
 """
 type Shopify_FulfillmentOrderAssignedLocation {
   """The first line of the address for the location."""
@@ -14227,9 +14933,9 @@ type Shopify_FulfillmentOrderAssignedLocation {
   countryCode: Shopify_CountryCode!
 
   """
-  The location where the fulfillment order was created. This can differ from the
-  `FulfillmentOrderAssignedLocation` if the location was updated since the fulfillment order
-  was closed.
+  The location where the fulfillment is expected to happen. This value might be different from
+  `FulfillmentOrderAssignedLocation` if the location's attributes were updated
+  after the fulfillment order was taken into work of canceled.
   """
   location: Shopify_Location
 
@@ -14437,7 +15143,9 @@ enum Shopify_FulfillmentOrderAction {
   EXTERNAL
 }
 
-"""Represents a single line item on an order."""
+"""
+Represents individual products and quantities purchased in the associated order.
+"""
 type Shopify_LineItem implements Shopify_Node {
   """Whether the line item can be restocked."""
   canRestock: Boolean! @deprecated(reason: "Use `restockable` instead.")
@@ -14454,7 +15162,7 @@ type Shopify_LineItem implements Shopify_Node {
   customAttributes: [Shopify_Attribute!]!
 
   """
-  The discounts that have been allocated onto the line item by discount applications.
+  The discounts that have been allocated onto the line item by discount applications, not including order edits and refunds.
   """
   discountAllocations: [Shopify_DiscountAllocation!]!
 
@@ -14483,11 +15191,21 @@ type Shopify_LineItem implements Shopify_Node {
   fulfillableQuantity: Int! @deprecated(reason: "Use [FulfillmentOrderLineItem#remainingQuantity](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrderLineItem#field-fulfillmentorderlineitem-remainingquantity) instead.")
 
   """
-  The service provider that fulfills the line item.
+  The fulfillment service that stocks the product variant belonging to a line item.
   
-  Deleted fulfillment services will return null.
+  This is a third-party fulfillment service in the following scenarios:
+  
+  **Scenario 1**
+  - The product variant is stocked by a single fulfillment service.
+  - The [FulfillmentService](/api/admin-graphql/latest/objects/FulfillmentService) is a third-party fulfillment service. Third-party fulfillment services don't have a handle with the value `manual`.
+  
+  **Scenario 2**
+  - Multiple fulfillment services stock the product variant.
+  - The last time that the line item was unfulfilled, it was awaiting fulfillment by a third-party fulfillment service. Third-party fulfillment services don't have a handle with the value `manual`.
+  
+  If none of the above conditions are met, then the fulfillment service has the `manual` handle.
   """
-  fulfillmentService: Shopify_FulfillmentService @deprecated(reason: "Multi-managed inventory introduced a [breaking change](https://shopify.dev/api/release-notes/2022-07#shipping-and-fulfillment) to this field, therefore this field will no longer be supported. Fulfillment services will all be opted into SKU sharing in 2023-04. Use [FulfillmentOrder#assignedLocation](https://shopify.dev/api/admin-graphql/latest/objects/FulfillmentOrder#field-fulfillmentorder-assignedlocation) instead.")
+  fulfillmentService: Shopify_FulfillmentService @deprecated(reason: "\nThe [relationship between a product variant and a fulfillment service was changed in the `2022-07` API version](/changelog/fulfillment-service-sku-sharing). A [ProductVariant](/api/admin-graphql/latest/objects/ProductVariant) can be stocked by multiple fulfillment services. As a result, we recommend that you use the [inventoryItem field](/api/admin-graphql/latest/objects/ProductVariant#field-productvariant-inventoryitem) if you need to determine where a product variant is stocked.\n\nIf you need to determine whether a product is a gift card, then you should continue to use this field until an alternative is available.\n\nAltering the locations which stock a product variant won't change the value of this field for existing orders.\n\nLearn about [managing inventory quantities and states](/apps/fulfillment/inventory-management-apps/quantities-states).\n")
 
   """
   The line item's fulfillment status. Returns 'fulfilled' if fulfillableQuantity >= quantity,
@@ -14504,7 +15222,9 @@ type Shopify_LineItem implements Shopify_Node {
   """Whether the line item can be edited or not."""
   merchantEditable: Boolean!
 
-  """The name of the product."""
+  """
+  The title of the product, optionally appended with the title of the variant (if applicable).
+  """
   name: String!
 
   """
@@ -14566,7 +15286,7 @@ type Shopify_LineItem implements Shopify_Node {
   """Whether the variant is taxable."""
   taxable: Boolean!
 
-  """The title of the product."""
+  """The title of the product at time of order creation."""
   title: String!
 
   """
@@ -14603,7 +15323,7 @@ type Shopify_LineItem implements Shopify_Node {
   """The Variant object associated with this line item."""
   variant: Shopify_ProductVariant
 
-  """The name of the variant."""
+  """The title of the variant at time of order creation."""
   variantTitle: String
 
   """The name of the vendor who made the variant."""
@@ -15502,7 +16222,10 @@ type Shopify_SubscriptionMailingAddress {
 
 """Represents the selected shipping option on a subscription contract."""
 type Shopify_SubscriptionDeliveryMethodShippingOption {
-  """The carrier service of the shipping option."""
+  """
+  The carrier service that is providing this shipping option.
+  This field isn't currently supported and returns null.
+  """
   carrierService: Shopify_DeliveryCarrierService
 
   """The code of the shipping option."""
@@ -16031,14 +16754,14 @@ type Shopify_DeliveryProfileItem implements Shopify_Node {
 }
 
 """
-A location group is a collection of active locations. They share zones and delivery methods across delivery
+A location group is a collection of locations. They share zones and delivery methods across delivery
 profiles.
 """
 type Shopify_DeliveryLocationGroup implements Shopify_Node {
   """A globally-unique identifier."""
   id: ID!
 
-  """A list of active locations that are part of this location group."""
+  """A list of all locations that are part of this location group."""
   locations(
     """Returns up to the first `n` elements from the list."""
     first: Int
@@ -16848,7 +17571,9 @@ type Shopify_SellingPlanRecurringDeliveryPolicy {
   """The date and time when the selling plan delivery policy was created."""
   createdAt: DateTime!
 
-  """A buffer period for orders to be included in a cycle."""
+  """
+  Number of days which represent a buffer period for orders to be included in a cycle.
+  """
   cutoff: Int
 
   """
@@ -16900,13 +17625,15 @@ to restore them later.
 """
 union Shopify_SellingPlanPricingPolicy = Shopify_SellingPlanFixedPricingPolicy | Shopify_SellingPlanRecurringPricingPolicy
 
-"""A line item that belongs to a fulfillment order."""
+"""
+Associates an order line item with quantities requiring fulfillment from the respective fulfillment order.
+"""
 type Shopify_FulfillmentOrderLineItem implements Shopify_Node {
   """A globally-unique identifier."""
   id: ID!
 
   """The associated order line item."""
-  lineItem: Shopify_LineItem!
+  lineItem: Shopify_LineItem! @deprecated(reason: "          As of API version 2023-01, this field has been deprecated. The order line item associated with a `FulfillmentOrderLineItem`\n          shouldn't be used to determine what to fulfill. Use the `FulfillmentOrderLineItem` and `FulfillmentOrder` objects\n          instead. An order `LineItem` represents a single line item on an order, but it doesn't represent what should be fulfilled.\n")
 
   """The number of units remaining to be fulfilled."""
   remainingQuantity: Int!
@@ -16930,7 +17657,8 @@ type Shopify_FulfillmentOrderLineItemWarning {
 }
 
 """
-Represents a request made by the merchant to a fulfillment service for a fulfillment order.
+A request made by the merchant or an order management app to a fulfillment service
+for a fulfillment order.
 """
 type Shopify_FulfillmentOrderMerchantRequest implements Shopify_Node {
   """A globally-unique identifier."""
@@ -17181,9 +17909,7 @@ type Shopify_AppUsageRecord implements Shopify_Node {
   """A globally-unique identifier."""
   id: ID!
 
-  """
-  The price of the usage record. The only permitted currency code is USD.
-  """
+  """The price of the usage record."""
   price: Shopify_MoneyV2!
 
   """Defines the usage pricing plan the merchant is subscribed to."""
@@ -19088,10 +19814,10 @@ enum Shopify_DiscountErrorCode {
   INTERNAL_ERROR
   TOO_MANY_ARGUMENTS
   MISSING_ARGUMENT
-  ACTIVE_PERIOD_OVERLAP
   VALUE_OUTSIDE_RANGE
-  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
   EXCEEDED_MAX
+  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
+  ACTIVE_PERIOD_OVERLAP
   CONFLICT
   IMPLICIT_DUPLICATE
   DUPLICATE
@@ -19597,12 +20323,12 @@ type ShopifyStorefront_ProductVariant implements ShopifyStorefront_HasMetafields
   """
   The compare at price of the variant. This can be used to mark a variant as on sale, when `compareAtPrice` is higher than `price`.
   """
-  compareAtPrice: Money @deprecated(reason: "Use `compareAtPriceV2` instead.")
+  compareAtPrice: ShopifyStorefront_MoneyV2
 
   """
   The compare at price of the variant. This can be used to mark a variant as on sale, when `compareAtPriceV2` is higher than `priceV2`.
   """
-  compareAtPriceV2: ShopifyStorefront_MoneyV2
+  compareAtPriceV2: ShopifyStorefront_MoneyV2 @deprecated(reason: "Use `compareAtPrice` instead.")
 
   """
   Whether a product is out of stock but still available for purchase (used for backorders).
@@ -19635,10 +20361,10 @@ type ShopifyStorefront_ProductVariant implements ShopifyStorefront_HasMetafields
   ): [ShopifyStorefront_Metafield!]!
 
   """The product variant’s price."""
-  price: Money! @deprecated(reason: "Use `priceV2` instead.")
+  price: ShopifyStorefront_MoneyV2!
 
   """The product variant’s price."""
-  priceV2: ShopifyStorefront_MoneyV2!
+  priceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `price` instead.")
 
   """The product object that the product variant belongs to."""
   product: ShopifyStorefront_Product!
@@ -20286,6 +21012,7 @@ type ShopifyStorefront_CollectionEdge {
 """
 Returns information about pagination in a connection, in accordance with the
 [Relay specification](https://relay.dev/graphql/connections.htm#sec-undefined.PageInfo).
+For more information, please read our [GraphQL Pagination Usage Guide](https://shopify.dev/api/usage/pagination-graphql).
 """
 type ShopifyStorefront_PageInfo {
   """The cursor corresponding to the last node in edges."""
@@ -20889,6 +21616,11 @@ type ShopifyStorefront_Customer implements ShopifyStorefront_HasMetafields {
     identifiers: [ShopifyStorefront_HasMetafieldsIdentifierInput!]!
   ): [ShopifyStorefront_Metafield!]!
 
+  """
+  The number of orders that the customer has made at the store in their lifetime.
+  """
+  numberOfOrders: UnsignedInt64!
+
   """The orders associated with the customer."""
   orders(
     """Returns up to the first `n` elements from the list."""
@@ -20967,6 +21699,9 @@ type ShopifyStorefront_OrderConnection {
 
   """Information to aid in pagination."""
   pageInfo: ShopifyStorefront_PageInfo!
+
+  """The total count of Orders."""
+  totalCount: UnsignedInt64!
 }
 
 """
@@ -21621,10 +22356,10 @@ type ShopifyStorefront_Order implements ShopifyStorefront_HasMetafields & Shopif
   statusUrl: Url!
 
   """Price of the order before shipping and taxes."""
-  subtotalPrice: Money @deprecated(reason: "Use `subtotalPriceV2` instead.")
+  subtotalPrice: ShopifyStorefront_MoneyV2
 
   """Price of the order before duties, shipping and taxes."""
-  subtotalPriceV2: ShopifyStorefront_MoneyV2
+  subtotalPriceV2: ShopifyStorefront_MoneyV2 @deprecated(reason: "Use `subtotalPrice` instead.")
 
   """List of the order’s successful fulfillments."""
   successfulFulfillments(
@@ -21633,39 +22368,39 @@ type ShopifyStorefront_Order implements ShopifyStorefront_HasMetafields & Shopif
   ): [ShopifyStorefront_Fulfillment]
 
   """
-  The sum of all the prices of all the items in the order, taxes and discounts included (must be positive).
+  The sum of all the prices of all the items in the order, duties, taxes and discounts included (must be positive).
   """
-  totalPrice: Money! @deprecated(reason: "Use `totalPriceV2` instead.")
+  totalPrice: ShopifyStorefront_MoneyV2!
 
   """
   The sum of all the prices of all the items in the order, duties, taxes and discounts included (must be positive).
   """
-  totalPriceV2: ShopifyStorefront_MoneyV2!
+  totalPriceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `totalPrice` instead.")
 
   """The total amount that has been refunded."""
-  totalRefunded: Money! @deprecated(reason: "Use `totalRefundedV2` instead.")
+  totalRefunded: ShopifyStorefront_MoneyV2!
 
   """The total amount that has been refunded."""
-  totalRefundedV2: ShopifyStorefront_MoneyV2!
+  totalRefundedV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `totalRefunded` instead.")
 
   """The total cost of shipping."""
-  totalShippingPrice: Money! @deprecated(reason: "Use `totalShippingPriceV2` instead.")
+  totalShippingPrice: ShopifyStorefront_MoneyV2!
 
   """The total cost of shipping."""
-  totalShippingPriceV2: ShopifyStorefront_MoneyV2!
+  totalShippingPriceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `totalShippingPrice` instead.")
 
   """The total cost of taxes."""
-  totalTax: Money @deprecated(reason: "Use `totalTaxV2` instead.")
+  totalTax: ShopifyStorefront_MoneyV2
 
   """The total cost of taxes."""
-  totalTaxV2: ShopifyStorefront_MoneyV2
+  totalTaxV2: ShopifyStorefront_MoneyV2 @deprecated(reason: "Use `totalTax` instead.")
 }
 
 enum ShopifyStorefront_OrderCancelReason {
   CUSTOMER
+  DECLINED
   FRAUD
   INVENTORY
-  DECLINED
   OTHER
 }
 
@@ -21975,6 +22710,9 @@ type ShopifyStorefront_Page implements ShopifyStorefront_HasMetafields & Shopify
 Shop represents a collection of the general settings and information about the shop.
 """
 type ShopifyStorefront_Shop implements ShopifyStorefront_HasMetafields & ShopifyStorefront_Node {
+  """The shop's branding configuration."""
+  brand: ShopifyStorefront_Brand
+
   """A description of the shop."""
   description: String
 
@@ -22030,6 +22768,47 @@ type ShopifyStorefront_Shop implements ShopifyStorefront_HasMetafields & Shopify
   """The shop’s terms of service."""
   termsOfService: ShopifyStorefront_ShopPolicy
 }
+
+"""The store's branding configuration."""
+type ShopifyStorefront_Brand {
+  """The colors of the store's brand."""
+  colors: ShopifyStorefront_BrandColors!
+
+  """The store's cover image."""
+  coverImage: ShopifyStorefront_MediaImage
+
+  """The store's default logo."""
+  logo: ShopifyStorefront_MediaImage
+
+  """The store's short description."""
+  shortDescription: String
+
+  """The store's slogan."""
+  slogan: String
+
+  """The store's preferred logo for square UI elements."""
+  squareLogo: ShopifyStorefront_MediaImage
+}
+
+"""The colors of the shop's brand."""
+type ShopifyStorefront_BrandColors {
+  """The shop's primary brand colors."""
+  primary: [ShopifyStorefront_BrandColorGroup!]!
+
+  """The shop's secondary brand colors."""
+  secondary: [ShopifyStorefront_BrandColorGroup!]!
+}
+
+"""A group of related colors for the shop's brand."""
+type ShopifyStorefront_BrandColorGroup {
+  """The background color."""
+  background: Color
+
+  """The foreground color."""
+  foreground: Color
+}
+
+scalar Color
 
 """Settings related to payments."""
 type ShopifyStorefront_PaymentSettings {
@@ -22386,6 +23165,23 @@ type ShopifyStorefront_Metafield implements ShopifyStorefront_Node {
   reference: ShopifyStorefront_MetafieldReference
 
   """
+  A list of reference objects if the metafield's type is a resource reference list.
+  """
+  references(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+  ): ShopifyStorefront_MetafieldReferenceConnection
+
+  """
   The type name of the metafield.
   See the list of [supported types](https://shopify.dev/apps/metafields/definitions/types).
   """
@@ -22402,7 +23198,32 @@ type ShopifyStorefront_Metafield implements ShopifyStorefront_Node {
 union ShopifyStorefront_MetafieldParentResource = ShopifyStorefront_Article | ShopifyStorefront_Blog | ShopifyStorefront_Collection | ShopifyStorefront_Customer | ShopifyStorefront_Order | ShopifyStorefront_Page | ShopifyStorefront_Product | ShopifyStorefront_ProductVariant | ShopifyStorefront_Shop
 
 """Returns the resource which is being referred to by a metafield."""
-union ShopifyStorefront_MetafieldReference = ShopifyStorefront_GenericFile | ShopifyStorefront_MediaImage | ShopifyStorefront_Page | ShopifyStorefront_Product | ShopifyStorefront_ProductVariant | ShopifyStorefront_Video
+union ShopifyStorefront_MetafieldReference = ShopifyStorefront_Collection | ShopifyStorefront_GenericFile | ShopifyStorefront_MediaImage | ShopifyStorefront_Page | ShopifyStorefront_Product | ShopifyStorefront_ProductVariant | ShopifyStorefront_Video
+
+"""
+An auto-generated type for paginating through multiple MetafieldReferences.
+"""
+type ShopifyStorefront_MetafieldReferenceConnection {
+  """A list of edges."""
+  edges: [ShopifyStorefront_MetafieldReferenceEdge!]!
+
+  """A list of the nodes contained in MetafieldReferenceEdge."""
+  nodes: [ShopifyStorefront_MetafieldReference!]!
+
+  """Information to aid in pagination."""
+  pageInfo: ShopifyStorefront_PageInfo!
+}
+
+"""
+An auto-generated type which holds one MetafieldReference and a cursor during pagination.
+"""
+type ShopifyStorefront_MetafieldReferenceEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of MetafieldReferenceEdge."""
+  node: ShopifyStorefront_MetafieldReference!
+}
 
 """
 Product property names like "Size", "Color", and "Material" that the customers can select.
@@ -22453,7 +23274,8 @@ type ShopifyStorefront_Cart implements ShopifyStorefront_Node {
   createdAt: DateTime!
 
   """
-  The delivery groups available for the cart, based on the default address of the logged-in customer.
+  The delivery groups available for the cart, based on the buyer identity default
+  delivery address preference or the default address of the logged-in customer.
   """
   deliveryGroups(
     """Returns up to the first `n` elements from the list."""
@@ -22533,12 +23355,22 @@ type ShopifyStorefront_CartBuyerIdentity {
   """The customer account associated with the cart."""
   customer: ShopifyStorefront_Customer
 
+  """
+  An ordered set of delivery addresses tied to the buyer that is interacting with the cart.
+  The rank of the preferences is determined by the order of the addresses in the array. Preferences
+  can be used to populate relevant fields in the checkout flow.
+  """
+  deliveryAddressPreferences: [ShopifyStorefront_DeliveryAddress!]!
+
   """The email address of the buyer that is interacting with the cart."""
   email: String
 
   """The phone number of the buyer that is interacting with the cart."""
   phone: String
 }
+
+"""A delivery address of the buyer that is interacting with the cart."""
+union ShopifyStorefront_DeliveryAddress = ShopifyStorefront_MailingAddress
 
 """
 The costs that the buyer will pay at checkout.
@@ -22633,6 +23465,9 @@ type ShopifyStorefront_CartDeliveryGroup {
 
   """The ID for the delivery group."""
   id: ID!
+
+  """The selected delivery option for the delivery group."""
+  selectedDeliveryOption: ShopifyStorefront_CartDeliveryOption
 }
 
 """An auto-generated type for paginating through multiple CartLines."""
@@ -22671,6 +23506,9 @@ type ShopifyStorefront_CartDeliveryOption {
 
   """The estimated cost for the delivery option."""
   estimatedCost: ShopifyStorefront_MoneyV2!
+
+  """The unique identifier of the delivery option."""
+  handle: String!
 
   """The title of the delivery option."""
   title: String
@@ -22908,14 +23746,14 @@ type ShopifyStorefront_Checkout implements ShopifyStorefront_Node {
   orderStatusUrl: Url
 
   """
-  The amount left to be paid. This is equal to the cost of the line items, taxes and shipping minus discounts and gift cards.
+  The amount left to be paid. This is equal to the cost of the line items, taxes, and shipping, minus discounts and gift cards.
   """
-  paymentDue: Money! @deprecated(reason: "Use `paymentDueV2` instead.")
+  paymentDue: ShopifyStorefront_MoneyV2!
 
   """
   The amount left to be paid. This is equal to the cost of the line items, duties, taxes, and shipping, minus discounts and gift cards.
   """
-  paymentDueV2: ShopifyStorefront_MoneyV2!
+  paymentDueV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `paymentDue` instead.")
 
   """
   Whether or not the Checkout is ready and can be completed. Checkouts may
@@ -22941,11 +23779,11 @@ type ShopifyStorefront_Checkout implements ShopifyStorefront_Node {
   """
   shippingLine: ShopifyStorefront_ShippingRate
 
-  """Price of the checkout before shipping and taxes."""
-  subtotalPrice: Money! @deprecated(reason: "Use `subtotalPriceV2` instead.")
+  """The price at checkout before shipping and taxes."""
+  subtotalPrice: ShopifyStorefront_MoneyV2!
 
   """The price at checkout before duties, shipping, and taxes."""
-  subtotalPriceV2: ShopifyStorefront_MoneyV2!
+  subtotalPriceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `subtotalPrice` instead.")
 
   """Whether the checkout is tax exempt."""
   taxExempt: Boolean!
@@ -22957,24 +23795,24 @@ type ShopifyStorefront_Checkout implements ShopifyStorefront_Node {
   totalDuties: ShopifyStorefront_MoneyV2
 
   """
-  The sum of all the prices of all the items in the checkout, taxes and discounts included.
+  The sum of all the prices of all the items in the checkout, including taxes and duties.
   """
-  totalPrice: Money! @deprecated(reason: "Use `totalPriceV2` instead.")
+  totalPrice: ShopifyStorefront_MoneyV2!
 
   """
-  The sum of all the prices of all the items in the checkout, including duties, taxes, and discounts.
+  The sum of all the prices of all the items in the checkout, including taxes and duties.
   """
-  totalPriceV2: ShopifyStorefront_MoneyV2!
-
-  """
-  The sum of all the taxes applied to the line items and shipping lines in the checkout.
-  """
-  totalTax: Money! @deprecated(reason: "Use `totalTaxV2` instead.")
+  totalPriceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `totalPrice` instead.")
 
   """
   The sum of all the taxes applied to the line items and shipping lines in the checkout.
   """
-  totalTaxV2: ShopifyStorefront_MoneyV2!
+  totalTax: ShopifyStorefront_MoneyV2!
+
+  """
+  The sum of all the taxes applied to the line items and shipping lines in the checkout.
+  """
+  totalTaxV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `totalTax` instead.")
 
   """The date and time when the checkout was last updated."""
   updatedAt: DateTime!
@@ -23002,10 +23840,10 @@ type ShopifyStorefront_ShippingRate {
   handle: String!
 
   """Price of this shipping rate."""
-  price: Money! @deprecated(reason: "Use `priceV2` instead.")
+  price: ShopifyStorefront_MoneyV2!
 
   """Price of this shipping rate."""
-  priceV2: ShopifyStorefront_MoneyV2!
+  priceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `price` instead.")
 
   """Title of this shipping rate."""
   title: String!
@@ -23122,16 +23960,16 @@ type ShopifyStorefront_VideoSource {
 """Details about the gift card used on the checkout."""
 type ShopifyStorefront_AppliedGiftCard implements ShopifyStorefront_Node {
   """The amount that was taken from the gift card by applying it."""
-  amountUsed: Money! @deprecated(reason: "Use `amountUsedV2` instead.")
+  amountUsed: ShopifyStorefront_MoneyV2!
 
   """The amount that was taken from the gift card by applying it."""
-  amountUsedV2: ShopifyStorefront_MoneyV2!
+  amountUsedV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `amountUsed` instead.")
 
   """The amount left on the gift card."""
-  balance: Money! @deprecated(reason: "Use `balanceV2` instead.")
+  balance: ShopifyStorefront_MoneyV2!
 
   """The amount left on the gift card."""
-  balanceV2: ShopifyStorefront_MoneyV2!
+  balanceV2: ShopifyStorefront_MoneyV2! @deprecated(reason: "Use `balance` instead.")
 
   """A globally-unique identifier."""
   id: ID!
@@ -24502,6 +25340,42 @@ type Query {
     """The handle of the `Product`."""
     handle: String
   ): ShopifyStorefront_Product
+  Shopify_channels(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ChannelConnection
+  Shopify_channel(
+    """The ID of the Channel to return."""
+    id: ID!
+  ): Shopify_Channel
+  Shopify_publications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PublicationConnection
   searchAssetIndex(
     terms: String
 
@@ -26193,6 +27067,7 @@ input TSWhereInput {
   environmentVariables: TSWhereTsStaticSiteEnvironmentVariablesInput
   triggers: TSWhereTsStaticSiteTriggersInput
   templateHash: TSWhereStringInput
+  availablePublicationCount: TSWhereIntegerInput
   bodyHtml: TSWhereStringInput
   collections: TSWhereShopify_CollectionConnectionInput
   contextualPricing: TSWhereShopify_ProductContextualPricingInput
@@ -26225,12 +27100,19 @@ input TSWhereInput {
   priceRangeV2: TSWhereShopify_ProductPriceRangeV2Input
   privateMetafield: TSWhereShopify_PrivateMetafieldInput
   privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  productPublications: TSWhereShopify_ProductPublicationConnectionInput
   productType: TSWhereStringInput
+  publicationCount: TSWhereIntegerInput
+  publications: TSWhereShopify_ProductPublicationConnectionInput
   publishedAt: TSWhereInput
   publishedOnChannel: TSWhereBooleanInput
+  publishedOnCurrentChannel: TSWhereBooleanInput
+  publishedOnCurrentPublication: TSWhereBooleanInput
   publishedOnPublication: TSWhereBooleanInput
   requiresSellingPlan: TSWhereBooleanInput
   resourcePublicationOnCurrentPublication: TSWhereShopify_ResourcePublicationV2Input
+  resourcePublications: TSWhereShopify_ResourcePublicationConnectionInput
+  resourcePublicationsV2: TSWhereShopify_ResourcePublicationV2ConnectionInput
   sellingPlanGroupCount: TSWhereIntegerInput
   sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
   seo: TSWhereShopify_SEOInput
@@ -26243,6 +27125,8 @@ input TSWhereInput {
   totalVariants: TSWhereIntegerInput
   tracksInventory: TSWhereBooleanInput
   translations: TSWhereShopify_PublishedTranslationInput
+  unpublishedChannels: TSWhereShopify_ChannelConnectionInput
+  unpublishedPublications: TSWhereShopify_PublicationConnectionInput
   updatedAt: TSWhereInput
   variants: TSWhereShopify_ProductVariantConnectionInput
   vendor: TSWhereStringInput
@@ -26293,6 +27177,7 @@ input TSWhereShopify_CollectionEdgeInput {
 }
 
 input TSWhereShopify_CollectionInput {
+  availablePublicationCount: TSWhereIntegerInput
   description: TSWhereStringInput
   descriptionHtml: TSWhereInput
   feedback: TSWhereShopify_ResourceFeedbackInput
@@ -26308,8 +27193,14 @@ input TSWhereShopify_CollectionInput {
   privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
   products: TSWhereShopify_ProductConnectionInput
   productsCount: TSWhereIntegerInput
+  publicationCount: TSWhereIntegerInput
+  publications: TSWhereShopify_CollectionPublicationConnectionInput
   publishedOnChannel: TSWhereBooleanInput
+  publishedOnCurrentChannel: TSWhereBooleanInput
+  publishedOnCurrentPublication: TSWhereBooleanInput
   publishedOnPublication: TSWhereBooleanInput
+  resourcePublications: TSWhereShopify_ResourcePublicationConnectionInput
+  resourcePublicationsV2: TSWhereShopify_ResourcePublicationV2ConnectionInput
   ruleSet: TSWhereShopify_CollectionRuleSetInput
   seo: TSWhereShopify_SEOInput
   sortOrder: TSWhereStringInput
@@ -26317,6 +27208,8 @@ input TSWhereShopify_CollectionInput {
   templateSuffix: TSWhereStringInput
   title: TSWhereStringInput
   translations: TSWhereShopify_PublishedTranslationInput
+  unpublishedChannels: TSWhereShopify_ChannelConnectionInput
+  unpublishedPublications: TSWhereShopify_PublicationConnectionInput
   updatedAt: TSWhereInput
   takeshape: TSWhereCollectionInput
 }
@@ -26517,6 +27410,7 @@ input TSWhereShopify_MetafieldReferenceInput {
   status: TSWhereStringInput
   defaultCursor: TSWhereStringInput
   translations: TSWhereShopify_PublishedTranslationInput
+  availablePublicationCount: TSWhereIntegerInput
   bodyHtml: TSWhereStringInput
   collections: TSWhereShopify_CollectionConnectionInput
   contextualPricing: TSWhereShopify_ProductVariantContextualPricingInput
@@ -26547,12 +27441,19 @@ input TSWhereShopify_MetafieldReferenceInput {
   priceRangeV2: TSWhereShopify_ProductPriceRangeV2Input
   privateMetafield: TSWhereShopify_PrivateMetafieldInput
   privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  productPublications: TSWhereShopify_ProductPublicationConnectionInput
   productType: TSWhereStringInput
+  publicationCount: TSWhereIntegerInput
+  publications: TSWhereShopify_ProductPublicationConnectionInput
   publishedAt: TSWhereInput
   publishedOnChannel: TSWhereBooleanInput
+  publishedOnCurrentChannel: TSWhereBooleanInput
+  publishedOnCurrentPublication: TSWhereBooleanInput
   publishedOnPublication: TSWhereBooleanInput
   requiresSellingPlan: TSWhereBooleanInput
   resourcePublicationOnCurrentPublication: TSWhereShopify_ResourcePublicationV2Input
+  resourcePublications: TSWhereShopify_ResourcePublicationConnectionInput
+  resourcePublicationsV2: TSWhereShopify_ResourcePublicationV2ConnectionInput
   sellingPlanGroupCount: TSWhereIntegerInput
   sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
   seo: TSWhereShopify_SEOInput
@@ -26564,6 +27465,8 @@ input TSWhereShopify_MetafieldReferenceInput {
   totalInventory: TSWhereIntegerInput
   totalVariants: TSWhereIntegerInput
   tracksInventory: TSWhereBooleanInput
+  unpublishedChannels: TSWhereShopify_ChannelConnectionInput
+  unpublishedPublications: TSWhereShopify_PublicationConnectionInput
   updatedAt: TSWhereInput
   variants: TSWhereShopify_ProductVariantConnectionInput
   vendor: TSWhereStringInput
@@ -26725,20 +27628,35 @@ input TSWhereShopify_ProductPriceRangeV2Input {
   minVariantPrice: TSWhereShopify_MoneyV2Input
 }
 
-input TSWhereShopify_ResourcePublicationV2Input {
-  isPublished: TSWhereBooleanInput
-  publication: TSWhereShopify_PublicationInput
-  publishDate: TSWhereInput
-  publishable: TSWhereShopify_PublishableInput
+input TSWhereShopify_ProductPublicationConnectionInput {
+  edges: TSWhereShopify_ProductPublicationEdgeInput
+  nodes: TSWhereShopify_ProductPublicationInput
+  pageInfo: TSWhereShopify_PageInfoInput
 }
 
-input TSWhereShopify_PublicationInput {
+input TSWhereShopify_ProductPublicationEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ProductPublicationInput
+}
+
+input TSWhereShopify_ProductPublicationInput {
+  channel: TSWhereShopify_ChannelInput
+  isPublished: TSWhereBooleanInput
+  product: TSWhereShopify_ProductInput
+  publishDate: TSWhereInput
+}
+
+input TSWhereShopify_ChannelInput {
   app: TSWhereShopify_AppInput
   collectionPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
   collections: TSWhereShopify_CollectionConnectionInput
+  handle: TSWhereStringInput
   hasCollection: TSWhereBooleanInput
   id: TSWhereStringInput
   name: TSWhereStringInput
+  navigationItems: TSWhereShopify_NavigationItemInput
+  overviewPath: TSWhereInput
+  productPublications: TSWhereShopify_ProductPublicationConnectionInput
   productPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
   products: TSWhereShopify_ProductConnectionInput
   supportsFuturePublishing: TSWhereBooleanInput
@@ -26763,25 +27681,16 @@ input TSWhereShopify_ResourcePublicationInput {
   publishable: TSWhereShopify_PublishableInput
 }
 
-input TSWhereShopify_ChannelInput {
+input TSWhereShopify_PublicationInput {
   app: TSWhereShopify_AppInput
   collectionPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
   collections: TSWhereShopify_CollectionConnectionInput
-  handle: TSWhereStringInput
   hasCollection: TSWhereBooleanInput
   id: TSWhereStringInput
   name: TSWhereStringInput
-  navigationItems: TSWhereShopify_NavigationItemInput
-  overviewPath: TSWhereInput
   productPublicationsV3: TSWhereShopify_ResourcePublicationConnectionInput
   products: TSWhereShopify_ProductConnectionInput
   supportsFuturePublishing: TSWhereBooleanInput
-}
-
-input TSWhereShopify_NavigationItemInput {
-  id: TSWhereStringInput
-  title: TSWhereStringInput
-  url: TSWhereInput
 }
 
 input TSWhereShopify_ProductConnectionInput {
@@ -26796,6 +27705,7 @@ input TSWhereShopify_ProductEdgeInput {
 }
 
 input TSWhereShopify_ProductInput {
+  availablePublicationCount: TSWhereIntegerInput
   bodyHtml: TSWhereStringInput
   collections: TSWhereShopify_CollectionConnectionInput
   contextualPricing: TSWhereShopify_ProductContextualPricingInput
@@ -26829,12 +27739,19 @@ input TSWhereShopify_ProductInput {
   priceRangeV2: TSWhereShopify_ProductPriceRangeV2Input
   privateMetafield: TSWhereShopify_PrivateMetafieldInput
   privateMetafields: TSWhereShopify_PrivateMetafieldConnectionInput
+  productPublications: TSWhereShopify_ProductPublicationConnectionInput
   productType: TSWhereStringInput
+  publicationCount: TSWhereIntegerInput
+  publications: TSWhereShopify_ProductPublicationConnectionInput
   publishedAt: TSWhereInput
   publishedOnChannel: TSWhereBooleanInput
+  publishedOnCurrentChannel: TSWhereBooleanInput
+  publishedOnCurrentPublication: TSWhereBooleanInput
   publishedOnPublication: TSWhereBooleanInput
   requiresSellingPlan: TSWhereBooleanInput
   resourcePublicationOnCurrentPublication: TSWhereShopify_ResourcePublicationV2Input
+  resourcePublications: TSWhereShopify_ResourcePublicationConnectionInput
+  resourcePublicationsV2: TSWhereShopify_ResourcePublicationV2ConnectionInput
   sellingPlanGroupCount: TSWhereIntegerInput
   sellingPlanGroups: TSWhereShopify_SellingPlanGroupConnectionInput
   seo: TSWhereShopify_SEOInput
@@ -26848,6 +27765,8 @@ input TSWhereShopify_ProductInput {
   totalVariants: TSWhereIntegerInput
   tracksInventory: TSWhereBooleanInput
   translations: TSWhereShopify_PublishedTranslationInput
+  unpublishedChannels: TSWhereShopify_ChannelConnectionInput
+  unpublishedPublications: TSWhereShopify_PublicationConnectionInput
   updatedAt: TSWhereInput
   variants: TSWhereShopify_ProductVariantConnectionInput
   vendor: TSWhereStringInput
@@ -26863,6 +27782,59 @@ input TSWhereShopify_ProductContextualPricingInput {
   maxVariantPricing: TSWhereShopify_ProductVariantContextualPricingInput
   minVariantPricing: TSWhereShopify_ProductVariantContextualPricingInput
   priceRange: TSWhereShopify_ProductPriceRangeV2Input
+}
+
+input TSWhereShopify_ResourcePublicationV2Input {
+  isPublished: TSWhereBooleanInput
+  publication: TSWhereShopify_PublicationInput
+  publishDate: TSWhereInput
+  publishable: TSWhereShopify_PublishableInput
+}
+
+input TSWhereShopify_PublishableInput {
+  availablePublicationCount: TSWhereIntegerInput
+  publicationCount: TSWhereIntegerInput
+  publishedOnChannel: TSWhereBooleanInput
+  publishedOnCurrentChannel: TSWhereBooleanInput
+  publishedOnCurrentPublication: TSWhereBooleanInput
+  publishedOnPublication: TSWhereBooleanInput
+  resourcePublications: TSWhereShopify_ResourcePublicationConnectionInput
+  resourcePublicationsV2: TSWhereShopify_ResourcePublicationV2ConnectionInput
+  unpublishedChannels: TSWhereShopify_ChannelConnectionInput
+  unpublishedPublications: TSWhereShopify_PublicationConnectionInput
+}
+
+input TSWhereShopify_ResourcePublicationV2ConnectionInput {
+  edges: TSWhereShopify_ResourcePublicationV2EdgeInput
+  nodes: TSWhereShopify_ResourcePublicationV2Input
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ResourcePublicationV2EdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ResourcePublicationV2Input
+}
+
+input TSWhereShopify_ChannelConnectionInput {
+  edges: TSWhereShopify_ChannelEdgeInput
+  nodes: TSWhereShopify_ChannelInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_ChannelEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_ChannelInput
+}
+
+input TSWhereShopify_PublicationConnectionInput {
+  edges: TSWhereShopify_PublicationEdgeInput
+  nodes: TSWhereShopify_PublicationInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_PublicationEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_PublicationInput
 }
 
 input TSWhereShopify_SellingPlanGroupConnectionInput {
@@ -27583,9 +28555,10 @@ input TSWhereShopify_ProductNumberOfReviewsInput {
   fiveStars: TSWhereIntegerInput
 }
 
-input TSWhereShopify_PublishableInput {
-  publishedOnChannel: TSWhereBooleanInput
-  publishedOnPublication: TSWhereBooleanInput
+input TSWhereShopify_NavigationItemInput {
+  id: TSWhereStringInput
+  title: TSWhereStringInput
+  url: TSWhereInput
 }
 
 input TSWhereShopify_FailedRequirementInput {
@@ -27787,6 +28760,25 @@ input TSWhereShopify_ProductFieldInput {
   Regular expression string matching. Use of * wildcards could degrade performance.
   """
   regexp: String
+}
+
+input TSWhereShopify_CollectionPublicationConnectionInput {
+  edges: TSWhereShopify_CollectionPublicationEdgeInput
+  nodes: TSWhereShopify_CollectionPublicationInput
+  pageInfo: TSWhereShopify_PageInfoInput
+}
+
+input TSWhereShopify_CollectionPublicationEdgeInput {
+  cursor: TSWhereStringInput
+  node: TSWhereShopify_CollectionPublicationInput
+}
+
+input TSWhereShopify_CollectionPublicationInput {
+  channel: TSWhereShopify_ChannelInput
+  collection: TSWhereShopify_CollectionInput
+  isPublished: TSWhereBooleanInput
+  publication: TSWhereShopify_PublicationInput
+  publishDate: TSWhereInput
 }
 
 input TSWhereShopify_CollectionRuleSetInput {
@@ -28764,6 +29756,42 @@ type WithContext {
     """The handle of the `Product`."""
     handle: String
   ): ShopifyStorefront_Product
+  Shopify_channels(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_ChannelConnection
+  Shopify_channel(
+    """The ID of the Channel to return."""
+    id: ID!
+  ): Shopify_Channel
+  Shopify_publications(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): Shopify_PublicationConnection
   searchAssetIndex(
     terms: String
 
@@ -29113,12 +30141,6 @@ type Mutation {
     """The customer’s mailing address."""
     address: ShopifyStorefront_MailingAddressInput!
   ): ShopifyStorefront_CustomerAddressUpdatePayload
-
-  """DEPRECATED"""
-  createTicket(email: String!, message: String!, recaptchaToken: String!): CreateTicketResponse
-
-  """DEPRECATED"""
-  createZendeskTicket(name: String!, email: String!, message: String!, recaptchaToken: String!): CreateTicketResponse
   Gorgias_createTicket(name: String!, email: String!, message: String!, recaptchaToken: String): CreateTicketResponse
   Zendesk_createTicket(name: String!, email: String!, message: String!, recaptchaToken: String): CreateTicketResponse
 
@@ -29243,6 +30265,10 @@ type Mutation {
   Recharge_updateMyDeliveryFrequency(subscriptionId: String!, frequency: String!, unit: String!): Recharge_Subscription
   Recharge_updateMyProductOptions(subscriptionId: String!, variantId: String, quantity: String): Recharge_Subscription
   Recharge_updateMySubscriptionPaymentMethod(addressId: String!, paymentMethodId: String!): Recharge_Address
+  Shopify_publishablePublishToCurrentChannel(
+    """The resource to create or update publications for."""
+    id: ID!
+  ): Shopify_PublishablePublishToCurrentChannelPayload
 }
 
 """A project file stored on s3"""
@@ -29509,12 +30535,17 @@ input CreateMyCheckoutPropertiesLinesItemsPropertyInput {
 
 type Klaviyo_AddMembersResponse {
   items: [Klaviyo_AddMembersResponseItemsProperty]
+  userErrors: [UserError]
 }
 
 type Klaviyo_AddMembersResponseItemsProperty {
   id: String
   email: String
   phone_number: String
+}
+
+type UserError {
+  message: String
 }
 
 type Klaviyo_200Ok {
@@ -29757,6 +30788,62 @@ input ShopifyStorefront_CartBuyerIdentityInput {
   The access token used to identify the customer associated with the cart.
   """
   customerAccessToken: String
+
+  """
+  An ordered set of delivery addresses tied to the buyer that is interacting with the cart.
+  The rank of the preferences is determined by the order of the addresses in the array. Preferences
+  can be used to populate relevant fields in the checkout flow.
+  """
+  deliveryAddressPreferences: [ShopifyStorefront_DeliveryAddressInput]
+}
+
+"""The input fields for delivery address preferences."""
+input ShopifyStorefront_DeliveryAddressInput {
+  """
+  A delivery address preference of a buyer that is interacting with the cart.
+  """
+  deliveryAddress: ShopifyStorefront_MailingAddressInput
+}
+
+"""Specifies the fields accepted to create or update a mailing address."""
+input ShopifyStorefront_MailingAddressInput {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the customer's company or organization."""
+  company: String
+
+  """The name of the country."""
+  country: String
+
+  """The first name of the customer."""
+  firstName: String
+
+  """The last name of the customer."""
+  lastName: String
+
+  """
+  A unique phone number for the customer.
+  
+  Formatted using E.164 standard. For example, _+16135551111_.
+  """
+  phone: String
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """The zip or postal code of the address."""
+  zip: String
 }
 
 """Return type for `customerAccessTokenCreate` mutation."""
@@ -29832,6 +30919,7 @@ input ShopifyStorefront_CustomerCreateInput {
 
 type CreateCustomerPayload {
   customer: CreateCustomerPayloadCustomerProperty
+  userErrors: [UserError]
 }
 
 type CreateCustomerPayloadCustomerProperty {
@@ -29919,49 +31007,9 @@ type ShopifyStorefront_CustomerAddressUpdatePayload {
   userErrors: [ShopifyStorefront_UserError!]! @deprecated(reason: "Use `customerUserErrors` instead.")
 }
 
-"""Specifies the fields accepted to create or update a mailing address."""
-input ShopifyStorefront_MailingAddressInput {
-  """
-  The first line of the address. Typically the street address or PO Box number.
-  """
-  address1: String
-
-  """
-  The second line of the address. Typically the number of the apartment, suite, or unit.
-  """
-  address2: String
-
-  """The name of the city, district, village, or town."""
-  city: String
-
-  """The name of the customer's company or organization."""
-  company: String
-
-  """The name of the country."""
-  country: String
-
-  """The first name of the customer."""
-  firstName: String
-
-  """The last name of the customer."""
-  lastName: String
-
-  """
-  A unique phone number for the customer.
-  
-  Formatted using E.164 standard. For example, _+16135551111_.
-  """
-  phone: String
-
-  """The region of the address, such as the province, state, or district."""
-  province: String
-
-  """The zip or postal code of the address."""
-  zip: String
-}
-
 type CreateTicketResponse {
-  id: Int!
+  id: Int
+  userErrors: [UserError]
 }
 
 type UpdateStorefrontResult {
@@ -31382,4 +32430,16 @@ type Recharge_CreateNotificationResponse {
 
 type Recharge_Onetime {
   id: String!
+}
+
+"""Return type for `publishablePublishToCurrentChannel` mutation."""
+type Shopify_PublishablePublishToCurrentChannelPayload {
+  """Resource that has been published."""
+  publishable: Shopify_Publishable
+
+  """The user's shop."""
+  shop: Shopify_Shop!
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [Shopify_UserError!]!
 }
