@@ -6,6 +6,7 @@ on:
 
 env:
   NEXT_TELEMETRY_DISABLED: 1
+  HUSKY: 0
 
 jobs:
   npm-test:
@@ -15,10 +16,19 @@ jobs:
     env:
       # Triggers loading env vars from .env.test
       NODE_ENV: test
+      # Required for API access during typechecking
+      TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/cache@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.node-version'
+          cache: 'npm'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
         with:
           path: |
             ~/.npm
