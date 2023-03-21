@@ -1,9 +1,21 @@
 #!/bin/sh
 
-if sh -c ": >/dev/tty" >/dev/null 2>/dev/null; then
-  exec < /dev/tty
-  npm run --silent takeshape:post-merge-hook -- --tty
-else
-  npm run --silent takeshape:post-merge-hook -- --no-tty
-fi
+is_merge() {
+  local reflog_message=$(git reflog -1)
+  local action_message=$(echo $reflog_message | cut -d":" -f 2)
+  if [[ $action_message = " merge "* ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
 
+# Test to ensure we don't run this for other commands like 'git pull'
+if is_merge; then
+  if sh -c ": >/dev/tty" >/dev/null 2>/dev/null; then
+    exec </dev/tty
+    npm run --silent takeshape:post-merge-hook -- --tty
+  else
+    npm run --silent takeshape:post-merge-hook -- --no-tty
+  fi
+fi
