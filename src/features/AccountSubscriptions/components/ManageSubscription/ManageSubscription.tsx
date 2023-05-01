@@ -236,12 +236,14 @@ export const ManageSubscription = ({
         </div>
       </div>
 
-      <NextChargeDateForm
-        isOpen={isNextChargeDateOpen}
-        onClose={() => setIsNextChargeDateOpen(false)}
-        subscription={subscription}
-        refetchSubscriptions={refetchSubscriptions}
-      />
+      {subscription.nextChargeScheduledAt && (
+        <NextChargeDateForm
+          isOpen={isNextChargeDateOpen}
+          onClose={() => setIsNextChargeDateOpen(false)}
+          subscription={subscription}
+          refetchSubscriptions={refetchSubscriptions}
+        />
+      )}
 
       <ProductOptionsForm
         subscription={subscription}
