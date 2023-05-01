@@ -7,12 +7,9 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     {
-      name: '@storybook/addon-postcss',
+      name: '@storybook/addon-styling',
       options: {
-        cssLoaderOptions: {
-          importLoaders: 1
-        },
-        postcssLoaderOptions: {
+        postCss: {
           implementation: require('postcss')
         }
       }

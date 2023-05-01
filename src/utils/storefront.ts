@@ -18,7 +18,11 @@ const client = createClient({
   accessTokenPrefix: ''
 });
 
-export function useStorefrontQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
+export function useStorefrontQuery<
+  TData,
+  TVariables extends OperationVariables = OperationVariables,
+  TDataTransformed = JsonValue
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: QueryHookWithTranformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
@@ -28,7 +32,11 @@ export function useStorefrontQuery<TData, TVariables = OperationVariables, TData
   });
 }
 
-export function useStorefrontLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
+export function useStorefrontLazyQuery<
+  TData,
+  TVariables extends OperationVariables = OperationVariables,
+  TDataTransformed = JsonValue
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: LazyQueryHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
