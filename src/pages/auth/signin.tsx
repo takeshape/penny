@@ -4,6 +4,7 @@ import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { parseSigninError } from 'utils/errors';
 import { getSingle } from 'utils/types';
 
 const SignUpPage: NextPage = () => {
@@ -14,7 +15,7 @@ const SignUpPage: NextPage = () => {
       <AuthSignIn
         signIn={signIn}
         callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/'}
-        error={query.error ? getSingle(query.error) : ''}
+        error={parseSigninError(query.error)}
         email={query.email ? getSingle(query.email) : ''}
         useMultipass={shopifyUseMultipass}
       />

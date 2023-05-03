@@ -116,6 +116,7 @@
     "msw": "^1.2.1",
     "msw-storybook-addon": "^1.8.0",
     "next-sitemap": "^4.0.9",
+    "pino-pretty": "^10.0.0",
     "postcss": "^8.4.23",
     "prettier": "^2.8.8",
     "storybook-addon-jotai": "^0.0.6",

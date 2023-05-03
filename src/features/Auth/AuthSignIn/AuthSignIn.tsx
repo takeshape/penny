@@ -1,15 +1,14 @@
-import { useQuery } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
-import { GetCustomerStateQuery } from 'features/Auth/queries';
+import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { SigninError } from 'features/Auth/types';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { GetCustomerStateQueryResponse, GetCustomerStateQueryVariables } from 'types/takeshape';
 import { getSingle } from 'utils/types';
 
 export interface AuthSignInForm {
@@ -20,7 +19,7 @@ export interface AuthSignInForm {
 export interface AuthSignInProps {
   signIn: typeof signIn;
   callbackUrl: string;
-  error?: string;
+  error?: SigninError;
   useMultipass: boolean;
   email?: string;
 }
@@ -38,19 +37,17 @@ export const errors: Record<string, string> = {
   SessionRequired: 'Please sign in to access this page.',
   CheckoutSessionRequired: 'Please sign in to checkout.',
   CannotCreate: 'Email address already in use. Sign in instead.',
+  EmailInUse: '',
+  UNIDENTIFIED_CUSTOMER: 'Try signing in with a different account.',
   default: 'Unable to sign in.'
 };
 
 export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
-  const { handleSubmit, formState, control, register, watch } = useForm<AuthSignInForm>();
+  const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
   const router = useRouter();
   const watched = useRef({ email: '' });
 
   watched.current.email = watch('email', '');
-
-  const { refetch } = useQuery<GetCustomerStateQueryResponse, GetCustomerStateQueryVariables>(GetCustomerStateQuery, {
-    skip: true
-  });
 
   const onSubmit = useCallback(
     async ({ email, password, rememberMe }: AuthSignInForm) => {
@@ -60,7 +57,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
   );
 
   const hasErrors = Boolean(error);
-  const errorMessage = error && (errors[error] ?? errors.default);
+  const errorMessage = error && (errors[error.code] ?? errors.default);
 
   const signupLink = useMemo(() => {
     let href = '/auth/create';
@@ -74,21 +71,31 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
     signIn('google', { callbackUrl });
   }, [callbackUrl, signIn]);
 
-  useEffect(() => {
-    refetch({ email: watched.current.email }).then(({ data: { customer } }) => {
-      if (customer?.state === 'invited' || customer?.state === 'disabled') {
-        console.log(customer);
-        // if (!customer.id) {
-        //   throw new Error('Invalid customer state');
-        // }
+  const inactiveCustomer = useMemo(() => {
+    if (error?.code === 'EmailInUse') {
+      return {
+        email: error.email,
+        id: error.customerId
+      };
+    }
+  }, [error]);
 
-        // setInactiveCustomer({ email, id: customer.id });
-      }
-    });
-  }, [email, hasErrors, refetch]);
+  const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
+  const onAccountInactiveFormClose = useCallback(() => {
+    router.push(window.location.pathname);
+    reset();
+  }, [reset, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      {inactiveCustomer && (
+        <AccountInactiveForm
+          customer={inactiveCustomer}
+          isOpen={isAccountInactiveOpen}
+          onClose={onAccountInactiveFormClose}
+        />
+      )}
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Sign in to your account</h2>
