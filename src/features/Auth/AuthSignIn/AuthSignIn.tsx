@@ -158,7 +158,10 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
               </div>
 
               <div className="text-sm">
-                <NextLink href="/auth/reset-password" className="font-medium text-accent-600 hover:text-accent-500">
+                <NextLink
+                  href={`/auth/reset-password?callbackUrl=${encodeURIComponent('/auth/signin')}`}
+                  className="font-medium text-accent-600 hover:text-accent-500"
+                >
                   Forgot your password?
                 </NextLink>
               </div>

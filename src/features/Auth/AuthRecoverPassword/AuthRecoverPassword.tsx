@@ -7,7 +7,7 @@ import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
 import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   GetCustomerStateQueryResponse,
@@ -25,11 +25,11 @@ export interface AuthRecoverPasswordProps {
   callbackUrl: string;
 }
 
-export const AuthRecoverPassword = ({}: AuthRecoverPasswordProps) => {
+export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
   const { handleSubmit, formState, reset, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
-  const { push } = useRouter();
+  const router = useRouter();
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordMutationResponse,
     RecoverCustomerPasswordMutationVariables
@@ -58,14 +58,14 @@ export const AuthRecoverPassword = ({}: AuthRecoverPasswordProps) => {
 
       if (customer?.state === 'no-account') {
         // Send to sign up page
-        push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        router.push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
         return;
       }
 
       const recaptchaToken = await executeRecaptcha('recover_password');
       await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
     },
-    [executeRecaptcha, push, refetch, setRecoverPasswordPayload]
+    [executeRecaptcha, router, refetch, setRecoverPasswordPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -76,6 +76,12 @@ export const AuthRecoverPassword = ({}: AuthRecoverPasswordProps) => {
 
   const hasData = Boolean(recoverPasswordData);
   const hasErrors = (recoverPasswordData?.customerRecover?.customerUserErrors?.length ?? 0) > 0;
+
+  useEffect(() => {
+    if (callbackUrl && hasData) {
+      setTimeout(() => router.push(callbackUrl), 5000);
+    }
+  }, [callbackUrl, hasData, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
