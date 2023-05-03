@@ -1,12 +1,15 @@
+import { useQuery } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
+import { GetCustomerStateQuery } from 'features/Auth/queries';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { GetCustomerStateQueryResponse, GetCustomerStateQueryVariables } from 'types/takeshape';
 import { getSingle } from 'utils/types';
 
 export interface AuthSignInForm {
@@ -39,9 +42,15 @@ export const errors: Record<string, string> = {
 };
 
 export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
-  const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
-
+  const { handleSubmit, formState, control, register, watch } = useForm<AuthSignInForm>();
   const router = useRouter();
+  const watched = useRef({ email: '' });
+
+  watched.current.email = watch('email', '');
+
+  const { refetch } = useQuery<GetCustomerStateQueryResponse, GetCustomerStateQueryVariables>(GetCustomerStateQuery, {
+    skip: true
+  });
 
   const onSubmit = useCallback(
     async ({ email, password, rememberMe }: AuthSignInForm) => {
@@ -64,6 +73,19 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
   const signinGoogle = useCallback(() => {
     signIn('google', { callbackUrl });
   }, [callbackUrl, signIn]);
+
+  useEffect(() => {
+    refetch({ email: watched.current.email }).then(({ data: { customer } }) => {
+      if (customer?.state === 'invited' || customer?.state === 'disabled') {
+        console.log(customer);
+        // if (!customer.id) {
+        //   throw new Error('Invalid customer state');
+        // }
+
+        // setInactiveCustomer({ email, id: customer.id });
+      }
+    });
+  }, [email, hasErrors, refetch]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
