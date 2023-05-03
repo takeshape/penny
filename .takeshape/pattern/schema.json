@@ -907,6 +907,66 @@
     }
   },
   "queries": {
+    "getCustomerState": {
+      "args": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
+      "resolver": {
+        "compose": [
+          {
+            "id": "customer",
+            "name": "rest:get",
+            "service": "shopify",
+            "path": "/admin/api/2023-04/customers/search.json",
+            "options": {
+              "endpoint": "https://deluxe-sample-project.myshopify.com/"
+            },
+            "searchParams": {
+              "ops": [
+                {
+                  "path": "query",
+                  "mapping": [
+                    [
+                      "get",
+                      {
+                        "path": "$args.email"
+                      }
+                    ],
+                    [
+                      "format",
+                      {
+                        "template": "\"%s\""
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "path": "fields",
+                  "value": "state"
+                }
+              ]
+            },
+            "results": {
+              "ops": [
+                {
+                  "path": "$",
+                  "mapping": "$currentResolver.customers[0]"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "shape": "CustomerState"
+    },
     "getMyLoyaltyLionCustomer": {
       "shape": "Loyal_Customer",
       "resolver": {
@@ -10299,6 +10359,19 @@
             }
           }
         ]
+      }
+    },
+    "CustomerState": {
+      "id": "CustomerState",
+      "name": "CustomerState",
+      "title": "CustomerState",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string"
+          }
+        }
       }
     }
   },

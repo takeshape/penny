@@ -1,4 +1,4 @@
-import { commitSha, logLevel, vercelEnv } from 'config';
+import { commitSha, isDevelopment, logLevel, vercelEnv } from 'config';
 import pino, { LoggerOptions } from 'pino';
 
 const config: LoggerOptions = {
@@ -8,5 +8,14 @@ const config: LoggerOptions = {
     revision: commitSha
   }
 };
+
+if (isDevelopment) {
+  config.transport = {
+    target: 'pino-pretty',
+    options: {
+      colorize: true
+    }
+  };
+}
 
 export default pino(config);

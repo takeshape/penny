@@ -6,6 +6,9 @@ export const CreateCustomerMutation = gql`
       customer {
         id
       }
+      userErrors {
+        message
+      }
     }
   }
 `;
@@ -18,6 +21,25 @@ export const RecoverCustomerPasswordMutation = gql`
         field
         message
       }
+    }
+  }
+`;
+
+export const SendCustomerInviteMutation = gql`
+  mutation SendCustomerInviteMutation($customerId: String!) {
+    customerInvite: sendCustomerInvite(customerId: $customerId) {
+      customer_invite {
+        from
+      }
+    }
+  }
+`;
+
+export const GetCustomerStateQuery = gql`
+  query GetCustomerStateQuery($email: String!) {
+    customer: getCustomerState(email: $email) {
+      state
+      id
     }
   }
 `;
