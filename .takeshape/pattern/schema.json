@@ -950,7 +950,7 @@
                 },
                 {
                   "path": "fields",
-                  "value": "state"
+                  "value": "id,state"
                 }
               ]
             },
@@ -958,7 +958,22 @@
               "ops": [
                 {
                   "path": "$",
-                  "mapping": "$currentResolver.customers[0]"
+                  "mapping": [
+                    [
+                      "set",
+                      {
+                        "value": {
+                          "state": "no-account"
+                        }
+                      }
+                    ],
+                    [
+                      "get",
+                      {
+                        "path": "$currentResolver.customers[0]"
+                      }
+                    ]
+                  ]
                 }
               ]
             }
@@ -2766,6 +2781,48 @@
     }
   },
   "mutations": {
+    "sendCustomerInvite": {
+      "args": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "customerId"
+        ]
+      },
+      "resolver": {
+        "compose": [
+          {
+            "id": "customer",
+            "name": "rest:post",
+            "service": "shopify",
+            "path": {
+              "ops": [
+                {
+                  "path": "customerId",
+                  "mapping": "$args.customerId"
+                }
+              ],
+              "serialize": {
+                "template": "/admin/api/2023-04/customers/{customerId}/send_invite.json",
+                "paths": {
+                  "customerId": {
+                    "style": "simple"
+                  }
+                }
+              }
+            },
+            "options": {
+              "endpoint": "https://deluxe-sample-project.myshopify.com/"
+            }
+          }
+        ]
+      },
+      "shape": "CustomerInvite"
+    },
     "createMyCheckoutSession": {
       "args": {
         "type": "object",
@@ -10370,8 +10427,46 @@
         "properties": {
           "state": {
             "type": "string"
+          },
+          "id": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "state"
+        ]
+      }
+    },
+    "CustomerInvite": {
+      "id": "CustomerInvite",
+      "name": "CustomerInvite",
+      "title": "CustomerInvite",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "customer_invite": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string"
+              },
+              "from": {
+                "type": "string"
+              },
+              "subject": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "to",
+              "from",
+              "subject"
+            ]
+          }
+        },
+        "required": [
+          "customer_invite"
+        ]
       }
     }
   },
