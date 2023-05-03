@@ -1,15 +1,22 @@
-import { ApolloError, useMutation } from '@apollo/client';
+import { ApolloError, useMutation, useQuery } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { InactiveCustomer } from 'features/Auth/types';
 import { signIn } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { CreateCustomerMutationResponse, CreateCustomerMutationVariables } from 'types/takeshape';
-import { CreateCustomerMutation } from '../queries';
+import {
+  CreateCustomerMutationResponse,
+  CreateCustomerMutationVariables,
+  GetCustomerStateQueryResponse,
+  GetCustomerStateQueryVariables
+} from 'types/takeshape';
+import { CreateCustomerMutation, GetCustomerStateQuery } from '../queries';
 
 export interface AuthCreateAccountForm {
   email: string;
@@ -36,12 +43,17 @@ function getErrorMessage(error?: ApolloError) {
 }
 
 export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCreateAccountProps) => {
-  const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
+  const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
+  const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
 
   const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<
     CreateCustomerMutationResponse,
     CreateCustomerMutationVariables
   >(CreateCustomerMutation);
+
+  const { refetch } = useQuery<GetCustomerStateQueryResponse, GetCustomerStateQueryVariables>(GetCustomerStateQuery, {
+    skip: true
+  });
 
   const watched = useRef({ email: '', password: '' });
 
@@ -59,13 +71,37 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
 
   const onSubmit: SubmitHandler<AuthCreateAccountForm> = useCallback(
     async ({ email, password }) => {
+      const {
+        data: { customer }
+      } = await refetch({ email });
+
+      if (customer?.state === 'invited' || customer?.state === 'disabled') {
+        if (!customer.id) {
+          throw new Error('Invalid customer state');
+        }
+
+        setInactiveCustomer({ email, id: customer.id });
+        return;
+      }
+
+      if (customer?.state === 'no-account') {
+        // Send to sign up page
+        return;
+      }
+
       const recaptchaToken = await executeRecaptcha('create_account');
       await setCustomerPayload({
         variables: { input: { email, password, recaptchaToken } }
       });
     },
-    [executeRecaptcha, setCustomerPayload]
+    [executeRecaptcha, refetch, setCustomerPayload]
   );
+
+  const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
+  const onAccountInactiveFormClose = useCallback(() => {
+    setInactiveCustomer(null);
+    reset();
+  }, [reset]);
 
   const errorMessage = getErrorMessage(customerError);
 
@@ -75,6 +111,13 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      {inactiveCustomer && (
+        <AccountInactiveForm
+          customer={inactiveCustomer}
+          isOpen={isAccountInactiveOpen}
+          onClose={onAccountInactiveFormClose}
+        />
+      )}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Create your account</h2>

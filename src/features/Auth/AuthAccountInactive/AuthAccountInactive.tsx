@@ -68,10 +68,13 @@ export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInacti
             </div>
             <div className="mt-3 text-center sm:mt-5">
               <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                <strong>{customer.email}</strong> is inactive.
+                <strong>{customer.email}</strong> is in use.
               </Dialog.Title>
               <div className="mt-2">
-                <p className="text-sm text-gray-500">Would you like to activate it by confirming your email address?</p>
+                <p className="text-sm text-gray-500">This email address is in use, but in an inactive state.</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Would you like to activate it by confirming your email address?
+                </p>
               </div>
             </div>
           </div>
