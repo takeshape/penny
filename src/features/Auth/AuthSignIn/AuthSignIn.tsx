@@ -19,6 +19,7 @@ export interface AuthSignInProps {
   callbackUrl: string;
   error?: string;
   useMultipass: boolean;
+  email?: string;
 }
 
 export const errors: Record<string, string> = {
@@ -33,10 +34,11 @@ export const errors: Record<string, string> = {
   CredentialsSignin: 'Email address or password are incorrect.',
   SessionRequired: 'Please sign in to access this page.',
   CheckoutSessionRequired: 'Please sign in to checkout.',
+  CannotCreate: 'Email address already in use. Sign in instead.',
   default: 'Unable to sign in.'
 };
 
-export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSignInProps) => {
+export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
   const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
 
   const router = useRouter();
@@ -82,7 +84,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               id="email"
               label="Email Address"
               autoComplete="email"
-              defaultValue=""
+              defaultValue={email ?? ''}
               type="email"
               rules={{
                 required: 'This field is required',

@@ -8,6 +8,7 @@ import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccou
 import { InactiveCustomer } from 'features/Auth/types';
 import { signIn } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -28,6 +29,8 @@ export interface AuthCreateAccountProps {
   callbackUrl: string;
   signIn: typeof signIn;
   useMultipass: boolean;
+  notice?: string;
+  email?: string;
 }
 
 function getErrorMessage(error?: ApolloError) {
@@ -42,9 +45,10 @@ function getErrorMessage(error?: ApolloError) {
   return error.message;
 }
 
-export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCreateAccountProps) => {
+export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, email }: AuthCreateAccountProps) => {
   const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
+  const { push } = useRouter();
 
   const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<
     CreateCustomerMutationResponse,
@@ -84,8 +88,9 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
         return;
       }
 
-      if (customer?.state === 'no-account') {
+      if (customer?.state === 'enabled') {
         // Send to sign up page
+        push(`/auth/signin?error=CannotCreate&email=${email}`);
         return;
       }
 
@@ -94,7 +99,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
         variables: { input: { email, password, recaptchaToken } }
       });
     },
-    [executeRecaptcha, refetch, setCustomerPayload]
+    [executeRecaptcha, push, refetch, setCustomerPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -126,6 +131,8 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            {notice && <Alert status="warn" primaryText={notice} />}
+
             {errorMessage && (
               <Alert
                 status="error"
@@ -141,7 +148,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               id="email"
               label="Email Address"
               autoComplete="email"
-              defaultValue=""
+              defaultValue={email ?? ''}
               type="email"
               rules={{
                 required: 'This field is required',
