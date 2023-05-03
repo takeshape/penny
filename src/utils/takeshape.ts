@@ -56,7 +56,11 @@ export function useAuthenticatedClient() {
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
+export function useAuthenticatedQuery<
+  TData,
+  TVariables extends OperationVariables = OperationVariables,
+  TDataTransformed = JsonValue
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: QueryHookWithTranformOptions<TData, TVariables, TDataTransformed> = {}
 ) {
@@ -74,7 +78,11 @@ export function useAuthenticatedQuery<TData, TVariables = OperationVariables, TD
  *
  * WARNING: You must guard the code path that uses this against un-authenticated access.
  */
-export function useAuthenticatedLazyQuery<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
+export function useAuthenticatedLazyQuery<
+  TData,
+  TVariables extends OperationVariables = OperationVariables,
+  TDataTransformed = JsonValue
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   options: LazyQueryHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ) {

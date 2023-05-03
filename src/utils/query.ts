@@ -23,14 +23,19 @@ export type TransformOptions<T, To> = {
   data?: (data?: T | null) => To | null;
 };
 
-export type QueryHookWithTranformOptions<TData, TVariables, TDataTransformed> = QueryHookOptions<TData, TVariables> & {
+export type QueryHookWithTranformOptions<
+  TData,
+  TVariables extends OperationVariables,
+  TDataTransformed
+> = QueryHookOptions<TData, TVariables> & {
   transform?: TransformOptions<TData, TDataTransformed>;
 };
 
-export type LazyQueryHookWithTransformOptions<TData, TVariables, TDataTransformed> = LazyQueryHookOptions<
+export type LazyQueryHookWithTransformOptions<
   TData,
-  TVariables
-> & {
+  TVariables extends OperationVariables,
+  TDataTransformed
+> = LazyQueryHookOptions<TData, TVariables> & {
   transform?: TransformOptions<TData, TDataTransformed>;
 };
 
@@ -41,7 +46,10 @@ export type MutationHookWithTransformOptions<TData, TVariables, TDataTransformed
   transform?: TransformOptions<TData, TDataTransformed>;
 };
 
-export type QueryResultWithTransformData<TData, TVariables, TDataTransformed> = QueryResult<TData, TVariables> & {
+export type QueryResultWithTransformData<TData, TVariables extends OperationVariables, TDataTransformed> = QueryResult<
+  TData,
+  TVariables
+> & {
   transformedData?: TDataTransformed | null;
 };
 
@@ -49,7 +57,7 @@ export type MutationResultWithTransformData<TData, TDataTransformed> = MutationR
   transformedData?: TDataTransformed | null;
 };
 
-export type LazyQueryResultTupleWithTransformData<TData, TVariables, TDataTransformed> = [
+export type LazyQueryResultTupleWithTransformData<TData, TVariables extends OperationVariables, TDataTransformed> = [
   LazyQueryExecFunction<TData, TVariables>,
   QueryResultWithTransformData<TData, TVariables, TDataTransformed>
 ];
@@ -68,7 +76,11 @@ export type MutationTupleWithTranformData<
 /**
  * A convenience hook, uses a provided Apollo Client and supports transform fns.
  */
-export function useQueryWithTransform<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
+export function useQueryWithTransform<
+  TData,
+  TVariables extends OperationVariables = OperationVariables,
+  TDataTransformed = JsonValue
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   { transform, ...options }: QueryHookWithTranformOptions<TData, TVariables, TDataTransformed> = {}
 ): QueryResultWithTransformData<TData, TVariables, TDataTransformed> {
@@ -85,7 +97,11 @@ export function useQueryWithTransform<TData, TVariables = OperationVariables, TD
 /**
  * A convenience hook, uses a provided Apollo Client and supports transform fns.
  */
-export function useLazyQueryWithTransform<TData, TVariables = OperationVariables, TDataTransformed = JsonValue>(
+export function useLazyQueryWithTransform<
+  TData,
+  TVariables extends OperationVariables = OperationVariables,
+  TDataTransformed = JsonValue
+>(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
   { transform, ...options }: LazyQueryHookWithTransformOptions<TData, TVariables, TDataTransformed> = {}
 ): LazyQueryResultTupleWithTransformData<TData, TVariables, TDataTransformed> {
