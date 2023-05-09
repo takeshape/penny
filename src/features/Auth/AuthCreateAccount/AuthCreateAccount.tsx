@@ -17,6 +17,7 @@ import {
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables
 } from 'types/takeshape';
+import { sanitizeCallbackUrl } from 'utils/callbacks';
 import { CreateCustomerMutation, GetCustomerStateQuery } from '../queries';
 
 export interface AuthCreateAccountForm {
@@ -46,6 +47,8 @@ function getErrorMessage(error?: ApolloError) {
 }
 
 export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, email }: AuthCreateAccountProps) => {
+  callbackUrl = sanitizeCallbackUrl(callbackUrl);
+
   const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
   const { push } = useRouter();

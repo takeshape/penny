@@ -15,6 +15,7 @@ import {
   RecoverCustomerPasswordMutationResponse,
   RecoverCustomerPasswordMutationVariables
 } from 'types/takeshape';
+import { sanitizeCallbackUrl } from 'utils/callbacks';
 import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
 import { InactiveCustomer } from '../types';
 export interface AuthRecoverPasswordForm {
@@ -26,6 +27,8 @@ export interface AuthRecoverPasswordProps {
 }
 
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
+  callbackUrl = sanitizeCallbackUrl(callbackUrl);
+
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
   const { handleSubmit, formState, reset, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 

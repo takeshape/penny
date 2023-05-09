@@ -9,6 +9,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { sanitizeCallbackUrl } from 'utils/callbacks';
 import { getSingle } from 'utils/types';
 
 export interface AuthSignInForm {
@@ -43,6 +44,8 @@ export const errors: Record<string, string> = {
 };
 
 export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
+  callbackUrl = sanitizeCallbackUrl(callbackUrl);
+
   const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
   const router = useRouter();
   const watched = useRef({ email: '' });
