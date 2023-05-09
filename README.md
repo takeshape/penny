@@ -745,7 +745,9 @@ hook here, a prompt will be presented whenever you run `git checkout -b my_new_b
   - For your production site, it will always run with the exact API version that matches the commit which triggered the
     build. **Any changes to your production API will not take effect on your production site until you run a new
     build.**
-- Using GitHub Actions, it will deleting a TakeShape API branch after a PR is merged and the git branch is deleted.
+- If you are incorporating branch promtion into your Vercel deployment you will need to provide a `GITHUB_TOKEN` env
+  variable with sufficient access to read your repo PRs, which is required to determine which branch needs to be
+  promoted.
 
 You can read more about our Branches feature and workflow in our
 [Work with Branches guide](https://app.takeshape.io/docs/get-started/branches/).
