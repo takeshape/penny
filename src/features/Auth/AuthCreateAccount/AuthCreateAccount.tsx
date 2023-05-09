@@ -47,7 +47,7 @@ function getErrorMessage(error?: ApolloError) {
 }
 
 export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, email }: AuthCreateAccountProps) => {
-  callbackUrl = sanitizeCallbackUrl(callbackUrl);
+  const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
   const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
@@ -70,9 +70,9 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
   useEffect(() => {
     if (customerResponse?.customerCreate?.customer?.id) {
       const { email, password } = watched.current;
-      signIn('shopify', { email, password, callbackUrl });
+      signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
     }
-  }, [customerResponse, signIn, callbackUrl]);
+  }, [customerResponse, signIn, sanitizedCallbackUrl]);
 
   const { executeRecaptcha } = useReCaptcha();
 
@@ -114,8 +114,8 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
   const errorMessage = getErrorMessage(customerError);
 
   const signinGoogle = useCallback(() => {
-    signIn('google', { callbackUrl });
-  }, [callbackUrl, signIn]);
+    signIn('google', { callbackUrl: sanitizedCallbackUrl });
+  }, [sanitizedCallbackUrl, signIn]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -212,7 +212,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
                 href={`/api/auth/signin`}
                 onClick={(e) => {
                   e.preventDefault();
-                  signIn(undefined, { callbackUrl });
+                  signIn(undefined, { callbackUrl: sanitizedCallbackUrl });
                 }}
                 className="ml-1 text-sm font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >

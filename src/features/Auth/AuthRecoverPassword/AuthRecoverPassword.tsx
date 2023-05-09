@@ -27,12 +27,12 @@ export interface AuthRecoverPasswordProps {
 }
 
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
-  callbackUrl = sanitizeCallbackUrl(callbackUrl);
+  const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
   const { handleSubmit, formState, reset, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
-  const router = useRouter();
+  const { push } = useRouter();
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordMutationResponse,
     RecoverCustomerPasswordMutationVariables
@@ -61,14 +61,14 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       if (customer?.state === 'no-account') {
         // Send to sign up page
-        router.push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
         return;
       }
 
       const recaptchaToken = await executeRecaptcha('recover_password');
       await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
     },
-    [executeRecaptcha, router, refetch, setRecoverPasswordPayload]
+    [executeRecaptcha, push, refetch, setRecoverPasswordPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -81,10 +81,10 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   const hasErrors = (recoverPasswordData?.customerRecover?.customerUserErrors?.length ?? 0) > 0;
 
   useEffect(() => {
-    if (callbackUrl && hasData) {
-      setTimeout(() => router.push(callbackUrl), 5000);
+    if (sanitizedCallbackUrl && hasData) {
+      setTimeout(() => push(sanitizedCallbackUrl), 5000);
     }
-  }, [callbackUrl, hasData, router]);
+  }, [sanitizedCallbackUrl, hasData, push]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">

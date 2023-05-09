@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { sanitizeCallbackUrl } from 'utils/callbacks';
-import { getSingle } from 'utils/types';
 
 export interface AuthSignInForm {
   email: string;
@@ -44,10 +43,10 @@ export const errors: Record<string, string> = {
 };
 
 export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
-  callbackUrl = sanitizeCallbackUrl(callbackUrl);
+  const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
   const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
-  const router = useRouter();
+  const { push } = useRouter();
   const watched = useRef({ email: '' });
 
   watched.current.email = watch('email', '');
@@ -64,11 +63,11 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const signupLink = useMemo(() => {
     let href = '/auth/create';
-    if (router.query.callbackUrl) {
-      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl) ?? '')}`;
+    if (sanitizedCallbackUrl) {
+      href += `?callbackUrl=${encodeURIComponent(sanitizedCallbackUrl)}`;
     }
     return href;
-  }, [router]);
+  }, [sanitizedCallbackUrl]);
 
   const signinGoogle = useCallback(() => {
     signIn('google', { callbackUrl });
@@ -85,9 +84,9 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
   const onAccountInactiveFormClose = useCallback(() => {
-    router.push(window.location.pathname);
+    push(window.location.pathname);
     reset();
-  }, [reset, router]);
+  }, [reset, push]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
