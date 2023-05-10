@@ -2,6 +2,7 @@ import { AuthResetPassword } from 'features/Auth/AuthResetPassword/AuthResetPass
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { shopifyCustomerIdToGid } from 'transforms/shopify';
 import { getSingle } from 'utils/types';
 
 const ResetPasswordPage: NextPage = () => {
@@ -15,7 +16,7 @@ const ResetPasswordPage: NextPage = () => {
     <Layout seo={{ title: 'Reset Password' }}>
       <AuthResetPassword
         resetToken={getSingle(query.token)}
-        customerId={getSingle(query.customerId)}
+        customerId={shopifyCustomerIdToGid(getSingle(query.customerId))}
         callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/auth/signin'}
       />
     </Layout>

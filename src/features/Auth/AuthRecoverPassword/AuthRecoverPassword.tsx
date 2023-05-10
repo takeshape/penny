@@ -58,7 +58,11 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
             )}
 
             {hasData && !hasErrors && (
-              <Alert status="success" primaryText="Check your email for password reset instructions" />
+              <Alert
+                status="success"
+                primaryText="Email Sent"
+                secondaryText="Check your email for password reset instructions"
+              />
             )}
 
             {!hasData && (

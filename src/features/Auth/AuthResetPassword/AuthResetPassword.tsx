@@ -1,13 +1,19 @@
-import { useMutation } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { AuthResetPasswordMutation } from 'features/Auth/queries.storefront';
-import { useCallback, useRef } from 'react';
+import { AuthActivateAccountMutation, AuthResetPasswordMutation } from 'features/Auth/queries.storefront';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AuthResetPasswordMutationResponse, AuthResetPasswordMutationVariables } from 'types/storefront';
+import {
+  AuthActivateAccountMutationResponse,
+  AuthActivateAccountMutationVariables,
+  AuthResetPasswordMutationResponse,
+  AuthResetPasswordMutationVariables
+} from 'types/storefront';
+import { useStorefrontMutation } from 'utils/storefront';
 
 export interface AuthResetPasswordForm {
   password: string;
@@ -23,32 +29,47 @@ export interface AuthResetPasswordProps {
 
 export const AuthResetPassword = ({ customerId, resetToken, activationToken, callbackUrl }: AuthResetPasswordProps) => {
   if (!activationToken && !resetToken) {
-    throw new Error('One of activationToken or resetToken is required');
+    throw new Error('One of `activationToken` or `resetToken` is required');
   }
+
+  const { push } = useRouter();
 
   const { handleSubmit, formState, control, watch } = useForm<AuthResetPasswordForm>({ mode: 'onBlur' });
 
-  const [setResetPasswordPayload, { data: resetPasswordData }] = useMutation<
+  const [setResetPasswordPayload, { data: resetPasswordData }] = useStorefrontMutation<
     AuthResetPasswordMutationResponse,
     AuthResetPasswordMutationVariables
   >(AuthResetPasswordMutation);
 
+  const [setActivateAccountPayload, { data: activateAccountData }] = useStorefrontMutation<
+    AuthActivateAccountMutationResponse,
+    AuthActivateAccountMutationVariables
+  >(AuthActivateAccountMutation);
+
   const onSubmit: SubmitHandler<AuthResetPasswordForm> = useCallback(
     async ({ password }) => {
       if (activationToken) {
-        console.log({ customerId, password, resetToken, activationToken });
-        setResetPasswordPayload({ variables: { id: customerId, input: { password, activationToken } } });
-      } else {
+        setActivateAccountPayload({ variables: { id: customerId, input: { password, activationToken } } });
+      }
+
+      if (resetToken) {
         setResetPasswordPayload({ variables: { id: customerId, input: { password, resetToken } } });
       }
     },
-    [activationToken, customerId, resetToken]
+    [activationToken, customerId, resetToken, setActivateAccountPayload, setResetPasswordPayload]
   );
 
-  const hasData = Boolean(resetPasswordData);
-  const hasErrors = (resetPasswordData?.customer?.customerUserErrors?.length ?? 0) > 0;
+  const data = resetPasswordData ?? activateAccountData;
+  const hasData = Boolean(data);
+  const hasErrors = (data?.customer?.customerUserErrors?.length ?? 0) > 0;
   const watched = useRef({ password: '' });
   watched.current.password = watch('password', '');
+
+  useEffect(() => {
+    if (hasData && !hasErrors) {
+      setTimeout(() => push('/auth/signin'), 5000);
+    }
+  }, [hasData, hasErrors, push]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -66,12 +87,16 @@ export const AuthResetPassword = ({ customerId, resetToken, activationToken, cal
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={resetPasswordData?.customerReset?.customerUserErrors.map((e) => e.message)}
+                secondaryText={data?.customer?.customerUserErrors.map((e) => e.message)}
               />
             )}
 
             {hasData && !hasErrors && (
-              <Alert status="success" primaryText="Check your email for password reset instructions" />
+              <Alert
+                status="success"
+                primaryText={activateAccountData ? 'Account Activated' : 'Password Reset'}
+                secondaryText="You can now sign in with your new password."
+              />
             )}
 
             {!hasData && (
