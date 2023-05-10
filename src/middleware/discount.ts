@@ -22,6 +22,6 @@ export function middleware(request: NextRequest) {
   return NextResponse.redirect(new URL(`/${redirect}?${discount.toString()}`, request.url));
 }
 
-export const config = {
-  matcher: '/discount/:path*'
-};
+export function predicate(request: NextRequest) {
+  return request.nextUrl.pathname.startsWith('/discount');
+}

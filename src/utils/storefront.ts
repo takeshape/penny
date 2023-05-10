@@ -55,7 +55,3 @@ export function useStorefrontMutation<TData, TVariables, TDataTransformed = Json
     client
   });
 }
-
-export function parsePasswordResetUrl(resetUrl: string) {}
-
-export function parsePasswordResetUrl(resetUrl: string) {}

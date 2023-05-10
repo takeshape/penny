@@ -4,10 +4,10 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
+import { AuthResetPasswordMutation } from 'features/Auth/queries.storefront';
 import { useCallback, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { AuthResetPasswordMutationResponse, AuthResetPasswordMutationVariables } from 'types/storefront';
-import { RecoverCustomerPasswordMutation } from '../queries';
 
 export interface AuthResetPasswordForm {
   password: string;
@@ -22,22 +22,31 @@ export interface AuthResetPasswordProps {
 }
 
 export const AuthResetPassword = ({ customerId, resetToken, activationToken, callbackUrl }: AuthResetPasswordProps) => {
+  if (!activationToken && !resetToken) {
+    throw new Error('One of activationToken or resetToken is required');
+  }
+
   const { handleSubmit, formState, control, watch } = useForm<AuthResetPasswordForm>({ mode: 'onBlur' });
 
   const [setResetPasswordPayload, { data: resetPasswordData }] = useMutation<
     AuthResetPasswordMutationResponse,
     AuthResetPasswordMutationVariables
-  >(RecoverCustomerPasswordMutation);
+  >(AuthResetPasswordMutation);
 
   const onSubmit: SubmitHandler<AuthResetPasswordForm> = useCallback(
     async ({ password }) => {
-      console.log({ customerId, password, resetToken, activationToken });
+      if (activationToken) {
+        console.log({ customerId, password, resetToken, activationToken });
+        setResetPasswordPayload({ variables: { id: customerId, input: { password, activationToken } } });
+      } else {
+        setResetPasswordPayload({ variables: { id: customerId, input: { password, resetToken } } });
+      }
     },
     [activationToken, customerId, resetToken]
   );
 
   const hasData = Boolean(resetPasswordData);
-  const hasErrors = (resetPasswordData?.customerReset?.customerUserErrors?.length ?? 0) > 0;
+  const hasErrors = (resetPasswordData?.customer?.customerUserErrors?.length ?? 0) > 0;
   const watched = useRef({ password: '' });
   watched.current.password = watch('password', '');
 
@@ -45,7 +54,9 @@ export const AuthResetPassword = ({ customerId, resetToken, activationToken, cal
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Logo className="h-12 w-auto" />
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Reset your password</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">
+          {activationToken ? 'Activate your account' : 'Reset your password'}
+        </h2>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -99,7 +110,7 @@ export const AuthResetPassword = ({ customerId, resetToken, activationToken, cal
                 />
                 <div>
                   <Button disabled={formState.isSubmitting} type="submit" color="primary" className="w-full">
-                    Reset password
+                    {activationToken ? 'Activate account' : 'Reset password'}
                   </Button>
                 </div>
                 <RecaptchaBranding />

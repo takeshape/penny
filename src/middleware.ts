@@ -1,21 +1,20 @@
+import * as account from 'middleware/account';
 import * as discount from 'middleware/discount';
-import * as password from 'middleware/password';
-import { NextRequest } from 'next/server';
-
-const matcherRe = /\/:path.+/;
+import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (pathname.startsWith(discount.config.matcher.replace(matcherRe, ''))) {
+  if (discount.predicate(request)) {
     return discount.middleware(request);
   }
 
-  if (pathname.startsWith(password.config.matcher.replace(matcherRe, ''))) {
-    return password.middleware(request);
+  if (account.predicate(request)) {
+    return account.middleware(request);
   }
+
+  return NextResponse.next();
 }
 
+// Matcher must be a string-literal it seems
 export const config = {
-  matcher: [discount.config.matcher, password.config.matcher]
+  matcher: ['/discount/:path*', '/account/:path*']
 };

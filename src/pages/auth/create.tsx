@@ -9,8 +9,6 @@ import { getSingle } from 'utils/types';
 const SignUpPage: NextPage = () => {
   const { query } = useRouter();
 
-  console.log(query.callbackUrl);
-
   return (
     <Layout seo={{ title: 'Register' }}>
       <AuthCreateAccount

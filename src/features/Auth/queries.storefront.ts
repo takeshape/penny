@@ -47,7 +47,19 @@ export const AuthCustomerQuery = gql`
 
 export const AuthResetPasswordMutation = gql`
   mutation AuthResetPasswordMutation($id: ID!, $input: CustomerResetInput!) {
-    customerReset(id: $id, input: $input) {
+    customer: customerReset(id: $id, input: $input) {
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;
+
+export const AuthActivateAccountMutation = gql`
+  mutation AuthActivateAccountMutation($id: ID!, $input: CustomerActivateInput!) {
+    customer: customerActivate(id: $id, input: $input) {
       customerUserErrors {
         code
         field
