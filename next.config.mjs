@@ -18,7 +18,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 // https://securityheaders.com
 const ContentSecurityPolicy = `
   default-src * 'unsafe-inline' 'unsafe-eval' data:;
-  script-src * 'unsafe-inline' 'unsafe-eval';
+  script-src * 'unsafe-inline' 'unsafe-eval' data:;
 `;
 
 const securityHeaders = [
