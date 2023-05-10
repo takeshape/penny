@@ -36,6 +36,8 @@ function getErrorMessage(error?: ApolloError) {
 }
 
 export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCreateAccountProps) => {
+  console.log(callbackUrl);
+
   const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
 
   const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<

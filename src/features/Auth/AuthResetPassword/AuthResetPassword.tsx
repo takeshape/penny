@@ -4,40 +4,42 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { useReCaptcha } from 'next-recaptcha-v3';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { RecoverCustomerPasswordMutationResponse, RecoverCustomerPasswordMutationVariables } from 'types/takeshape';
+import { AuthResetPasswordMutationResponse, AuthResetPasswordMutationVariables } from 'types/storefront';
 import { RecoverCustomerPasswordMutation } from '../queries';
 
 export interface AuthResetPasswordForm {
-  email: string;
+  password: string;
+  passwordConfirm: string;
 }
 
 export interface AuthResetPasswordProps {
   callbackUrl: string;
+  customerId: string;
+  resetToken?: string;
+  activationToken?: string;
 }
 
-export const AuthResetPassword = ({ callbackUrl }: AuthResetPasswordProps) => {
-  const { handleSubmit, formState, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
+export const AuthResetPassword = ({ customerId, resetToken, activationToken, callbackUrl }: AuthResetPasswordProps) => {
+  const { handleSubmit, formState, control, watch } = useForm<AuthResetPasswordForm>({ mode: 'onBlur' });
 
-  const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
-    RecoverCustomerPasswordMutationResponse,
-    RecoverCustomerPasswordMutationVariables
+  const [setResetPasswordPayload, { data: resetPasswordData }] = useMutation<
+    AuthResetPasswordMutationResponse,
+    AuthResetPasswordMutationVariables
   >(RecoverCustomerPasswordMutation);
 
-  const { executeRecaptcha } = useReCaptcha();
-
-  const onSubmit: SubmitHandler<AuthRecoverPasswordForm> = useCallback(
-    async ({ email }) => {
-      const recaptchaToken = await executeRecaptcha('recover_password');
-      await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
+  const onSubmit: SubmitHandler<AuthResetPasswordForm> = useCallback(
+    async ({ password }) => {
+      console.log({ customerId, password, resetToken, activationToken });
     },
-    [executeRecaptcha, setRecoverPasswordPayload]
+    [activationToken, customerId, resetToken]
   );
 
-  const hasData = Boolean(recoverPasswordData);
-  const hasErrors = (recoverPasswordData?.customerRecover?.customerUserErrors?.length ?? 0) > 0;
+  const hasData = Boolean(resetPasswordData);
+  const hasErrors = (resetPasswordData?.customerReset?.customerUserErrors?.length ?? 0) > 0;
+  const watched = useRef({ password: '' });
+  watched.current.password = watch('password', '');
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -53,7 +55,7 @@ export const AuthResetPassword = ({ callbackUrl }: AuthResetPasswordProps) => {
               <Alert
                 status="error"
                 primaryText="There was a problem with your submission"
-                secondaryText={recoverPasswordData?.customerRecover?.customerUserErrors.map((e) => e.message)}
+                secondaryText={resetPasswordData?.customerReset?.customerUserErrors.map((e) => e.message)}
               />
             )}
 
@@ -64,21 +66,35 @@ export const AuthResetPassword = ({ callbackUrl }: AuthResetPasswordProps) => {
             {!hasData && (
               <>
                 <FormInput
-                  className="sm:col-span-2"
+                  className="col-span-4"
                   control={control}
-                  name="email"
-                  id="email"
-                  label="Email Address"
-                  autoComplete="email"
+                  name="password"
+                  id="password"
+                  label="New Password"
+                  autoComplete="new-password"
                   defaultValue=""
-                  type="email"
+                  type="password"
                   rules={{
                     required: 'This field is required',
                     pattern: {
-                      value:
-                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      message: 'Please enter a valid email'
+                      value: /[^\r\n]{8,}/,
+                      message: 'Password is too short'
                     }
+                  }}
+                />
+
+                <FormInput
+                  className="col-span-4"
+                  control={control}
+                  name="passwordConfirm"
+                  id="passwordConfirm"
+                  label="Confirm New Password"
+                  autoComplete="new-password"
+                  defaultValue=""
+                  type="password"
+                  rules={{
+                    required: 'This field is required',
+                    validate: (value) => value === watched.current.password || 'The passwords do not match'
                   }}
                 />
                 <div>

@@ -44,3 +44,15 @@ export const AuthCustomerQuery = gql`
     }
   }
 `;
+
+export const AuthResetPasswordMutation = gql`
+  mutation AuthResetPasswordMutation($id: ID!, $input: CustomerResetInput!) {
+    customerReset(id: $id, input: $input) {
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+`;

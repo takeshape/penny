@@ -127,7 +127,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               </div>
 
               <div className="text-sm">
-                <NextLink href="/auth/reset-password" className="font-medium text-accent-600 hover:text-accent-500">
+                <NextLink href="/auth/recover-password" className="font-medium text-accent-600 hover:text-accent-500">
                   Forgot your password?
                 </NextLink>
               </div>

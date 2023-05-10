@@ -1,17 +1,22 @@
-import { AuthRecoverPassword } from 'features/Auth/AuthRecoverPassword/AuthRecoverPassword';
+import { AuthResetPassword } from 'features/Auth/AuthResetPassword/AuthResetPassword';
 import Layout from 'layouts/Full';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { getSingle } from 'utils/types';
 
-const SignUpPage: NextPage = () => {
+const ResetPasswordPage: NextPage = () => {
   const { query } = useRouter();
 
   return (
     <Layout seo={{ title: 'Reset Password' }}>
-      <AuthRecoverPassword callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/auth/signin'} />
+      <AuthResetPassword
+        resetToken=""
+        activationToken=""
+        customerId=""
+        callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/auth/signin'}
+      />
     </Layout>
   );
 };
 
-export default SignUpPage;
+export default ResetPasswordPage;
