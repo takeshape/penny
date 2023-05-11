@@ -752,6 +752,52 @@ hook here, a prompt will be presented whenever you run `git checkout -b my_new_b
 You can read more about our Branches feature and workflow in our
 [Work with Branches guide](https://app.takeshape.io/docs/get-started/branches/).
 
+## Shopify password reset / customer invite emails
+
+Penny provides custom password reset and customer activation pages. They are at paths that mirror the Shopify URL
+structure:
+
+- `/account/reset`
+- `/account/activate`
+
+### Update the customer account invite template
+
+You can follow the instructions from
+[Shopify](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/customer-accounts#update-the-account-invite-template),
+but in short you want to:
+
+1. In your Shopify store go to **Settings** > **Notifications** > **Customer account invite**
+2. Update the `Activate your account` button with a URL for your site, like this:
+
+```html
+<td class="button__cell">
+  <a
+    href="https://my-penny-website.ecommerce/account/activate?activationUrl={{ customer.account_activation_url }}"
+    class="button__text"
+    >Activate your account</a
+  >
+</td>
+```
+
+### Update the customer account password reset template
+
+The steps here are very similar to above.
+[Shopify](https://shopify.dev/docs/custom-storefronts/building-with-the-storefront-api/customer-accounts#update-the-password-reset-template)
+covers this in-depth as well, but the basic steps are:
+
+1. In your Shopify store go to **Settings** > **Notifications** > **Customer account password reset**
+2. Update the `Reset your password` button with a URL for your site, like this:
+
+```html
+<td class="button__cell">
+  <a
+    href="https://my-penny-website.ecommerce/account/reset?resetUrl={{ customer.reset_password_url }}"
+    class="button__text"
+    >Reset your password</a
+  >
+</td>
+```
+
 ### IMPORTANT
 
 If you use the automated Lighthouse (Production) workflow, you must add the following to your Vercel
@@ -772,7 +818,7 @@ bash scripts/ignore-build.sh
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
 
-- Shopify **must** use the `2022-07` endpoint, like this:  
+- Shopify **must** use the `2022-07` endpoint or newer, like this:  
   Admin API: `https://shopify-shop-name.myshopify.com/admin/api/2022-07/graphql.json`  
   Storefront API: `https://deluxe-sample-project.myshopify.com/api/2022-07/graphql.json`
 
