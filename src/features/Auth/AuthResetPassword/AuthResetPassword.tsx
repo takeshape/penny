@@ -21,13 +21,12 @@ export interface AuthResetPasswordForm {
 }
 
 export interface AuthResetPasswordProps {
-  callbackUrl: string;
   customerId: string;
   resetToken?: string;
   activationToken?: string;
 }
 
-export const AuthResetPassword = ({ customerId, resetToken, activationToken, callbackUrl }: AuthResetPasswordProps) => {
+export const AuthResetPassword = ({ customerId, resetToken, activationToken }: AuthResetPasswordProps) => {
   if (!activationToken && !resetToken) {
     throw new Error('One of `activationToken` or `resetToken` is required');
   }
