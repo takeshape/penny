@@ -3,11 +3,13 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import NextLink from 'components/NextLink';
+import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { SigninError } from 'features/Auth/types';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { getSingle } from 'utils/types';
+import { sanitizeCallbackUrl } from 'utils/callbacks';
 
 export interface AuthSignInForm {
   email: string;
@@ -17,8 +19,9 @@ export interface AuthSignInForm {
 export interface AuthSignInProps {
   signIn: typeof signIn;
   callbackUrl: string;
-  error?: string;
+  error?: SigninError;
   useMultipass: boolean;
+  email?: string;
 }
 
 export const errors: Record<string, string> = {
@@ -33,13 +36,20 @@ export const errors: Record<string, string> = {
   CredentialsSignin: 'Email address or password are incorrect.',
   SessionRequired: 'Please sign in to access this page.',
   CheckoutSessionRequired: 'Please sign in to checkout.',
+  CannotCreate: 'Email address already in use. Sign in instead.',
+  EmailInUse: '',
+  UNIDENTIFIED_CUSTOMER: 'Try signing in with a different account.',
   default: 'Unable to sign in.'
 };
 
-export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSignInProps) => {
-  const { handleSubmit, formState, control, register } = useForm<AuthSignInForm>();
+export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
+  const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
-  const router = useRouter();
+  const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
+  const { push } = useRouter();
+  const watched = useRef({ email: '' });
+
+  watched.current.email = watch('email', '');
 
   const onSubmit = useCallback(
     async ({ email, password, rememberMe }: AuthSignInForm) => {
@@ -49,22 +59,45 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
   );
 
   const hasErrors = Boolean(error);
-  const errorMessage = error && (errors[error] ?? errors.default);
+  const errorMessage = error && (errors[error.code] ?? errors.default);
 
   const signupLink = useMemo(() => {
     let href = '/auth/create';
-    if (router.query.callbackUrl) {
-      href += `?callbackUrl=${encodeURIComponent(getSingle(router.query.callbackUrl) ?? '')}`;
+    if (sanitizedCallbackUrl) {
+      href += `?callbackUrl=${encodeURIComponent(sanitizedCallbackUrl)}`;
     }
     return href;
-  }, [router]);
+  }, [sanitizedCallbackUrl]);
 
   const signinGoogle = useCallback(() => {
     signIn('google', { callbackUrl });
   }, [callbackUrl, signIn]);
 
+  const inactiveCustomer = useMemo(() => {
+    if (error?.code === 'EmailInUse') {
+      return {
+        email: error.email,
+        id: error.customerId
+      };
+    }
+  }, [error]);
+
+  const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
+  const onAccountInactiveFormClose = useCallback(() => {
+    push(window.location.pathname);
+    reset();
+  }, [reset, push]);
+
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      {inactiveCustomer && (
+        <AccountInactiveForm
+          customer={inactiveCustomer}
+          isOpen={isAccountInactiveOpen}
+          onClose={onAccountInactiveFormClose}
+        />
+      )}
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Sign in to your account</h2>
@@ -82,7 +115,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               id="email"
               label="Email Address"
               autoComplete="email"
-              defaultValue=""
+              defaultValue={email ?? ''}
               type="email"
               rules={{
                 required: 'This field is required',
@@ -127,7 +160,10 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass }: AuthSig
               </div>
 
               <div className="text-sm">
-                <NextLink href="/auth/reset-password" className="font-medium text-accent-600 hover:text-accent-500">
+                <NextLink
+                  href={`/auth/reset-password?callbackUrl=${encodeURIComponent('/auth/signin')}`}
+                  className="font-medium text-accent-600 hover:text-accent-500"
+                >
                   Forgot your password?
                 </NextLink>
               </div>

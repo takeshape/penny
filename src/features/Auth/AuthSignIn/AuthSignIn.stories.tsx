@@ -27,7 +27,7 @@ export const Success = Template.bind({});
 
 export const Error: ComponentStory<typeof AuthSignIn> = Template.bind({});
 Error.args = {
-  error: 'CredentialsSignin'
+  error: { code: 'CredentialsSignin' }
 };
 
 export default Meta;

@@ -1,15 +1,23 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { RecoverCustomerPasswordMutationResponse, RecoverCustomerPasswordMutationVariables } from 'types/takeshape';
-import { RecoverCustomerPasswordMutation } from '../queries';
-
+import {
+  GetCustomerStateQueryResponse,
+  GetCustomerStateQueryVariables,
+  RecoverCustomerPasswordMutationResponse,
+  RecoverCustomerPasswordMutationVariables
+} from 'types/takeshape';
+import { sanitizeCallbackUrl } from 'utils/callbacks';
+import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
+import { InactiveCustomer } from '../types';
 export interface AuthRecoverPasswordForm {
   email: string;
 }
@@ -19,28 +27,74 @@ export interface AuthRecoverPasswordProps {
 }
 
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
-  const { handleSubmit, formState, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
+  const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
+  const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
+  const { handleSubmit, formState, reset, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
+
+  const { push } = useRouter();
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordMutationResponse,
     RecoverCustomerPasswordMutationVariables
   >(RecoverCustomerPasswordMutation);
 
+  const { refetch } = useQuery<GetCustomerStateQueryResponse, GetCustomerStateQueryVariables>(GetCustomerStateQuery, {
+    skip: true
+  });
+
   const { executeRecaptcha } = useReCaptcha();
 
   const onSubmit: SubmitHandler<AuthRecoverPasswordForm> = useCallback(
     async ({ email }) => {
+      const {
+        data: { customer }
+      } = await refetch({ email });
+
+      if (customer?.state === 'invited' || customer?.state === 'disabled') {
+        if (!customer.id) {
+          throw new Error('Invalid customer state');
+        }
+
+        setInactiveCustomer({ email, id: customer.id });
+        return;
+      }
+
+      if (customer?.state === 'no-account') {
+        // Send to sign up page
+        push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        return;
+      }
+
       const recaptchaToken = await executeRecaptcha('recover_password');
       await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
     },
-    [executeRecaptcha, setRecoverPasswordPayload]
+    [executeRecaptcha, push, refetch, setRecoverPasswordPayload]
   );
+
+  const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
+  const onAccountInactiveFormClose = useCallback(() => {
+    setInactiveCustomer(null);
+    reset();
+  }, [reset]);
 
   const hasData = Boolean(recoverPasswordData);
   const hasErrors = (recoverPasswordData?.customerRecover?.customerUserErrors?.length ?? 0) > 0;
 
+  useEffect(() => {
+    if (sanitizedCallbackUrl && hasData) {
+      setTimeout(() => push(sanitizedCallbackUrl), 5000);
+    }
+  }, [sanitizedCallbackUrl, hasData, push]);
+
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      {inactiveCustomer && (
+        <AccountInactiveForm
+          customer={inactiveCustomer}
+          isOpen={isAccountInactiveOpen}
+          onClose={onAccountInactiveFormClose}
+        />
+      )}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Reset your password</h2>

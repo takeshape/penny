@@ -8,9 +8,12 @@ import {
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
   shopifyUseMultipass,
+  takeshapeAnonymousApiKey,
+  takeshapeApiUrl,
   takeshapeAuthAudience,
   takeshapeAuthIssuer
 } from 'config';
+import { GetCustomerStateQuery } from 'features/Auth/queries';
 import {
   AuthCustomerAccessTokenCreateMutation,
   AuthCustomerAccessTokenCreateWithMultipassMutation,
@@ -42,6 +45,13 @@ const shopifyClient = createClient({
   accessToken: shopifyStorefrontToken,
   accessTokenHeader: 'X-Shopify-Storefront-Access-Token',
   accessTokenPrefix: ''
+});
+
+const takeshapeClient = createClient({
+  uri: takeshapeApiUrl,
+  accessToken: takeshapeAnonymousApiKey,
+  accessTokenHeader: 'Authorization',
+  accessTokenPrefix: 'Bearer'
 });
 
 const withAllAccess = createNextAuthAllAccess({
@@ -94,6 +104,17 @@ const providers: Provider[] = [
 
       if (customerUserErrors?.length || !customerAccessToken?.accessToken) {
         const error = customerUserErrors?.[0];
+
+        if (error?.code === 'UNIDENTIFIED_CUSTOMER') {
+          const {
+            data: { customer }
+          } = await takeshapeClient.query({ query: GetCustomerStateQuery, variables: { email } });
+          if (customer?.state !== 'no-account') {
+            throw new Error(
+              encodeURIComponent(`code=EmailInUse,email=${email},state=${customer.state},customerId=${customer.id}`)
+            );
+          }
+        }
 
         logger.error(
           {
