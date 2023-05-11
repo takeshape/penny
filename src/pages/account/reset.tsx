@@ -16,18 +16,17 @@ const ResetPasswordPage: NextPage<InferGetServerSidePropsType<typeof getServerSi
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  if (!query.resetUrl) {
-    return {
-      notFound: true
-    };
+  let activationParams;
+
+  if (query.resetUrl) {
+    activationParams = getActivationParams('reset', getSingle(query.resetUrl));
   }
 
-  const { customerId, token } = getActivationParams('reset', getSingle(query.resetUrl));
-
   return {
+    notFound: !Boolean(query.activationUrl),
     props: {
-      customerId,
-      resetToken: token
+      customerId: activationParams?.customerId,
+      resetUrl: activationParams?.token
     }
   };
 };
