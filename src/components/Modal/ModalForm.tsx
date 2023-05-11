@@ -2,11 +2,12 @@ import { Modal, ModalProps } from 'components/Modal/Modal';
 import { FormEventHandler, PropsWithChildren, useEffect } from 'react';
 
 export interface ModalFormProps extends ModalProps {
-  primaryText: string;
+  primaryText?: string;
   secondaryText?: string;
   onSubmit: FormEventHandler<HTMLFormElement>;
   isSubmitSuccessful?: boolean;
   autoCloseDelay?: number;
+  className?: string;
 }
 
 export const ModalForm = ({
@@ -18,7 +19,8 @@ export const ModalForm = ({
   onSubmit,
   isSubmitSuccessful,
   autoCloseDelay,
-  children
+  children,
+  className
 }: PropsWithChildren<ModalFormProps>) => {
   useEffect(() => {
     let closeTimer: ReturnType<typeof setTimeout>;
@@ -39,11 +41,11 @@ export const ModalForm = ({
       <div className="w-full grid grid-cols-1 gap-y-8 gap-x-6 items-start sm:grid-cols-12 lg:gap-x-8">
         <div className="sm:col-span-12 lg:col-span-12">
           <div>
-            <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">{primaryText}</h2>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">{secondaryText}</p>
+            {primaryText && <h2 className="text-2xl font-extrabold text-gray-900 sm:pr-12">{primaryText}</h2>}
+            {secondaryText && <p className="mt-1 max-w-2xl text-sm text-gray-500">{secondaryText}</p>}
           </div>
 
-          <form className="mt-10" onSubmit={onSubmit}>
+          <form className={className ?? 'mt-10'} onSubmit={onSubmit}>
             {children}
           </form>
         </div>

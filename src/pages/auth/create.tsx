@@ -14,6 +14,8 @@ const SignUpPage: NextPage = () => {
       <AuthCreateAccount
         signIn={signIn}
         callbackUrl={(query.callbackUrl && getSingle(query.callbackUrl)) ?? '/'}
+        notice={query.notice ? getSingle(query.notice) : ''}
+        email={query.email ? getSingle(query.email) : ''}
         useMultipass={shopifyUseMultipass}
       />
     </Layout>

@@ -1,15 +1,24 @@
-import { ApolloError, useMutation } from '@apollo/client';
+import { ApolloError, useMutation, useQuery } from '@apollo/client';
 import Alert from 'components/Alert/Alert';
 import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { InactiveCustomer } from 'features/Auth/types';
 import { signIn } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useCallback, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { CreateCustomerMutationResponse, CreateCustomerMutationVariables } from 'types/takeshape';
-import { CreateCustomerMutation } from '../queries';
+import {
+  CreateCustomerMutationResponse,
+  CreateCustomerMutationVariables,
+  GetCustomerStateQueryResponse,
+  GetCustomerStateQueryVariables
+} from 'types/takeshape';
+import { sanitizeCallbackUrl } from 'utils/callbacks';
+import { CreateCustomerMutation, GetCustomerStateQuery } from '../queries';
 
 export interface AuthCreateAccountForm {
   email: string;
@@ -21,6 +30,8 @@ export interface AuthCreateAccountProps {
   callbackUrl: string;
   signIn: typeof signIn;
   useMultipass: boolean;
+  notice?: string;
+  email?: string;
 }
 
 function getErrorMessage(error?: ApolloError) {
@@ -35,13 +46,21 @@ function getErrorMessage(error?: ApolloError) {
   return error.message;
 }
 
-export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCreateAccountProps) => {
-  const { handleSubmit, formState, control, watch } = useForm<AuthCreateAccountForm>();
+export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, email }: AuthCreateAccountProps) => {
+  const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
+
+  const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
+  const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
+  const { push } = useRouter();
 
   const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<
     CreateCustomerMutationResponse,
     CreateCustomerMutationVariables
   >(CreateCustomerMutation);
+
+  const { refetch } = useQuery<GetCustomerStateQueryResponse, GetCustomerStateQueryVariables>(GetCustomerStateQuery, {
+    skip: true
+  });
 
   const watched = useRef({ email: '', password: '' });
 
@@ -51,30 +70,62 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
   useEffect(() => {
     if (customerResponse?.customerCreate?.customer?.id) {
       const { email, password } = watched.current;
-      signIn('shopify', { email, password, callbackUrl });
+      signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
     }
-  }, [customerResponse, signIn, callbackUrl]);
+  }, [customerResponse, signIn, sanitizedCallbackUrl]);
 
   const { executeRecaptcha } = useReCaptcha();
 
   const onSubmit: SubmitHandler<AuthCreateAccountForm> = useCallback(
     async ({ email, password }) => {
+      const {
+        data: { customer }
+      } = await refetch({ email });
+
+      if (customer?.state === 'invited' || customer?.state === 'disabled') {
+        if (!customer.id) {
+          throw new Error('Invalid customer state');
+        }
+
+        setInactiveCustomer({ email, id: customer.id });
+        return;
+      }
+
+      if (customer?.state === 'enabled') {
+        // Send to sign up page
+        push(`/auth/signin?error=CannotCreate&email=${email}`);
+        return;
+      }
+
       const recaptchaToken = await executeRecaptcha('create_account');
       await setCustomerPayload({
         variables: { input: { email, password, recaptchaToken } }
       });
     },
-    [executeRecaptcha, setCustomerPayload]
+    [executeRecaptcha, push, refetch, setCustomerPayload]
   );
+
+  const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
+  const onAccountInactiveFormClose = useCallback(() => {
+    setInactiveCustomer(null);
+    reset();
+  }, [reset]);
 
   const errorMessage = getErrorMessage(customerError);
 
   const signinGoogle = useCallback(() => {
-    signIn('google', { callbackUrl });
-  }, [callbackUrl, signIn]);
+    signIn('google', { callbackUrl: sanitizedCallbackUrl });
+  }, [sanitizedCallbackUrl, signIn]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      {inactiveCustomer && (
+        <AccountInactiveForm
+          customer={inactiveCustomer}
+          isOpen={isAccountInactiveOpen}
+          onClose={onAccountInactiveFormClose}
+        />
+      )}
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Logo className="h-12 w-auto" />
         <h2 className="mt-6 text-center text-3xl font-extrabold text-body-900">Create your account</h2>
@@ -83,6 +134,8 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            {notice && <Alert status="warn" primaryText={notice} />}
+
             {errorMessage && (
               <Alert
                 status="error"
@@ -98,7 +151,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
               id="email"
               label="Email Address"
               autoComplete="email"
-              defaultValue=""
+              defaultValue={email ?? ''}
               type="email"
               rules={{
                 required: 'This field is required',
@@ -159,7 +212,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass }: AuthCre
                 href={`/api/auth/signin`}
                 onClick={(e) => {
                   e.preventDefault();
-                  signIn(undefined, { callbackUrl });
+                  signIn(undefined, { callbackUrl: sanitizedCallbackUrl });
                 }}
                 className="ml-1 text-sm font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >

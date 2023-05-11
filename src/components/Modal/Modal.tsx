@@ -6,9 +6,10 @@ export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   afterLeave?: () => void;
+  showCloseButton?: boolean;
 }
 
-export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildren<ModalProps>) => {
+export const Modal = ({ isOpen, onClose, afterLeave, showCloseButton, children }: PropsWithChildren<ModalProps>) => {
   // TODO Because of this: https://github.com/tailwindlabs/headlessui/issues/1705
   const [dialogIsOpen, setDialogIsOpen] = useState(isOpen);
 
@@ -65,14 +66,16 @@ export const Modal = ({ isOpen, onClose, afterLeave, children }: PropsWithChildr
             >
               <Dialog.Panel className="flex text-base text-left transform transition w-full md:max-w-2xl md:px-4 md:my-8 lg:max-w-2xl">
                 <div className="w-full relative flex items-center bg-white px-4 pt-14 pb-8 overflow-hidden shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8 md:rounded-md">
-                  <button
-                    type="button"
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
-                    onClick={handleClose}
-                  >
-                    <span className="sr-only">Close</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
+                  {showCloseButton && (
+                    <button
+                      type="button"
+                      className="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
+                      onClick={handleClose}
+                    >
+                      <span className="sr-only">Close</span>
+                      <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                  )}
 
                   {children}
                 </div>
