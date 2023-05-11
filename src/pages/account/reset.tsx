@@ -1,4 +1,4 @@
-import { AuthResetPassword } from 'features/Auth/AuthResetPassword/AuthResetPassword';
+import { AccountResetPassword } from 'features/AccountResetPassword/AccountResetPassword';
 import Layout from 'layouts/Full';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import { getActivationParams } from 'utils/account';
@@ -10,7 +10,7 @@ const ResetPasswordPage: NextPage<InferGetServerSidePropsType<typeof getServerSi
 }) => {
   return (
     <Layout seo={{ title: 'Reset Password' }}>
-      <AuthResetPassword resetToken={resetToken} customerId={customerId} />
+      <AccountResetPassword resetToken={resetToken} customerId={customerId} />
     </Layout>
   );
 };

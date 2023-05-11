@@ -3,49 +3,49 @@ import Button from 'components/Button/Button';
 import FormInput from 'components/Form/Input/Input';
 import { Logo } from 'components/Logo/Logo';
 import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { AuthActivateAccountMutation, AuthResetPasswordMutation } from 'features/Auth/queries.storefront';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
-  AuthActivateAccountMutationResponse,
-  AuthActivateAccountMutationVariables,
-  AuthResetPasswordMutationResponse,
-  AuthResetPasswordMutationVariables
+  ActivateAccountMutationResponse,
+  ActivateAccountMutationVariables,
+  ResetPasswordMutationResponse,
+  ResetPasswordMutationVariables
 } from 'types/storefront';
 import { useStorefrontMutation } from 'utils/storefront';
+import { ActivateAccountMutation, ResetPasswordMutation } from './queries.storefront';
 
-export interface AuthResetPasswordForm {
+export interface AccountResetPasswordForm {
   password: string;
   passwordConfirm: string;
 }
 
-export interface AuthResetPasswordProps {
+export interface AccountResetPasswordProps {
   customerId: string;
   resetToken?: string;
   activationToken?: string;
 }
 
-export const AuthResetPassword = ({ customerId, resetToken, activationToken }: AuthResetPasswordProps) => {
+export const AccountResetPassword = ({ customerId, resetToken, activationToken }: AccountResetPasswordProps) => {
   if (!activationToken && !resetToken) {
     throw new Error('One of `activationToken` or `resetToken` is required');
   }
 
   const { push } = useRouter();
 
-  const { handleSubmit, formState, control, watch } = useForm<AuthResetPasswordForm>({ mode: 'onBlur' });
+  const { handleSubmit, formState, control, watch } = useForm<AccountResetPasswordForm>({ mode: 'onBlur' });
 
   const [setResetPasswordPayload, { data: resetPasswordData }] = useStorefrontMutation<
-    AuthResetPasswordMutationResponse,
-    AuthResetPasswordMutationVariables
-  >(AuthResetPasswordMutation);
+    ResetPasswordMutationResponse,
+    ResetPasswordMutationVariables
+  >(ResetPasswordMutation);
 
   const [setActivateAccountPayload, { data: activateAccountData }] = useStorefrontMutation<
-    AuthActivateAccountMutationResponse,
-    AuthActivateAccountMutationVariables
-  >(AuthActivateAccountMutation);
+    ActivateAccountMutationResponse,
+    ActivateAccountMutationVariables
+  >(ActivateAccountMutation);
 
-  const onSubmit: SubmitHandler<AuthResetPasswordForm> = useCallback(
+  const onSubmit: SubmitHandler<AccountResetPasswordForm> = useCallback(
     async ({ password }) => {
       if (activationToken) {
         setActivateAccountPayload({ variables: { id: customerId, input: { password, activationToken } } });
