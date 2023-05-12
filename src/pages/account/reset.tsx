@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     notFound: !Boolean(query.resetUrl),
     props: {
       customerId: params?.customerId,
-      resetUrl: params?.token
+      resetToken: params?.token
     }
   };
 };
