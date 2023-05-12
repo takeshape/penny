@@ -16,17 +16,17 @@ const ActivateAccountPage: NextPage<InferGetServerSidePropsType<typeof getServer
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  let activationParams;
+  let params;
 
   if (query.activationUrl) {
-    activationParams = getActivationParams('activate', getSingle(query.activationUrl));
+    params = getActivationParams('activate', getSingle(query.activationUrl));
   }
 
   return {
     notFound: !Boolean(query.activationUrl),
     props: {
-      customerId: activationParams?.customerId,
-      activationToken: activationParams?.token
+      customerId: params?.customerId,
+      activationToken: params?.token
     }
   };
 };
