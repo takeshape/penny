@@ -302,6 +302,10 @@ export function shopifyGidToId(gid: string): string {
   return gid.replace(/gid:\/\/shopify\/\w+\//, '');
 }
 
+export function shopifyCustomerIdToGid(customerId: string) {
+  return `gid://shopify/Customer/${customerId}`;
+}
+
 /**
  * Storefront Transforms
  */
