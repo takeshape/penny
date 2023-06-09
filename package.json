@@ -86,8 +86,8 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
-    "@takeshape/graphql-validate": "^1.0.0",
-    "@takeshape/shape-tools": "^0.7.0",
+    "@takeshape/graphql-validate": "^1.0.1",
+    "@takeshape/shape-tools": "^0.7.3",
     "@testing-library/cypress": "^9.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -127,10 +127,10 @@
     "typescript": "^4.9.5",
     "webpack": "^5.81.0"
   },
-  "packageManager": "npm@8.19.2",
+  "packageManager": "npm@9.5.1",
   "engines": {
-    "node": "16",
-    "npm": "8"
+    "node": "18",
+    "npm": "9"
   },
   "msw": {
     "workerDirectory": "mocks"
