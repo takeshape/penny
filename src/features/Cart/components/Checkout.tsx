@@ -1,7 +1,7 @@
 import Button from 'components/Button/Button';
 import { signedInCheckout } from 'config';
 import { getCheckoutUrl } from 'features/Cart/transforms';
-import { useAtomValue, useSetAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
@@ -15,7 +15,7 @@ export const CartCheckout = () => {
   const { data: session } = useSession();
   const { push } = useRouter();
 
-  const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
+  const [, setIsCartCheckingOut] = useAtom(isCartCheckingOutAtom);
   const quantity = useAtomValue(cartQuantityAtom);
   const items = useAtomValue(cartItemsAtom);
   const discountCode = useAtomValue(cartDiscountCodeAtom);

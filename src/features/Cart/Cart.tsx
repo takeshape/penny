@@ -3,7 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import PageLoader from 'components/PageLoader';
 import { isStorybook } from 'config';
 import { CartDiscountCode } from 'features/Cart/components/DiscountCode';
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom } from 'jotai';
 import { Fragment } from 'react';
 import { CartItem } from './components/CartItem';
 import { CartCheckout } from './components/Checkout';
@@ -13,7 +13,11 @@ import { cartItemAtomsAtom, isCartCheckingOutAtom, isCartOpenAtom } from './stor
 
 export const Cart = () => {
   const [isCartOpen, setIsCartOpen] = useAtom(isCartOpenAtom);
-  const isCartCheckingOut = useAtomValue(isCartCheckingOutAtom);
+  const [isCartCheckingOut] = useAtom(isCartCheckingOutAtom);
+
+  // eslint-disable-next-line no-console
+  console.log({ isCartCheckingOut });
+
   const [items, dispatch] = useAtom(cartItemAtomsAtom);
 
   return (
