@@ -844,3 +844,10 @@ bash scripts/ignore-build.sh
 - Cannot use TypeScript v5 due to: https://github.com/storybookjs/storybook/issues/21642
 - Cannot use jotai v2 due to: https://github.com/johnf/storybook-addon-jotai/issues/16
 - Cannot use Storybook v7 yes, due to `storybook-addon-jotai` and other issues...
+
+# Copyright and License
+Copyright TakeShape, Inc. 2023
+
+Penny is [MIT licensed](./LICENSE).
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
