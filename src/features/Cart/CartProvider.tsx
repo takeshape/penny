@@ -86,5 +86,16 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   //   return () => window.removeEventListener('pageshow', handlePageshow);
   // }, [handlePageshow, listenerAdded]);
 
+  useEffect(() => {
+    const checkBfcache = (e: any) => {
+      // eslint-disable-next-line no-console
+      console.log('This page is restored from bfcache?', e.persisted);
+      if (e.persisted) {
+        setIsCartCheckingOut(false);
+      }
+    };
+    window.addEventListener('pageshow', checkBfcache);
+  }, [setIsCartCheckingOut]);
+
   return <Fragment>{children}</Fragment>;
 };
