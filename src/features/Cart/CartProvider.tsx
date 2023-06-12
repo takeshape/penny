@@ -14,8 +14,12 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const [previousCurrency, setPreviousCurrency] = useState('');
   const currency = useAtomValue(currencyAtom);
 
+  const [listenerAdded, setListenerAdded] = useState(false);
+
   const handlePageshow = useCallback(
     (event: PageTransitionEvent) => {
+      // eslint-disable-next-line no-console
+      console.log('pageshow event handler', event);
       if (event.persisted) {
         setIsCartCheckingOut(false);
       }
@@ -74,9 +78,14 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [currency, previousCurrency, setCartItems, setNotification]);
 
   useEffect(() => {
-    window.addEventListener('pageshow', handlePageshow);
-    return () => window.removeEventListener('pageshow', handlePageshow);
-  }, [handlePageshow]);
+    if (!listenerAdded) {
+      setListenerAdded(true);
+      // eslint-disable-next-line no-console
+      console.log('adding listener');
+      window.addEventListener('pageshow', handlePageshow);
+    }
+    // return () => window.removeEventListener('pageshow', handlePageshow);
+  }, [handlePageshow, listenerAdded]);
 
   return <Fragment>{children}</Fragment>;
 };
