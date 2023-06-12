@@ -17,19 +17,6 @@ if (sentryDsn) {
 }
 
 export default function App({ Component, pageProps }: AppContext & AppInitialProps) {
-  // const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
-
-  // useEffect(() => {
-  //   const checkBfcache = (e: any) => {
-  //     // eslint-disable-next-line no-console
-  //     console.log('This page is restored from bfcache?', e.persisted);
-  //     if (e.persisted) {
-  //       setIsCartCheckingOut(false);
-  //     }
-  //   };
-  //   window.addEventListener('pageshow', checkBfcache);
-  // }, [setIsCartCheckingOut]);
-
   return (
     <ErrorBoundary>
       <ReCaptchaProvider>

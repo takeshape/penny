@@ -1,7 +1,7 @@
 import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from 'features/Cart/store';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { Fragment, PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
 import { currencyAtom, notificationAtom } from 'store';
 import { getSingle } from 'utils/types';
 
@@ -10,22 +10,9 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const setNotification = useSetAtom(notificationAtom);
   const setDiscountCode = useSetAtom(cartDiscountCodeAtom);
   const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
-
-  const [previousCurrency, setPreviousCurrency] = useState('');
   const currency = useAtomValue(currencyAtom);
 
-  const [listenerAdded, setListenerAdded] = useState(false);
-
-  const handlePageshow = useCallback(
-    (event: PageTransitionEvent) => {
-      // This is restoring the back/forward cache snapshot, and needs to be
-      // reset explicitly
-      if (event.persisted) {
-        setIsCartCheckingOut(false);
-      }
-    },
-    [setIsCartCheckingOut]
-  );
+  const [previousCurrency, setPreviousCurrency] = useState('');
 
   const {
     replace,
@@ -77,25 +64,14 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
     setPreviousCurrency(currency);
   }, [currency, previousCurrency, setCartItems, setNotification]);
 
-  // useEffect(() => {
-  //   // Can only add once, otherwise the handler won't be in place
-  //   if (!listenerAdded) {
-  //     setListenerAdded(true);
-  //     window.addEventListener('pageshow', handlePageshow);
-  //   }
-  //   return () => window.removeEventListener('pageshow', handlePageshow);
-  // }, [handlePageshow, listenerAdded]);
-
   useEffect(() => {
-    const checkBfcache = (e: any) => {
-      // eslint-disable-next-line no-console
-      console.log('This page is restored from bfcache?', e.persisted);
+    const handleBfCache = (e: PageTransitionEvent) => {
       if (e.persisted) {
         setIsCartCheckingOut(false);
       }
     };
-    window.addEventListener('pageshow', checkBfcache);
-    return () => window.removeEventListener('pageshow', checkBfcache);
+    window.addEventListener('pageshow', handleBfCache);
+    return () => window.removeEventListener('pageshow', handleBfCache);
   }, [setIsCartCheckingOut]);
 
   return <Fragment>{children}</Fragment>;
