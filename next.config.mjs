@@ -1,4 +1,3 @@
-import createBundleAnalyzer from '@next/bundle-analyzer';
 import { setProcessBranchUrl } from '@takeshape/shape-tools';
 import { createRequire } from 'module';
 import withPwa from 'next-pwa';
@@ -7,10 +6,6 @@ import withPwa from 'next-pwa';
 await setProcessBranchUrl({ envVar: 'NEXT_PUBLIC_TAKESHAPE_API_URL' });
 
 const require = createRequire(import.meta.url);
-
-const withBundleAnalyzer = createBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true'
-});
 
 /**
  * Add your own CSP here...
@@ -21,6 +16,9 @@ const ContentSecurityPolicy = `
   script-src * 'unsafe-inline' 'unsafe-eval' data:;
 `;
 
+/**
+ * @type {{key: string, value: string}[]}
+ */
 const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
   {
@@ -158,7 +156,6 @@ const withPlugins = (plugins, config) => () =>
 
 export default withPlugins(
   [
-    withBundleAnalyzer,
     withPwa({
       dest: 'public',
       disable: process.env.NODE_ENV === 'development'
