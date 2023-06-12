@@ -95,6 +95,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
       }
     };
     window.addEventListener('pageshow', checkBfcache);
+    return () => window.removeEventListener('pageshow', checkBfcache);
   }, [setIsCartCheckingOut]);
 
   return <Fragment>{children}</Fragment>;
