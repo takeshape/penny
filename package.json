@@ -2,6 +2,7 @@
   "name": "@takeshape/penny",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "prebuild": "shape promote-branch --lookup-pr --production-only --nofail",
     "build": "npm run graphql:typegen && next build",

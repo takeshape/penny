@@ -17,24 +17,24 @@ directory. [The instructions section of this README will teach you how to do tha
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
-## Lighthouse Report: mobile
+## Lighthouse Report: desktop
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-4as2tem2t-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686346564713-83942.report.html) |
-| 🟢 Performance | 98 |
+| [Path: /](https://penny-jrvmvf1tg-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686602080809-52895.report.html) |
+| 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-4as2tem2t-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686346565249-68884.report.html) |
-| 🟢 Performance | 97 |
+| [Path: /products/basic-tee-6-pack](https://penny-jrvmvf1tg-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686602081245-66768.report.html) |
+| 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-4as2tem2t-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686346565699-74072.report.html) |
-| 🟢 Performance | 99 |
+| [Path: /collections/men](https://penny-jrvmvf1tg-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686602081609-5402.report.html) |
+| 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
@@ -844,3 +844,10 @@ bash scripts/ignore-build.sh
 - Cannot use TypeScript v5 due to: https://github.com/storybookjs/storybook/issues/21642
 - Cannot use jotai v2 due to: https://github.com/johnf/storybook-addon-jotai/issues/16
 - Cannot use Storybook v7 yes, due to `storybook-addon-jotai` and other issues...
+
+# Copyright and License
+Copyright TakeShape, Inc. 2023
+
+Penny is [MIT licensed](./LICENSE).
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
