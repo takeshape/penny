@@ -38,6 +38,7 @@
     "@apollo/client": "^3.7.13",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
+    "@next/bundle-analyzer": "^13.4.4",
     "@next/env": "^13.4.4",
     "@sentry/node": "^7.50.0",
     "@sentry/react": "^7.50.0",

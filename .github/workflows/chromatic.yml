@@ -41,7 +41,13 @@ jobs:
           TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
 
       - name: Publish to Chromatic
-        uses: chromaui/action@v1
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          exitOnceUploaded: true
+        env:
+          PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: |
+          npx chromatic --project-token $PROJECT_TOKEN --exit-once-uploaded
+
+      # - name: Publish to Chromatic
+      #   uses: chromaui/action@v1
+      #   with:
+      #     projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      #     exitOnceUploaded: true
