@@ -77,14 +77,14 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
     setPreviousCurrency(currency);
   }, [currency, previousCurrency, setCartItems, setNotification]);
 
-  useEffect(() => {
-    // Can only add once, otherwise the handler won't be in place
-    if (!listenerAdded) {
-      setListenerAdded(true);
-      window.addEventListener('pageshow', handlePageshow);
-    }
-    return () => window.removeEventListener('pageshow', handlePageshow);
-  }, [handlePageshow, listenerAdded]);
+  // useEffect(() => {
+  //   // Can only add once, otherwise the handler won't be in place
+  //   if (!listenerAdded) {
+  //     setListenerAdded(true);
+  //     window.addEventListener('pageshow', handlePageshow);
+  //   }
+  //   return () => window.removeEventListener('pageshow', handlePageshow);
+  // }, [handlePageshow, listenerAdded]);
 
   return <Fragment>{children}</Fragment>;
 };
