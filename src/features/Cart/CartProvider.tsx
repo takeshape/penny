@@ -6,6 +6,15 @@ import { currencyAtom, notificationAtom } from 'store';
 import { getSingle } from 'utils/types';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
+  const [time, setTime] = useState<number | null>(null);
+
+  // eslint-disable-next-line no-console
+  console.log({ time });
+
+  if (!time) {
+    setTime(new Date().getTime());
+  }
+
   const setCartItems = useSetAtom(cartItemsAtom);
   const setNotification = useSetAtom(notificationAtom);
   const setDiscountCode = useSetAtom(cartDiscountCodeAtom);
