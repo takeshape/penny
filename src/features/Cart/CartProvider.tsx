@@ -1,26 +1,27 @@
-import { cartDiscountCodeAtom, cartItemsAtom } from 'features/Cart/store';
+import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from 'features/Cart/store';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
+import { Fragment, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { currencyAtom, notificationAtom } from 'store';
 import { getSingle } from 'utils/types';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
-  const [time, setTime] = useState<number | null>(null);
-
-  // eslint-disable-next-line no-console
-  console.log({ time });
-
-  if (!time) {
-    setTime(new Date().getTime());
-  }
-
   const setCartItems = useSetAtom(cartItemsAtom);
   const setNotification = useSetAtom(notificationAtom);
   const setDiscountCode = useSetAtom(cartDiscountCodeAtom);
+  const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
 
   const [previousCurrency, setPreviousCurrency] = useState('');
   const currency = useAtomValue(currencyAtom);
+
+  const handlePageshow = useCallback(
+    (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        setIsCartCheckingOut(false);
+      }
+    },
+    [setIsCartCheckingOut]
+  );
 
   const {
     replace,
@@ -71,6 +72,11 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
     }
     setPreviousCurrency(currency);
   }, [currency, previousCurrency, setCartItems, setNotification]);
+
+  useEffect(() => {
+    window.addEventListener('pageshow', handlePageshow);
+    return () => window.removeEventListener('pageshow', handlePageshow);
+  }, [handlePageshow]);
 
   return <Fragment>{children}</Fragment>;
 };
