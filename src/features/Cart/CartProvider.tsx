@@ -18,8 +18,8 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
 
   const handlePageshow = useCallback(
     (event: PageTransitionEvent) => {
-      // eslint-disable-next-line no-console
-      console.log('pageshow event handler', event);
+      // This is restoring the back/forward cache snapshot, and needs to be
+      // reset explicitly
       if (event.persisted) {
         setIsCartCheckingOut(false);
       }
@@ -78,13 +78,12 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   }, [currency, previousCurrency, setCartItems, setNotification]);
 
   useEffect(() => {
+    // Can only add once, otherwise the handler won't be in place
     if (!listenerAdded) {
       setListenerAdded(true);
-      // eslint-disable-next-line no-console
-      console.log('adding listener');
       window.addEventListener('pageshow', handlePageshow);
     }
-    // return () => window.removeEventListener('pageshow', handlePageshow);
+    return () => window.removeEventListener('pageshow', handlePageshow);
   }, [handlePageshow, listenerAdded]);
 
   return <Fragment>{children}</Fragment>;
