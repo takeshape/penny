@@ -9,9 +9,7 @@ module.exports = {
     {
       name: '@storybook/addon-styling',
       options: {
-        postCss: {
-          implementation: require('postcss')
-        }
+        postCss: true
       }
     },
     'storybook-addon-jotai',
