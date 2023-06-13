@@ -11,9 +11,7 @@ module.exports = {
       options: {
         postCss: true
       }
-    },
-    'storybook-addon-jotai',
-    'storybook-addon-next-router'
+    }
   ],
   framework: '@storybook/react',
   core: {
