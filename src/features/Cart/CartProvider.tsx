@@ -1,4 +1,4 @@
-import { cartDiscountCodeAtom, cartItemsAtom } from 'features/Cart/store';
+import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from 'features/Cart/store';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
@@ -9,9 +9,10 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const setCartItems = useSetAtom(cartItemsAtom);
   const setNotification = useSetAtom(notificationAtom);
   const setDiscountCode = useSetAtom(cartDiscountCodeAtom);
+  const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
+  const currency = useAtomValue(currencyAtom);
 
   const [previousCurrency, setPreviousCurrency] = useState('');
-  const currency = useAtomValue(currencyAtom);
 
   const {
     replace,
@@ -62,6 +63,16 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
     }
     setPreviousCurrency(currency);
   }, [currency, previousCurrency, setCartItems, setNotification]);
+
+  useEffect(() => {
+    const handleBfCache = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        setIsCartCheckingOut(false);
+      }
+    };
+    window.addEventListener('pagehide', handleBfCache);
+    return () => window.removeEventListener('pagehide', handleBfCache);
+  }, [setIsCartCheckingOut]);
 
   return <Fragment>{children}</Fragment>;
 };
