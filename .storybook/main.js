@@ -1,5 +1,4 @@
 const cwd = process.cwd();
-
 module.exports = {
   stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [
@@ -13,14 +12,20 @@ module.exports = {
       }
     }
   ],
-  framework: '@storybook/react',
-  core: {
-    builder: '@storybook/builder-webpack5'
+  framework: {
+    name: '@storybook/nextjs',
+    options: {}
   },
   staticDirs: ['../public', '../mocks'],
   webpackFinal: (config) => {
     // Because `tsconfig.baseUrl`
     config.resolve.modules.push(`${cwd}/src`);
     return config;
+  },
+  docs: {
+    autodocs: true
+  },
+  core: {
+    disableTelemetry: true
   }
 };

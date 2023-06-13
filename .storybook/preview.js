@@ -2,7 +2,7 @@ import { ApolloProvider } from '@apollo/client';
 import { rest } from 'msw';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { SessionProvider } from 'next-auth/react';
-import { withJotai } from 'storybook-addon-jotai';
+// import { withJotai } from 'storybook-addon-jotai';
 import 'styles/globals.css';
 import { createClient } from '../src/utils/apollo/client';
 
@@ -37,7 +37,7 @@ export const parameters = {
 };
 
 export const decorators = [
-  withJotai,
+  // withJotai,
   mswDecorator,
   (Story) => (
     <SessionProvider refetchInterval={0} session={mockSession}>
