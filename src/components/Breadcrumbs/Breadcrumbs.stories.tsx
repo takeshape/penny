@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import Breadcrumbs from './Breadcrumbs';
 
-const Meta: ComponentMeta<typeof Breadcrumbs> = {
+const meta: Meta<typeof Breadcrumbs> = {
   title: 'Components / Breadcrumbs',
   component: Breadcrumbs,
   parameters: {
@@ -9,27 +9,28 @@ const Meta: ComponentMeta<typeof Breadcrumbs> = {
   }
 };
 
-const Template: ComponentStory<typeof Breadcrumbs> = (args) => <Breadcrumbs {...args} />;
+export default meta;
 
-export const _Breadcrumbs = Template.bind({});
-_Breadcrumbs.args = {
-  breadcrumbs: [
-    {
-      id: '1',
-      name: 'First',
-      href: '#'
-    },
-    {
-      id: '2',
-      name: 'Second',
-      href: '#'
-    },
-    {
-      id: '3',
-      name: 'Third',
-      href: '#'
-    }
-  ]
+type Story = StoryObj<typeof Breadcrumbs>;
+
+export const _Breadcrumbs: Story = {
+  args: {
+    breadcrumbs: [
+      {
+        id: '1',
+        name: 'First',
+        href: '#'
+      },
+      {
+        id: '2',
+        name: 'Second',
+        href: '#'
+      },
+      {
+        id: '3',
+        name: 'Third',
+        href: '#'
+      }
+    ]
+  }
 };
-
-export default Meta;
