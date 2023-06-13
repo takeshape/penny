@@ -41,7 +41,7 @@ const addToCartInputToCartItem = ({ product, variant, price, attributes }: AddTo
   };
 };
 
-export const addToCartAtom = atom<null, AddToCartInput>(null, (get, set, input) => {
+export const addToCartAtom = atom<null, [AddToCartInput], void>(null, (get, set, input) => {
   const itemToAdd = addToCartInputToCartItem(input);
 
   const items = get(cartItemAtomsAtom);
