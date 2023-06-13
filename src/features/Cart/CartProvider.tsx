@@ -70,8 +70,8 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
         setIsCartCheckingOut(false);
       }
     };
-    window.addEventListener('pageshow', handleBfCache);
-    return () => window.removeEventListener('pageshow', handleBfCache);
+    window.addEventListener('pagehide', handleBfCache);
+    return () => window.removeEventListener('pagehide', handleBfCache);
   }, [setIsCartCheckingOut]);
 
   return <Fragment>{children}</Fragment>;
