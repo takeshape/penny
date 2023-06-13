@@ -17,26 +17,26 @@ directory. [The instructions section of this README will teach you how to do tha
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
-## Lighthouse Report: desktop
+## Lighthouse Report: mobile
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-jrvmvf1tg-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686602080809-52895.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /](https://penny-bit7i7kur-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686693763252-30939.report.html) |
+| 🟢 Performance | 98 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 92 |
+| 🟢 SEO | 100 |
+| 🟢 PWA | 100 |
+| [Path: /products/basic-tee-6-pack](https://penny-bit7i7kur-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686693763608-74881.report.html) |
+| 🟢 Performance | 97 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-jrvmvf1tg-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686602081245-66768.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /collections/men](https://penny-bit7i7kur-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686693764064-52456.report.html) |
+| 🟢 Performance | 96 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
-| 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-jrvmvf1tg-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686602081609-5402.report.html) |
-| 🟢 Performance | 100 |
-| 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
