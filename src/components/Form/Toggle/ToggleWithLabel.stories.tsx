@@ -1,8 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ReactRenderer, StoryObj } from '@storybook/react';
+import { ArgsStoryFn } from '@storybook/types';
 import { useForm } from 'react-hook-form';
 import { FormToggleWithLabel } from './ToggleWithLabel';
 
-const Meta: ComponentMeta<typeof FormToggleWithLabel> = {
+const meta: Meta<typeof FormToggleWithLabel> = {
   title: 'Components / Form / Toggle / With Label',
   component: FormToggleWithLabel,
   parameters: {
@@ -10,34 +11,42 @@ const Meta: ComponentMeta<typeof FormToggleWithLabel> = {
   }
 };
 
-const Template: ComponentStory<typeof FormToggleWithLabel> = (args) => {
+type Story = StoryObj<typeof FormToggleWithLabel>;
+
+const Template: ArgsStoryFn<ReactRenderer, any> = (args) => {
   const { control } = useForm();
   return <FormToggleWithLabel control={control} {...args} />;
 };
 
-export const RightLabel = Template.bind({});
-RightLabel.args = {
-  name: 'switch',
-  labelPrimary: 'Toggle Me',
-  labelSecondary: 'It‘s fun!',
-  labelPosition: 'right'
+export const RightLabel: Story = {
+  args: {
+    name: 'switch',
+    labelPrimary: 'Toggle Me',
+    labelSecondary: 'It‘s fun!',
+    labelPosition: 'right'
+  },
+  render: Template
 };
 
-export const LeftLabel = Template.bind({});
-LeftLabel.args = {
-  name: 'switch',
-  labelPrimary: 'Toggle Me',
-  labelSecondary: 'It‘s fun!',
-  labelPosition: 'left',
-  disabled: true
+export const LeftLabel: Story = {
+  args: {
+    name: 'switch',
+    labelPrimary: 'Toggle Me',
+    labelSecondary: 'It‘s fun!',
+    labelPosition: 'left',
+    disabled: true
+  },
+  render: Template
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  name: 'switch',
-  labelPrimary: 'Toggle Me',
-  labelSecondary: 'It‘s fun!',
-  disabled: true
+export const Disabled: Story = {
+  args: {
+    name: 'switch',
+    labelPrimary: 'Toggle Me',
+    labelSecondary: 'It‘s fun!',
+    disabled: true
+  },
+  render: Template
 };
 
-export default Meta;
+export default meta;

@@ -1,6 +1,7 @@
+import { Meta } from '@storybook/react';
 import * as Icons from './Icons';
 
-const Meta = {
+const meta: Meta<typeof Icons> = {
   title: 'Components / Icons',
   parameters: {
     layout: 'centered'
@@ -17,4 +18,4 @@ export const GitHub = () => <Icons.GitHub className="h-12 w-12" />;
 
 export const Dribbble = () => <Icons.Dribbble className="h-12 w-12" />;
 
-export default Meta;
+export default meta;

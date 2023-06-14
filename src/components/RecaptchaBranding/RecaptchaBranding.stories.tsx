@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import RecaptchaBranding from './RecaptchaBranding';
 
-const Meta: ComponentMeta<typeof RecaptchaBranding> = {
+const meta: Meta<typeof RecaptchaBranding> = {
   title: 'Components / RecaptchaBranding',
   component: RecaptchaBranding,
   parameters: {
@@ -14,8 +14,8 @@ const Meta: ComponentMeta<typeof RecaptchaBranding> = {
   }
 };
 
-const Template: ComponentStory<typeof RecaptchaBranding> = (args) => <RecaptchaBranding />;
+type Story = StoryObj<typeof RecaptchaBranding>;
 
-export const _RecaptchaBranding = Template.bind({});
+export const _RecaptchaBranding: Story = {};
 
-export default Meta;
+export default meta;

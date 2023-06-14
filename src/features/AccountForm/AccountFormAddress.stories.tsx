@@ -1,58 +1,61 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountFormAddress } from './AccountFormAddress';
 import fixtures from './queries.fixtures.json';
 
-const Meta: ComponentMeta<typeof AccountFormAddress> = {
+const meta: Meta<typeof AccountFormAddress> = {
   title: 'Features / Account Form / Address',
   component: AccountFormAddress
 };
 
-const Template: ComponentStory<typeof AccountFormAddress> = () => <AccountFormAddress />;
+export default meta;
 
-export const NotReady = Template.bind({});
-NotReady.parameters = {
-  msw: {
-    handlers: {
-      customer: [
-        graphql.query('CustomerQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'));
-        })
-      ]
+type Story = StoryObj<typeof AccountFormAddress>;
+
+export const NotReady: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        customer: [
+          graphql.query('CustomerQuery', (req, res, ctx) => {
+            return res(ctx.delay('infinite'));
+          })
+        ]
+      }
     }
   }
 };
 
-export const Success = Template.bind({});
-Success.parameters = {
-  msw: {
-    handlers: {
-      customer: [
-        graphql.query('CustomerQuery', (req, res, ctx) => {
-          return res(ctx.data(fixtures.GetCustomerQuery.ok));
-        }),
-        graphql.mutation('CustomerAddressUpdateMutation', (req, res, ctx) => {
-          return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerAddressMutation.ok));
-        })
-      ]
+export const Success: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        customer: [
+          graphql.query('CustomerQuery', (req, res, ctx) => {
+            return res(ctx.data(fixtures.GetCustomerQuery.ok));
+          }),
+          graphql.mutation('CustomerAddressUpdateMutation', (req, res, ctx) => {
+            return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerAddressMutation.ok));
+          })
+        ]
+      }
     }
   }
 };
 
-export const Error = Template.bind({});
-Error.parameters = {
-  msw: {
-    handlers: {
-      customer: [
-        graphql.query('CustomerQuery', (req, res, ctx) => {
-          return res(ctx.data(fixtures.GetCustomerQuery.ok));
-        }),
-        graphql.mutation('CustomerAddressUpdateMutation', (req, res, ctx) => {
-          return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerAddressMutation.error));
-        })
-      ]
+export const Error: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        customer: [
+          graphql.query('CustomerQuery', (req, res, ctx) => {
+            return res(ctx.data(fixtures.GetCustomerQuery.ok));
+          }),
+          graphql.mutation('CustomerAddressUpdateMutation', (req, res, ctx) => {
+            return res(ctx.delay(1000), ctx.data(fixtures.UpdateCustomerAddressMutation.error));
+          })
+        ]
+      }
     }
   }
 };
-
-export default Meta;

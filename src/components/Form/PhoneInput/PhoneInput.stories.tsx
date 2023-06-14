@@ -1,8 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ReactRenderer, StoryObj } from '@storybook/react';
+import { ArgsStoryFn } from '@storybook/types';
 import { useForm } from 'react-hook-form';
 import { FormPhoneInput } from './PhoneInput';
 
-const Meta: ComponentMeta<typeof FormPhoneInput> = {
+const meta: Meta<typeof FormPhoneInput> = {
   title: 'Components / Form / Phone Input',
   component: FormPhoneInput,
   parameters: {
@@ -10,52 +11,65 @@ const Meta: ComponentMeta<typeof FormPhoneInput> = {
   }
 };
 
-const Template: ComponentStory<typeof FormPhoneInput> = (args) => {
+type Story = StoryObj<typeof FormPhoneInput>;
+
+const Template: ArgsStoryFn<ReactRenderer, any> = (args) => {
   const { control } = useForm();
   return <FormPhoneInput control={control} {...args} />;
 };
 
-export const Basic = Template.bind({});
-Basic.args = {
-  id: 'input',
-  name: 'input',
-  label: 'Input',
-  type: 'text'
+export const Basic: Story = {
+  args: {
+    id: 'input',
+    name: 'input',
+    label: 'Input',
+    type: 'text'
+  },
+  render: Template
 };
 
-export const Required = Template.bind({});
-Required.args = {
-  id: 'input',
-  name: 'input',
-  label: 'Input',
-  type: 'text',
-  rules: { required: true }
+export const Required: Story = {
+  args: {
+    id: 'input',
+    name: 'input',
+    label: 'Input',
+    type: 'text',
+    rules: { required: true }
+  },
+  render: Template
 };
 
-export const Error: ComponentStory<typeof FormPhoneInput> = (args) => {
-  const { control, setError } = useForm();
-  setError('input', { type: 'validate', message: '' });
-  args.name = args.name ?? 'input';
-  return <FormPhoneInput control={control} {...args} />;
-};
-Error.args = {
-  id: 'input',
-  label: 'Input',
-  type: 'text',
-  defaultValue: 'oops',
-  defaultErrorMessage: 'Please enter a valid phone number'
-};
-
-export const HelpText = Template.bind({});
-HelpText.args = {
-  ...Basic.args,
-  helpText: 'Type something in!'
+export const Error: Story = {
+  args: {
+    id: 'input',
+    label: 'Input',
+    type: 'text',
+    defaultValue: 'oops',
+    defaultErrorMessage: 'Please enter a valid phone number'
+  },
+  render: (args) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { control, setError } = useForm();
+    setError('input', { type: 'validate', message: '' });
+    args.name = args.name ?? 'input';
+    return <FormPhoneInput control={control} {...args} />;
+  }
 };
 
-export const Placeholder = Template.bind({});
-Placeholder.args = {
-  ...Basic.args,
-  placeholder: 'Type something in!'
+export const HelpText: Story = {
+  args: {
+    ...Basic.args,
+    helpText: 'Type something in!'
+  },
+  render: Template
 };
 
-export default Meta;
+export const Placeholder: Story = {
+  args: {
+    ...Basic.args,
+    placeholder: 'Type something in!'
+  },
+  render: Template
+};
+
+export default meta;

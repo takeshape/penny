@@ -1,8 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ReactRenderer, StoryObj } from '@storybook/react';
+import { ArgsStoryFn } from '@storybook/types';
 import { useForm } from 'react-hook-form';
 import { FormTextarea } from './Textarea';
 
-const Meta: ComponentMeta<typeof FormTextarea> = {
+const meta: Meta<typeof FormTextarea> = {
   title: 'Components / Form / Textarea',
   component: FormTextarea,
   parameters: {
@@ -10,46 +11,59 @@ const Meta: ComponentMeta<typeof FormTextarea> = {
   }
 };
 
-const Template: ComponentStory<typeof FormTextarea> = (args) => {
+type Story = StoryObj<typeof FormTextarea>;
+
+const Template: ArgsStoryFn<ReactRenderer, any> = (args) => {
   const { control } = useForm();
   return <FormTextarea control={control} {...args} />;
 };
 
-export const Basic = Template.bind({});
-Basic.args = {
-  id: 'textarea',
-  name: 'textarea',
-  label: 'Textarea'
+export const Basic: Story = {
+  args: {
+    id: 'textarea',
+    name: 'textarea',
+    label: 'Textarea'
+  },
+  render: Template
 };
 
-export const Required = Template.bind({});
-Required.args = {
-  ...Basic.args,
-  rules: { required: true }
+export const Required: Story = {
+  args: {
+    ...Basic.args,
+    rules: { required: true }
+  },
+  render: Template
 };
 
-export const Error: ComponentStory<typeof FormTextarea> = (args) => {
-  const { control, setError } = useForm();
-  setError('textarea', { type: 'required', message: 'This field is required' });
-  args.name = args.name ?? 'input';
-  return <FormTextarea control={control} {...args} />;
-};
-Error.args = {
-  ...Basic.args,
-  rules: { required: true },
-  defaultValue: ''
-};
-
-export const HelpText = Template.bind({});
-HelpText.args = {
-  ...Basic.args,
-  helpText: 'Type something in!'
+export const Error: Story = {
+  args: {
+    ...Basic.args,
+    rules: { required: true },
+    defaultValue: ''
+  },
+  render: (args) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { control, setError } = useForm();
+    setError('textarea', { type: 'required', message: 'This field is required' });
+    args.name = args.name ?? 'input';
+    return <FormTextarea control={control} {...args} />;
+  }
 };
 
-export const Placeholder = Template.bind({});
-Placeholder.args = {
-  ...Basic.args,
-  placeholder: 'Type something in!'
+export const HelpText: Story = {
+  args: {
+    ...Basic.args,
+    helpText: 'Type something in!'
+  },
+  render: Template
 };
 
-export default Meta;
+export const Placeholder: Story = {
+  args: {
+    ...Basic.args,
+    placeholder: 'Type something in!'
+  },
+  render: Template
+};
+
+export default meta;
