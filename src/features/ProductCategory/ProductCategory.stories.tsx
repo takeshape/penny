@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { productCategoryCollection } from 'features/ProductCategory/fixtures';
 import { ProductCategory } from './ProductCategory';
 
-const Meta: ComponentMeta<typeof ProductCategory> = {
+const meta: Meta<typeof ProductCategory> = {
   title: 'Features / Product Category',
   component: ProductCategory,
   parameters: {
@@ -10,15 +10,16 @@ const Meta: ComponentMeta<typeof ProductCategory> = {
   }
 };
 
-const Template: ComponentStory<typeof ProductCategory> = (args) => <ProductCategory {...args} />;
+type Story = StoryObj<typeof ProductCategory>;
 
-export const _ProductCategory = Template.bind({});
-_ProductCategory.args = {
-  header: { text: { primary: productCategoryCollection.name, secondary: productCategoryCollection.descriptionHtml } },
-  items: productCategoryCollection.items,
-  pagination: {
-    setCurrentPage: () => {}
+export const _ProductCategory: Story = {
+  args: {
+    header: { text: { primary: productCategoryCollection.name, secondary: productCategoryCollection.descriptionHtml } },
+    items: productCategoryCollection.items,
+    pagination: {
+      setCurrentPage: () => {}
+    }
   }
 };
 
-export default Meta;
+export default meta;

@@ -1,17 +1,18 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Blog } from './Blog';
 import * as blog from './Blog.fixtures';
 
-const Meta: ComponentMeta<typeof Blog> = {
+const meta: Meta<typeof Blog> = {
   title: 'Features / Product Page / Components / Blog',
   component: Blog
 };
 
-const Template: ComponentStory<typeof Blog> = (args) => <Blog {...args} />;
+type Story = StoryObj<typeof Blog>;
 
-export const _Blog = Template.bind({});
-_Blog.args = {
-  blog
+export const _Blog: Story = {
+  args: {
+    blog
+  }
 };
 
-export default Meta;
+export default meta;

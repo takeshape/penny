@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Loader } from './Loader';
 
-const Meta: ComponentMeta<typeof Loader> = {
+const meta: Meta<typeof Loader> = {
   title: 'Components / Loader',
   component: Loader,
   parameters: {
@@ -10,8 +10,8 @@ const Meta: ComponentMeta<typeof Loader> = {
   decorators: [(Story) => <div className="relative z-10">{Story()}</div>]
 };
 
-const Template: ComponentStory<typeof Loader> = (args) => <Loader {...args} />;
+type Story = StoryObj<typeof Loader>;
 
-export const _Loader = Template.bind({});
+export const _Loader: Story = {};
 
-export default Meta;
+export default meta;

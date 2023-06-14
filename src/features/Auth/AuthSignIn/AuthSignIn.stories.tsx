@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { AuthSignIn, errors } from './AuthSignIn';
 
-const Meta: ComponentMeta<typeof AuthSignIn> = {
+const meta: Meta<typeof AuthSignIn> = {
   title: 'Features / Auth / Sign In',
   component: AuthSignIn,
   argTypes: {
@@ -17,17 +17,18 @@ const Meta: ComponentMeta<typeof AuthSignIn> = {
   }
 };
 
-const Template: ComponentStory<typeof AuthSignIn> = (args) => <AuthSignIn {...args} />;
+type Story = StoryObj<typeof AuthSignIn>;
 
 /**
  * TODO: When we can mock mutations we might want to show more states.
  */
 
-export const Success = Template.bind({});
+export const Success: Story = {};
 
-export const Error: ComponentStory<typeof AuthSignIn> = Template.bind({});
-Error.args = {
-  error: { code: 'CredentialsSignin' }
+export const Error: Story = {
+  args: {
+    error: { code: 'CredentialsSignin' }
+  }
 };
 
-export default Meta;
+export default meta;

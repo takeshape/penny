@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { AuthCreateAccount } from './AuthCreateAccount';
 
-const Meta: ComponentMeta<typeof AuthCreateAccount> = {
+const meta: Meta<typeof AuthCreateAccount> = {
   title: 'Features / Auth / Create Account',
   component: AuthCreateAccount,
   argTypes: {
@@ -12,32 +12,34 @@ const Meta: ComponentMeta<typeof AuthCreateAccount> = {
   }
 };
 
-const Template: ComponentStory<typeof AuthCreateAccount> = (args) => <AuthCreateAccount {...args} />;
+type Story = StoryObj<typeof AuthCreateAccount>;
 
-export const Success = Template.bind({});
-Success.parameters = {
-  msw: {
-    handlers: {
-      createAccount: [
-        graphql.mutation('CreateCustomerMutation', (req, res, ctx) => {
-          return res(ctx.data({ customerCreate: { customer: { id: '12345' } } }));
-        })
-      ]
+export const Success: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        createAccount: [
+          graphql.mutation('CreateCustomerMutation', (req, res, ctx) => {
+            return res(ctx.data({ customerCreate: { customer: { id: '12345' } } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export const Error = Template.bind({});
-Error.parameters = {
-  msw: {
-    handlers: {
-      createAccount: [
-        graphql.mutation('CreateCustomerMutation', (req, res, ctx) => {
-          return res(ctx.errors([{ message: 'An account with that email already exists' }]));
-        })
-      ]
+export const Error: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        createAccount: [
+          graphql.mutation('CreateCustomerMutation', (req, res, ctx) => {
+            return res(ctx.errors([{ message: 'An account with that email already exists' }]));
+          })
+        ]
+      }
     }
   }
 };
 
-export default Meta;
+export default meta;

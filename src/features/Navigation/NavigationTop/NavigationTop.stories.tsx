@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { navigationResponse } from '../queries.fixtures';
@@ -7,7 +7,7 @@ import { NavigationTop } from './NavigationTop';
 
 const navigation = getNavigation(navigationResponse)!;
 
-const Meta: ComponentMeta<typeof NavigationTop> = {
+const meta: Meta<typeof NavigationTop> = {
   title: 'Features / Navigation / Navigation Top',
   component: NavigationTop,
   parameters: {
@@ -35,38 +35,41 @@ const Meta: ComponentMeta<typeof NavigationTop> = {
   }
 };
 
-const Template: ComponentStory<typeof NavigationTop> = (args) => <NavigationTop {...args} />;
+type Story = StoryObj<typeof NavigationTop>;
 
-export const _Mobile = Template.bind({});
-_Mobile.args = {
-  message: navigation.message,
-  sections: navigation.sections,
-  currencies: navigation.currencies
-};
-_Mobile.parameters = {
-  viewport: {
-    defaultViewport: 'mobile2'
+export const _Mobile: Story = {
+  args: {
+    message: navigation.message,
+    sections: navigation.sections,
+    currencies: navigation.currencies
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile2'
+    }
   }
 };
 
-export const _Tablet = Template.bind({});
-_Tablet.args = {
-  message: navigation.message,
-  sections: navigation.sections,
-  currencies: navigation.currencies
-};
-_Tablet.parameters = {
-  viewport: {
-    defaultViewport: 'tablet'
+export const _Tablet: Story = {
+  args: {
+    message: navigation.message,
+    sections: navigation.sections,
+    currencies: navigation.currencies
+  },
+  parameters: {
+    viewport: {
+      defaultViewport: 'tablet'
+    }
   }
 };
 
-export const _Desktop = Template.bind({});
-_Desktop.args = {
-  message: navigation.message,
-  sections: navigation.sections,
-  currencies: navigation.currencies
+export const _Desktop: Story = {
+  args: {
+    message: navigation.message,
+    sections: navigation.sections,
+    currencies: navigation.currencies
+  },
+  parameters: {}
 };
-_Desktop.parameters = {};
 
-export default Meta;
+export default meta;

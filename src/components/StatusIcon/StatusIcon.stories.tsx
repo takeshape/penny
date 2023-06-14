@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { StatusIcon } from './StatusIcon';
 
-const Meta: ComponentMeta<typeof StatusIcon> = {
+const meta: Meta<typeof StatusIcon> = {
   title: 'Components / Status Icons',
   component: StatusIcon,
   parameters: {
@@ -12,26 +12,30 @@ const Meta: ComponentMeta<typeof StatusIcon> = {
   }
 };
 
-const Template: ComponentStory<typeof StatusIcon> = (args) => <StatusIcon {...args} />;
+type Story = StoryObj<typeof StatusIcon>;
 
-export const Info = Template.bind({});
-Info.args = {
-  status: 'info'
+export const Info: Story = {
+  args: {
+    status: 'info'
+  }
 };
 
-export const Warn = Template.bind({});
-Warn.args = {
-  status: 'warn'
+export const Warn: Story = {
+  args: {
+    status: 'warn'
+  }
 };
 
-export const Success = Template.bind({});
-Success.args = {
-  status: 'success'
+export const Success: Story = {
+  args: {
+    status: 'success'
+  }
 };
 
-export const Error = Template.bind({});
-Error.args = {
-  status: 'error'
+export const Error: Story = {
+  args: {
+    status: 'error'
+  }
 };
 
-export default Meta;
+export default meta;

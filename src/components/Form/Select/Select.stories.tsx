@@ -1,8 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ReactRenderer, StoryObj } from '@storybook/react';
+import { ArgsStoryFn } from '@storybook/types';
 import { useForm } from 'react-hook-form';
 import { FormSelect } from './Select';
 
-const Meta: ComponentMeta<typeof FormSelect> = {
+const meta: Meta<typeof FormSelect> = {
   title: 'Components / Form / Select',
   component: FormSelect,
   parameters: {
@@ -17,104 +18,116 @@ const Meta: ComponentMeta<typeof FormSelect> = {
   ]
 };
 
-const Template: ComponentStory<typeof FormSelect> = (args) => {
+type Story = StoryObj<typeof FormSelect>;
+
+const Template: ArgsStoryFn<ReactRenderer, any> = (args) => {
   const { control } = useForm();
   return <FormSelect control={control} {...args} />;
 };
 
-export const Basic = Template.bind({});
-Basic.args = {
-  id: 'select',
-  name: 'select',
-  label: 'Select',
-  options: [
-    {
-      key: 'foo',
-      value: 'foo',
-      title: 'Foo'
-    },
-    {
-      key: 'bar',
-      value: 'bar',
-      title: 'Bar'
-    }
-  ],
-  className: 'col-span-6'
+export const Basic: Story = {
+  args: {
+    id: 'select',
+    name: 'select',
+    label: 'Select',
+    options: [
+      {
+        key: 'foo',
+        value: 'foo',
+        title: 'Foo'
+      },
+      {
+        key: 'bar',
+        value: 'bar',
+        title: 'Bar'
+      }
+    ],
+    className: 'col-span-6'
+  },
+  render: Template
 };
 
-export const DefaultBlank = Template.bind({});
-DefaultBlank.args = {
-  id: 'select',
-  name: 'select',
-  label: 'Select',
-  defaultValue: '',
-  options: [
-    {
-      key: 'blank',
-      value: '',
-      title: '--Make your selection--',
-      disabled: true
-    },
-    {
-      key: 'foo',
-      value: 'foo',
-      title: 'Foo'
-    },
-    {
-      key: 'bar',
-      value: 'bar',
-      title: 'Bar'
-    }
-  ],
-  className: 'col-span-6'
+export const DefaultBlank: Story = {
+  args: {
+    id: 'select',
+    name: 'select',
+    label: 'Select',
+    defaultValue: '',
+    options: [
+      {
+        key: 'blank',
+        value: '',
+        title: '--Make your selection--',
+        disabled: true
+      },
+      {
+        key: 'foo',
+        value: 'foo',
+        title: 'Foo'
+      },
+      {
+        key: 'bar',
+        value: 'bar',
+        title: 'Bar'
+      }
+    ],
+    className: 'col-span-6'
+  },
+  render: Template
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  disabled: true,
-  id: 'select',
-  name: 'select',
-  label: 'Select',
-  options: [
-    {
-      key: 'foo',
-      value: 'foo',
-      title: 'Foo'
-    },
-    {
-      key: 'bar',
-      value: 'bar',
-      title: 'Bar'
-    }
-  ],
-  className: 'col-span-6'
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    id: 'select',
+    name: 'select',
+    label: 'Select',
+    options: [
+      {
+        key: 'foo',
+        value: 'foo',
+        title: 'Foo'
+      },
+      {
+        key: 'bar',
+        value: 'bar',
+        title: 'Bar'
+      }
+    ],
+    className: 'col-span-6'
+  },
+  render: Template
 };
 
-export const Required = Template.bind({});
-Required.args = {
-  id: 'select',
-  name: 'select',
-  label: 'Select',
-  rules: { required: true },
-  options: [
-    {
-      key: 'foo',
-      value: 'foo',
-      title: 'Foo'
-    },
-    {
-      key: 'bar',
-      value: 'bar',
-      title: 'Bar'
-    }
-  ],
-  className: 'col-span-6'
+export const Required: Story = {
+  args: {
+    id: 'select',
+    name: 'select',
+    label: 'Select',
+    rules: { required: true },
+    options: [
+      {
+        key: 'foo',
+        value: 'foo',
+        title: 'Foo'
+      },
+      {
+        key: 'bar',
+        value: 'bar',
+        title: 'Bar'
+      }
+    ],
+    className: 'col-span-6'
+  },
+  render: Template
 };
 
-export const HelpText = Template.bind({});
-HelpText.args = {
-  ...Basic.args,
-  helpText: 'Select something!'
+export const HelpText: Story = {
+  args: {
+    ...Basic.args,
+    helpText: 'Select something!'
+  },
+  render: Template
 };
 
-export default Meta;
+export default meta;

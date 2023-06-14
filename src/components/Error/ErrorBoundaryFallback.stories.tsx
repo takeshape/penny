@@ -1,22 +1,21 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { ErrorBoundaryFallback } from './ErrorBoundaryFallback';
 
-const Meta: ComponentMeta<typeof ErrorBoundaryFallback> = {
+const meta: Meta<typeof ErrorBoundaryFallback> = {
   title: 'Components / Error / Error Boundary Fallback',
   component: ErrorBoundaryFallback
 };
 
-const Template: ComponentStory<typeof ErrorBoundaryFallback> = (args) => {
-  return <ErrorBoundaryFallback {...args} />;
+export default meta;
+
+type Story = StoryObj<typeof ErrorBoundaryFallback>;
+
+export const Default: Story = {};
+
+export const Custom: Story = {
+  args: {
+    headline: 'Headline',
+    subhead: 'Subhead',
+    body: 'Body'
+  }
 };
-
-export const Default = Template.bind({});
-
-export const Custom = Template.bind({});
-Custom.args = {
-  headline: 'Headline',
-  subhead: 'Subhead',
-  body: 'Body'
-};
-
-export default Meta;

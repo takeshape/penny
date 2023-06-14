@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import Stars from './Stars';
 
-const Meta: ComponentMeta<typeof Stars> = {
+const meta: Meta<typeof Stars> = {
   title: 'Components / Stars',
   component: Stars,
   parameters: {
@@ -14,11 +14,12 @@ const Meta: ComponentMeta<typeof Stars> = {
   }
 };
 
-const Template: ComponentStory<typeof Stars> = (args) => <Stars {...args} />;
+type Story = StoryObj<typeof Stars>;
 
-export const _Stars = Template.bind({});
-_Stars.args = {
-  rating: 3
+export const _Stars: Story = {
+  args: {
+    rating: 3
+  }
 };
 
-export default Meta;
+export default meta;

@@ -4,7 +4,10 @@ import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
 // Set the TakeShape branch URL
-await setProcessBranchUrl({ envVar: 'NEXT_PUBLIC_TAKESHAPE_API_URL' });
+// Storybook doesn't make live queries, so this is unnecessary.
+if (!process.env.STORYBOOK) {
+  await setProcessBranchUrl({ envVar: 'NEXT_PUBLIC_TAKESHAPE_API_URL' });
+}
 
 const require = createRequire(import.meta.url);
 

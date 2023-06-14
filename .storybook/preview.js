@@ -2,10 +2,9 @@ import { ApolloProvider } from '@apollo/client';
 import { rest } from 'msw';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { SessionProvider } from 'next-auth/react';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
-import { withJotai } from 'storybook-addon-jotai';
 import 'styles/globals.css';
 import { createClient } from '../src/utils/apollo/client';
+import { withJotai } from './decorators/jotai/withJotai';
 
 // initialize MSW
 initialize({
@@ -25,9 +24,6 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/
     }
-  },
-  nextRouter: {
-    Provider: RouterContext.Provider
   },
   msw: {
     handlers: {

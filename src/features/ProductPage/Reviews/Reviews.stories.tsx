@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { productPageReviewsIoReviewList } from '../fixtures';
 import { Reviews } from './Reviews';
 
-const Meta: ComponentMeta<typeof Reviews> = {
+const meta: Meta<typeof Reviews> = {
   title: 'Features / Product Page / Components / Reviews',
   component: Reviews,
   parameters: {
@@ -10,9 +10,10 @@ const Meta: ComponentMeta<typeof Reviews> = {
   }
 };
 
-const Template: ComponentStory<typeof Reviews> = (args) => <Reviews {...args} />;
+type Story = StoryObj<typeof Reviews>;
 
-export const _Reviews = Template.bind({});
-_Reviews.args = productPageReviewsIoReviewList;
+export const _Reviews: Story = {
+  args: productPageReviewsIoReviewList
+};
 
-export default Meta;
+export default meta;

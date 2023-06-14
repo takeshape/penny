@@ -1,8 +1,8 @@
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
-const Meta: ComponentMeta<typeof Button> = {
+const meta: Meta<typeof Button> = {
   title: 'Components / Button',
   component: Button,
   parameters: {
@@ -15,61 +15,69 @@ const Meta: ComponentMeta<typeof Button> = {
   }
 };
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+export default meta;
 
-export const Primary = Template.bind({});
-Primary.args = {
-  color: 'primary',
-  children: 'Button'
+type Story = StoryObj<typeof Button>;
+
+export const Primary: Story = {
+  args: {
+    color: 'primary',
+    children: 'Button'
+  }
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  color: 'secondary',
-  children: 'Button'
+export const Secondary: Story = {
+  args: {
+    color: 'secondary',
+    children: 'Button'
+  }
 };
 
-export const Clear = Template.bind({});
-Clear.args = {
-  color: 'clear',
-  children: 'Button'
+export const Clear: Story = {
+  args: {
+    color: 'clear',
+    children: 'Button'
+  }
 };
 
-export const Large = Template.bind({});
-Large.args = {
-  color: 'primary',
-  size: 'large',
-  children: 'Button'
+export const Large: Story = {
+  args: {
+    color: 'primary',
+    size: 'large',
+    children: 'Button'
+  }
 };
 
-export const Small = Template.bind({});
-Small.args = {
-  color: 'primary',
-  size: 'small',
-  children: 'Button'
+export const Small: Story = {
+  args: {
+    color: 'primary',
+    size: 'small',
+    children: 'Button'
+  }
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  color: 'primary',
-  disabled: true,
-  children: 'Button'
+export const Disabled: Story = {
+  args: {
+    color: 'primary',
+    disabled: true,
+    children: 'Button'
+  }
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  ...Primary.args,
-  loading: true
+export const Loading: Story = {
+  args: {
+    ...Primary.args,
+    loading: true
+  }
 };
 
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-  ...Primary.args,
-  children: (
-    <>
-      <EnvelopeIcon className="h-4 w-4" aria-hidden="true" /> Subscribe
-    </>
-  )
+export const WithIcon: Story = {
+  args: {
+    ...Primary.args,
+    children: (
+      <>
+        <EnvelopeIcon className="h-4 w-4" aria-hidden="true" /> Subscribe
+      </>
+    )
+  }
 };
-
-export default Meta;

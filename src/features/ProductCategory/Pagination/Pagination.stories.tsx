@@ -1,8 +1,8 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Pagination } from './Pagination';
 
-const Meta: ComponentMeta<typeof Pagination> = {
+const meta: Meta<typeof Pagination> = {
   title: 'Features / Product Category / Components / Pagination',
   component: Pagination,
   parameters: {
@@ -10,13 +10,14 @@ const Meta: ComponentMeta<typeof Pagination> = {
   }
 };
 
-const Template: ComponentStory<typeof Pagination> = (args) => <Pagination {...args} />;
+type Story = StoryObj<typeof Pagination>;
 
-export default Meta;
+export default meta;
 
-export const _Pagination = Template.bind({});
-_Pagination.args = {
-  pagination: {
-    setCurrentPage: action('Set Current Page')
+export const _Pagination: Story = {
+  args: {
+    pagination: {
+      setCurrentPage: action('Set Current Page')
+    }
   }
 };

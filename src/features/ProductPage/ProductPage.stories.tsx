@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import {
   productPageBreadcrumbs,
@@ -12,62 +12,62 @@ import {
 import { ProductPage } from './ProductPage';
 import { relatedProductsResponse } from './queries.fixtures';
 
-const Meta: ComponentMeta<typeof ProductPage> = {
+const meta: Meta<typeof ProductPage> = {
   title: 'Features / Product Page',
   component: ProductPage
 };
 
-export default Meta;
+export default meta;
 
-const Template: ComponentStory<typeof ProductPage> = (args) => <ProductPage {...args} />;
+type Story = StoryObj<typeof ProductPage>;
 
-export const _ProductPage = Template.bind({});
-
-_ProductPage.args = {
-  component: 'withImageGrid',
-  options: {
-    showDetails: true,
-    showReviewsIo: true,
-    showTrustpilot: false,
-    showRelatedProducts: true,
-    showPolicies: true,
-    showBreadcrumbs: true
+export const _ProductPage: Story = {
+  args: {
+    component: 'withImageGrid',
+    options: {
+      showDetails: true,
+      showReviewsIo: true,
+      showTrustpilot: false,
+      showRelatedProducts: true,
+      showPolicies: true,
+      showBreadcrumbs: true
+    },
+    product: productPageProduct,
+    reviewHighlights: productPageReviewHighlights,
+    reviewList: productPageReviewsIoReviewList,
+    details: productPageDetails,
+    policies: productPagePolicies,
+    breadcrumbs: productPageBreadcrumbs
   },
-  product: productPageProduct,
-  reviewHighlights: productPageReviewHighlights,
-  reviewList: productPageReviewsIoReviewList,
-  details: productPageDetails,
-  policies: productPagePolicies,
-  breadcrumbs: productPageBreadcrumbs
-};
 
-_ProductPage.parameters = {
-  msw: {
-    handlers: {
-      related: [
-        graphql.query('RelatedProductsShopifyCollectionQuery', (req, res, ctx) => {
-          return res(ctx.data(relatedProductsResponse));
-        })
-      ]
+  parameters: {
+    msw: {
+      handlers: {
+        related: [
+          graphql.query('RelatedProductsShopifyCollectionQuery', (req, res, ctx) => {
+            return res(ctx.data(relatedProductsResponse));
+          })
+        ]
+      }
     }
   }
 };
 
-export const _ProductPageWithTrustpilot = Template.bind({});
-
-_ProductPageWithTrustpilot.args = {
-  ..._ProductPage.args,
-  options: {
-    showDetails: true,
-    showReviewsIo: false,
-    showTrustpilot: true,
-    showRelatedProducts: true,
-    showPolicies: true,
-    showBreadcrumbs: true
+export const _ProductPageWithTrustpilot: Story = {
+  args: {
+    ..._ProductPage.args,
+    options: {
+      showDetails: true,
+      showReviewsIo: false,
+      showTrustpilot: true,
+      showRelatedProducts: true,
+      showPolicies: true,
+      showBreadcrumbs: true
+    },
+    reviewList: trustpilotPageData
   },
-  reviewList: trustpilotPageData
-};
 
-_ProductPageWithTrustpilot.parameters = {
-  ..._ProductPage.parameters
+  parameters: {
+    ..._ProductPage.parameters
+  }
 };

@@ -1,14 +1,17 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, ReactRenderer, StoryObj } from '@storybook/react';
+import { ArgsStoryFn } from '@storybook/types';
 import FormInput from 'components/Form/Input/Input';
 import { useForm } from 'react-hook-form';
 import { FormCardPanel } from './CardPanel';
 
-const Meta: ComponentMeta<typeof FormCardPanel> = {
+const meta: Meta<typeof FormCardPanel> = {
   title: 'Components / Form / Two Column Card',
   component: FormCardPanel
 };
 
-const Template: ComponentStory<typeof FormCardPanel> = (args) => {
+type Story = StoryObj<typeof FormCardPanel>;
+
+const Template: ArgsStoryFn<ReactRenderer, any> = (args) => {
   const { control } = useForm();
 
   return (
@@ -44,34 +47,44 @@ const Template: ComponentStory<typeof FormCardPanel> = (args) => {
   );
 };
 
-export const Basic = Template.bind({});
-Basic.args = {
-  primaryText: 'Profile',
-  secondaryText: 'Your profile!'
+export const Basic: Story = {
+  args: {
+    primaryText: 'Profile',
+    secondaryText: 'Your profile!'
+  },
+  render: Template
 };
 
-export const NotReady = Template.bind({});
-NotReady.args = {
-  ...Basic.args,
-  isReady: false
+export const NotReady: Story = {
+  args: {
+    ...Basic.args,
+    isReady: false
+  },
+  render: Template
 };
 
-export const Submitting = Template.bind({});
-Submitting.args = {
-  ...Basic.args,
-  isSubmitting: true
+export const Submitting: Story = {
+  args: {
+    ...Basic.args,
+    isSubmitting: true
+  },
+  render: Template
 };
 
-export const Submitted = Template.bind({});
-Submitted.args = {
-  ...Basic.args,
-  isSubmitSuccessful: true
+export const Submitted: Story = {
+  args: {
+    ...Basic.args,
+    isSubmitSuccessful: true
+  },
+  render: Template
 };
 
-export const Error = Template.bind({});
-Error.args = {
-  ...Basic.args,
-  error: 'There was an error!'
+export const Error: Story = {
+  args: {
+    ...Basic.args,
+    error: 'There was an error!'
+  },
+  render: Template
 };
 
-export default Meta;
+export default meta;

@@ -1,9 +1,9 @@
-import type { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountPurchaseList } from './AccountPurchaseList';
 import { myPurchasesResponse } from './queries.fixtures';
 
-const Meta: ComponentMeta<typeof AccountPurchaseList> = {
+const meta: Meta<typeof AccountPurchaseList> = {
   title: 'Features / Account Purchases',
   component: AccountPurchaseList,
   parameters: {
@@ -11,45 +11,48 @@ const Meta: ComponentMeta<typeof AccountPurchaseList> = {
   }
 };
 
-const Template: ComponentStory<typeof AccountPurchaseList> = () => <AccountPurchaseList />;
+type Story = StoryObj<typeof AccountPurchaseList>;
 
-export const Empty = Template.bind({});
-Empty.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
-          return res(ctx.data({ customer: { orders: { edges: [] } } }));
-        })
-      ]
+export const Empty: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
+            return res(ctx.data({ customer: { orders: { edges: [] } } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export const Loading = Template.bind({});
-Loading.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data({ customer: { orders: [] } }));
-        })
-      ]
+export const Loading: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
+            return res(ctx.delay('infinite'), ctx.data({ customer: { orders: [] } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export const WithOrders = Template.bind({});
-WithOrders.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
-          return res(ctx.data(myPurchasesResponse));
-        })
-      ]
+export const WithOrders: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.query('GetMyAdminCustomerOrdersQuery', (req, res, ctx) => {
+            return res(ctx.data(myPurchasesResponse));
+          })
+        ]
+      }
     }
   }
 };
 
-export default Meta;
+export default meta;

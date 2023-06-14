@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { TrustpilotLoading } from './TrustpilotLoading';
 
-const Meta: ComponentMeta<typeof TrustpilotLoading> = {
+const meta: Meta<typeof TrustpilotLoading> = {
   title: 'Features / Product Page / Components / Trustpilot Loading',
   component: TrustpilotLoading
 };
 
-const Template: ComponentStory<typeof TrustpilotLoading> = (args) => <TrustpilotLoading />;
+type Story = StoryObj<typeof TrustpilotLoading>;
 
-export const _TrustpilotLoading = Template.bind({});
+export const _TrustpilotLoading: Story = {};
 
-export default Meta;
+export default meta;

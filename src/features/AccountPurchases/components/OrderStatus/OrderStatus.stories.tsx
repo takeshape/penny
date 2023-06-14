@@ -1,24 +1,26 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { getFulfillment } from '../../transforms';
 import { ResponseFulfillment } from '../../types';
 import { PurchaseItemOrderStatus } from './OrderStatus';
 import OrderStatusFixtures from './OrderStatus.fixtures.json';
 
-const Meta: ComponentMeta<typeof PurchaseItemOrderStatus> = {
+const meta: Meta<typeof PurchaseItemOrderStatus> = {
   title: 'Features / Account Purchases / Components / OrderStatus',
   component: PurchaseItemOrderStatus
 };
 
-const Template: ComponentStory<typeof PurchaseItemOrderStatus> = (args) => <PurchaseItemOrderStatus {...args} />;
+type Story = StoryObj<typeof PurchaseItemOrderStatus>;
 
-export const Processing = Template.bind({});
-Processing.args = {
-  unfulfilled: true
+export const Processing: Story = {
+  args: {
+    unfulfilled: true
+  }
 };
 
-export const Fulfilled = Template.bind({});
-Fulfilled.args = {
-  ...getFulfillment(OrderStatusFixtures.FULFILLED as ResponseFulfillment)
+export const Fulfilled: Story = {
+  args: {
+    ...getFulfillment(OrderStatusFixtures.FULFILLED as ResponseFulfillment)
+  }
 };
 
-export default Meta;
+export default meta;
