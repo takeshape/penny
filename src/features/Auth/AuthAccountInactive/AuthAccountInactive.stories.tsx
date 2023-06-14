@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { AccountInactiveForm } from './AuthAccountInactive';
 
-const Meta: ComponentMeta<typeof AccountInactiveForm> = {
+const meta: Meta<typeof AccountInactiveForm> = {
   title: 'Features / Auth / Account Inactive',
   component: AccountInactiveForm,
   parameters: {
@@ -10,28 +10,27 @@ const Meta: ComponentMeta<typeof AccountInactiveForm> = {
   }
 };
 
-const Template: ComponentStory<typeof AccountInactiveForm> = (args) => <AccountInactiveForm {...args} />;
+type Story = StoryObj<typeof AccountInactiveForm>;
 
-export const _AccountInactiveForm = Template.bind({});
-
-_AccountInactiveForm.args = {
-  customer: {
-    id: '1234',
-    email: 'foo@bar.com'
+export const _AccountInactiveForm: Story = {
+  args: {
+    customer: {
+      id: '1234',
+      email: 'foo@bar.com'
+    },
+    isOpen: true
   },
-  isOpen: true
-};
-
-_AccountInactiveForm.parameters = {
-  msw: {
-    handlers: {
-      customer: [
-        graphql.mutation('SendCustomerInviteMutation', (req, res, ctx) => {
-          return res(ctx.delay(1000), ctx.data({ customerInvite: { customer_invite: { from: 'me@you.com' } } }));
-        })
-      ]
+  parameters: {
+    msw: {
+      handlers: {
+        customer: [
+          graphql.mutation('SendCustomerInviteMutation', (req, res, ctx) => {
+            return res(ctx.delay(1000), ctx.data({ customerInvite: { customer_invite: { from: 'me@you.com' } } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export default Meta;
+export default meta;

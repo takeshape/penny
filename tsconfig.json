@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/components/Form/Select/Select.stories.tsx.bak", "src/components/Form/Textarea/Textarea.stories.tsx.bak", "src/components/Form/Toggle/ToggleWithLabel.stories.tsx.bak"  ],
+  ],
   "exclude": [
     "node_modules",
     "cypress",

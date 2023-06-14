@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { Newsletter } from './Newsletter';
 
-const Meta: ComponentMeta<typeof Newsletter> = {
+const meta: Meta<typeof Newsletter> = {
   title: 'Features / Footer / Components / Newsletter',
   component: Newsletter,
   parameters: {
@@ -10,58 +10,61 @@ const Meta: ComponentMeta<typeof Newsletter> = {
   }
 };
 
-const Template: ComponentStory<typeof Newsletter> = (args) => <Newsletter {...args} />;
+type Story = StoryObj<typeof Newsletter>;
 
-export const Success = Template.bind({});
-Success.args = {
-  text: {
-    primary: 'Subscribe to our newsletter',
-    secondary: 'The latest news, articles, and resources, sent to your inbox weekly.',
-    button: 'Subscribe'
-  }
-};
-Success.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
-          return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
-        })
-      ]
+export const Success: Story = {
+  args: {
+    text: {
+      primary: 'Subscribe to our newsletter',
+      secondary: 'The latest news, articles, and resources, sent to your inbox weekly.',
+      button: 'Subscribe'
+    }
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+            return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  ...Success.args
-};
-Loading.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data({}));
-        })
-      ]
+export const Loading: Story = {
+  args: {
+    ...Success.args
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+            return res(ctx.delay('infinite'), ctx.data({}));
+          })
+        ]
+      }
     }
   }
 };
 
-export const Error = Template.bind({});
-Error.args = {
-  ...Success.args
-};
-Error.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
-          return res(ctx.errors([{ message: 'Oops! Something went wrong' }]));
-        })
-      ]
+export const Error: Story = {
+  args: {
+    ...Success.args
+  },
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+            return res(ctx.errors([{ message: 'Oops! Something went wrong' }]));
+          })
+        ]
+      }
     }
   }
 };
 
-export default Meta;
+export default meta;

@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { AccountNavigation } from './AccountNavigation';
 
-const Meta: ComponentMeta<typeof AccountNavigation> = {
+const meta: Meta<typeof AccountNavigation> = {
   title: 'Features / Account Navigation',
   component: AccountNavigation
 };
 
-const Template: ComponentStory<typeof AccountNavigation> = () => <AccountNavigation />;
+type Story = StoryObj<typeof AccountNavigation>;
 
-export const _AccountNavigation = Template.bind({});
+export const _AccountNavigation: Story = {};
 
-export default Meta;
+export default meta;

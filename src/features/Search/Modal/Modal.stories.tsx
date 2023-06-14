@@ -1,10 +1,10 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { isSearchOpenAtom } from 'store';
 import { SearchShopifyProducts } from '../queries.fixtures';
 import { Modal } from './Modal';
 
-const Meta: ComponentMeta<typeof Modal> = {
+const meta: Meta<typeof Modal> = {
   title: 'Features / Search / Components / Modal',
   component: Modal,
   parameters: {
@@ -19,79 +19,83 @@ const Meta: ComponentMeta<typeof Modal> = {
   }
 };
 
-const Template: ComponentStory<typeof Modal> = () => <Modal />;
+type Story = StoryObj<typeof Modal>;
 
-export const _Empty = Template.bind({});
-_Empty.parameters = {
-  msw: {
-    handlers: {
-      search: [
-        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
-          return res(ctx.data({ search: { results: [] } }));
-        })
-      ]
+export const _Empty: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        search: [
+          graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+            return res(ctx.data({ search: { results: [] } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export const _Loading = Template.bind({});
-_Loading.parameters = {
-  nextRouter: {
-    path: '/',
-    isReady: true,
-    query: {
-      search: 'basic'
-    }
-  },
-  msw: {
-    handlers: {
-      search: [
-        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
-          return res(ctx.delay('infinite'), ctx.data(SearchShopifyProducts.result.data));
-        })
-      ]
-    }
-  }
-};
-
-export const _WithResults = Template.bind({});
-_WithResults.parameters = {
-  nextRouter: {
-    path: '/',
-    isReady: true,
-    query: {
-      search: 'basic'
-    }
-  },
-  msw: {
-    handlers: {
-      search: [
-        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
-          return res(ctx.data(SearchShopifyProducts.result.data));
-        })
-      ]
+export const _Loading: Story = {
+  parameters: {
+    nextRouter: {
+      path: '/',
+      isReady: true,
+      query: {
+        search: 'basic'
+      }
+    },
+    msw: {
+      handlers: {
+        search: [
+          graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+            return res(ctx.delay('infinite'), ctx.data(SearchShopifyProducts.result.data));
+          })
+        ]
+      }
     }
   }
 };
 
-export const _NoResults = Template.bind({});
-_NoResults.parameters = {
-  nextRouter: {
-    path: '/',
-    isReady: true,
-    query: {
-      search: 'basic'
-    }
-  },
-  msw: {
-    handlers: {
-      search: [
-        graphql.query('SearchShopifyProducts', (req, res, ctx) => {
-          return res(ctx.data({ search: { results: [] } }));
-        })
-      ]
+export const _WithResults: Story = {
+  parameters: {
+    nextRouter: {
+      path: '/',
+      isReady: true,
+      query: {
+        search: 'basic'
+      }
+    },
+    msw: {
+      handlers: {
+        search: [
+          graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+            return res(ctx.data(SearchShopifyProducts.result.data));
+          })
+        ]
+      }
     }
   }
 };
 
-export default Meta;
+export const _NoResults: Story = {
+  parameters: {
+    nextRouter: {
+      path: '/',
+      isReady: true,
+      query: {
+        search: 'basic'
+      }
+    },
+    msw: {
+      handlers: {
+        search: [
+          graphql.query('SearchShopifyProducts', (req, res, ctx) => {
+            return res(ctx.data({ search: { results: [] } }));
+          })
+        ]
+      }
+    }
+  }
+};
+
+export default meta;

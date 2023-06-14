@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { currencyList } from 'config';
 import { rest } from 'msw';
 import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
@@ -8,7 +8,7 @@ import { getNavigation } from './transforms';
 
 const navigation = getNavigation(navigationResponse)!;
 
-const Meta: ComponentMeta<typeof Navigation> = {
+const meta: Meta<typeof Navigation> = {
   title: 'Features / Navigation',
   component: Navigation,
   parameters: {
@@ -36,13 +36,14 @@ const Meta: ComponentMeta<typeof Navigation> = {
   }
 };
 
-const Template: ComponentStory<typeof Navigation> = (args) => <Navigation {...args} />;
+type Story = StoryObj<typeof Navigation>;
 
-export const _Navigation = Template.bind({});
-_Navigation.args = {
-  message: navigation.message,
-  sections: navigation.sections,
-  currencies: currencyList
+export const _Navigation: Story = {
+  args: {
+    message: navigation.message,
+    sections: navigation.sections,
+    currencies: currencyList
+  }
 };
 
-export default Meta;
+export default meta;

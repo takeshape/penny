@@ -1,18 +1,19 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { quickAddProduct } from 'features/QuickAdd/fixtures';
 import { QuickAdd } from './QuickAdd';
 
-const Meta: ComponentMeta<typeof QuickAdd> = {
+const meta: Meta<typeof QuickAdd> = {
   title: 'Features / Quick Add',
   component: QuickAdd
 };
 
-const Template: ComponentStory<typeof QuickAdd> = (args) => <QuickAdd {...args} />;
+type Story = StoryObj<typeof QuickAdd>;
 
-export const _QuickAdd = Template.bind({});
-_QuickAdd.args = {
-  isOpen: true,
-  product: quickAddProduct
+export const _QuickAdd: Story = {
+  args: {
+    isOpen: true,
+    product: quickAddProduct
+  }
 };
 
-export default Meta;
+export default meta;

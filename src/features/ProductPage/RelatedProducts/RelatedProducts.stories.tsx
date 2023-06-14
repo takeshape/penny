@@ -1,17 +1,18 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { productPageRelatedProducts } from '../fixtures';
 import { RelatedProducts } from './RelatedProducts';
 
-const Meta: ComponentMeta<typeof RelatedProducts> = {
+const meta: Meta<typeof RelatedProducts> = {
   title: 'Features / Product Page / Components / Related Products',
   component: RelatedProducts
 };
 
-const Template: ComponentStory<typeof RelatedProducts> = (args) => <RelatedProducts {...args} />;
+type Story = StoryObj<typeof RelatedProducts>;
 
-export const _RelatedProducts = Template.bind({});
-_RelatedProducts.args = {
-  products: productPageRelatedProducts
+export const _RelatedProducts: Story = {
+  args: {
+    products: productPageRelatedProducts
+  }
 };
 
-export default Meta;
+export default meta;

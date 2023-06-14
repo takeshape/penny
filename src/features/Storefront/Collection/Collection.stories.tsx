@@ -1,15 +1,16 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { storefrontCollectionComponent } from '../fixtures';
 import { Collection } from './Collection';
 
-const Meta: ComponentMeta<typeof Collection> = {
+const meta: Meta<typeof Collection> = {
   title: 'Features / Storefront / Components / Collection',
   component: Collection
 };
 
-const Template: ComponentStory<typeof Collection> = (args) => <Collection {...args} />;
+type Story = StoryObj<typeof Collection>;
 
-export const _Collection = Template.bind({});
-_Collection.args = storefrontCollectionComponent;
+export const _Collection: Story = {
+  args: storefrontCollectionComponent
+};
 
-export default Meta;
+export default meta;

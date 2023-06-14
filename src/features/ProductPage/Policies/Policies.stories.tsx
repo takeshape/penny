@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { productPagePolicies } from '../fixtures';
 import { Policies } from './Policies';
 
-const Meta: ComponentMeta<typeof Policies> = {
+const meta: Meta<typeof Policies> = {
   title: 'Features / Product Page / Components / Policies',
   component: Policies,
   parameters: {
@@ -10,11 +10,12 @@ const Meta: ComponentMeta<typeof Policies> = {
   }
 };
 
-const Template: ComponentStory<typeof Policies> = (args) => <Policies {...args} />;
+type Story = StoryObj<typeof Policies>;
 
-export const _Policies = Template.bind({});
-_Policies.args = {
-  policies: productPagePolicies
+export const _Policies: Story = {
+  args: {
+    policies: productPagePolicies
+  }
 };
 
-export default Meta;
+export default meta;

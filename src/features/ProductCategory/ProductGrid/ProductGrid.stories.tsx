@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { productCategoryCollection } from '../fixtures';
 import { ProductGrid } from './ProductGrid';
 
-const Meta: ComponentMeta<typeof ProductGrid> = {
+const meta: Meta<typeof ProductGrid> = {
   title: 'Features / Product Category / Components / Product Grid',
   component: ProductGrid,
   parameters: {
@@ -10,16 +10,18 @@ const Meta: ComponentMeta<typeof ProductGrid> = {
   }
 };
 
-const Template: ComponentStory<typeof ProductGrid> = (args) => <ProductGrid {...args} />;
+type Story = StoryObj<typeof ProductGrid>;
 
-export const _ProductGrid = Template.bind({});
-_ProductGrid.args = {
-  items: productCategoryCollection.items
+export const _ProductGrid: Story = {
+  args: {
+    items: productCategoryCollection.items
+  }
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  items: [null, null, null]
+export const Loading: Story = {
+  args: {
+    items: [null, null, null]
+  }
 };
 
-export default Meta;
+export default meta;

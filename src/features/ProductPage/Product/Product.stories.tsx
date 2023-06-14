@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { productPageProduct, productPageReviewHighlights } from '../fixtures';
 import { Product } from './Product';
 
@@ -7,7 +7,7 @@ const breadcrumbs = [
   { id: '2', name: 'Clothing', href: '#' }
 ];
 
-const Meta: ComponentMeta<typeof Product> = {
+const meta: Meta<typeof Product> = {
   title: 'Features / Product Page / Components / Product',
   component: Product,
   parameters: {
@@ -15,26 +15,28 @@ const Meta: ComponentMeta<typeof Product> = {
   }
 };
 
-const Template: ComponentStory<typeof Product> = (args) => <Product {...args} />;
+type Story = StoryObj<typeof Product>;
 
-export const WithImageGrid = Template.bind({});
-WithImageGrid.args = {
-  component: 'withImageGrid',
-  breadcrumbs,
-  product: productPageProduct,
-  reviewHighlights: productPageReviewHighlights,
-  showFeaturedReviews: true,
-  showReviewsLink: true
+export const WithImageGrid: Story = {
+  args: {
+    component: 'withImageGrid',
+    breadcrumbs,
+    product: productPageProduct,
+    reviewHighlights: productPageReviewHighlights,
+    showFeaturedReviews: true,
+    showReviewsLink: true
+  }
 };
 
-export const WithImage = Template.bind({});
-WithImage.args = {
-  component: 'withImage',
-  breadcrumbs,
-  product: productPageProduct,
-  reviewHighlights: productPageReviewHighlights,
-  showFeaturedReviews: true,
-  showReviewsLink: true
+export const WithImage: Story = {
+  args: {
+    component: 'withImage',
+    breadcrumbs,
+    product: productPageProduct,
+    reviewHighlights: productPageReviewHighlights,
+    showFeaturedReviews: true,
+    showReviewsLink: true
+  }
 };
 
-export default Meta;
+export default meta;

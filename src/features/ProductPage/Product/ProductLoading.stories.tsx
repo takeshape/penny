@@ -1,13 +1,13 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { ProductLoading } from './ProductLoading';
 
-const Meta: ComponentMeta<typeof ProductLoading> = {
+const meta: Meta<typeof ProductLoading> = {
   title: 'Features / Product Page / Components / Product / Loading',
   component: ProductLoading
 };
 
-const Template: ComponentStory<typeof ProductLoading> = () => <ProductLoading />;
+type Story = StoryObj<typeof ProductLoading>;
 
-export const Loading = Template.bind({});
+export const Loading: Story = {};
 
-export default Meta;
+export default meta;

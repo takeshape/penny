@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { isMobileMenuOpenAtom } from 'store';
 import { navigationResponse } from '../queries.fixtures';
@@ -7,7 +7,7 @@ import { NavigationMobileMenu } from './NavigationMobileMenu';
 
 const navigation = getNavigation(navigationResponse)!;
 
-const Meta: ComponentMeta<typeof NavigationMobileMenu> = {
+const meta: Meta<typeof NavigationMobileMenu> = {
   title: 'Features / Navigation / Navigation Mobile Menu',
   component: NavigationMobileMenu,
   parameters: {
@@ -27,22 +27,23 @@ const Meta: ComponentMeta<typeof NavigationMobileMenu> = {
   }
 };
 
-const Template: ComponentStory<typeof NavigationMobileMenu> = (args) => <NavigationMobileMenu {...args} />;
+type Story = StoryObj<typeof NavigationMobileMenu>;
 
-export const _Open = Template.bind({});
-_Open.parameters = {
-  jotai: {
-    atoms: {
-      isMobileMenuOpen: isMobileMenuOpenAtom
-    },
-    values: {
-      isMobileMenuOpen: true
+export const _Open: Story = {
+  parameters: {
+    jotai: {
+      atoms: {
+        isMobileMenuOpen: isMobileMenuOpenAtom
+      },
+      values: {
+        isMobileMenuOpen: true
+      }
     }
+  },
+  args: {
+    sections: navigation.sections,
+    currencies: navigation.currencies
   }
 };
-_Open.args = {
-  sections: navigation.sections,
-  currencies: navigation.currencies
-};
 
-export default Meta;
+export default meta;

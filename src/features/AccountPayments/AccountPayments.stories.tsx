@@ -1,9 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { AccountPayments } from './AccountPayments';
 import { paymentMethods } from './fixtures';
 import { getPaymentMethods } from './transforms';
 
-const Meta: ComponentMeta<typeof AccountPayments> = {
+const meta: Meta<typeof AccountPayments> = {
   title: 'Features / Account Payments',
   component: AccountPayments,
   parameters: {
@@ -11,12 +11,12 @@ const Meta: ComponentMeta<typeof AccountPayments> = {
   }
 };
 
-const Template: ComponentStory<typeof AccountPayments> = (args) => <AccountPayments {...args} />;
+type Story = StoryObj<typeof AccountPayments>;
 
-export const _AccountPayments = Template.bind({});
-
-_AccountPayments.args = {
-  paymentMethods: getPaymentMethods(paymentMethods)
+export const _AccountPayments: Story = {
+  args: {
+    paymentMethods: getPaymentMethods(paymentMethods)
+  }
 };
 
-export default Meta;
+export default meta;

@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
 import { SubscriptionOrder } from '../../types';
 import { ShipmentStatus } from './ShipmentStatus';
@@ -41,7 +41,7 @@ const order: Pick<SubscriptionOrder, 'id' | 'statusAt' | 'chargeScheduledAt' | '
   statusAt: '2022-09-15T10:10:00.000Z'
 };
 
-const Meta: ComponentMeta<typeof ShipmentStatus> = {
+const meta: Meta<typeof ShipmentStatus> = {
   title: 'Features / Account Subscriptions / Overview / Shipment Status',
   component: ShipmentStatus,
   parameters: {
@@ -49,168 +49,168 @@ const Meta: ComponentMeta<typeof ShipmentStatus> = {
   }
 };
 
-const Template: ComponentStory<typeof ShipmentStatus> = (args) => <ShipmentStatus {...args} />;
+type Story = StoryObj<typeof ShipmentStatus>;
 
-export const ChargeSuccess = Template.bind({});
-
-ChargeSuccess.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_SUCCESS'
+export const ChargeSuccess: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_SUCCESS'
+    }
   }
 };
 
-export const ChargeQueued = Template.bind({});
-
-ChargeQueued.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_QUEUED'
+export const ChargeQueued: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_QUEUED'
+    }
   }
 };
 
-export const ChargeSkipped = Template.bind({});
-
-ChargeSkipped.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_SKIPPED'
+export const ChargeSkipped: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_SKIPPED'
+    }
   }
 };
 
-export const ChargeCanceled = Template.bind({});
-
-ChargeCanceled.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_CANCELLED'
+export const ChargeCanceled: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_CANCELLED'
+    }
   }
 };
 
-export const ChargeRefunded = Template.bind({});
-
-ChargeRefunded.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_REFUNDED'
+export const ChargeRefunded: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_REFUNDED'
+    }
   }
 };
 
-export const ChargePendingManualPayment = Template.bind({});
-
-ChargePendingManualPayment.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_PENDING_MANUAL_PAYMENT'
+export const ChargePendingManualPayment: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_PENDING_MANUAL_PAYMENT'
+    }
   }
 };
 
-export const ChargePending = Template.bind({});
-
-ChargePending.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_PENDING'
+export const ChargePending: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_PENDING'
+    }
   }
 };
 
-export const ChargeError = Template.bind({});
-
-ChargeError.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_ERROR'
+export const ChargeError: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_ERROR'
+    }
   }
 };
 
-export const ChargeUnknown = Template.bind({});
-
-ChargeUnknown.args = {
-  order: {
-    ...order,
-    status: 'CHARGE_UNKNOWN'
+export const ChargeUnknown: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'CHARGE_UNKNOWN'
+    }
   }
 };
 
-export const FulfillmentUnknown = Template.bind({});
-
-FulfillmentUnknown.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_UNKNOWN'
+export const FulfillmentUnknown: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_UNKNOWN'
+    }
   }
 };
 
-export const FulfillmentAttemptedDelivery = Template.bind({});
-
-FulfillmentAttemptedDelivery.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_ATTEMPTED_DELIVERY'
+export const FulfillmentAttemptedDelivery: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_ATTEMPTED_DELIVERY'
+    }
   }
 };
 
-export const FulfillmentDelivered = Template.bind({});
-
-FulfillmentDelivered.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_DELIVERED'
+export const FulfillmentDelivered: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_DELIVERED'
+    }
   }
 };
 
-export const FulfillmentFailure = Template.bind({});
-
-FulfillmentFailure.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_FAILURE'
+export const FulfillmentFailure: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_FAILURE'
+    }
   }
 };
 
-export const FulfillmentCanceled = Template.bind({});
-
-FulfillmentCanceled.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_CANCELED'
+export const FulfillmentCanceled: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_CANCELED'
+    }
   }
 };
 
-export const FulfillmentFulfilled = Template.bind({});
-
-FulfillmentFulfilled.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_FULFILLED'
+export const FulfillmentFulfilled: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_FULFILLED'
+    }
   }
 };
 
-export const FulfillmentInTransit = Template.bind({});
-
-FulfillmentInTransit.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_IN_TRANSIT'
+export const FulfillmentInTransit: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_IN_TRANSIT'
+    }
   }
 };
 
-export const FulfillmentNotDelivered = Template.bind({});
-
-FulfillmentNotDelivered.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_NOT_DELIVERED'
+export const FulfillmentNotDelivered: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_NOT_DELIVERED'
+    }
   }
 };
 
-export const FulfillmentOutForDelivery = Template.bind({});
-
-FulfillmentOutForDelivery.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_OUT_FOR_DELIVERY'
+export const FulfillmentOutForDelivery: Story = {
+  args: {
+    order: {
+      ...order,
+      status: 'FULFILLMENT_OUT_FOR_DELIVERY'
+    }
   }
 };
 
-export default Meta;
+export default meta;

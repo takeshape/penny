@@ -1,7 +1,7 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { AuthSignOut } from './AuthSignOut';
 
-const Meta: ComponentMeta<typeof AuthSignOut> = {
+const meta: Meta<typeof AuthSignOut> = {
   title: 'Features / Auth / Sign Out',
   component: AuthSignOut,
   argTypes: {
@@ -11,8 +11,8 @@ const Meta: ComponentMeta<typeof AuthSignOut> = {
   }
 };
 
-const Template: ComponentStory<typeof AuthSignOut> = (args) => <AuthSignOut {...args} />;
+type Story = StoryObj<typeof AuthSignOut>;
 
-export const SignOut = Template.bind({});
+export const SignOut: Story = {};
 
-export default Meta;
+export default meta;

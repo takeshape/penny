@@ -1,29 +1,28 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { Footer } from './Footer';
 import { GetFooterQueryData } from './Footer.fixtures';
 
-const Meta: ComponentMeta<typeof Footer> = {
+const meta: Meta<typeof Footer> = {
   title: 'Features / Footer',
   component: Footer
 };
 
-const Template: ComponentStory<typeof Footer> = (args) => <Footer {...args} />;
+type Story = StoryObj<typeof Footer>;
 
-export const _Footer = Template.bind({});
-
-_Footer.args = GetFooterQueryData.footer;
-
-_Footer.parameters = {
-  msw: {
-    handlers: {
-      newsletter: [
-        graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
-          return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
-        })
-      ]
+export const _Footer: Story = {
+  args: GetFooterQueryData.footer,
+  parameters: {
+    msw: {
+      handlers: {
+        newsletter: [
+          graphql.mutation('NewsletterEmailSubmission', (req, res, ctx) => {
+            return res(ctx.data({ addMembers: { items: [{ id: 'foo' }] } }));
+          })
+        ]
+      }
     }
   }
 };
 
-export default Meta;
+export default meta;

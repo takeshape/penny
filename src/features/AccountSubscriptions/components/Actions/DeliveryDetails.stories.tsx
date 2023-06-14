@@ -1,8 +1,8 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
 import { DeliveryDetails } from './DeliveryDetails';
 
-const Meta: ComponentMeta<typeof DeliveryDetails> = {
+const meta: Meta<typeof DeliveryDetails> = {
   title: 'Features / Account Subscriptions / Actions / Delivery Details',
   component: DeliveryDetails,
   parameters: {
@@ -10,9 +10,7 @@ const Meta: ComponentMeta<typeof DeliveryDetails> = {
   }
 };
 
-const Template: ComponentStory<typeof DeliveryDetails> = (args) => (
-  <DeliveryDetails order={args.order} isOpen={true} onClose={() => {}} onReportIssue={() => {}} />
-);
+type Story = StoryObj<typeof DeliveryDetails>;
 
 const shippingAddress = {
   firstName: 'Michael',
@@ -48,146 +46,155 @@ const order = {
   statusAt: '2022-09-15T10:10:00.000Z'
 };
 
-export const FulfillmentUnknown = Template.bind({});
-
-FulfillmentUnknown.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_UNKNOWN',
-    fulfillments: []
+export const FulfillmentUnknown: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_UNKNOWN',
+      fulfillments: []
+    }
   }
 };
 
-export const FulfillmentAttemptedDelivery = Template.bind({});
-
-FulfillmentAttemptedDelivery.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_ATTEMPTED_DELIVERY',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'ATTEMPTED_DELIVERY' as Shopify_FulfillmentDisplayStatus,
-        deliveredAt: null
-      }
-    ]
+export const FulfillmentAttemptedDelivery: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_ATTEMPTED_DELIVERY',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'ATTEMPTED_DELIVERY' as Shopify_FulfillmentDisplayStatus,
+          deliveredAt: null
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentDelivered = Template.bind({});
-
-FulfillmentDelivered.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_DELIVERED',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'DELIVERED' as Shopify_FulfillmentDisplayStatus
-      }
-    ]
+export const FulfillmentDelivered: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_DELIVERED',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'DELIVERED' as Shopify_FulfillmentDisplayStatus
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentFailure = Template.bind({});
-
-FulfillmentFailure.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_FAILURE',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'FAILURE' as Shopify_FulfillmentDisplayStatus,
-        deliveredAt: null,
-        estimatedDeliveryAt: null,
-        inTransitAt: null
-      }
-    ]
+export const FulfillmentFailure: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_FAILURE',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'FAILURE' as Shopify_FulfillmentDisplayStatus,
+          deliveredAt: null,
+          estimatedDeliveryAt: null,
+          inTransitAt: null
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentCanceled = Template.bind({});
-
-FulfillmentCanceled.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_CANCELED',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'CANCELED' as Shopify_FulfillmentDisplayStatus,
-        deliveredAt: null,
-        estimatedDeliveryAt: null,
-        inTransitAt: null
-      }
-    ]
+export const FulfillmentCanceled: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_CANCELED',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'CANCELED' as Shopify_FulfillmentDisplayStatus,
+          deliveredAt: null,
+          estimatedDeliveryAt: null,
+          inTransitAt: null
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentFulfilled = Template.bind({});
-
-FulfillmentFulfilled.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_FULFILLED',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'FULFILLED' as Shopify_FulfillmentDisplayStatus,
-        deliveredAt: null,
-        estimatedDeliveryAt: null,
-        inTransitAt: null
-      }
-    ]
+export const FulfillmentFulfilled: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_FULFILLED',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'FULFILLED' as Shopify_FulfillmentDisplayStatus,
+          deliveredAt: null,
+          estimatedDeliveryAt: null,
+          inTransitAt: null
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentInTransit = Template.bind({});
-
-FulfillmentInTransit.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_IN_TRANSIT',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'IN_TRANSIT' as Shopify_FulfillmentDisplayStatus,
-        deliveredAt: null
-      }
-    ]
+export const FulfillmentInTransit: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_IN_TRANSIT',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'IN_TRANSIT' as Shopify_FulfillmentDisplayStatus,
+          deliveredAt: null
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentNotDelivered = Template.bind({});
-
-FulfillmentNotDelivered.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_NOT_DELIVERED',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'NOT_DELIVERED' as Shopify_FulfillmentDisplayStatus
-      }
-    ]
+export const FulfillmentNotDelivered: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_NOT_DELIVERED',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'NOT_DELIVERED' as Shopify_FulfillmentDisplayStatus
+        }
+      ]
+    }
   }
 };
 
-export const FulfillmentOutForDelivery = Template.bind({});
-
-FulfillmentOutForDelivery.args = {
-  order: {
-    ...order,
-    status: 'FULFILLMENT_OUT_FOR_DELIVERY',
-    fulfillments: [
-      {
-        ...fulfillment,
-        displayStatus: 'OUT_FOR_DELIVERY' as Shopify_FulfillmentDisplayStatus,
-        deliveredAt: null
-      }
-    ]
+export const FulfillmentOutForDelivery: Story = {
+  args: {
+    isOpen: true,
+    order: {
+      ...order,
+      status: 'FULFILLMENT_OUT_FOR_DELIVERY',
+      fulfillments: [
+        {
+          ...fulfillment,
+          displayStatus: 'OUT_FOR_DELIVERY' as Shopify_FulfillmentDisplayStatus,
+          deliveredAt: null
+        }
+      ]
+    }
   }
 };
 
-export default Meta;
+export default meta;
