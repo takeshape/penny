@@ -37,11 +37,12 @@ export const _Empty: Story = {
 
 export const _Loading: Story = {
   parameters: {
-    nextRouter: {
-      path: '/',
-      isReady: true,
-      query: {
-        search: 'basic'
+    nextjs: {
+      router: {
+        pathname: '/',
+        query: {
+          search: 'basic'
+        }
       }
     },
     msw: {
@@ -58,11 +59,12 @@ export const _Loading: Story = {
 
 export const _WithResults: Story = {
   parameters: {
-    nextRouter: {
-      path: '/',
-      isReady: true,
-      query: {
-        search: 'basic'
+    nextjs: {
+      router: {
+        pathname: '/',
+        query: {
+          search: 'basic'
+        }
       }
     },
     msw: {
@@ -79,11 +81,12 @@ export const _WithResults: Story = {
 
 export const _NoResults: Story = {
   parameters: {
-    nextRouter: {
-      path: '/',
-      isReady: true,
-      query: {
-        search: 'basic'
+    nextjs: {
+      router: {
+        pathname: '/',
+        query: {
+          search: 'basic'
+        }
       }
     },
     msw: {
