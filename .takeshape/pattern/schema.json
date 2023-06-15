@@ -1,6 +1,5 @@
 {
   "$schema": "https://schema.takeshape.io/project-schema",
-  "projectId": "67b6f454-a777-48a2-af0d-8f8a4869352b",
   "apiVersion": "2",
   "workflows": {},
   "forms": {
@@ -833,7 +832,7 @@
       "authenticationType": "oauth2Bearer",
       "options": {
         "shop": "deluxe-sample-project",
-        "endpoint": "https://deluxe-sample-project.myshopify.com/admin/api/2022-10/graphql.json",
+        "endpoint": "https://deluxe-sample-project.myshopify.com/admin/api/2023-04/graphql.json",
         "shopifyPlus": true,
         "bootstrap": [
           {
@@ -856,7 +855,7 @@
       "serviceType": "graphql",
       "authenticationType": "bearer",
       "options": {
-        "endpoint": "https://deluxe-sample-project.myshopify.com/api/2022-10/graphql.json"
+        "endpoint": "https://deluxe-sample-project.myshopify.com/api/2023-04/graphql.json"
       }
     },
     "open-id": {
@@ -868,7 +867,6 @@
       "options": {
         "configurationUrl": "https://penny-ecommerce.vercel.app/api/auth/all-access/.well-known/openid-configuration",
         "issuer": "https://penny-ecommerce.vercel.app/",
-        "audience": "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id",
         "idClaim": "sub"
       }
     },
@@ -3597,7 +3595,7 @@
             "if": "$resolvers.recaptcha.success == true",
             "name": "rest:post",
             "service": "shopify",
-            "path": "/admin/api/2022-04/customers.json",
+            "path": "/admin/api/2023-04/customers.json",
             "options": {
               "endpoint": "https://deluxe-sample-project.myshopify.com/"
             },
