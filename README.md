@@ -191,6 +191,10 @@ To get started with TakeShape you need to perform these steps:
 - `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
   these are prefixed with `NEXT_PUBLIC`. This file **is** checked into your repo.
 
+  - Even though there are fallbacks, you should set `NEXT_PUBLIC_CANONICAL_URL` in this file
+    to the canonical URL of your site. This is important for accurate sitemap generation and to ensure the OpenID
+    config can load correctly.
+
 - `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
   contain all the secrets you need to get your local development environment running, as well as overrides for common
   `.env` variables.
@@ -262,6 +266,8 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
   OpenID provider. This should be your store's URL.
+- If you haven't already, set your `NEXT_PUBLIC_CANONICAL_URL` to your production site's canonical URL. This will avoid
+  any resolution issues with your JWKS file.
 
 #### Setting up NextAuth
 

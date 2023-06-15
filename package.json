@@ -43,7 +43,7 @@
     "@next/env": "^13.4.4",
     "@sentry/node": "^7.50.0",
     "@sentry/react": "^7.50.0",
-    "@takeshape/next-auth-all-access": "^0.3.3",
+    "@takeshape/next-auth-all-access": "^0.4.3",
     "@takeshape/routing": "^9.14.1",
     "abortcontroller-polyfill": "^1.7.5",
     "card-validator": "^8.1.1",
