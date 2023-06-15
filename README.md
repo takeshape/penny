@@ -723,6 +723,10 @@ Add the following to your hosting platform's environment variables
 
 # TakeShape Branches
 
+> **Warning**  
+> TakeShape Branches are not compatible with GitHub merge queues. You can still use a merge queue, but will not be able
+> to access your development branches automatically in it.
+
 TakeShape Branches allows you to create separate copies of your production API for use in your development process. This
 is great for multiple developers working on a project so they can all make changes to the production API that get merged
 intelligently and automatically. It can even be helpful for a solo developer who wants to prototype changes without
@@ -846,8 +850,11 @@ bash scripts/ignore-build.sh
 - Cannot use Storybook v7 yes, due to `storybook-addon-jotai` and other issues...
 
 # Copyright and License
+
 Copyright TakeShape, Inc. 2023
 
 Penny is [MIT licensed](./LICENSE).
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+language governing permissions and limitations under the License.
