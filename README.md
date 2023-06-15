@@ -17,26 +17,26 @@ directory. [The instructions section of this README will teach you how to do tha
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
-## Lighthouse Report: desktop
+## Lighthouse Report: mobile
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-pvdv2ed9a-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686850719022-3876.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /](https://penny-8wzfuwz1v-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686852336355-1217.report.html) |
+| 🟠 Performance | 87 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-pvdv2ed9a-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686850719453-25160.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /products/basic-tee-6-pack](https://penny-8wzfuwz1v-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686852336818-7527.report.html) |
+| 🟢 Performance | 90 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-pvdv2ed9a-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686850720061-37772.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /collections/men](https://penny-8wzfuwz1v-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686852337254-77032.report.html) |
+| 🟠 Performance | 86 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
