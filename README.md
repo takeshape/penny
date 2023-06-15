@@ -197,7 +197,8 @@ To get started with TakeShape you need to perform these steps:
 
 - `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
 
-> Warning! Never check secrets into your repo!
+> **Warning**  
+> Never check secrets into your repo!
 
 4. Add secrets needed for Github Actions. You can do this by going to your Github project settings then Secrets /
    Actions. You'll need the following secrets:
@@ -283,8 +284,9 @@ You will then need to follow these steps:
 
 ### Shopify Admin and Shopify Storefront
 
-> Warning! Connecting this project to a live Shopify store **WILL** enable real purchases. If you just want to play
-> around without risking real charges,
+> **Warning**  
+> Connecting this project to a live Shopify store **WILL** enable real purchases. If you just want to play around
+> without risking real charges,
 > [set your store's payments to Test Mode](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments)
 > and use [appropriately scoped Shopify API keys](https://shopify.dev/api/usage/access-scopes). When testing purchases,
 > always use
