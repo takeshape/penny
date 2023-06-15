@@ -192,7 +192,7 @@ To get started with TakeShape you need to perform these steps:
   these are prefixed with `NEXT_PUBLIC`. This file **is** checked into your repo.
 
   - Even though there are fallbacks, you will almost certainly want to set you `NEXT_PUBLIC_CANONICAL_URL` in this file
-    to the canonical URL of your site. This is important for accurate sitemap generation and to ensure your OpenID
+    to the canonical URL of your site. This is important for accurate sitemap generation and to ensure the OpenID
     config can load correctly.
 
 - `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
