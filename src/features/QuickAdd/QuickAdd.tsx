@@ -11,7 +11,7 @@ export interface QuickAddProps {
 
 export const QuickAdd = ({ isOpen, onClose, product }: QuickAddProps) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} showCloseButton={true}>
       {!product && <QuickAddItemLoading />}
       {product && <QuickAddItem product={product} onClose={onClose} />}
     </Modal>
