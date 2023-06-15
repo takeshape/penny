@@ -855,9 +855,7 @@ bash scripts/ignore-build.sh
 
 # Dependency Notes
 
-- Cannot use TypeScript v5 due to: https://github.com/storybookjs/storybook/issues/21642
-- Cannot use jotai v2 due to: https://github.com/johnf/storybook-addon-jotai/issues/16
-- Cannot use Storybook v7 yes, due to `storybook-addon-jotai` and other issues...
+- No issues...
 
 # Copyright and License
 
