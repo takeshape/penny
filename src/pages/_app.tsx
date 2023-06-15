@@ -6,24 +6,8 @@ import { SessionProvider } from 'next-auth/react';
 import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import { DefaultSeo } from 'next-seo';
 import { AppContext, AppInitialProps } from 'next/app';
-import localFont from 'next/font/local';
+import { inter } from 'styles/fonts';
 import 'styles/globals.css';
-
-const inter = localFont({
-  src: [
-    {
-      path: '../../public/fonts/inter-roman.var.woff2',
-      weight: '100 900',
-      style: 'normal'
-    },
-    {
-      path: '../../public/fonts/inter-italic.var.woff2',
-      weight: '100 900',
-      style: 'italic'
-    }
-  ],
-  variable: '--font-inter'
-});
 
 if (sentryDsn) {
   Sentry.init({
