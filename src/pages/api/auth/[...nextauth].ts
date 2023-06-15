@@ -8,6 +8,7 @@ import {
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
   shopifyUseMultipass,
+  siteUrl,
   takeshapeAnonymousApiKey,
   takeshapeApiUrl,
   takeshapeAuthAudience,
@@ -56,6 +57,7 @@ const takeshapeClient = createClient({
 
 const withAllAccess = createNextAuthAllAccess({
   issuer: takeshapeAuthIssuer,
+  origin: siteUrl,
   jwks,
   clients: [
     {
