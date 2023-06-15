@@ -191,6 +191,10 @@ To get started with TakeShape you need to perform these steps:
 - `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
   these are prefixed with `NEXT_PUBLIC`. This file **is** checked into your repo.
 
+  - Even though there are fallbacks, you will almost certainly want to set you `NEXT_PUBLIC_CANONICAL_URL` in this file
+    to the canonical URL of your site. This is important for accurate sitemap generation and to ensure your OpenID
+    config can load correctly.
+
 - `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
   contain all the secrets you need to get your local development environment running, as well as overrides for common
   `.env` variables.
@@ -261,6 +265,8 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE` variable with the generated **Audience** URL from your OpenID provider.
 - Add a `NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER` variable with the same URL you provided for the **Issuer URL** field on your
   OpenID provider. This should be your store's URL.
+- If you haven't already, set your `NEXT_PUBLIC_CANONICAL_URL` to your production site's canonical URL. This will avoid
+  any resolution issues with your JWKS file.
 
 #### Setting up NextAuth
 
@@ -846,8 +852,11 @@ bash scripts/ignore-build.sh
 - Cannot use Storybook v7 yes, due to `storybook-addon-jotai` and other issues...
 
 # Copyright and License
+
 Copyright TakeShape, Inc. 2023
 
 Penny is [MIT licensed](./LICENSE).
 
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific
+language governing permissions and limitations under the License.
