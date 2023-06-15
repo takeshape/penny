@@ -17,26 +17,26 @@ directory. [The instructions section of this README will teach you how to do tha
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
-## Lighthouse Report: mobile
+## Lighthouse Report: desktop
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-74378l2tc-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686847464481-66701.report.html) |
-| 🟢 Performance | 92 |
-| 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
-| 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-74378l2tc-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686847464814-34265.report.html) |
-| 🟢 Performance | 91 |
+| [Path: /](https://penny-pvdv2ed9a-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686850719022-3876.report.html) |
+| 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-74378l2tc-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686847465367-80567.report.html) |
-| 🟢 Performance | 96 |
+| [Path: /products/basic-tee-6-pack](https://penny-pvdv2ed9a-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686850719453-25160.report.html) |
+| 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
+| 🟢 Best practices | 100 |
+| 🟢 SEO | 100 |
+| 🟢 PWA | 100 |
+| [Path: /collections/men](https://penny-pvdv2ed9a-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1686850720061-37772.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
@@ -741,7 +741,15 @@ intelligently and automatically. It can even be helpful for a solo developer who
 affecting the production API.
 
 This project is set up to make working with TakeShape Branches easy and fully integrated into your workflow with the
-following features:
+following features.
+
+## Setup
+
+This project is fully configured for TakeShape Branches. To enable the workflow and features:
+
+1. Create an API key in TakeShape with a `dev` role.
+2. Add a `TAKESHAPE_API_KEY` variable to your local `.env.local` file and your remote CI environments with the new API
+   key.
 
 ## Branch creation
 
