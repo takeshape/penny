@@ -1,6 +1,5 @@
 {
   "$schema": "https://schema.takeshape.io/project-schema",
-  "projectId": "67b6f454-a777-48a2-af0d-8f8a4869352b",
   "apiVersion": "2",
   "workflows": {},
   "forms": {
@@ -770,9 +769,7 @@
       "namespace": "Gorgias",
       "serviceType": "rest",
       "authenticationType": "basic",
-      "options": {
-        "endpoint": "https://takeshape.gorgias.com/api/"
-      }
+      "options": {}
     },
     "reviews-io": {
       "id": "reviews-io",
@@ -783,8 +780,7 @@
       "authenticationType": "searchParams",
       "options": {
         "endpoint": "https://api.reviews.io/",
-        "storeId": "www.markcatalano.net",
-        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/dde622465941025aef4cc32944d3ba1b3238f4ed/specs/reviews.io/v0.1.0-3.yml",
+        "spec": "https://raw.githubusercontent.com/takeshape/openapi-specs/main/specs/reviews.io/v0.1.0-3.yml",
         "useRestfulNames": true
       }
     },
@@ -810,7 +806,7 @@
       "options": {
         "endpoint": "https://us1.api.voucherify.io/",
         "headers": {
-          "X-App-Id": "7b3f5d07-ebc6-4fb9-a66f-3b94097cfc30"
+          "X-App-Id": ""
         }
       }
     },
@@ -832,8 +828,6 @@
       "serviceType": "graphql",
       "authenticationType": "oauth2Bearer",
       "options": {
-        "shop": "deluxe-sample-project",
-        "endpoint": "https://deluxe-sample-project.myshopify.com/admin/api/2022-10/graphql.json",
         "shopifyPlus": true,
         "bootstrap": [
           {
@@ -855,9 +849,7 @@
       "namespace": "ShopifyStorefront",
       "serviceType": "graphql",
       "authenticationType": "bearer",
-      "options": {
-        "endpoint": "https://deluxe-sample-project.myshopify.com/api/2022-10/graphql.json"
-      }
+      "options": {}
     },
     "open-id": {
       "id": "open-id",
@@ -866,9 +858,6 @@
       "serviceType": "authentication",
       "authenticationType": "none",
       "options": {
-        "configurationUrl": "https://penny-ecommerce.vercel.app/api/auth/all-access/.well-known/openid-configuration",
-        "issuer": "https://penny-ecommerce.vercel.app/",
-        "audience": "https://api.takeshape.io/project/06ccc3dc-a9da-4f5b-9142-5a104db52ee3/open-id",
         "idClaim": "sub"
       }
     },
@@ -890,9 +879,7 @@
       "namespace": "Zendesk",
       "serviceType": "rest",
       "authenticationType": "none",
-      "options": {
-        "endpoint": "https://takeshape.zendesk.com/"
-      }
+      "options": {}
     },
     "trustpilot": {
       "id": "trustpilot",
@@ -901,9 +888,7 @@
       "namespace": "Trustpilot",
       "serviceType": "rest",
       "authenticationType": "searchParams",
-      "options": {
-        "endpoint": "https://api.trustpilot.com/v1/product-reviews/business-units/62ed495079f2770a09852bf0"
-      }
+      "options": {}
     }
   },
   "queries": {
@@ -3597,7 +3582,7 @@
             "if": "$resolvers.recaptcha.success == true",
             "name": "rest:post",
             "service": "shopify",
-            "path": "/admin/api/2022-04/customers.json",
+            "path": "/admin/api/2023-04/customers.json",
             "options": {
               "endpoint": "https://deluxe-sample-project.myshopify.com/"
             },
