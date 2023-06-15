@@ -191,7 +191,7 @@ To get started with TakeShape you need to perform these steps:
 - `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
   these are prefixed with `NEXT_PUBLIC`. This file **is** checked into your repo.
 
-  - Even though there are fallbacks, you will almost certainly want to set you `NEXT_PUBLIC_CANONICAL_URL` in this file
+  - Even though there are fallbacks, you should set `NEXT_PUBLIC_CANONICAL_URL` in this file
     to the canonical URL of your site. This is important for accurate sitemap generation and to ensure the OpenID
     config can load correctly.
 
