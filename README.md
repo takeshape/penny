@@ -735,7 +735,15 @@ intelligently and automatically. It can even be helpful for a solo developer who
 affecting the production API.
 
 This project is set up to make working with TakeShape Branches easy and fully integrated into your workflow with the
-following features:
+following features.
+
+## Setup
+
+This project is fully configured for TakeShape Branches. To enable the workflow and features:
+
+1. Create an API key in TakeShape with a `dev` role.
+2. Add a `TAKESHAPE_API_KEY` variable to your local `.env.local` file and your remote CI environments with the new API
+   key.
 
 ## Branch creation
 
