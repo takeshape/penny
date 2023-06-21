@@ -68,7 +68,8 @@
     "react-phone-number-input": "^3.2.23",
     "react-star-ratings": "^2.3.0",
     "sharp": "^0.32.1",
-    "slug": "^8.2.2"
+    "slug": "^8.2.2",
+    "stach": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
