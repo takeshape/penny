@@ -7063,6 +7063,9 @@
                   "name": "rest:get",
                   "service": "trustpilot",
                   "path": "/reviews",
+                  "options": {
+                    "ignoreErrors": true
+                  },
                   "searchParams": {
                     "ops": [
                       {
