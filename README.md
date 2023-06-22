@@ -191,9 +191,8 @@ To get started with TakeShape you need to perform these steps:
 - `.env` contains common variables for all runtimes. You can define **publicly** available variables here. In most cases
   these are prefixed with `NEXT_PUBLIC`. This file **is** checked into your repo.
 
-  - Even though there are fallbacks, you should set `NEXT_PUBLIC_CANONICAL_URL` in this file
-    to the canonical URL of your site. This is important for accurate sitemap generation and to ensure the OpenID
-    config can load correctly.
+  - Even though there are fallbacks, you should set `NEXT_PUBLIC_CANONICAL_URL` in this file to the canonical URL of
+    your site. This is important for accurate sitemap generation and to ensure the OpenID config can load correctly.
 
 - `.env.local` contains variables to use during local development. This file **is not** checked into your repo and can
   contain all the secrets you need to get your local development environment running, as well as overrides for common
@@ -838,9 +837,11 @@ bash scripts/ignore-build.sh
   [docs](https://help.shopify.com/en/manual/orders/status-tracking/customize-order-status#add-additional-scripts)) for
   the order status page and uses the `redirect_origin` attribute set at cart creation:
 
-- Shopify **must** use the `2022-07` endpoint or newer, like this:  
-  Admin API: `https://shopify-shop-name.myshopify.com/admin/api/2022-07/graphql.json`  
-  Storefront API: `https://deluxe-sample-project.myshopify.com/api/2022-07/graphql.json`
+- Shopify **must** use the `2023-04` endpoint or newer, like this:  
+  Admin API: `https://shopify-shop-name.myshopify.com/admin/api/2023-04/graphql.json`  
+  Storefront API: `https://deluxe-sample-project.myshopify.com/api/2023-04/graphql.json`
+
+Add this snippet to your checkout template.
 
 ```erb
 {% if checkout.attributes.redirect_origin %}
@@ -849,6 +850,10 @@ bash scripts/ignore-build.sh
 <script> window.location = "https://your-shopify-store.com?shopify_checkout_action=success"; </script>
 {% endif %}
 ```
+
+You can also set your own `redirect_origin` with the `shopifyCheckoutRedirectUrl` variable exported from
+`src/config/shopify.ts`. Note that `{{origin}}` is available as a replacement variable, for example, this will redirect
+you to the same origin, at the path `/foo` — `{{origin}}/foo`.
 
 - Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
   will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is
