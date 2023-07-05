@@ -1854,26 +1854,6 @@
       },
       "shape": "Shopify_CustomerPaymentMethod"
     },
-    "ShopifyStorefront_customer": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "customerAccessToken": {
-            "type": "string",
-            "description": "The customer access token."
-          }
-        },
-        "required": [
-          "customerAccessToken"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "customer"
-      },
-      "shape": "ShopifyStorefront_Customer"
-    },
     "getMyCustomer": {
       "resolver": {
         "name": "graphql:query",
@@ -2270,26 +2250,6 @@
       },
       "shape": "Shopify_Shop"
     },
-    "ShopifyStorefront_productTypes": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "first": {
-            "type": "integer",
-            "description": "Returns up to the first `n` elements from the list."
-          }
-        },
-        "required": [
-          "first"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "productTypes"
-      },
-      "shape": "ShopifyStorefront_StringConnection"
-    },
     "getLink": {
       "args": "TSGetArgs<Link>",
       "resolver": {
@@ -2309,95 +2269,6 @@
       },
       "shape": "PaginatedList<Link>",
       "description": "Returns a list Link in natural order."
-    },
-    "ShopifyStorefront_productRecommendations": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "string",
-            "@tag": "id",
-            "description": "The id of the product."
-          }
-        },
-        "required": [
-          "productId"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "productRecommendations"
-      },
-      "shape": {
-        "type": "array",
-        "items": {
-          "@ref": "shopify-storefront:Product"
-        }
-      }
-    },
-    "ShopifyStorefront_products": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "first": {
-            "type": "integer",
-            "description": "Returns up to the first `n` elements from the list."
-          },
-          "after": {
-            "type": "string",
-            "description": "Returns the elements that come after the specified cursor."
-          },
-          "last": {
-            "type": "integer",
-            "description": "Returns up to the last `n` elements from the list."
-          },
-          "before": {
-            "type": "string",
-            "description": "Returns the elements that come before the specified cursor."
-          },
-          "reverse": {
-            "type": "boolean",
-            "description": "Reverse the order of the underlying list.",
-            "default": false
-          },
-          "sortKey": {
-            "@ref": "shopify-storefront:ProductSortKeys",
-            "description": "Sort the underlying list by the given key.",
-            "default": "ID"
-          },
-          "query": {
-            "type": "string",
-            "description": "Supported filter parameters:\n - `available_for_sale`\n - `created_at`\n - `product_type`\n - `tag`\n - `tag_not`\n - `title`\n - `updated_at`\n - `variants.price`\n - `vendor`\n\nSee the detailed [search syntax](https://shopify.dev/api/usage/search-syntax)\nfor more information about using filters."
-          }
-        }
-      },
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "products"
-      },
-      "shape": "ShopifyStorefront_ProductConnection"
-    },
-    "ShopifyStorefront_productByHandle": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "handle": {
-            "type": "string",
-            "description": "The handle of the product."
-          }
-        },
-        "required": [
-          "handle"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "productByHandle"
-      },
-      "shape": "ShopifyStorefront_Product"
     },
     "getLineItemAttributes": {
       "shape": "LineItemAttributes",
@@ -2741,28 +2612,6 @@
         ]
       },
       "shape": "Shopify_Order"
-    },
-    "ShopifyStorefront_product": {
-      "resolver": {
-        "name": "graphql:query",
-        "service": "shopify-storefront",
-        "fieldName": "product"
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "@tag": "id",
-            "description": "The ID of the `Product`."
-          },
-          "handle": {
-            "type": "string",
-            "description": "The handle of the `Product`."
-          }
-        }
-      },
-      "shape": "ShopifyStorefront_Product"
     }
   },
   "mutations": {
@@ -3419,23 +3268,6 @@
       "description": "Update Footer",
       "args": "UpdateArgs<Footer>"
     },
-    "ShopifyStorefront_cartCreate": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "@ref": "shopify-storefront:CartInput",
-            "description": "The fields used to create a cart."
-          }
-        }
-      },
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "cartCreate"
-      },
-      "shape": "ShopifyStorefront_CartCreatePayload"
-    },
     "createMyCart": {
       "args": {
         "type": "object",
@@ -3469,46 +3301,6 @@
         "fieldName": "cartCreate"
       },
       "shape": "ShopifyStorefront_CartCreatePayload"
-    },
-    "ShopifyStorefront_customerAccessTokenCreate": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "@ref": "shopify-storefront:CustomerAccessTokenCreateInput",
-            "description": "The fields used to create a customer access token."
-          }
-        },
-        "required": [
-          "input"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerAccessTokenCreate"
-      },
-      "shape": "ShopifyStorefront_CustomerAccessTokenCreatePayload"
-    },
-    "ShopifyStorefront_customerCreate": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "input": {
-            "@ref": "shopify-storefront:CustomerCreateInput",
-            "description": "The fields used to create a new customer."
-          }
-        },
-        "required": [
-          "input"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerCreate"
-      },
-      "shape": "ShopifyStorefront_CustomerCreatePayload"
     },
     "createCustomer": {
       "args": {
@@ -3682,62 +3474,6 @@
         ]
       },
       "shape": "ShopifyStorefront_CustomerRecoverPayload"
-    },
-    "ShopifyStorefront_customerUpdate": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "customerAccessToken": {
-            "type": "string",
-            "description": "The access token used to identify the customer."
-          },
-          "customer": {
-            "@ref": "shopify-storefront:CustomerUpdateInput",
-            "description": "The customer object input."
-          }
-        },
-        "required": [
-          "customerAccessToken",
-          "customer"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerUpdate"
-      },
-      "shape": "ShopifyStorefront_CustomerUpdatePayload"
-    },
-    "ShopifyStorefront_customerAddressUpdate": {
-      "args": {
-        "type": "object",
-        "properties": {
-          "customerAccessToken": {
-            "type": "string",
-            "description": "The access token used to identify the customer."
-          },
-          "id": {
-            "type": "string",
-            "@tag": "id",
-            "description": "Specifies the customer address to update."
-          },
-          "address": {
-            "@ref": "shopify-storefront:MailingAddressInput",
-            "description": "The customer’s mailing address."
-          }
-        },
-        "required": [
-          "customerAccessToken",
-          "id",
-          "address"
-        ]
-      },
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerAddressUpdate"
-      },
-      "shape": "ShopifyStorefront_CustomerAddressUpdatePayload"
     },
     "updateMyCustomer": {
       "args": {
@@ -4838,26 +4574,6 @@
       },
       "description": "Delete LineItemAttributes",
       "args": "DeleteArgs<LineItemAttributes>"
-    },
-    "ShopifyStorefront_customerAccessTokenCreateWithMultipass": {
-      "resolver": {
-        "name": "graphql:mutation",
-        "service": "shopify-storefront",
-        "fieldName": "customerAccessTokenCreateWithMultipass"
-      },
-      "args": {
-        "type": "object",
-        "properties": {
-          "multipassToken": {
-            "type": "string",
-            "description": "A valid multipass token to be authenticated."
-          }
-        },
-        "required": [
-          "multipassToken"
-        ]
-      },
-      "shape": "ShopifyStorefront_CustomerAccessTokenCreateWithMultipassPayload"
     },
     "Shopify_customerUpdate": {
       "resolver": {
