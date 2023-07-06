@@ -1,6 +1,4 @@
 {
-  "$schema": "https://schema.takeshape.io/project-schema",
-  "apiVersion": "2",
   "workflows": {},
   "forms": {
     "Text": {
@@ -274,34 +272,10 @@
             "widget": "singleLineText"
           },
           "text": {
-            "widget": "object",
-            "properties": {
-              "primary": {
-                "widget": "wysiwygSingleLineText"
-              },
-              "secondary": {
-                "widget": "wysiwygSingleLineText"
-              }
-            },
-            "order": [
-              "primary",
-              "secondary"
-            ]
+            "widget": "shapeObject"
           },
           "details": {
-            "widget": "repeater",
-            "properties": {
-              "image": {
-                "widget": "image"
-              },
-              "description": {
-                "widget": "wysiwygSingleLineText"
-              }
-            },
-            "order": [
-              "image",
-              "description"
-            ]
+            "widget": "shapeArray"
           }
         },
         "order": [
@@ -318,23 +292,7 @@
             "widget": "singleLineText"
           },
           "policies": {
-            "widget": "repeater",
-            "properties": {
-              "name": {
-                "widget": "wysiwygSingleLineText"
-              },
-              "description": {
-                "widget": "wysiwygText"
-              },
-              "image": {
-                "widget": "image"
-              }
-            },
-            "order": [
-              "name",
-              "description",
-              "image"
-            ]
+            "widget": "shapeArray"
           }
         },
         "order": [
@@ -376,41 +334,25 @@
           "lineItemAttributes": {
             "widget": "relationship"
           },
+          "shopifyProductId": {
+            "instructions": "Format: gid://shopify/Product/1111111111111",
+            "label": "product ID",
+            "widget": "serviceObjectId",
+            "provider": "shopify",
+            "serviceObjectType": "product",
+            "service": "shopify"
+          },
           "shopifyProduct": {
             "properties": {
-              "descriptionHtml": {
-                "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
-              "handle": {
-                "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
-              "redirectNewHandle": {
-                "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
-              "productType": {
-                "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
-              "tags": {
-                "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
-              "templateSuffix": {
-                "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
               "giftCard": {
                 "widget": "serviceObjectProperty",
                 "provider": "shopify"
               },
-              "giftCardTemplateSuffix": {
+              "publishedAt": {
                 "widget": "serviceObjectProperty",
                 "provider": "shopify"
               },
-              "title": {
+              "descriptionHtml": {
                 "widget": "serviceObjectProperty",
                 "provider": "shopify"
               },
@@ -418,7 +360,35 @@
                 "widget": "serviceObjectProperty",
                 "provider": "shopify"
               },
+              "handle": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "productType": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "templateSuffix": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "giftCardTemplateSuffix": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "redirectNewHandle": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
               "bodyHtml": {
+                "widget": "serviceObjectProperty",
+                "provider": "shopify"
+              },
+              "variants": {
+                "widget": "shopifyRelationshipSummary",
+                "provider": "shopify"
+              },
+              "title": {
                 "widget": "serviceObjectProperty",
                 "provider": "shopify"
               },
@@ -426,12 +396,8 @@
                 "widget": "shopifyProductImages",
                 "provider": "shopify"
               },
-              "publishedAt": {
+              "tags": {
                 "widget": "serviceObjectProperty",
-                "provider": "shopify"
-              },
-              "variants": {
-                "widget": "shopifyRelationshipSummary",
                 "provider": "shopify"
               }
             },
@@ -453,14 +419,6 @@
               "giftCard",
               "giftCardTemplateSuffix"
             ]
-          },
-          "shopifyProductId": {
-            "instructions": "Format: gid://shopify/Product/1111111111111",
-            "label": "product ID",
-            "widget": "serviceObjectId",
-            "provider": "shopify",
-            "serviceObjectType": "product",
-            "service": "shopify"
           }
         },
         "order": [
@@ -535,6 +493,14 @@
           "parent": {
             "widget": "relationship"
           },
+          "shopifyCollectionId": {
+            "instructions": "Format: gid://shopify/Collection/1111111111111",
+            "label": "collection ID",
+            "widget": "serviceObjectId",
+            "provider": "shopify",
+            "serviceObjectType": "collection",
+            "service": "shopify"
+          },
           "shopifyCollection": {
             "properties": {
               "descriptionHtml": {
@@ -582,14 +548,6 @@
               "sortOrder",
               "redirectNewHandle"
             ]
-          },
-          "shopifyCollectionId": {
-            "instructions": "Format: gid://shopify/Collection/1111111111111",
-            "label": "collection ID",
-            "widget": "serviceObjectId",
-            "provider": "shopify",
-            "serviceObjectType": "collection",
-            "service": "shopify"
           }
         },
         "order": [
@@ -734,6 +692,61 @@
         "order": [
           "name",
           "attributes"
+        ]
+      }
+    },
+    "ProductPageDetailsText": {
+      "default": {
+        "widget": "shapeObject",
+        "properties": {
+          "primary": {
+            "widget": "wysiwygSingleLineText"
+          },
+          "secondary": {
+            "widget": "wysiwygSingleLineText"
+          }
+        },
+        "order": [
+          "primary",
+          "secondary"
+        ]
+      }
+    },
+    "ProductPageDetailsDetails": {
+      "default": {
+        "widget": "shapeArray",
+        "properties": {
+          "image": {
+            "widget": "image"
+          },
+          "description": {
+            "widget": "wysiwygSingleLineText"
+          }
+        },
+        "order": [
+          "image",
+          "description"
+        ]
+      }
+    },
+    "ProductPagePoliciesPolicies": {
+      "default": {
+        "widget": "shapeArray",
+        "properties": {
+          "name": {
+            "widget": "wysiwygSingleLineText"
+          },
+          "description": {
+            "widget": "wysiwygText"
+          },
+          "image": {
+            "widget": "image"
+          }
+        },
+        "order": [
+          "name",
+          "description",
+          "image"
         ]
       }
     }
@@ -3970,7 +3983,7 @@
         }
       },
       "description": "Update Product. If the input has Shopify values and a Shopify ID, the Shopify product with that ID is updated.\nIf the input has Shopify values and no Shopify ID, a Shopify product is created.",
-      "args": "UpdateArgs<ProductInterface>"
+      "args": "UpdateArgs<Product>"
     },
     "createProduct": {
       "shape": "CreateResult<Product>",
@@ -4092,7 +4105,7 @@
         }
       },
       "description": "Create Product. If Shopify values are provided, a Shopify product is also created and the new product ID is saved.",
-      "args": "CreateArgs<ProductInterface>"
+      "args": "CreateArgs<Product>"
     },
     "duplicateProduct": {
       "shape": "DuplicateResult<Product>",
@@ -4125,7 +4138,7 @@
       "description": "Update Navigation"
     },
     "updateCollection": {
-      "args": "UpdateArgs<CollectionInterface>",
+      "args": "UpdateArgs<Collection>",
       "resolver": {
         "compose": [
           {
@@ -4253,7 +4266,7 @@
       "description": "Update Collection. If the input has Shopify values and a Shopify ID, the Shopify collection with that ID is updated.\nIf the input has Shopify values and no Shopify ID, a Shopify collection is created."
     },
     "createCollection": {
-      "args": "CreateArgs<CollectionInterface>",
+      "args": "CreateArgs<Collection>",
       "resolver": {
         "compose": [
           {
@@ -7522,474 +7535,6 @@
         }
       }
     },
-    "ProductInterface": {
-      "id": "ProductInterface",
-      "name": "ProductInterface",
-      "title": "ProductInterface",
-      "description": "ProductInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string",
-            "@workflow": "default"
-          },
-          "name": {
-            "type": "string",
-            "description": "Initialized with title from shopify",
-            "title": "Name"
-          },
-          "productComponent": {
-            "type": "string",
-            "oneOf": [
-              {
-                "enum": [
-                  "withImageGrid"
-                ],
-                "title": "With ImageGrid"
-              },
-              {
-                "enum": [
-                  "withImage"
-                ],
-                "title": "With Image"
-              }
-            ],
-            "title": "Product Component"
-          },
-          "hideBreadcrumbs": {
-            "default": false,
-            "@l10n": false,
-            "type": "boolean",
-            "title": "Hide Breadcrumbs"
-          },
-          "hideRelatedProducts": {
-            "default": false,
-            "@l10n": false,
-            "type": "boolean",
-            "title": "Hide Related Products"
-          },
-          "hideReviews": {
-            "default": false,
-            "@l10n": false,
-            "type": "boolean",
-            "title": "Hide Reviews"
-          },
-          "showPolicies": {
-            "default": false,
-            "@l10n": false,
-            "type": "boolean",
-            "title": "Show Policies"
-          },
-          "policies": {
-            "@ref": "local:TSRelationship",
-            "title": "Policies",
-            "@output": {
-              "description": "",
-              "@args": "TSRelationshipArgs",
-              "@resolver": {
-                "name": "takeshape:getRelated",
-                "service": "takeshape:local",
-                "options": {
-                  "nullable": true
-                }
-              },
-              "@ref": "local:ProductPagePolicies",
-              "@backreference": {
-                "enabled": false
-              }
-            }
-          },
-          "showDetails": {
-            "default": false,
-            "@l10n": false,
-            "type": "boolean",
-            "title": "Show Details"
-          },
-          "details": {
-            "@ref": "local:TSRelationship",
-            "title": "Details",
-            "@output": {
-              "description": "",
-              "@args": "TSRelationshipArgs",
-              "@resolver": {
-                "name": "takeshape:getRelated",
-                "service": "takeshape:local",
-                "options": {
-                  "nullable": true
-                }
-              },
-              "@ref": "local:ProductPageDetails",
-              "@backreference": {
-                "enabled": false
-              }
-            }
-          },
-          "lineItemAttributes": {
-            "@ref": "local:TSRelationship",
-            "title": "Line Item Attributes",
-            "@output": {
-              "description": "",
-              "@args": "TSRelationshipArgs",
-              "@resolver": {
-                "name": "takeshape:getRelated",
-                "service": "takeshape:local",
-                "options": {
-                  "nullable": true
-                }
-              },
-              "@ref": "local:LineItemAttributes",
-              "@backreference": {
-                "enabled": false
-              }
-            }
-          },
-          "shopifyProductId": {
-            "title": "Service ID",
-            "type": "string"
-          },
-          "shopifyProduct": {
-            "@ref": "shopify:ProductInput"
-          }
-        },
-        "required": []
-      }
-    },
-    "ReviewsIo_ReviewerInterface": {
-      "id": "ReviewsIo_ReviewerInterface",
-      "name": "ReviewsIo_ReviewerInterface",
-      "title": "ReviewsIo_ReviewerInterface",
-      "description": "ReviewsIo_ReviewerInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "user_id": {
-            "type": "integer"
-          },
-          "first_name": {
-            "type": "string"
-          },
-          "last_name": {
-            "type": "string"
-          },
-          "verified_buyer": {
-            "enum": [
-              "yes",
-              "no"
-            ]
-          },
-          "address": {
-            "type": "string"
-          },
-          "profile_picture": {
-            "type": "string"
-          },
-          "gravatar": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name_formatted": {
-            "type": "string"
-          }
-        },
-        "required": []
-      }
-    },
-    "ReviewsIo_ProductInterface": {
-      "id": "ReviewsIo_ProductInterface",
-      "name": "ReviewsIo_ProductInterface",
-      "title": "ReviewsIo_ProductInterface",
-      "description": "ReviewsIo_ProductInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "sku": {
-            "description": "Product unique ID",
-            "type": "string"
-          },
-          "name": {
-            "description": "Product name",
-            "type": "string"
-          },
-          "description": {
-            "description": "Product description",
-            "type": "string"
-          },
-          "image_url": {
-            "description": "Product image URL",
-            "type": "string"
-          },
-          "link": {
-            "description": "Product link URL",
-            "type": "string"
-          },
-          "mpn": {
-            "description": "Product MPN",
-            "type": "string"
-          },
-          "gtin": {
-            "description": "Product GTIN",
-            "type": "string"
-          },
-          "brand": {
-            "description": "Product brand",
-            "type": "string"
-          },
-          "category": {
-            "description": "Product category",
-            "type": "string"
-          },
-          "custom": {
-            "description": "Product custom property",
-            "type": "string"
-          },
-          "pageUrl": {
-            "description": "Product page url",
-            "type": "string"
-          }
-        },
-        "required": []
-      }
-    },
-    "ReviewsIo_ProductReviewInterface": {
-      "id": "ReviewsIo_ProductReviewInterface",
-      "name": "ReviewsIo_ProductReviewInterface",
-      "title": "ReviewsIo_ProductReviewInterface",
-      "description": "ReviewsIo_ProductReviewInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "product_review_id": {
-            "type": "integer"
-          },
-          "product_make": {
-            "type": "string"
-          },
-          "order_id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "sku": {
-            "type": "string"
-          },
-          "review": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "rating": {
-            "minimum": 0,
-            "maximum": 5,
-            "type": "integer"
-          },
-          "date_created": {
-            "type": "string"
-          },
-          "votes": {
-            "type": "string"
-          },
-          "flags": {
-            "type": "string"
-          },
-          "timeago": {
-            "type": "string"
-          },
-          "date_formatted": {
-            "type": "string"
-          },
-          "product": {
-            "@ref": "reviews-io:ProductInterface"
-          },
-          "ratings": {
-            "items": {
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "score": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "reviewer": {
-            "@ref": "reviews-io:ReviewerInterface"
-          },
-          "images": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "replies": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "tags": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          },
-          "author": {
-            "properties": {
-              "email": {
-                "format": "email",
-                "type": "string"
-              }
-            },
-            "type": "object"
-          }
-        },
-        "required": []
-      }
-    },
-    "ReviewsIo_ListProductReviewsResponseInterface": {
-      "id": "ReviewsIo_ListProductReviewsResponseInterface",
-      "name": "ReviewsIo_ListProductReviewsResponseInterface",
-      "title": "ReviewsIo_ListProductReviewsResponseInterface",
-      "description": "ReviewsIo_ListProductReviewsResponseInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "write_review_link": {
-            "type": "string"
-          },
-          "word": {
-            "type": "string"
-          },
-          "stats": {
-            "properties": {
-              "average": {
-                "type": "number"
-              },
-              "count": {
-                "type": "integer"
-              }
-            },
-            "type": "object"
-          },
-          "store": {
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "logo": {
-                "type": "string"
-              }
-            },
-            "type": "object"
-          },
-          "reviews": {
-            "properties": {
-              "total": {
-                "type": "integer"
-              },
-              "per_page": {
-                "type": "integer"
-              },
-              "current_page": {
-                "type": "integer"
-              },
-              "last_page": {
-                "type": "integer"
-              },
-              "from": {
-                "type": "integer"
-              },
-              "to": {
-                "type": "integer"
-              },
-              "data": {
-                "items": {
-                  "@ref": "reviews-io:ProductReview"
-                },
-                "type": "array"
-              }
-            },
-            "type": "object"
-          },
-          "products": {
-            "items": {
-              "properties": {
-                "sku": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "ratings": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array"
-          },
-          "settings": {
-            "items": {
-              "type": "object"
-            },
-            "type": "array"
-          }
-        },
-        "required": []
-      }
-    },
     "CollectionsComponentCollections": {
       "id": "CkeuB_BtQ",
       "name": "CollectionsComponentCollections",
@@ -8270,36 +7815,36 @@
       "id": "naUzXVxMY",
       "name": "ProductPageDetails",
       "title": "Product Page Details",
-      "workflow": "default",
       "model": {
         "type": "multiple"
       },
+      "workflow": "default",
       "schema": {
         "type": "object",
         "properties": {
           "name": {
             "minLength": 1,
             "type": "string",
+            "@mapping": "takeshape:local:ProductPageDetails.WtUmvnUzJ",
             "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:ProductPageDetails.WtUmvnUzJ"
+            "title": "Name"
           },
           "text": {
+            "@mapping": "takeshape:local:ProductPageDetails.9MK2Somel",
             "title": "Text",
             "description": "",
-            "@ref": "local:ProductPageDetailsText",
-            "@mapping": "takeshape:local:ProductPageDetails.9MK2Somel"
+            "@ref": "local:ProductPageDetailsText"
           },
           "details": {
+            "type": "array",
+            "@mapping": "takeshape:local:ProductPageDetails.TA8kBx-Sj",
             "title": "Details",
             "description": "",
+            "minItems": 2,
+            "maxItems": 2,
             "items": {
               "@ref": "local:ProductPageDetailsDetails"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": "array",
-            "@mapping": "takeshape:local:ProductPageDetails.TA8kBx-Sj"
+            }
           }
         },
         "required": [
@@ -8359,29 +7904,29 @@
       "id": "MPyglWNF_",
       "name": "ProductPagePolicies",
       "title": "Product Page Policies",
-      "workflow": "default",
       "model": {
         "type": "multiple"
       },
+      "workflow": "default",
       "schema": {
         "type": "object",
         "properties": {
           "name": {
             "minLength": 1,
             "type": "string",
+            "@mapping": "takeshape:local:ProductPagePolicies.2ydozONqt",
             "description": "",
-            "title": "Name",
-            "@mapping": "takeshape:local:ProductPagePolicies.2ydozONqt"
+            "title": "Name"
           },
           "policies": {
+            "type": "array",
+            "@mapping": "takeshape:local:ProductPagePolicies.YWzSVEezj",
             "title": "Policies",
             "description": "",
+            "minItems": 1,
             "items": {
               "@ref": "local:ProductPagePoliciesPolicies"
-            },
-            "minItems": 1,
-            "type": "array",
-            "@mapping": "takeshape:local:ProductPagePolicies.YWzSVEezj"
+            }
           }
         },
         "required": [
@@ -8394,73 +7939,68 @@
       "id": "oseWW7gAF",
       "name": "Product",
       "title": "Product",
-      "workflow": "default",
       "model": {
         "type": "multiple"
       },
+      "workflow": "default",
       "schema": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "@mapping": "takeshape:local:Product.O17SLDB3vK",
             "description": "Initialized with title from shopify",
-            "title": "Name",
-            "@mapping": "takeshape:local:Product.O17SLDB3vK"
+            "title": "Name"
           },
           "productComponent": {
             "type": "string",
+            "@mapping": "takeshape:local:Product.DkdYI1Z7o",
             "description": "",
+            "title": "Product Component",
             "oneOf": [
               {
+                "title": "With ImageGrid",
                 "enum": [
                   "withImageGrid"
-                ],
-                "title": "With ImageGrid"
+                ]
               },
               {
+                "title": "With Image",
                 "enum": [
                   "withImage"
-                ],
-                "title": "With Image"
+                ]
               }
-            ],
-            "title": "Product Component",
-            "@mapping": "takeshape:local:Product.DkdYI1Z7o"
+            ]
           },
           "hideBreadcrumbs": {
             "default": false,
-            "@l10n": false,
             "type": "boolean",
+            "@mapping": "takeshape:local:Product.SNVU8G6B8",
             "description": "",
-            "title": "Hide Breadcrumbs",
-            "@mapping": "takeshape:local:Product.SNVU8G6B8"
+            "title": "Hide Breadcrumbs"
           },
           "hideRelatedProducts": {
             "default": false,
-            "@l10n": false,
             "type": "boolean",
+            "@mapping": "takeshape:local:Product.3Hg5xUi7u",
             "description": "",
-            "title": "Hide Related Products",
-            "@mapping": "takeshape:local:Product.3Hg5xUi7u"
+            "title": "Hide Related Products"
           },
           "hideReviews": {
             "default": false,
-            "@l10n": false,
             "type": "boolean",
+            "@mapping": "takeshape:local:Product.t1lmvX0yi",
             "description": "",
-            "title": "Hide Reviews",
-            "@mapping": "takeshape:local:Product.t1lmvX0yi"
+            "title": "Hide Reviews"
           },
           "showPolicies": {
             "default": false,
-            "@l10n": false,
             "type": "boolean",
+            "@mapping": "takeshape:local:Product.Z3ArrPyet",
             "description": "",
-            "title": "Show Policies",
-            "@mapping": "takeshape:local:Product.Z3ArrPyet"
+            "title": "Show Policies"
           },
           "policies": {
-            "description": "",
             "@args": "TSRelationshipArgs",
             "@resolver": {
               "name": "takeshape:getRelated",
@@ -8469,26 +8009,22 @@
                 "nullable": true
               }
             },
+            "@mapping": "takeshape:local:Product.iQC0bkexG",
+            "title": "Policies",
+            "description": "",
             "@ref": "local:ProductPagePolicies",
             "@input": {
               "@ref": "local:TSRelationship"
-            },
-            "title": "Policies",
-            "@backreference": {
-              "enabled": false
-            },
-            "@mapping": "takeshape:local:Product.iQC0bkexG"
+            }
           },
           "showDetails": {
             "default": false,
-            "@l10n": false,
             "type": "boolean",
+            "@mapping": "takeshape:local:Product.rGL8dd9jx",
             "description": "",
-            "title": "Show Details",
-            "@mapping": "takeshape:local:Product.rGL8dd9jx"
+            "title": "Show Details"
           },
           "details": {
-            "description": "",
             "@args": "TSRelationshipArgs",
             "@resolver": {
               "name": "takeshape:getRelated",
@@ -8497,18 +8033,15 @@
                 "nullable": true
               }
             },
+            "@mapping": "takeshape:local:Product.VSmmE1OTM",
+            "title": "Details",
+            "description": "",
             "@ref": "local:ProductPageDetails",
             "@input": {
               "@ref": "local:TSRelationship"
-            },
-            "title": "Details",
-            "@backreference": {
-              "enabled": false
-            },
-            "@mapping": "takeshape:local:Product.VSmmE1OTM"
+            }
           },
           "lineItemAttributes": {
-            "description": "",
             "@args": "TSRelationshipArgs",
             "@resolver": {
               "name": "takeshape:getRelated",
@@ -8517,25 +8050,22 @@
                 "nullable": true
               }
             },
+            "@mapping": "takeshape:local:Product.jr4_7XXaA",
+            "title": "Line Item Attributes",
+            "description": "",
             "@ref": "local:LineItemAttributes",
             "@input": {
               "@ref": "local:TSRelationship"
-            },
-            "title": "Line Item Attributes",
-            "@backreference": {
-              "enabled": false
-            },
-            "@mapping": "takeshape:local:Product.jr4_7XXaA"
+            }
           },
           "shopifyProductId": {
             "type": "string",
             "@mapping": "takeshape:local:Product.shopifyProductId",
-            "title": "shopify product",
             "minLength": 1,
-            "pattern": "(^gid://shopify/Product/\\d+$)"
+            "pattern": "(^gid://shopify/Product/\\d+$)",
+            "title": "shopify product"
           },
           "shopifyProduct": {
-            "@ref": "shopify:Product",
             "@resolver": {
               "name": "graphql:query",
               "service": "shopify",
@@ -8549,7 +8079,12 @@
                 ]
               }
             },
-            "@tag": "pattern:service-object:1"
+            "@tag": "pattern:service-object:1",
+            "title": "",
+            "@ref": "shopify:Product",
+            "@input": {
+              "@ref": "shopify:ProductInput"
+            }
           }
         }
       }
@@ -8584,433 +8119,30 @@
         }
       }
     },
-    "CollectionInterface": {
-      "id": "CollectionInterface",
-      "name": "CollectionInterface",
-      "title": "CollectionInterface",
-      "description": "CollectionInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string",
-            "@workflow": "default"
-          },
-          "name": {
-            "type": "string",
-            "description": "Initialized with title from shopify",
-            "title": "Name"
-          },
-          "breadcrumbTitle": {
-            "type": "string",
-            "description": "An optional title to override the regular title in breadcrumbs",
-            "title": "Breadcrumb Title"
-          },
-          "parent": {
-            "@ref": "local:TSRelationship",
-            "title": "Parent",
-            "@output": {
-              "description": "",
-              "@args": "TSRelationshipArgs",
-              "@resolver": {
-                "name": "takeshape:getRelated",
-                "service": "takeshape:local",
-                "options": {
-                  "nullable": true
-                }
-              },
-              "@ref": "local:Collection",
-              "@backreference": {
-                "enabled": false
-              }
-            }
-          },
-          "shopifyCollectionId": {
-            "title": "Service ID",
-            "type": "string"
-          },
-          "shopifyCollection": {
-            "@ref": "shopify:CollectionInput"
-          }
-        },
-        "required": []
-      }
-    },
-    "ProductPageDetailsDetailsInterface": {
-      "id": "ProductPageDetailsDetailsInterface",
-      "name": "ProductPageDetailsDetailsInterface",
-      "title": "ProductPageDetailsDetailsInterface",
-      "description": "ProductPageDetailsDetailsInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "image": {
-            "@ref": "local:TSRelationship",
-            "title": "Image",
-            "@output": {
-              "description": "",
-              "@args": "TSRelationshipArgs",
-              "@resolver": {
-                "name": "takeshape:getRelated",
-                "service": "takeshape:local",
-                "options": {
-                  "nullable": true
-                }
-              },
-              "@ref": "local:Asset"
-            }
-          },
-          "description": {
-            "type": "object",
-            "@tag": "draftjs",
-            "title": "Description"
-          }
-        },
-        "required": [
-          "description"
-        ]
-      }
-    },
-    "ProductPageDetailsTextInterface": {
-      "id": "ProductPageDetailsTextInterface",
-      "name": "ProductPageDetailsTextInterface",
-      "title": "ProductPageDetailsTextInterface",
-      "description": "ProductPageDetailsTextInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "primary": {
-            "type": "object",
-            "@tag": "draftjs",
-            "title": "Primary"
-          },
-          "secondary": {
-            "type": "object",
-            "@tag": "draftjs",
-            "title": "Secondary"
-          }
-        },
-        "required": [
-          "primary",
-          "secondary"
-        ]
-      }
-    },
-    "ProductPageDetailsInterface": {
-      "id": "ProductPageDetailsInterface",
-      "name": "ProductPageDetailsInterface",
-      "title": "ProductPageDetailsInterface",
-      "description": "ProductPageDetailsInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "_version": {
-            "title": "Version",
-            "type": "integer"
-          },
-          "_status": {
-            "type": "string",
-            "title": "Status",
-            "@workflow": "default"
-          },
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "title": "Name"
-          },
-          "text": {
-            "title": "Text",
-            "@ref": "local:ProductPageDetailsTextInterface"
-          },
-          "details": {
-            "title": "Details",
-            "items": {
-              "@ref": "local:ProductPageDetailsDetailsInterface"
-            },
-            "maxItems": 2,
-            "minItems": 2,
-            "type": "array"
-          },
-          "_shapeId": {
-            "type": "string",
-            "title": "Shape Id",
-            "enum": [
-              "naUzXVxMY"
-            ]
-          },
-          "_shapeName": {
-            "title": "Shape Name",
-            "type": "string"
-          },
-          "_createdAt": {
-            "title": "Created",
-            "type": "string",
-            "format": "date-time"
-          },
-          "_createdBy": {
-            "type": "string",
-            "title": "Created By",
-            "@output": {
-              "@ref": "local:TSUser",
-              "@resolver": {
-                "name": "takeshape:getUser",
-                "service": "takeshape:local"
-              }
-            }
-          },
-          "_updatedAt": {
-            "title": "Updated",
-            "type": "string",
-            "format": "date-time"
-          },
-          "_updatedBy": {
-            "type": "string",
-            "title": "Updated By",
-            "@output": {
-              "@ref": "local:TSUser",
-              "@resolver": {
-                "name": "takeshape:getUser",
-                "service": "takeshape:local"
-              }
-            }
-          },
-          "_schemaVersion": {
-            "title": "Schema Version",
-            "type": "number"
-          },
-          "_enabled": {
-            "title": "Enabled",
-            "type": "boolean",
-            "@deprecationReason": "Use _status instead"
-          },
-          "_enabledAt": {
-            "title": "Enabled Date",
-            "type": "string",
-            "format": "date-time",
-            "@deprecationReason": "Use a custom date field instead"
-          },
-          "_contentTypeId": {
-            "type": "string"
-          },
-          "_contentTypeName": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "text",
-          "details"
-        ]
-      }
-    },
-    "ProductPagePoliciesPoliciesInterface": {
-      "id": "ProductPagePoliciesPoliciesInterface",
-      "name": "ProductPagePoliciesPoliciesInterface",
-      "title": "ProductPagePoliciesPoliciesInterface",
-      "description": "ProductPagePoliciesPoliciesInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "_version": {
-            "type": "number"
-          },
-          "_status": {
-            "type": "string"
-          },
-          "name": {
-            "type": "object",
-            "@tag": "draftjs",
-            "title": "Name"
-          },
-          "description": {
-            "type": "object",
-            "@tag": "draftjs",
-            "title": "Description"
-          },
-          "image": {
-            "@ref": "local:TSRelationship",
-            "title": "Image",
-            "@output": {
-              "description": "",
-              "@args": "TSRelationshipArgs",
-              "@resolver": {
-                "name": "takeshape:getRelated",
-                "service": "takeshape:local",
-                "options": {
-                  "nullable": true
-                }
-              },
-              "@ref": "local:Asset"
-            }
-          }
-        },
-        "required": [
-          "name",
-          "description",
-          "image"
-        ]
-      }
-    },
-    "ProductPagePoliciesInterface": {
-      "id": "ProductPagePoliciesInterface",
-      "name": "ProductPagePoliciesInterface",
-      "title": "ProductPagePoliciesInterface",
-      "description": "ProductPagePoliciesInterface",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "_version": {
-            "title": "Version",
-            "type": "integer"
-          },
-          "_status": {
-            "type": "string",
-            "title": "Status",
-            "@workflow": "default"
-          },
-          "name": {
-            "minLength": 1,
-            "type": "string",
-            "title": "Name"
-          },
-          "policies": {
-            "title": "Policies",
-            "items": {
-              "@ref": "local:ProductPagePoliciesPoliciesInterface"
-            },
-            "minItems": 1,
-            "type": "array"
-          },
-          "_shapeId": {
-            "type": "string",
-            "title": "Shape Id",
-            "enum": [
-              "MPyglWNF_"
-            ]
-          },
-          "_shapeName": {
-            "title": "Shape Name",
-            "type": "string"
-          },
-          "_createdAt": {
-            "title": "Created",
-            "type": "string",
-            "format": "date-time"
-          },
-          "_createdBy": {
-            "type": "string",
-            "title": "Created By",
-            "@output": {
-              "@ref": "local:TSUser",
-              "@resolver": {
-                "name": "takeshape:getUser",
-                "service": "takeshape:local"
-              }
-            }
-          },
-          "_updatedAt": {
-            "title": "Updated",
-            "type": "string",
-            "format": "date-time"
-          },
-          "_updatedBy": {
-            "type": "string",
-            "title": "Updated By",
-            "@output": {
-              "@ref": "local:TSUser",
-              "@resolver": {
-                "name": "takeshape:getUser",
-                "service": "takeshape:local"
-              }
-            }
-          },
-          "_schemaVersion": {
-            "title": "Schema Version",
-            "type": "number"
-          },
-          "_enabled": {
-            "title": "Enabled",
-            "type": "boolean",
-            "@deprecationReason": "Use _status instead"
-          },
-          "_enabledAt": {
-            "title": "Enabled Date",
-            "type": "string",
-            "format": "date-time",
-            "@deprecationReason": "Use a custom date field instead"
-          },
-          "_contentTypeId": {
-            "type": "string"
-          },
-          "_contentTypeName": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "policies"
-        ]
-      }
-    },
     "Collection": {
       "id": "wsEbSG-yV",
       "name": "Collection",
       "title": "Collection",
-      "workflow": "default",
       "model": {
         "type": "multiple"
       },
+      "workflow": "default",
       "schema": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
+            "@mapping": "takeshape:local:Collection.sZuVCwK3h7",
             "description": "Initialized with title from shopify",
-            "title": "Name",
-            "@mapping": "takeshape:local:Collection.sZuVCwK3h7"
+            "title": "Name"
           },
           "breadcrumbTitle": {
             "type": "string",
             "description": "An alternate title to use in breadcrumbs",
-            "title": "Breadcrumb Title"
+            "title": "Breadcrumb Title",
+            "@mapping": "takeshape:local:Collection.breadcrumbTitle"
           },
           "parent": {
-            "description": "",
             "@args": "TSRelationshipArgs",
             "@resolver": {
               "name": "takeshape:getRelated",
@@ -9019,25 +8151,22 @@
                 "nullable": true
               }
             },
+            "@mapping": "takeshape:local:Collection.BGIKvV5Mk",
+            "title": "Parent",
+            "description": "",
             "@ref": "local:Collection",
             "@input": {
               "@ref": "local:TSRelationship"
-            },
-            "title": "Parent",
-            "@backreference": {
-              "enabled": false
-            },
-            "@mapping": "takeshape:local:Collection.BGIKvV5Mk"
+            }
           },
           "shopifyCollectionId": {
             "type": "string",
             "@mapping": "takeshape:local:Collection.shopifyCollectionId",
-            "title": "shopify collection",
             "minLength": 1,
-            "pattern": "(^gid://shopify/Collection/\\d+$)"
+            "pattern": "(^gid://shopify/Collection/\\d+$)",
+            "title": "shopify collection"
           },
           "shopifyCollection": {
-            "@ref": "shopify:Collection",
             "@resolver": {
               "name": "graphql:query",
               "service": "shopify",
@@ -9051,7 +8180,12 @@
                 ]
               }
             },
-            "@tag": "pattern:service-object:1"
+            "@tag": "pattern:service-object:1",
+            "title": "",
+            "@ref": "shopify:Collection",
+            "@input": {
+              "@ref": "shopify:CollectionInput"
+            }
           }
         }
       }
@@ -9765,7 +8899,6 @@
       }
     }
   },
-  "schemaVersion": "3.23.0",
   "indexedShapes": {
     "Shopify_Product": {
       "queries": {
@@ -9797,5 +8930,11 @@
         "maxDepth": 2
       }
     }
-  }
+  },
+  "defaultLocale": "en-us",
+  "locales": [
+    "en-us"
+  ],
+  "schemaVersion": "3.30.0",
+  "apiVersion": "2"
 }
