@@ -15,6 +15,7 @@ export interface ProductWithImageProps {
   breadcrumbs: Breadcrumb[] | null;
   showReviewsLink: boolean;
 }
+// comment to trigger deploy
 
 export const ProductWithImage = ({
   product,
