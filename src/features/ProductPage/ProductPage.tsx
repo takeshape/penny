@@ -1,5 +1,4 @@
 import Wrapper from 'components/Wrapper/Content';
-import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWithData';
 import { shopifyGidToId } from 'transforms/shopify';
 import { ReviewList } from 'types/review';
 import { Details } from './Details/Details';
@@ -28,7 +27,7 @@ export const ProductPage = ({
   breadcrumbs,
   reviewsPerPage
 }: ProductPageProps) => {
-  const { showDetails, showPolicies, showReviewsIo, showTrustpilot, showRelatedProducts, showBreadcrumbs } = options;
+  const { showDetails, showPolicies, showReviewsIo, showRelatedProducts, showBreadcrumbs } = options;
 
   return (
     <>
@@ -60,9 +59,6 @@ export const ProductPage = ({
               reviewList={reviewList}
               reviewsPerPage={reviewsPerPage ?? 5}
             />
-          )}
-          {showTrustpilot && reviewList?.publisher === 'Trustpilot' && (
-            <TrustpilotWithData sku={shopifyGidToId(product.id)} reviewList={reviewList} />
           )}
           {showRelatedProducts && <RelatedProductsWithData limit={4} productId={product.id} />}
         </Wrapper>

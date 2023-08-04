@@ -266,41 +266,6 @@ export const ProductPageReviewPageQuery = gql`
   }
 `;
 
-export const TrustpilotProductPageReviewPageQuery = gql`
-  query TrustpilotProductPageReviewPageQuery($sku: [String!], $page: Int!, $perPage: Int!) {
-    reviews: Trustpilot_listProductReviews(sku: $sku, page: $page, perPage: $perPage) {
-      productReviews {
-        id
-        content
-        stars
-        createdAt
-        consumer {
-          displayName
-        }
-      }
-      links {
-        rel
-      }
-    }
-    summary: Trustpilot_getProductReviewsSummary(sku: $sku) {
-      starsAverage
-      numberOfReviews {
-        total
-        fiveStars
-        fourStars
-        threeStars
-        twoStars
-        oneStar
-      }
-      links {
-        rel
-        href
-        method
-      }
-    }
-  }
-`;
-
 export const CreateMyProductReviewMutation = gql`
   mutation CreateMyProductReviewMutation($input: CreateMyProductReviewPropertiesPropertyInput!) {
     result: createMyProductReview(input: $input) {

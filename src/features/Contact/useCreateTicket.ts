@@ -1,19 +1,12 @@
 import { useMutation } from '@apollo/client';
-import { contactProvider } from 'config';
-import { CreateTicketWithGorgiasMutation, CreateTicketWithZendeskMutation } from 'features/Contact/queries';
-import {
-  CreateTicketWithGorgiasMutationResponse,
-  CreateTicketWithGorgiasMutationVariables,
-  CreateTicketWithZendeskMutationResponse,
-  CreateTicketWithZendeskMutationVariables
-} from 'types/takeshape';
+import { CreateTicketWithGorgiasMutation } from 'features/Contact/queries';
+import { CreateTicketWithGorgiasMutationResponse, CreateTicketWithGorgiasMutationVariables } from 'types/takeshape';
 import { useAuthenticatedMutation } from 'utils/takeshape';
 
-export type CreateTicketVariables = CreateTicketWithGorgiasMutationVariables | CreateTicketWithZendeskMutationVariables;
-export type CreateTicketResponse = CreateTicketWithGorgiasMutationResponse | CreateTicketWithZendeskMutationResponse;
+export type CreateTicketVariables = CreateTicketWithGorgiasMutationVariables;
+export type CreateTicketResponse = CreateTicketWithGorgiasMutationResponse;
 
-const CreateTicketMutation =
-  contactProvider === 'zendesk' ? CreateTicketWithZendeskMutation : CreateTicketWithGorgiasMutation;
+const CreateTicketMutation = CreateTicketWithGorgiasMutation;
 
 /**
  * Wraps a createTicket mutation, so that the provider can be configured more easily.

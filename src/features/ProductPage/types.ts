@@ -4,7 +4,6 @@ import { ProductBase } from 'types/product';
 import { Review, ReviewHighlights, ReviewList, ReviewRollup, ReviewStats } from 'types/review';
 import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
 import { ProductPageShopifyProductResponse, Shopify_Product, Shopify_ProductConnection } from 'types/takeshape';
-import { TrustpilotReviewList } from 'types/trustpilot';
 import { NonNullablePath } from 'types/util';
 
 export type ProductPageShopifyProductHandleNode = Pick<Shopify_Product, 'id' | 'handle'>;
@@ -82,8 +81,6 @@ export type ProductPageReviewsReview = Review;
 export type ProductPageReviewHighlights = ReviewHighlights;
 export type ProductPageReviewsRollup = ReviewRollup;
 export type ProductPageReviewsStats = ReviewStats;
-
-export type TrustpilotProductPageReviewsReviewList = TrustpilotReviewList;
 
 export type ProductPageBreadcrumbs = Breadcrumb[];
 
