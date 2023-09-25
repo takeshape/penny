@@ -1,13 +1,5 @@
 name: Playwright
 
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-#     branches:
-#       - main
-
 on:
   deployment_status:
 
@@ -29,6 +21,9 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
