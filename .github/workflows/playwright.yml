@@ -1,4 +1,4 @@
-name: Playwright
+name: Playwright Test
 
 on:
   deployment_status:
@@ -7,7 +7,7 @@ env:
   HUSKY: 0
 
 jobs:
-  test:
+  playwright-test:
     name: Test
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     timeout-minutes: 60
@@ -49,7 +49,7 @@ jobs:
     if: ${{ vars.PW_S3_URL != '' && (success() || failure()) }}
     runs-on: ubuntu-latest
     needs:
-      - test
+      - playwright-test
     env:
       HTML_REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
     steps:

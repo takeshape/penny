@@ -1,4 +1,4 @@
-name: Test
+name: Unit Test
 
 on:
   pull_request:
@@ -10,8 +10,8 @@ env:
   HUSKY: 0
 
 jobs:
-  npm-test:
-    name: 'Unit Tests & Hygiene'
+  unit-test:
+    name: Unit Tests
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
