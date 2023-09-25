@@ -81,7 +81,7 @@ jobs:
           echo "[Playwright Report]($REPORT_URL)" >> $GITHUB_STEP_SUMMARY
 
       - name: Post status
-        if: ${{ github.event_name == 'pull_request' && (success() || failure()) }}
+        if: ${{ success() || failure() }}
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
