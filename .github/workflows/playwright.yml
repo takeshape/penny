@@ -53,11 +53,6 @@ jobs:
     env:
       HTML_REPORT_URL_PATH: reports/${{ github.sha }}/${{ github.run_attempt }}
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
       - name: Download results
         uses: actions/download-artifact@v3
         with:
