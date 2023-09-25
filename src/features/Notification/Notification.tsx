@@ -10,7 +10,7 @@ export const Notification = () => {
   const notification = useAtomValue(notificationAtom);
   const resetNotification = useResetAtom(notificationAtom);
 
-  const timeout = useRef<NodeJS.Timer>();
+  const timeout = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (notification.showFor) {
