@@ -51,7 +51,7 @@ jobs:
     needs:
       - playwright-test
     env:
-      HTML_REPORT_URL_PATH: reports/${{ github.ref_name }}/${{ github.run_id }}/${{ github.run_attempt }}
+      HTML_REPORT_URL_PATH: reports/${{ github.event.workflow_run.head_branch }}/${{ github.run_id }}/${{ github.run_attempt }}
     steps:
       - name: Download results
         uses: actions/download-artifact@v3
@@ -81,6 +81,6 @@ jobs:
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: Playwright Report
-          state: ${{ needs.test.result }}
-          sha: ${{ github.event.deployment.sha }}
+          state: ${{ needs.playwright-test.result }}
+          sha: ${{ github.event.workflow_run.head_sha }}
           target_url: ${{ vars.PW_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
