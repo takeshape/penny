@@ -65,3 +65,6 @@ src/types/storefront.ts
 /public/sw.*
 /public/workbox-*
 /public/worker-*
+/test-results/
+/playwright-report/
+/playwright/.cache/
