@@ -51,8 +51,13 @@ jobs:
     needs:
       - playwright-test
     env:
-      HTML_REPORT_URL_PATH: reports/${{ github.event.workflow_run.head_branch }}/${{ github.run_id }}/${{ github.run_attempt }}
+      HTML_REPORT_URL_PATH: reports/${{ github.run_id }}/${{ github.run_attempt }}
     steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: Download results
         uses: actions/download-artifact@v3
         with:
