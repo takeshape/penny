@@ -51,7 +51,7 @@ jobs:
     needs:
       - playwright-test
     env:
-      HTML_REPORT_URL_PATH: reports/${{ github.run_id }}/${{ github.run_attempt }}
+      HTML_REPORT_URL_PATH: reports/${{ github.sha }}/${{ github.run_attempt }}
     steps:
       - name: Dump GitHub context
         env:
@@ -87,5 +87,5 @@ jobs:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: Playwright Report
           state: ${{ needs.playwright-test.result }}
-          sha: ${{ github.event.workflow_run.head_sha }}
+          sha: ${{ github.sha }}
           target_url: ${{ vars.PW_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
