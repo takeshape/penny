@@ -114,7 +114,7 @@ to keep error-free and performant.
 
 #### E2E Tests
 
-- [Cypress](https://www.cypress.io/) for frontend end-to-end testing and API service mocking
+- [Playwright](https://playwright.dev) for frontend end-to-end testing and API service mocking
 
 #### Performance Tests
 
@@ -198,7 +198,7 @@ To get started with TakeShape you need to perform these steps:
   contain all the secrets you need to get your local development environment running, as well as overrides for common
   `.env` variables.
 
-- `.env.test` contains variables and overrides only used when running tests, like `jest` or `cypress`.
+- `.env.test` contains variables and overrides only used when running tests, like `jest` or `playwright`.
 
 > **Warning**  
 > Never check secrets into your repo!
@@ -718,7 +718,7 @@ Both services offer preview deployments, which we've enabled on our PRs.
 If you are using the included workflows you will get a great CI process that includes:
 
 - Unit tests on every PR
-- Cypress E2E Testing on every PR
+- Playwright E2E Testing on every PR
 - Storybook deploys and testing with Chromatic
 - Automated Lighthouse scores on every PR and on production deploys
 
@@ -727,6 +727,26 @@ If you are using the included workflows you will get a great CI process that inc
 Add the following to your hosting platform's environment variables
 
 - TAKESHAPE_API_TOKEN (same as Github Actions secrets)
+
+## E2E testing
+
+Playwright will work without additional configuration. If you want to use the S3 hosting option for Playwright reports,
+you will need to add some variables to your repository. Add the following:
+
+### Secrets
+
+You AWS credentials:
+
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+
+### Variables
+
+Your S3 details:
+
+- `PW_S3_URL` - Example: `https://dbr9n5zkng988.cloudfront.net/`
+- `PW_S3_BUCKET` - Example: `my-playwright-bucket`
+- `PW_S3_REGION` - Example: `us-east-1`
 
 # TakeShape Branches
 
