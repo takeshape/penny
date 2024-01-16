@@ -198,7 +198,7 @@ To get started with TakeShape you need to perform these steps:
   contain all the secrets you need to get your local development environment running, as well as overrides for common
   `.env` variables.
 
-- `.env.test` contains variables and overrides only used when running tests, like `jest` or `playwright`.
+- `.env.test` contains variables and overrides only used when running tests, like `jest`.
 
 > **Warning**  
 > Never check secrets into your repo!
@@ -693,6 +693,17 @@ Google auth in Vercel preview environments, which use dynamic URLs. It is recomm
 Your project is configured to generate types for the GraphQL APIs in use. Run `npm run graphql:typegen` before running
 the site locally to generate query-specific types. This is a big advantage of the TakeShape GraphQL mesh — you will have
 your queries and responses fully typed, and can develop efficiently and safely.
+
+## Playwright End-to-End (E2E) Testing
+
+### Local test development
+
+You can run and develop your Playwright tests locally using the following process:
+
+1. Edit your `.env.local` file and ensure your have the corrent environment variables set for your personal project.
+1. Start a Next.js server, `npm run dev` will do.
+1. In another process (terminal) run `npm run playwright:dev`
+1. Work within the Playwright UI to run and debug your tests.
 
 # Deploying to production
 

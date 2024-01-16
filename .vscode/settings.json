@@ -23,8 +23,8 @@
   "eslint.runtime": "node",
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": true
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
   },
   "eslint.onIgnoredFiles": "warn",
   "[markdown]": {

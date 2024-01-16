@@ -1,29 +1,36 @@
-import { test } from '../fixtures';
-import { ENDPOINTS } from '../constants/endpoints';
-import { expect } from 'playwright/test';
+import assert from 'assert';
 import dayjs from 'dayjs';
+import { expect } from 'playwright/test';
+import { PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
+import { test } from '../fixtures';
 
 test.describe('Add to cart', () => {
-  const productName = process.env.PW_PRODUCT_NAME!;
-
   test.beforeEach('Navigate to the Collections page', async ({ page }) => {
-    await page.goto(ENDPOINTS.womenCollections);
+    await page.goto(WOMEN_COLLECTIONS_ENDPOINT);
   });
 
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {
-    await collectionsPage.getProductByName(productName).click();
-    await expect(page.getByLabel('Breadcrumb')).toContainText(productName);
+    if (!PRODUCT_NAME) {
+      assert(PRODUCT_NAME, 'PRODUCT_NAME must be defined');
+    }
+
+    await collectionsPage.getProductByName(PRODUCT_NAME).click();
+    await expect(page.getByLabel('Breadcrumb')).toContainText(PRODUCT_NAME);
 
     const productPrice = await productPage.productPrice().innerText();
 
     await productPage.addToCartBtn().click();
     await expect(page.getByText('Shopping cart')).toBeVisible();
     await expect(shoppingCart.shoppingCartItems()).toHaveCount(1);
-    await expect(shoppingCart.shoppingCartItems()).toContainText(productName);
+    await expect(shoppingCart.shoppingCartItems()).toContainText(PRODUCT_NAME);
     await expect(shoppingCart.cartTotalPrice()).toContainText(productPrice);
   });
 
   test.fixme('Checkout phase', async ({ page, shoppingCart, collectionsPage, productPage }) => {
+    if (!PRODUCT_NAME) {
+      assert(PRODUCT_NAME, 'PRODUCT_NAME must be defined');
+    }
+
     const email = 'test_email@mail.com';
     const userName = 'test';
     const address = 'Ottawa';
@@ -34,10 +41,10 @@ test.describe('Add to cart', () => {
     const expirationYear = dayjs().add(1, 'year').format('YY');
     const getFrameLocator = (field: string) => page.frameLocator(`[title="Field container for: ${field}"]`);
 
-    await collectionsPage.getProductByName(productName).click();
+    await collectionsPage.getProductByName(PRODUCT_NAME).click();
     await productPage.addToCartBtn().click();
     await expect(page.getByText('Shopping cart')).toBeVisible();
-    await expect(shoppingCart.shoppingCartItems()).toContainText(productName);
+    await expect(shoppingCart.shoppingCartItems()).toContainText(PRODUCT_NAME);
 
     await shoppingCart.checkoutBtn().click();
     await page.waitForURL('**/checkouts/**');
