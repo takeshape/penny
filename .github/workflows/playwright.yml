@@ -30,9 +30,10 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: NODE_ENV=test npx playwright test
+        run: npx playwright test
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          PLAYWRIGHT_PRODUCT_NAME: ${{ vars.PLAYWRIGHT_PRODUCT_NAME }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -46,7 +47,7 @@ jobs:
 
   report:
     name: Report
-    if: ${{ vars.PW_S3_URL != '' && (success() || failure()) }}
+    if: ${{ vars.PLAYWRIGHT_S3_URL != '' && (success() || failure()) }}
     runs-on: ubuntu-latest
     needs:
       - playwright-test
@@ -63,14 +64,14 @@ jobs:
         run: |
           aws s3 sync playwright s3://$S3_BUCKET
         env:
-          S3_BUCKET: ${{ vars.PW_S3_BUCKET }}
+          S3_BUCKET: ${{ vars.PLAYWRIGHT_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.PW_S3_REGION }}
+          AWS_DEFAULT_REGION: ${{ vars.PLAYWRIGHT_S3_REGION }}
 
       - name: Add link to summary
         env:
-          REPORT_URL: ${{ vars.PW_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
+          REPORT_URL: ${{ vars.PLAYWRIGHT_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
         shell: bash
         run: |
           echo "[Playwright Report]($REPORT_URL)" >> $GITHUB_STEP_SUMMARY
@@ -83,4 +84,4 @@ jobs:
           context: Playwright Report
           state: ${{ needs.playwright-test.result }}
           sha: ${{ github.sha }}
-          target_url: ${{ vars.PW_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
+          target_url: ${{ vars.PLAYWRIGHT_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
