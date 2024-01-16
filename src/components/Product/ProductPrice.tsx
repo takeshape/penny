@@ -14,7 +14,11 @@ export const ProductPrice = ({ price, isAvailable, size }: ProductPriceProps) =>
   const wrapperClass = classNames(size === 'small' && 'text-2xl', size === 'large' && 'text-3xl', 'text-body-900');
 
   if (isAvailable) {
-    return <p className={wrapperClass}>{formatPrice(currencyCode, amount)}</p>;
+    return (
+      <p className={wrapperClass} data-testid="product-price">
+        {formatPrice(currencyCode, amount)}
+      </p>
+    );
   }
 
   return (
