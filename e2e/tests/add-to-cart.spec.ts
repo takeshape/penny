@@ -1,5 +1,5 @@
-import * as assert from 'assert';
-import * as dayjs from 'dayjs';
+const assert = require('assert');
+const dayjs = require('dayjs');
 import { expect } from 'playwright/test';
 import { BASE_URL, PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
 import { test } from '../fixtures';
