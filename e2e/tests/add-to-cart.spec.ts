@@ -1,7 +1,7 @@
-import assert from 'assert';
-import dayjs from 'dayjs';
+import * as assert from 'assert';
+import * as dayjs from 'dayjs';
 import { expect } from 'playwright/test';
-import { PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
+import { BASE_URL, PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
 import { test } from '../fixtures';
 
 test.describe('Add to cart', () => {
@@ -29,6 +29,10 @@ test.describe('Add to cart', () => {
   test.fixme('Checkout phase', async ({ page, shoppingCart, collectionsPage, productPage }) => {
     if (!PRODUCT_NAME) {
       assert(PRODUCT_NAME, 'PRODUCT_NAME must be defined');
+    }
+
+    if (!BASE_URL) {
+      assert(BASE_URL, 'BASE_URL must be defined');
     }
 
     const email = 'test_email@mail.com';
@@ -67,7 +71,7 @@ test.describe('Add to cart', () => {
     await getFrameLocator('Security code').locator('#verification_value').fill(securityCode);
 
     await page.getByRole('button', { name: 'Pay now', exact: true }).click();
-    await page.waitForURL(process.env.PW_BASE_URL!);
+    await page.waitForURL(BASE_URL);
     await page.getByText('Successfully checked out').waitFor();
     await expect(shoppingCart.cartItemsCount()).toContainText('0');
   });

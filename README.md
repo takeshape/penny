@@ -700,9 +700,9 @@ your queries and responses fully typed, and can develop efficiently and safely.
 
 You can run and develop your Playwright tests locally using the following process:
 
-1. Edit your `.env.local` file and ensure your have the corrent environment variables set for your personal project.
+1. Edit your `.env.local` file and ensure your have the correct environment variables set for your personal project.
 1. Start a Next.js server, `npm run dev` will do.
-1. In another process (terminal) run `npm run playwright:dev`
+1. In another process (terminal) run `npm run playwright:ui`
 1. Work within the Playwright UI to run and debug your tests.
 
 # Deploying to production
