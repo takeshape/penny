@@ -10,6 +10,7 @@ test.describe('Add to cart', () => {
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {
     if (!PRODUCT_NAME) {
       test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+      return;
     }
 
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
@@ -27,6 +28,7 @@ test.describe('Add to cart', () => {
   test('Checkout phase', async ({ page, shoppingCart, collectionsPage, productPage }) => {
     if (!PRODUCT_NAME) {
       test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+      return;
     }
 
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
