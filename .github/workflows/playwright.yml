@@ -64,8 +64,8 @@ jobs:
           aws s3 sync playwright s3://$S3_BUCKET
         env:
           S3_BUCKET: ${{ vars.PLAYWRIGHT_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.PLAYWRIGHT_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.PLAYWRIGHT_AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ vars.PLAYWRIGHT_S3_REGION }}
 
       - name: Add link to summary
