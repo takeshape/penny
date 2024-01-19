@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-const dotenv = require('dotenv');
+import * as dotenv from 'dotenv';
 
 /**
  * Replicate next.js .env defaults / local override behavior
