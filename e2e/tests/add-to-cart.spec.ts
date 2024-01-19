@@ -1,6 +1,5 @@
-const assert = require('assert');
 import { expect } from 'playwright/test';
-import { BASE_URL, PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
+import { PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
 import { test } from '../fixtures';
 
 test.describe('Add to cart', () => {
@@ -10,7 +9,7 @@ test.describe('Add to cart', () => {
 
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {
     if (!PRODUCT_NAME) {
-      assert(PRODUCT_NAME, 'PRODUCT_NAME must be defined');
+      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
     }
 
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
@@ -27,11 +26,7 @@ test.describe('Add to cart', () => {
 
   test('Checkout phase', async ({ page, shoppingCart, collectionsPage, productPage }) => {
     if (!PRODUCT_NAME) {
-      assert(PRODUCT_NAME, 'PRODUCT_NAME must be defined');
-    }
-
-    if (!BASE_URL) {
-      assert(BASE_URL, 'BASE_URL must be defined');
+      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
     }
 
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
@@ -41,7 +36,7 @@ test.describe('Add to cart', () => {
 
     await page.goto('/?shopify_checkout_action=success');
 
-    await page.waitForURL(BASE_URL);
+    await page.waitForURL('/');
     await page.getByText('Successfully checked out').waitFor();
     await expect(shoppingCart.cartItemsCount()).toContainText('0');
   });
