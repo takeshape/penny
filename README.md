@@ -706,7 +706,7 @@ You can run and develop your Playwright tests locally using the following proces
 1. Work within the Playwright UI to run and debug your tests.
 
 ### CI
-Make sure you have set these variables in your repository and `.env.local`:
+Make sure you have set these environment variables in your repository:
 - `PLAYWRIGHT_TEST_BASE_URL`
 - `PLAYWRIGHT_PRODUCT_NAME`
 - `PLAYWRIGHT_COLLECTION_NAME` (should be the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME` relates to)
