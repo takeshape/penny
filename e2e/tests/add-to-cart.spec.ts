@@ -1,10 +1,10 @@
 import { expect } from 'playwright/test';
-import { PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
+import { PRODUCT_NAME, COLLECTIONS_PAGE_ENDPOINT } from '../constants';
 import { test } from '../fixtures';
 
 test.describe('Add to cart', () => {
   test.beforeEach('Navigate to the Collections page', async ({ page }) => {
-    await page.goto(WOMEN_COLLECTIONS_ENDPOINT);
+    await page.goto(COLLECTIONS_PAGE_ENDPOINT);
   });
 
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {

@@ -705,6 +705,12 @@ You can run and develop your Playwright tests locally using the following proces
 1. In another process (terminal) run `npm run playwright:ui`
 1. Work within the Playwright UI to run and debug your tests.
 
+### CI
+Make sure you have set these variables in your repository and `.env.local`:
+- `PLAYWRIGHT_TEST_BASE_URL`
+- `PLAYWRIGHT_PRODUCT_NAME`
+- `PLAYWRIGHT_COLLECTION_NAME` (should be the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME` relates to)
+
 # Deploying to production
 
 > When deploying this project to production, be sure to replace all public placeholder assets.
