@@ -1,10 +1,12 @@
 import { expect } from 'playwright/test';
-import { PRODUCT_NAME, COLLECTIONS_PAGE_ENDPOINT } from '../constants';
+import { COLLECTION_NAME, COLLECTIONS_ENDPOINT, PRODUCT_NAME } from '../constants';
 import { test } from '../fixtures';
 
 test.describe('Add to cart', () => {
   test.beforeEach('Navigate to the Collections page', async ({ page }) => {
-    await page.goto(COLLECTIONS_PAGE_ENDPOINT);
+    test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
+
+    await page.goto(COLLECTIONS_ENDPOINT + COLLECTION_NAME);
   });
 
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {
