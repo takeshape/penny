@@ -70,7 +70,7 @@ jobs:
 
       - name: Add link to summary
         env:
-          REPORT_URL: ${{ vars.PLAYWRIGHT_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}
+          REPORT_URL: ${{ vars.PLAYWRIGHT_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}/index.html
         shell: bash
         run: |
           echo "[Playwright Report]($REPORT_URL)" >> $GITHUB_STEP_SUMMARY
