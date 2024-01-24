@@ -65,7 +65,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
         </div>
 
         {/* Secondary navigation */}
-        <div className="bg-background">
+        <div className="bg-background" data-testid="nav-bar">
           <div className="border-b border-body-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="h-16 flex items-center justify-between">

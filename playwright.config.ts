@@ -1,16 +1,18 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as dotenv from 'dotenv';
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
+ * Replicate next.js .env defaults / local override behavior
+ * https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#default-environment-variables
  */
-// require('dotenv').config();
+dotenv.config({ path: `.env` });
+dotenv.config({ path: `.env.local` });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './e2e/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -21,31 +23,38 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  expect: {
+    timeout: 20000
+  },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
+    /* This will typically be set in the env at runtime with `PLAYWRIGHT_TEST_BASE_URL` */
     // baseURL: 'http://127.0.0.1:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry'
+    trace: 'retain-on-failure',
+    actionTimeout: 20000,
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure'
   },
 
-  /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] }
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] }
     }
+
+    /* Additional browser tests */
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] }
+    // },
+
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] }
+    // },
 
     /* Test against mobile viewports. */
     // {

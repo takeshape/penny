@@ -8,7 +8,7 @@ export const TopCartIcon = () => {
   const cartQuantity = useAtomValue(cartQuantityAtom);
 
   return (
-    <div className="flow-root">
+    <div className="flow-root" data-testid="cart-icon">
       <div
         onClick={() => (isCartOpen ? setIsCartOpen(false) : setIsCartOpen(true))}
         className="group -m-2 p-2 flex items-center"
@@ -18,7 +18,12 @@ export const TopCartIcon = () => {
           aria-hidden="true"
         />
         <ClientOnly>
-          <span className="ml-2 text-sm font-medium text-primary-700 group-hover:text-primary-800">{cartQuantity}</span>
+          <span
+            className="ml-2 text-sm font-medium text-primary-700 group-hover:text-primary-800"
+            data-testid="cart-items-count"
+          >
+            {cartQuantity}
+          </span>
         </ClientOnly>
         <span className="sr-only">items in cart, view cart</span>
       </div>

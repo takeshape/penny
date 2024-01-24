@@ -33,6 +33,8 @@ jobs:
         run: npx playwright test
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+          PLAYWRIGHT_PRODUCT_NAME: ${{ vars.PLAYWRIGHT_PRODUCT_NAME }}
+          PLAYWRIGHT_COLLECTION_NAME: ${{ vars.PLAYWRIGHT_COLLECTION_NAME }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

@@ -73,7 +73,7 @@ export const Cart = () => {
                           <div className="flow-root">
                             <ul role="list" className="-my-6 divide-y divide-body-200">
                               {items.map((atom) => (
-                                <li key={atom.toString()} className="flex py-6">
+                                <li key={atom.toString()} className="flex py-6" data-testid="cart-item">
                                   <CartItem atom={atom} onRemove={() => dispatch({ type: 'remove', atom })} />
                                 </li>
                               ))}
