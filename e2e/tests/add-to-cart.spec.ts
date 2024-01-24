@@ -4,8 +4,10 @@ import { test } from '../fixtures';
 
 test.describe('Add to cart', () => {
   test.beforeEach('Navigate to the Collections page', async ({ page }) => {
-    test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
-
+    if (!COLLECTION_NAME) {
+      test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
+      return;
+    }
     await page.goto(COLLECTIONS_ENDPOINT + COLLECTION_NAME);
   });
 
