@@ -13,4 +13,6 @@ export class ShoppingCart {
   cartItemsCount = () => this.page.getByTestId('cart-items-count');
   cartIcon = () => this.page.getByTestId('cart-icon');
   cartDialog = () => this.page.getByTestId('cart-dialog');
+  addItemBtn = () => this.page.getByTestId('plus-icon');
+  reduceItemBtn = () => this.page.getByTestId('minus-icon');
 }
