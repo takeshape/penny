@@ -1,24 +1,8 @@
 {
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "markdown",
-    "mdx",
-    "json"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "markdown", "mdx", "json"],
   "eslint.options": {
-    "extensions": [
-      ".js",
-      ".jsx",
-      ".md",
-      ".mdx",
-      ".ts",
-      ".tsx",
-      ".json"
-    ]
+    "extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx", ".json"]
   },
   "eslint.runtime": "node",
   "editor.formatOnSave": false,

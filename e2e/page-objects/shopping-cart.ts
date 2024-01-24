@@ -11,4 +11,6 @@ export class ShoppingCart {
   cartTotalPrice = () => this.page.locator('p:has-text("Subtotal") + p');
   checkoutBtn = () => this.page.getByRole('button', { name: 'Checkout', exact: true });
   cartItemsCount = () => this.page.getByTestId('cart-items-count');
+  cartIcon = () => this.page.getByTestId('cart-icon');
+  cartDialog = () => this.page.getByTestId('cart-dialog');
 }

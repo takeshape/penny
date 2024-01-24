@@ -43,7 +43,7 @@ export const Cart = () => {
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md relative">
+                <Dialog.Panel className="pointer-events-auto w-screen max-w-md relative" data-testid="cart-dialog">
                   {isCartCheckingOut && (
                     <div className="z-20 bg-gray-500 bg-opacity-75 absolute h-full w-full">
                       <PageLoader colorClass="text-background" />
