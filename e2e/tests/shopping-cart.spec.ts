@@ -1,9 +1,17 @@
 import { test } from '../fixtures';
-import { COLLECTIONS_PAGE_ENDPOINT, HOMEPAGE_ENDPOINT, PRODUCT_NAME } from '../constants';
+import {
+  COLLECTION_NAME,
+  COLLECTIONS_ENDPOINT,
+  HOMEPAGE_ENDPOINT,
+  PRODUCT_COLOR_OUTOFSTOCK,
+  PRODUCT_NAME,
+  PRODUCT_OUTOFSTOCK,
+  PRODUCT_SIZE_OUTOFSTOCK
+} from '../constants';
 import { expect } from 'playwright/test';
 
 test.describe('Shopping cart', () => {
-  test.beforeEach('Navigate to the Collections page', async ({ page }) => {
+  test.beforeEach('Navigate to the Home page', async ({ page }) => {
     await page.goto(HOMEPAGE_ENDPOINT);
   });
 
@@ -18,8 +26,9 @@ test.describe('Shopping cart', () => {
       test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
       return;
     }
+    test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
 
-    await page.goto(COLLECTIONS_PAGE_ENDPOINT);
+    await page.goto(COLLECTIONS_ENDPOINT + COLLECTION_NAME);
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
     await page.getByLabel('Breadcrumb').waitFor();
 
@@ -44,8 +53,9 @@ test.describe('Shopping cart', () => {
       test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
       return;
     }
+    test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
 
-    await page.goto(COLLECTIONS_PAGE_ENDPOINT);
+    await page.goto(COLLECTIONS_ENDPOINT + COLLECTION_NAME);
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
     await page.getByLabel('Breadcrumb').waitFor();
 
@@ -59,5 +69,31 @@ test.describe('Shopping cart', () => {
     await shoppingCart.removeCartItemBtn().click();
     await expect(shoppingCart.cartDialog()).toContainText('Your cart is empty');
     await expect(shoppingCart.shoppingCartItems()).toHaveCount(0);
+  });
+
+  test('Verify out of stock products cannot be added to cart', async ({ page, collectionsPage, productPage }) => {
+    if (!PRODUCT_OUTOFSTOCK) {
+      test.skip(!PRODUCT_OUTOFSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK was not defined');
+      return;
+    }
+    if (!PRODUCT_COLOR_OUTOFSTOCK) {
+      test.skip(!PRODUCT_COLOR_OUTOFSTOCK, 'PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK was not defined');
+      return;
+    }
+    if (!PRODUCT_SIZE_OUTOFSTOCK) {
+      test.skip(!PRODUCT_SIZE_OUTOFSTOCK, 'PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK was not defined');
+      return;
+    }
+    test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
+
+    await page.goto(COLLECTIONS_ENDPOINT + COLLECTION_NAME);
+    await collectionsPage.getProductByName(PRODUCT_OUTOFSTOCK).click();
+    await page.getByLabel('Breadcrumb').waitFor();
+
+    await productPage.colorPicker(PRODUCT_COLOR_OUTOFSTOCK).click();
+    await productPage.sizePickerDisabled().getByText(PRODUCT_SIZE_OUTOFSTOCK, { exact: true }).click();
+
+    await expect(page.getByText('Out of stock')).toBeVisible();
+    await expect(productPage.addToCartBtn()).toBeDisabled();
   });
 });
