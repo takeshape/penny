@@ -1,5 +1,5 @@
 import { test } from '../fixtures';
-import { HOMEPAGE_ENDPOINT, PRODUCT_NAME, WOMEN_COLLECTIONS_ENDPOINT } from '../constants';
+import { COLLECTIONS_PAGE_ENDPOINT, HOMEPAGE_ENDPOINT, PRODUCT_NAME } from '../constants';
 import { expect } from 'playwright/test';
 
 test.describe('Shopping cart', () => {
@@ -19,7 +19,7 @@ test.describe('Shopping cart', () => {
       return;
     }
 
-    await page.goto(WOMEN_COLLECTIONS_ENDPOINT);
+    await page.goto(COLLECTIONS_PAGE_ENDPOINT);
     await collectionsPage.getProductByName(PRODUCT_NAME).click();
     await page.getByLabel('Breadcrumb').waitFor();
 
@@ -37,5 +37,27 @@ test.describe('Shopping cart', () => {
 
     await shoppingCart.reduceItemBtn().click();
     await expect(shoppingCart.cartTotalPrice()).toContainText(String(convertedPrice * 2));
+  });
+
+  test('Remove items from the cart', async ({ shoppingCart, page, collectionsPage, productPage }) => {
+    if (!PRODUCT_NAME) {
+      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+      return;
+    }
+
+    await page.goto(COLLECTIONS_PAGE_ENDPOINT);
+    await collectionsPage.getProductByName(PRODUCT_NAME).click();
+    await page.getByLabel('Breadcrumb').waitFor();
+
+    const productPrice = await productPage.productPrice().innerText();
+
+    await productPage.addToCartBtn().click();
+    await shoppingCart.cartDialog().waitFor();
+    await expect(shoppingCart.shoppingCartItems()).toHaveCount(1);
+    await expect(shoppingCart.cartTotalPrice()).toContainText(productPrice);
+
+    await shoppingCart.removeCartItemBtn().click();
+    await expect(shoppingCart.cartDialog()).toContainText('Your cart is empty');
+    await expect(shoppingCart.shoppingCartItems()).toHaveCount(0);
   });
 });

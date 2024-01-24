@@ -15,4 +15,5 @@ export class ShoppingCart {
   cartDialog = () => this.page.getByTestId('cart-dialog');
   addItemBtn = () => this.page.getByTestId('plus-icon');
   reduceItemBtn = () => this.page.getByTestId('minus-icon');
+  removeCartItemBtn = () => this.page.getByRole('button', { name: 'Remove', exact: true });
 }
