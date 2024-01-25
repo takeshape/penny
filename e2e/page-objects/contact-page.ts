@@ -13,4 +13,5 @@ export class ContactPage {
   emailInput = () => this.page.locator('#email');
   messageInput = () => this.page.locator('#message');
   agreementBtn = () => this.page.getByRole('switch');
+  phoneNumberInput = () => this.page.locator('#phoneNumber');
 }
