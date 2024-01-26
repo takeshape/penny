@@ -53,6 +53,7 @@ export const ProductSizeSelect = ({
                   buttonStyles
                 )
               }
+              data-testid={isSoftDisabled ? 'size-picker-disabled' : 'size-picker-enabled'}
             >
               {({ active, checked }) => (
                 <>
