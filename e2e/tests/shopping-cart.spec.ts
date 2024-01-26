@@ -1,13 +1,13 @@
 import { test } from '../fixtures';
 import {
   COLLECTION_NAME,
-  COLLECTIONS_ENDPOINT,
   PRODUCT_COLOR_OUTOFSTOCK,
   PRODUCT_NAME,
   PRODUCT_OUTOFSTOCK,
   PRODUCT_SIZE_OUTOFSTOCK
 } from '../constants';
 import { expect } from 'playwright/test';
+import { getCollectionEndpoint } from '../utils';
 
 test.describe('Shopping cart', () => {
   test.beforeEach('Navigate to the Collections page', async ({ page }) => {
@@ -15,7 +15,7 @@ test.describe('Shopping cart', () => {
       test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
       return;
     }
-    await page.goto(COLLECTIONS_ENDPOINT + COLLECTION_NAME);
+    await page.goto(getCollectionEndpoint());
   });
 
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {
