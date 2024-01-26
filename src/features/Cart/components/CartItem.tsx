@@ -58,17 +58,19 @@ export const CartItem = ({ atom, onRemove }: CartItemProps) => {
                   className="text-body-400 hover:text-body-500 disabled:text-body-300"
                 >
                   <span className="sr-only">One Less</span>
-                  <MinusCircleIcon className="w-5 h-5" aria-hidden="true" />
+                  <MinusCircleIcon className="w-5 h-5" aria-hidden="true" data-testid="minus-icon" />
                 </button>
 
-                <div className="flex justify-center items-center w-1 text-body-500">{quantity}</div>
+                <div className="flex justify-center items-center w-1 text-body-500" data-testid="cart-items-count">
+                  {quantity}
+                </div>
 
                 <a
                   onClick={() => setItem({ ...item, quantity: item.quantity + 1 })}
                   className="text-body-400 hover:text-body-500"
                 >
                   <span className="sr-only">One More</span>
-                  <PlusCircleIcon className="w-5 h-5" aria-hidden="true" />
+                  <PlusCircleIcon className="w-5 h-5" aria-hidden="true" data-testid="plus-icon" />
                 </a>
               </div>
             </div>
