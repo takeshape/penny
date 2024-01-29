@@ -21,22 +21,22 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-8tto8b0ph-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1706273312970-15201.report.html) |
-| 🟢 Performance | 100 |
-| 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
-| 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-8tto8b0ph-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1706273313520-41040.report.html) |
+| [Path: /](https://penny-846qxp4s4-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1706519310381-6404.report.html) |
 | 🟢 Performance | 99 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 100 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-8tto8b0ph-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1706273314003-78505.report.html) |
-| 🟢 Performance | 100 |
+| [Path: /products/basic-tee-6-pack](https://penny-846qxp4s4-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1706519310950-73088.report.html) |
+| 🟢 Performance | 98 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 92 |
+| 🟢 SEO | 100 |
+| 🟢 PWA | 100 |
+| [Path: /collections/men](https://penny-846qxp4s4-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1706519311266-79614.report.html) |
+| 🟢 Performance | 99 |
+| 🟢 Accessibility | 100 |
+| 🟢 Best practices | 92 |
 | 🟢 SEO | 100 |
 | 🟢 PWA | 100 |
 
