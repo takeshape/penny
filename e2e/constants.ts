@@ -14,3 +14,4 @@ export const INVALID_PHONE_NUMBER = faker.string.numeric(5);
 export const VALID_PHONE_NUMBER = '+1' + faker.string.numeric(10);
 export const USER_NAME = 'test';
 export const MESSAGE = faker.lorem.sentence();
+export const BRAND_NAME = process.env.PLAYWRIGHT_BRAND_NAME;
