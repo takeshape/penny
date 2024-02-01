@@ -2,7 +2,7 @@ import { test } from '../fixtures';
 import {
   COLLECTION_NAME,
   PRODUCT_COLOR_OUTOFSTOCK,
-  PRODUCT_NAME,
+  PRODUCT_NAME_INSTOCK,
   PRODUCT_OUTOFSTOCK,
   PRODUCT_SIZE_OUTOFSTOCK
 } from '../constants';
@@ -19,33 +19,32 @@ test.describe('Shopping cart', () => {
   });
 
   test('User is able to add product to cart', async ({ page, collectionsPage, shoppingCart, productPage }) => {
-    if (!PRODUCT_NAME) {
-      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+    if (!PRODUCT_NAME_INSTOCK) {
+      test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;
     }
 
-    await collectionsPage.getProductByName(PRODUCT_NAME).click();
-    await expect(page.getByLabel('Breadcrumb')).toContainText(PRODUCT_NAME);
+    await collectionsPage.selectProduct(PRODUCT_NAME_INSTOCK);
 
     const productPrice = await productPage.productPrice().innerText();
 
     await productPage.addToCartBtn().click();
     await expect(page.getByText('Shopping cart')).toBeVisible();
     await expect(shoppingCart.shoppingCartItems()).toHaveCount(1);
-    await expect(shoppingCart.shoppingCartItems()).toContainText(PRODUCT_NAME);
+    await expect(shoppingCart.shoppingCartItems()).toContainText(PRODUCT_NAME_INSTOCK);
     await expect(shoppingCart.cartTotalPrice()).toContainText(productPrice);
   });
 
   test('Checkout phase', async ({ page, shoppingCart, collectionsPage, productPage }) => {
-    if (!PRODUCT_NAME) {
-      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+    if (!PRODUCT_NAME_INSTOCK) {
+      test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;
     }
 
-    await collectionsPage.getProductByName(PRODUCT_NAME).click();
+    await collectionsPage.selectProduct(PRODUCT_NAME_INSTOCK);
     await productPage.addToCartBtn().click();
     await expect(page.getByText('Shopping cart')).toBeVisible();
-    await expect(shoppingCart.shoppingCartItems()).toContainText(PRODUCT_NAME);
+    await expect(shoppingCart.shoppingCartItems()).toContainText(PRODUCT_NAME_INSTOCK);
 
     await page.goto('/?shopify_checkout_action=success');
 
@@ -61,13 +60,12 @@ test.describe('Shopping cart', () => {
   });
 
   test('Adjust the number of items', async ({ shoppingCart, page, collectionsPage, productPage }) => {
-    if (!PRODUCT_NAME) {
-      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+    if (!PRODUCT_NAME_INSTOCK) {
+      test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;
     }
 
-    await collectionsPage.getProductByName(PRODUCT_NAME).click();
-    await page.getByLabel('Breadcrumb').waitFor();
+    await collectionsPage.selectProduct(PRODUCT_NAME_INSTOCK);
 
     const productPrice = await productPage.productPrice().innerText();
     const convertedPrice = parseFloat(productPrice.replace('$', ''));
@@ -86,13 +84,12 @@ test.describe('Shopping cart', () => {
   });
 
   test('Remove items from the cart', async ({ shoppingCart, page, collectionsPage, productPage }) => {
-    if (!PRODUCT_NAME) {
-      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+    if (!PRODUCT_NAME_INSTOCK) {
+      test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;
     }
 
-    await collectionsPage.getProductByName(PRODUCT_NAME).click();
-    await page.getByLabel('Breadcrumb').waitFor();
+    await collectionsPage.selectProduct(PRODUCT_NAME_INSTOCK);
 
     const productPrice = await productPage.productPrice().innerText();
 
@@ -120,8 +117,7 @@ test.describe('Shopping cart', () => {
       return;
     }
 
-    await collectionsPage.getProductByName(PRODUCT_OUTOFSTOCK).click();
-    await page.getByLabel('Breadcrumb').waitFor();
+    await collectionsPage.selectProduct(PRODUCT_OUTOFSTOCK);
 
     await productPage.colorPicker(PRODUCT_COLOR_OUTOFSTOCK).click();
     await productPage.sizePickerDisabled().getByText(PRODUCT_SIZE_OUTOFSTOCK, { exact: true }).click();

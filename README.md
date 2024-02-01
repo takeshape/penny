@@ -708,8 +708,12 @@ You can run and develop your Playwright tests locally using the following proces
 ### CI
 Make sure you have set these environment variables in your repository:
 - `PLAYWRIGHT_TEST_BASE_URL` - this will be set automatically by the GitHub Actions workflow;
-- `PLAYWRIGHT_PRODUCT_NAME`  - a product name to find in a collection and use in tests;
-- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME` relates to.
+- `PLAYWRIGHT_PRODUCT_NAME_INSTOCK`  - a product name to find in a collection and use in tests;
+- `PLAYWRIGHT_PRODUCT_SIZE_INSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_INSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` product;
+- `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK`  - a product name to find in a collection and use in tests;
+- `PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` product;
+- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to.
+- `PLAYWRIGHT_BRAND_NAME` - any brand name in your store.
 
 # Deploying to production
 
