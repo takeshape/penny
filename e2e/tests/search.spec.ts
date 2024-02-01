@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 import { expect } from 'playwright/test';
-import { BRAND_NAME, COLLECTION_NAME, HOMEPAGE_ENDPOINT, PRODUCT_NAME } from '../constants';
+import { BRAND_NAME, COLLECTION_NAME, HOMEPAGE_ENDPOINT, PRODUCT_NAME_INSTOCK } from '../constants';
 import { getRandomString } from '../fake-data-generation';
 
 test.describe('Search functionality', () => {
@@ -9,16 +9,16 @@ test.describe('Search functionality', () => {
   });
 
   test('Search by product name', async ({ page }) => {
-    if (!PRODUCT_NAME) {
-      test.skip(!PRODUCT_NAME, 'PLAYWRIGHT_PRODUCT_NAME was not defined');
+    if (!PRODUCT_NAME_INSTOCK) {
+      test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;
     }
 
     await page.getByTestId('search-icon').click();
     await page.getByPlaceholder('Search...').waitFor();
-    await page.getByPlaceholder('Search...').fill(PRODUCT_NAME);
+    await page.getByPlaceholder('Search...').fill(PRODUCT_NAME_INSTOCK);
     await page.getByRole('listbox').waitFor();
-    await expect(page.getByRole('listbox')).toContainText(PRODUCT_NAME);
+    await expect(page.getByRole('listbox')).toContainText(PRODUCT_NAME_INSTOCK);
   });
 
   test('Search by brand name', async ({ page }) => {
