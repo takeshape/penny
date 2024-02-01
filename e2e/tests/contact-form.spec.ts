@@ -1,14 +1,7 @@
 import { test } from '../fixtures';
 import { expect } from 'playwright/test';
-import {
-  CONTACT_PAGE_ENDPOINT,
-  INVALID_EMAIL,
-  INVALID_PHONE_NUMBER,
-  MESSAGE,
-  USER_NAME,
-  VALID_EMAIL,
-  VALID_PHONE_NUMBER
-} from '../constants';
+import { CONTACT_PAGE_ENDPOINT, INVALID_EMAIL, USER_NAME } from '../constants';
+import { getInvalidPhoneNumber, getTextMessage, getValidEmail, getValidPhoneNumber } from '../fake-data-generation';
 
 test.describe('Contact form', () => {
   test.beforeEach('Navigate to the Contact page', async ({ page }) => {
@@ -31,7 +24,7 @@ test.describe('Contact form', () => {
   });
 
   test('Verify user is unable to submit the form with invalid phone number', async ({ contactPage, page }) => {
-    await contactPage.phoneNumberInput().fill(INVALID_PHONE_NUMBER);
+    await contactPage.phoneNumberInput().fill(getInvalidPhoneNumber());
     await contactPage.sendButton().click({ force: true });
     await expect(page.getByText('Please enter a valid phone number')).toBeVisible();
   });
@@ -40,9 +33,9 @@ test.describe('Contact form', () => {
   test.fixme('Submit a contact form', async ({ contactPage, page }) => {
     await contactPage.firstNameInput().fill(USER_NAME);
     await contactPage.lastNameInput().fill(USER_NAME);
-    await contactPage.emailInput().fill(VALID_EMAIL);
-    await contactPage.phoneNumberInput().fill(VALID_PHONE_NUMBER);
-    await contactPage.messageInput().fill(MESSAGE);
+    await contactPage.emailInput().fill(getValidEmail());
+    await contactPage.phoneNumberInput().fill(getValidPhoneNumber());
+    await contactPage.messageInput().fill(getTextMessage());
 
     await contactPage.agreementBtn().click();
     await expect(contactPage.sendButton()).not.toBeDisabled();

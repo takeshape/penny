@@ -111,6 +111,7 @@ export const NavigationTop = ({ message, sections, currencies }: NavigationTopPr
                         <div
                           onClick={() => setIsSearchOpen(true)}
                           className="-m-2 p-2 text-primary-400 hover:text-primary-500"
+                          data-testid="search-icon"
                         >
                           <span className="sr-only">Search</span>
                           <MagnifyingGlassIcon className="w-6 h-6" aria-hidden="true" />
