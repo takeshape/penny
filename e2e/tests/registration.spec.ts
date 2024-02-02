@@ -3,7 +3,7 @@ import { expect } from 'playwright/test';
 import { HOMEPAGE_ENDPOINT, INVALID_EMAIL, SIGN_IN_PAGE_ENDPOINT, SIGN_UP_PAGE_ENDPOINT } from '../constants';
 import { getPassword, getValidEmail } from '../fake-data-generation';
 
-test.describe('Create an account', () => {
+test.describe('Registration form', () => {
   test.beforeEach('Navigate to the Sign up page', async ({ page, signUpPage }) => {
     await page.goto(HOMEPAGE_ENDPOINT);
     await signUpPage.createAnAccountNavBtn().click();
