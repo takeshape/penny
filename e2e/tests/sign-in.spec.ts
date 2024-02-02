@@ -2,12 +2,13 @@ import { test } from '../fixtures';
 import { expect } from 'playwright/test';
 import {
   HOMEPAGE_ENDPOINT,
+  INVALID_EMAIL,
   SIGN_IN_PAGE_ENDPOINT,
   SIGN_UP_PAGE_ENDPOINT,
   USER_EMAIL,
-  USER_PASSWORD,
-  VALID_EMAIL
+  USER_PASSWORD
 } from '../constants';
+import { getPassword, getValidEmail } from '../fake-data-generation';
 
 test.describe('Sign in', () => {
   test.beforeEach('Navigate to the Sign in page', async ({ page, signInPage }) => {
@@ -36,14 +37,8 @@ test.describe('Sign in', () => {
   });
 
   test('Sign in as a non-existing user', async ({ signInPage, page }) => {
-    // TODO: Use generated password, there is no need to skip the test
-    if (!USER_PASSWORD) {
-      test.skip(!USER_PASSWORD, 'PLAYWRIGHT_USER_PASSWORD was not defined');
-      return;
-    }
-
-    await signInPage.emailInput().fill(VALID_EMAIL);
-    await signInPage.passwordInput().fill(USER_PASSWORD);
+    await signInPage.emailInput().fill(getValidEmail());
+    await signInPage.passwordInput().fill(getPassword());
     await signInPage.signInButton().click();
     await expect(page.getByText('Try signing in with a different account.')).toBeVisible();
   });
@@ -58,5 +53,24 @@ test.describe('Sign in', () => {
     await signInPage.signUpButton().click();
     await page.waitForTimeout(1000);
     expect(page.url()).toContain(SIGN_UP_PAGE_ENDPOINT);
+  });
+
+  test('Verify user cannot log in with incorrect password', async ({ signInPage, page }) => {
+    if (!USER_EMAIL) {
+      test.skip(!USER_EMAIL, 'PLAYWRIGHT_USER_EMAIL was not defined');
+      return;
+    }
+
+    await signInPage.emailInput().fill(USER_EMAIL);
+    await signInPage.passwordInput().fill(getPassword());
+    await signInPage.signInButton().click();
+    await expect(page.getByText(`${USER_EMAIL} is in use`)).toBeVisible();
+  });
+
+  test('Verify user cannot log in with invalid email', async ({ signInPage, page }) => {
+    await signInPage.emailInput().fill(INVALID_EMAIL);
+    await signInPage.passwordInput().fill(getPassword());
+    await signInPage.signInButton().click();
+    await expect(page.getByText('Please enter a valid email')).toBeVisible();
   });
 });

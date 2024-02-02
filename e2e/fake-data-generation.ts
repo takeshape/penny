@@ -15,3 +15,6 @@ export function getTextMessage() {
 export function getRandomString() {
   return faker.string.alpha(10);
 }
+export function getPassword() {
+  return faker.string.alphanumeric(10);
+}
