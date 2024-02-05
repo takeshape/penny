@@ -17,9 +17,11 @@ test.describe('Registration form', () => {
   });
 
   test('Cannot register a new user using invalid email', async ({ page, signUpPage }) => {
+    const password = getPassword();
+
     await signUpPage.emailInput().fill(INVALID_EMAIL);
-    await signUpPage.passwordInput().fill(getPassword());
-    await signUpPage.passwordConfirmInput().fill(getPassword());
+    await signUpPage.passwordInput().fill(password);
+    await signUpPage.passwordConfirmInput().fill(password);
     await signUpPage.signUpButton().click();
     await expect(page.getByText('Please enter a valid email')).toBeVisible();
   });
