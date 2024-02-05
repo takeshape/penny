@@ -9,6 +9,7 @@ import {
   USER_EMAIL,
   USER_PASSWORD
 } from '../constants';
+import { getTextMessage } from '../fake-data-generation';
 
 test.describe('Product page', () => {
   test.beforeEach('Navigate to the product', async ({ page, productPage, collectionsPage }) => {
@@ -77,7 +78,14 @@ test.describe('Write a product review', () => {
     await expect(page.getByText('This field is required')).toHaveCount(2);
   });
 
-  test('Submit a review form', async ({ productPage, page }) => {
-    await productPage.setAStarRating(3);
+  // BUG: https://app.shortcut.com/takeshape/story/12703/product-review-doesn-t-appear-after-submitting-a-review-form
+  test.fixme('Submit a review form', async ({ productPage }) => {
+    const message = getTextMessage();
+
+    await productPage.clickOnWriteAReviewBtn();
+    await productPage.setStarRating(3);
+    await productPage.reviewTextarea().fill(message);
+    await productPage.submitAReview();
+    await productPage.verifyLastProductReview({ message, stars: 3 });
   });
 });

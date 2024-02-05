@@ -18,6 +18,7 @@ export class ProductPage {
   reviewTextarea = () => this.page.locator('#review');
   submitAReviewBtn = () => this.page.getByRole('button', { name: 'Submit', exact: true });
   starRating = () => this.page.locator('#starRating');
+  reviewItem = () => this.page.getByTestId('review-item');
 
   async clickOnWriteAReviewBtn() {
     await expect(this.writeAReviewBtn()).toBeVisible();
@@ -25,12 +26,30 @@ export class ProductPage {
     await this.reviewDialog().waitFor();
   }
 
-  async setAStarRating(stars: number) {
+  async setStarRating(stars: number) {
     const starElement = this.starRating()
       .locator('svg')
       .nth(stars - 1);
 
     await starElement.click();
     await expect(starElement).toHaveClass(/text-yellow-400/);
+  }
+
+  async submitAReview() {
+    await this.submitAReviewBtn().click();
+    await this.page.getByText('Review submitted successfully').waitFor();
+    await this.page.getByRole('button', { name: 'Done', exact: true }).click();
+    await this.reviewDialog().waitFor({ state: 'detached' });
+  }
+
+  async verifyLastProductReview({ message, stars }: { message: string; stars: number }) {
+    await expect(this.reviewItem().first()).toContainText(message);
+    await expect(
+      this.reviewItem()
+        .first()
+        .locator('svg')
+        .nth(stars - 1)
+    ).toHaveClass(/text-yellow-400/);
+    await expect(this.reviewItem().first().locator('svg').nth(stars)).toHaveClass(/text-gray-300/);
   }
 }

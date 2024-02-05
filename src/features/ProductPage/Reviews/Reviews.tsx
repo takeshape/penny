@@ -91,7 +91,7 @@ export const Reviews = ({
               {error && 'There was an error loading more reviews.'}
               {!error &&
                 items.map((item, idx) => (
-                  <div key={item?.id ?? idx} className="py-12">
+                  <div key={item?.id ?? idx} className="py-12" data-testid="review-item">
                     {item ? <ReviewsListItem item={item} /> : <ReviewsListItemLoading />}
                   </div>
                 ))}
