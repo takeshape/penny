@@ -712,8 +712,10 @@ Make sure you have set these environment variables in your repository:
 - `PLAYWRIGHT_PRODUCT_SIZE_INSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_INSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` product;
 - `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK`  - a product name to find in a collection and use in tests;
 - `PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` product;
-- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to.
-- `PLAYWRIGHT_BRAND_NAME` - any brand name in your store.
+- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to;
+- `PLAYWRIGHT_BRAND_NAME` - any brand name in your store;
+- `PLAYWRIGHT_USER_EMAIL` - test user email already registered in the system, it's used for authenticated feature testing like account settings, etc.;
+- `PLAYWRIGHT_USER_PASSWORD` - test user password.
 
 # Deploying to production
 

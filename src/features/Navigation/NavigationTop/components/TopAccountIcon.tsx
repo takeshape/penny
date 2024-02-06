@@ -37,5 +37,9 @@ export const SignedOut = () => (
 export const TopAccountIcon = () => {
   const { status } = useSession();
 
-  return <div className="flex">{status === 'authenticated' ? <SignedIn /> : <SignedOut />}</div>;
+  return (
+    <div className="flex" data-testid="account-icon">
+      {status === 'authenticated' ? <SignedIn /> : <SignedOut />}
+    </div>
+  );
 };
