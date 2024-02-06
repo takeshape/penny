@@ -72,7 +72,7 @@ test.describe('Write a product review', () => {
     await collectionsPage.selectProduct(PRODUCT_NAME_INSTOCK);
   });
 
-  test.only('Verify user cannot submit an empty review form', async ({ productPage, page }) => {
+  test('Verify user cannot submit an empty review form', async ({ productPage, page }) => {
     await productPage.clickOnWriteAReviewBtn();
     await productPage.submitAReviewBtn().click();
     await expect(page.getByText('This field is required')).toHaveCount(2);
