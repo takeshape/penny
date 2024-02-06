@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { expect } from 'playwright/test';
+import { HOMEPAGE_ENDPOINT, SIGN_IN_PAGE_ENDPOINT } from '../constants';
 
 export class SignInPage {
   readonly page: Page;
@@ -17,5 +18,15 @@ export class SignInPage {
   async verifyUserIsSignedIn() {
     await expect(this.signInNavButton()).toHaveCount(0);
     await expect(await this.page.getByTestId('account-icon').locator('a').getAttribute('href')).toBe('/account');
+  }
+
+  async signIn({ email, password }: { email: string; password: string }) {
+    await this.page.goto(SIGN_IN_PAGE_ENDPOINT);
+    await this.emailInput().fill(email);
+    await this.passwordInput().fill(password);
+    await this.signInButton().click();
+    await this.page.waitForTimeout(2000);
+    await this.page.goto(HOMEPAGE_ENDPOINT);
+    await this.verifyUserIsSignedIn();
   }
 }
