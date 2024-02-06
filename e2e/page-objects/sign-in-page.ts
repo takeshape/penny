@@ -25,6 +25,11 @@ export class SignInPage {
     await this.emailInput().fill(email);
     await this.passwordInput().fill(password);
     await this.signInButton().click();
+
+    /* TODO: Clicking the Sign In button triggers another URL to load, it's impossible to use page.waitForLoadState() for a new page.
+        Remove the timeout and page.goto() when bug's fixed.
+        BUG: https://app.shortcut.com/takeshape/story/12693/sign-in-and-sign-out-redirects-to-the-localhost
+    */
     await this.page.waitForTimeout(2000);
     await this.page.goto(HOMEPAGE_ENDPOINT);
     await this.verifyUserIsSignedIn();
