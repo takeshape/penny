@@ -10,7 +10,7 @@ export function getValidPhoneNumber() {
   return '+1' + faker.string.numeric(10);
 }
 export function getTextMessage() {
-  return faker.lorem.sentence();
+  return 'Test ' + faker.lorem.sentence();
 }
 export function getRandomString() {
   return faker.string.alpha(10);
