@@ -15,7 +15,7 @@ export const FormCardPanel = ({
   ...props
 }: PropsWithChildren<FormCardPanelProps>) => {
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} data-testid="account-form">
       <div className="shadow sm:rounded-md sm:overflow-hidden">
         <div className="bg-background py-6 px-4 space-y-6 sm:p-6">
           <div>
