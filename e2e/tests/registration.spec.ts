@@ -1,6 +1,6 @@
 import { test } from '../fixtures';
 import { expect } from 'playwright/test';
-import { HOMEPAGE_ENDPOINT, INVALID_EMAIL, SIGN_UP_PAGE_ENDPOINT } from '../constants';
+import { HOMEPAGE_ENDPOINT, INVALID_EMAIL, SIGN_IN_PAGE_ENDPOINT, SIGN_UP_PAGE_ENDPOINT } from '../constants';
 import { getPassword, getValidEmail } from '../fake-data-generation';
 
 test.describe('Create an account', () => {
@@ -30,5 +30,12 @@ test.describe('Create an account', () => {
     await signUpPage.passwordConfirmInput().fill('passworddoesntmatch');
     await signUpPage.signUpButton().click();
     await expect(page.getByText('The passwords do not match')).toBeVisible();
+  });
+
+  test('Verify user can navigate to the Sign In page', async ({ page, signUpPage }) => {
+    await expect(page.getByText('Already have an account?')).toBeVisible();
+    await signUpPage.signInButton().click();
+    await page.waitForTimeout(1000);
+    expect(page.url()).toContain(SIGN_IN_PAGE_ENDPOINT);
   });
 });

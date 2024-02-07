@@ -12,4 +12,5 @@ export class SignUpPage {
   passwordConfirmInput = () => this.page.locator('#passwordConfirm');
   signUpButton = () => this.page.getByRole('button', { name: 'Sign up', exact: true });
   createAnAccountNavBtn = () => this.page.getByText('Create an account');
+  signInButton = () => this.page.locator('a', { hasText: 'Sign in' });
 }
