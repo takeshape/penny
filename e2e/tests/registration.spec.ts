@@ -1,6 +1,7 @@
 import { test } from '../fixtures';
 import { expect } from 'playwright/test';
-import { HOMEPAGE_ENDPOINT, INVALID_EMAIL, PASSWORD, SIGN_UP_PAGE_ENDPOINT, VALID_EMAIL } from '../constants';
+import { HOMEPAGE_ENDPOINT, INVALID_EMAIL, SIGN_UP_PAGE_ENDPOINT } from '../constants';
+import { getPassword, getValidEmail } from '../fake-data-generation';
 
 test.describe('Create an account', () => {
   test.beforeEach('Navigate to the Sign up page', async ({ page, signUpPage }) => {
@@ -17,15 +18,15 @@ test.describe('Create an account', () => {
 
   test('Cannot register a new user using invalid email', async ({ page, signUpPage }) => {
     await signUpPage.emailInput().fill(INVALID_EMAIL);
-    await signUpPage.passwordInput().fill(PASSWORD);
-    await signUpPage.passwordConfirmInput().fill(PASSWORD);
+    await signUpPage.passwordInput().fill(getPassword());
+    await signUpPage.passwordConfirmInput().fill(getPassword());
     await signUpPage.signUpButton().click();
     await expect(page.getByText('Please enter a valid email')).toBeVisible();
   });
 
   test("Cannot register a new user if passwords don't match", async ({ page, signUpPage }) => {
-    await signUpPage.emailInput().fill(VALID_EMAIL);
-    await signUpPage.passwordInput().fill(PASSWORD);
+    await signUpPage.emailInput().fill(getValidEmail());
+    await signUpPage.passwordInput().fill(getPassword());
     await signUpPage.passwordConfirmInput().fill('passworddoesntmatch');
     await signUpPage.signUpButton().click();
     await expect(page.getByText('The passwords do not match')).toBeVisible();
