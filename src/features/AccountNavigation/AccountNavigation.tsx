@@ -55,7 +55,7 @@ export const AccountNavigation = () => {
   const items = useAccountNavigationItems();
 
   return (
-    <aside className="w-full">
+    <aside className="w-full" data-testid="account-navigation">
       <nav className="space-y-1">
         {items.map((item) => (
           <NextLink key={item.name} href={item.href}>

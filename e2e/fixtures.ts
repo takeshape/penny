@@ -5,6 +5,7 @@ import { ProductPage } from './page-objects/product-page';
 import { ContactPage } from './page-objects/contact-page';
 import { SignInPage } from './page-objects/sign-in-page';
 import { SignUpPage } from './page-objects/sign-up-page';
+import { AccountPage } from './page-objects/account-page';
 
 export const test = baseTest.extend<{
   collectionsPage: CollectionsPage;
@@ -13,6 +14,7 @@ export const test = baseTest.extend<{
   contactPage: ContactPage;
   signInPage: SignInPage;
   signUpPage: SignUpPage;
+  accountPage: AccountPage;
 }>({
   collectionsPage: async ({ page }, use) => {
     await use(new CollectionsPage(page));
@@ -31,5 +33,8 @@ export const test = baseTest.extend<{
   },
   signUpPage: async ({ page }, use) => {
     await use(new SignUpPage(page));
+  },
+  accountPage: async ({ page }, use) => {
+    await use(new AccountPage(page));
   }
 });
