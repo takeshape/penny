@@ -210,10 +210,7 @@ export class AccountPage {
 
   async verifyUserIsSignedOut() {
     await expect(this.page.getByText('Sign in', { exact: true })).toBeVisible();
-    await expect(this.page.getByTestId('account-icon').getByRole('link')).toHaveAttribute(
-      'href',
-      `/api${SIGN_IN_PAGE_ENDPOINT}`
-    );
+    await expect(this.accountNavIcon().getByRole('link')).toHaveAttribute('href', `/api${SIGN_IN_PAGE_ENDPOINT}`);
   }
 
   async signOut() {
