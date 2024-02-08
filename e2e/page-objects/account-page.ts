@@ -193,7 +193,7 @@ export class AccountPage {
   async selectRandomCountry() {
     const country = await this.selectRandomOption(this.shippingCountrySelect());
     await this.verifyInputValue({ locator: this.shippingCountrySelect(), text: country });
-    await this.page.waitForLoadState('domcontentloaded'); // wait for State options to load;
+    await this.page.waitForLoadState('domcontentloaded'); // wait for State options to load
     return country;
   }
 

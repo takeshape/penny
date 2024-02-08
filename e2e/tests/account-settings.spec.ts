@@ -85,7 +85,7 @@ test.describe('Account settings', () => {
 
       await test.step('Save and verify changes', async () => {
         await accountPage.saveShippingUpdates();
-        // BUG: Data are not saved after reloading
+        // BUG: Data are not saved after reloading, see link above
         await page.reload();
         await page.waitForLoadState('domcontentloaded');
         await accountPage.verifyShippingChangesSaved({
