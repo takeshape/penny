@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+import { faker, fakerEN_CA } from '@faker-js/faker';
 
 export function getValidEmail() {
   return 'test_' + faker.internet.email({ provider: 'example.fakerjs.dev' });
@@ -26,4 +26,13 @@ export function getUserLastName() {
 }
 export function getUserPhoneNumber() {
   return `1800${faker.string.numeric(7)}`;
+}
+export function getShippingAddress() {
+  return faker.location.streetAddress();
+}
+export function getPostalCode() {
+  return fakerEN_CA.location.zipCode();
+}
+export function getCity() {
+  return faker.location.city();
 }

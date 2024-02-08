@@ -7,3 +7,12 @@ export function transformStringToSlug(string: string) {
 export function getCollectionEndpoint() {
   return COLLECTIONS_ENDPOINT + transformStringToSlug(`${COLLECTION_NAME}`);
 }
+
+export function getRandomValueFromArray(array: string[]) {
+  if (!array.length) {
+    throw new Error(`Array should not be empty.`);
+  }
+
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+}
