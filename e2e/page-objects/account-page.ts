@@ -191,7 +191,17 @@ export class AccountPage {
   }
 
   async selectRandomCountry() {
-    const country = await this.selectRandomOption(this.shippingCountrySelect());
+    const countries = await this.shippingCountrySelect().getByRole('option').allTextContents();
+    const currentCountry = await this.shippingCountrySelect().inputValue();
+    const otherOptions: string[] = [];
+
+    for (const value of countries) {
+      if (value === currentCountry) continue;
+      otherOptions.push(value);
+    }
+
+    const country = getRandomValueFromArray(otherOptions);
+    await this.shippingCountrySelect().selectOption(country);
     await this.verifyInputValue({ locator: this.shippingCountrySelect(), text: country });
     await this.page.waitForLoadState('domcontentloaded'); // wait for State options to load
     return country;
@@ -223,5 +233,10 @@ export class AccountPage {
     await this.page.waitForTimeout(2000);
     await this.page.goto(HOMEPAGE_ENDPOINT);
     await this.verifyUserIsSignedOut();
+  }
+
+  async saveNewPassword() {
+    await this.passwordSaveBtn().click();
+    await this.page.waitForURL(`**${SIGN_IN_PAGE_ENDPOINT}`);
   }
 }

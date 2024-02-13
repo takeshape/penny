@@ -118,5 +118,43 @@ test.describe('Account settings', () => {
       await accountPage.passwordSaveBtn().click();
       await expect(page.getByText('The passwords do not match')).toBeVisible();
     });
+
+    // TODO: need to register a new user for it
+    test.fixme('Verify the password can be changed successfully', async ({ accountPage, signInPage, page }) => {
+      const newPassword = getPassword();
+
+      await test.step('Change password and sign in', async () => {
+        if (!USER_EMAIL) {
+          test.skip(!USER_EMAIL, 'PLAYWRIGHT_USER_EMAIL was not defined');
+          return;
+        }
+
+        await accountPage.newPasswordInput().fill(newPassword);
+        await accountPage.confirmNewPasswordInput().fill(newPassword);
+        await accountPage.saveNewPassword();
+
+        await signInPage.signIn({ email: USER_EMAIL, password: newPassword });
+      });
+
+      await test.step('Change the password back and sign in', async () => {
+        if (!USER_PASSWORD) {
+          test.skip(!USER_PASSWORD, 'PLAYWRIGHT_USER_PASSWORD was not defined');
+          return;
+        }
+        if (!USER_EMAIL) {
+          test.skip(!USER_EMAIL, 'PLAYWRIGHT_USER_EMAIL was not defined');
+          return;
+        }
+
+        await accountPage.navigateToAccountPage();
+        await accountPage.openPasswordSetting();
+
+        await accountPage.newPasswordInput().fill(USER_PASSWORD);
+        await accountPage.confirmNewPasswordInput().fill(USER_PASSWORD);
+        await accountPage.saveNewPassword();
+
+        await signInPage.signIn({ email: USER_EMAIL, password: USER_PASSWORD });
+      });
+    });
   });
 });

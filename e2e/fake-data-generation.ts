@@ -25,7 +25,7 @@ export function getUserLastName() {
   return faker.person.lastName();
 }
 export function getUserPhoneNumber() {
-  return `1800${faker.string.numeric(7)}`;
+  return `800${faker.string.numeric(7)}`;
 }
 export function getShippingAddress() {
   return faker.location.streetAddress();
