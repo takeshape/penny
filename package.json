@@ -21,9 +21,9 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "playwright": "playwright test",
-    "playwright:ui": "playwright test --ui",
-    "playwright:headed": "playwright test --headed",
     "playwright:debug": "playwright test --debug",
+    "playwright:headed": "playwright test --headed",
+    "playwright:ui": "playwright test --ui",
     "prepare": "husky install",
     "prepare-env": "shape prepare-env",
     "start": "next start",
@@ -94,7 +94,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
     "@takeshape/graphql-validate": "^1.0.1",
-    "@takeshape/shape-tools": "^0.7.6",
+    "@takeshape/shape-tools": "^1.0.0",
     "@testing-library/cypress": "^9.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -137,8 +137,8 @@
   },
   "packageManager": "npm@9.5.1",
   "engines": {
-    "node": "18",
-    "npm": "9"
+    "node": "^18.0.0 || ^20.0.0",
+    "npm": "^9.0.0 || ^10.0.0"
   },
   "msw": {
     "workerDirectory": "mocks"
