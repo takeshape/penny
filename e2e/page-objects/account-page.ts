@@ -9,7 +9,6 @@ import {
   getUserLastName,
   getUserPhoneNumber
 } from '../fake-data-generation';
-import { getRandomValueFromArray } from '../utils';
 
 export class AccountPage {
   readonly page: Page;
