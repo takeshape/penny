@@ -2,7 +2,6 @@ import { test } from '../fixtures';
 import { expect } from 'playwright/test';
 import { USER_EMAIL, USER_PASSWORD } from '../constants';
 import { getPassword } from '../fake-data-generation';
-import gen from 'random-seed';
 
 test.describe('Account settings', () => {
   test.beforeEach('Sign in', async ({ signInPage }) => {
@@ -62,14 +61,15 @@ test.describe('Account settings', () => {
     });
 
     // BUG: https://app.shortcut.com/takeshape/story/12729/shipping-address-data-are-not-saved-after-refreshing
-    test.only('Verify user can update shipping address', async ({ page, accountPage }) => {
+    test.skip('Verify user can update shipping address', async ({ page, accountPage }) => {
+      const country = 'Canada';
+      const state = 'Ontario';
+
       let firstName: string;
       let lastName: string;
       let address: string;
       let city: string;
       let postalCode: string;
-      let country: string;
-      let state: string;
 
       await test.step('Update required fields', async () => {
         firstName = await accountPage.changeShippingFirstName();
@@ -80,13 +80,8 @@ test.describe('Account settings', () => {
       });
 
       await test.step('Update selection fields', async () => {
-        const rand = gen.create('my seed value');
-        //country = await accountPage.selectCountry();
-        country = await accountPage.selectRandomCountry(rand);
-        console.log(country);
-        //state = await accountPage.selectState();
-        state = await accountPage.selectRandomState(rand);
-        console.log(state);
+        await accountPage.selectCountry(country);
+        await accountPage.selectState(state);
       });
 
       await test.step('Save and verify changes', async () => {

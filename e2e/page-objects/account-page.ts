@@ -180,73 +180,15 @@ export class AccountPage {
     }
   }
 
-  async selectNextOption({ locator, currentOption }: { locator: Locator; currentOption: string }) {
-    const allOptions = await locator.getByRole('option').allTextContents();
-    const currentIndex = allOptions.indexOf(currentOption);
-    const nextOption = currentIndex + 1 === allOptions.length ? allOptions[0] : allOptions[currentIndex + 1];
-
-    await locator.selectOption(nextOption);
-    await this.page.waitForTimeout(1000); // wait for selection done
-
-    return nextOption;
-  }
-
-  async getCurrentSelectedValue(locator: Locator) {
-    return await locator.inputValue();
-  }
-
-  async selectRandomOption(rand: any, locator: Locator) {
-    const allOptions = await locator.getByRole('option').allTextContents();
-    const option = getRandomValueFromArray(rand, allOptions);
-
-    await locator.selectOption(option);
-    await this.page.waitForTimeout(1000); // wait for selection done
-
-    return option;
-  }
-
-  async selectRandomCountry(rand: any) {
-    const countries = await this.shippingCountrySelect().getByRole('option').allTextContents();
-    const currentCountry = await this.shippingCountrySelect().inputValue();
-    const otherOptions: string[] = [];
-
-    for (const value of countries) {
-      if (value === currentCountry) continue;
-      otherOptions.push(value);
-    }
-
-    const country = getRandomValueFromArray(rand, otherOptions);
+  async selectCountry(country: string) {
     await this.shippingCountrySelect().selectOption(country);
     await this.verifyInputValue({ locator: this.shippingCountrySelect(), text: country });
     await this.page.waitForLoadState('domcontentloaded'); // wait for State options to load
     return country;
   }
 
-  async selectRandomState(rand: any) {
-    const state = await this.selectRandomOption(rand, this.shippingStateSelect());
-    await this.verifyInputValue({ locator: this.shippingStateSelect(), text: state });
-    return state;
-  }
-
-  async selectCountry() {
-    const currentCountry = await this.getCurrentSelectedValue(this.shippingCountrySelect());
-    const country = await this.selectNextOption({
-      locator: this.shippingCountrySelect(),
-      currentOption: currentCountry
-    });
-
-    await this.verifyInputValue({ locator: this.shippingCountrySelect(), text: country });
-    await this.page.waitForLoadState('domcontentloaded'); // wait for State options to load
-    return country;
-  }
-
-  async selectState() {
-    const currentState = await this.getCurrentSelectedValue(this.shippingStateSelect());
-    const state = await this.selectNextOption({
-      locator: this.shippingStateSelect(),
-      currentOption: currentState
-    });
-
+  async selectState(state: string) {
+    await this.shippingStateSelect().selectOption(state);
     await this.verifyInputValue({ locator: this.shippingStateSelect(), text: state });
     return state;
   }
