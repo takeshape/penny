@@ -22,7 +22,12 @@ export const FormCardPanelActions = ({
     <div className="px-4 py-3 bg-background text-right sm:px-6">
       <div className="flex justify-end">
         {isSubmitSuccessful && !error && !isSubmitting && (
-          <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-body-500">Saved</div>
+          <div
+            className="inline-flex justify-center py-2 px-4 text-sm font-medium text-body-500"
+            data-testid="information-saved"
+          >
+            Saved
+          </div>
         )}
         {isSubmitting && !error && (
           <div className="inline-flex justify-center py-2 px-4 text-sm font-medium text-body-500">Saving...</div>

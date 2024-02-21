@@ -15,3 +15,4 @@ export const SIGN_IN_PAGE_ENDPOINT = '/auth/signin';
 export const SIGN_UP_PAGE_ENDPOINT = '/auth/create';
 export const USER_PASSWORD = process.env.PLAYWRIGHT_USER_PASSWORD;
 export const USER_EMAIL = process.env.PLAYWRIGHT_USER_EMAIL;
+export const ACCOUNT_PAGE_ENDPOINT = '/account';

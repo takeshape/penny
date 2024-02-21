@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { expect } from 'playwright/test';
-import { HOMEPAGE_ENDPOINT, SIGN_IN_PAGE_ENDPOINT } from '../constants';
+import { ACCOUNT_PAGE_ENDPOINT, HOMEPAGE_ENDPOINT, SIGN_IN_PAGE_ENDPOINT } from '../constants';
 
 export class SignInPage {
   readonly page: Page;
@@ -13,11 +13,14 @@ export class SignInPage {
   passwordInput = () => this.page.locator('#password');
   signInButton = () => this.page.getByRole('button', { name: 'Sign in', exact: true });
   signInNavButton = () => this.page.getByText('Sign in');
-  signUpButton = () => this.page.locator('a').getByText('Sign up', { exact: true });
+  signUpButton = () => this.page.getByRole('link').getByText('Sign up', { exact: true });
 
   async verifyUserIsSignedIn() {
     await expect(this.signInNavButton()).toHaveCount(0);
-    await expect(await this.page.getByTestId('account-icon').locator('a').getAttribute('href')).toBe('/account');
+    await expect(this.page.getByTestId('account-icon').getByRole('link')).toHaveAttribute(
+      'href',
+      ACCOUNT_PAGE_ENDPOINT
+    );
   }
 
   async signIn({ email, password }: { email: string; password: string }) {
