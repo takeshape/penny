@@ -76,7 +76,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@faker-js/faker": "^8.4.1",
-    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-operations": "^4.2.0",
     "@playwright/test": "^1.42.1",
