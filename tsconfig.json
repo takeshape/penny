@@ -33,7 +33,6 @@
   ],
   "exclude": [
     "node_modules",
-    "cypress",
     "coverage",
     ".github",
     "public",

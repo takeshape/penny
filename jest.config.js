@@ -5,7 +5,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/.jest/jest.setup.js'],
   // coverage
   collectCoverageFrom: ['<rootDir>/src/**/*.{ts,tsx}'],
-  // ignore cypress folder
+  // ignore E2E folder
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/e2e/'],
   // jest 27 introduced 'node' as new default `testEnvironment`
   // this can be set on a per-file basis: https://jestjs.io/docs/configuration#testenvironment-string
