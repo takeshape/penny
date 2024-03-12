@@ -19,9 +19,7 @@ export const MobileMenuCurrencySelect = ({ currencies }: Pick<Navigation, 'curre
             onChange={(e) => updateCurrency(e.target.value)}
             value={selectedCurrency}
           >
-            {currencies?.map((currency) => (
-              <option key={currency}>{currency}</option>
-            ))}
+            {currencies?.map((currency) => <option key={currency}>{currency}</option>)}
           </select>
           <div className="absolute right-0 inset-y-0 flex items-center pointer-events-none">
             <svg

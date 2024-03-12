@@ -1,9 +1,17 @@
+const assert = require('assert');
+
 require('dotenv').config();
 
 const shopifyStorefrontUrl = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_URL;
 const shopifyStorefrontToken = process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN;
 
-module.exports = {
+assert(shopifyStorefrontUrl, 'NEXT_PUBLIC_SHOPIFY_STOREFRONT_URL is required');
+assert(shopifyStorefrontToken, 'NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN is required');
+
+/**
+ * @type {import('@graphql-codegen/plugin-helpers').Types.Config}
+ */
+const config = {
   overwrite: true,
   documents: 'src/**/queries.storefront.ts',
   schema: {
@@ -30,3 +38,5 @@ module.exports = {
     }
   }
 };
+
+module.exports = config;

@@ -1,4 +1,7 @@
-module.exports = {
+/**
+ * @type {import('jest').Config}
+ */
+const config = {
   // add test-utils direct import
   moduleDirectories: ['node_modules', '.jest', 'src'],
   // add jest-dom and emotion's extra matchers
@@ -14,3 +17,5 @@ module.exports = {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }]
   }
 };
+
+module.exports = config;

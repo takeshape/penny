@@ -4,7 +4,7 @@ import { ModalProps } from 'components/Modal/Modal';
 import { ModalForm } from 'components/Modal/ModalForm';
 import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { isBefore, lastDayOfMonth } from 'date-fns';
-import IMask from 'imask';
+import IMask, { MaskedDynamic, MaskedPattern } from 'imask';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { countries } from 'utils/countries/countries';
@@ -22,9 +22,7 @@ export interface AddFormValues {
   zip: string;
 }
 
-/**
- * TODO Handle submit errors
- */
+// TODO Handle submit errors
 export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
   const {
     handleSubmit,
@@ -43,6 +41,102 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
   );
 
   const resetState = useCallback(() => reset(), [reset]);
+
+  const ccNumberMask = new MaskedDynamic({
+    mask: [
+      {
+        mask: '1234 1234 1234 1234',
+        lazy: true,
+        maxLength: 16,
+        blocks: {
+          '1234': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 9999,
+            autofix: true
+          }
+        }
+      },
+      {
+        mask: '3412 123456 12345',
+        // @ts-expect-error custom prop
+        startsWith: '34',
+        maxLength: 15,
+        lazy: true,
+        blocks: {
+          '3412': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 9999,
+            autofix: true
+          },
+          '123456': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 999999,
+            autofix: true
+          },
+          '12345': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 99999,
+            autofix: true
+          }
+        }
+      },
+      {
+        mask: '3712 123456 12345',
+        // @ts-expect-error custom prop
+        startsWith: '37',
+        maxLength: 15,
+        lazy: true,
+        blocks: {
+          '3712': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 9999,
+            autofix: true
+          },
+          '123456': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 999999,
+            autofix: true
+          },
+          '12345': {
+            mask: IMask.MaskedRange,
+            from: 0,
+            to: 99999,
+            autofix: true
+          }
+        }
+      }
+    ],
+    dispatch: (appended, dynamicMasked) => {
+      const number = (dynamicMasked.value + appended).replace(/\D/g, '');
+      // @ts-expect-error custom prop
+      const mask = dynamicMasked.compiledMasks.find((m) => number.indexOf(m.startsWith) === 0);
+      return mask ?? dynamicMasked.compiledMasks[0];
+    }
+  });
+
+  const ccExpirationMask = new MaskedPattern({
+    mask: 'MM/YY',
+    lazy: true,
+    blocks: {
+      MM: {
+        mask: IMask.MaskedRange,
+        from: 1,
+        to: 12,
+        autofix: 'pad'
+      },
+      YY: {
+        mask: IMask.MaskedRange,
+        from: 24,
+        to: 99
+      }
+    }
+  });
 
   return (
     <ModalForm
@@ -74,85 +168,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 label="Card number"
                 autoComplete="cc-number"
                 defaultValue=""
-                mask={[
-                  {
-                    mask: [
-                      {
-                        mask: '1234 1234 1234 1234',
-                        lazy: true,
-                        maxLength: 16,
-                        blocks: {
-                          '1234': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 9999,
-                            autofix: true
-                          }
-                        }
-                      },
-                      {
-                        mask: '3412 123456 12345',
-                        // @ts-expect-error custom prop
-                        startsWith: '34',
-                        maxLength: 15,
-                        lazy: true,
-                        blocks: {
-                          '3412': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 9999,
-                            autofix: true
-                          },
-                          '123456': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 999999,
-                            autofix: true
-                          },
-                          '12345': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 99999,
-                            autofix: true
-                          }
-                        }
-                      },
-                      {
-                        mask: '3712 123456 12345',
-                        // @ts-expect-error custom prop
-                        startsWith: '37',
-                        maxLength: 15,
-                        lazy: true,
-                        blocks: {
-                          '3712': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 9999,
-                            autofix: true
-                          },
-                          '123456': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 999999,
-                            autofix: true
-                          },
-                          '12345': {
-                            mask: IMask.MaskedRange,
-                            from: 0,
-                            to: 99999,
-                            autofix: true
-                          }
-                        }
-                      }
-                    ],
-                    dispatch: (appended, dynamicMasked) => {
-                      const number = (dynamicMasked.value + appended).replace(/\D/g, '');
-                      // @ts-expect-error custom prop
-                      const mask = dynamicMasked.compiledMasks.find((m) => number.indexOf(m.startsWith) === 0);
-                      return mask ?? dynamicMasked.compiledMasks[0];
-                    }
-                  }
-                ]}
+                mask={ccNumberMask}
                 placeholder="1234 1234 1234 1234"
                 type="text"
                 rules={{
@@ -169,25 +185,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
                 autoComplete="cc-exp"
                 defaultValue=""
                 type="text"
-                mask={[
-                  {
-                    mask: 'MM/YY',
-                    lazy: true,
-                    blocks: {
-                      MM: {
-                        mask: IMask.MaskedRange,
-                        from: 1,
-                        to: 12,
-                        autofix: 'pad'
-                      },
-                      YY: {
-                        mask: IMask.MaskedRange,
-                        from: 22,
-                        to: 99
-                      }
-                    }
-                  }
-                ]}
+                mask={ccExpirationMask}
                 placeholder="MM/YY"
                 rules={{
                   required: 'This field is required',
