@@ -1,5 +1,5 @@
-import Wrapper from 'components/Wrapper/Content';
-import { AccountNavigation } from 'features/AccountNavigation/AccountNavigation';
+import Wrapper from '@/components/Wrapper/Content';
+import { AccountNavigation } from '@/features/AccountNavigation/AccountNavigation';
 import { useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 import DefaultLayout, { LayoutProps } from './Default';

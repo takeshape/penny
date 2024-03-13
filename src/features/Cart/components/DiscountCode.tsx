@@ -1,6 +1,6 @@
+import { cartDiscountCodeAtom } from '@/features/Cart/store';
 import { Disclosure } from '@headlessui/react';
 import { TagIcon } from '@heroicons/react/24/solid';
-import { cartDiscountCodeAtom } from 'features/Cart/store';
 import { useAtomValue } from 'jotai';
 
 export const CartDiscountCode = () => {

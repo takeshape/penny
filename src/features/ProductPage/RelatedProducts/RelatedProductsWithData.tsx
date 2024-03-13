@@ -1,6 +1,6 @@
+import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from '@/types/storefront';
+import { useStorefrontLazyQuery } from '@/utils/storefront';
 import { useEffect, useMemo } from 'react';
-import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from 'types/storefront';
-import { useStorefrontLazyQuery } from 'utils/storefront';
 import { ProductPageRelatedProductsQuery } from '../queries.storefront';
 import { getRelatedProductList } from '../transforms';
 import { ProductPageRelatedProductsProduct } from '../types';

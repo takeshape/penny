@@ -1,8 +1,8 @@
-import { AccountResetPassword } from 'features/AccountResetPassword/AccountResetPassword';
-import Layout from 'layouts/Full';
+import { AccountResetPassword } from '@/features/AccountResetPassword/AccountResetPassword';
+import Layout from '@/layouts/Full';
+import { getActivationParams } from '@/utils/account';
+import { getSingle } from '@/utils/types';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-import { getActivationParams } from 'utils/account';
-import { getSingle } from 'utils/types';
 
 const ResetPasswordPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
   customerId,

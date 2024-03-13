@@ -1,8 +1,8 @@
+import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
+import classNames from '@/utils/classNames';
+import { useHasStockFor } from '@/utils/hooks/useHasStockFor';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductVariantOption, ProductVariantSelection } from 'types/product';
-import classNames from 'utils/classNames';
-import { useHasStockFor } from 'utils/hooks/useHasStockFor';
 
 export interface ProductSizeSelectProps {
   value: string | null;

@@ -1,11 +1,7 @@
-import { cloneDeep } from '@apollo/client/utilities';
-import { getImageUrl } from '@takeshape/routing';
-import { enableReviewsIo, enableTrustpilot } from 'config';
-import { ProductProps } from 'features/ProductPage/Product/Product';
-import { GetStaticPathsResult } from 'next';
-import { ProductJsonLdProps } from 'next-seo';
-import { getProductLineItemAttributes } from 'transforms/product';
-import { getReview, getReviewList as getReviewsIoReviewList, getStats } from 'transforms/reviewsIo';
+import { enableReviewsIo, enableTrustpilot } from '@/config';
+import { ProductProps } from '@/features/ProductPage/Product/Product';
+import { getProductLineItemAttributes } from '@/transforms/product';
+import { getReview, getReviewList as getReviewsIoReviewList, getStats } from '@/transforms/reviewsIo';
 import {
   createImageGetter,
   getCollectionUrl,
@@ -16,17 +12,21 @@ import {
   getProductVariantOptions,
   getProductVariants,
   getSeo
-} from 'transforms/shopify';
-import { ReviewList } from 'types/review';
-import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
+} from '@/transforms/shopify';
+import { ReviewList } from '@/types/review';
+import { ProductPageRelatedProductsQueryResponse } from '@/types/storefront';
 import {
   ProductPageReviewPageQueryResponse,
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
   Shopify_MoneyV2
-} from 'types/takeshape';
-import { DeepRequired } from 'types/util';
-import { isNotNullish } from 'utils/types';
+} from '@/types/takeshape';
+import { DeepRequired } from '@/types/util';
+import { isNotNullish } from '@/utils/types';
+import { cloneDeep } from '@apollo/client/utilities';
+import { getImageUrl } from '@takeshape/routing';
+import { GetStaticPathsResult } from 'next';
+import { ProductJsonLdProps } from 'next-seo';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,

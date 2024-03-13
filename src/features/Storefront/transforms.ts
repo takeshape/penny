@@ -6,8 +6,8 @@ import {
   getProductIsAvailable,
   getProductUrl,
   getProductVariantOptions
-} from 'transforms/shopify';
-import { GetStorefrontQueryResponse } from 'types/takeshape';
+} from '@/transforms/shopify';
+import { GetStorefrontQueryResponse } from '@/types/takeshape';
 import {
   StorefrontCollection,
   StorefrontCollectionComponent,

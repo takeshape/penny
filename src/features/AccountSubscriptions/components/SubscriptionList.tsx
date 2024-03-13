@@ -1,5 +1,5 @@
+import { PropsWithCallableChildren } from '@/types/util';
 import { PropsWithChildren } from 'react';
-import { PropsWithCallableChildren } from 'types/util';
 import { AnySubscription } from '../types';
 
 export const SubscriptionListWrapper = ({ children }: PropsWithChildren<{}>) => (

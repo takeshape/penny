@@ -1,5 +1,5 @@
+import { AddForm } from '@/features/AccountPayments/components/Actions/AddPaymentMethodForm';
 import { CreditCardIcon } from '@heroicons/react/24/solid';
-import { AddForm } from 'features/AccountPayments/components/Actions/AddPaymentMethodForm';
 import { useState } from 'react';
 
 export interface AddPaymentMethodProps {

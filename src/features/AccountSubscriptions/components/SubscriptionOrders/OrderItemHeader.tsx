@@ -1,5 +1,5 @@
+import { getOrderStatusDisplay } from '@/features/AccountSubscriptions/utils';
 import { format } from 'date-fns';
-import { getOrderStatusDisplay } from 'features/AccountSubscriptions/utils';
 import { SubscriptionOrder } from '../../types';
 import { OrderItemBadge } from './OrderItemBadge';
 

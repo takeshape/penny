@@ -1,10 +1,10 @@
-import Alert from 'components/Alert/Alert';
-import CardPanel from 'components/Card/Panel/Panel';
-import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
-import { AnySubscription } from 'features/AccountSubscriptions/types';
+import Alert from '@/components/Alert/Alert';
+import CardPanel from '@/components/Card/Panel/Panel';
+import { ActiveSubscription } from '@/features/AccountSubscriptions/components/ActiveSubscription';
+import { AnySubscription } from '@/features/AccountSubscriptions/types';
+import { GetMySubscriptionListQueryResponse } from '@/types/takeshape';
+import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { useMemo } from 'react';
-import { GetMySubscriptionListQueryResponse } from 'types/takeshape';
-import { useAuthenticatedQuery } from 'utils/takeshape';
 import { EndedSubscription } from './components/EndedSubscription';
 import { NoSubscriptions } from './components/NoSubscriptions';
 import { SubscriptionItem, SubscriptionList, SubscriptionListWrapper } from './components/SubscriptionList';

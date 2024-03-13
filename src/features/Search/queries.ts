@@ -1,5 +1,5 @@
+import { TsSearchableSearchResults } from '@/types/takeshape';
 import { gql } from '@apollo/client';
-import { TsSearchableSearchResults } from 'types/takeshape';
 import { SearchShopifyProduct } from './types';
 
 export interface SearchShopifyProductsResults extends TsSearchableSearchResults {

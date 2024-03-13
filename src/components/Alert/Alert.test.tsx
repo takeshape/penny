@@ -1,4 +1,4 @@
-import { render } from 'test/test-utils';
+import { render } from '@/test/test-utils';
 import { Alert } from './Alert';
 
 describe('Example', () => {

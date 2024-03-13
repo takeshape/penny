@@ -1,6 +1,6 @@
-import { getCreditCardIcon } from 'components/Payments/utils';
+import { getCreditCardIcon } from '@/components/Payments/utils';
+import { PaymentMethod as TPaymentMethod } from '@/types/paymentMethod';
 import { useState } from 'react';
-import { PaymentMethod as TPaymentMethod } from 'types/paymentMethod';
 import { RemoveForm } from './Actions/RemoveForm';
 
 export const PaymentMethod = (paymentMethod: TPaymentMethod) => {

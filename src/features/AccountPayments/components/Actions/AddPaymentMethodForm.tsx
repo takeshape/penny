@@ -1,13 +1,13 @@
-import FormInput from 'components/Form/Input/Input';
-import FormSelect from 'components/Form/Select/Select';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import FormInput from '@/components/Form/Input/Input';
+import FormSelect from '@/components/Form/Select/Select';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { countries } from '@/utils/countries/countries';
 import { isBefore, lastDayOfMonth } from 'date-fns';
 import IMask, { MaskedDynamic, MaskedPattern } from 'imask';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { countries } from 'utils/countries/countries';
 
 export interface AddFormProps extends ModalProps {
   customerId: string;

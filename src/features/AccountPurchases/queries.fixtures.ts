@@ -1,4 +1,4 @@
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
 
 export const myPurchasesResponse: GetMyAdminCustomerOrdersQueryResponse = {
   customer: {

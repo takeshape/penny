@@ -1,7 +1,7 @@
-import { CreditCard } from 'components/Payments/CreditCard';
+import { CreditCard } from '@/components/Payments/CreditCard';
+import { formatPrice } from '@/utils/text';
 import { format } from 'date-fns';
 import { useMemo, useState } from 'react';
-import { formatPrice } from 'utils/text';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { formatDeliverySchedule, getOrders } from '../../utils';
 import { CancelSubscriptionForm } from '../Actions/CancelSubscriptionForm';

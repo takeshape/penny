@@ -1,4 +1,4 @@
-import { assertEnv } from 'utils/env';
+import { assertEnv } from '@/utils/env';
 
 export const takeshapeAuthIssuer = assertEnv(process.env.NEXT_PUBLIC_TAKESHAPE_AUTH_ISSUER);
 export const takeshapeAuthAudience = assertEnv(process.env.NEXT_PUBLIC_TAKESHAPE_AUTH_AUDIENCE);

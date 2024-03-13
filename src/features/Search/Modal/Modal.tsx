@@ -1,13 +1,13 @@
+import Loader from '@/components/Loader/Loader';
+import { isSearchOpenAtom } from '@/store';
+import { replaceState } from '@/utils/history';
+import { getSingle } from '@/utils/types';
 import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import Loader from 'components/Loader/Loader';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { ChangeEventHandler, Fragment, useCallback, useEffect } from 'react';
-import { isSearchOpenAtom } from 'store';
-import { replaceState } from 'utils/history';
-import { getSingle } from 'utils/types';
 import { SearchShopifyProducts } from '../queries';
 import { getSearchList } from '../transforms';
 import { useSearch } from '../useSearch';

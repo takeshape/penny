@@ -1,6 +1,6 @@
-import { ProductLineItemAttribute } from 'types/product';
-import { LineItemAttributes } from 'types/takeshape';
-import { isNotNullish } from 'utils/types';
+import { ProductLineItemAttribute } from '@/types/product';
+import { LineItemAttributes } from '@/types/takeshape';
+import { isNotNullish } from '@/utils/types';
 
 export function getProductLineItemAttributes(
   lineItemProperties: Pick<LineItemAttributes, 'attributes'> | null

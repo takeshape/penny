@@ -1,8 +1,8 @@
+import Button from '@/components/Button/Button';
+import { Stars } from '@/components/Stars/Stars';
+import { ReviewsListItem } from '@/features/ProductPage/Reviews/ReviewsListItem';
+import { ReviewsListItemLoading } from '@/features/ProductPage/Reviews/ReviewsListItemLoading';
 import { ApolloError } from '@apollo/client';
-import Button from 'components/Button/Button';
-import { Stars } from 'components/Stars/Stars';
-import { ReviewsListItem } from 'features/ProductPage/Reviews/ReviewsListItem';
-import { ReviewsListItemLoading } from 'features/ProductPage/Reviews/ReviewsListItemLoading';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { MouseEventHandler } from 'react';

@@ -1,10 +1,10 @@
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { getCreditCardIcon } from 'components/Payments/utils';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { getCreditCardIcon } from '@/components/Payments/utils';
+import { PaymentMethod } from '@/types/paymentMethod';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { PaymentMethod } from 'types/paymentMethod';
 
 export interface RemoveFormProps extends ModalProps {
   paymentMethod: PaymentMethod;

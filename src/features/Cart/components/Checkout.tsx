@@ -1,12 +1,12 @@
-import Button from 'components/Button/Button';
-import { signedInCheckout } from 'config';
-import { getCheckoutUrl } from 'features/Cart/transforms';
+import Button from '@/components/Button/Button';
+import { signedInCheckout } from '@/config';
+import { getCheckoutUrl } from '@/features/Cart/transforms';
+import { CartCreateMutationResponse, CartCreateMutationVariables } from '@/types/storefront';
+import { useStorefrontMutation } from '@/utils/storefront';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
-import { CartCreateMutationResponse, CartCreateMutationVariables } from 'types/storefront';
-import { useStorefrontMutation } from 'utils/storefront';
 import { CartCreateMutation } from '../queries.storefront';
 import { cartDiscountCodeAtom, cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
 import { getCartVariables } from '../utils';

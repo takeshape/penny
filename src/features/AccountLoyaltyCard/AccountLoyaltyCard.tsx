@@ -1,5 +1,5 @@
-import CardPanel from 'components/Card/Panel/Panel';
-import Image from 'components/NextImage';
+import CardPanel from '@/components/Card/Panel/Panel';
+import Image from '@/components/NextImage';
 import { LoyaltyCard } from './types';
 
 export type AccountLoyaltyCardProps = {

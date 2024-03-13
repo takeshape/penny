@@ -1,8 +1,8 @@
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { ReviewList } from 'types/review';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { ReviewList } from '@/types/review';
 import { TrustpilotLoading } from './TrustpilotLoading';
 import { TrustpilotStars } from './TrustpilotStars';
 

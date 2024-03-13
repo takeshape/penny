@@ -1,15 +1,11 @@
 /**
  * If a project is able to use `write_customer_payment_methods` can use this.
  */
-import { RadioGroup } from '@headlessui/react';
-import { Loader } from 'components/Loader/Loader';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { CreditCard } from 'components/Payments/CreditCard';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Loader } from '@/components/Loader/Loader';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { CreditCard } from '@/components/Payments/CreditCard';
 import {
   GetMyPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryVariables,
@@ -17,9 +13,13 @@ import {
   SendMyUpdatePaymentEmailMutationVariables,
   UpdateMyPaymentMethodMutationResponse,
   UpdateMyPaymentMethodMutationVariables
-} from 'types/takeshape';
-import classNames from 'utils/classNames';
-import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from 'utils/takeshape';
+} from '@/types/takeshape';
+import classNames from '@/utils/classNames';
+import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from '@/utils/takeshape';
+import { RadioGroup } from '@headlessui/react';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   GetMyPaymentMethodsQuery,
   SendMyUpdatePaymentEmailMutation,

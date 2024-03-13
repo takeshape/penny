@@ -1,4 +1,4 @@
-import NextImage from 'components/NextImage';
+import NextImage from '@/components/NextImage';
 import { ProductPageDetails as ProductPageDetailsType } from '../types';
 
 export interface DetailsProps {

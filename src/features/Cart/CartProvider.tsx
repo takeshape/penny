@@ -1,9 +1,9 @@
-import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from 'features/Cart/store';
+import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from '@/features/Cart/store';
+import { currencyAtom, notificationAtom } from '@/store';
+import { getSingle } from '@/utils/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
-import { currencyAtom, notificationAtom } from 'store';
-import { getSingle } from 'utils/types';
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const setCartItems = useSetAtom(cartItemsAtom);

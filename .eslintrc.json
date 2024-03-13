@@ -1,8 +1,8 @@
 {
-  "plugins": [
-    "json-format"
-  ],
   "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "next/core-web-vitals",
     "plugin:prettier/recommended"
   ],
@@ -28,18 +28,17 @@
       }
     },
     {
-      "extends": [
-        "plugin:mdx/recommended"
-      ],
       "files": [
-        "**/*.{mdx,md}"
+        "*.mdx",
+        "*.md"
       ],
+      "settings": {
+        "mdx/code-blocks": false,
+        "mdx/language-mapper": {}
+      },
+      "extends": "plugin:mdx/recommended",
       "rules": {
         "indent": "off"
-      },
-      "settings": {
-        "mdx/code-blocks": true,
-        "mdx/language-mapper": {}
       }
     },
     {
@@ -48,6 +47,14 @@
       ],
       "files": [
         "**/*.stories.*"
+      ]
+    },
+    {
+      "plugins": [
+        "json-format"
+      ],
+      "files": [
+        "*.json"
       ]
     }
   ],

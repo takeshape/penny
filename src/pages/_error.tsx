@@ -1,7 +1,7 @@
+import { Error, ErrorProps } from '@/components/Error/Error';
+import Wrapper from '@/components/Wrapper/Content';
+import Layout from '@/layouts/Default';
 import * as Sentry from '@sentry/nextjs';
-import { Error, ErrorProps } from 'components/Error/Error';
-import Wrapper from 'components/Wrapper/Content';
-import Layout from 'layouts/Default';
 import type { NextPage } from 'next';
 
 Error.getInitialProps = async (contextData) => {

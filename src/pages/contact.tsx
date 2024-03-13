@@ -1,5 +1,5 @@
-import { Contact } from 'features/Contact/Contact';
-import Layout from 'layouts/Default';
+import { Contact } from '@/features/Contact/Contact';
+import Layout from '@/layouts/Default';
 import { NextPage } from 'next';
 
 const ContactPage: NextPage = () => {

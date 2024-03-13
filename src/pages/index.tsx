@@ -1,11 +1,11 @@
-import { homepageRevalidationTtl } from 'config';
-import { GetStorefrontQuery } from 'features/Storefront/queries';
-import { Storefront } from 'features/Storefront/Storefront';
-import { getStorefront } from 'features/Storefront/transforms';
-import Layout from 'layouts/Default';
+import { homepageRevalidationTtl } from '@/config';
+import { Storefront } from '@/features/Storefront/Storefront';
+import { GetStorefrontQuery } from '@/features/Storefront/queries';
+import { getStorefront } from '@/features/Storefront/transforms';
+import Layout from '@/layouts/Default';
+import { GetStorefrontQueryResponse } from '@/types/takeshape';
+import { createAnonymousTakeshapeApolloClient } from '@/utils/takeshape';
 import { InferGetStaticPropsType, NextPage } from 'next';
-import { GetStorefrontQueryResponse } from 'types/takeshape';
-import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
 
 const IndexPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ storefront }) => {
   return (

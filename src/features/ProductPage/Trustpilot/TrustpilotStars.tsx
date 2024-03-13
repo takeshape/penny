@@ -1,4 +1,4 @@
-import NextImage from 'components/NextImage';
+import NextImage from '@/components/NextImage';
 
 export interface TrustpilotStarsProps {
   stars: number;

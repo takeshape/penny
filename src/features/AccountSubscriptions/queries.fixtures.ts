@@ -3,7 +3,7 @@ import {
   GetMySubscriptionListQueryResponse,
   SendMyUpdatePaymentEmailMutationResponse,
   UpdateMyPaymentMethodMutationResponse
-} from 'types/takeshape';
+} from '@/types/takeshape';
 
 export const getMySubscriptionListResponse: GetMySubscriptionListQueryResponse = {
   subscriptions: [

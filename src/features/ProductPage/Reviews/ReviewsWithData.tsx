@@ -1,12 +1,12 @@
+import { CreateReview } from '@/features/ProductPage/Reviews/CreateReview';
+import { ProductPageReviewPageQuery } from '@/features/ProductPage/queries.takeshape';
+import { getProductReviewsPage } from '@/features/ProductPage/transforms';
+import { getReviewList } from '@/transforms/reviewsIo';
+import { Review } from '@/types/review';
+import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from '@/types/takeshape';
 import { useLazyQuery } from '@apollo/client';
-import { ProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
-import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
-import { getProductReviewsPage } from 'features/ProductPage/transforms';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getReviewList } from 'transforms/reviewsIo';
-import { Review } from 'types/review';
-import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
 import { Reviews } from './Reviews';
 

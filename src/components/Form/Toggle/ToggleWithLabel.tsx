@@ -1,6 +1,6 @@
+import classNames from '@/utils/classNames';
 import { Switch } from '@headlessui/react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
-import classNames from 'utils/classNames';
 
 export interface FormToggleWithLabelProps {
   labelPrimary: string;

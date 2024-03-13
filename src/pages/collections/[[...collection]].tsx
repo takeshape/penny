@@ -1,21 +1,21 @@
-import PageLoader from 'components/PageLoader';
-import { collectionsPageSize, pageRevalidationTtl } from 'config';
-import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
+import PageLoader from '@/components/PageLoader';
+import { collectionsPageSize, pageRevalidationTtl } from '@/config';
+import { ProductCategoryWithCollection } from '@/features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionHandles,
   ProductCategoryShopifyCollectionQuery
-} from 'features/ProductCategory/queries';
-import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
-import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
-import { useRouter } from 'next/router';
+} from '@/features/ProductCategory/queries';
+import { getCollection, getCollectionPageParams } from '@/features/ProductCategory/transforms';
+import Layout from '@/layouts/Default';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionHandlesVariables,
   ProductCategoryShopifyCollectionQueryResponse,
   ProductCategoryShopifyCollectionQueryVariables
-} from 'types/takeshape';
-import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { createAnonymousTakeshapeApolloClient } from '@/utils/takeshape';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ collection }) => {
   const { isFallback } = useRouter();

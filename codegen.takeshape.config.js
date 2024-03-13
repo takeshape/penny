@@ -15,6 +15,7 @@ const config = {
   overwrite: true,
   documents: ['src/**/queries.ts', 'src/**/queries.takeshape.ts'],
   schema: {
+    // @ts-ignore
     [takeshapeApiUrl]: {
       headers: {
         Authorization: `Bearer ${takeshapeAnonymousApiKey}`

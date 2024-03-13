@@ -1,13 +1,13 @@
-import FormTextarea from 'components/Form/Textarea/Textarea';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { siteContactEmail } from 'config';
-import { useAuthenticatedCreateTicket } from 'features/Contact/useCreateTicket';
+import FormTextarea from '@/components/Form/Textarea/Textarea';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { siteContactEmail } from '@/config';
+import { useAuthenticatedCreateTicket } from '@/features/Contact/useCreateTicket';
+import { shopifyGidToId } from '@/transforms/shopify';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { shopifyGidToId } from 'transforms/shopify';
 import { SubscriptionOrder } from '../../types';
 
 export interface ReportIssueFormProps extends ModalProps {

@@ -1,6 +1,6 @@
-import Loader from 'components/Loader/Loader';
+import Loader from '@/components/Loader/Loader';
+import classNames from '@/utils/classNames';
 import React from 'react';
-import classNames from 'utils/classNames';
 
 export type ButtonProps<T extends React.ElementType = 'button'> = {
   as?: T;

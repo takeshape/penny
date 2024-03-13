@@ -1,4 +1,4 @@
-import { GetPageSlugsResponse, PageGetPageResponse } from 'types/takeshape';
+import { GetPageSlugsResponse, PageGetPageResponse } from '@/types/takeshape';
 
 export function getPage(response: PageGetPageResponse) {
   const page = response?.pageList?.items?.[0];

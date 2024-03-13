@@ -1,6 +1,6 @@
+import NextLink from '@/components/NextLink';
 import { UserIcon } from '@heroicons/react/24/outline';
 import { UserIcon as SolidUserIcon } from '@heroicons/react/24/solid';
-import NextLink from 'components/NextLink';
 import { signIn, useSession } from 'next-auth/react';
 
 export const SignedIn = () => {

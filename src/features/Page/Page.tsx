@@ -1,6 +1,6 @@
-import Wrapper from 'components/Wrapper/Content';
-import { ContentBody } from 'features/Content/ContentBody';
-import { ContentHeader } from 'features/Content/ContentHeader';
+import Wrapper from '@/components/Wrapper/Content';
+import { ContentBody } from '@/features/Content/ContentBody';
+import { ContentHeader } from '@/features/Content/ContentHeader';
 import { ResponsePage } from './types';
 
 export interface PageProps {

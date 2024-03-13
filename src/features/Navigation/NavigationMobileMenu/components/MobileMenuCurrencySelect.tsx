@@ -1,5 +1,5 @@
+import { currencyAtom } from '@/store';
 import { useAtom } from 'jotai';
-import { currencyAtom } from 'store';
 import { Navigation } from '../../types';
 
 export const MobileMenuCurrencySelect = ({ currencies }: Pick<Navigation, 'currencies'>) => {

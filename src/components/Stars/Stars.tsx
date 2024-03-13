@@ -1,6 +1,6 @@
+import classNames from '@/utils/classNames';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { MouseEventHandler, useMemo } from 'react';
-import classNames from 'utils/classNames';
 
 interface StarProps {
   lit?: boolean;

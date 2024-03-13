@@ -1,6 +1,6 @@
+import { siteCopyrightText } from '@/config';
 import { expect, test } from '@playwright/test';
 import { HOMEPAGE_ENDPOINT } from '../constants';
-import { siteCopyrightText } from 'config';
 
 test.describe('Homepage', () => {
   test('Should load the homepage', async ({ page }) => {

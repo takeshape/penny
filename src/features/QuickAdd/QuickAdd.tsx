@@ -1,4 +1,4 @@
-import { Modal } from 'components/Modal/Modal';
+import { Modal } from '@/components/Modal/Modal';
 import { QuickAddItem } from './components/QuickAddItem';
 import { QuickAddItemLoading } from './components/QuickAddItemLoading';
 import { QuickAddProduct } from './types';

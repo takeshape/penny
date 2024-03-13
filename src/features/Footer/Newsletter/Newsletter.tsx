@@ -1,12 +1,12 @@
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
+import { defaultKlaviyoListId } from '@/config';
+import { NewsletterEmailSubmissionResponse, NewsletterEmailSubmissionVariables } from '@/types/takeshape';
 import { ApolloError, useMutation } from '@apollo/client';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { defaultKlaviyoListId } from 'config';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { NewsletterEmailSubmissionResponse, NewsletterEmailSubmissionVariables } from 'types/takeshape';
 import { EmailSubmissionMutation } from './queries';
 
 export interface NewsletterProps {

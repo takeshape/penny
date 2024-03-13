@@ -1,21 +1,21 @@
-import { useMutation, useQuery } from '@apollo/client';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { useReCaptcha } from 'next-recaptcha-v3';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
 import {
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables,
   RecoverCustomerPasswordMutationResponse,
   RecoverCustomerPasswordMutationVariables
-} from 'types/takeshape';
-import { sanitizeCallbackUrl } from 'utils/callbacks';
+} from '@/types/takeshape';
+import { sanitizeCallbackUrl } from '@/utils/callbacks';
+import { useMutation, useQuery } from '@apollo/client';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
 import { InactiveCustomer } from '../types';
 export interface AuthRecoverPasswordForm {

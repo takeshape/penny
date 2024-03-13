@@ -1,4 +1,4 @@
-import { siteUrl } from 'config';
+import { siteUrl } from '@/config';
 import { NextSeo, NextSeoProps } from 'next-seo';
 import { useRouter } from 'next/router';
 

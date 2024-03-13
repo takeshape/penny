@@ -1,5 +1,5 @@
+import { ProductVariant, ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
 
 export interface VariantOptionHookProps {
   name: string;

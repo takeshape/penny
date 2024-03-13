@@ -1,14 +1,14 @@
-import PageLoader from 'components/PageLoader';
-import { CartCreateMutation } from 'features/Cart/queries.storefront';
-import { cartDiscountCodeAtom, cartItemsAtom } from 'features/Cart/store';
-import { getCheckoutUrl } from 'features/Cart/transforms';
-import { getCartVariables } from 'features/Cart/utils';
+import PageLoader from '@/components/PageLoader';
+import { CartCreateMutation } from '@/features/Cart/queries.storefront';
+import { cartDiscountCodeAtom, cartItemsAtom } from '@/features/Cart/store';
+import { getCheckoutUrl } from '@/features/Cart/transforms';
+import { getCartVariables } from '@/features/Cart/utils';
+import { CartCreateMutationResponse, CartCreateMutationVariables } from '@/types/storefront';
+import { useStorefrontMutation } from '@/utils/storefront';
 import { useAtomValue } from 'jotai';
 import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-import { CartCreateMutationResponse, CartCreateMutationVariables } from 'types/storefront';
-import { useStorefrontMutation } from 'utils/storefront';
 
 // After a successful login, redirect here to automatically checkout with the cart
 const _CheckoutPage: NextPage = () => {

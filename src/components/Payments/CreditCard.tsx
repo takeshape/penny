@@ -1,6 +1,6 @@
+import { CreditCard as TCreditCard } from '@/types/paymentMethod';
+import classNames from '@/utils/classNames';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
-import { CreditCard as TCreditCard } from 'types/paymentMethod';
-import classNames from 'utils/classNames';
 import { getCreditCardIcon, getIsExpired } from './utils';
 
 export interface CreditCardProps {

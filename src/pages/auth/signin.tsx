@@ -1,11 +1,11 @@
-import { shopifyUseMultipass } from 'config';
-import { AuthSignIn } from 'features/Auth/AuthSignIn/AuthSignIn';
-import Layout from 'layouts/Full';
+import { shopifyUseMultipass } from '@/config';
+import { AuthSignIn } from '@/features/Auth/AuthSignIn/AuthSignIn';
+import Layout from '@/layouts/Full';
+import { parseSigninError } from '@/utils/errors';
+import { getSingle } from '@/utils/types';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { parseSigninError } from 'utils/errors';
-import { getSingle } from 'utils/types';
 
 const SignUpPage: NextPage = () => {
   const { query } = useRouter();

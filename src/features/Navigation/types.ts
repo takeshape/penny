@@ -1,5 +1,5 @@
-import { currencyList } from 'config';
-import { NavigationItem } from 'types/navigation';
+import { currencyList } from '@/config';
+import { NavigationItem } from '@/types/navigation';
 
 // TakeShape doesn't support scalar arrays, so sticking with this for now
 export type NavigationCurrency = (typeof currencyList)[number];

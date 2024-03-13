@@ -1,6 +1,6 @@
-import { ProductPriceOption } from 'types/product';
-import classNames from 'utils/classNames';
-import { formatPrice } from 'utils/text';
+import { ProductPriceOption } from '@/types/product';
+import classNames from '@/utils/classNames';
+import { formatPrice } from '@/utils/text';
 
 export interface ProductPriceProps {
   price: ProductPriceOption;

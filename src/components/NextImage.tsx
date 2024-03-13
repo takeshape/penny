@@ -1,4 +1,4 @@
-import { isTest } from 'config';
+import { isTest } from '@/config';
 import NextBaseImage, { ImageProps } from 'next/image';
 
 const NextImage = (props: ImageProps & { src: string }) => {

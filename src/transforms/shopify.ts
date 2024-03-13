@@ -1,4 +1,4 @@
-import { defaultCurrency, defaultProductImage, productOptions } from 'config';
+import { defaultCurrency, defaultProductImage, productOptions } from '@/config';
 import {
   ProductImage,
   ProductPrice,
@@ -6,8 +6,8 @@ import {
   ProductPriceOption,
   ProductSeo,
   ProductVariant
-} from 'types/product';
-import * as Storefront from 'types/storefront';
+} from '@/types/product';
+import * as Storefront from '@/types/storefront';
 import {
   Maybe,
   Shopify_MoneyV2,
@@ -20,7 +20,7 @@ import {
   Shopify_SellingPlanPricingPolicyPercentageValue,
   Shopify_SellingPlanRecurringBillingPolicy,
   Shopify_Seo
-} from 'types/takeshape';
+} from '@/types/takeshape';
 
 type ShopifyImage = { height: Maybe<number>; width: Maybe<number>; altText: Maybe<string>; url: string };
 

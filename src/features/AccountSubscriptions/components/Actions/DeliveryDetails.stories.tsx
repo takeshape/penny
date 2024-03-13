@@ -1,5 +1,5 @@
+import { Shopify_FulfillmentDisplayStatus } from '@/types/takeshape';
 import { Meta, StoryObj } from '@storybook/react';
-import { Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
 import { DeliveryDetails } from './DeliveryDetails';
 
 const meta: Meta<typeof DeliveryDetails> = {

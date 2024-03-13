@@ -1,4 +1,4 @@
-import { BackgroundImageChild } from 'features/Storefront/types';
+import { BackgroundImageChild } from '@/features/Storefront/types';
 
 type TestimonialsProps = BackgroundImageChild & { __typename: 'TestimonialsComponent' };
 

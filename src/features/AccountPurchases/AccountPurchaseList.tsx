@@ -1,6 +1,6 @@
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
+import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { NetworkStatus } from '@apollo/client';
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
-import { useAuthenticatedQuery } from 'utils/takeshape';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
 import { GetMyAdminCustomerOrdersQuery } from './queries';

@@ -1,14 +1,14 @@
-import PageLoader from 'components/PageLoader';
-import { pageRevalidationTtl } from 'config';
-import Page from 'features/Page/Page';
-import { PageGetPage, PageGetPageSlugs } from 'features/Page/queries';
-import { getPage, getPageParams } from 'features/Page/transforms';
-import Layout from 'layouts/Default';
+import PageLoader from '@/components/PageLoader';
+import { pageRevalidationTtl } from '@/config';
+import Page from '@/features/Page/Page';
+import { PageGetPage, PageGetPageSlugs } from '@/features/Page/queries';
+import { getPage, getPageParams } from '@/features/Page/transforms';
+import Layout from '@/layouts/Default';
+import { GetPageSlugsResponse, PageGetPageResponse, PageGetPageVariables } from '@/types/takeshape';
+import { createAnonymousTakeshapeApolloClient } from '@/utils/takeshape';
+import { getSingle } from '@/utils/types';
 import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { GetPageSlugsResponse, PageGetPageResponse, PageGetPageVariables } from 'types/takeshape';
-import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { getSingle } from 'utils/types';
 
 const apolloClient = createAnonymousTakeshapeApolloClient();
 

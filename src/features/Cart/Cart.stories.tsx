@@ -1,6 +1,6 @@
+import { cartDiscountCodeAtom, cartItemsAtom, isCartOpenAtom } from '@/features/Cart/store';
+import { currencyAtom } from '@/store';
 import { Meta, StoryObj } from '@storybook/react';
-import { cartDiscountCodeAtom, cartItemsAtom, isCartOpenAtom } from 'features/Cart/store';
-import { currencyAtom } from 'store';
 import { Cart } from './Cart';
 import fixtures from './Cart.fixtures.json';
 

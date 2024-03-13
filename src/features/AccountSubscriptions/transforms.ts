@@ -1,19 +1,19 @@
-import { getIsExpiringSoon } from 'components/Payments/utils';
-import { defaultProductImage } from 'config';
+import { getIsExpiringSoon } from '@/components/Payments/utils';
+import { defaultProductImage } from '@/config';
 import {
   createImageGetter,
   getProductHasStock,
   getProductIsAvailable,
   getProductUrl,
   getProductVariantOptions
-} from 'transforms/shopify';
+} from '@/transforms/shopify';
 import {
   GetMyPaymentMethodsQueryResponse,
   GetMySubscriptionListQueryResponse,
   GetMySubscriptionQueryResponse
-} from 'types/takeshape';
-import { capitalize } from 'utils/text';
-import { isNotNullish } from 'utils/types';
+} from '@/types/takeshape';
+import { capitalize } from '@/utils/text';
+import { isNotNullish } from '@/utils/types';
 import {
   AnySubscription,
   ResponseAddress,

@@ -1,7 +1,7 @@
+import classNames from '@/utils/classNames';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/solid';
 import { Fragment, PropsWithChildren, useCallback, useMemo } from 'react';
-import classNames from 'utils/classNames';
 
 interface SortOption {
   name: string;

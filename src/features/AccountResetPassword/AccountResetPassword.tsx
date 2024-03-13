@@ -1,18 +1,18 @@
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
 import {
   ActivateAccountMutationResponse,
   ActivateAccountMutationVariables,
   ResetPasswordMutationResponse,
   ResetPasswordMutationVariables
-} from 'types/storefront';
-import { useStorefrontMutation } from 'utils/storefront';
+} from '@/types/storefront';
+import { useStorefrontMutation } from '@/utils/storefront';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { ActivateAccountMutation, ResetPasswordMutation } from './queries.storefront';
 
 export interface AccountResetPasswordForm {

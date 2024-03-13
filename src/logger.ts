@@ -1,4 +1,4 @@
-import { commitSha, logLevel, vercelEnv } from 'config';
+import { commitSha, logLevel, vercelEnv } from '@/config';
 import pino, { LoggerOptions } from 'pino';
 
 const config: LoggerOptions = {

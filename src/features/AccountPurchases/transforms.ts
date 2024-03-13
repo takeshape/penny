@@ -1,5 +1,5 @@
-import { createImageGetter, getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+import { createImageGetter, getProductUrl, shopifyGidToId } from '@/transforms/shopify';
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
 import {
   Fulfillment,
   FulfillmentStatus,

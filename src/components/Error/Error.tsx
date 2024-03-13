@@ -1,6 +1,6 @@
-import { ErrorMessage } from 'components/Error/ErrorMessage';
-import NextLink from 'components/NextLink';
-import Wrapper from 'components/Wrapper/Content';
+import { ErrorMessage } from '@/components/Error/ErrorMessage';
+import NextLink from '@/components/NextLink';
+import Wrapper from '@/components/Wrapper/Content';
 import NextError from 'next/error';
 export interface ErrorProps {
   statusCode?: 400 | 404 | 405 | 500;

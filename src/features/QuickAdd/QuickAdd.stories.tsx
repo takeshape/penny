@@ -1,5 +1,5 @@
+import { quickAddProduct } from '@/features/QuickAdd/fixtures';
 import { Meta, StoryObj } from '@storybook/react';
-import { quickAddProduct } from 'features/QuickAdd/fixtures';
 import { QuickAdd } from './QuickAdd';
 
 const meta: Meta<typeof QuickAdd> = {

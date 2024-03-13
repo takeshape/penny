@@ -1,6 +1,6 @@
+import { commitSha, sentryDsn, vercelEnv } from '@/config';
+import logger from '@/logger';
 import * as Sentry from '@sentry/node';
-import { commitSha, sentryDsn, vercelEnv } from 'config';
-import logger from 'logger';
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 
 export function withSentry(handler: NextApiHandler) {

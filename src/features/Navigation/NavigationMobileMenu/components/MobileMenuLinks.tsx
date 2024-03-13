@@ -1,6 +1,6 @@
+import NextLink from '@/components/NextLink';
+import classNames from '@/utils/classNames';
 import { Disclosure } from '@headlessui/react';
-import NextLink from 'components/NextLink';
-import classNames from 'utils/classNames';
 import { Navigation } from '../../types';
 
 export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {

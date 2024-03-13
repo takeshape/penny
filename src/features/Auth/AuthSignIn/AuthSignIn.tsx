@@ -1,15 +1,15 @@
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import NextLink from 'components/NextLink';
-import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { SigninError } from 'features/Auth/types';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import NextLink from '@/components/NextLink';
+import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { SigninError } from '@/features/Auth/types';
+import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { sanitizeCallbackUrl } from 'utils/callbacks';
 
 export interface AuthSignInForm {
   email: string;

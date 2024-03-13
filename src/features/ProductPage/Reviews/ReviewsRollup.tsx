@@ -1,4 +1,4 @@
-import { Star } from 'components/Stars/Stars';
+import { Star } from '@/components/Stars/Stars';
 import { ProductPageReviewsRollup, ProductPageReviewsStats } from '../types';
 
 export interface ReviewsRollupProps {

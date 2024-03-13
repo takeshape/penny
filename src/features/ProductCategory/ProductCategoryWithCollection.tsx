@@ -1,7 +1,7 @@
-import Seo from 'components/Seo';
+import Seo from '@/components/Seo';
+import { PaginationDataHookParsedPath, usePaginationData } from '@/utils/hooks/usePaginationData';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
-import { PaginationDataHookParsedPath, usePaginationData } from 'utils/hooks/usePaginationData';
 import { ProductCategory } from './ProductCategory';
 import { ProductCategoryShopifyCollectionQuery } from './queries';
 import { getCollection, getCurrentTitle, getNextUrl, parseRouterPath } from './transforms';

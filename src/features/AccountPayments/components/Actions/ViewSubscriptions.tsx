@@ -1,5 +1,5 @@
-import { Modal, ModalProps } from 'components/Modal/Modal';
-import { PaymentMethod } from 'types/paymentMethod';
+import { Modal, ModalProps } from '@/components/Modal/Modal';
+import { PaymentMethod } from '@/types/paymentMethod';
 
 // export const SubscriptionStatus = ({ status }: Pick<SubscriptionContract, 'status'>) => {
 //   let badgeText = '';

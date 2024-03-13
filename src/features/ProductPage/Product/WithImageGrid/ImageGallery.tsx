@@ -1,6 +1,6 @@
-import NextImage from 'components/NextImage';
-import { ProductImage } from 'types/product';
-import classNames from 'utils/classNames';
+import NextImage from '@/components/NextImage';
+import { ProductImage } from '@/types/product';
+import classNames from '@/utils/classNames';
 
 export interface ImageGalleryProps {
   images: ProductImage[];

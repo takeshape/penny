@@ -1,5 +1,5 @@
-import Stars from 'components/Stars/Stars';
-import { ReviewStats } from 'types/review';
+import Stars from '@/components/Stars/Stars';
+import { ReviewStats } from '@/types/review';
 
 export interface ReviewsCalloutProps {
   stats: ReviewStats;

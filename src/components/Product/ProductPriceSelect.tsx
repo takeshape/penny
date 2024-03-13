@@ -1,8 +1,8 @@
+import { ProductPriceOption } from '@/types/product';
+import classNames from '@/utils/classNames';
+import { formatDiscount, formatPrice, pluralizeText } from '@/utils/text';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductPriceOption } from 'types/product';
-import classNames from 'utils/classNames';
-import { formatDiscount, formatPrice, pluralizeText } from 'utils/text';
 
 export interface ProductPriceSelectProps {
   value: ProductPriceOption;

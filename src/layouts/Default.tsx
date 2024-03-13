@@ -1,13 +1,13 @@
-import Seo from 'components/Seo';
-import { Cart } from 'features/Cart/Cart';
-import { CartProvider } from 'features/Cart/CartProvider';
-import footerData from 'features/Footer/data.preval';
-import { Footer } from 'features/Footer/Footer';
-import navigationData from 'features/Navigation/data.preval';
-import { Navigation } from 'features/Navigation/Navigation';
-import { Notification } from 'features/Notification/Notification';
-import { QuickAddWithData } from 'features/QuickAdd/QuickAddWithData';
-import SearchModal from 'features/Search/Modal/Modal';
+import Seo from '@/components/Seo';
+import { Cart } from '@/features/Cart/Cart';
+import { CartProvider } from '@/features/Cart/CartProvider';
+import footerData from '@/features/Footer/data.preval';
+import { Footer } from '@/features/Footer/Footer';
+import navigationData from '@/features/Navigation/data.preval';
+import { Navigation } from '@/features/Navigation/Navigation';
+import { Notification } from '@/features/Notification/Notification';
+import { QuickAddWithData } from '@/features/QuickAdd/QuickAddWithData';
+import SearchModal from '@/features/Search/Modal/Modal';
 import { NextSeoProps } from 'next-seo';
 import { PropsWithChildren } from 'react';
 

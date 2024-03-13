@@ -1,5 +1,5 @@
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
 
 export type OrderStatus =
   | 'UNFULFILLED'

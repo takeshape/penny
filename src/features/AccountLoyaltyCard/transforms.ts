@@ -1,4 +1,4 @@
-import { GetMyLoyaltyCardQueryResponse } from 'types/takeshape';
+import { GetMyLoyaltyCardQueryResponse } from '@/types/takeshape';
 import { LoyaltyCard } from './types';
 
 export function getLoyaltyCard(response?: GetMyLoyaltyCardQueryResponse | null): LoyaltyCard | null {

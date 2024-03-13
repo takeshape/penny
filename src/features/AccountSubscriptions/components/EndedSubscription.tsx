@@ -1,9 +1,9 @@
+import { shopifyGidToId } from '@/transforms/shopify';
+import classNames from '@/utils/classNames';
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
 import { Fragment, useCallback } from 'react';
-import { shopifyGidToId } from 'transforms/shopify';
-import classNames from 'utils/classNames';
 import { AnySubscription, RefetchSubscriptions } from '../types';
 import { SubscriptionOrders } from './SubscriptionOrders/SubscriptionOrders';
 import { SubscriptionOverview } from './SubscriptionOverview/SubscriptionOverview';

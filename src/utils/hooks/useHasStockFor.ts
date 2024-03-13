@@ -1,5 +1,5 @@
+import { ProductVariantOptionValue, ProductVariantSelection } from '@/types/product';
 import { useCallback } from 'react';
-import { ProductVariantOptionValue, ProductVariantSelection } from 'types/product';
 
 export interface HasStockForHookProps {
   name: string;

@@ -1,4 +1,4 @@
-import { getStats } from 'transforms/reviewsIo';
+import { getStats } from '@/transforms/reviewsIo';
 import {
   createImageGetter,
   getCollectionUrl,
@@ -7,11 +7,11 @@ import {
   getProductIsAvailable,
   getProductUrl,
   getSeo
-} from 'transforms/shopify';
+} from '@/transforms/shopify';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionQueryResponse
-} from 'types/takeshape';
+} from '@/types/takeshape';
 import { PaginationDataHookParsedPath } from '../../utils/hooks/usePaginationData';
 import {
   ProductCategoryBreadcrumbs,

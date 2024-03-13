@@ -1,7 +1,7 @@
-import NextImage from 'components/NextImage';
-import { CreditCard } from 'components/Payments/CreditCard';
+import NextImage from '@/components/NextImage';
+import { CreditCard } from '@/components/Payments/CreditCard';
+import { getProductUrl } from '@/transforms/shopify';
 import { useMemo, useState } from 'react';
-import { getProductUrl } from 'transforms/shopify';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { getOrders } from '../../utils';
 import { PaymentMethodForm } from '../Actions/PaymentMethodForm';

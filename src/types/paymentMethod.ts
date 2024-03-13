@@ -1,4 +1,4 @@
-import { Shopify_CustomerCreditCard } from 'types/takeshape';
+import { Shopify_CustomerCreditCard } from '@/types/takeshape';
 
 export type CreditCard = Pick<
   Shopify_CustomerCreditCard,

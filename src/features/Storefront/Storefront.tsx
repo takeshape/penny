@@ -1,6 +1,6 @@
-import { GetStorefrontQueryResponse } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
-import { isNotNullish } from 'utils/types';
+import { GetStorefrontQueryResponse } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
+import { isNotNullish } from '@/utils/types';
 import { BackgroundImage } from './BackgroundImage/BackgroundImage';
 import { Collection } from './Collection/Collection';
 import { Collections } from './Collections/Collections';

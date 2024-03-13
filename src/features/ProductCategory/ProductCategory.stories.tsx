@@ -1,5 +1,5 @@
+import { productCategoryCollection } from '@/features/ProductCategory/fixtures';
 import { Meta, StoryObj } from '@storybook/react';
-import { productCategoryCollection } from 'features/ProductCategory/fixtures';
 import { ProductCategory } from './ProductCategory';
 
 const meta: Meta<typeof ProductCategory> = {

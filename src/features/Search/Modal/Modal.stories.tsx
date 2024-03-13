@@ -1,6 +1,6 @@
+import { isSearchOpenAtom } from '@/store';
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
-import { isSearchOpenAtom } from 'store';
 import { SearchShopifyProducts } from '../queries.fixtures';
 import { Modal } from './Modal';
 

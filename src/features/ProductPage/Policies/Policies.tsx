@@ -1,4 +1,4 @@
-import NextImage from 'components/NextImage';
+import NextImage from '@/components/NextImage';
 import { ProductPagePolicies as ProductPagePoliciesType } from '../types';
 
 export interface PoliciesProps {

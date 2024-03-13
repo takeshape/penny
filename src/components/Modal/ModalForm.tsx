@@ -1,4 +1,4 @@
-import { Modal, ModalProps } from 'components/Modal/Modal';
+import { Modal, ModalProps } from '@/components/Modal/Modal';
 import { FormEventHandler, PropsWithChildren, useEffect } from 'react';
 
 export interface ModalFormProps extends ModalProps {

@@ -1,4 +1,4 @@
-const assert = require('assert');
+const assert = require('node:assert');
 
 require('dotenv').config();
 
@@ -15,6 +15,7 @@ const config = {
   overwrite: true,
   documents: 'src/**/queries.storefront.ts',
   schema: {
+    // @ts-ignore
     [shopifyStorefrontUrl]: {
       headers: {
         ['X-Shopify-Storefront-Access-Token']: shopifyStorefrontToken

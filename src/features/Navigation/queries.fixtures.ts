@@ -1,4 +1,4 @@
-import { NavigationQueryResponse } from 'types/takeshape';
+import { NavigationQueryResponse } from '@/types/takeshape';
 
 export const navigationResponse: NavigationQueryResponse = {
   navigation: {

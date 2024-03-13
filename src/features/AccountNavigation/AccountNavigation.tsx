@@ -1,3 +1,5 @@
+import NextLink from '@/components/NextLink';
+import classNames from '@/utils/classNames';
 import { useApolloClient } from '@apollo/client';
 import {
   ArrowPathIcon,
@@ -7,11 +9,9 @@ import {
   TagIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline';
-import NextLink from 'components/NextLink';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
-import classNames from 'utils/classNames';
 
 export const accountNavigationItems = [
   { name: 'Account', href: '/account', icon: UserCircleIcon, current: false },

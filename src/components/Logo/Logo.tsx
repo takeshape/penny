@@ -1,5 +1,5 @@
-import NextImage from 'components/NextImage';
-import { siteLogo, siteName } from 'config';
+import NextImage from '@/components/NextImage';
+import { siteLogo, siteName } from '@/config';
 
 export interface LogoProps {
   className?: string;

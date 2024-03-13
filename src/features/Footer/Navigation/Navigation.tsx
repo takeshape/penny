@@ -1,4 +1,4 @@
-import NextLink from 'components/NextLink';
+import NextLink from '@/components/NextLink';
 import { PropsWithChildren, useMemo } from 'react';
 
 interface NavigationItemProps {

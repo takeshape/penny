@@ -1,4 +1,4 @@
-import { ProductPageRelatedProductsQueryResponse } from 'types/storefront';
+import { ProductPageRelatedProductsQueryResponse } from '@/types/storefront';
 
 export const relatedProductsResponse: ProductPageRelatedProductsQueryResponse = {
   products: [

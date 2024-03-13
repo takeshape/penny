@@ -1,4 +1,4 @@
-import NextLink from 'components/NextLink';
+import NextLink from '@/components/NextLink';
 import { signIn, useSession } from 'next-auth/react';
 
 export const TopCreateOrSignIn = () => {

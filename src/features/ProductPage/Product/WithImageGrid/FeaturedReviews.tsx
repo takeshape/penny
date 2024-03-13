@@ -1,7 +1,7 @@
-import { Avatar } from 'components/Avatar/Avatar';
-import { DefaultReviewer } from 'components/Icons/Icons';
-import Stars from 'components/Stars/Stars';
-import { Review } from 'types/review';
+import { Avatar } from '@/components/Avatar/Avatar';
+import { DefaultReviewer } from '@/components/Icons/Icons';
+import Stars from '@/components/Stars/Stars';
+import { Review } from '@/types/review';
 
 export interface FeaturedReviewsProps {
   reviews: Review[];

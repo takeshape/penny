@@ -1,24 +1,24 @@
-import FormCardPanel from 'components/Form/CardPanel/CardPanel';
-import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
+import FormToggleWithLabel from '@/components/Form/Toggle/ToggleWithLabel';
 import {
   CustomerQueryResponse,
   CustomerQueryVariables,
   CustomerUpdateMutationResponse,
   CustomerUpdateMutationVariables
-} from 'types/storefront';
+} from '@/types/storefront';
 import {
   GetMyNewsletterSubscriptionsQueryResponse,
   SubscribeMyEmailToNewsletterMutationResponse,
   SubscribeMyEmailToNewsletterMutationVariables,
   UnsubscribeMyEmailFromNewsletterMutationResponse,
   UnsubscribeMyEmailFromNewsletterMutationVariables
-} from 'types/takeshape';
-import { formatError } from 'utils/errors';
-import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
-import { useAuthenticatedMutation, useAuthenticatedQuery } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { formatError } from '@/utils/errors';
+import { useStorefrontLazyQuery, useStorefrontMutation } from '@/utils/storefront';
+import { useAuthenticatedMutation, useAuthenticatedQuery } from '@/utils/takeshape';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   GetMyNewsletterSubscriptionsQuery,
   SubscribeMyEmailToNewsletterMutation,

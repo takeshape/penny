@@ -1,7 +1,7 @@
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { StorefrontChild } from '@/features/Storefront/types';
 import { getImageUrl } from '@takeshape/routing';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { StorefrontChild } from 'features/Storefront/types';
 
 type CollectionsProps = StorefrontChild & {
   __typename: 'CollectionsComponent';

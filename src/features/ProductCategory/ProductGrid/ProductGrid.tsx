@@ -1,4 +1,4 @@
-import { GridItemLoading } from 'features/ProductCategory/ProductGrid/components/GridItemLoading';
+import { GridItemLoading } from '@/features/ProductCategory/ProductGrid/components/GridItemLoading';
 import { PropsWithChildren } from 'react';
 import { ProductCategoryProductListItem } from '../types';
 import { GridItem } from './components/GridItem';
