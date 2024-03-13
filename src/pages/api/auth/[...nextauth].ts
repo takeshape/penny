@@ -24,7 +24,6 @@ import logger from 'logger';
 import { NextApiHandler } from 'next';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
-import { Provider } from 'next-auth/providers';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { parseCookies, setCookie } from 'nookies';
@@ -73,7 +72,7 @@ const withAllAccess = createNextAuthAllAccess({
   ]
 });
 
-const providers: Provider[] = [
+const providers: NextAuthOptions['providers'] = [
   CredentialsProvider({
     id: 'shopify',
     name: 'Shopify',
