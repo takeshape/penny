@@ -34,7 +34,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.config.js",
-    "codegen.*.config.js"
+    "codegen.*.config.ts",
+    "tailwind.config.ts"
   ],
   "exclude": [
     "node_modules",
