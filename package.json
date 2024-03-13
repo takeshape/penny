@@ -50,6 +50,7 @@
     "@takeshape/routing": "^10.7.6",
     "abortcontroller-polyfill": "^1.7.5",
     "card-validator": "^9.1.0",
+    "cookies-next": "^4.1.1",
     "date-fns": "^3.4.0",
     "graphql": "^16.8.1",
     "imask": "^7.5.0",
