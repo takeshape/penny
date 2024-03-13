@@ -664,6 +664,21 @@ project name.
 
 - Set the `SENTRY_AUTH_TOKEN` value in your `.env.local` or in your hosting provider's UI.
 
+3. Find your sentry org slug.
+
+- Head to **Settings**, then **General Settings**. At the top of the page you should see **Organization Slug**. Copy the
+  value there.
+
+- Set this value in your checked in `.env` file.
+
+4. Find your sentry project name.
+
+- Head to **Settings**, then **Projects**. You'll see a list of projects. Select the Next.js project you want to use.
+
+- Under the **Project Details** section on the next page, you'll see a **Name** field. Copy that value.
+
+- Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your checked in `.env` file.
+
 ## Multipass
 
 For Shopify Plus users, this project supports sign in with Google, in addition to the regular Shopify sign in. To set it
