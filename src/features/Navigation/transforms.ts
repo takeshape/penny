@@ -1,8 +1,8 @@
-import { currencyList } from '@/config';
-import { getNavigationLink } from '@/transforms/navigation';
-import { NavigationQueryResponse, NavigationSectionsLinkProperty } from '@/types/takeshape';
-import { isNotNullish } from '@/utils/types';
 import { Object } from 'ts-toolbelt';
+import { currencyList } from '../../config';
+import { getNavigationLink } from '../../transforms/navigation';
+import { NavigationQueryResponse, NavigationSectionsLinkProperty } from '../../types/takeshape';
+import { isNotNullish } from '../../utils/types';
 import { Navigation, NavigationSection } from './types';
 
 function getNavigationLinksSections(

@@ -1,6 +1,6 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
-import { createStaticClient } from '@/utils/apollo/client';
 import preval from 'next-plugin-preval';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '../../config';
+import { createStaticClient } from '../../utils/apollo/client';
 import { NavigationQuery } from './queries';
 import { getNavigation } from './transforms';
 

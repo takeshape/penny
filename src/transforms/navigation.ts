@@ -1,6 +1,6 @@
-import { getCollectionUrl, getProductUrl } from '@/transforms/shopify';
-import { NavigationItem } from '@/types/navigation';
-import { NavigationSectionsLinkProperty } from '@/types/takeshape';
+import { getCollectionUrl, getProductUrl } from '../transforms/shopify';
+import { NavigationItem } from '../types/navigation';
+import { NavigationSectionsLinkProperty } from '../types/takeshape';
 
 export function getNavigationLink(link: NavigationSectionsLinkProperty): NavigationItem | null {
   let item: NavigationItem | undefined;
