@@ -28,7 +28,7 @@ export const TrustpilotWithData = ({ sku, reviewList }: TrustpilotProps) => {
 
   useEffect(() => {
     if (currentPage !== 1) {
-      loadReviews({
+      void loadReviews({
         variables: {
           sku,
           page: currentPage,

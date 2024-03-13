@@ -11,10 +11,11 @@ import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { NextPage } from 'next';
 
 const AccountRewardsPage: NextPage = () => {
-  const { transformedData: loyaltyCard, error } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse, {}, LoyaltyCard>(
-    GetMyLoyaltyCardQuery,
-    { transform: { data: getLoyaltyCard } }
-  );
+  const { transformedData: loyaltyCard, error } = useAuthenticatedQuery<
+    GetMyLoyaltyCardQueryResponse,
+    object,
+    LoyaltyCard
+  >(GetMyLoyaltyCardQuery, { transform: { data: getLoyaltyCard } });
 
   if (error) {
     return (

@@ -5,7 +5,7 @@ import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter } from 'next/router';
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
 
-export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
+export const CartProvider = ({ children }: PropsWithChildren) => {
   const setCartItems = useSetAtom(cartItemsAtom);
   const setNotification = useSetAtom(notificationAtom);
   const setDiscountCode = useSetAtom(cartDiscountCodeAtom);
@@ -37,7 +37,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
       }
 
       setNotification({ title, body, showFor: 5000, status: 'info' });
-      replace({ query }, undefined, { shallow: true });
+      void replace({ query }, undefined, { shallow: true });
     }
   }, [action, query, replace, setCartItems, setDiscountCode, setNotification]);
 
@@ -49,7 +49,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
       const title = `Discount code added`;
       const body = `<b>${ucDiscountCode}</b> has been added to your cart and will be applied at checkout.`;
       setNotification({ title, body, showFor: 5000, status: 'info' });
-      replace({ query }, undefined, { shallow: true });
+      void replace({ query }, undefined, { shallow: true });
     }
   }, [discount, query, replace, setDiscountCode, setNotification]);
 

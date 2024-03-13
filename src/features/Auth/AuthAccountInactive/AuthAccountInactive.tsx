@@ -17,7 +17,7 @@ export type AccountInactiveFormProps = {
   customer: InactiveCustomer;
 } & ModalProps;
 
-export type AccountInactiveFormValues = {};
+export type AccountInactiveFormValues = Record<string, unknown>;
 
 export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInactiveFormProps) => {
   const {
@@ -38,7 +38,7 @@ export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInacti
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
       className=""

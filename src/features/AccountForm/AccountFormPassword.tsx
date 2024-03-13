@@ -51,7 +51,7 @@ export const AccountFormPassword = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful && !error) {
-      signOut({ callbackUrl: '/auth/signin' });
+      void signOut({ callbackUrl: '/auth/signin' });
     }
   }, [isSubmitSuccessful, error, reset]);
 
@@ -64,7 +64,7 @@ export const AccountFormPassword = () => {
     <FormCardPanel
       primaryText="New Password"
       secondaryText="Setting a new password will sign you out."
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       isReady={isReady}
       isSubmitting={isSubmitting}
       isSubmitSuccessful={isSubmitSuccessful}

@@ -26,7 +26,7 @@ export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWit
   });
 
   useEffect(() => {
-    loadProducts();
+    void loadProducts();
   }, [loadProducts]);
 
   const loadingProducts = useMemo(() => Array(limit).fill(undefined) as ProductPageRelatedProductsProduct[], [limit]);

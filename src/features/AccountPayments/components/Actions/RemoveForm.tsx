@@ -32,7 +32,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
   const { instrument } = paymentMethod;
   const CreditCardIcon = getCreditCardIcon(instrument.brand);
 
-  const handleFormSubmit = useCallback(async (formData: RemoveFormValues) => {
+  const handleFormSubmit = useCallback((formData: RemoveFormValues) => {
     // eslint-disable-next-line no-console
     console.log({ formData });
     // TODO Mutate payment methods list
@@ -47,7 +47,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
       primaryText="Remove payment method"
       secondaryText="Remove a payment method from your account."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

@@ -83,7 +83,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
         nextUrl = getNextUrl(currentPageData, nextPage, isPreviousPage);
       }
 
-      push(nextUrl, undefined, { shallow: true });
+      void push(nextUrl, undefined, { shallow: true });
     },
     [cachedPageData, currentPageData, currentPath.page, push]
   );

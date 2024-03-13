@@ -1,6 +1,6 @@
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
 
-const ClientOnly = ({ children }: PropsWithChildren<{}>) => {
+const ClientOnly = ({ children }: PropsWithChildren) => {
   const [hasMounted, setHasMounted] = useState(false);
   useEffect(() => {
     setHasMounted(true);

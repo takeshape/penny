@@ -261,7 +261,7 @@ const nextAuthConfig: NextAuthOptions = {
 
       return token;
     },
-    async session({ session, token }) {
+    session({ session, token }) {
       const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {

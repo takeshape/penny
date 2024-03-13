@@ -22,7 +22,7 @@ const _CheckoutPage: NextPage = () => {
 
   useEffect(() => {
     if (session) {
-      setCartMutation({
+      void setCartMutation({
         mutation: CartCreateMutation,
         variables: getCartVariables(cartItems, session, discountCode)
       });

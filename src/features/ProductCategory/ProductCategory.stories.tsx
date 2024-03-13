@@ -17,7 +17,9 @@ export const _ProductCategory: Story = {
     header: { text: { primary: productCategoryCollection.name, secondary: productCategoryCollection.descriptionHtml } },
     items: productCategoryCollection.items,
     pagination: {
-      setCurrentPage: () => {}
+      setCurrentPage: () => {
+        // empty
+      }
     }
   }
 };

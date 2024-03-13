@@ -1,7 +1,6 @@
-import React from 'react';
 import { AnyWritableAtom, InitialValues, JotaiTestProvider } from './JotaiTestProvider';
 
-export function withJotai(StoryFn, context) {
+export function withJotai(StoryFn: any, context: any) {
   const {
     parameters: { jotai }
   } = context;

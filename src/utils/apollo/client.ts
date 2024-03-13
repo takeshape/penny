@@ -60,7 +60,7 @@ function createApolloClient({
       }
 
       logger.error({
-        message: `[Network error]: ${networkError}`
+        message: `[Network error]: ${networkError.message}`
       });
     }
   });
@@ -93,7 +93,7 @@ function createApolloClient({
     //   jitter: true
     // },
     attempts: {
-      retryIf: (error, _operation) => {
+      retryIf: (error) => {
         if (Array.isArray(error)) {
           return error.some(({ message }) => message === 'Throttled');
         }

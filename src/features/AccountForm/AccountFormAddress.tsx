@@ -95,7 +95,7 @@ export const AccountFormAddress = () => {
   // Load the customer
   useEffect(() => {
     if (session?.user?.shopifyCustomerAccessToken) {
-      loadCustomer({
+      void loadCustomer({
         variables: {
           customerAccessToken: session.user.shopifyCustomerAccessToken
         }
@@ -135,7 +135,7 @@ export const AccountFormAddress = () => {
     <FormCardPanel
       primaryText="Shipping Address"
       secondaryText="Use a permanent address where you can receive mail."
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       isReady={isReady}
       isSubmitting={isSubmitting}
       isSubmitSuccessful={isSubmitSuccessful}

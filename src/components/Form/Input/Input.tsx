@@ -9,7 +9,7 @@ type MaskedInputProps = SetRequired<IMaskInputProps<HTMLInputElement>, 'name'> &
   onChange: (event: { target: { name: string; value: string } }) => void;
 };
 
-const MaskedInputInner = ({ id, name, onChange, onBlur, ...props }: MaskedInputProps) => {
+const MaskedInputInner = ({ id, name, onChange, ...props }: MaskedInputProps) => {
   return (
     <IMaskInput
       {...props}

@@ -126,7 +126,7 @@ export const ProductOptionsForm = ({
       primaryText="Product options"
       secondaryText="Update the product options for your subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section aria-labelledby="options-heading" className="md:h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
         <h3 id="options-heading" className="sr-only">

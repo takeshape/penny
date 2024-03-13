@@ -120,7 +120,7 @@ export const NextChargeDateForm = ({
       primaryText="Delivery schedule"
       secondaryText="Change the date of your next scheduled order and all upcoming orders."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section
         aria-labelledby="options-heading"

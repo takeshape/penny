@@ -1,6 +1,4 @@
-import { test } from '../fixtures';
 import { expect } from 'playwright/test';
-import { getCollectionEndpoint } from '../utils';
 import {
   COLLECTION_NAME,
   PRODUCT_COLOR_INSTOCK,
@@ -10,9 +8,11 @@ import {
   USER_PASSWORD
 } from '../constants';
 import { getTextMessage } from '../fake-data-generation';
+import { test } from '../fixtures';
+import { getCollectionEndpoint } from '../utils';
 
 test.describe('Product page', () => {
-  test.beforeEach('Navigate to the product', async ({ page, productPage, collectionsPage }) => {
+  test.beforeEach('Navigate to the product', async ({ page, collectionsPage }) => {
     if (!COLLECTION_NAME) {
       test.skip(!COLLECTION_NAME, 'PLAYWRIGHT_COLLECTION_NAME was not defined');
       return;

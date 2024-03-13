@@ -89,7 +89,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             action="#"
             method="POST"
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
           >
             <FormInput
               control={control}

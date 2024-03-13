@@ -25,7 +25,7 @@ export function useSearch({ graphqlQuery, resultsFn }: UseSearchProps): UseSearc
 
   useEffect(() => {
     if (debouncedQuery.length > 1) {
-      search({ variables: { query: debouncedQuery } });
+      void search({ variables: { query: debouncedQuery } });
     } else {
       setResults(null);
     }

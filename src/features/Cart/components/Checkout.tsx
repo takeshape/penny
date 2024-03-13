@@ -26,12 +26,12 @@ export const CartCheckout = () => {
 
   const handleCheckout = useCallback(() => {
     if (signedInCheckout && !session) {
-      push(`/auth/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/_checkout')}`);
+      void push(`/auth/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/_checkout')}`);
       return;
     }
 
     setIsCartCheckingOut(true);
-    setCartMutation({
+    void setCartMutation({
       variables: getCartVariables(items, session, discountCode)
     });
   }, [session, setIsCartCheckingOut, setCartMutation, items, discountCode, push]);

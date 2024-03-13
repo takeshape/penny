@@ -74,7 +74,7 @@ export const Reviews = ({
               </Button>
             ) : (
               <span
-                onClick={() => signIn(undefined, { callbackUrl: `${asPath}?writeReview=true` })}
+                onClick={() => void signIn(undefined, { callbackUrl: `${asPath}?writeReview=true` })}
                 className="mt-6 inline-flex w-full bg-background border border-form-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-50 sm:w-auto lg:w-full cursor-pointer"
               >
                 Sign in to write a review

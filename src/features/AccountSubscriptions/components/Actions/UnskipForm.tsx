@@ -51,7 +51,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
       primaryText="Unskip order"
       secondaryText="Restore a previously skipped upcoming order."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

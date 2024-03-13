@@ -24,7 +24,7 @@ export const SignedOut = () => (
       href={`/api/auth/signin`}
       onClick={(e) => {
         e.preventDefault();
-        signIn(undefined, { callbackUrl: '/account' });
+        void signIn(undefined, { callbackUrl: '/account' });
       }}
       className="-m-2 p-2 text-primary-400 hover:text-primary-500 cursor-pointer"
     >

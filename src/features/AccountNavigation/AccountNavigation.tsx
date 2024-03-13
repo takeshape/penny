@@ -18,7 +18,7 @@ export const accountNavigationItems = [
   { name: 'Password', href: '/account/password', icon: KeyIcon, current: false },
   { name: 'Purchases', href: '/account/purchases', icon: TagIcon, current: false },
   { name: 'Subscriptions', href: '/account/subscriptions', icon: ArrowPathIcon, current: false },
-  // Cannot use without `write_customer_payment_methods` scope — requires an approved app
+  // Cannot use without `write_customer_payment_methods` scope — requires an approved app
   // { name: 'Payment Methods', href: '/account/payments', icon: CreditCardIcon, current: false },
   { name: 'Rewards', href: '/account/rewards', icon: GiftIcon, current: false }
 ];
@@ -40,10 +40,11 @@ function useAccountNavigationItems() {
 }
 
 function useLogout() {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { resetStore } = useApolloClient();
   const handleLogout = useCallback(async () => {
     await resetStore();
-    signOut({ callbackUrl: '/' });
+    void signOut({ callbackUrl: '/' });
   }, [resetStore]);
   return {
     handleLogout
@@ -82,7 +83,7 @@ export const AccountNavigation = () => {
           </NextLink>
         ))}
         <button
-          onClick={handleLogout}
+          onClick={() => void handleLogout()}
           className="text-body-500 hover:text-body-900 hover:bg-primary-50 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
         >
           <ArrowRightOnRectangleIcon

@@ -21,7 +21,15 @@ export type ReviewsProps = {
   setIsOpen: (isOpen: boolean) => void;
 };
 
-const ReviewStar = ({ value, starNumber, onChange }: { value: number; starNumber: number; onChange: any }) => {
+const ReviewStar = ({
+  value,
+  starNumber,
+  onChange
+}: {
+  value: number;
+  starNumber: number;
+  onChange: (star: number) => void;
+}) => {
   return <Star lit={value >= starNumber} onClick={() => onChange(starNumber)} hoverHighlight={true} />;
 };
 
@@ -110,7 +118,7 @@ export const CreateReview = (props: ReviewsProps) => {
                 </Dialog.Title>
 
                 {!success && (
-                  <form onSubmit={handleSubmit(submitCallback)}>
+                  <form onSubmit={(...args) => void handleSubmit(submitCallback)(...args)}>
                     <Controller
                       control={control}
                       name="rating"

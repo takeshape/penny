@@ -15,6 +15,7 @@ const ActivateAccountPage: NextPage<InferGetServerSidePropsType<typeof getServer
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   let params;
 

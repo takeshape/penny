@@ -4,7 +4,7 @@ import { truncate } from '@/utils/truncate';
 import { Combobox } from '@headlessui/react';
 import { SearchItem } from '../../types';
 
-export type ModalSearchItemProps = {} & SearchItem;
+export type ModalSearchItemProps = SearchItem;
 
 export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
   return (

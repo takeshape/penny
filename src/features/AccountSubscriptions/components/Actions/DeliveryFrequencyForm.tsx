@@ -73,7 +73,7 @@ export const DeliveryFrequencyForm = ({
       primaryText="Delivery frequency"
       secondaryText="Change how often you get your subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section aria-labelledby="options-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
         <h3 id="options-heading" className="sr-only">

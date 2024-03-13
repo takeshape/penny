@@ -14,7 +14,7 @@ export type FormPhoneInputProps = {
   helpText?: string;
   // Because the phone # validation gives no way to set a message
   defaultErrorMessage?: string;
-} & PhoneInputProps<DefaultInputComponentProps>;
+} & Omit<PhoneInputProps<DefaultInputComponentProps>, 'inputComponent'>;
 
 export const FormPhoneInput = <
   TFieldValues extends FieldValues,
@@ -29,7 +29,6 @@ export const FormPhoneInput = <
   defaultValue,
   rules,
   shouldUnregister,
-  inputComponent,
   defaultErrorMessage,
   ...props
 }: FormPhoneInputProps & UseControllerProps<TFieldValues, TName>) => {

@@ -24,7 +24,9 @@ export type EndedSubscriptionProps = {
 };
 
 export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
-  const refetchSubscriptions = useCallback(async () => {}, []);
+  const refetchSubscriptions = useCallback(async () => {
+    // empty
+  }, []);
 
   return (
     <Tab.Group>

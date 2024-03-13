@@ -52,7 +52,7 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
 
       if (email) {
         setLoading(true);
-        mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
+        void mutateFn({ variables: { listId: defaultKlaviyoListId, email, recaptchaToken } });
       }
     },
     [executeRecaptcha, mutateFn]
@@ -64,7 +64,7 @@ export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
         <h3 className="text-sm font-semibold text-body-400 tracking-wider uppercase">{text.primary}</h3>
       )}
       {text?.secondary && <p className="mt-4 text-base text-body-500">{text.secondary}</p>}
-      <form className="mt-4 sm:flex" onSubmit={handleSubmit(onSubmit)}>
+      <form className="mt-4 sm:flex" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>

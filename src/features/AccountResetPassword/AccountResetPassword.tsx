@@ -46,13 +46,13 @@ export const AccountResetPassword = ({ customerId, resetToken, activationToken }
   >(ActivateAccountMutation);
 
   const onSubmit: SubmitHandler<AccountResetPasswordForm> = useCallback(
-    async ({ password }) => {
+    ({ password }) => {
       if (activationToken) {
-        setActivateAccountPayload({ variables: { id: customerId, input: { password, activationToken } } });
+        void setActivateAccountPayload({ variables: { id: customerId, input: { password, activationToken } } });
       }
 
       if (resetToken) {
-        setResetPasswordPayload({ variables: { id: customerId, input: { password, resetToken } } });
+        void setResetPasswordPayload({ variables: { id: customerId, input: { password, resetToken } } });
       }
     },
     [activationToken, customerId, resetToken, setActivateAccountPayload, setResetPasswordPayload]
@@ -66,7 +66,7 @@ export const AccountResetPassword = ({ customerId, resetToken, activationToken }
 
   useEffect(() => {
     if (hasData && !hasErrors) {
-      setTimeout(() => push('/auth/signin'), 5000);
+      setTimeout(() => void push('/auth/signin'), 5000);
     }
   }, [hasData, hasErrors, push]);
 
@@ -81,7 +81,7 @@ export const AccountResetPassword = ({ customerId, resetToken, activationToken }
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {hasErrors && (
               <Alert
                 status="error"

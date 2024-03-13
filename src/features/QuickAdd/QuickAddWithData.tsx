@@ -21,7 +21,7 @@ export const QuickAddWithData = () => {
 
   useEffect(() => {
     if (quickAdd?.productHandle && !loading && !error) {
-      loadProduct({
+      void loadProduct({
         variables: {
           handle: quickAdd.productHandle
         }

@@ -89,6 +89,7 @@ export function getProductReviewsPage(
 }
 
 export function getTrustpilotProductReviews(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   response?: ProductPageShopifyProductResponse
 ): ProductPageReviewsReviewList | null {
   // To enable Trustpilot reviews follow the directions in /docs/trustpilot and

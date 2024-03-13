@@ -7,22 +7,19 @@ export function getNavigationLink(link: NavigationSectionsLinkProperty): Navigat
 
   switch (link.__typename) {
     case 'Collection':
-      const { shopifyCollection } = link;
-      if (shopifyCollection) {
+      if (link.shopifyCollection) {
         item = {
-          name: shopifyCollection.title,
-          href: getCollectionUrl(shopifyCollection.handle)
+          name: link.shopifyCollection.title,
+          href: getCollectionUrl(link.shopifyCollection.handle)
         };
       }
       break;
 
     case 'Product':
-      const { shopifyProduct } = link;
-
-      if (shopifyProduct) {
+      if (link.shopifyProduct) {
         item = {
-          name: shopifyProduct.title,
-          href: getProductUrl(shopifyProduct.handle)
+          name: link.shopifyProduct.title,
+          href: getProductUrl(link.shopifyProduct.handle)
         };
       }
       break;

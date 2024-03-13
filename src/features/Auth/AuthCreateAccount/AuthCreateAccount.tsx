@@ -70,7 +70,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
   useEffect(() => {
     if (customerResponse?.customerCreate?.customer?.id) {
       const { email, password } = watched.current;
-      signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
+      void signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
     }
   }, [customerResponse, signIn, sanitizedCallbackUrl]);
 
@@ -93,7 +93,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
 
       if (customer?.state === 'enabled') {
         // Send to sign up page
-        push(`/auth/signin?error=CannotCreate&email=${email}`);
+        void push(`/auth/signin?error=CannotCreate&email=${email}`);
         return;
       }
 
@@ -114,7 +114,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
   const errorMessage = getErrorMessage(customerError);
 
   const signinGoogle = useCallback(() => {
-    signIn('google', { callbackUrl: sanitizedCallbackUrl });
+    void signIn('google', { callbackUrl: sanitizedCallbackUrl });
   }, [sanitizedCallbackUrl, signIn]);
 
   return (
@@ -133,7 +133,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {notice && <Alert status="warn" primaryText={notice} />}
 
             {errorMessage && (
@@ -212,7 +212,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
                 href={`/api/auth/signin`}
                 onClick={(e) => {
                   e.preventDefault();
-                  signIn(undefined, { callbackUrl: sanitizedCallbackUrl });
+                  void signIn(undefined, { callbackUrl: sanitizedCallbackUrl });
                 }}
                 className="ml-1 text-sm font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >

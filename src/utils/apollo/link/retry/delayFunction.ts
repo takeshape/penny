@@ -40,7 +40,7 @@ export type DelayFunctionOptions = {
 };
 
 export function buildDelayFunction(delayOptions?: DelayFunctionOptions): DelayFunction {
-  const { initial = 300, jitter = true, max = Infinity } = delayOptions || {};
+  const { initial = 300, jitter = true, max = Infinity } = delayOptions ?? {};
   // If we're jittering, baseDelay is half of the maximum delay for that
   // attempt (and is, on average, the delay we will encounter).
   // If we're not jittering, adjust baseDelay so that the first attempt

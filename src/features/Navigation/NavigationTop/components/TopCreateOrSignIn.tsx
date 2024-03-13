@@ -18,7 +18,7 @@ export const TopCreateOrSignIn = () => {
         href={`/api/auth/signin`}
         onClick={(e) => {
           e.preventDefault();
-          signIn();
+          void signIn();
         }}
         className="text-sm font-medium text-inverted hover:text-primary-100 cursor-pointer"
       >

@@ -37,7 +37,7 @@ export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }
 
   useEffect(() => {
     if (currentPage !== 1) {
-      loadReviews();
+      void loadReviews();
     }
   }, [currentPage, loadReviews]);
 

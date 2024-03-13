@@ -93,7 +93,7 @@ export const ShippingAddressForm = ({
       primaryText="Shipping address"
       secondaryText="Update the shipping address for your subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section aria-labelledby="form-heading" className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px]">
         <h3 id="form-heading" className="sr-only">

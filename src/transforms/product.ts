@@ -12,7 +12,7 @@ export function getProductLineItemAttributes(
   return lineItemProperties.attributes
     .map(({ key, values }) => ({
       key,
-      values: values?.map((v) => v && v.value).filter(isNotNullish) ?? null
+      values: values?.map((v) => v?.value).filter(isNotNullish) ?? null
     }))
     .filter(isNotNullish);
 }

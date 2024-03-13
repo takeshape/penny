@@ -29,7 +29,7 @@ export type RetryFunctionOptions = {
 };
 
 export function buildRetryFunction(retryOptions?: RetryFunctionOptions): RetryFunction {
-  const { retryIf, max = 5 } = retryOptions || ({} as RetryFunctionOptions);
+  const { retryIf, max = 5 } = retryOptions ?? ({} as RetryFunctionOptions);
   return function retryFunction(count, operation, error) {
     if (count >= max) return false;
     return retryIf ? retryIf(error, operation) : !!error;

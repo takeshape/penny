@@ -33,12 +33,12 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
   } = useForm<ReportIssueFormValues>();
 
   const handleFormSubmit = useCallback(
-    async ({ message }: ReportIssueFormValues) => {
+    ({ message }: ReportIssueFormValues) => {
       if (!session?.user) {
         return;
       }
 
-      createTicket({
+      void createTicket({
         variables: {
           name: session.user.name ?? 'Unknown',
           email: session.user.email ?? 'no-user@site.test',
@@ -64,7 +64,7 @@ ${message}`
       primaryText="Report an issue"
       secondaryText="Let us know what happened and we'll fix it right away!"
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
     >
       <div className="md:h-[calc(1/4*100vh)] p-[1px] flex flex-col">

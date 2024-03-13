@@ -27,7 +27,7 @@ export const CancelSubscriptionForm = ({
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<CancelSubscriptionFormValues>({
     defaultValues: {
       confirm: true
@@ -53,7 +53,7 @@ export const CancelSubscriptionForm = ({
       primaryText="Cancel subscription"
       secondaryText="Will stop all future orders from being processed."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

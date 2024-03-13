@@ -24,7 +24,7 @@ export const CreateReferral = ({ sendReferral }: CreateReferralProps) => {
     [sendReferral, reset]
   );
   return (
-    <form className="mt-4 sm:flex" onSubmit={handleSubmit(onSubmit)}>
+    <form className="mt-4 sm:flex" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
       <label htmlFor="email-address" className="sr-only">
         Email address
       </label>

@@ -32,7 +32,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
   } = useForm<AddFormValues>();
 
   const handleFormSubmit = useCallback(
-    async (formData: AddFormValues) => {
+    (formData: AddFormValues) => {
       // eslint-disable-next-line no-console
       console.log({ formData, customerId });
       // TODO Mutate payment methods list
@@ -145,7 +145,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
       primaryText="Add payment method"
       secondaryText="Add a new payment method to use with subscriptions and purchases."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

@@ -32,12 +32,16 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.js",
     ".next/types/**/*.ts",
     "jest.config.js",
     "codegen.*.config.ts",
     "tailwind.config.ts",
     ".storybook/**/*.ts",
-    ".storybook/**/*.tsx"
+    ".storybook/**/*.tsx",
+    ".storybook/**/*.js",
+    ".jest/**/*.js",
+    ".lighthouse/**/*.js"
   ],
   "exclude": [
     "node_modules",
@@ -45,7 +49,6 @@
     ".github",
     "public",
     ".takeshape",
-    ".next",
-    ".lighthouse"
+    ".next"
   ]
 }

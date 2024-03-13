@@ -42,7 +42,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     throw new Error('Invalid getStaticProps params');
   }
 
-  const [handle, _page, cursor, direction] = params?.collection;
+  const [handle, cursor, direction] = params?.collection ?? [];
 
   const variables =
     direction === 'before'

@@ -28,15 +28,18 @@ export const AccountPurchaseList = () => {
     transformedData: orders,
     loading,
     networkStatus
-  } = useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse, {}, Order[]>(GetMyAdminCustomerOrdersQuery, {
-    transform: { data: getOrders }
-  });
+  } = useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse, Record<string, unknown>, Order[]>(
+    GetMyAdminCustomerOrdersQuery,
+    {
+      transform: { data: getOrders }
+    }
+  );
 
   if (networkStatus !== NetworkStatus.refetch && !orders?.length) {
     return (
       <div className="flex flex-col min-h-full space-y-4">
         <Header />
-        <div className="space-y-4 min-h-40 flex-1 min-h-full flex justify-center items-center">
+        <div className="space-y-4 flex-1 min-h-full flex justify-center items-center">
           {loading ? <OrderSkeleton /> : <Empty />}
         </div>
       </div>

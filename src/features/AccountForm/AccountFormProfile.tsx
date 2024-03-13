@@ -66,7 +66,7 @@ export const AccountFormProfile = () => {
   // Load the customer
   useEffect(() => {
     if (session?.user?.shopifyCustomerAccessToken) {
-      loadCustomer({
+      void loadCustomer({
         variables: {
           customerAccessToken: session.user.shopifyCustomerAccessToken
         }
@@ -104,7 +104,7 @@ export const AccountFormProfile = () => {
     <FormCardPanel
       primaryText="Profile"
       secondaryText="Tell us about yourself."
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       isReady={isReady}
       isSubmitting={isSubmitting}
       isSubmitSuccessful={isSubmitSuccessful}

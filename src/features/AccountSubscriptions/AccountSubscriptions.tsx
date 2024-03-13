@@ -18,9 +18,12 @@ export const AccountSubscriptions = () => {
     transformedData: subscriptions,
     refetch,
     error
-  } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse, {}, AnySubscription[]>(GetMySubscriptionListQuery, {
-    transform: { data: getSubscriptionList }
-  });
+  } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse, Record<string, unknown>, AnySubscription[]>(
+    GetMySubscriptionListQuery,
+    {
+      transform: { data: getSubscriptionList }
+    }
+  );
 
   const activeSubscriptions = useMemo(() => subscriptions?.filter(isActiveSubscription) ?? [], [subscriptions]);
   const endedSubscriptions = useMemo(() => subscriptions?.filter(isEndedSubscription) ?? [], [subscriptions]);

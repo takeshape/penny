@@ -45,7 +45,7 @@ export const Modal = () => {
     (productUrl: string) => {
       setIsSearchOpen(false);
       setQuery('');
-      router.push(productUrl);
+      void router.push(productUrl);
     },
     [router, setIsSearchOpen, setQuery]
   );

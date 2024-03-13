@@ -84,7 +84,7 @@ export const PaymentMethodForm = ({
   );
 
   const handleAddPaymentMethod = useCallback(() => {
-    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId ?? '' } });
+    void sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId ?? '' } });
     setIsPaymentMethodAdded(true);
   }, [defaultPaymentMethodId, sendUpdatePaymentEmail]);
 
@@ -96,7 +96,7 @@ export const PaymentMethodForm = ({
   // Set initial values
   useEffect(() => {
     if (isOpen) {
-      getMyPaymentMethods();
+      void getMyPaymentMethods();
     }
     resetState();
   }, [getMyPaymentMethods, isOpen, resetState]);
@@ -108,7 +108,7 @@ export const PaymentMethodForm = ({
       primaryText="Payment method"
       secondaryText="Change how you pay for this subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful || isPaymentMethodAdded}
       autoCloseDelay={3000}
     >

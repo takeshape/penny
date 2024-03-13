@@ -17,7 +17,7 @@ export const AuthSignOut = (props: { signOut: typeof signOut }) => {
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                signOut({ callbackUrl: '/' });
+                void signOut({ callbackUrl: '/' });
               }}
               color="primary"
               className="w-full"

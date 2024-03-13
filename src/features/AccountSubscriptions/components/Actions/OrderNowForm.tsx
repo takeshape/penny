@@ -73,7 +73,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order, refetchSubs
       primaryText="Order now"
       secondaryText="Get your next order right away."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">

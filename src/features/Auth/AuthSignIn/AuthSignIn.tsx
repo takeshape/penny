@@ -70,7 +70,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
   }, [sanitizedCallbackUrl]);
 
   const signinGoogle = useCallback(() => {
-    signIn('google', { callbackUrl });
+    void signIn('google', { callbackUrl });
   }, [callbackUrl, signIn]);
 
   const inactiveCustomer = useMemo(() => {
@@ -84,7 +84,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
   const onAccountInactiveFormClose = useCallback(() => {
-    push(window.location.pathname);
+    void push(window.location.pathname);
     reset();
   }, [reset, push]);
 
@@ -105,7 +105,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {hasErrors && errorMessage && <Alert status="error" primaryText={errorMessage} />}
 
             <FormInput

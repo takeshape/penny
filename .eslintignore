@@ -2,8 +2,7 @@ src/types/takeshape.ts
 src/types/storefront.ts
 tsconfig.json
 package-lock.json
-public/sw.*
-public/workbox-*
+public
 LICENSE
 .next
 playwright-report
@@ -14,3 +13,4 @@ countries.json
 !.lighthouse
 !.jest
 worker
+mocks

@@ -61,7 +61,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       if (customer?.state === 'no-account') {
         // Send to sign up page
-        push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        void push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
         return;
       }
 
@@ -82,7 +82,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
   useEffect(() => {
     if (sanitizedCallbackUrl && hasData) {
-      setTimeout(() => push(sanitizedCallbackUrl), 5000);
+      setTimeout(() => void push(sanitizedCallbackUrl), 5000);
     }
   }, [sanitizedCallbackUrl, hasData, push]);
 
@@ -102,7 +102,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {hasErrors && (
               <Alert
                 status="error"
