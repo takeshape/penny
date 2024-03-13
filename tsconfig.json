@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es2018",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
-      "es2022"
+      "esnext"
     ],
     "allowJs": true,
     "checkJs": true,
@@ -14,7 +14,7 @@
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -24,7 +24,10 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }    
   },
   "include": [
     "next-env.d.ts",
