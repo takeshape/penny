@@ -1,5 +1,8 @@
 import * as Sentry from '@sentry/nextjs';
-import { Error } from 'components/Error/Error';
+import { Error, ErrorProps } from 'components/Error/Error';
+import Wrapper from 'components/Wrapper/Content';
+import Layout from 'layouts/Default';
+import type { NextPage } from 'next';
 
 Error.getInitialProps = async (contextData) => {
   // In case this is running in a serverless function, await this in order to give Sentry
@@ -10,4 +13,14 @@ Error.getInitialProps = async (contextData) => {
   return Error.getInitialProps(contextData);
 };
 
-export default Error;
+const ErrorPage: NextPage<ErrorProps> = (props) => {
+  return (
+    <Layout seo={{ title: 'Server Error' }}>
+      <Wrapper>
+        <Error {...props} />
+      </Wrapper>
+    </Layout>
+  );
+};
+
+export default ErrorPage;
