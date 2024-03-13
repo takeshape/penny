@@ -23,6 +23,7 @@ const withBundleAnalyzer = createBundleAnalyzer({
 const ContentSecurityPolicy = `
   default-src * 'unsafe-inline' 'unsafe-eval' data:;
   script-src * 'unsafe-inline' 'unsafe-eval' data:;
+  worker-src * blob:;
 `;
 
 const securityHeaders = [
