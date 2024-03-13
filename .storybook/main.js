@@ -1,4 +1,3 @@
-// @ts-nocheck
 const cwd = process.cwd();
 
 module.exports = {

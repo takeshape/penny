@@ -39,7 +39,6 @@
     "tailwind.config.ts",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
-    ".storybook/**/*.js",
     ".jest/**/*.js"
   ],
   "exclude": [
@@ -49,6 +48,10 @@
     "public",
     ".takeshape",
     ".next",
-    ".lighthouse"
+    ".lighthouse",
+    "storybook-static",
+    "playwright-report",
+    "worker",
+    "mocks"
   ]
 }
