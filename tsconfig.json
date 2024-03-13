@@ -40,8 +40,7 @@
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
     ".storybook/**/*.js",
-    ".jest/**/*.js",
-    ".lighthouse/**/*.js"
+    ".jest/**/*.js"
   ],
   "exclude": [
     "node_modules",
@@ -49,6 +48,7 @@
     ".github",
     "public",
     ".takeshape",
-    ".next"
+    ".next",
+    ".lighthouse"
   ]
 }

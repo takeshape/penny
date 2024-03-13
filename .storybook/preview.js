@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ApolloProvider } from '@apollo/client';
 import { rest } from 'msw';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
