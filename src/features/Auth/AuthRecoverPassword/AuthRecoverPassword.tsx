@@ -18,13 +18,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
 import { InactiveCustomer } from '../types';
-export interface AuthRecoverPasswordForm {
+export type AuthRecoverPasswordForm = {
   email: string;
-}
+};
 
-export interface AuthRecoverPasswordProps {
+export type AuthRecoverPasswordProps = {
   callbackUrl: string;
-}
+};
 
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);

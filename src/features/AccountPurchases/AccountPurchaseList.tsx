@@ -32,7 +32,7 @@ export const AccountPurchaseList = () => {
     transform: { data: getOrders }
   });
 
-  if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
+  if (networkStatus !== NetworkStatus.refetch && !orders?.length) {
     return (
       <div className="flex flex-col min-h-full space-y-4">
         <Header />
@@ -51,7 +51,7 @@ export const AccountPurchaseList = () => {
           Recent orders
         </h2>
         <div className="space-y-4 min-h-40">
-          {orders && orders.map((order) => <PurchaseOrder key={order.id} order={order} />)}
+          {orders?.map((order) => <PurchaseOrder key={order.id} order={order} />)}
         </div>
       </section>
     </div>

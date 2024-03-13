@@ -36,10 +36,10 @@ const social: SocialProps = {
   ]
 };
 
-export interface FooterProps {
+export type FooterProps = {
   navigation: NavigationProps | null;
   newsletter: NewsletterProps | null;
-}
+};
 
 export const Footer = ({ navigation, newsletter }: FooterProps) => {
   const currentYear = new Date().getFullYear();

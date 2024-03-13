@@ -2,25 +2,26 @@ import { DefaultSession, DefaultUser } from 'next-auth';
 import { DefaultJWT } from 'next-auth/jwt';
 
 declare module 'next-auth' {
-  interface User extends DefaultUser {
+  type User = {
     shopifyCustomerAccessToken?: string;
-  }
+  } & DefaultUser;
 
-  interface Session extends DefaultSession {
+  type Session = {
     user?: User;
     shopifyCustomerAccessToken?: string;
-  }
+  } & DefaultSession;
 
-  interface Profile {
+  type Profile = {
     given_name?: string;
     family_name?: string;
-  }
+  };
 }
 
 declare module 'next-auth/jwt' {
-  interface JWT extends Record<string, unknown>, DefaultJWT {
+  type JWT = {
     firstName?: string | null;
     lastName?: string | null;
     shopifyCustomerAccessToken?: string;
-  }
+  } & Record<string, unknown> &
+    DefaultJWT;
 }

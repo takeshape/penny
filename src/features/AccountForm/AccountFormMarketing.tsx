@@ -25,10 +25,10 @@ import {
   UnsubscribeMyEmailFromNewsletterMutation
 } from './queries';
 import { CustomerQuery, CustomerUpdateMutation } from './queries.storefront';
-interface AccountFormMarketingForm {
+type AccountFormMarketingForm = {
   newsletters: Record<string, boolean>;
   acceptsMarketing: boolean;
-}
+};
 
 export const AccountFormMarketing = () => {
   const { data: session } = useSession({ required: true });

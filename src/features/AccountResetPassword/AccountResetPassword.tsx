@@ -15,16 +15,16 @@ import { useCallback, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ActivateAccountMutation, ResetPasswordMutation } from './queries.storefront';
 
-export interface AccountResetPasswordForm {
+export type AccountResetPasswordForm = {
   password: string;
   passwordConfirm: string;
-}
+};
 
-export interface AccountResetPasswordProps {
+export type AccountResetPasswordProps = {
   customerId: string;
   resetToken?: string;
   activationToken?: string;
-}
+};
 
 export const AccountResetPassword = ({ customerId, resetToken, activationToken }: AccountResetPasswordProps) => {
   if (!activationToken && !resetToken) {

@@ -3,7 +3,7 @@ import { BackgroundImageChild } from '@/features/Storefront/types';
 type TestimonialsProps = BackgroundImageChild & { __typename: 'TestimonialsComponent' };
 
 export const Testimonials = ({ testimonials }: TestimonialsProps) => {
-  if (!testimonials || !testimonials.length) return null;
+  if (!testimonials?.length) return null;
   return (
     <section
       aria-labelledby="testimonial-heading"

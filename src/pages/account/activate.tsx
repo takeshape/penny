@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   return {
-    notFound: !Boolean(query.activationUrl),
+    notFound: !query.activationUrl,
     props: {
       customerId: params?.customerId,
       activationToken: params?.token

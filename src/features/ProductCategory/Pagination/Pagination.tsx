@@ -1,13 +1,13 @@
 import { PropsWithChildren, useCallback } from 'react';
 import { PaginationLink } from './PaginationLink';
 
-export interface PaginationProps {
+export type PaginationProps = {
   pagination: {
     nextPageUrl?: string;
     previousPageUrl?: string;
     setCurrentPage: (nextPage: number) => void;
   };
-}
+};
 
 export const Pagination = ({
   pagination: { nextPageUrl, previousPageUrl, setCurrentPage }
@@ -21,12 +21,12 @@ export const Pagination = ({
       className="max-w-7xl mx-auto space-x-2 px-4 mt-6 flex justify-between text-sm font-medium text-body-700 sm:px-6 lg:px-8"
     >
       <div className="flex-1">
-        <PaginationLink href={previousPageUrl} onClick={onPrevious} disabled={!Boolean(previousPageUrl)}>
+        <PaginationLink href={previousPageUrl} onClick={onPrevious} disabled={!previousPageUrl}>
           Previous
         </PaginationLink>
       </div>
       <div className="flex-1 flex justify-end">
-        <PaginationLink href={nextPageUrl} onClick={onNext} disabled={!Boolean(nextPageUrl)}>
+        <PaginationLink href={nextPageUrl} onClick={onNext} disabled={!nextPageUrl}>
           Next
         </PaginationLink>
       </div>

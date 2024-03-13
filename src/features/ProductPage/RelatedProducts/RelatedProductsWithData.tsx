@@ -6,10 +6,10 @@ import { getRelatedProductList } from '../transforms';
 import { ProductPageRelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
 
-export interface RelatedProductsWithDataProps {
+export type RelatedProductsWithDataProps = {
   productId: string;
   limit: number;
-}
+};
 
 export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWithDataProps) => {
   const [loadProducts, { transformedData, error }] = useStorefrontLazyQuery<

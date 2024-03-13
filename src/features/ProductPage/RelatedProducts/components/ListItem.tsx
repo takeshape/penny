@@ -7,9 +7,9 @@ import { useSetAtom } from 'jotai';
 import { MouseEvent, useCallback } from 'react';
 import { ProductPageRelatedProductsProduct } from '../../types';
 
-export interface ListItemProps {
+export type ListItemProps = {
   product: ProductPageRelatedProductsProduct;
-}
+};
 
 export const ListItem = ({ product }: ListItemProps) => {
   const quickAdd = useSetAtom(quickAddAtom);

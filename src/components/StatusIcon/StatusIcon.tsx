@@ -6,10 +6,10 @@ import {
   XCircleIcon
 } from '@heroicons/react/24/solid';
 
-export interface StatusIconProps {
+export type StatusIconProps = {
   status: 'error' | 'warn' | 'success' | 'info';
   size?: 4 | 5 | 6;
-}
+};
 
 export const StatusIcon = ({ status, size }: StatusIconProps) => {
   size = size ?? 5;

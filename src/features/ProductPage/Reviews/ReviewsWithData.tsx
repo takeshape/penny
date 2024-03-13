@@ -10,12 +10,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ProductPageReviewsReviewList } from '../types';
 import { Reviews } from './Reviews';
 
-export interface ReviewsWithDataProps {
+export type ReviewsWithDataProps = {
   productName: string;
   sku: string;
   reviewList: ProductPageReviewsReviewList;
   reviewsPerPage: number;
-}
+};
 
 export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }: ReviewsWithDataProps) => {
   const { stats, rollup, items, currentPage: initialPage, totalPages } = reviewList ?? getReviewList(null);

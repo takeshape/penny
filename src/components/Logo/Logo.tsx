@@ -1,9 +1,9 @@
 import NextImage from '@/components/NextImage';
 import { siteLogo, siteName } from '@/config';
 
-export interface LogoProps {
+export type LogoProps = {
   className?: string;
-}
+};
 
 export const Logo = (props: LogoProps) => {
   return (

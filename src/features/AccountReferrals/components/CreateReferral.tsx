@@ -2,13 +2,13 @@ import Button from '@/components/Button/Button';
 import { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-export interface CreateReferralProps {
+export type CreateReferralProps = {
   sendReferral: (props: any) => void;
-}
+};
 
-interface CreateReferralFormValues {
+type CreateReferralFormValues = {
   email: string;
-}
+};
 
 export const CreateReferral = ({ sendReferral }: CreateReferralProps) => {
   const { handleSubmit, reset, register } = useForm<{ email: string }>({

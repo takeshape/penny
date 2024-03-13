@@ -3,9 +3,9 @@ import { PaymentMethod as TPaymentMethod } from '@/types/paymentMethod';
 import { AddPaymentMethod } from './components/AddPaymentMethod';
 import { PaymentMethod } from './components/PaymentMethod';
 
-export interface AccountPaymentsProps {
+export type AccountPaymentsProps = {
   paymentMethods: TPaymentMethod[];
-}
+};
 
 export const AccountPayments = ({ paymentMethods }: AccountPaymentsProps) => {
   return (

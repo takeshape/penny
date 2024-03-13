@@ -9,12 +9,12 @@ import { useProduct } from '@/utils/hooks/useProduct';
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/24/solid';
 import { ProductPageProduct } from '../../types';
 
-export interface ProductWithImageProps {
+export type ProductWithImageProps = {
   product: ProductPageProduct;
   reviewHighlights: ReviewHighlights | null;
   breadcrumbs: Breadcrumb[] | null;
   showReviewsLink: boolean;
-}
+};
 
 export const ProductWithImage = ({
   product,

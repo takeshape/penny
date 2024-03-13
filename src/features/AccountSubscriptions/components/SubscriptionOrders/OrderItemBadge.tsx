@@ -2,9 +2,9 @@ import classNames from '@/utils/classNames';
 import { SubscriptionOrder } from '../../types';
 import { getOrderStatusDisplay } from '../../utils';
 
-interface OrderItemBadgeProps {
+type OrderItemBadgeProps = {
   order: SubscriptionOrder;
-}
+};
 
 export const OrderItemBadge = ({ order }: OrderItemBadgeProps) => {
   const displayStatus = getOrderStatusDisplay(order.status);

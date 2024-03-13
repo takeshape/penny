@@ -10,13 +10,13 @@ import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubscriptionOrder } from '../../types';
 
-export interface ReportIssueFormProps extends ModalProps {
+export type ReportIssueFormProps = {
   order: Pick<SubscriptionOrder, 'id'>;
-}
+} & ModalProps;
 
-export interface ReportIssueFormValues {
+export type ReportIssueFormValues = {
   message: string;
-}
+};
 
 export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps) => {
   const { data: session } = useSession();

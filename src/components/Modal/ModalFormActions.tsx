@@ -1,13 +1,13 @@
 import { Button } from '@/components/Button/Button';
 
-export interface ModalFormActionsProps {
+export type ModalFormActionsProps = {
   isSubmitted: boolean;
   isSubmitting: boolean;
   onCancel: () => void;
   className?: string;
   submitText?: string;
   disableSubmit?: boolean;
-}
+};
 
 export const ModalFormActions = ({
   isSubmitting,

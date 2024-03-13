@@ -14,15 +14,15 @@ import { useForm } from 'react-hook-form';
 import { SetNextChargeDateMutation, UnskipChargeMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
-export interface OrderNowFormProps extends ModalProps {
+export type OrderNowFormProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface OrderNowFormValues {
+export type OrderNowFormValues = {
   confirm: boolean;
-}
+};
 
 /**
  * TODO Ideally we'd use this: https://developer.rechargepayments.com/2021-11/charges/charge_process but it requires a

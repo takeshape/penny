@@ -2,9 +2,9 @@ import NextImage from '@/components/NextImage';
 import { ProductImage } from '@/types/product';
 import classNames from '@/utils/classNames';
 
-export interface ImageGalleryProps {
+export type ImageGalleryProps = {
   images: ProductImage[];
-}
+};
 
 export const ImageGallery = ({ images }: ImageGalleryProps) => {
   if (images.length === 0) {

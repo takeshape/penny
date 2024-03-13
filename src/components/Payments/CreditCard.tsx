@@ -3,10 +3,10 @@ import classNames from '@/utils/classNames';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { getCreditCardIcon, getIsExpired } from './utils';
 
-export interface CreditCardProps {
+export type CreditCardProps = {
   className?: string;
   card: TCreditCard;
-}
+};
 
 export const CreditCard = ({
   card: { brand, maskedNumber, expiryMonth, expiryYear, expiresSoon },

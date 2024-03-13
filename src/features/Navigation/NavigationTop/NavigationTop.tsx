@@ -12,7 +12,7 @@ import { TopCurrencySelect } from './components/TopCurrencySelect';
 import { TopLinks } from './components/TopLinks';
 import { TopMessage } from './components/TopMessage';
 
-export interface NavigationTopProps extends Navigation {}
+export type NavigationTopProps = {} & Navigation;
 
 export const NavigationTop = ({ message, sections, currencies }: NavigationTopProps) => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);

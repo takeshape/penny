@@ -13,22 +13,22 @@ import { useReCaptcha } from 'next-recaptcha-v3';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-export interface ContactForm {
+export type ContactForm = {
   company?: string;
   email: string;
   firstName: string;
   lastName: string;
   message: string;
   phoneNumber?: string;
-}
+};
 
-export interface ContactProps {
+export type ContactProps = {
   text: {
     primary: string;
     secondary: string;
     button: string;
   };
-}
+};
 
 export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
   const { text } = props;

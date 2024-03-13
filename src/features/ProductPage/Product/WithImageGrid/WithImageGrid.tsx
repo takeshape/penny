@@ -12,14 +12,14 @@ import { FeaturedReviews } from './FeaturedReviews';
 import { ImageGallery } from './ImageGallery';
 import { ReviewsCallout } from './ReviewsCallout';
 
-export interface ProductWithImageGridProps {
+export type ProductWithImageGridProps = {
   product: ProductPageProduct;
   reviewHighlights: ReviewHighlights | null;
   breadcrumbs: Breadcrumb[] | null;
   showFeaturedReviews: boolean;
   showBreadcrumbs: boolean;
   showReviewsLink: boolean;
-}
+};
 
 export const ProductWithImageGrid = ({
   product,

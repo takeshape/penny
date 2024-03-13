@@ -2,11 +2,11 @@ import { TsSearchableSearchResults } from '@/types/takeshape';
 import { gql } from '@apollo/client';
 import { SearchShopifyProduct } from './types';
 
-export interface SearchShopifyProductsResults extends TsSearchableSearchResults {
+export type SearchShopifyProductsResults = {
   search: {
     results: SearchShopifyProduct[];
   };
-}
+} & TsSearchableSearchResults;
 
 export const SearchShopifyProducts = gql`
   query SearchShopifyProducts($query: String!) {

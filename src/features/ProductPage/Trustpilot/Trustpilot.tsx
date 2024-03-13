@@ -9,13 +9,13 @@ import { TrustpilotStars } from './TrustpilotStars';
 export const readOnlyReviews = true;
 export const useReviewsFromProductQuery = false;
 
-export interface TrustpilotProps {
+export type TrustpilotProps = {
   error: boolean;
   currentPageData: ReviewList | null;
   currentPage: number;
   handleNext: () => void;
   handlePrevious: () => void;
-}
+};
 
 export const Trustpilot = ({ error, currentPageData, currentPage, handleNext, handlePrevious }: TrustpilotProps) => {
   const { stats } = currentPageData ?? {};

@@ -11,9 +11,9 @@ import SearchModal from '@/features/Search/Modal/Modal';
 import { NextSeoProps } from 'next-seo';
 import { PropsWithChildren } from 'react';
 
-export interface LayoutProps {
+export type LayoutProps = {
   seo?: NextSeoProps;
-}
+};
 
 export const Layout = ({ children, seo }: PropsWithChildren<LayoutProps>) => {
   return (

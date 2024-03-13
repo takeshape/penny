@@ -267,7 +267,7 @@ function getRelatedProduct(
 
 export function getRelatedProductList(limit = 0) {
   return (response?: ProductPageRelatedProductsQueryResponse | null): ProductPageRelatedProductsProduct[] | null => {
-    let products = response?.products;
+    const products = response?.products;
 
     if (!products) {
       return null;

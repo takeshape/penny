@@ -3,12 +3,12 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { TextareaHTMLAttributes } from 'react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 
-export interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export type FormTextareaProps = {
   id: string;
   label: string;
   helpText?: string;
   fluidHeight?: boolean;
-}
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export const FormTextarea = <
   TFieldValues extends FieldValues,

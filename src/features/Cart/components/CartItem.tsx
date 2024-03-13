@@ -6,10 +6,10 @@ import { PrimitiveAtom, useAtom } from 'jotai';
 import { Fragment } from 'react';
 import { CartItem as CartItemType } from '../types';
 
-export interface CartItemProps {
+export type CartItemProps = {
   atom: PrimitiveAtom<CartItemType>;
   onRemove: () => void;
-}
+};
 
 export const CartItem = ({ atom, onRemove }: CartItemProps) => {
   const [item, setItem] = useAtom(atom);

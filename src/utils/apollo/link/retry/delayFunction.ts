@@ -4,11 +4,9 @@ import { Operation } from '@apollo/client';
  * Advanced mode: a function that implements the strategy for calculating delays
  * for particular responses.
  */
-export interface DelayFunction {
-  (count: number, operation: Operation, error: any): number;
-}
+export type DelayFunction = (count: number, operation: Operation, error: any) => number;
 
-export interface DelayFunctionOptions {
+export type DelayFunctionOptions = {
   /**
    * The number of milliseconds to wait before attempting the first retry.
    *
@@ -39,7 +37,7 @@ export interface DelayFunctionOptions {
    * Defaults to true.
    */
   jitter?: boolean;
-}
+};
 
 export function buildDelayFunction(delayOptions?: DelayFunctionOptions): DelayFunction {
   const { initial = 300, jitter = true, max = Infinity } = delayOptions || {};

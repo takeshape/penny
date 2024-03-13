@@ -9,18 +9,18 @@ import IMask, { MaskedDynamic, MaskedPattern } from 'imask';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
-export interface AddFormProps extends ModalProps {
+export type AddFormProps = {
   customerId: string;
-}
+} & ModalProps;
 
-export interface AddFormValues {
+export type AddFormValues = {
   number: string;
   name: string;
   expiration: string;
   verificationValue: string;
   countryCode: string;
   zip: string;
-}
+};
 
 // TODO Handle submit errors
 export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
@@ -115,7 +115,7 @@ export const AddForm = ({ isOpen, onClose, customerId }: AddFormProps) => {
     dispatch: (appended, dynamicMasked) => {
       const number = (dynamicMasked.value + appended).replace(/\D/g, '');
       // @ts-expect-error custom prop
-      const mask = dynamicMasked.compiledMasks.find((m) => number.indexOf(m.startsWith) === 0);
+      const mask = dynamicMasked.compiledMasks.find((m) => number.startsWith(m.startsWith));
       return mask ?? dynamicMasked.compiledMasks[0];
     }
   });

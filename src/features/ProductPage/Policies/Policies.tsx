@@ -1,9 +1,9 @@
 import NextImage from '@/components/NextImage';
 import { ProductPagePolicies as ProductPagePoliciesType } from '../types';
 
-export interface PoliciesProps {
+export type PoliciesProps = {
   policies: ProductPagePoliciesType;
-}
+};
 
 export const Policies = ({ policies }: PoliciesProps) => {
   return (

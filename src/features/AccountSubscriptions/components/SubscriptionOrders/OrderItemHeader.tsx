@@ -3,9 +3,9 @@ import { format } from 'date-fns';
 import { SubscriptionOrder } from '../../types';
 import { OrderItemBadge } from './OrderItemBadge';
 
-interface OrderItemHeaderProps {
+type OrderItemHeaderProps = {
   order: SubscriptionOrder;
-}
+};
 
 export const OrderItemHeader = ({ order }: OrderItemHeaderProps) => {
   const { status } = order;

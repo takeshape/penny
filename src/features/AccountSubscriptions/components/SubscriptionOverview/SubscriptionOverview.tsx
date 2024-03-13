@@ -8,10 +8,10 @@ import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShipmentStatus } from './ShipmentStatus';
 
-export interface SubscriptionOverviewProps {
+export type SubscriptionOverviewProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+};
 
 export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: SubscriptionOverviewProps) => {
   const { status, orders, product, productVariant } = subscription;

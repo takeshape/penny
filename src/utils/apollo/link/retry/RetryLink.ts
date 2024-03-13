@@ -10,10 +10,10 @@ import {
 import { buildDelayFunction, DelayFunction, DelayFunctionOptions } from './delayFunction';
 import { buildRetryFunction, RetryFunction, RetryFunctionOptions } from './retryFunction';
 
-interface RetryOptions {
+type RetryOptions = {
   delay?: DelayFunctionOptions | DelayFunction;
   attempts?: RetryFunctionOptions | RetryFunction;
-}
+};
 
 // export namespace RetryLink {
 //   export interface Options {
@@ -33,7 +33,7 @@ interface RetryOptions {
  * Tracking and management of operations that may be (or currently are) retried.
  */
 class RetryableOperation<TValue = any> {
-  retryCount: number = 0;
+  retryCount = 0;
   values: any[] = [];
   error: any;
   complete = false;

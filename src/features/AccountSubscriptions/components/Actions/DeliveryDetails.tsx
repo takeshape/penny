@@ -5,10 +5,10 @@ import { format } from 'date-fns';
 import { SubscriptionOrder } from '../../types';
 import { getOrderStatusDisplay, getOrderTrackingInfo } from '../../utils';
 
-export interface DeliveryDetailsProps extends ModalProps {
+export type DeliveryDetailsProps = {
   order: Pick<SubscriptionOrder, 'shippingAddress' | 'status' | 'fulfillments'>;
   onReportIssue: () => void;
-}
+} & ModalProps;
 
 export const DeliveryDetails = ({ isOpen, onClose, onReportIssue, order }: DeliveryDetailsProps) => {
   const { shippingAddress, status } = order;

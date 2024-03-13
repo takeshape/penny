@@ -16,7 +16,7 @@ const maxAttempts = 10;
 const backoffBase = 500;
 const jitterBase = 10000;
 
-export interface InitializeApolloProps {
+export type InitializeApolloProps = {
   initialCache?: NormalizedCacheObject;
   accessToken: string;
   accessTokenHeader: string;
@@ -24,7 +24,7 @@ export interface InitializeApolloProps {
   ssrMode?: boolean;
   rateLimit?: boolean;
   uri: string;
-}
+};
 
 function createApolloClient({
   accessToken,

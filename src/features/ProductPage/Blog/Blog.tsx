@@ -1,6 +1,6 @@
 import NextImage from '@/components/NextImage';
 
-export interface Post {
+export type Post = {
   title: string;
   href: string;
   category: {
@@ -17,9 +17,9 @@ export interface Post {
     href: string;
     imageUrl: string;
   };
-}
+};
 
-export interface BlogProps {
+export type BlogProps = {
   blog: {
     text: {
       primary: string;
@@ -27,7 +27,7 @@ export interface BlogProps {
     };
     posts: Post[];
   };
-}
+};
 
 export const Blog = (props: BlogProps) => {
   const {

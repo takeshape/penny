@@ -8,13 +8,13 @@ import { useAddToCart } from '@/utils/hooks/useAddToCart';
 import { useProduct } from '@/utils/hooks/useProduct';
 import { QuickAddProduct } from '../types';
 
-export interface QuickAddItemProps {
+export type QuickAddItemProps = {
   product: QuickAddProduct;
   onClose: () => void;
-}
+};
 
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
-  let { hasStock } = product;
+  const { hasStock } = product;
 
   const {
     setSelectedColor,

@@ -5,13 +5,13 @@ import { useCallback, useState } from 'react';
 import { GetMySubscriptionQuery } from './queries';
 import { getSubscription } from './transforms';
 
-export interface SubscriptionRefetchHookProps {
+export type SubscriptionRefetchHookProps = {
   subscription: AnySubscription;
-}
+};
 
-export interface SubscriptionRefetchHookData {
+export type SubscriptionRefetchHookData = {
   data: AnySubscription;
-}
+};
 
 export function useSubscriptionRefetch({
   subscription

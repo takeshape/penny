@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { CustomerAddressUpdateMutation, CustomerQuery } from './queries.storefront';
 
-interface AccountFormAddressForm {
+type AccountFormAddressForm = {
   firstName: string | null;
   lastName: string | null;
   address1: string | null;
@@ -25,7 +25,7 @@ interface AccountFormAddressForm {
   province: string | null;
   zip: string | null;
   company: string | null;
-}
+};
 
 export const AccountFormAddress = () => {
   const { data: session } = useSession({ required: true });

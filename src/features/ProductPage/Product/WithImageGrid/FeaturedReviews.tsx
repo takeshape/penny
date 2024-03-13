@@ -3,9 +3,9 @@ import { DefaultReviewer } from '@/components/Icons/Icons';
 import Stars from '@/components/Stars/Stars';
 import { Review } from '@/types/review';
 
-export interface FeaturedReviewsProps {
+export type FeaturedReviewsProps = {
   reviews: Review[];
-}
+};
 
 export const FeaturedReviews = ({ reviews }: FeaturedReviewsProps) => {
   return (

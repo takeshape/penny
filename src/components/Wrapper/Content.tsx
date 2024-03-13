@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 
-export interface WrapperProps {
+export type WrapperProps = {
   className?: string;
-}
+};
 
 export const Wrapper = ({ children, className }: PropsWithChildren<WrapperProps>) => {
   return (

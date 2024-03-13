@@ -4,13 +4,13 @@ import { useHasStockFor } from '@/utils/hooks/useHasStockFor';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
 
-export interface ProductSizeSelectProps {
+export type ProductSizeSelectProps = {
   value: string | null;
   onChange: Dispatch<SetStateAction<string | null>>;
   option: ProductVariantOption;
   selections: ProductVariantSelection[];
   size?: 'large' | 'small';
-}
+};
 
 export const ProductSizeSelect = ({
   value,

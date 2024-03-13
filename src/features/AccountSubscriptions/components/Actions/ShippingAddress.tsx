@@ -11,10 +11,10 @@ import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { UpdateMyAddressMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
-interface ShippingAddressFormProps extends ModalProps {
+type ShippingAddressFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
 type ShippingAddressFormValues = Pick<
   UpdateMyAddressMutationVariables,

@@ -15,9 +15,9 @@ import { UpdateProductOptionsMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionProductVariant } from '../../types';
 import { getVariant, toFormOptions, toSelections } from '../../utils';
 
-interface ProductOptionsPriceProps extends Pick<ProductOptionsFormProps, 'subscription' | 'variants'> {
+type ProductOptionsPriceProps = {
   control: Control<ProductOptionsFormValues, any>;
-}
+} & Pick<ProductOptionsFormProps, 'subscription' | 'variants'>;
 
 const ProductOptionsPrice = ({ control, variants }: ProductOptionsPriceProps) => {
   const options = useWatch({
@@ -48,18 +48,18 @@ const ProductOptionsPrice = ({ control, variants }: ProductOptionsPriceProps) =>
   );
 };
 
-export interface ProductOptionsFormProps extends ModalProps {
+export type ProductOptionsFormProps = {
   subscription: AnySubscription;
   variants: SubscriptionProductVariant[];
   variantOptions: ProductVariantOption[];
   currentSelections: ProductVariantSelection[];
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-interface ProductOptionsFormValues {
+type ProductOptionsFormValues = {
   options: Record<string, string>;
   quantity: number;
-}
+};
 
 export const ProductOptionsForm = ({
   subscription,

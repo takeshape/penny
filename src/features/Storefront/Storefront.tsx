@@ -46,9 +46,9 @@ function storefrontChildToComponent() {
   return StorefrontComponent;
 }
 
-export interface StorefrontProps {
+export type StorefrontProps = {
   storefront: NonNullablePath<GetStorefrontQueryResponse, ['storefront']>;
-}
+};
 
 export const Storefront = ({ storefront }: StorefrontProps) => {
   const components = storefront.components?.filter(isNotNullish).map(storefrontChildToComponent());

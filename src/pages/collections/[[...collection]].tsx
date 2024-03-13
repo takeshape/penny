@@ -72,7 +72,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const collection = getCollection(data);
 
   return {
-    notFound: !Boolean(collection),
+    notFound: !collection,
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
@@ -89,7 +89,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let endCursor: string | undefined;
 
   while (hasNextPage) {
-    let variables: ProductCategoryShopifyCollectionHandlesVariables = {
+    const variables: ProductCategoryShopifyCollectionHandlesVariables = {
       first: 50
     };
 

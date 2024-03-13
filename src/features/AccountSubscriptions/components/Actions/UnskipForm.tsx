@@ -9,15 +9,15 @@ import { useForm } from 'react-hook-form';
 import { UnskipChargeMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
-export interface UnskipFormProps extends ModalProps {
+export type UnskipFormProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface SkipFormValues {
+export type SkipFormValues = {
   confirm: boolean;
-}
+};
 
 export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscriptions }: UnskipFormProps) => {
   const {

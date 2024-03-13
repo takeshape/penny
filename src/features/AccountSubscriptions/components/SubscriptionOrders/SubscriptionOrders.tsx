@@ -5,10 +5,10 @@ import { OrderNowForm } from '../Actions/OrderNowForm';
 import { SkipForm } from '../Actions/SkipForm';
 import { OrderItem } from '../SubscriptionOrders/OrderItem';
 
-export interface SubscriptionOrdersProps {
+export type SubscriptionOrdersProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+};
 
 export const SubscriptionOrders = ({ subscription, refetchSubscriptions }: SubscriptionOrdersProps) => {
   const { status, orders } = subscription;

@@ -1,14 +1,14 @@
 import { Modal, ModalProps } from '@/components/Modal/Modal';
 import { FormEventHandler, PropsWithChildren, useEffect } from 'react';
 
-export interface ModalFormProps extends ModalProps {
+export type ModalFormProps = {
   primaryText?: string;
   secondaryText?: string;
   onSubmit: FormEventHandler<HTMLFormElement>;
   isSubmitSuccessful?: boolean;
   autoCloseDelay?: number;
   className?: string;
-}
+} & ModalProps;
 
 export const ModalForm = ({
   isOpen,

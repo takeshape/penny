@@ -28,15 +28,15 @@ import {
 import { getPaymentMethods } from '../../transforms';
 import { RefetchSubscriptions, SubscriptionPaymentMethod } from '../../types';
 
-export interface PaymentMethodFormProps extends ModalProps {
+export type PaymentMethodFormProps = {
   defaultPaymentMethodId?: string;
   addressId: string;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface PaymentMethodFormValues {
+export type PaymentMethodFormValues = {
   paymentMethodId: string;
-}
+};
 
 export const PaymentMethodForm = ({
   isOpen,

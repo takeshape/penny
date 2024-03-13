@@ -1,3 +1,4 @@
+import { expect, test } from '@jest/globals';
 import { truncate } from './truncate';
 
 test('default behavior', () => {

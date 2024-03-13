@@ -71,7 +71,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  let handle = getSingle(params?.product);
+  const handle = getSingle(params?.product);
 
   if (!handle) {
     throw new Error('Invalid getStaticProps params');
@@ -96,7 +96,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const reviewList = getReviewsIoProductReviews(data) ?? getTrustpilotProductReviews(data);
 
   return {
-    notFound: !Boolean(product) || !product?.isAvailable,
+    notFound: !product || !product?.isAvailable,
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
@@ -120,7 +120,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let endCursor: string | undefined;
 
   while (hasNextPage) {
-    let variables: ProductPageShopifyProductHandlesQueryVariables = {
+    const variables: ProductPageShopifyProductHandlesQueryVariables = {
       first: 50
     };
 

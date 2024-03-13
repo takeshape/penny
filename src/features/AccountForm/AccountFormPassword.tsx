@@ -8,10 +8,10 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { CustomerUpdateMutation } from './queries.storefront';
 
-export interface AccountFormPasswordForm {
+export type AccountFormPasswordForm = {
   password: string;
   passwordConfirm: string;
-}
+};
 
 export const AccountFormPassword = () => {
   const { data: session } = useSession({ required: true });

@@ -5,13 +5,13 @@ import { getOrderStatusDisplay, getOrderTrackingInfo } from '../../utils';
 import { DeliveryDetails } from '../Actions/DeliveryDetails';
 import { ReportIssueForm } from '../Actions/ReportIssueForm';
 
-export interface ShipmentStatusProps {
+export type ShipmentStatusProps = {
   heading?: string;
   order: Pick<
     SubscriptionOrder,
     'id' | 'status' | 'statusAt' | 'chargeScheduledAt' | 'fulfillments' | 'shippingAddress'
   >;
-}
+};
 
 export const ShipmentStatus = ({ heading, order }: ShipmentStatusProps) => {
   const { status, chargeScheduledAt } = order;

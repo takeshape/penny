@@ -34,9 +34,9 @@ import { PaymentMethod } from '@/types/paymentMethod';
 //   );
 // };
 
-export interface ViewSubscriptionsProps extends ModalProps {
+export type ViewSubscriptionsProps = {
   paymentMethod: PaymentMethod;
-}
+} & ModalProps;
 
 export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscriptionsProps) => {
   return (

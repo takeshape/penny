@@ -6,13 +6,13 @@ import { PaymentMethod } from '@/types/paymentMethod';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
-export interface RemoveFormProps extends ModalProps {
+export type RemoveFormProps = {
   paymentMethod: PaymentMethod;
-}
+} & ModalProps;
 
-export interface RemoveFormValues {
+export type RemoveFormValues = {
   confirm: boolean;
-}
+};
 
 /**
  * TODO Handle submit errors

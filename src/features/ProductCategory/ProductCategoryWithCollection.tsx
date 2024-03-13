@@ -13,10 +13,10 @@ function isSameCollection(collA: ProductCategoryCollection, collB: ProductCatego
   );
 }
 
-export interface ProductCategoryWithCollectionProps {
+export type ProductCategoryWithCollectionProps = {
   collection: ProductCategoryCollection;
   pageSize: number;
-}
+};
 
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
   const { push } = useRouter();

@@ -35,7 +35,9 @@
     ".next/types/**/*.ts",
     "jest.config.js",
     "codegen.*.config.ts",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx"
   ],
   "exclude": [
     "node_modules",
@@ -44,7 +46,6 @@
     "public",
     ".takeshape",
     ".next",
-    ".lighthouse",
-    ".storybook"
+    ".lighthouse"
   ]
 }

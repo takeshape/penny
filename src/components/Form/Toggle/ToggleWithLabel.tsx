@@ -2,13 +2,13 @@ import classNames from '@/utils/classNames';
 import { Switch } from '@headlessui/react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 
-export interface FormToggleWithLabelProps {
+export type FormToggleWithLabelProps = {
   labelPrimary: string;
   labelSecondary?: string;
   labelPosition?: 'right' | 'left';
   className?: string;
   disabled?: boolean;
-}
+};
 
 export const FormToggleWithLabel = <
   TFieldValues extends FieldValues,

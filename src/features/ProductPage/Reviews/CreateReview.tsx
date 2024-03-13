@@ -9,17 +9,17 @@ import { Fragment, useCallback, useMemo } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { CreateMyProductReviewMutation } from '../queries.takeshape';
 
-interface CreateReviewForm {
+type CreateReviewForm = {
   review: string;
   rating: number;
-}
+};
 
-export interface ReviewsProps {
+export type ReviewsProps = {
   productName: string;
   sku: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-}
+};
 
 const ReviewStar = ({ value, starNumber, onChange }: { value: number; starNumber: number; onChange: any }) => {
   return <Star lit={value >= starNumber} onClick={() => onChange(starNumber)} hoverHighlight={true} />;

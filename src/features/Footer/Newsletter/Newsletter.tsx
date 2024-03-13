@@ -9,17 +9,17 @@ import { useCallback, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { EmailSubmissionMutation } from './queries';
 
-export interface NewsletterProps {
+export type NewsletterProps = {
   text: {
     primary: string | null;
     secondary: string | null;
     button: string | null;
   };
-}
+};
 
-interface NewsletterFormValues {
+type NewsletterFormValues = {
   email: string;
-}
+};
 
 export const Newsletter = (props: React.PropsWithChildren<NewsletterProps>) => {
   const { text } = props;

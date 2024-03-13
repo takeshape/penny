@@ -8,13 +8,13 @@ import {
 } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/input';
 
-export interface FormPhoneInputProps extends PhoneInputProps<DefaultInputComponentProps> {
+export type FormPhoneInputProps = {
   id: string;
   label: string;
   helpText?: string;
   // Because the phone # validation gives no way to set a message
   defaultErrorMessage?: string;
-}
+} & PhoneInputProps<DefaultInputComponentProps>;
 
 export const FormPhoneInput = <
   TFieldValues extends FieldValues,

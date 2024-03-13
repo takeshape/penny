@@ -11,18 +11,18 @@ import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-export interface AuthSignInForm {
+export type AuthSignInForm = {
   email: string;
   password: string;
   rememberMe: boolean;
-}
-export interface AuthSignInProps {
+};
+export type AuthSignInProps = {
   signIn: typeof signIn;
   callbackUrl: string;
   error?: SigninError;
   useMultipass: boolean;
   email?: string;
-}
+};
 
 export const errors: Record<string, string> = {
   Signin: 'Try signing in with a different account.',

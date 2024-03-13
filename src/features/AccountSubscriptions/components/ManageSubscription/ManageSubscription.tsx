@@ -13,11 +13,11 @@ import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShippingAddressForm } from '../Actions/ShippingAddress';
 import { SkipForm } from '../Actions/SkipForm';
 
-export interface ManageSubscriptionProps {
+export type ManageSubscriptionProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
   refetchSubscriptionList: RefetchSubscriptions;
-}
+};
 
 export const ManageSubscription = ({
   subscription,

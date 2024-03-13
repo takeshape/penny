@@ -4,11 +4,11 @@ import { formatDiscount, formatPrice, pluralizeText } from '@/utils/text';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
 
-export interface ProductPriceSelectProps {
+export type ProductPriceSelectProps = {
   value: ProductPriceOption;
   onChange: Dispatch<SetStateAction<ProductPriceOption>>;
   options: ProductPriceOption[];
-}
+};
 
 export const ProductPriceSelect = ({ value, onChange, options }: ProductPriceSelectProps) => {
   return (

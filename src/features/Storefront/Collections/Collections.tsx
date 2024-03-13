@@ -8,7 +8,7 @@ type CollectionsProps = StorefrontChild & {
 };
 
 export const Collections = ({ collections }: CollectionsProps) => {
-  if (!collections || !collections.length) return null;
+  if (!collections?.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-body-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

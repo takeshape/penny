@@ -8,14 +8,14 @@ import { useForm } from 'react-hook-form';
 import { CancelSubscriptionMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 
-export interface CancelSubscriptionFormProps extends ModalProps {
+export type CancelSubscriptionFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface CancelSubscriptionFormValues {
+export type CancelSubscriptionFormValues = {
   confirm: boolean;
-}
+};
 
 export const CancelSubscriptionForm = ({
   isOpen,

@@ -1,10 +1,10 @@
 import Stars from '@/components/Stars/Stars';
 import { ReviewStats } from '@/types/review';
 
-export interface ReviewsCalloutProps {
+export type ReviewsCalloutProps = {
   stats: ReviewStats;
   showReviewsLink: boolean;
-}
+};
 
 export const ReviewsCallout = ({ stats, showReviewsLink }: ReviewsCalloutProps) => {
   return (

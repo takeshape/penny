@@ -14,12 +14,12 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { CustomerQuery, CustomerUpdateMutation } from './queries.storefront';
 
-interface AccountFormProfileForm {
+type AccountFormProfileForm = {
   firstName: string | null;
   lastName: string | null;
   email: string | null;
   phone: string | null;
-}
+};
 
 export const AccountFormProfile = () => {
   const { data: session } = useSession({ required: true });

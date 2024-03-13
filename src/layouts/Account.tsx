@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 import DefaultLayout, { LayoutProps } from './Default';
 
-export interface AccountLayoutProps extends LayoutProps {}
+export type AccountLayoutProps = {} & LayoutProps;
 
 export const Layout = ({ children, ...layout }: PropsWithChildren<AccountLayoutProps>) => {
   useSession({ required: true });

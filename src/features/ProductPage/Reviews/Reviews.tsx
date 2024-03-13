@@ -9,7 +9,7 @@ import { MouseEventHandler } from 'react';
 import { ProductPageReviewsReview, ProductPageReviewsRollup, ProductPageReviewsStats } from '../types';
 import { ReviewsRollup } from './ReviewsRollup';
 
-export interface ReviewsProps {
+export type ReviewsProps = {
   stats: ProductPageReviewsStats;
   items: ProductPageReviewsReview[];
   rollup?: ProductPageReviewsRollup[];
@@ -19,7 +19,7 @@ export interface ReviewsProps {
   onNextPage: MouseEventHandler;
   onCreateReview: MouseEventHandler;
   error?: ApolloError;
-}
+};
 
 export const Reviews = ({
   stats,

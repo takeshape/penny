@@ -2,9 +2,9 @@ import Seo from '@/components/Seo';
 import { NextSeoProps } from 'next-seo';
 import { PropsWithChildren } from 'react';
 
-export interface LayoutProps {
+export type LayoutProps = {
   seo: NextSeoProps;
-}
+};
 
 export const Layout = ({ children, seo }: PropsWithChildren<LayoutProps>) => {
   return (

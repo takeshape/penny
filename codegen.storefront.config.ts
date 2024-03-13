@@ -15,7 +15,6 @@ const config: CodegenConfig = {
   overwrite: true,
   documents: 'src/**/queries.storefront.ts',
   schema: {
-    // @ts-ignore
     [shopifyStorefrontUrl]: {
       headers: {
         ['X-Shopify-Storefront-Access-Token']: shopifyStorefrontToken

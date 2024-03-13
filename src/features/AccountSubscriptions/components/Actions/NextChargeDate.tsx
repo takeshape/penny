@@ -52,14 +52,14 @@ function getMonth(forDate: Date) {
   };
 }
 
-export interface NextChargeDateFormProps extends ModalProps {
+export type NextChargeDateFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-interface NextChargeDateFormValues {
+type NextChargeDateFormValues = {
   nextChargeDate: string;
-}
+};
 
 export const NextChargeDateForm = ({
   isOpen,

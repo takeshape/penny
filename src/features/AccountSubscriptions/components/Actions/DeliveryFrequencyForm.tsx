@@ -11,14 +11,14 @@ import { UpdateDeliveryFrequencyMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 
-export interface DeliveryFrequencyFormProps extends ModalProps {
+export type DeliveryFrequencyFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface DeliveryFrequencyFormValues {
+export type DeliveryFrequencyFormValues = {
   intervalCount: string;
-}
+};
 
 export const DeliveryFrequencyForm = ({
   isOpen,

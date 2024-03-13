@@ -23,10 +23,10 @@ const navigationItems = [
   }
 ];
 
-export interface ActiveSubscriptionProps {
+export type ActiveSubscriptionProps = {
   subscription: AnySubscription;
   refetchSubscriptionList: RefetchSubscriptions;
-}
+};
 
 export const ActiveSubscription = ({
   subscription: initialSubscription,

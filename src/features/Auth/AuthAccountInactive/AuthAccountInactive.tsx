@@ -13,11 +13,11 @@ import { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InactiveCustomer } from '../types';
 
-export interface AccountInactiveFormProps extends ModalProps {
+export type AccountInactiveFormProps = {
   customer: InactiveCustomer;
-}
+} & ModalProps;
 
-export interface AccountInactiveFormValues {}
+export type AccountInactiveFormValues = {};
 
 export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInactiveFormProps) => {
   const {

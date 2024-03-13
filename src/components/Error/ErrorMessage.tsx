@@ -1,10 +1,10 @@
 import { PropsWithChildren } from 'react';
 
-export interface ErrorMessageProps {
+export type ErrorMessageProps = {
   headline: string;
   subhead: string;
   body: string;
-}
+};
 
 export const ErrorMessage = ({ headline, subhead, body, children }: PropsWithChildren<ErrorMessageProps>) => {
   return (

@@ -40,10 +40,6 @@ yarn-error.log*
 .takeshaperc
 .current-branch-url
 
-# cypress
-/cypress/videos
-/cypress/screenshots
-
 # build cache
 *.cache
 
@@ -65,6 +61,8 @@ src/types/storefront.ts
 /public/sw.*
 /public/workbox-*
 /public/worker-*
+
+# Playwright
 /test-results/
 /playwright-report/
 /playwright/.cache/

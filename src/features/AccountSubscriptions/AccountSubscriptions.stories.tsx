@@ -27,7 +27,7 @@ export const Default: Story = {
             return res(ctx.data(getMySubscriptionListResponse));
           }),
           graphql.query('GetMySubscriptionQuery', (req, res, ctx) => {
-            return res(ctx.data(getMySubscriptionListResponse.subscriptions![0]!));
+            return res(ctx.data(getMySubscriptionListResponse.subscriptions![0]));
           })
         ],
         payments: [

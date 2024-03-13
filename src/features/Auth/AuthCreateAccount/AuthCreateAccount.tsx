@@ -20,19 +20,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CreateCustomerMutation, GetCustomerStateQuery } from '../queries';
 
-export interface AuthCreateAccountForm {
+export type AuthCreateAccountForm = {
   email: string;
   password: string;
   passwordConfirm: string;
-}
+};
 
-export interface AuthCreateAccountProps {
+export type AuthCreateAccountProps = {
   callbackUrl: string;
   signIn: typeof signIn;
   useMultipass: boolean;
   notice?: string;
   email?: string;
-}
+};
 
 function getErrorMessage(error?: ApolloError) {
   if (!error) {

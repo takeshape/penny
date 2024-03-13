@@ -12,10 +12,10 @@ import { Trustpilot } from './Trustpilot';
 export const readOnlyReviews = true;
 export const useReviewsFromProductQuery = false;
 
-export interface TrustpilotProps {
+export type TrustpilotProps = {
   sku: string;
   reviewList: ReviewList;
-}
+};
 
 export const TrustpilotWithData = ({ sku, reviewList }: TrustpilotProps) => {
   const [currentPage, setCurrentPage] = useState(1);

@@ -17,11 +17,11 @@ const navigationItems = [
   }
 ];
 
-export interface EndedSubscriptionProps {
+export type EndedSubscriptionProps = {
   subscription: AnySubscription;
   refetchSubscription?: RefetchSubscriptions;
   refetchSubscriptionList?: RefetchSubscriptions;
-}
+};
 
 export const EndedSubscription = ({ subscription }: EndedSubscriptionProps) => {
   const refetchSubscriptions = useCallback(async () => {}, []);
