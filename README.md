@@ -312,8 +312,8 @@ the frontend Next.js project.
 3. Configure your Shopify checkout experience.
 
 This project uses Shopify's checkout experience. That means when a customer is ready to purchase, they are redirected to
-a checkout flow that Shopify generates. The only downside is, shopify's checkout flow will send users to your shopify
-store, not your headless store, when they're done. To force Shopify's checkout experience to redirect to your headless
+a checkout flow that Shopify generates. The only downside is, Shopify's checkout flow will send users to your Shopify
+store, not your Penny store, when they're done. To force Shopify's checkout experience to redirect to your Penny
 storefront, you must use [their Liquid templating language](https://shopify.github.io/liquid/). These instructions show
 you how:
 
@@ -335,8 +335,8 @@ you how:
 
 - **Save** your changes.
 
-The following instructions will show you how to configure your checkout process to work with this headless store. To
-configure these settings, stay in the **Checkout** section of the **Settings** menu in your store's admin UI.
+Configure your checkout process to work with this headless store. Stay in the **Checkout** section of the **Settings**
+menu in your store's admin UI.
 
 - Under **Customer Accounts**, select **Accounts are optional**. This allows customers to create checkouts as guests.
 
@@ -357,6 +357,12 @@ configure these settings, stay in the **Checkout** section of the **Settings** m
 > If you want to test this app without enabling real payments, it's best to set up test payments while you're in
 > Shopify's admin UI.
 > [Follow Shopify's instructions for setting up test payments in your store](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments).
+
+Shopify's support for allowing headless checkout on password protected stores has proven erratic, so it is **not**
+recommended that you password protect your Shopify store when using Penny. Instead you should update your Shopify theme
+to redirect users to your Penny site and set up a `robots.txt` file to prevent indexing of your Shopify native store.
+
+The [shopify-headless-theme](https://github.com/instantcommerce/shopify-headless-theme) is an excellent option.
 
 4. Get your Storefront API keys.
 
@@ -907,7 +913,7 @@ Add this snippet to your checkout template.
 
 You can also set your own `redirect_origin` with the `shopifyCheckoutRedirectUrl` variable exported from
 `src/config/shopify.ts`. Note that `{{origin}}` is available as a replacement variable, for example, this will redirect
-you to the same origin, at the path `/foo` — `{{origin}}/foo`.
+you to the same origin, at the path `/foo` — `{{origin}}/foo`.
 
 - Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
   will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is

@@ -1,7 +1,6 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import { setProcessBranchUrl } from '@takeshape/shape-tools';
-import { createRequire } from 'module';
 import withPwa from 'next-pwa';
 
 // Set the TakeShape branch URL
@@ -9,8 +8,6 @@ import withPwa from 'next-pwa';
 if (!process.env.STORYBOOK) {
   await setProcessBranchUrl({ envVar: 'NEXT_PUBLIC_TAKESHAPE_API_URL' });
 }
-
-const require = createRequire(import.meta.url);
 
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -105,7 +102,6 @@ const nextConfig = {
     ];
   },
   poweredByHeader: false,
-  reactStrictMode: true,
   eslint: {
     dirs: ['src']
   },
@@ -129,31 +125,7 @@ const nextConfig = {
       }
     ]
   },
-  swcMinify: true,
-  webpack: (config, { webpack }) => {
-    // Sentry tree shaking
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: false,
-        __SENTRY_TRACING__: false
-      })
-    );
-
-    // Unable to use the next-plugin-preval config directly for some reason, mjs?
-    const rules = config.module?.rules;
-
-    rules.push({
-      test: /\.preval\.(t|j)sx?$/,
-      loader: require.resolve('next-plugin-preval/loader')
-    });
-
-    return config;
-  },
-  experimental: {
-    // Try to avoid throttling
-    // workerThreads: false,
-    // cpus: 1
-  }
+  swcMinify: true
 };
 
 const withPlugins = (plugins, config) => () =>
