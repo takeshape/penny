@@ -1,3 +1,5 @@
+'use client';
+
 import PageLoader from '@/components/PageLoader';
 import { CartCreateMutation } from '@/features/Cart/queries.storefront';
 import { cartDiscountCodeAtom, cartItemsAtom } from '@/features/Cart/store';
@@ -6,12 +8,14 @@ import { getCartVariables } from '@/features/Cart/utils';
 import { CartCreateMutationResponse, CartCreateMutationVariables } from '@/types/storefront';
 import { useStorefrontMutation } from '@/utils/storefront';
 import { useAtomValue } from 'jotai';
-import { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 
-// After a successful login, redirect here to automatically checkout with the cart
-const _CheckoutPage: NextPage = () => {
+/**
+ * After a successful sign in redirect the user here to automatically checkout with their cart.
+ *
+ */
+export function CheckoutAfterSignIn() {
   const { data: session } = useSession();
   const cartItems = useAtomValue(cartItemsAtom);
   const discountCode = useAtomValue(cartDiscountCodeAtom);
@@ -37,6 +41,4 @@ const _CheckoutPage: NextPage = () => {
   }, [data]);
 
   return <PageLoader />;
-};
-
-export default _CheckoutPage;
+}

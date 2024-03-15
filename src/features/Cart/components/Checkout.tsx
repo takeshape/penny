@@ -28,7 +28,7 @@ export const CartCheckout = () => {
 
   const handleCheckout = useCallback(() => {
     if (signedInCheckout && !session) {
-      void router.push(`/account/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/_checkout')}`);
+      void router.push(`/account/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/checkout')}`);
       return;
     }
 
