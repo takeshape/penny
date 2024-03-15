@@ -28,7 +28,6 @@ import {
   AuthCustomerQueryResponse,
   AuthCustomerQueryVariables
 } from '@/types/storefront';
-import { withSentry } from '@/utils/api/withSentry';
 import { createClient } from '@/utils/apollo/client';
 import { createMultipassToken } from '@/utils/multipass';
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
@@ -301,4 +300,4 @@ const handler: NextApiHandler = async (req, res) => {
   return await nextAuth(req, res);
 };
 
-export default withSentry(handler);
+export default handler;

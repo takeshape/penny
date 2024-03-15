@@ -3,7 +3,7 @@ import { useApollo } from '@/utils/apollo/useApollo';
 import { ApolloProvider as Provider } from '@apollo/client';
 import { PropsWithChildren } from 'react';
 
-type ApolloProviderProps = PropsWithChildren<{ pageProps: any }>;
+type ApolloProviderProps = PropsWithChildren<{ pageProps?: Record<string, unknown> }>;
 
 const ApolloProvider = ({ pageProps, children }: ApolloProviderProps) => {
   const apolloClient = useApollo(pageProps, {

@@ -1,3 +1,5 @@
+'use client';
+
 import NextImage from '@/components/NextImage';
 import NextLink from '@/components/NextLink';
 import { formatPrice, pluralizeText } from '@/utils/text';

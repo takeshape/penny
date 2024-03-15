@@ -1,3 +1,5 @@
+'use client';
+
 import NextLink from '@/components/NextLink';
 import { UserIcon } from '@heroicons/react/24/outline';
 import { UserIcon as SolidUserIcon } from '@heroicons/react/24/solid';

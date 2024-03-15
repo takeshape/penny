@@ -1,3 +1,5 @@
+'use client';
+
 import { isStorybook } from '@/config';
 import { isMobileMenuOpenAtom } from '@/store';
 import classNames from '@/utils/classNames';

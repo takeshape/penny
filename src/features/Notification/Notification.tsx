@@ -1,3 +1,5 @@
+'use client';
+
 import StatusIcon from '@/components/StatusIcon/StatusIcon';
 import { notificationAtom } from '@/store';
 import { Transition } from '@headlessui/react';

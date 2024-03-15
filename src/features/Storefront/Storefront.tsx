@@ -1,3 +1,5 @@
+'use client';
+
 import { GetStorefrontQueryResponse } from '@/types/takeshape';
 import { NonNullablePath } from '@/types/util';
 import { isNotNullish } from '@/utils/types';

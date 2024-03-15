@@ -1,3 +1,5 @@
+'use client';
+
 import { cartSubtotalAtom } from '@/features/Cart/store';
 import { currencyAtom } from '@/store';
 import { formatPrice } from '@/utils/text';

@@ -1,3 +1,5 @@
+'use client';
+
 import { AccountNavigation } from '@/features/AccountNavigation/AccountNavigation';
 import { signIn, useSession } from 'next-auth/react';
 

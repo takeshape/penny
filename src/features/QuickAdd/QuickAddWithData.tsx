@@ -1,3 +1,5 @@
+'use client';
+
 import { QuickAddQueryResponse, QuickAddQueryVariables } from '@/types/takeshape';
 import { useLazyQueryWithTransform } from '@/utils/query';
 import { useAtomValue } from 'jotai';

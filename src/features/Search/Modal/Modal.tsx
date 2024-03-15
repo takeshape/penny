@@ -1,3 +1,5 @@
+'use client';
+
 import Loader from '@/components/Loader/Loader';
 import { isSearchOpenAtom } from '@/store';
 import { replaceState } from '@/utils/history';
@@ -6,7 +8,7 @@ import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { useAtom } from 'jotai';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ChangeEventHandler, Fragment, useCallback, useEffect } from 'react';
 import { SearchShopifyProducts } from '../queries';
 import { getSearchList } from '../transforms';
@@ -14,6 +16,7 @@ import { useSearch } from '../useSearch';
 import { ModalSearchItem } from './components/ModalSearchItem';
 
 export const Modal = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { query, setQuery, results, loading } = useSearch({
     graphqlQuery: SearchShopifyProducts,
@@ -24,13 +27,13 @@ export const Modal = () => {
 
   // This should only be called once, on page load, to avoid a loop
   useEffect(() => {
-    const initialQuery = getSingle(router.query.search);
-    if (router.isReady && initialQuery) {
+    const initialQuery = getSingle(searchParams?.get('search'));
+    if (initialQuery) {
       setIsSearchOpen(true);
       setQuery(initialQuery);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  }, [searchParams]);
 
   // Only trigger this on queries, router is a side-effect
   const onQueryChange: ChangeEventHandler<HTMLInputElement> = useCallback(

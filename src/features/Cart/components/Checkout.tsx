@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '@/components/Button/Button';
 import { signedInCheckout } from '@/config';
 import { getCheckoutUrl } from '@/features/Cart/transforms';
@@ -5,7 +7,7 @@ import { CartCreateMutationResponse, CartCreateMutationVariables } from '@/types
 import { useStorefrontMutation } from '@/utils/storefront';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { CartCreateMutation } from '../queries.storefront';
 import { cartDiscountCodeAtom, cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';

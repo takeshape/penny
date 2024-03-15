@@ -1,3 +1,5 @@
+'use client';
+
 import NextLink from '@/components/NextLink';
 import classNames from '@/utils/classNames';
 import { Disclosure } from '@headlessui/react';

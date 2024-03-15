@@ -1,3 +1,5 @@
+'use client';
+
 import NextImage from '@/components/NextImage';
 import classNames from '@/utils/classNames';
 import { truncate } from '@/utils/truncate';

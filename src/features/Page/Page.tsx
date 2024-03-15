@@ -1,3 +1,5 @@
+'use client';
+
 import Wrapper from '@/components/Wrapper/Content';
 import { ContentBody } from '@/features/Content/ContentBody';
 import { ContentHeader } from '@/features/Content/ContentHeader';

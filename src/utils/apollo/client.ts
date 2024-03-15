@@ -1,10 +1,16 @@
 // We use Apollo Client cache rehydration to support loading data into components during static render. Read more:
 // https://developers.wpengine.com/blog/apollo-client-cache-rehydration-in-next-js
 
-import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import {
+  ApolloClient,
+  ApolloLink,
+  createHttpLink,
+  HttpOptions,
+  InMemoryCache,
+  NormalizedCacheObject
+} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
-// import { RetryLink } from '@apollo/client/link/retry';
 import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from '../../config';
 import logger from '../../logger';
@@ -21,20 +27,21 @@ export type InitializeApolloProps = {
   accessToken: string;
   accessTokenHeader: string;
   accessTokenPrefix: string;
-  ssrMode?: boolean;
   rateLimit?: boolean;
   uri: string;
+  fetchOptions?: HttpOptions['fetchOptions'];
 };
 
-function createApolloClient({
+export function createApolloClientLinks({
   accessToken,
   accessTokenHeader,
   accessTokenPrefix,
   uri,
-  ssrMode
-}: Pick<InitializeApolloProps, 'accessToken' | 'accessTokenHeader' | 'accessTokenPrefix' | 'ssrMode' | 'uri'>) {
+  fetchOptions
+}: Pick<InitializeApolloProps, 'accessToken' | 'accessTokenHeader' | 'accessTokenPrefix' | 'uri' | 'fetchOptions'>) {
   const httpLink = createHttpLink({
-    uri
+    uri,
+    fetchOptions
   });
 
   const withToken = setContext(() => {
@@ -87,11 +94,6 @@ function createApolloClient({
       logger.info(`Retrying throttled request (${delay}ms): ${attempt} / ${maxAttempts}`);
       return delay;
     },
-    // delay: {
-    //   initial: 1000,
-    //   max: 10,
-    //   jitter: true
-    // },
     attempts: {
       retryIf: (error) => {
         if (Array.isArray(error)) {
@@ -102,12 +104,24 @@ function createApolloClient({
     }
   });
 
-  const httpLinkWithoutTypeName = ApolloLink.from([httpLink]);
+  return {
+    retryLink,
+    withToken,
+    withError,
+    authLink,
+    httpLink
+  };
+}
+
+export function createApolloClient(
+  params: Pick<InitializeApolloProps, 'accessToken' | 'accessTokenHeader' | 'accessTokenPrefix' | 'uri'>
+) {
+  const { retryLink, withToken, withError, authLink, httpLink } = createApolloClientLinks(params);
 
   return new ApolloClient<NormalizedCacheObject>({
-    link: ApolloLink.from([retryLink, withToken, withError, authLink.concat(httpLinkWithoutTypeName)]),
+    link: ApolloLink.from([retryLink, withToken, withError, authLink.concat(httpLink)]),
     cache: new InMemoryCache(),
-    ssrMode
+    ssrMode: false
   });
 }
 
@@ -133,8 +147,7 @@ export function createStaticClient({
     accessToken,
     uri,
     accessTokenHeader,
-    accessTokenPrefix,
-    ssrMode: true
+    accessTokenPrefix
   });
 
   return staticClientCache[cacheKey];

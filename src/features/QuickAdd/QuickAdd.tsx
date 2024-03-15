@@ -1,3 +1,5 @@
+'use client';
+
 import { Modal } from '@/components/Modal/Modal';
 import { QuickAddItem } from './components/QuickAddItem';
 import { QuickAddItemLoading } from './components/QuickAddItemLoading';

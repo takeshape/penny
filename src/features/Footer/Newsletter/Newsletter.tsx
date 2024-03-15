@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
