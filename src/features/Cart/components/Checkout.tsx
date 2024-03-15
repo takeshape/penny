@@ -15,7 +15,7 @@ import { getCartVariables } from '../utils';
 
 export const CartCheckout = () => {
   const { data: session } = useSession();
-  const { push } = useRouter();
+  const router = useRouter();
 
   const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
   const quantity = useAtomValue(cartQuantityAtom);
@@ -28,7 +28,7 @@ export const CartCheckout = () => {
 
   const handleCheckout = useCallback(() => {
     if (signedInCheckout && !session) {
-      void push(`/auth/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/_checkout')}`);
+      void router.push(`/account/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/_checkout')}`);
       return;
     }
 
@@ -36,7 +36,7 @@ export const CartCheckout = () => {
     void setCartMutation({
       variables: getCartVariables(items, session, discountCode)
     });
-  }, [session, setIsCartCheckingOut, setCartMutation, items, discountCode, push]);
+  }, [session, setIsCartCheckingOut, setCartMutation, items, discountCode, router]);
 
   useEffect(() => {
     const checkoutUrl = getCheckoutUrl(data);

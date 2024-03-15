@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import FormInput from '@/components/Form/Input/Input';
@@ -13,11 +15,12 @@ import {
 import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { useMutation, useQuery } from '@apollo/client';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
 import { InactiveCustomer } from '../types';
+
 export type AuthRecoverPasswordForm = {
   email: string;
 };
@@ -32,7 +35,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
   const { handleSubmit, formState, reset, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
-  const { push } = useRouter();
+  const router = useRouter();
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordMutationResponse,
     RecoverCustomerPasswordMutationVariables
@@ -61,14 +64,14 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       if (customer?.state === 'no-account') {
         // Send to sign up page
-        void push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        void router.push(`/account/create?notice=Email+address+not+found.&email=${email}`);
         return;
       }
 
       const recaptchaToken = await executeRecaptcha('recover_password');
       await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
     },
-    [executeRecaptcha, push, refetch, setRecoverPasswordPayload]
+    [executeRecaptcha, router, refetch, setRecoverPasswordPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -82,9 +85,9 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
   useEffect(() => {
     if (sanitizedCallbackUrl && hasData) {
-      setTimeout(() => void push(sanitizedCallbackUrl), 5000);
+      setTimeout(() => void router.push(sanitizedCallbackUrl), 5000);
     }
-  }, [sanitizedCallbackUrl, hasData, push]);
+  }, [sanitizedCallbackUrl, hasData, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">

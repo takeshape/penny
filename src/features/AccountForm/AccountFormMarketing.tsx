@@ -1,3 +1,5 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormToggleWithLabel from '@/components/Form/Toggle/ToggleWithLabel';
 import {

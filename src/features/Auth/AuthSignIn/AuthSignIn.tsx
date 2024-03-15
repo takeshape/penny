@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import FormInput from '@/components/Form/Input/Input';
@@ -7,7 +9,7 @@ import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAcc
 import { SigninError } from '@/features/Auth/types';
 import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -17,7 +19,6 @@ export type AuthSignInForm = {
   rememberMe: boolean;
 };
 export type AuthSignInProps = {
-  signIn: typeof signIn;
   callbackUrl: string;
   error?: SigninError;
   useMultipass: boolean;
@@ -42,11 +43,11 @@ export const errors: Record<string, string> = {
   default: 'Unable to sign in.'
 };
 
-export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
+export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSignInProps) => {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
   const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
-  const { push } = useRouter();
+  const router = useRouter();
   const watched = useRef({ email: '' });
 
   watched.current.email = watch('email', '');
@@ -55,14 +56,14 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
     async ({ email, password, rememberMe }: AuthSignInForm) => {
       await signIn('shopify', { email, password, rememberMe, callbackUrl });
     },
-    [callbackUrl, signIn]
+    [callbackUrl]
   );
 
   const hasErrors = Boolean(error);
   const errorMessage = error && (errors[error.code] ?? errors.default);
 
   const signupLink = useMemo(() => {
-    let href = '/auth/create';
+    let href = '/account/create';
     if (sanitizedCallbackUrl) {
       href += `?callbackUrl=${encodeURIComponent(sanitizedCallbackUrl)}`;
     }
@@ -71,7 +72,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const signinGoogle = useCallback(() => {
     void signIn('google', { callbackUrl });
-  }, [callbackUrl, signIn]);
+  }, [callbackUrl]);
 
   const inactiveCustomer = useMemo(() => {
     if (error?.code === 'EmailInUse') {
@@ -84,9 +85,9 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
   const onAccountInactiveFormClose = useCallback(() => {
-    void push(window.location.pathname);
+    void router.push(window.location.pathname);
     reset();
-  }, [reset, push]);
+  }, [reset, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -161,7 +162,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
               <div className="text-sm">
                 <NextLink
-                  href={`/auth/recover?callbackUrl=${encodeURIComponent('/auth/signin')}`}
+                  href={`/account/recover?callbackUrl=${encodeURIComponent('/account/signin')}`}
                   className="font-medium text-accent-600 hover:text-accent-500"
                 >
                   Forgot your password?

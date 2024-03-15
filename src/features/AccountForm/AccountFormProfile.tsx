@@ -1,3 +1,5 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
 import FormPhoneInput from '@/components/Form/PhoneInput/PhoneInput';

@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import FormInput from '@/components/Form/Input/Input';
@@ -10,7 +12,7 @@ import {
   ResetPasswordMutationVariables
 } from '@/types/storefront';
 import { useStorefrontMutation } from '@/utils/storefront';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ActivateAccountMutation, ResetPasswordMutation } from './queries.storefront';
@@ -31,7 +33,7 @@ export const AccountResetPassword = ({ customerId, resetToken, activationToken }
     throw new Error('One of `activationToken` or `resetToken` is required');
   }
 
-  const { push } = useRouter();
+  const router = useRouter();
 
   const { handleSubmit, formState, control, watch } = useForm<AccountResetPasswordForm>({ mode: 'onBlur' });
 
@@ -66,9 +68,9 @@ export const AccountResetPassword = ({ customerId, resetToken, activationToken }
 
   useEffect(() => {
     if (hasData && !hasErrors) {
-      setTimeout(() => void push('/auth/signin'), 5000);
+      setTimeout(() => void router.push('/account/signin'), 5000);
     }
-  }, [hasData, hasErrors, push]);
+  }, [hasData, hasErrors, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">

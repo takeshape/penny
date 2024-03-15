@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import CardPanel from '@/components/Card/Panel/Panel';
 import { ActiveSubscription } from '@/features/AccountSubscriptions/components/ActiveSubscription';

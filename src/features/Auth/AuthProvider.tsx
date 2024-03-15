@@ -5,11 +5,11 @@ import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import { PropsWithChildren } from 'react';
 
-export type ProvidersProps = {
+export type AuthProvidersProps = {
   session: Session | null;
 };
 
-export default function SessionProviderWrapper({ children, session }: PropsWithChildren<ProvidersProps>) {
+export function AuthProvider({ children, session }: PropsWithChildren<AuthProvidersProps>) {
   return (
     <SessionProvider session={session} refetchInterval={sessionRefetchInterval} refetchOnWindowFocus={false}>
       {children}

@@ -1,3 +1,5 @@
+'use client';
+
 import CardPanel from '@/components/Card/Panel/Panel';
 import { useState } from 'react';
 import { CreateReferral } from './components/CreateReferral';

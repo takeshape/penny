@@ -1,3 +1,5 @@
+'use client';
+
 import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
 import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { NetworkStatus } from '@apollo/client';

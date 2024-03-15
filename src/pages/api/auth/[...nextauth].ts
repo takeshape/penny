@@ -162,9 +162,9 @@ if (shopifyUseMultipass) {
 
 const nextAuthConfig: NextAuthOptions = {
   pages: {
-    signIn: '/auth/signin',
-    signOut: '/auth/signout',
-    error: '/auth/signin'
+    signIn: '/account/signin',
+    signOut: '/account/signout',
+    error: '/account/signin'
   },
   session: {
     maxAge: sessionMaxAgeRememberMe

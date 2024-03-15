@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/features/Auth/AuthProvider';
 import { Cart } from '@/features/Cart/Cart';
 import { CartProvider } from '@/features/Cart/CartProvider';
 import { Footer } from '@/features/Footer/Footer';
@@ -9,7 +10,6 @@ import { QuickAddWithData } from '@/features/QuickAdd/QuickAddWithData';
 import SearchModal from '@/features/Search/Modal/Modal';
 import { getServerSession } from 'next-auth';
 import { PropsWithChildren } from 'react';
-import SessionProviderWrapper from './providers';
 
 export default async function ShopLayout({ children }: PropsWithChildren) {
   const navigationData = await getNavigationData();
@@ -17,7 +17,7 @@ export default async function ShopLayout({ children }: PropsWithChildren) {
   const session = await getServerSession();
 
   return (
-    <SessionProviderWrapper session={session}>
+    <AuthProvider session={session}>
       <CartProvider>
         <div className="flex flex-col min-h-screen">
           <SearchModal />
@@ -34,6 +34,6 @@ export default async function ShopLayout({ children }: PropsWithChildren) {
           {footerData && <Footer {...footerData} />}
         </div>
       </CartProvider>
-    </SessionProviderWrapper>
+    </AuthProvider>
   );
 }

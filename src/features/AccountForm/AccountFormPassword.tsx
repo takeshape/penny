@@ -1,3 +1,5 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
 import { CustomerUpdateMutationResponse, CustomerUpdateMutationVariables } from '@/types/storefront';
@@ -51,7 +53,7 @@ export const AccountFormPassword = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful && !error) {
-      void signOut({ callbackUrl: '/auth/signin' });
+      void signOut({ callbackUrl: '/account/signin' });
     }
   }, [isSubmitSuccessful, error, reset]);
 

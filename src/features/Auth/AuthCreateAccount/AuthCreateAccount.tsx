@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import FormInput from '@/components/Form/Input/Input';
@@ -15,7 +17,7 @@ import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { ApolloError, useMutation, useQuery } from '@apollo/client';
 import { signIn } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CreateCustomerMutation, GetCustomerStateQuery } from '../queries';
@@ -28,7 +30,6 @@ export type AuthCreateAccountForm = {
 
 export type AuthCreateAccountProps = {
   callbackUrl: string;
-  signIn: typeof signIn;
   useMultipass: boolean;
   notice?: string;
   email?: string;
@@ -46,12 +47,12 @@ function getErrorMessage(error?: ApolloError) {
   return error.message;
 }
 
-export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, email }: AuthCreateAccountProps) => {
+export function AuthCreateAccount({ callbackUrl, useMultipass, notice, email }: AuthCreateAccountProps) {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
   const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
-  const { push } = useRouter();
+  const router = useRouter();
 
   const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<
     CreateCustomerMutationResponse,
@@ -72,7 +73,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
       const { email, password } = watched.current;
       void signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
     }
-  }, [customerResponse, signIn, sanitizedCallbackUrl]);
+  }, [customerResponse, sanitizedCallbackUrl]);
 
   const { executeRecaptcha } = useReCaptcha();
 
@@ -93,7 +94,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
 
       if (customer?.state === 'enabled') {
         // Send to sign up page
-        void push(`/auth/signin?error=CannotCreate&email=${email}`);
+        void router.push(`/account/signin?error=CannotCreate&email=${email}`);
         return;
       }
 
@@ -102,7 +103,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
         variables: { input: { email, password, recaptchaToken } }
       });
     },
-    [executeRecaptcha, push, refetch, setCustomerPayload]
+    [executeRecaptcha, router, refetch, setCustomerPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -115,7 +116,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
 
   const signinGoogle = useCallback(() => {
     void signIn('google', { callbackUrl: sanitizedCallbackUrl });
-  }, [sanitizedCallbackUrl, signIn]);
+  }, [sanitizedCallbackUrl]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -262,4 +263,4 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
       </div>
     </div>
   );
-};
+}
