@@ -3,24 +3,48 @@ import { GetStorefrontQuery } from '@/features/Storefront/queries';
 import { getStorefront } from '@/features/Storefront/transforms';
 import { GetStorefrontQueryResponse } from '@/types/takeshape';
 import { getAnonymousClient } from '@/utils/takeshape/server';
+import { ApolloError } from '@apollo/client';
+import * as Sentry from '@sentry/nextjs';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 export const revalidate = 60;
 
-export default async function HomePage() {
-  const { data, error } = await getAnonymousClient().query<GetStorefrontQueryResponse>({
-    query: GetStorefrontQuery
-  });
+async function getPageData() {
+  try {
+    const { data } = await getAnonymousClient().query<GetStorefrontQueryResponse>({
+      query: GetStorefrontQuery
+    });
 
-  const storefront = getStorefront(data);
+    return getStorefront(data);
+  } catch (error) {
+    if (error instanceof ApolloError) {
+      Sentry.captureMessage(error.message);
+      return;
+    }
 
-  if (error) {
-    throw new Error(`Failed to get storefront, received message ${error.message}`);
+    throw error;
+  }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageData = await getPageData();
+
+  if (!pageData) {
+    return {};
   }
 
-  if (!storefront) {
+  return {
+    // TODO Add SEO title / description / keywords to the Storefront shape
+  };
+}
+
+export default async function HomePage() {
+  const pageData = await getPageData();
+
+  if (!pageData) {
     return notFound();
   }
 
-  return <Storefront storefront={storefront} />;
+  return <Storefront storefront={pageData} />;
 }

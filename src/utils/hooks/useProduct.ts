@@ -1,3 +1,5 @@
+'use client';
+
 import { Product } from '@/types/product';
 import { useVariantOption } from '@/utils/hooks/useVariantOption';
 import { getVariant } from '@/utils/products';

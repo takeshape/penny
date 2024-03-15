@@ -1,3 +1,5 @@
+'use client';
+
 import Breadcrumbs, { Breadcrumb } from '@/components/Breadcrumbs/Breadcrumbs';
 import NextImage from '@/components/NextImage';
 import ProductPrice from '@/components/Product/ProductPrice';

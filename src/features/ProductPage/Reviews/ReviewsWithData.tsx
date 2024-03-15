@@ -1,3 +1,5 @@
+'use client';
+
 import { CreateReview } from '@/features/ProductPage/Reviews/CreateReview';
 import { ProductPageReviewPageQuery } from '@/features/ProductPage/queries.takeshape';
 import { getProductReviewsPage } from '@/features/ProductPage/transforms';

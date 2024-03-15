@@ -1,6 +1,8 @@
+'use client';
+
 import logger from '@/logger';
 import { DocumentNode, useApolloClient } from '@apollo/client';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 export type PaginationDataHookParsedPath = { page: number; cursor: string | null; direction: 'before' | 'after' };
@@ -27,7 +29,7 @@ export type PaginationDataHookResultTuple<T> = [
 ];
 
 export type PaginationDataHooksOptions<T extends PaginationDataHookPageData> = {
-  parsePath: (path: string) => PaginationDataHookParsedPath;
+  parsePath: (path: string | null) => PaginationDataHookParsedPath;
   query: DocumentNode;
   getVariables: (parsedPath: PaginationDataHookParsedPath) => Record<string, unknown>;
   initialPageData: T;
@@ -51,8 +53,8 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
 }: PaginationDataHooksOptions<T>): PaginationDataHookResultTuple<T> {
   const apolloClient = useApolloClient();
 
-  const { asPath } = useRouter();
-  const currentPath = useMemo(() => parsePath(asPath), [asPath, parsePath]);
+  const pathname = usePathname();
+  const currentPath = useMemo(() => parsePath(pathname), [pathname, parsePath]);
 
   const [isLoadingPage, setIsLoadingPage] = useState(false);
   const [isLoadingNextPage, setIsLoadingNextPage] = useState(false);

@@ -117,9 +117,7 @@ export function getCollectionPageParams(response: ProductCategoryShopifyCollecti
   }
 
   return nodes.map((node) => ({
-    params: {
-      collection: [node.handle]
-    }
+    collection: [node.handle]
   }));
 }
 
@@ -135,8 +133,11 @@ export function getNextUrl(collection: ProductCategoryCollection, page: number, 
   return `${collection.url}/${page}/${collection.pageInfo.endCursor}`;
 }
 
-export function parseRouterPath(collection: ProductCategoryCollection, pathname: string): PaginationDataHookParsedPath {
-  const paginationPath = pathname.replace(collection.url, '').replace(/^\//, '');
+export function parseRouterPath(
+  collection: ProductCategoryCollection,
+  pathname: string | null
+): PaginationDataHookParsedPath {
+  const paginationPath = pathname?.replace(collection.url, '').replace(/^\//, '') ?? '';
   const [page, cursor, direction] = paginationPath.split('/');
   return {
     page: page ? Number(page) : 1,
@@ -145,8 +146,8 @@ export function parseRouterPath(collection: ProductCategoryCollection, pathname:
   };
 }
 
-export function getCurrentTitle(collection: ProductCategoryCollection, page: number) {
-  return collection.pageInfo.hasPreviousPage ? `Page ${page} | ${collection.name}` : collection.name;
+export function getCurrentTitle(collection: ProductCategoryCollection, page?: string) {
+  return collection.pageInfo.hasPreviousPage ? `Page ${page} | ${collection.seo.title}` : collection.seo.title;
 }
 
 export function getBreadcrumbs(collection: ProductCategoryCollection): ProductCategoryBreadcrumbs {

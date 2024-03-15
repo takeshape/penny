@@ -1,3 +1,5 @@
+'use client';
+
 import { addToCartAtom, isCartOpenAtom } from '@/features/Cart/store';
 import { AddToCartInput } from '@/features/Cart/types';
 import { useSetAtom } from 'jotai';

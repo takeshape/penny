@@ -1,3 +1,5 @@
+'use client';
+
 import { reviewsPerPage } from '@/config';
 import { TrustpilotProductPageReviewPageQuery } from '@/features/ProductPage/queries.takeshape';
 import { ReviewList } from '@/types/review';

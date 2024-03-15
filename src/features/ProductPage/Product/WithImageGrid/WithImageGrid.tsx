@@ -1,3 +1,5 @@
+'use client';
+
 import Breadcrumbs, { Breadcrumb } from '@/components/Breadcrumbs/Breadcrumbs';
 import ProductColorSelect from '@/components/Product/ProductColorSelect';
 import ProductPrice from '@/components/Product/ProductPrice';

@@ -1,3 +1,5 @@
+'use client';
+
 import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from '@/types/storefront';
 import { useStorefrontLazyQuery } from '@/utils/storefront';
 import { useEffect, useMemo } from 'react';

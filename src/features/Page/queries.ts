@@ -6,7 +6,6 @@ export const PageGetPageSlugs = gql`
       items {
         _id
         slug
-        title
       }
     }
   }

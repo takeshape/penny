@@ -25,7 +25,6 @@ import { DeepRequired } from '@/types/util';
 import { isNotNullish } from '@/utils/types';
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
-import { GetStaticPathsResult } from 'next';
 import { ProductJsonLdProps } from 'next-seo';
 import {
   ProductPageBreadcrumbs,
@@ -219,9 +218,7 @@ export function getPageOptions(response?: ProductPageShopifyProductResponse): Pr
   };
 }
 
-export function getProductPageParams(
-  response: ProductPageShopifyProductHandlesQueryResponse
-): GetStaticPathsResult['paths'] | null {
+export function getProductPageParams(response: ProductPageShopifyProductHandlesQueryResponse) {
   const nodes = response?.products?.nodes;
 
   if (!nodes) {
@@ -235,9 +232,7 @@ export function getProductPageParams(
       }
 
       return {
-        params: {
-          product: [node.handle]
-        }
+        product: [node.handle]
       };
     })
     .filter(isNotNullish);
