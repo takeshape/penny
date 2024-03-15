@@ -44,12 +44,11 @@ function useAccountNavigationItems() {
 }
 
 function useLogout() {
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  const { resetStore } = useApolloClient();
+  const client = useApolloClient();
   const handleLogout = useCallback(async () => {
-    await resetStore();
+    await client.resetStore();
     void signOut({ callbackUrl: '/' });
-  }, [resetStore]);
+  }, [client]);
   return {
     handleLogout
   };

@@ -15,7 +15,7 @@ import { getSearchList } from '../transforms';
 import { useSearch } from '../useSearch';
 import { ModalSearchItem } from './components/ModalSearchItem';
 
-export const Modal = () => {
+export function SearchModal() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { query, setQuery, results, loading } = useSearch({
@@ -126,6 +126,4 @@ export const Modal = () => {
       </Dialog>
     </Transition.Root>
   );
-};
-
-export default Modal;
+}

@@ -14,7 +14,8 @@ import {
   GetCustomerStateQueryVariables
 } from '@/types/takeshape';
 import { sanitizeCallbackUrl } from '@/utils/callbacks';
-import { ApolloError, useMutation, useQuery } from '@apollo/client';
+import { ApolloError, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr';
 import { signIn } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useRouter } from 'next/navigation';

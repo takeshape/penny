@@ -6,8 +6,8 @@ import { getFooterData } from '@/features/Footer/data';
 import { Navigation } from '@/features/Navigation/Navigation';
 import { getNavigationData } from '@/features/Navigation/data';
 import { Notification } from '@/features/Notification/Notification';
-import { QuickAddWithData } from '@/features/QuickAdd/QuickAddWithData';
-import SearchModal from '@/features/Search/Modal/Modal';
+import { QuickAdd } from '@/features/QuickAdd/QuickAdd';
+import { SearchModal } from '@/features/Search/Modal/Modal';
 import { getServerSession } from 'next-auth';
 import { PropsWithChildren } from 'react';
 
@@ -28,7 +28,7 @@ export default async function ShopLayout({ children }: PropsWithChildren) {
           </main>
 
           <Cart />
-          <QuickAddWithData />
+          <QuickAdd />
           <Notification />
 
           {footerData && <Footer {...footerData} />}

@@ -1,5 +1,3 @@
-'use client';
-
 import NextImage from '@/components/NextImage';
 import NextLink from '@/components/NextLink';
 import ProductColorSelect from '@/components/Product/ProductColorSelect';
