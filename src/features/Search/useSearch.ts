@@ -1,5 +1,3 @@
-'use client';
-
 import useDebounce from '@/utils/hooks/useDebounce';
 import { useLazyQuery } from '@apollo/client';
 import type { DocumentNode } from 'graphql';
