@@ -58,14 +58,7 @@ export const metadata: Metadata = {
       url: '/apple-touch-icon.png',
       sizes: '180x180'
     }
-  ],
-  manifest: `${siteUrl}/manifest.json`,
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: siteName
-  },
-  themeColor: '#000000'
+  ]
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {

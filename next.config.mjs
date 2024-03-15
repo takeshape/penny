@@ -1,7 +1,6 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import { setProcessBranchUrl } from '@takeshape/shape-tools';
-import withPwa from 'next-pwa';
 
 // Set the TakeShape branch URL
 // Storybook doesn't make live queries, so this is unnecessary.
@@ -134,16 +133,7 @@ const withPlugins = (plugins, config) => () =>
   });
 
 export default withSentryConfig(
-  withPlugins(
-    [
-      withBundleAnalyzer,
-      withPwa({
-        dest: 'public',
-        disable: process.env.NODE_ENV === 'development'
-      })
-    ],
-    nextConfig
-  ),
+  withPlugins([withBundleAnalyzer], nextConfig),
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options

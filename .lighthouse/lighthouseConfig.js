@@ -18,7 +18,7 @@ module.exports = {
       'maskable-icon', // not helpful
       'unsized-images' // not helpful
     ],
-    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa'],
+    onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo'],
     budgets: [
       {
         path: '/*',
