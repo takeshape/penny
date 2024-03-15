@@ -16,7 +16,7 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
   const currency = useAtomValue(currencyAtom);
 
   const [previousCurrency, setPreviousCurrency] = useState('');
-  const { replace } = useRouter();
+  const router = useRouter();
 
   const searchParams = useSearchParams();
   const action = searchParams?.get('shopify_checkout_action');
@@ -43,10 +43,10 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       setNotification({ title, body, showFor: 5000, status: 'info' });
 
       if (replacementUrl) {
-        void replace(replacementUrl);
+        void router.replace(replacementUrl);
       }
     }
-  }, [action, replace, setCartItems, setDiscountCode, setNotification, replacementUrl]);
+  }, [action, router, setCartItems, setDiscountCode, setNotification, replacementUrl]);
 
   useEffect(() => {
     const discountCode = getSingle(discount);
@@ -57,10 +57,10 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       const body = `<b>${ucDiscountCode}</b> has been added to your cart and will be applied at checkout.`;
       setNotification({ title, body, showFor: 5000, status: 'info' });
       if (replacementUrl) {
-        void replace(replacementUrl);
+        void router.replace(replacementUrl);
       }
     }
-  }, [discount, replace, setDiscountCode, setNotification, replacementUrl]);
+  }, [discount, router, setDiscountCode, setNotification, replacementUrl]);
 
   useEffect(() => {
     // If the currency changes the cart needs to be reset to prevent out-of-sync
