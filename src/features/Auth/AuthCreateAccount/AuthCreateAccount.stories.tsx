@@ -5,11 +5,7 @@ import { AuthCreateAccount } from './AuthCreateAccount';
 const meta: Meta<typeof AuthCreateAccount> = {
   title: 'Features / Auth / Create Account',
   component: AuthCreateAccount,
-  argTypes: {
-    signIn: {
-      action: 'Sign In'
-    }
-  }
+  argTypes: {}
 };
 
 type Story = StoryObj<typeof AuthCreateAccount>;

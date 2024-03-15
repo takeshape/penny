@@ -5,9 +5,6 @@ const meta: Meta<typeof AuthSignIn> = {
   title: 'Features / Auth / Sign In',
   component: AuthSignIn,
   argTypes: {
-    signIn: {
-      action: 'Sign In'
-    },
     error: {
       control: {
         type: 'select',
@@ -19,9 +16,7 @@ const meta: Meta<typeof AuthSignIn> = {
 
 type Story = StoryObj<typeof AuthSignIn>;
 
-/**
- * TODO: When we can mock mutations we might want to show more states.
- */
+// TODO When we can mock mutations we might want to show more states.
 
 export const Success: Story = {};
 
