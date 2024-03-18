@@ -250,8 +250,7 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
    ![A screenshot of the Home tab in the Penny on TakeShape](/readme-images/home-tab-open-id-readme-images.png)
 
 2. Add your store's URL to the **Issuer URL** field, and enter the same URL with
-   `/api/auth/all-access/.well-known/openid-configuration` appended to the end of it in the **OpenID Configuration
-   URL**.
+   `/api/oidc/.well-known/openid-configuration` appended to the end of it in the **OpenID Configuration URL**.
 
    > Note: Your store URL should be the public-facing URL of your website, not necessarily your myshopify.com URL.
 
