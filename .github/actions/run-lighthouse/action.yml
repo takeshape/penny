@@ -24,7 +24,7 @@ runs:
 
     - name: Audit URLs using Lighthouse
       id: audit
-      uses: treosh/lighthouse-ci-action@v9
+      uses: treosh/lighthouse-ci-action@v11
       with:
         urls: ${{ steps.audit-urls.outputs.urls }}
         configPath: ./.lighthouse/profiles/${{ inputs.profile }}.js

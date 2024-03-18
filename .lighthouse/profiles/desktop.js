@@ -3,7 +3,7 @@ const constants = require('../constants');
 module.exports = {
   ci: {
     collect: {
-      extends: 'lighthouse:default',
+      extends: 'lighthouse:no-pwa',
       settings: {
         formFactor: 'desktop',
         throttling: constants.throttling.desktopFIOS,
