@@ -93,6 +93,10 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Install Playwright Browsers
+        if: steps.cache-playwright.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
       - name: Run Playwright tests
         run: npx playwright test --shard=$SHARD_INDEX/$SHARD_TOTAL
         env:
@@ -141,6 +145,13 @@ jobs:
           path: playwright-reports
           pattern: playwright-report-*
           merge-multiple: true
+
+      - name: DEBUG
+        shell: bash
+        run: |
+          ls -al
+          cd ./playwright-reports
+          ls -al
 
       - name: Merge reports
         shell: bash
