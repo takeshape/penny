@@ -211,7 +211,7 @@ export function AuthCreateAccount({ callbackUrl, useMultipass, notice, email }: 
             <div className="text-body-500 text-sm">
               Already have an account?
               <a
-                href={`/api/auth/signin`}
+                href={`/account/signin`}
                 onClick={(e) => {
                   e.preventDefault();
                   void signIn(undefined, { callbackUrl: sanitizedCallbackUrl });

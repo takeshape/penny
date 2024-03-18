@@ -20,7 +20,7 @@ export const TopCreateOrSignIn = () => {
       </NextLink>
       <span className="h-6 w-px bg-primary-600" aria-hidden="true" />
       <a
-        href={`/api/auth/signin`}
+        href={`/account/signin`}
         onClick={(e) => {
           e.preventDefault();
           void signIn();

@@ -23,7 +23,7 @@ export const SignedIn = () => {
 export const SignedOut = () => (
   <div className="flex-1 items-center hidden lg:flex">
     <a
-      href={`/api/auth/signin`}
+      href={`/account/signin`}
       onClick={(e) => {
         e.preventDefault();
         void signIn(undefined, { callbackUrl: '/account' });

@@ -8,7 +8,7 @@ env:
 
 jobs:
   Run:
-    name: Run (${{ matrix.shardIndex }})
+    name: Shard ${{ matrix.shardIndex }}
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     timeout-minutes: 60
     runs-on: ubuntu-latest
