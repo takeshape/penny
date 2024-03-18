@@ -1,4 +1,4 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
+import { takeshapeApiUrl } from '@/config';
 import { createClient } from '@/lib/apollo/client';
 import {
   LazyQueryHookWithTransformOptions,
@@ -19,16 +19,6 @@ import { getClientToken } from '@takeshape/next-auth-all-access/react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { JsonValue } from 'type-fest';
-import { createStaticClient } from './apollo/client';
-
-export function createAnonymousTakeshapeApolloClient() {
-  return createStaticClient({
-    uri: takeshapeApiUrl,
-    accessToken: takeshapeAnonymousApiKey,
-    accessTokenHeader: 'Authorization',
-    accessTokenPrefix: 'Bearer'
-  });
-}
 
 export function useAuthenticatedClient() {
   const { data: session } = useSession();

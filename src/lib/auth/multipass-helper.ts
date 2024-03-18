@@ -1,6 +1,5 @@
-import { shopifyStorefrontToken, shopifyStorefrontUrl } from '@/config';
 import { AuthCustomerAccessTokenCreateWithMultipassMutation } from '@/features/Auth/queries.storefront';
-import { createClient } from '@/lib/apollo/client';
+import { getStorefrontClient } from '@/lib/apollo/rsc';
 import logger from '@/lib/logger';
 import { createMultipassToken } from '@/lib/multipass';
 import {
@@ -9,12 +8,7 @@ import {
 } from '@/types/storefront';
 import { Account, Profile } from 'next-auth';
 
-const shopifyClient = createClient({
-  uri: shopifyStorefrontUrl,
-  accessToken: shopifyStorefrontToken,
-  accessTokenHeader: 'X-Shopify-Storefront-Access-Token',
-  accessTokenPrefix: ''
-});
+const shopifyClient = getStorefrontClient();
 
 export async function getMultipassCustomerAccessToken({
   account,

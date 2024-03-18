@@ -3,12 +3,10 @@ import {
   googleClientSecret,
   sessionMaxAge,
   shopifyMultipassSecret,
-  shopifyStorefrontToken,
-  shopifyStorefrontUrl,
   shopifyUseMultipass
 } from '@/config';
 import { AuthCustomerQuery } from '@/features/Auth/queries.storefront';
-import { createClient } from '@/lib/apollo/client';
+import { getStorefrontClient } from '@/lib/apollo/rsc';
 import { withAllAccess } from '@/lib/auth-all-access';
 import { getMultipassCustomerAccessToken } from '@/lib/auth/multipass-helper';
 import ShopifyCredentialsProvider from '@/lib/auth/shopify-credentials-provider';
@@ -18,12 +16,7 @@ import NextAuth, { NextAuthConfig } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';
 
-const shopifyClient = createClient({
-  uri: shopifyStorefrontUrl,
-  accessToken: shopifyStorefrontToken,
-  accessTokenHeader: 'X-Shopify-Storefront-Access-Token',
-  accessTokenPrefix: ''
-});
+const shopifyClient = getStorefrontClient();
 
 const providers: NextAuthConfig['providers'] = [ShopifyCredentialsProvider()];
 

@@ -1,7 +1,6 @@
-import { shopifyStorefrontToken, shopifyStorefrontUrl, takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
 import { GetCustomerStateQuery } from '@/features/Auth/queries';
 import { AuthCustomerAccessTokenCreateMutation } from '@/features/Auth/queries.storefront';
-import { createClient } from '@/lib/apollo/client';
+import { getAnonymousTakeshapeClient, getStorefrontClient } from '@/lib/apollo/rsc';
 import logger from '@/lib/logger';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
@@ -10,19 +9,8 @@ import {
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export default function ShopifyCredentialsProvider() {
-  const shopifyClient = createClient({
-    uri: shopifyStorefrontUrl,
-    accessToken: shopifyStorefrontToken,
-    accessTokenHeader: 'X-Shopify-Storefront-Access-Token',
-    accessTokenPrefix: ''
-  });
-
-  const takeshapeClient = createClient({
-    uri: takeshapeApiUrl,
-    accessToken: takeshapeAnonymousApiKey,
-    accessTokenHeader: 'Authorization',
-    accessTokenPrefix: 'Bearer'
-  });
+  const shopifyClient = getStorefrontClient();
+  const takeshapeClient = getAnonymousTakeshapeClient();
 
   return CredentialsProvider({
     id: 'shopify',

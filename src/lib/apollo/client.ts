@@ -113,7 +113,7 @@ export function createApolloClientLinks({
   };
 }
 
-export function createApolloClient(
+export function createClient(
   params: Pick<InitializeApolloProps, 'accessToken' | 'accessTokenHeader' | 'accessTokenPrefix' | 'uri'>
 ) {
   const { retryLink, withToken, withError, authLink, httpLink } = createApolloClientLinks(params);
@@ -123,52 +123,4 @@ export function createApolloClient(
     cache: new InMemoryCache(),
     ssrMode: false
   });
-}
-
-const staticClientCache: Record<string, ApolloClient<NormalizedCacheObject>> = {};
-
-/**
- * The static client is used during static generation. Existing clients will be
- * reused to ensure the cache is complete.
- */
-export function createStaticClient({
-  accessToken,
-  accessTokenHeader,
-  accessTokenPrefix,
-  uri
-}: InitializeApolloProps): ApolloClient<NormalizedCacheObject> {
-  const cacheKey = `${uri}:${accessToken}`;
-
-  if (staticClientCache[cacheKey]) {
-    return staticClientCache[cacheKey];
-  }
-
-  staticClientCache[cacheKey] = createApolloClient({
-    accessToken,
-    uri,
-    accessTokenHeader,
-    accessTokenPrefix
-  });
-
-  return staticClientCache[cacheKey];
-}
-
-/**
- * Creates a client and  restores the cache. Always returns a new client. Suitable
- * for use inside useMemo.
- */
-export function createClient({
-  initialCache,
-  accessToken,
-  accessTokenHeader,
-  accessTokenPrefix,
-  uri
-}: InitializeApolloProps) {
-  const client = createApolloClient({ accessToken, accessTokenHeader, accessTokenPrefix, uri });
-
-  if (initialCache) {
-    client.cache.restore(initialCache);
-  }
-
-  return client;
 }

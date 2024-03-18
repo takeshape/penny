@@ -1,5 +1,5 @@
 import { locale, siteDescription, siteName, siteUrl } from '@/config';
-import { ApolloProvider } from '@/features/Apollo/ApolloProvider_NEW';
+import { ApolloProvider } from '@/features/Apollo/ApolloProvider';
 import { inter } from '@/styles/fonts';
 import '@/styles/globals.css';
 import { Provider as JotaiProvider } from 'jotai';
