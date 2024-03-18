@@ -1,7 +1,7 @@
 import {
   googleClientId,
   googleClientSecret,
-  sessionMaxAgeRememberMe,
+  sessionMaxAge,
   shopifyMultipassSecret,
   shopifyStorefrontToken,
   shopifyStorefrontUrl,
@@ -43,7 +43,7 @@ const nextAuthConfig: NextAuthConfig = withAllAccess({
     error: '/account/signin'
   },
   session: {
-    maxAge: sessionMaxAgeRememberMe
+    maxAge: sessionMaxAge
   },
   providers,
   callbacks: {
