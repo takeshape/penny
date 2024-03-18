@@ -85,6 +85,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@takeshape/graphql-validate": "^1.0.1",
     "@takeshape/shape-tools": "^1.0.0",
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.1",
     "@types/node": "^20.11.28",
     "@types/react": "^18.2.67",
