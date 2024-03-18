@@ -1,9 +1,18 @@
 import { siteUrl } from '@/config';
 import { getAllPageSummaryItems } from '@/features/Page/data';
+import * as Sentry from '@sentry/nextjs';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const pages = await getAllPageSummaryItems();
+  let pages: Awaited<ReturnType<typeof getAllPageSummaryItems>> = [];
+
+  try {
+    pages = await getAllPageSummaryItems();
+  } catch (error) {
+    if (error instanceof Error) {
+      Sentry.captureMessage(error.message);
+    }
+  }
 
   return [
     {
