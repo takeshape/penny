@@ -1,12 +1,12 @@
 import { shopifyStorefrontToken, shopifyStorefrontUrl } from '@/config';
 import { AuthCustomerAccessTokenCreateWithMultipassMutation } from '@/features/Auth/queries.storefront';
-import logger from '@/logger';
+import { createClient } from '@/lib/apollo/client';
+import logger from '@/lib/logger';
+import { createMultipassToken } from '@/lib/multipass';
 import {
   AuthCustomerAccessTokenCreateWithMultipassMutationResponse,
   AuthCustomerAccessTokenCreateWithMultipassMutationVariables
 } from '@/types/storefront';
-import { createClient } from '@/utils/apollo/client';
-import { createMultipassToken } from '@/utils/multipass';
 import { Account, Profile } from 'next-auth';
 
 const shopifyClient = createClient({

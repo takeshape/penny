@@ -12,7 +12,7 @@ import {
   ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionQueryResponse
 } from '@/types/takeshape';
-import { PaginationDataHookParsedPath } from '../../utils/hooks/usePaginationData';
+import { PaginationDataHookParsedPath } from '../../lib/hooks/usePaginationData';
 import {
   ProductCategoryBreadcrumbs,
   ProductCategoryCollection,

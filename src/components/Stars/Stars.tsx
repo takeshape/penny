@@ -1,4 +1,4 @@
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/classNames';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { MouseEventHandler, useMemo } from 'react';
 

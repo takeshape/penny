@@ -8,7 +8,7 @@ import FormTextarea from '@/components/Form/Textarea/Textarea';
 import NextLink from '@/components/NextLink';
 import { BackgroundDots } from '@/features/Contact/components/BackgroundDots';
 import { useCreateTicket } from '@/features/Contact/useCreateTicket';
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/classNames';
 import { Switch } from '@headlessui/react';
 import { useSession } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';

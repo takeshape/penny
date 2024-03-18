@@ -1,5 +1,6 @@
 import { enableReviewsIo, enableTrustpilot } from '@/config';
 import { ProductProps } from '@/features/ProductPage/Product/Product';
+import { isNotNullish } from '@/lib/types';
 import { getProductLineItemAttributes } from '@/transforms/product';
 import { getReview, getReviewList as getReviewsIoReviewList, getStats } from '@/transforms/reviewsIo';
 import {
@@ -22,7 +23,6 @@ import {
   Shopify_MoneyV2
 } from '@/types/takeshape';
 import { DeepRequired } from '@/types/util';
-import { isNotNullish } from '@/utils/types';
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
 import { ProductJsonLdProps } from 'next-seo';

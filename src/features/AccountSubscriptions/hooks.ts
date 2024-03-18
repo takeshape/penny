@@ -1,6 +1,6 @@
 import { AnySubscription } from '@/features/AccountSubscriptions/types';
+import { useAuthenticatedClient } from '@/lib/takeshape';
 import { GetMySubscriptionQueryResponse, GetMySubscriptionQueryVariables } from '@/types/takeshape';
-import { useAuthenticatedClient } from '@/utils/takeshape';
 import { useCallback, useState } from 'react';
 import { GetMySubscriptionQuery } from './queries';
 import { getSubscription } from './transforms';

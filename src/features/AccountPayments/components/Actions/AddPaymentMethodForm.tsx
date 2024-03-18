@@ -3,7 +3,7 @@ import FormSelect from '@/components/Form/Select/Select';
 import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
-import { countries } from '@/utils/countries/countries';
+import { countries } from '@/lib/countries/countries';
 import { isBefore, lastDayOfMonth } from 'date-fns';
 import IMask, { MaskedDynamic, MaskedPattern } from 'imask';
 import { useCallback } from 'react';

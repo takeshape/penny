@@ -1,6 +1,6 @@
 'use client';
 
-import logger from '@/logger';
+import logger from '@/lib/logger';
 import { DocumentNode, useApolloClient } from '@apollo/client';
 import { usePathname } from 'next/navigation';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';

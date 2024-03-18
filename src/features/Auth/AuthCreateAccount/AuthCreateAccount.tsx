@@ -7,13 +7,13 @@ import { Logo } from '@/components/Logo/Logo';
 import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
 import { InactiveCustomer } from '@/features/Auth/types';
+import { sanitizeCallbackUrl } from '@/lib/callbacks';
 import {
   CreateCustomerMutationResponse,
   CreateCustomerMutationVariables,
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables
 } from '@/types/takeshape';
-import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { ApolloError, useMutation } from '@apollo/client';
 import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr';
 import { signIn } from 'next-auth/react';

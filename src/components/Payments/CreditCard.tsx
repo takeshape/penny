@@ -1,5 +1,5 @@
+import classNames from '@/lib/classNames';
 import { CreditCard as TCreditCard } from '@/types/paymentMethod';
-import classNames from '@/utils/classNames';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { getCreditCardIcon, getIsExpired } from './utils';
 

@@ -1,7 +1,7 @@
 import { shopifyUseMultipass } from '@/config';
 import { AuthCreateAccount } from '@/features/Auth/AuthCreateAccount/AuthCreateAccount';
+import { getSingle } from '@/lib/types';
 import { ServerProps } from '@/types/next';
-import { getSingle } from '@/utils/types';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

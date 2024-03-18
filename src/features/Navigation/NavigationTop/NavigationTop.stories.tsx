@@ -1,4 +1,4 @@
-import { isMobileMenuOpenAtom, isSearchOpenAtom } from '@/store';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from '@/lib/store';
 import { Meta, StoryObj } from '@storybook/react';
 import { rest } from 'msw';
 import { navigationResponse } from '../queries.fixtures';

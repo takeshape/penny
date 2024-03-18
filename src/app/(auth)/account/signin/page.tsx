@@ -1,8 +1,8 @@
 import { shopifyUseMultipass } from '@/config';
 import { AuthSignIn } from '@/features/Auth/AuthSignIn/AuthSignIn';
+import { parseSigninError } from '@/lib/errors';
+import { getSingle } from '@/lib/types';
 import { ServerProps } from '@/types/next';
-import { parseSigninError } from '@/utils/errors';
-import { getSingle } from '@/utils/types';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

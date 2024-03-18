@@ -1,9 +1,9 @@
 'use client';
 
+import { useVariantOption } from '@/lib/hooks/useVariantOption';
+import { getVariant } from '@/lib/products';
+import { isNotNullish } from '@/lib/types';
 import { Product } from '@/types/product';
-import { useVariantOption } from '@/utils/hooks/useVariantOption';
-import { getVariant } from '@/utils/products';
-import { isNotNullish } from '@/utils/types';
 import { useEffect, useMemo, useState } from 'react';
 
 export type ProductHookOptions = {

@@ -4,8 +4,8 @@ import CardPanel from '@/components/Card/Panel/Panel';
 import Image from '@/components/NextImage';
 import { GetMyLoyaltyCardQuery } from '@/features/AccountLoyaltyCard/queries';
 import { getLoyaltyCard } from '@/features/AccountLoyaltyCard/transforms';
+import { useAuthenticatedQuery } from '@/lib/takeshape';
 import { GetMyLoyaltyCardQueryResponse } from '@/types/takeshape';
-import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { LoyaltyCard } from './types';
 
 export const AccountLoyaltyCard = () => {

@@ -1,6 +1,6 @@
 import { NavigationQuery } from '@/features/Navigation/queries';
 import { getNavigation } from '@/features/Navigation/transforms';
-import { getAnonymousClient } from '@/utils/takeshape/server';
+import { getAnonymousClient } from '@/lib/takeshape/server';
 
 const client = getAnonymousClient();
 

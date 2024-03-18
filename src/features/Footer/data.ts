@@ -1,4 +1,4 @@
-import { getAnonymousClient } from '@/utils/takeshape/server';
+import { getAnonymousClient } from '@/lib/takeshape/server';
 import { FooterQuery } from './queries';
 import { getFooter } from './transforms';
 

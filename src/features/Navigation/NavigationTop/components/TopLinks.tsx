@@ -1,7 +1,7 @@
 'use client';
 
 import NextLink from '@/components/NextLink';
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/classNames';
 import { Popover, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { Navigation, NavigationSection } from '../../types';

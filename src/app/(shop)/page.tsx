@@ -1,8 +1,8 @@
 import { Storefront } from '@/features/Storefront/Storefront';
 import { GetStorefrontQuery } from '@/features/Storefront/queries';
 import { getStorefront } from '@/features/Storefront/transforms';
+import { getAnonymousClient } from '@/lib/takeshape/server';
 import { GetStorefrontQueryResponse } from '@/types/takeshape';
-import { getAnonymousClient } from '@/utils/takeshape/server';
 import { ApolloError } from '@apollo/client';
 import * as Sentry from '@sentry/nextjs';
 import { Metadata } from 'next';

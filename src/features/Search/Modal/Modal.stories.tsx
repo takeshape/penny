@@ -1,4 +1,4 @@
-import { isSearchOpenAtom } from '@/store';
+import { isSearchOpenAtom } from '@/lib/store';
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
 import { SearchShopifyProducts } from '../queries.fixtures';

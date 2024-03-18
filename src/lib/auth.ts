@@ -1,4 +1,3 @@
-import { withAllAccess } from '@/auth-all-access';
 import {
   googleClientId,
   googleClientSecret,
@@ -9,11 +8,12 @@ import {
   shopifyUseMultipass
 } from '@/config';
 import { AuthCustomerQuery } from '@/features/Auth/queries.storefront';
-import logger from '@/logger';
+import { createClient } from '@/lib/apollo/client';
+import { withAllAccess } from '@/lib/auth-all-access';
+import { getMultipassCustomerAccessToken } from '@/lib/auth/multipass-helper';
+import ShopifyCredentialsProvider from '@/lib/auth/shopify-credentials-provider';
+import logger from '@/lib/logger';
 import { AuthCustomerQueryResponse, AuthCustomerQueryVariables } from '@/types/storefront';
-import { createClient } from '@/utils/apollo/client';
-import { getMultipassCustomerAccessToken } from '@/utils/auth/multipass-helper';
-import ShopifyCredentialsProvider from '@/utils/auth/shopify-credentials-provider';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import GoogleProvider from 'next-auth/providers/google';

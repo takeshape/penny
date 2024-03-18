@@ -1,5 +1,7 @@
 import { getIsExpiringSoon } from '@/components/Payments/utils';
 import { defaultProductImage } from '@/config';
+import { capitalize } from '@/lib/text';
+import { isNotNullish } from '@/lib/types';
 import {
   createImageGetter,
   getProductHasStock,
@@ -12,8 +14,6 @@ import {
   GetMySubscriptionListQueryResponse,
   GetMySubscriptionQueryResponse
 } from '@/types/takeshape';
-import { capitalize } from '@/utils/text';
-import { isNotNullish } from '@/utils/types';
 import {
   AnySubscription,
   ResponseAddress,

@@ -1,4 +1,4 @@
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/classNames';
 import { SubscriptionOrder } from '../../types';
 import { getOrderStatusDisplay } from '../../utils';
 

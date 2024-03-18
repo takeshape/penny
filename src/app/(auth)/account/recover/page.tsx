@@ -1,6 +1,6 @@
 import { AuthRecoverPassword } from '@/features/Auth/AuthRecoverPassword/AuthRecoverPassword';
+import { getSingle } from '@/lib/types';
 import { ServerProps } from '@/types/next';
-import { getSingle } from '@/utils/types';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

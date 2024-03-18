@@ -1,5 +1,5 @@
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
-import { useApollo } from '@/utils/apollo/useApollo';
+import { useApollo } from '@/lib/apollo/useApollo';
 import { ApolloProvider as Provider } from '@apollo/client';
 import { PropsWithChildren } from 'react';
 

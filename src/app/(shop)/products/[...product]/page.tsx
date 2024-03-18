@@ -15,6 +15,7 @@ import {
   getReviewsIoProductReviews,
   getTrustpilotProductReviews
 } from '@/features/ProductPage/transforms';
+import { getAnonymousClient } from '@/lib/takeshape/server';
 import { ServerProps } from '@/types/next';
 import {
   ProductPageShopifyProductHandlesQueryResponse,
@@ -22,7 +23,6 @@ import {
   ProductPageShopifyProductResponse,
   ProductPageShopifyProductVariables
 } from '@/types/takeshape';
-import { getAnonymousClient } from '@/utils/takeshape/server';
 import { ApolloError } from '@apollo/client';
 import * as Sentry from '@sentry/nextjs';
 import { Metadata } from 'next';

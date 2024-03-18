@@ -6,13 +6,13 @@ import FormInput from '@/components/Form/Input/Input';
 import { Logo } from '@/components/Logo/Logo';
 import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { sanitizeCallbackUrl } from '@/lib/callbacks';
 import {
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables,
   RecoverCustomerPasswordMutationResponse,
   RecoverCustomerPasswordMutationVariables
 } from '@/types/takeshape';
-import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { useMutation, useQuery } from '@apollo/client';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useRouter } from 'next/navigation';

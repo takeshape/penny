@@ -1,5 +1,5 @@
 import { CreditCard } from '@/components/Payments/CreditCard';
-import { formatPrice } from '@/utils/text';
+import { formatPrice } from '@/lib/text';
 import { format } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { AnySubscription, RefetchSubscriptions } from '../../types';

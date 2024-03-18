@@ -1,12 +1,12 @@
 import { shopifyStorefrontToken, shopifyStorefrontUrl, takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
 import { GetCustomerStateQuery } from '@/features/Auth/queries';
 import { AuthCustomerAccessTokenCreateMutation } from '@/features/Auth/queries.storefront';
-import logger from '@/logger';
+import { createClient } from '@/lib/apollo/client';
+import logger from '@/lib/logger';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
   AuthCustomerAccessTokenCreateMutationVariables
 } from '@/types/storefront';
-import { createClient } from '@/utils/apollo/client';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 export default function ShopifyCredentialsProvider() {

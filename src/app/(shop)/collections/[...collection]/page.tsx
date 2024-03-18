@@ -5,6 +5,7 @@ import {
   ProductCategoryShopifyCollectionQuery
 } from '@/features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams, getCurrentTitle } from '@/features/ProductCategory/transforms';
+import { getAnonymousClient } from '@/lib/takeshape/server';
 import { ServerProps } from '@/types/next';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
@@ -12,7 +13,6 @@ import {
   ProductCategoryShopifyCollectionQueryResponse,
   ProductCategoryShopifyCollectionQueryVariables
 } from '@/types/takeshape';
-import { getAnonymousClient } from '@/utils/takeshape/server';
 import { ApolloError } from '@apollo/client';
 import * as Sentry from '@sentry/nextjs';
 import { Metadata } from 'next';

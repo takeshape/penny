@@ -1,12 +1,12 @@
 import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import classNames from '@/lib/classNames';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
+import { formatPrice } from '@/lib/text';
 import { shopifyGidToId } from '@/transforms/shopify';
 import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from '@/types/takeshape';
-import classNames from '@/utils/classNames';
-import { useAuthenticatedMutation } from '@/utils/takeshape';
-import { formatPrice } from '@/utils/text';
 import { Disclosure, RadioGroup } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
 import { useCallback, useEffect } from 'react';

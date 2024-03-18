@@ -1,5 +1,5 @@
 import NextImage from '@/components/NextImage';
-import { formatPrice } from '@/utils/text';
+import { formatPrice } from '@/lib/text';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 import { OrderItemActions } from './OrderItemActions';
 import { OrderItemHeader } from './OrderItemHeader';

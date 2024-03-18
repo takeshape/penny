@@ -1,5 +1,5 @@
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
-import { createClient } from '@/utils/apollo/client';
+import { createClient } from '@/lib/apollo/client';
 import {
   LazyQueryHookWithTransformOptions,
   MutationHookWithTransformOptions,
@@ -7,7 +7,7 @@ import {
   useLazyQueryWithTransform,
   useMutationWithTransform,
   useQueryWithTransform
-} from '@/utils/query';
+} from '@/lib/query';
 import {
   ApolloClient,
   DocumentNode,

@@ -1,9 +1,9 @@
 'use client';
 
 import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from '@/features/Cart/store';
-import { currencyAtom, notificationAtom } from '@/store';
-import { useRemoveQueryParams } from '@/utils/hooks/useRemoveQueryParams';
-import { getSingle } from '@/utils/types';
+import { useRemoveQueryParams } from '@/lib/hooks/useRemoveQueryParams';
+import { currencyAtom, notificationAtom } from '@/lib/store';
+import { getSingle } from '@/lib/types';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';

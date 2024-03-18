@@ -1,5 +1,5 @@
 import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
-import { createApolloClient } from '@/utils/apollo/client';
+import { createApolloClient } from '@/lib/apollo/client';
 import { registerApolloClient } from '@apollo/experimental-nextjs-app-support/rsc';
 
 export const { getClient: getAnonymousClient } = registerApolloClient(() => {

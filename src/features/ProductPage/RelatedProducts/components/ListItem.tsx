@@ -1,8 +1,8 @@
 import NextImage from '@/components/NextImage';
 import NextLink from '@/components/NextLink';
 import { quickAddAtom } from '@/features/QuickAdd/store';
-import { formatPrice } from '@/utils/text';
-import { truncate } from '@/utils/truncate';
+import { formatPrice } from '@/lib/text';
+import { truncate } from '@/lib/truncate';
 import { useSetAtom } from 'jotai';
 import { MouseEvent, useCallback } from 'react';
 import { ProductPageRelatedProductsProduct } from '../../types';

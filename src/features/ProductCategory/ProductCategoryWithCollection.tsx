@@ -1,6 +1,6 @@
 'use client';
 
-import { PaginationDataHookParsedPath, usePaginationData } from '@/utils/hooks/usePaginationData';
+import { PaginationDataHookParsedPath, usePaginationData } from '@/lib/hooks/usePaginationData';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { ProductCategory } from './ProductCategory';

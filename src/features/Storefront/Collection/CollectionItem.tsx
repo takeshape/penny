@@ -1,6 +1,6 @@
 import NextImage from '@/components/NextImage';
 import NextLink from '@/components/NextLink';
-import { formatPrice } from '@/utils/text';
+import { formatPrice } from '@/lib/text';
 import { StorefrontCollectionItem } from '../types';
 
 export type CollectionItemProps = StorefrontCollectionItem;

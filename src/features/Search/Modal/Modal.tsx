@@ -1,9 +1,9 @@
 'use client';
 
 import Loader from '@/components/Loader/Loader';
-import { isSearchOpenAtom } from '@/store';
-import { replaceState } from '@/utils/history';
-import { getSingle } from '@/utils/types';
+import { replaceState } from '@/lib/history';
+import { isSearchOpenAtom } from '@/lib/store';
+import { getSingle } from '@/lib/types';
 import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';

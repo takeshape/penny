@@ -1,6 +1,6 @@
+import classNames from '@/lib/classNames';
+import { formatDiscount, formatPrice, pluralizeText } from '@/lib/text';
 import { ProductPriceOption } from '@/types/product';
-import classNames from '@/utils/classNames';
-import { formatDiscount, formatPrice, pluralizeText } from '@/utils/text';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
 

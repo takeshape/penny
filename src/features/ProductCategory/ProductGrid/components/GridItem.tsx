@@ -1,7 +1,7 @@
 import NextImage from '@/components/NextImage';
 import NextLink from '@/components/NextLink';
-import classNames from '@/utils/classNames';
-import { formatPrice } from '@/utils/text';
+import classNames from '@/lib/classNames';
+import { formatPrice } from '@/lib/text';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { ProductCategoryProductListItem } from '../../types';
 
