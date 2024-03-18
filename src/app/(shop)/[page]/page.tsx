@@ -13,15 +13,15 @@ import { notFound } from 'next/navigation';
 export const revalidate = 300;
 
 type GetPageDataParams = {
-  slug: string;
+  page: string;
 };
 
-async function getPageData({ slug }: GetPageDataParams) {
+async function getPageData({ page }: GetPageDataParams) {
   try {
     const { data } = await getAnonymousTakeshapeClient().query<PageGetPageResponse, PageGetPageVariables>({
       query: PageGetPage,
       variables: {
-        slug
+        slug: page
       }
     });
 
@@ -51,7 +51,7 @@ async function getPageStaticParams() {
 }
 
 type Params = {
-  slug: string;
+  page: string;
 };
 
 export async function generateStaticParams() {
@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: ServerProps<Params>): Promise
 
   if (!pageData) {
     return {
-      title: params.slug
+      title: params.page
     };
   }
 
