@@ -127,6 +127,10 @@ const nextConfig = {
   swcMinify: true
 };
 
+/**
+ * @param {Array<(config: import('next').NextConfig | undefined) => import('next').NextConfig>} plugins
+ * @param {import('next').NextConfig} config
+ */
 const withPlugins = (plugins, config) => () =>
   plugins.reduce((acc, plugin) => plugin(acc), {
     ...config
