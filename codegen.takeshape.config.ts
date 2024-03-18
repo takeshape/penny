@@ -33,6 +33,9 @@ const config: CodegenConfig = {
           inputValue: false,
           object: false,
           defaultValue: false
+        },
+        scalars: {
+          DateTime: 'string'
         }
       }
     }

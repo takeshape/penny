@@ -18,14 +18,14 @@ import { ReviewList } from '@/types/review';
 import { ProductPageRelatedProductsQueryResponse } from '@/types/storefront';
 import {
   ProductPageReviewPageQueryResponse,
-  ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
+  ProductPageShopifySummaryQueryResponse,
   Shopify_MoneyV2
 } from '@/types/takeshape';
 import { DeepRequired } from '@/types/util';
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
-import { ProductJsonLdProps } from 'next-seo';
+import type { ProductJsonLdProps } from 'next-seo';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -38,6 +38,7 @@ import {
   ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
   ProductPageReviewsReviewList,
+  ProductPageShopifySummaryNodes,
   ResponseCollection
 } from './types';
 
@@ -218,13 +219,13 @@ export function getPageOptions(response?: ProductPageShopifyProductResponse): Pr
   };
 }
 
-export function getProductPageParams(response: ProductPageShopifyProductHandlesQueryResponse) {
-  const nodes = response?.products?.nodes;
+export function getProductPageSummaryNodes(
+  response: ProductPageShopifySummaryQueryResponse
+): ProductPageShopifySummaryNodes {
+  return response?.products?.nodes;
+}
 
-  if (!nodes) {
-    return null;
-  }
-
+export function getProductPageParams(nodes: NonNullable<ProductPageShopifySummaryNodes>) {
   return nodes
     .map((node) => {
       if (!node.publishedOnCurrentPublication) {

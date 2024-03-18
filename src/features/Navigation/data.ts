@@ -1,11 +1,9 @@
 import { NavigationQuery } from '@/features/Navigation/queries';
 import { getNavigation } from '@/features/Navigation/transforms';
-import { getAnonymousClient } from '@/lib/takeshape/server';
-
-const client = getAnonymousClient();
+import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 
 export async function getNavigationData() {
-  const { data } = await client.query({
+  const { data } = await getAnonymousTakeshapeClient().query({
     query: NavigationQuery,
     context: {
       fetchOptions: {

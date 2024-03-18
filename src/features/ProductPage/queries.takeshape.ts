@@ -30,8 +30,8 @@ const ReviewsIoFragment = gql`
   }
 `;
 
-export const ProductPageShopifyProductHandlesQuery = gql`
-  query ProductPageShopifyProductHandlesQuery($first: Int!, $after: String) {
+export const ProductPageShopifySummaryQuery = gql`
+  query ProductPageShopifySummaryQuery($first: Int!, $after: String) {
     products: productsWithTtl(first: $first, after: $after, sortKey: ID, query: "status:active") {
       pageInfo {
         hasNextPage
@@ -41,6 +41,7 @@ export const ProductPageShopifyProductHandlesQuery = gql`
         id
         handle
         publishedOnCurrentPublication
+        updatedAt
       }
     }
   }

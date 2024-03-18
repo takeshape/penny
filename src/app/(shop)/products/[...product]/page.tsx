@@ -1,9 +1,7 @@
 import { reviewsPerPage } from '@/config';
 import { ProductPage as ProductPageComponent } from '@/features/ProductPage/ProductPage';
-import {
-  ProductPageShopifyProductHandlesQuery,
-  ProductPageShopifyProductQuery
-} from '@/features/ProductPage/queries.takeshape';
+import { getAllProductPageSummaryNodes } from '@/features/ProductPage/data';
+import { ProductPageShopifyProductQuery } from '@/features/ProductPage/queries.takeshape';
 import {
   getBreadcrumbs,
   getDetails,
@@ -15,14 +13,9 @@ import {
   getReviewsIoProductReviews,
   getTrustpilotProductReviews
 } from '@/features/ProductPage/transforms';
-import { getAnonymousClient } from '@/lib/takeshape/server';
+import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { ServerProps } from '@/types/next';
-import {
-  ProductPageShopifyProductHandlesQueryResponse,
-  ProductPageShopifyProductHandlesQueryVariables,
-  ProductPageShopifyProductResponse,
-  ProductPageShopifyProductVariables
-} from '@/types/takeshape';
+import { ProductPageShopifyProductResponse, ProductPageShopifyProductVariables } from '@/types/takeshape';
 import { ApolloError } from '@apollo/client';
 import * as Sentry from '@sentry/nextjs';
 import { Metadata } from 'next';
@@ -36,7 +29,7 @@ type GetPageDataParams = {
 
 async function getPageData({ handle }: GetPageDataParams) {
   try {
-    const { data } = await getAnonymousClient().query<
+    const { data } = await getAnonymousTakeshapeClient().query<
       ProductPageShopifyProductResponse,
       ProductPageShopifyProductVariables
     >({
@@ -72,40 +65,8 @@ type Params = {
 
 async function getPageStaticParams() {
   try {
-    let params: Params[] = [];
-
-    let hasNextPage = true;
-    let endCursor: string | undefined;
-
-    while (hasNextPage) {
-      const variables: ProductPageShopifyProductHandlesQueryVariables = {
-        first: 50
-      };
-
-      if (endCursor) {
-        variables.after = endCursor;
-      }
-
-      const { data } = await getAnonymousClient().query<
-        ProductPageShopifyProductHandlesQueryResponse,
-        ProductPageShopifyProductHandlesQueryVariables
-      >({
-        query: ProductPageShopifyProductHandlesQuery,
-        variables
-      });
-
-      const pageParams = getProductPageParams(data);
-
-      if (!pageParams) {
-        throw new Error('Could not generate paths');
-      }
-
-      params = [...params, ...pageParams];
-      hasNextPage = data.products?.pageInfo.hasNextPage ?? false;
-      endCursor = data.products?.pageInfo.endCursor ?? undefined;
-    }
-
-    return params;
+    const nodes = await getAllProductPageSummaryNodes();
+    return getProductPageParams(nodes);
   } catch (error) {
     if (error instanceof ApolloError) {
       Sentry.captureMessage(error.message);

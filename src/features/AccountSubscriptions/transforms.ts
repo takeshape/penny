@@ -290,7 +290,7 @@ function getSubscriptionOrderStatus(rechargeCharge: ResponseSubscription['charge
       return {
         status: 'FULFILLMENT_DELIVERED',
         // This is a terminal event, statusAt should not change
-        statusAt: deliveredAt
+        statusAt: deliveredAt ?? updatedAt
       };
 
     case 'NOT_DELIVERED':

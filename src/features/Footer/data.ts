@@ -1,11 +1,9 @@
-import { getAnonymousClient } from '@/lib/takeshape/server';
+import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { FooterQuery } from './queries';
 import { getFooter } from './transforms';
 
-const client = getAnonymousClient();
-
 export async function getFooterData() {
-  const { data } = await client.query({
+  const { data } = await getAnonymousTakeshapeClient().query({
     query: FooterQuery,
     context: {
       fetchOptions: {

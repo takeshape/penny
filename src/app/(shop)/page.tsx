@@ -1,7 +1,7 @@
 import { Storefront } from '@/features/Storefront/Storefront';
 import { GetStorefrontQuery } from '@/features/Storefront/queries';
 import { getStorefront } from '@/features/Storefront/transforms';
-import { getAnonymousClient } from '@/lib/takeshape/server';
+import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { GetStorefrontQueryResponse } from '@/types/takeshape';
 import { ApolloError } from '@apollo/client';
 import * as Sentry from '@sentry/nextjs';
@@ -12,7 +12,7 @@ export const revalidate = 60;
 
 async function getPageData() {
   try {
-    const { data } = await getAnonymousClient().query<GetStorefrontQueryResponse>({
+    const { data } = await getAnonymousTakeshapeClient().query<GetStorefrontQueryResponse>({
       query: GetStorefrontQuery
     });
 

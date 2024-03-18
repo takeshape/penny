@@ -12,8 +12,8 @@ import {
 
 function getFulfillmentStatus(
   status: ResponseFulfillment['displayStatus'],
-  deliveredAt: string,
-  estimatedDeliveryAt: string,
+  deliveredAt: string | null,
+  estimatedDeliveryAt: string | null,
   updatedAt: string
 ): FulfillmentStatus {
   switch (status) {

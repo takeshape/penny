@@ -5,7 +5,7 @@ import {
   ProductCategoryShopifyCollectionQuery
 } from '@/features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams, getCurrentTitle } from '@/features/ProductCategory/transforms';
-import { getAnonymousClient } from '@/lib/takeshape/server';
+import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { ServerProps } from '@/types/next';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
@@ -41,7 +41,7 @@ async function getPageData({ handle, direction, cursor }: GetPageDataParams) {
             after: cursor
           };
 
-    const { data } = await getAnonymousClient().query<
+    const { data } = await getAnonymousTakeshapeClient().query<
       ProductCategoryShopifyCollectionQueryResponse,
       ProductCategoryShopifyCollectionQueryVariables
     >({
@@ -80,7 +80,7 @@ async function getPageStaticParams() {
         variables.after = endCursor;
       }
 
-      const { data } = await getAnonymousClient().query<
+      const { data } = await getAnonymousTakeshapeClient().query<
         ProductCategoryShopifyCollectionHandlesResponse,
         ProductCategoryShopifyCollectionHandlesVariables
       >({

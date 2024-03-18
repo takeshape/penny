@@ -1,7 +1,7 @@
 import Page from '@/features/Page/Page';
 import { PageGetPage, PageGetPageSlugs } from '@/features/Page/queries';
 import { getPage, getPageParams } from '@/features/Page/transforms';
-import { getAnonymousClient } from '@/lib/takeshape/server';
+import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { ServerProps } from '@/types/next';
 import { GetPageSlugsResponse, PageGetPageResponse, PageGetPageVariables } from '@/types/takeshape';
 import { ApolloError } from '@apollo/client';
@@ -17,7 +17,7 @@ type GetPageDataParams = {
 
 async function getPageData({ slug }: GetPageDataParams) {
   try {
-    const { data } = await getAnonymousClient().query<PageGetPageResponse, PageGetPageVariables>({
+    const { data } = await getAnonymousTakeshapeClient().query<PageGetPageResponse, PageGetPageVariables>({
       query: PageGetPage,
       variables: {
         slug
@@ -37,7 +37,7 @@ async function getPageData({ slug }: GetPageDataParams) {
 
 async function getPageStaticParams() {
   try {
-    const { data } = await getAnonymousClient().query<GetPageSlugsResponse>({
+    const { data } = await getAnonymousTakeshapeClient().query<GetPageSlugsResponse>({
       query: PageGetPageSlugs
     });
 
