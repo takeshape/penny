@@ -1,12 +1,11 @@
 import { siteUrl } from '@/config';
-import { getAllProductPageSummaryNodes } from '@/features/ProductPage/data';
+import { getAllCategoryPageSummaryNodes } from '@/features/ProductCategory/data';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Google's limit is 50,000 URLs per sitemap
-  const summaryNodes = await getAllProductPageSummaryNodes();
+  const summaryNodes = await getAllCategoryPageSummaryNodes();
   return summaryNodes.map(({ handle, updatedAt }) => ({
-    url: `${siteUrl}/products/${handle}`,
+    url: `${siteUrl}/collections/${handle}`,
     lastModified: updatedAt
   }));
 }

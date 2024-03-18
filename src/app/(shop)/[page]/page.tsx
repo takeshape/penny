@@ -1,9 +1,10 @@
 import Page from '@/features/Page/Page';
-import { PageGetPage, PageGetPageSlugs } from '@/features/Page/queries';
+import { getAllPageSummaryItems } from '@/features/Page/data';
+import { PageGetPage } from '@/features/Page/queries';
 import { getPage, getPageParams } from '@/features/Page/transforms';
 import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { ServerProps } from '@/types/next';
-import { GetPageSlugsResponse, PageGetPageResponse, PageGetPageVariables } from '@/types/takeshape';
+import { PageGetPageResponse, PageGetPageVariables } from '@/types/takeshape';
 import { ApolloError } from '@apollo/client';
 import * as Sentry from '@sentry/nextjs';
 import { Metadata } from 'next';
@@ -37,11 +38,8 @@ async function getPageData({ slug }: GetPageDataParams) {
 
 async function getPageStaticParams() {
   try {
-    const { data } = await getAnonymousTakeshapeClient().query<GetPageSlugsResponse>({
-      query: PageGetPageSlugs
-    });
-
-    return getPageParams(data);
+    const items = await getAllPageSummaryItems();
+    return getPageParams(items);
   } catch (error) {
     if (error instanceof ApolloError) {
       Sentry.captureMessage(error.message);

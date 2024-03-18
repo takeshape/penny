@@ -9,8 +9,8 @@ import {
   getSeo
 } from '@/transforms/shopify';
 import {
-  ProductCategoryShopifyCollectionHandlesResponse,
-  ProductCategoryShopifyCollectionQueryResponse
+  ProductCategoryShopifyCollectionQueryResponse,
+  ProductCategoryShopifySummaryResponse
 } from '@/types/takeshape';
 import { PaginationDataHookParsedPath } from '../../lib/hooks/usePaginationData';
 import {
@@ -21,7 +21,8 @@ import {
   ProductCategoryProductListItem,
   ProductCategoryReviewsIoReviews,
   ProductCategoryShopifyCollection,
-  ProductCategoryShopifyProduct
+  ProductCategoryShopifyProduct,
+  ProductCategoryShopifySummaryNodes
 } from './types';
 
 function getReviews(reviewsIoReviews: ProductCategoryReviewsIoReviews | null) {
@@ -109,13 +110,13 @@ export function getCollection(
   };
 }
 
-export function getCollectionPageParams(response: ProductCategoryShopifyCollectionHandlesResponse) {
-  const nodes = response?.collections?.nodes;
+export function getCollectionPageSummaryNodes(
+  response: ProductCategoryShopifySummaryResponse
+): ProductCategoryShopifySummaryNodes {
+  return response?.collections?.nodes;
+}
 
-  if (!nodes) {
-    return null;
-  }
-
+export function getCollectionPageParams(nodes: NonNullable<ProductCategoryShopifySummaryNodes>) {
   return nodes.map((node) => ({
     collection: [node.handle]
   }));

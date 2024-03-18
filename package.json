@@ -6,7 +6,6 @@
   "scripts": {
     "prebuild": "shape promote-branch --lookup-pr --production-only --nofail",
     "build": "npm run graphql:typegen && next build",
-    "postbuild": "next-sitemap",
     "build-storybook": "storybook build",
     "dev": "next dev | pino-pretty --colorize",
     "export": "next build && next export",

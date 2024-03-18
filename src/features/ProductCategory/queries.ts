@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const ProductCategoryShopifyCollectionHandles = gql`
-  query ProductCategoryShopifyCollectionHandles($first: Int!, $after: String) {
+export const ProductCategoryShopifySummary = gql`
+  query ProductCategoryShopifySummary($first: Int!, $after: String) {
     collections: collectionsWithTtl(first: $first, after: $after, sortKey: ID) {
       pageInfo {
         hasNextPage
@@ -10,6 +10,7 @@ export const ProductCategoryShopifyCollectionHandles = gql`
       nodes {
         id
         handle
+        updatedAt
       }
     }
   }

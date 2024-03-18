@@ -1,15 +1,11 @@
 import { collectionsPageSize } from '@/config';
 import { ProductCategoryWithCollection } from '@/features/ProductCategory/ProductCategoryWithCollection';
-import {
-  ProductCategoryShopifyCollectionHandles,
-  ProductCategoryShopifyCollectionQuery
-} from '@/features/ProductCategory/queries';
+import { getAllCategoryPageSummaryNodes } from '@/features/ProductCategory/data';
+import { ProductCategoryShopifyCollectionQuery } from '@/features/ProductCategory/queries';
 import { getCollection, getCollectionPageParams, getCurrentTitle } from '@/features/ProductCategory/transforms';
 import { getAnonymousTakeshapeClient } from '@/lib/apollo/rsc';
 import { ServerProps } from '@/types/next';
 import {
-  ProductCategoryShopifyCollectionHandlesResponse,
-  ProductCategoryShopifyCollectionHandlesVariables,
   ProductCategoryShopifyCollectionQueryResponse,
   ProductCategoryShopifyCollectionQueryVariables
 } from '@/types/takeshape';
@@ -66,40 +62,8 @@ type Params = {
 
 async function getPageStaticParams() {
   try {
-    let params: Params[] = [];
-
-    let hasNextPage = true;
-    let endCursor: string | undefined;
-
-    while (hasNextPage) {
-      const variables: ProductCategoryShopifyCollectionHandlesVariables = {
-        first: 50
-      };
-
-      if (endCursor) {
-        variables.after = endCursor;
-      }
-
-      const { data } = await getAnonymousTakeshapeClient().query<
-        ProductCategoryShopifyCollectionHandlesResponse,
-        ProductCategoryShopifyCollectionHandlesVariables
-      >({
-        query: ProductCategoryShopifyCollectionHandles,
-        variables
-      });
-
-      const pageParams = getCollectionPageParams(data);
-
-      if (!pageParams) {
-        throw new Error('Could not generate params');
-      }
-
-      params = [...params, ...pageParams];
-      hasNextPage = data.collections?.pageInfo.hasNextPage ?? false;
-      endCursor = data.collections?.pageInfo.endCursor ?? undefined;
-    }
-
-    return params;
+    const nodes = await getAllCategoryPageSummaryNodes();
+    return getCollectionPageParams(nodes);
   } catch (error) {
     if (error instanceof ApolloError) {
       Sentry.captureMessage(error.message);
