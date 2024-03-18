@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { AuthProvider } from '@/features/Auth/AuthProvider';
 import { Cart } from '@/features/Cart/Cart';
 import { CartProvider } from '@/features/Cart/CartProvider';
@@ -8,13 +9,12 @@ import { getNavigationData } from '@/features/Navigation/data';
 import { Notification } from '@/features/Notification/Notification';
 import { QuickAdd } from '@/features/QuickAdd/QuickAdd';
 import { SearchModal } from '@/features/Search/Modal/Modal';
-import { getServerSession } from 'next-auth';
 import { PropsWithChildren } from 'react';
 
 export default async function ShopLayout({ children }: PropsWithChildren) {
   const navigationData = await getNavigationData();
   const footerData = await getFooterData();
-  const session = await getServerSession();
+  const session = await auth();
 
   return (
     <AuthProvider session={session}>

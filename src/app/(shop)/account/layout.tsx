@@ -1,11 +1,11 @@
+import { auth } from '@/auth';
 import { Wrapper } from '@/components/Wrapper/Content';
 import { AccountNavigation } from '@/features/AccountNavigation/AccountNavigation';
-import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 
 export default async function ShopLayout({ children }: PropsWithChildren) {
-  const session = await getServerSession();
+  const session = await auth();
 
   if (!session?.user) {
     return notFound();

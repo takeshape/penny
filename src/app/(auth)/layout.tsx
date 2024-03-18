@@ -1,9 +1,9 @@
+import { auth } from '@/auth';
 import { AuthProvider } from '@/features/Auth/AuthProvider';
-import { getServerSession } from 'next-auth';
 import { PropsWithChildren } from 'react';
 
 export default async function AuthLayout({ children }: PropsWithChildren) {
-  const session = await getServerSession();
+  const session = await auth();
 
   return (
     <AuthProvider session={session}>

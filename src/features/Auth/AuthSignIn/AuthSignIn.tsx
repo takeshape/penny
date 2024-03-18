@@ -16,7 +16,6 @@ import { useForm } from 'react-hook-form';
 export type AuthSignInForm = {
   email: string;
   password: string;
-  rememberMe: boolean;
 };
 export type AuthSignInProps = {
   callbackUrl: string;
@@ -46,15 +45,15 @@ export const errors: Record<string, string> = {
 export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSignInProps) => {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
-  const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
+  const { handleSubmit, formState, control, watch, reset } = useForm<AuthSignInForm>();
   const router = useRouter();
   const watched = useRef({ email: '' });
 
   watched.current.email = watch('email', '');
 
   const onSubmit = useCallback(
-    async ({ email, password, rememberMe }: AuthSignInForm) => {
-      await signIn('shopify', { email, password, rememberMe, callbackUrl });
+    async ({ email, password }: AuthSignInForm) => {
+      await signIn('shopify', { email, password, callbackUrl });
     },
     [callbackUrl]
   );
@@ -147,19 +146,6 @@ export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSign
             />
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  {...register('rememberMe')}
-                  id="remember-me"
-                  type="checkbox"
-                  defaultChecked
-                  className="h-4 w-4 text-accent-600 focus:ring-accent-500 border-body-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-body-900">
-                  Remember me
-                </label>
-              </div>
-
               <div className="text-sm">
                 <NextLink
                   href={`/account/recover?callbackUrl=${encodeURIComponent('/account/signin')}`}
