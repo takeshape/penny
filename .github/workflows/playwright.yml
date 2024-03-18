@@ -146,16 +146,10 @@ jobs:
           pattern: playwright-report-*
           merge-multiple: true
 
-      - name: DEBUG
-        shell: bash
-        run: |
-          ls -al
-          cd ./playwright-reports
-          ls -al
-
       - name: Merge reports
         shell: bash
         run: |
+          mv ./playwright-reports/**/*.zip ./playwright-reports
           npx playwright merge-reports --reporter html ./playwright-reports
 
       - name: Upload to S3
