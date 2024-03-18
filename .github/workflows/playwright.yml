@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
           cache: 'npm'
@@ -45,7 +45,7 @@ jobs:
           PLAYWRIGHT_USER_PASSWORD: ${{ vars.PLAYWRIGHT_USER_PASSWORD }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
@@ -64,7 +64,7 @@ jobs:
       HTML_REPORT_URL_PATH: reports/${{ github.sha }}/${{ github.run_attempt }}
     steps:
       - name: Download results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: playwright-report
           path: playwright/${{ env.HTML_REPORT_URL_PATH }}
@@ -87,7 +87,7 @@ jobs:
 
       - name: Post status
         if: ${{ success() || failure() }}
-        uses: Sibz/github-status-action@v1
+        uses: guibranco/github-status-action-v2@v1.1.13
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: Playwright Report
