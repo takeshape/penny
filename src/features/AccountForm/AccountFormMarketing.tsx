@@ -2,9 +2,9 @@
 
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormToggleWithLabel from '@/components/Form/Toggle/ToggleWithLabel';
-import { formatError } from '@/lib/errors';
 import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
 import { useAuthenticatedMutation, useAuthenticatedQuery } from '@/lib/takeshape';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerQueryResponse,
   CustomerQueryVariables,

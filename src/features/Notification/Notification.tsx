@@ -1,7 +1,7 @@
 'use client';
 
 import StatusIcon from '@/components/StatusIcon/StatusIcon';
-import { notificationAtom } from '@/lib/store';
+import { notificationAtom } from '@/store';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useAtomValue } from 'jotai';

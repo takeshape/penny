@@ -1,7 +1,7 @@
 import { getIsExpiringSoon } from '@/components/Payments/utils';
 import { defaultProductImage } from '@/config';
-import { capitalize } from '@/lib/text';
-import { isNotNullish } from '@/lib/types';
+import { capitalize } from '@/lib/util/text';
+import { isNotNullish } from '@/lib/util/types';
 import {
   createImageGetter,
   getProductHasStock,

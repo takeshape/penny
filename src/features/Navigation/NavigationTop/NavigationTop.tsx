@@ -3,7 +3,7 @@
 import { Logo } from '@/components/Logo/Logo';
 import NextLink from '@/components/NextLink';
 import { showCurrencySelector } from '@/config';
-import { isMobileMenuOpenAtom, isSearchOpenAtom } from '@/lib/store';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from '@/store';
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSetAtom } from 'jotai';
 import { Navigation } from '../types';

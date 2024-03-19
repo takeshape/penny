@@ -4,7 +4,7 @@ import FormSelect from '@/components/Form/Select/Select';
 import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
-import { countries } from '@/lib/countries/countries';
+import { countries } from '@/lib/data/countries';
 import { useAuthenticatedMutation } from '@/lib/takeshape';
 import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } from '@/types/takeshape';
 import { useCallback, useEffect } from 'react';

@@ -1,9 +1,9 @@
 import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
-import classNames from '@/lib/classNames';
 import { useAuthenticatedMutation } from '@/lib/takeshape';
-import { formatPrice } from '@/lib/text';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
 import { shopifyGidToId } from '@/transforms/shopify';
 import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from '@/types/takeshape';

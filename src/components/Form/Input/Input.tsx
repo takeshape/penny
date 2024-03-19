@@ -1,4 +1,4 @@
-import classNames from '@/lib/classNames';
+import classNames from '@/lib/util/classNames';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { forwardRef, InputHTMLAttributes } from 'react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';

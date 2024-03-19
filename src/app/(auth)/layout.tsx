@@ -1,5 +1,5 @@
+import { auth } from '@/auth';
 import { AuthProvider } from '@/features/Auth/AuthProvider';
-import { auth } from '@/lib/auth';
 import { PropsWithChildren } from 'react';
 
 export default async function AuthLayout({ children }: PropsWithChildren) {

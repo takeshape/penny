@@ -1,4 +1,4 @@
-import classNames from '@/lib/classNames';
+import classNames from '@/lib/util/classNames';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/solid';
 import { Fragment, PropsWithChildren, useCallback, useMemo } from 'react';

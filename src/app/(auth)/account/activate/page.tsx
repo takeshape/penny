@@ -1,6 +1,6 @@
 import { AccountResetPassword } from '@/features/AccountResetPassword/AccountResetPassword';
-import { getActivationParams } from '@/lib/account';
-import { getSingle } from '@/lib/types';
+import { getSingle } from '@/lib/util/types';
+import { getActivationParams } from '@/transforms/account';
 import { type ServerProps } from '@/types/next';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';

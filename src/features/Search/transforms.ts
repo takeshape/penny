@@ -1,4 +1,4 @@
-import { isNotNullish } from '@/lib/types';
+import { isNotNullish } from '@/lib/util/types';
 import { createImageGetter, getProductHasStock, getProductIsAvailable, getProductUrl } from '@/transforms/shopify';
 import { SearchShopifyProductsResponse } from '@/types/takeshape';
 import { SearchItem, SearchItemProduct, SearchShopifyProduct } from './types';

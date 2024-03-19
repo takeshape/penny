@@ -2,8 +2,8 @@
 
 import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from '@/features/Cart/store';
 import { useRemoveQueryParams } from '@/lib/hooks/useRemoveQueryParams';
-import { currencyAtom, notificationAtom } from '@/lib/store';
-import { getSingle } from '@/lib/types';
+import { getSingle } from '@/lib/util/types';
+import { currencyAtom, notificationAtom } from '@/store';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';

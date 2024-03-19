@@ -1,6 +1,6 @@
 import { Object } from 'ts-toolbelt';
 import { currencyList } from '../../config';
-import { isNotNullish } from '../../lib/types';
+import { isNotNullish } from '../../lib/util/types';
 import { getNavigationLink } from '../../transforms/navigation';
 import { NavigationQueryResponse, NavigationSectionsLinkProperty } from '../../types/takeshape';
 import { Navigation, NavigationSection } from './types';

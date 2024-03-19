@@ -1,7 +1,7 @@
 import { shopifyUseMultipass } from '@/config';
 import { AuthSignIn } from '@/features/Auth/AuthSignIn/AuthSignIn';
 import { parseSigninError } from '@/lib/auth/errors';
-import { getSingle } from '@/lib/types';
+import { getSingle } from '@/lib/util/types';
 import { ServerProps } from '@/types/next';
 import { Metadata } from 'next';
 

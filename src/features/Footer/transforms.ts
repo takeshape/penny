@@ -1,4 +1,4 @@
-import { isNotNullish } from '../../lib/types';
+import { isNotNullish } from '../../lib/util/types';
 import { getNavigationLink } from '../../transforms/navigation';
 import { FooterQueryResponse, NavigationSectionsLinkProperty } from '../../types/takeshape';
 

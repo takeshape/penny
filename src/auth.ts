@@ -1,3 +1,4 @@
+import { withAllAccess } from '@/auth-all-access';
 import {
   googleClientId,
   googleClientSecret,
@@ -7,11 +8,10 @@ import {
 } from '@/config';
 import { AuthCustomerQuery } from '@/features/Auth/queries.storefront';
 import { getStorefrontClient } from '@/lib/apollo/rsc';
-import { withAllAccess } from '@/lib/auth-all-access';
 import { NoAccessTokenError, NoEmailError } from '@/lib/auth/errors';
 import { getMultipassCustomerAccessToken } from '@/lib/auth/multipass-helper';
 import ShopifyCredentialsProvider from '@/lib/auth/shopify-credentials-provider';
-import logger from '@/lib/logger';
+import logger from '@/logger';
 import { AuthCustomerQueryResponse, AuthCustomerQueryVariables } from '@/types/storefront';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import { JWT } from 'next-auth/jwt';

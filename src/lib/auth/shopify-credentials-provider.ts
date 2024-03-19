@@ -2,7 +2,7 @@ import { GetCustomerStateQuery } from '@/features/Auth/queries';
 import { AuthCustomerAccessTokenCreateMutation } from '@/features/Auth/queries.storefront';
 import { getAnonymousTakeshapeClient, getStorefrontClient } from '@/lib/apollo/rsc';
 import { EmailInUseError, MissingCredentialsError, NoAccountError } from '@/lib/auth/errors';
-import logger from '@/lib/logger';
+import logger from '@/logger';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
   AuthCustomerAccessTokenCreateMutationVariables

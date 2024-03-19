@@ -1,5 +1,5 @@
 import NextImage from '@/components/NextImage';
-import classNames from '@/lib/classNames';
+import classNames from '@/lib/util/classNames';
 import { ProductImage } from '@/types/product';
 
 export type ImageGalleryProps = {

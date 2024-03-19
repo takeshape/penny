@@ -1,7 +1,7 @@
 'use client';
 
 import { useVariantOption } from '@/lib/hooks/useVariantOption';
-import { isNotNullish } from '@/lib/types';
+import { isNotNullish } from '@/lib/util/types';
 import { getVariant } from '@/transforms/product';
 import { Product } from '@/types/product';
 import { useEffect, useMemo, useState } from 'react';

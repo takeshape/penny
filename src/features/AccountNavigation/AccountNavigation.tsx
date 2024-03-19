@@ -1,7 +1,7 @@
 'use client';
 
 import NextLink from '@/components/NextLink';
-import classNames from '@/lib/classNames';
+import classNames from '@/lib/util/classNames';
 import { useApolloClient } from '@apollo/client';
 import {
   ArrowPathIcon,

@@ -3,9 +3,9 @@
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
 import FormSelect from '@/components/Form/Select/Select';
-import { countries } from '@/lib/countries/countries';
-import { formatError } from '@/lib/errors';
+import { countries } from '@/lib/data/countries';
 import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerAddressUpdateMutationResponse,
   CustomerAddressUpdateMutationVariables,

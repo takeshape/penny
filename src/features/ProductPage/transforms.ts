@@ -1,6 +1,6 @@
 import { enableReviewsIo, enableTrustpilot } from '@/config';
 import { ProductProps } from '@/features/ProductPage/Product/Product';
-import { isNotNullish } from '@/lib/types';
+import { isNotNullish } from '@/lib/util/types';
 import { getProductLineItemAttributes } from '@/transforms/product';
 import { getReview, getReviewList as getReviewsIoReviewList, getStats } from '@/transforms/reviewsIo';
 import {

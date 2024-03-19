@@ -1,4 +1,4 @@
-import { notificationAtom } from '@/lib/store';
+import { notificationAtom } from '@/store';
 import { Meta, StoryObj } from '@storybook/react';
 import { Notification } from './Notification';
 

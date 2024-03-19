@@ -1,5 +1,5 @@
-import classNames from '@/lib/classNames';
-import { formatPrice } from '@/lib/text';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
 import { ProductPriceOption } from '@/types/product';
 
 export type ProductPriceProps = {

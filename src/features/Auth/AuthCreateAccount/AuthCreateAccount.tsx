@@ -8,7 +8,7 @@ import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding'
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
 import { InactiveCustomer } from '@/features/Auth/types';
 import { encodeErrorCode } from '@/lib/auth/errors';
-import { sanitizeCallbackUrl } from '@/lib/callbacks';
+import { sanitizeCallbackUrl } from '@/lib/util/callbacks';
 import {
   CreateCustomerMutationResponse,
   CreateCustomerMutationVariables,

@@ -2,8 +2,8 @@
 
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
-import { formatError } from '@/lib/errors';
 import { useStorefrontMutation } from '@/lib/storefront';
+import { formatError } from '@/lib/util/errors';
 import { CustomerUpdateMutationResponse, CustomerUpdateMutationVariables } from '@/types/storefront';
 import { signOut, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';

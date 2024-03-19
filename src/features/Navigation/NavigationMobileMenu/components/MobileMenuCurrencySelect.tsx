@@ -1,6 +1,6 @@
 'use client';
 
-import { currencyAtom } from '@/lib/store';
+import { currencyAtom } from '@/store';
 import { useAtom } from 'jotai';
 import { Navigation } from '../../types';
 

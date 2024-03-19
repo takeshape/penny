@@ -6,7 +6,7 @@ import FormInput from '@/components/Form/Input/Input';
 import { Logo } from '@/components/Logo/Logo';
 import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { sanitizeCallbackUrl } from '@/lib/callbacks';
+import { sanitizeCallbackUrl } from '@/lib/util/callbacks';
 import {
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables,

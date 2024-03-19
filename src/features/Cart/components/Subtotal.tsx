@@ -1,8 +1,8 @@
 'use client';
 
 import { cartSubtotalAtom } from '@/features/Cart/store';
-import { currencyAtom } from '@/lib/store';
-import { formatPrice } from '@/lib/text';
+import { formatPrice } from '@/lib/util/text';
+import { currencyAtom } from '@/store';
 import { useAtomValue } from 'jotai';
 
 export const CartSubtotal = () => {

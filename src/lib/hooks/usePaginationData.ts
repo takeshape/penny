@@ -1,4 +1,4 @@
-import logger from '@/lib/logger';
+import logger from '@/logger';
 import { DocumentNode, useApolloClient } from '@apollo/client';
 import { usePathname } from 'next/navigation';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';

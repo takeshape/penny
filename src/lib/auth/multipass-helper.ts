@@ -2,7 +2,7 @@ import { shopifyMultipassSecret } from '@/config';
 import { AuthCustomerAccessTokenCreateWithMultipassMutation } from '@/features/Auth/queries.storefront';
 import { getStorefrontClient } from '@/lib/apollo/rsc';
 import { MultipassError } from '@/lib/auth/errors';
-import logger from '@/lib/logger';
+import logger from '@/logger';
 import {
   AuthCustomerAccessTokenCreateWithMultipassMutationResponse,
   AuthCustomerAccessTokenCreateWithMultipassMutationVariables

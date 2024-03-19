@@ -1,1 +1,1 @@
-export { GET } from '@/lib/auth-all-access';
+export { GET } from '@/auth-all-access';

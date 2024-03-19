@@ -1,6 +1,6 @@
 'use client';
 
-import { isNotNullish } from '@/lib/types';
+import { isNotNullish } from '@/lib/util/types';
 import { GetStorefrontQueryResponse } from '@/types/takeshape';
 import { NonNullablePath } from '@/types/util';
 import { BackgroundImage } from './BackgroundImage/BackgroundImage';

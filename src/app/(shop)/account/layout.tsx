@@ -1,6 +1,6 @@
+import { auth } from '@/auth';
 import { Wrapper } from '@/components/Wrapper/Content';
 import { AccountNavigation } from '@/features/AccountNavigation/AccountNavigation';
-import { auth } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import { PropsWithChildren } from 'react';
 

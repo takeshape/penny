@@ -13,7 +13,7 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { ServerError } from '@apollo/client/link/utils';
 import { isSsr } from '../../config';
-import logger from '../logger';
+import logger from '../../logger';
 import { RetryLink } from './link/retry/RetryLink';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';

@@ -7,7 +7,7 @@ import { Logo } from '@/components/Logo/Logo';
 import NextLink from '@/components/NextLink';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
 import { SigninError, getSigninErrorMessage } from '@/lib/auth/errors';
-import { sanitizeCallbackUrl } from '@/lib/callbacks';
+import { sanitizeCallbackUrl } from '@/lib/util/callbacks';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useRef } from 'react';

@@ -1,6 +1,6 @@
 import { siteUrl, takeshapeAuthAudience, takeshapeAuthIssuer } from '@/config';
 import createNextAuthAllAccess from '@takeshape/next-auth-all-access/v5';
-import jwks from '../../keys/jwks.json';
+import jwks from '../keys/jwks.json';
 
 export const {
   handlers: { GET },

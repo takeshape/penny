@@ -1,4 +1,4 @@
-import classNames from '@/lib/classNames';
+import classNames from '@/lib/util/classNames';
 import { shopifyGidToId } from '@/transforms/shopify';
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';

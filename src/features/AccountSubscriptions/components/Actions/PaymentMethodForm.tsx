@@ -6,8 +6,8 @@ import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
 import { CreditCard } from '@/components/Payments/CreditCard';
-import classNames from '@/lib/classNames';
 import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from '@/lib/takeshape';
+import classNames from '@/lib/util/classNames';
 import {
   GetMyPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryVariables,

@@ -1,5 +1,5 @@
-import classNames from '@/lib/classNames';
 import { useHasStockFor } from '@/lib/hooks/useHasStockFor';
+import classNames from '@/lib/util/classNames';
 import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';

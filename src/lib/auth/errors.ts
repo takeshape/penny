@@ -1,4 +1,4 @@
-import { getSingle } from '@/lib/types';
+import { getSingle } from '@/lib/util/types';
 import { ServerProps } from '@/types/next';
 import { CredentialsSignin } from '@auth/core/errors';
 

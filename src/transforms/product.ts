@@ -1,4 +1,4 @@
-import { isNotNullish } from '@/lib/types';
+import { isNotNullish } from '@/lib/util/types';
 import { ProductLineItemAttribute, ProductVariant, ProductVariantSelection } from '@/types/product';
 import { LineItemAttributes } from '@/types/takeshape';
 

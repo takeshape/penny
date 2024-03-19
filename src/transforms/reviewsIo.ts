@@ -1,4 +1,4 @@
-import { isNotNullish } from '@/lib/types';
+import { isNotNullish } from '@/lib/util/types';
 import { Review, ReviewList, ReviewStats } from '@/types/review';
 import {
   ReviewsIo_ListProductReviewsResponse,

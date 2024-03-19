@@ -1,8 +1,8 @@
 'use client';
 
 import NextImage from '@/components/NextImage';
-import classNames from '@/lib/classNames';
-import { truncate } from '@/lib/truncate';
+import classNames from '@/lib/util/classNames';
+import { truncate } from '@/lib/util/truncate';
 import { Combobox } from '@headlessui/react';
 import { SearchItem } from '../../types';
 
