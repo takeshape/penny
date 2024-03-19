@@ -1,4 +1,3 @@
-import { test } from '../fixtures';
 import { expect } from 'playwright/test';
 import {
   HOMEPAGE_ENDPOINT,
@@ -9,6 +8,7 @@ import {
   USER_PASSWORD
 } from '../constants';
 import { getPassword, getValidEmail } from '../fake-data-generation';
+import { test } from '../fixtures';
 
 test.describe('Sign in', () => {
   test.beforeEach('Navigate to the Sign in page', async ({ page, signInPage }) => {
@@ -40,7 +40,7 @@ test.describe('Sign in', () => {
     await signInPage.emailInput().fill(getValidEmail());
     await signInPage.passwordInput().fill(getPassword());
     await signInPage.signInButton().click();
-    await expect(page.getByText('Try signing in with a different account.')).toBeVisible();
+    await expect(page.getByText('Email address or password are incorrect.')).toBeVisible();
   });
 
   test('Verify red messages appear if required fields are not filled in', async ({ signInPage, page }) => {
