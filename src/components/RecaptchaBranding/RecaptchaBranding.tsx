@@ -3,7 +3,7 @@ export const RecaptchaBranding = () => {
     <div className="text-sm font-medium text-body-400">
       This site is protected by reCAPTCHA and the Google{' '}
       <a
-        className="text-accent-400 hover:text-accent-500"
+        className="text-body-400 hover:text-body-500"
         href="https://policies.google.com/privacy"
         target="_blank"
         rel="noreferrer"
@@ -12,7 +12,7 @@ export const RecaptchaBranding = () => {
       </a>{' '}
       and{' '}
       <a
-        className="text-accent-400 hover:text-accent-500"
+        className="text-body-400 hover:text-body-500"
         href="https://policies.google.com/terms"
         target="_blank"
         rel="noreferrer"
