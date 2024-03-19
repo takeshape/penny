@@ -5,7 +5,7 @@ import type { Config } from 'tailwindcss';
 import colors from 'tailwindcss/colors';
 
 export default {
-  content: ['./src/**/*.{ts,tsx}'],
+  content: ['./src/**/*.tsx'],
   theme: {
     extend: {
       fontFamily: {
