@@ -11,6 +11,9 @@ Check out the store now at https://penny-demo.takeshape.io/.
 - Deployed on Netlify: https://penny-ecommerce.netlify.app
 - Deployed on Vercel: https://penny-ecommerce.vercel.app
 
+> [!IMPORTANT]  
+> In order to checkout in the demo you will need to enter the store password `test1234`
+
 You can clone this repo with git to run the Next.js frontend locally (`git clone https://github.com/takeshape/penny`).
 To connect it to a GraphQL backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern`
 directory. [The instructions section of this README will teach you how to do that](#getting-started).
@@ -107,7 +110,7 @@ to keep error-free and performant.
 
 #### Unit Tests
 
-- [Jest](https://jestjs.io/) for React component testing.
+- [Vitest](https://vitest.dev/) for React component and unit testing.
 - [ESLint](https://eslint.org) for code style and quality.
 - [TypeScript](https://www.typescriptlang.org) ensures a type-safe codebase.
 - [GraphQL Codegen](https://www.graphql-code-generator.com) extend type-safety to all your GraphQL queries.
@@ -403,7 +406,7 @@ Then select **Save** at the top right of the page.
 - You will now see a **Storefront API access token**. Copy it and save it. You'll need it to configure Shopify
   Storefront in your TakeShape project.
 
-![A screenshot of the Storefront APi access token section](/readme-images/storefront-api-access-token-readme-images.png)
+![A screenshot of the Storefront API access token section](/readme-images/storefront-api-access-token-readme-images.png)
 
 - Go back to the Configuration tab for your app. At this point you have as Storefront API integration but no Admin API
   integration. Next to Admin API integration click Configure.
