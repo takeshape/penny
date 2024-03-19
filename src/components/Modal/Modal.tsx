@@ -2,12 +2,12 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { Fragment, MouseEvent, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
-export interface ModalProps {
+export type ModalProps = {
   isOpen: boolean;
   onClose: () => void;
   afterLeave?: () => void;
   showCloseButton?: boolean;
-}
+};
 
 export const Modal = ({ isOpen, onClose, afterLeave, showCloseButton, children }: PropsWithChildren<ModalProps>) => {
   // TODO Because of this: https://github.com/tailwindlabs/headlessui/issues/1705

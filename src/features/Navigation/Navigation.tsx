@@ -3,7 +3,7 @@ import { NavigationMobileMenu } from './NavigationMobileMenu/NavigationMobileMen
 import { NavigationTop } from './NavigationTop/NavigationTop';
 import { Navigation as TNavigation } from './types';
 
-export interface NavigationProps extends TNavigation {}
+export type NavigationProps = TNavigation;
 
 export const Navigation = ({ message, sections, currencies }: NavigationProps) => {
   return (

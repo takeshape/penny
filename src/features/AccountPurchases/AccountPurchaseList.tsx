@@ -1,6 +1,6 @@
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
+import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { NetworkStatus } from '@apollo/client';
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
-import { useAuthenticatedQuery } from 'utils/takeshape';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';
 import { GetMyAdminCustomerOrdersQuery } from './queries';
@@ -28,15 +28,18 @@ export const AccountPurchaseList = () => {
     transformedData: orders,
     loading,
     networkStatus
-  } = useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse, {}, Order[]>(GetMyAdminCustomerOrdersQuery, {
-    transform: { data: getOrders }
-  });
+  } = useAuthenticatedQuery<GetMyAdminCustomerOrdersQueryResponse, Record<string, unknown>, Order[]>(
+    GetMyAdminCustomerOrdersQuery,
+    {
+      transform: { data: getOrders }
+    }
+  );
 
-  if (networkStatus !== NetworkStatus.refetch && (!orders || !orders.length)) {
+  if (networkStatus !== NetworkStatus.refetch && !orders?.length) {
     return (
       <div className="flex flex-col min-h-full space-y-4">
         <Header />
-        <div className="space-y-4 min-h-40 flex-1 min-h-full flex justify-center items-center">
+        <div className="space-y-4 flex-1 min-h-full flex justify-center items-center">
           {loading ? <OrderSkeleton /> : <Empty />}
         </div>
       </div>
@@ -51,7 +54,7 @@ export const AccountPurchaseList = () => {
           Recent orders
         </h2>
         <div className="space-y-4 min-h-40">
-          {orders && orders.map((order) => <PurchaseOrder key={order.id} order={order} />)}
+          {orders?.map((order) => <PurchaseOrder key={order.id} order={order} />)}
         </div>
       </section>
     </div>

@@ -1,4 +1,4 @@
-import NextLink from 'components/NextLink';
+import NextLink from '@/components/NextLink';
 import { getCollection } from '../transforms';
 import { StorefrontChild } from '../types';
 import { CollectionItem } from './CollectionItem';

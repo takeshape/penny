@@ -1,6 +1,6 @@
+import NextLink from '@/components/NextLink';
+import classNames from '@/utils/classNames';
 import { Disclosure } from '@headlessui/react';
-import NextLink from 'components/NextLink';
-import classNames from 'utils/classNames';
 import { Navigation } from '../../types';
 
 export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
@@ -35,24 +35,23 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                     {section.name}
                   </Disclosure.Button>
                   <Disclosure.Panel className="space-y-1">
-                    {section.subsections &&
-                      section.subsections.map((subsection) => (
-                        <>
-                          <p className="bg-white text-body-400 group w-full flex items-center pl-7 pr-2 py-2 text-xs font-medium rounded-md uppercase">
-                            {subsection.name}
-                          </p>
-                          {subsection.links.map((link) => (
-                            <Disclosure.Button
-                              key={link.name}
-                              as="a"
-                              href={link.href}
-                              className="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-body-800 rounded-md hover:text-body-800 hover:bg-body-50"
-                            >
-                              {link.name}
-                            </Disclosure.Button>
-                          ))}
-                        </>
-                      ))}
+                    {section.subsections?.map((subsection) => (
+                      <>
+                        <p className="bg-white text-body-400 group w-full flex items-center pl-7 pr-2 py-2 text-xs font-medium rounded-md uppercase">
+                          {subsection.name}
+                        </p>
+                        {subsection.links.map((link) => (
+                          <Disclosure.Button
+                            key={link.name}
+                            as="a"
+                            href={link.href}
+                            className="group w-full flex items-center pl-10 pr-2 py-2 text-sm font-medium text-body-800 rounded-md hover:text-body-800 hover:bg-body-50"
+                          >
+                            {link.name}
+                          </Disclosure.Button>
+                        ))}
+                      </>
+                    )) ?? null}
                   </Disclosure.Panel>
                 </>
               )}

@@ -1,4 +1,4 @@
-import { assertEnv } from 'utils/env';
+import { assertEnv } from '../utils/env';
 
 export const shopifyStorefrontUrl = assertEnv(process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_URL);
 export const shopifyStorefrontToken = assertEnv(process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_TOKEN);

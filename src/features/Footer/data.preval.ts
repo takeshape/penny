@@ -1,6 +1,6 @@
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import preval from 'next-plugin-preval';
-import { createStaticClient } from 'utils/apollo/client';
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '../../config';
+import { createStaticClient } from '../../utils/apollo/client';
 import { FooterQuery } from './queries';
 import { getFooter } from './transforms';
 

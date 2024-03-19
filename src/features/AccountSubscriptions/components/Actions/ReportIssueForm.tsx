@@ -1,22 +1,22 @@
-import FormTextarea from 'components/Form/Textarea/Textarea';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { siteContactEmail } from 'config';
-import { useAuthenticatedCreateTicket } from 'features/Contact/useCreateTicket';
+import FormTextarea from '@/components/Form/Textarea/Textarea';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { siteContactEmail } from '@/config';
+import { useAuthenticatedCreateTicket } from '@/features/Contact/useCreateTicket';
+import { shopifyGidToId } from '@/transforms/shopify';
 import { useSession } from 'next-auth/react';
 import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { shopifyGidToId } from 'transforms/shopify';
 import { SubscriptionOrder } from '../../types';
 
-export interface ReportIssueFormProps extends ModalProps {
+export type ReportIssueFormProps = {
   order: Pick<SubscriptionOrder, 'id'>;
-}
+} & ModalProps;
 
-export interface ReportIssueFormValues {
+export type ReportIssueFormValues = {
   message: string;
-}
+};
 
 export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps) => {
   const { data: session } = useSession();
@@ -33,12 +33,12 @@ export const ReportIssueForm = ({ isOpen, onClose, order }: ReportIssueFormProps
   } = useForm<ReportIssueFormValues>();
 
   const handleFormSubmit = useCallback(
-    async ({ message }: ReportIssueFormValues) => {
+    ({ message }: ReportIssueFormValues) => {
       if (!session?.user) {
         return;
       }
 
-      createTicket({
+      void createTicket({
         variables: {
           name: session.user.name ?? 'Unknown',
           email: session.user.email ?? 'no-user@site.test',
@@ -64,7 +64,7 @@ ${message}`
       primaryText="Report an issue"
       secondaryText="Let us know what happened and we'll fix it right away!"
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
     >
       <div className="md:h-[calc(1/4*100vh)] p-[1px] flex flex-col">

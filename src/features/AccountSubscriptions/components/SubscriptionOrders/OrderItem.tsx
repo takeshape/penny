@@ -1,14 +1,14 @@
-import NextImage from 'components/NextImage';
-import { formatPrice } from 'utils/text';
+import NextImage from '@/components/NextImage';
+import { formatPrice } from '@/utils/text';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 import { OrderItemActions } from './OrderItemActions';
 import { OrderItemHeader } from './OrderItemHeader';
 
-export interface OrderItemProps {
+export type OrderItemProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+};
 
 export const OrderItem = ({ subscription, order, refetchSubscriptions }: OrderItemProps) => {
   const { product, productVariant, quantity, price } = order.lineItems[0];

@@ -1,9 +1,9 @@
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { formatPrice } from 'utils/text';
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { formatPrice } from '@/utils/text';
 import { StorefrontCollectionItem } from '../types';
 
-export interface CollectionItemProps extends StorefrontCollectionItem {}
+export type CollectionItemProps = StorefrontCollectionItem;
 
 export const CollectionItem = ({ product }: CollectionItemProps) => {
   const colors = product.variantOptions.find((opt) => opt.name.toLowerCase() === 'color');

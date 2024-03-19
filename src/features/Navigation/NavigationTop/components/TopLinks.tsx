@@ -1,7 +1,7 @@
+import NextLink from '@/components/NextLink';
+import classNames from '@/utils/classNames';
 import { Popover, Transition } from '@headlessui/react';
-import NextLink from 'components/NextLink';
 import { Fragment } from 'react';
-import classNames from 'utils/classNames';
 import { Navigation, NavigationSection } from '../../types';
 
 const SectionWithPopover = ({ section }: { section: NavigationSection }) => (

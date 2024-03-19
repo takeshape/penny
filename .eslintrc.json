@@ -3,55 +3,81 @@
     "json-format"
   ],
   "extends": [
+    "eslint:recommended",
     "next/core-web-vitals",
     "plugin:prettier/recommended"
   ],
-  "rules": {
-    "no-unreachable": "error",
-    "no-console": "error"
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "project": "tsconfig.json",
+    "sourceType": "module"
   },
   "overrides": [
     {
       "files": [
-        "**/*.test.*"
+        "**/*.{ts,tsx}"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "next/core-web-vitals",
+        "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked",
+        "plugin:prettier/recommended"
       ],
       "rules": {
-        "no-console": "off"
+        "@typescript-eslint/consistent-type-definitions": [
+          "error",
+          "type"
+        ],
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/prefer-nullish-coalescing": [
+          "error",
+          {
+            "ignoreTernaryTests": false,
+            "ignoreConditionalTests": true,
+            "ignoreMixedLogicalExpressions": true
+          }
+        ],
+        "@typescript-eslint/ban-ts-comment": "off"
       }
     },
     {
       "files": [
-        "scripts/**/*"
+        "**/*.stories.{ts,tsx}"
       ],
-      "rules": {
-        "no-console": "off"
-      }
-    },
-    {
       "extends": [
-        "plugin:mdx/recommended"
-      ],
-      "files": [
-        "**/*.{mdx,md}"
-      ],
-      "rules": {
-        "indent": "off"
-      },
-      "settings": {
-        "mdx/code-blocks": true,
-        "mdx/language-mapper": {}
-      }
-    },
-    {
-      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked",
+        "plugin:prettier/recommended",
         "plugin:storybook/recommended"
       ],
+      "rules": {
+        "@typescript-eslint/consistent-type-definitions": [
+          "error",
+          "type"
+        ],
+        "@typescript-eslint/no-explicit-any": "off"
+      }
+    },
+    {
       "files": [
-        "**/*.stories.*"
-      ]
+        "**/*.{md,mdx}"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:prettier/recommended",
+        "plugin:mdx/recommended"
+      ],
+      "settings": {
+        "mdx/code-blocks": false,
+        "mdx/language-mapper": {}
+      }
     }
-  ],
-  "parserOptions": {
-    "ecmaVersion": 12
-  }
+  ]
 }

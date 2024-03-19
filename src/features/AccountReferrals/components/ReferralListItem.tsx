@@ -1,10 +1,10 @@
 import { CheckCircleIcon, ClockIcon } from '@heroicons/react/24/outline';
 
-export interface ReferralListItemProps {
+export type ReferralListItemProps = {
   email: string;
   sent: Date;
   earned: boolean;
-}
+};
 
 export const ReferralListItem = ({ email, sent, earned }: ReferralListItemProps) => (
   <div className="flex gap-1 justify-start align-middle">

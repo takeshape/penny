@@ -1,12 +1,12 @@
 import { PropsWithChildren } from 'react';
-export interface HeaderProps {
+export type HeaderProps = {
   header: {
     text: {
       primary: string;
       secondary: string;
     };
   };
-}
+};
 
 export const Header = ({ header: { text } }: PropsWithChildren<HeaderProps>) => {
   return (

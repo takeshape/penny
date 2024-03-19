@@ -1,4 +1,4 @@
-import NextLink from 'components/NextLink';
+import NextLink from '@/components/NextLink';
 import { signIn, useSession } from 'next-auth/react';
 
 export const TopCreateOrSignIn = () => {
@@ -18,7 +18,7 @@ export const TopCreateOrSignIn = () => {
         href={`/api/auth/signin`}
         onClick={(e) => {
           e.preventDefault();
-          signIn();
+          void signIn();
         }}
         className="text-sm font-medium text-inverted hover:text-primary-100 cursor-pointer"
       >

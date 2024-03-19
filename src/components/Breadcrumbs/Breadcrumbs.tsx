@@ -1,14 +1,14 @@
 import Link from 'next/link';
 
-export interface Breadcrumb {
+export type Breadcrumb = {
   id: string;
   href: string;
   name: string;
-}
+};
 
-export interface BreadcrumbsProps {
+export type BreadcrumbsProps = {
   breadcrumbs: Breadcrumb[];
-}
+};
 
 const Breadcrumbs = (props: React.PropsWithChildren<BreadcrumbsProps>) => (
   <nav aria-label="Breadcrumb">

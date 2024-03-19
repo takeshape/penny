@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import { DefaultSession, DefaultUser } from 'next-auth';
 import { DefaultJWT } from 'next-auth/jwt';
 
@@ -18,7 +19,7 @@ declare module 'next-auth' {
 }
 
 declare module 'next-auth/jwt' {
-  interface JWT extends Record<string, unknown>, DefaultJWT {
+  interface JWT extends DefaultJWT, Record<string, unknown> {
     firstName?: string | null;
     lastName?: string | null;
     shopifyCustomerAccessToken?: string;

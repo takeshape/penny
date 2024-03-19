@@ -1,4 +1,4 @@
-import { ReviewList } from 'types/review';
+import { ReviewList } from '@/types/review';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,

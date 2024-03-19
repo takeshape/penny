@@ -1,10 +1,10 @@
-import { shopifyUseMultipass } from 'config';
-import { AuthCreateAccount } from 'features/Auth/AuthCreateAccount/AuthCreateAccount';
-import Layout from 'layouts/Full';
+import { shopifyUseMultipass } from '@/config';
+import { AuthCreateAccount } from '@/features/Auth/AuthCreateAccount/AuthCreateAccount';
+import Layout from '@/layouts/Full';
+import { getSingle } from '@/utils/types';
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { getSingle } from 'utils/types';
 
 const SignUpPage: NextPage = () => {
   const { query } = useRouter();

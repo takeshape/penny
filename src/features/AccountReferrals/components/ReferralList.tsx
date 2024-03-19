@@ -1,19 +1,19 @@
 import { GiftIcon } from '@heroicons/react/24/solid';
 import { ReferralListItem, ReferralListItemProps } from './ReferralListItem';
 
-export interface Reward {
+export type Reward = {
   name: string;
   code: string;
-}
+};
 
 const reward: Reward = {
   name: '20% Off One Order',
   code: '1XGHc80'
 };
 
-export interface ReferralListProps {
+export type ReferralListProps = {
   referrals: ReferralListItemProps[];
-}
+};
 
 export const ReferralList = ({ referrals }: ReferralListProps) => {
   return (

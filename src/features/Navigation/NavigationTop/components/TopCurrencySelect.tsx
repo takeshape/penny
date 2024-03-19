@@ -1,5 +1,5 @@
+import { currencyAtom } from '@/store';
 import { useAtom } from 'jotai';
-import { currencyAtom } from 'store';
 import { Navigation } from '../../types';
 
 export const TopCurrencySelect = ({ currencies }: Pick<Navigation, 'currencies'>) => {
@@ -13,9 +13,7 @@ export const TopCurrencySelect = ({ currencies }: Pick<Navigation, 'currencies'>
       onChange={(e) => updateCurrency(e.target.value)}
       value={selectedCurrency}
     >
-      {currencies?.map((currency) => (
-        <option key={currency}>{currency}</option>
-      ))}
+      {currencies?.map((currency) => <option key={currency}>{currency}</option>)}
     </select>
   );
 };

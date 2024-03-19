@@ -1,23 +1,23 @@
 /**
  * If a project is able to use `write_customer_payment_methods` can use this.
  */
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { SendCustomerInviteMutation } from '@/features/Auth/queries';
+import { SendCustomerInviteMutationResponse, SendCustomerInviteMutationVariables } from '@/types/takeshape';
 import { useMutation } from '@apollo/client';
 import { Dialog } from '@headlessui/react';
 import { CheckBadgeIcon } from '@heroicons/react/24/solid';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { SendCustomerInviteMutation } from 'features/Auth/queries';
 import { useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { SendCustomerInviteMutationResponse, SendCustomerInviteMutationVariables } from 'types/takeshape';
 import { InactiveCustomer } from '../types';
 
-export interface AccountInactiveFormProps extends ModalProps {
+export type AccountInactiveFormProps = {
   customer: InactiveCustomer;
-}
+} & ModalProps;
 
-export interface AccountInactiveFormValues {}
+export type AccountInactiveFormValues = Record<string, unknown>;
 
 export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInactiveFormProps) => {
   const {
@@ -38,7 +38,7 @@ export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInacti
     <ModalForm
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
       className=""

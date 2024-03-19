@@ -1,6 +1,6 @@
+import ClientOnly from '@/components/ClientOnly';
+import { cartQuantityAtom, isCartOpenAtom } from '@/features/Cart/store';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
-import ClientOnly from 'components/ClientOnly';
-import { cartQuantityAtom, isCartOpenAtom } from 'features/Cart/store';
 import { useAtom, useAtomValue } from 'jotai';
 
 export const TopCartIcon = () => {

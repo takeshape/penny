@@ -2,13 +2,13 @@ import { PropsWithChildren, useCallback, useMemo } from 'react';
 import { PaginationLink } from './PaginationLink';
 import { usePagination } from './usePagination';
 
-export interface PaginationWithPageListProps {
+export type PaginationWithPageListProps = {
   pagination: {
     pageCount: number;
     currentPage: number;
     setCurrentPage: (nextPage: number, currentPage: number) => void;
   };
-}
+};
 
 export const PaginationWithPageList = ({
   pagination: { pageCount, currentPage, setCurrentPage }

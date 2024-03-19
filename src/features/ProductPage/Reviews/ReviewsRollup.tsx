@@ -1,10 +1,10 @@
-import { Star } from 'components/Stars/Stars';
+import { Star } from '@/components/Stars/Stars';
 import { ProductPageReviewsRollup, ProductPageReviewsStats } from '../types';
 
-export interface ReviewsRollupProps {
+export type ReviewsRollupProps = {
   rollup: ProductPageReviewsRollup[];
   stats: ProductPageReviewsStats;
-}
+};
 
 export const ReviewsRollup = ({ rollup, stats }: ReviewsRollupProps) => {
   return (

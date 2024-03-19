@@ -1,4 +1,4 @@
-import { shopifyMultipassSecret } from 'config';
+import { shopifyMultipassSecret } from '@/config';
 import crypto from 'node:crypto';
 
 const blockSize = 16;

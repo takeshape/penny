@@ -1,6 +1,6 @@
+import { Testimonials } from '@/features/Storefront/Testimonials/Testimonials';
+import { _Testimonials } from '@/features/Storefront/Testimonials/Testimonials.stories';
 import { Meta, StoryObj } from '@storybook/react';
-import { Testimonials } from 'features/Storefront/Testimonials/Testimonials';
-import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
 import { Sale } from '../Sale/Sale';
 import { _Sale } from '../Sale/Sale.stories';
 import { BackgroundImage } from './BackgroundImage';

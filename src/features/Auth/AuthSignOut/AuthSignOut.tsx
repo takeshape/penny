@@ -1,5 +1,5 @@
-import Button from 'components/Button/Button';
-import { Logo } from 'components/Logo/Logo';
+import Button from '@/components/Button/Button';
+import { Logo } from '@/components/Logo/Logo';
 import { signOut } from 'next-auth/react';
 
 export const AuthSignOut = (props: { signOut: typeof signOut }) => {
@@ -17,7 +17,7 @@ export const AuthSignOut = (props: { signOut: typeof signOut }) => {
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                signOut({ callbackUrl: '/' });
+                void signOut({ callbackUrl: '/' });
               }}
               color="primary"
               className="w-full"

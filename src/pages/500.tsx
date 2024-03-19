@@ -1,7 +1,7 @@
-import { ErrorMessage } from 'components/Error/ErrorMessage';
-import NextLink from 'components/NextLink';
-import Wrapper from 'components/Wrapper/Content';
-import Layout from 'layouts/Default';
+import { ErrorMessage } from '@/components/Error/ErrorMessage';
+import NextLink from '@/components/NextLink';
+import Wrapper from '@/components/Wrapper/Content';
+import Layout from '@/layouts/Default';
 import { NextPage } from 'next';
 
 const NotFoundPage: NextPage = () => {

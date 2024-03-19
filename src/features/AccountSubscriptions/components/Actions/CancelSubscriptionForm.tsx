@@ -1,21 +1,21 @@
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { CancelSubscriptionMutationResponse, CancelSubscriptionMutationVariables } from '@/types/takeshape';
+import { useAuthenticatedMutation } from '@/utils/takeshape';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { CancelSubscriptionMutationResponse, CancelSubscriptionMutationVariables } from 'types/takeshape';
-import { useAuthenticatedMutation } from 'utils/takeshape';
 import { CancelSubscriptionMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 
-export interface CancelSubscriptionFormProps extends ModalProps {
+export type CancelSubscriptionFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface CancelSubscriptionFormValues {
+export type CancelSubscriptionFormValues = {
   confirm: boolean;
-}
+};
 
 export const CancelSubscriptionForm = ({
   isOpen,
@@ -27,7 +27,7 @@ export const CancelSubscriptionForm = ({
     handleSubmit,
     register,
     reset,
-    formState: { isSubmitting, isSubmitSuccessful, isSubmitted }
+    formState: { isSubmitting, isSubmitSuccessful }
   } = useForm<CancelSubscriptionFormValues>({
     defaultValues: {
       confirm: true
@@ -53,7 +53,7 @@ export const CancelSubscriptionForm = ({
       primaryText="Cancel subscription"
       secondaryText="Will stop all future orders from being processed."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

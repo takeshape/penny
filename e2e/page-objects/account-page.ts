@@ -53,13 +53,13 @@ export class AccountPage {
     for (const item of navigationItems) {
       await expect(this.getNavigationItem(item)).toBeVisible();
     }
-    await expect(this.page.url()).toContain(ACCOUNT_PAGE_ENDPOINT);
+    expect(this.page.url()).toContain(ACCOUNT_PAGE_ENDPOINT);
   }
 
   async navigateToAccountPage() {
     await this.page.goto(ACCOUNT_PAGE_ENDPOINT);
     await expect(this.profileSection()).toBeVisible();
-    await expect(this.page.url()).toContain(ACCOUNT_PAGE_ENDPOINT);
+    expect(this.page.url()).toContain(ACCOUNT_PAGE_ENDPOINT);
   }
 
   async clearAllRequiredFieldsForProfile() {
@@ -75,7 +75,7 @@ export class AccountPage {
   async verifyPhoneNumberInputValue(text: string) {
     const inputValue = await this.profilePhoneNumberInput().getAttribute('value');
     if (inputValue) {
-      await expect(text).toBe(inputValue.replace(/\D/g, ''));
+      expect(text).toBe(inputValue.replace(/\D/g, ''));
     } else {
       throw new Error('Value is not defined.');
     }

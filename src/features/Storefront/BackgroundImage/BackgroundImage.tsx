@@ -1,6 +1,6 @@
+import NextImage from '@/components/NextImage';
+import { StorefrontChild } from '@/features/Storefront/types';
 import { getImageUrl } from '@takeshape/routing';
-import NextImage from 'components/NextImage';
-import { StorefrontChild } from 'features/Storefront/types';
 import { PropsWithChildren } from 'react';
 
 type BackgroundImageProps = StorefrontChild & { __typename: 'BackgroundImageComponent' };

@@ -655,24 +655,29 @@ project name.
 
 ![A screenshot of the sentry settings page with the Client Keys (DSN) panel open](/readme-images/sentry/dsn-sentry.png)
 
-- Save your DSN. You can set it in your `.env.local` or your hosting provider's UI as the `NEXT_PUBLIC_SENTRY_DSN`
-  variable.
+- Save your DSN. You can set it in your `.env` or `.env.local` or your hosting provider's UI as
+  `NEXT_PUBLIC_SENTRY_DSN`.
 
-2. Find your sentry org slug.
+2. Create a Sentry auth token.
+
+- Head to **Settings**, then **Auth Tokens**.
+
+- Set the `SENTRY_AUTH_TOKEN` value in your `.env.local` or in your hosting provider's UI.
+
+3. Find your sentry org slug.
 
 - Head to **Settings**, then **General Settings**. At the top of the page you should see **Organization Slug**. Copy the
   value there.
 
-- Set this value in your `.env.local` or your hosting provider's UI as the `SENTRY_ORG` variable.
+- Set this value in your checked in `.env` file.
 
-3. Find your sentry project name.
+4. Find your sentry project name.
 
 - Head to **Settings**, then **Projects**. You'll see a list of projects. Select the Next.js project you want to use.
 
 - Under the **Project Details** section on the next page, you'll see a **Name** field. Copy that value.
 
-- Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your `.env.local` or your hosting provider's
-  UI.
+- Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your checked in `.env` file.
 
 ## Multipass
 
@@ -706,15 +711,21 @@ You can run and develop your Playwright tests locally using the following proces
 1. Work within the Playwright UI to run and debug your tests.
 
 ### CI
+
 Make sure you have set these environment variables in your repository:
+
 - `PLAYWRIGHT_TEST_BASE_URL` - this will be set automatically by the GitHub Actions workflow;
-- `PLAYWRIGHT_PRODUCT_NAME_INSTOCK`  - a product name to find in a collection and use in tests;
-- `PLAYWRIGHT_PRODUCT_SIZE_INSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_INSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` product;
-- `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK`  - a product name to find in a collection and use in tests;
-- `PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` product;
-- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to;
+- `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` - a product name to find in a collection and use in tests;
+- `PLAYWRIGHT_PRODUCT_SIZE_INSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_INSTOCK` - should be the combination of size and color
+  for your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` product;
+- `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` - a product name to find in a collection and use in tests;
+- `PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK` - should be the combination of size and
+  color for your `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` product;
+- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and
+  `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to;
 - `PLAYWRIGHT_BRAND_NAME` - any brand name in your store;
-- `PLAYWRIGHT_USER_EMAIL` - test user email already registered in the system, it's used for authenticated feature testing like account settings, etc.;
+- `PLAYWRIGHT_USER_EMAIL` - test user email already registered in the system, it's used for authenticated feature
+  testing like account settings, etc.;
 - `PLAYWRIGHT_USER_PASSWORD` - test user password.
 
 # Deploying to production

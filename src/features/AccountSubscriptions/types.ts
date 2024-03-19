@@ -1,7 +1,13 @@
+import {
+  ProductCore,
+  ProductImage,
+  ProductPrice,
+  ProductVariantOption,
+  ProductVariantSelection
+} from '@/types/product';
+import { GetMySubscriptionQueryResponse, Shopify_FulfillmentDisplayStatus } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
 import { Merge } from 'type-fest';
-import { ProductCore, ProductImage, ProductPrice, ProductVariantOption, ProductVariantSelection } from 'types/product';
-import { GetMySubscriptionQueryResponse, Shopify_FulfillmentDisplayStatus } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
 
 export type SubscriptionAddress = {
   id: string;

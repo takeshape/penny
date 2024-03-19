@@ -1,12 +1,12 @@
-import StatusIcon, { StatusIconProps } from 'components/StatusIcon/StatusIcon';
+import StatusIcon, { StatusIconProps } from '@/components/StatusIcon/StatusIcon';
+import classNames from '@/utils/classNames';
 import { ReactEventHandler } from 'react';
-import classNames from 'utils/classNames';
 
-export interface AlertActionProps {
+export type AlertActionProps = {
   text: string;
   onClick: ReactEventHandler;
   status: StatusIconProps['status'];
-}
+};
 
 export const AlertAction = ({ text, status, onClick }: AlertActionProps) => {
   const colorClasses = classNames(
@@ -41,7 +41,7 @@ export const AlertActions = ({ actions, status }: Required<Pick<AlertProps, 'sta
   );
 };
 
-export interface AlertProps {
+export type AlertProps = {
   status: StatusIconProps['status'];
   primaryText: string;
   secondaryText?: string | string[];
@@ -49,7 +49,7 @@ export interface AlertProps {
     text: string;
     onClick: ReactEventHandler;
   }[];
-}
+};
 
 export const Alert = ({ status, primaryText, secondaryText, actions }: AlertProps) => {
   const backgroundColor = classNames(

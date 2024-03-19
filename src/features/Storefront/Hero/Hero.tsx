@@ -1,7 +1,7 @@
+import Button from '@/components/Button/Button';
+import NextImage from '@/components/NextImage';
+import { StorefrontChild } from '@/features/Storefront/types';
 import { getImageUrl } from '@takeshape/routing';
-import Button from 'components/Button/Button';
-import NextImage from 'components/NextImage';
-import { StorefrontChild } from 'features/Storefront/types';
 
 type HeroProps = StorefrontChild & { __typename?: 'HeroComponent' };
 

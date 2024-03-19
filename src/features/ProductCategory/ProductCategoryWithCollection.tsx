@@ -1,7 +1,7 @@
-import Seo from 'components/Seo';
+import Seo from '@/components/Seo';
+import { PaginationDataHookParsedPath, usePaginationData } from '@/utils/hooks/usePaginationData';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo } from 'react';
-import { PaginationDataHookParsedPath, usePaginationData } from 'utils/hooks/usePaginationData';
 import { ProductCategory } from './ProductCategory';
 import { ProductCategoryShopifyCollectionQuery } from './queries';
 import { getCollection, getCurrentTitle, getNextUrl, parseRouterPath } from './transforms';
@@ -13,10 +13,10 @@ function isSameCollection(collA: ProductCategoryCollection, collB: ProductCatego
   );
 }
 
-export interface ProductCategoryWithCollectionProps {
+export type ProductCategoryWithCollectionProps = {
   collection: ProductCategoryCollection;
   pageSize: number;
-}
+};
 
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
   const { push } = useRouter();
@@ -83,7 +83,7 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
         nextUrl = getNextUrl(currentPageData, nextPage, isPreviousPage);
       }
 
-      push(nextUrl, undefined, { shallow: true });
+      void push(nextUrl, undefined, { shallow: true });
     },
     [cachedPageData, currentPageData, currentPath.page, push]
   );

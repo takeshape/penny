@@ -1,4 +1,4 @@
-import { AccountNavigation } from 'features/AccountNavigation/AccountNavigation';
+import { AccountNavigation } from '@/features/AccountNavigation/AccountNavigation';
 import { signIn, useSession } from 'next-auth/react';
 
 export const MobileMenuAccount = () => {
@@ -20,7 +20,7 @@ export const MobileMenuAccount = () => {
         href={`/api/auth/signin`}
         onClick={(e) => {
           e.preventDefault();
-          signIn();
+          void signIn();
         }}
         className="text-body-800 hover:text-body-800 hover:bg-body-50 m-0 cursor-pointer rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
       >
@@ -30,7 +30,7 @@ export const MobileMenuAccount = () => {
         href={`/api/auth/signin`}
         onClick={(e) => {
           e.preventDefault();
-          signIn();
+          void signIn();
         }}
         className="text-body-800 hover:text-body-800 hover:bg-body-50 m-0 cursor-pointer rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
       >

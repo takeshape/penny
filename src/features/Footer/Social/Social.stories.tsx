@@ -1,5 +1,5 @@
+import * as Icons from '@/components/Icons/Icons';
 import { Meta, StoryObj } from '@storybook/react';
-import * as Icons from 'components/Icons/Icons';
 import { Social } from './Social';
 
 const meta: Meta<typeof Social> = {

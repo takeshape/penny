@@ -1,45 +1,57 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
-      "es2017"
+      "esnext"
     ],
     "allowJs": true,
+    "checkJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "baseUrl": "src",
     "strict": true,
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    "**/*.js",
+    ".next/types/**/*.ts",
+    "jest.config.js",
+    "codegen.*.config.ts",
+    "tailwind.config.ts",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    ".jest/**/*.js"
   ],
   "exclude": [
     "node_modules",
-    "cypress",
     "coverage",
     ".github",
     "public",
     ".takeshape",
     ".next",
     ".lighthouse",
-    ".storybook"
+    "storybook-static",
+    "playwright-report",
+    "worker",
+    "mocks"
   ]
 }

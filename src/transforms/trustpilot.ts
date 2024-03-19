@@ -1,10 +1,10 @@
-import { Review, ReviewList, ReviewStats } from 'types/review';
+import { Review, ReviewList, ReviewStats } from '@/types/review';
 import {
   TrustpilotLink,
   TrustpilotProductReviewsProductReviewsConsumerProperty,
   TrustpilotProductReviewsProductReviewsProperty,
   TrustpilotProductReviewsSummary
-} from 'types/takeshape';
+} from '@/types/takeshape';
 
 export type TrustpilotReview = Pick<
   TrustpilotProductReviewsProductReviewsProperty,

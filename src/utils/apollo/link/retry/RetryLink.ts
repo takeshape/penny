@@ -7,13 +7,13 @@ import {
   Observer,
   Operation
 } from '@apollo/client';
-import { buildDelayFunction, DelayFunction, DelayFunctionOptions } from './delayFunction';
-import { buildRetryFunction, RetryFunction, RetryFunctionOptions } from './retryFunction';
+import { DelayFunction, DelayFunctionOptions, buildDelayFunction } from './delayFunction';
+import { RetryFunction, RetryFunctionOptions, buildRetryFunction } from './retryFunction';
 
-interface RetryOptions {
+type RetryOptions = {
   delay?: DelayFunctionOptions | DelayFunction;
   attempts?: RetryFunctionOptions | RetryFunction;
-}
+};
 
 // export namespace RetryLink {
 //   export interface Options {
@@ -33,7 +33,7 @@ interface RetryOptions {
  * Tracking and management of operations that may be (or currently are) retried.
  */
 class RetryableOperation<TValue = any> {
-  retryCount: number = 0;
+  retryCount = 0;
   values: any[] = [];
   error: any;
   complete = false;
@@ -125,6 +125,7 @@ class RetryableOperation<TValue = any> {
     this.currentSubscription = new Observable((observer) => {
       let onRetry = false;
       const sub = this.nextLink(this.operation).subscribe({
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
         next: async (result) => {
           if (!result.errors) {
             observer.next(result);
@@ -143,6 +144,7 @@ class RetryableOperation<TValue = any> {
             observer.complete();
           }
         },
+        // eslint-disable-next-line @typescript-eslint/unbound-method
         error: observer.error,
         complete: () => {
           if (!onRetry) observer.complete.bind(observer)();
@@ -154,6 +156,7 @@ class RetryableOperation<TValue = any> {
       };
     }).subscribe({
       next: this.onNext,
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       error: this.onError,
       complete: this.onComplete
     });
@@ -210,7 +213,7 @@ export class RetryLink extends ApolloLink {
 
   constructor(options?: RetryOptions) {
     super();
-    const { attempts, delay } = options || ({} as RetryOptions);
+    const { attempts, delay } = options ?? ({} as RetryOptions);
     this.delayFor = typeof delay === 'function' ? delay : buildDelayFunction(delay);
     this.retryIf = typeof attempts === 'function' ? attempts : buildRetryFunction(attempts);
   }

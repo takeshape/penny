@@ -1,4 +1,5 @@
-import { render } from 'test/test-utils';
+import { render } from '@/test/test-utils';
+import { describe, expect, it } from '@jest/globals';
 import { Alert } from './Alert';
 
 describe('Example', () => {

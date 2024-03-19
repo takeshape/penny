@@ -1,15 +1,15 @@
+import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from '@/types/storefront';
+import { useStorefrontLazyQuery } from '@/utils/storefront';
 import { useEffect, useMemo } from 'react';
-import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from 'types/storefront';
-import { useStorefrontLazyQuery } from 'utils/storefront';
 import { ProductPageRelatedProductsQuery } from '../queries.storefront';
 import { getRelatedProductList } from '../transforms';
 import { ProductPageRelatedProductsProduct } from '../types';
 import { RelatedProducts } from './RelatedProducts';
 
-export interface RelatedProductsWithDataProps {
+export type RelatedProductsWithDataProps = {
   productId: string;
   limit: number;
-}
+};
 
 export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWithDataProps) => {
   const [loadProducts, { transformedData, error }] = useStorefrontLazyQuery<
@@ -26,7 +26,7 @@ export const RelatedProductsWithData = ({ productId, limit }: RelatedProductsWit
   });
 
   useEffect(() => {
-    loadProducts();
+    void loadProducts();
   }, [loadProducts]);
 
   const loadingProducts = useMemo(() => Array(limit).fill(undefined) as ProductPageRelatedProductsProduct[], [limit]);

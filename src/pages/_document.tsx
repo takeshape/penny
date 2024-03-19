@@ -1,4 +1,4 @@
-import { locale } from 'config';
+import { locale } from '@/config';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 export default class CustomDocument extends Document {

@@ -1,7 +1,5 @@
-import { DocumentNode, OperationVariables, TypedDocumentNode } from '@apollo/client';
-import { shopifyStorefrontToken, shopifyStorefrontUrl } from 'config';
-import { JsonValue } from 'type-fest';
-import { createClient } from 'utils/apollo/client';
+import { shopifyStorefrontToken, shopifyStorefrontUrl } from '@/config';
+import { createClient } from '@/utils/apollo/client';
 import {
   LazyQueryHookWithTransformOptions,
   MutationHookWithTransformOptions,
@@ -9,7 +7,9 @@ import {
   useLazyQueryWithTransform,
   useMutationWithTransform,
   useQueryWithTransform
-} from 'utils/query';
+} from '@/utils/query';
+import { DocumentNode, OperationVariables, TypedDocumentNode } from '@apollo/client';
+import { JsonValue } from 'type-fest';
 
 const client = createClient({
   uri: shopifyStorefrontUrl,

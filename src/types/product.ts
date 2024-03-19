@@ -1,4 +1,4 @@
-import { currencyList } from 'config';
+import { currencyList } from '@/config';
 import { SetRequired } from 'type-fest';
 
 export type ProductImage = {

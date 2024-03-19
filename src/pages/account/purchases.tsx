@@ -1,5 +1,5 @@
-import { AccountPurchaseList } from 'features/AccountPurchases/AccountPurchaseList';
-import Layout from 'layouts/Account';
+import { AccountPurchaseList } from '@/features/AccountPurchases/AccountPurchaseList';
+import Layout from '@/layouts/Account';
 import { NextPage } from 'next';
 
 const AccountPurchasesPage: NextPage = () => {

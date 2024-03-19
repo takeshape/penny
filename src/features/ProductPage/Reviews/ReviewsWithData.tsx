@@ -1,21 +1,21 @@
+import { CreateReview } from '@/features/ProductPage/Reviews/CreateReview';
+import { ProductPageReviewPageQuery } from '@/features/ProductPage/queries.takeshape';
+import { getProductReviewsPage } from '@/features/ProductPage/transforms';
+import { getReviewList } from '@/transforms/reviewsIo';
+import { Review } from '@/types/review';
+import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from '@/types/takeshape';
 import { useLazyQuery } from '@apollo/client';
-import { ProductPageReviewPageQuery } from 'features/ProductPage/queries.takeshape';
-import { CreateReview } from 'features/ProductPage/Reviews/CreateReview';
-import { getProductReviewsPage } from 'features/ProductPage/transforms';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { getReviewList } from 'transforms/reviewsIo';
-import { Review } from 'types/review';
-import { ProductPageReviewPageQueryResponse, ProductPageReviewPageQueryVariables } from 'types/takeshape';
 import { ProductPageReviewsReviewList } from '../types';
 import { Reviews } from './Reviews';
 
-export interface ReviewsWithDataProps {
+export type ReviewsWithDataProps = {
   productName: string;
   sku: string;
   reviewList: ProductPageReviewsReviewList;
   reviewsPerPage: number;
-}
+};
 
 export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }: ReviewsWithDataProps) => {
   const { stats, rollup, items, currentPage: initialPage, totalPages } = reviewList ?? getReviewList(null);
@@ -37,7 +37,7 @@ export const ReviewsWithData = ({ productName, sku, reviewList, reviewsPerPage }
 
   useEffect(() => {
     if (currentPage !== 1) {
-      loadReviews();
+      void loadReviews();
     }
   }, [currentPage, loadReviews]);
 

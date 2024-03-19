@@ -1,4 +1,4 @@
-import { FooterProps } from 'features/Footer/Footer';
+import { FooterProps } from '@/features/Footer/Footer';
 
 export const GetFooterQueryData: { footer: FooterProps } = {
   footer: {

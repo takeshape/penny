@@ -1,13 +1,13 @@
-import Button from 'components/Button/Button';
+import Button from '@/components/Button/Button';
 import { PropsWithChildren } from 'react';
 
-export interface FormCardPanelActionsProps {
+export type FormCardPanelActionsProps = {
   error?: string;
   isReady?: boolean;
   isSubmitting: boolean;
   isSubmitSuccessful: boolean;
   isValid?: boolean;
-}
+};
 
 export const FormCardPanelActions = ({
   error,

@@ -1,34 +1,34 @@
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import FormPhoneInput from '@/components/Form/PhoneInput/PhoneInput';
+import FormTextarea from '@/components/Form/Textarea/Textarea';
+import NextLink from '@/components/NextLink';
+import { BackgroundDots } from '@/features/Contact/components/BackgroundDots';
+import { useCreateTicket } from '@/features/Contact/useCreateTicket';
+import classNames from '@/utils/classNames';
 import { Switch } from '@headlessui/react';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
-import FormTextarea from 'components/Form/Textarea/Textarea';
-import NextLink from 'components/NextLink';
-import { BackgroundDots } from 'features/Contact/components/BackgroundDots';
-import { useCreateTicket } from 'features/Contact/useCreateTicket';
 import { useSession } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import classNames from 'utils/classNames';
 
-export interface ContactForm {
+export type ContactForm = {
   company?: string;
   email: string;
   firstName: string;
   lastName: string;
   message: string;
   phoneNumber?: string;
-}
+};
 
-export interface ContactProps {
+export type ContactProps = {
   text: {
     primary: string;
     secondary: string;
     button: string;
   };
-}
+};
 
 export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
   const { text } = props;
@@ -89,7 +89,7 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
             action="#"
             method="POST"
             className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
           >
             <FormInput
               control={control}

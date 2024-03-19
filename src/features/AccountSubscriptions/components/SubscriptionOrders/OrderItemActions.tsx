@@ -6,11 +6,11 @@ import { ReportIssueForm } from '../Actions/ReportIssueForm';
 import { SkipForm } from '../Actions/SkipForm';
 import { UnskipForm } from '../Actions/UnskipForm';
 
-interface OrderItemActionsProps {
+type OrderItemActionsProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+};
 
 export const OrderItemActions = ({ subscription, order, refetchSubscriptions }: OrderItemActionsProps) => {
   const [isReportIssueOpen, setIsReportIssueOpen] = useState(false);

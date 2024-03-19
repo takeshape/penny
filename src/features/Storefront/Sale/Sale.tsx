@@ -1,5 +1,5 @@
-import Button from 'components/Button/Button';
-import { BackgroundImageChild } from 'features/Storefront/types';
+import Button from '@/components/Button/Button';
+import { BackgroundImageChild } from '@/features/Storefront/types';
 
 type SaleProps = BackgroundImageChild & { __typename: 'SaleComponent' };
 

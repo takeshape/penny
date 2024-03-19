@@ -1,4 +1,4 @@
-import { DefaultReviewer } from 'components/Icons/Icons';
+import { DefaultReviewer } from '@/components/Icons/Icons';
 
 export const ReviewsListItemLoading = () => {
   return (

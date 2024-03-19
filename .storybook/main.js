@@ -1,4 +1,5 @@
 const cwd = process.cwd();
+
 module.exports = {
   stories: ['../src/**/*.stories.@(tsx|mdx)'],
   addons: [

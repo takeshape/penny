@@ -1,4 +1,4 @@
-import { test } from '../fixtures';
+import { expect } from 'playwright/test';
 import {
   COLLECTION_NAME,
   PRODUCT_COLOR_OUTOFSTOCK,
@@ -6,7 +6,7 @@ import {
   PRODUCT_OUTOFSTOCK,
   PRODUCT_SIZE_OUTOFSTOCK
 } from '../constants';
-import { expect } from 'playwright/test';
+import { test } from '../fixtures';
 import { getCollectionEndpoint } from '../utils';
 
 test.describe('Shopping cart', () => {
@@ -59,7 +59,7 @@ test.describe('Shopping cart', () => {
     await expect(shoppingCart.cartDialog()).toContainText('Your cart is empty');
   });
 
-  test('Adjust the number of items', async ({ shoppingCart, page, collectionsPage, productPage }) => {
+  test('Adjust the number of items', async ({ shoppingCart, collectionsPage, productPage }) => {
     if (!PRODUCT_NAME_INSTOCK) {
       test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;
@@ -83,7 +83,7 @@ test.describe('Shopping cart', () => {
     await expect(shoppingCart.cartTotalPrice()).toContainText(String(convertedPrice * 2));
   });
 
-  test('Remove items from the cart', async ({ shoppingCart, page, collectionsPage, productPage }) => {
+  test('Remove items from the cart', async ({ shoppingCart, collectionsPage, productPage }) => {
     if (!PRODUCT_NAME_INSTOCK) {
       test.skip(!PRODUCT_NAME_INSTOCK, 'PLAYWRIGHT_PRODUCT_NAME_INSTOCK was not defined');
       return;

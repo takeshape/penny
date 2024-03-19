@@ -1,20 +1,20 @@
+import classNames from '@/utils/classNames';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 import {
   DefaultInputComponentProps,
-  FeatureProps as PhoneInputProps,
-  isPossiblePhoneNumber
+  isPossiblePhoneNumber,
+  FeatureProps as PhoneInputProps
 } from 'react-phone-number-input';
 import PhoneInput from 'react-phone-number-input/input';
-import classNames from 'utils/classNames';
 
-export interface FormPhoneInputProps extends PhoneInputProps<DefaultInputComponentProps> {
+export type FormPhoneInputProps = {
   id: string;
   label: string;
   helpText?: string;
   // Because the phone # validation gives no way to set a message
   defaultErrorMessage?: string;
-}
+} & Omit<PhoneInputProps<DefaultInputComponentProps>, 'inputComponent'>;
 
 export const FormPhoneInput = <
   TFieldValues extends FieldValues,
@@ -29,7 +29,6 @@ export const FormPhoneInput = <
   defaultValue,
   rules,
   shouldUnregister,
-  inputComponent,
   defaultErrorMessage,
   ...props
 }: FormPhoneInputProps & UseControllerProps<TFieldValues, TName>) => {

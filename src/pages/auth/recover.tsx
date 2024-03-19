@@ -1,8 +1,8 @@
-import { AuthRecoverPassword } from 'features/Auth/AuthRecoverPassword/AuthRecoverPassword';
-import Layout from 'layouts/Full';
+import { AuthRecoverPassword } from '@/features/Auth/AuthRecoverPassword/AuthRecoverPassword';
+import Layout from '@/layouts/Full';
+import { getSingle } from '@/utils/types';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { getSingle } from 'utils/types';
 
 const RecoverPasswordPage: NextPage = () => {
   const { query } = useRouter();

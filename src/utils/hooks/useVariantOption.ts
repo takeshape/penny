@@ -1,17 +1,17 @@
+import { ProductVariant, ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { ProductVariant, ProductVariantOption, ProductVariantSelection } from 'types/product';
 
-export interface VariantOptionHookProps {
+export type VariantOptionHookProps = {
   name: string;
   variant: ProductVariant;
   options: ProductVariantOption[];
-}
+};
 
-export interface VariantOptionHookData {
+export type VariantOptionHookData = {
   selectedValue: string | null;
   selected: ProductVariantSelection | undefined;
   option: ProductVariantOption | undefined;
-}
+};
 
 export function useVariantOption({
   name,

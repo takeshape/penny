@@ -1,4 +1,4 @@
-import * as discount from 'middleware/discount';
+import * as discount from '@/middleware/discount';
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {

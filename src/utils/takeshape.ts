@@ -1,3 +1,13 @@
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
+import { createClient } from '@/utils/apollo/client';
+import {
+  LazyQueryHookWithTransformOptions,
+  MutationHookWithTransformOptions,
+  QueryHookWithTranformOptions,
+  useLazyQueryWithTransform,
+  useMutationWithTransform,
+  useQueryWithTransform
+} from '@/utils/query';
 import {
   ApolloClient,
   DocumentNode,
@@ -6,19 +16,9 @@ import {
   TypedDocumentNode
 } from '@apollo/client';
 import { getClientToken } from '@takeshape/next-auth-all-access/react';
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { JsonValue } from 'type-fest';
-import { createClient } from 'utils/apollo/client';
-import {
-  LazyQueryHookWithTransformOptions,
-  MutationHookWithTransformOptions,
-  QueryHookWithTranformOptions,
-  useLazyQueryWithTransform,
-  useMutationWithTransform,
-  useQueryWithTransform
-} from 'utils/query';
 import { createStaticClient } from './apollo/client';
 
 export function createAnonymousTakeshapeApolloClient() {

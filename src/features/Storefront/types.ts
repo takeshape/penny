@@ -1,7 +1,7 @@
-import { CollectionBase } from 'types/collection';
-import { ProductBase } from 'types/product';
-import { GetStorefrontQueryResponse } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
+import { CollectionBase } from '@/types/collection';
+import { ProductBase } from '@/types/product';
+import { GetStorefrontQueryResponse } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
 
 export type StorefrontCollectionItemProduct = ProductBase;
 

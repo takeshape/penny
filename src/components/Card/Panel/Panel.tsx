@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
 
-export interface CardPanelProps extends PropsWithChildren<{}> {
+export type CardPanelProps = PropsWithChildren<{
   primaryText: string;
   secondaryText?: string;
-}
+}>;
 
 export const CardPanel = ({ primaryText, secondaryText, children }: CardPanelProps) => {
   return (

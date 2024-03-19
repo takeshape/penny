@@ -1,4 +1,4 @@
-import { shopifyCustomerIdToGid } from 'transforms/shopify';
+import { shopifyCustomerIdToGid } from '@/transforms/shopify';
 
 export function getActivationParams(type: 'reset' | 'activate', path: string) {
   const relevantPath = path.split(`/${type}/`)[1];

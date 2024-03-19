@@ -1,23 +1,23 @@
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { SkipChargeMutationResponse, SkipChargeMutationVariables } from '@/types/takeshape';
+import { useAuthenticatedMutation } from '@/utils/takeshape';
 import { format } from 'date-fns';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { SkipChargeMutationResponse, SkipChargeMutationVariables } from 'types/takeshape';
-import { useAuthenticatedMutation } from 'utils/takeshape';
 import { SkipChargeMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
-export interface SkipFormProps extends ModalProps {
+export type SkipFormProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface SkipFormValues {
+export type SkipFormValues = {
   confirm: boolean;
-}
+};
 
 export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscriptions }: SkipFormProps) => {
   const {
@@ -51,7 +51,7 @@ export const SkipForm = ({ isOpen, onClose, subscription, order, refetchSubscrip
       primaryText="Skip order"
       secondaryText="Skip an upcoming order."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

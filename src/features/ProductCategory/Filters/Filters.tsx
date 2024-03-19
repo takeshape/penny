@@ -1,45 +1,43 @@
+import classNames from '@/utils/classNames';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/24/solid';
 import { Fragment, PropsWithChildren, useCallback, useMemo } from 'react';
-import classNames from 'utils/classNames';
 
-interface SortOption {
+type SortOption = {
   name: string;
   href: string;
   current: boolean;
-}
+};
 
-interface FilterOption {
+type FilterOption = {
   value: string;
   label: string;
   checked: boolean;
-}
+};
 
-interface Filters {
-  [filter: string]: FilterOption[];
-}
+type Filters = Record<string, FilterOption[]>;
 
 type SetFilter = (filter: string, value: string, checked: boolean) => void;
 
-export interface FilterOptionProps extends FilterOption {
+export type FilterOptionProps = {
   index: number;
   filter: string;
   setFilter: SetFilter;
-}
+} & FilterOption;
 
-export interface FilterProps {
+export type FilterProps = {
   name: string;
   legend: string;
   options: FilterOption[];
   setFilter: SetFilter;
-}
-export interface FiltersProps {
+};
+export type FiltersProps = {
   filters: Filters;
   setFilters: (filters: Filters) => void;
   clearAllFilters: () => void;
   sortOptions: SortOption[];
   setSortOption: (option: SortOption) => void;
-}
+};
 
 const FilterOption = (props: PropsWithChildren<FilterOptionProps>) => {
   return (

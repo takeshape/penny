@@ -1,7 +1,7 @@
-import Wrapper from 'components/Wrapper/Content';
-import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWithData';
-import { shopifyGidToId } from 'transforms/shopify';
-import { ReviewList } from 'types/review';
+import Wrapper from '@/components/Wrapper/Content';
+import { TrustpilotWithData } from '@/features/ProductPage/Trustpilot/TrustpilotWithData';
+import { shopifyGidToId } from '@/transforms/shopify';
+import { ReviewList } from '@/types/review';
 import { Details } from './Details/Details';
 import { Policies } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';

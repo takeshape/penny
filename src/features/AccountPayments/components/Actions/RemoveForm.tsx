@@ -1,18 +1,18 @@
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { getCreditCardIcon } from 'components/Payments/utils';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { getCreditCardIcon } from '@/components/Payments/utils';
+import { PaymentMethod } from '@/types/paymentMethod';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { PaymentMethod } from 'types/paymentMethod';
 
-export interface RemoveFormProps extends ModalProps {
+export type RemoveFormProps = {
   paymentMethod: PaymentMethod;
-}
+} & ModalProps;
 
-export interface RemoveFormValues {
+export type RemoveFormValues = {
   confirm: boolean;
-}
+};
 
 /**
  * TODO Handle submit errors
@@ -32,7 +32,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
   const { instrument } = paymentMethod;
   const CreditCardIcon = getCreditCardIcon(instrument.brand);
 
-  const handleFormSubmit = useCallback(async (formData: RemoveFormValues) => {
+  const handleFormSubmit = useCallback((formData: RemoveFormValues) => {
     // eslint-disable-next-line no-console
     console.log({ formData });
     // TODO Mutate payment methods list
@@ -47,7 +47,7 @@ export const RemoveForm = ({ isOpen, onClose, paymentMethod }: RemoveFormProps) 
       primaryText="Remove payment method"
       secondaryText="Remove a payment method from your account."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

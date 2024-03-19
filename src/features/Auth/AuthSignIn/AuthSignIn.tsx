@@ -1,28 +1,28 @@
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import NextLink from 'components/NextLink';
-import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { SigninError } from 'features/Auth/types';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import NextLink from '@/components/NextLink';
+import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { SigninError } from '@/features/Auth/types';
+import { sanitizeCallbackUrl } from '@/utils/callbacks';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { sanitizeCallbackUrl } from 'utils/callbacks';
 
-export interface AuthSignInForm {
+export type AuthSignInForm = {
   email: string;
   password: string;
   rememberMe: boolean;
-}
-export interface AuthSignInProps {
+};
+export type AuthSignInProps = {
   signIn: typeof signIn;
   callbackUrl: string;
   error?: SigninError;
   useMultipass: boolean;
   email?: string;
-}
+};
 
 export const errors: Record<string, string> = {
   Signin: 'Try signing in with a different account.',
@@ -70,7 +70,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
   }, [sanitizedCallbackUrl]);
 
   const signinGoogle = useCallback(() => {
-    signIn('google', { callbackUrl });
+    void signIn('google', { callbackUrl });
   }, [callbackUrl, signIn]);
 
   const inactiveCustomer = useMemo(() => {
@@ -84,7 +84,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
   const onAccountInactiveFormClose = useCallback(() => {
-    push(window.location.pathname);
+    void push(window.location.pathname);
     reset();
   }, [reset, push]);
 
@@ -105,7 +105,7 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {hasErrors && errorMessage && <Alert status="error" primaryText={errorMessage} />}
 
             <FormInput

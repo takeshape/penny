@@ -1,11 +1,11 @@
 import { ReactEventHandler, useCallback } from 'react';
 
-export interface PaginationLinkProps {
+export type PaginationLinkProps = {
   onClick?: () => void;
   current?: boolean;
   disabled?: boolean;
   href?: string;
-}
+};
 
 export const PaginationLink = ({
   onClick,

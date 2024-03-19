@@ -1,5 +1,5 @@
+import { notificationAtom } from '@/store';
 import { Meta, StoryObj } from '@storybook/react';
-import { notificationAtom } from 'store';
 import { Notification } from './Notification';
 
 const meta: Meta<typeof Notification> = {

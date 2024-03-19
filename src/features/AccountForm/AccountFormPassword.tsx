@@ -1,17 +1,17 @@
-import FormCardPanel from 'components/Form/CardPanel/CardPanel';
-import FormInput from 'components/Form/Input/Input';
+import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
+import FormInput from '@/components/Form/Input/Input';
+import { CustomerUpdateMutationResponse, CustomerUpdateMutationVariables } from '@/types/storefront';
+import { formatError } from '@/utils/errors';
+import { useStorefrontMutation } from '@/utils/storefront';
 import { signOut, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { CustomerUpdateMutationResponse, CustomerUpdateMutationVariables } from 'types/storefront';
-import { formatError } from 'utils/errors';
-import { useStorefrontMutation } from 'utils/storefront';
 import { CustomerUpdateMutation } from './queries.storefront';
 
-export interface AccountFormPasswordForm {
+export type AccountFormPasswordForm = {
   password: string;
   passwordConfirm: string;
-}
+};
 
 export const AccountFormPassword = () => {
   const { data: session } = useSession({ required: true });
@@ -51,7 +51,7 @@ export const AccountFormPassword = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful && !error) {
-      signOut({ callbackUrl: '/auth/signin' });
+      void signOut({ callbackUrl: '/auth/signin' });
     }
   }, [isSubmitSuccessful, error, reset]);
 
@@ -64,7 +64,7 @@ export const AccountFormPassword = () => {
     <FormCardPanel
       primaryText="New Password"
       secondaryText="Setting a new password will sign you out."
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       isReady={isReady}
       isSubmitting={isSubmitting}
       isSubmitSuccessful={isSubmitSuccessful}

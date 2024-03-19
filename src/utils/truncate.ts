@@ -1,8 +1,8 @@
-export interface TruncateOptions {
+export type TruncateOptions = {
   length?: number;
   separator?: string | RegExp;
   omission?: string;
-}
+};
 
 export const truncate = (str: string, options: TruncateOptions = {}) => {
   const { length = 30, separator = '', omission = '...' } = options;

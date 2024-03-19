@@ -1,11 +1,11 @@
 import { PropsWithChildren, ReactEventHandler } from 'react';
 import FormCardPanelActions, { FormCardPanelActionsProps } from './CardPanelActions';
 
-export interface FormCardPanelProps extends FormCardPanelActionsProps {
+export type FormCardPanelProps = {
   primaryText: string;
   secondaryText?: string;
   onSubmit: ReactEventHandler;
-}
+} & FormCardPanelActionsProps;
 
 export const FormCardPanel = ({
   primaryText,

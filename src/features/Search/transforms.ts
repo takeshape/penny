@@ -1,6 +1,6 @@
-import { createImageGetter, getProductHasStock, getProductIsAvailable, getProductUrl } from 'transforms/shopify';
-import { SearchShopifyProductsResponse } from 'types/takeshape';
-import { isNotNullish } from 'utils/types';
+import { createImageGetter, getProductHasStock, getProductIsAvailable, getProductUrl } from '@/transforms/shopify';
+import { SearchShopifyProductsResponse } from '@/types/takeshape';
+import { isNotNullish } from '@/utils/types';
 import { SearchItem, SearchItemProduct, SearchShopifyProduct } from './types';
 
 function getProduct(shopifyProduct: SearchShopifyProduct): SearchItemProduct {

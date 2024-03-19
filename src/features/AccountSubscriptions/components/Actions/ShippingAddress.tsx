@@ -1,20 +1,20 @@
-import FormInput from 'components/Form/Input/Input';
-import FormPhoneInput from 'components/Form/PhoneInput/PhoneInput';
-import FormSelect from 'components/Form/Select/Select';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import FormInput from '@/components/Form/Input/Input';
+import FormPhoneInput from '@/components/Form/PhoneInput/PhoneInput';
+import FormSelect from '@/components/Form/Select/Select';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } from '@/types/takeshape';
+import { countries } from '@/utils/countries/countries';
+import { useAuthenticatedMutation } from '@/utils/takeshape';
 import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { UpdateMyAddressMutationResponse, UpdateMyAddressMutationVariables } from 'types/takeshape';
-import { countries } from 'utils/countries/countries';
-import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UpdateMyAddressMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
-interface ShippingAddressFormProps extends ModalProps {
+type ShippingAddressFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
 type ShippingAddressFormValues = Pick<
   UpdateMyAddressMutationVariables,
@@ -93,7 +93,7 @@ export const ShippingAddressForm = ({
       primaryText="Shipping address"
       secondaryText="Update the shipping address for your subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section aria-labelledby="form-heading" className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px]">
         <h3 id="form-heading" className="sr-only">

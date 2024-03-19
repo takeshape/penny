@@ -1,30 +1,30 @@
-import { useMutation, useQuery } from '@apollo/client';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { useReCaptcha } from 'next-recaptcha-v3';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
 import {
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables,
   RecoverCustomerPasswordMutationResponse,
   RecoverCustomerPasswordMutationVariables
-} from 'types/takeshape';
-import { sanitizeCallbackUrl } from 'utils/callbacks';
+} from '@/types/takeshape';
+import { sanitizeCallbackUrl } from '@/utils/callbacks';
+import { useMutation, useQuery } from '@apollo/client';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
 import { InactiveCustomer } from '../types';
-export interface AuthRecoverPasswordForm {
+export type AuthRecoverPasswordForm = {
   email: string;
-}
+};
 
-export interface AuthRecoverPasswordProps {
+export type AuthRecoverPasswordProps = {
   callbackUrl: string;
-}
+};
 
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
@@ -61,7 +61,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       if (customer?.state === 'no-account') {
         // Send to sign up page
-        push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        void push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
         return;
       }
 
@@ -82,7 +82,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
   useEffect(() => {
     if (sanitizedCallbackUrl && hasData) {
-      setTimeout(() => push(sanitizedCallbackUrl), 5000);
+      setTimeout(() => void push(sanitizedCallbackUrl), 5000);
     }
   }, [sanitizedCallbackUrl, hasData, push]);
 
@@ -102,7 +102,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {hasErrors && (
               <Alert
                 status="error"

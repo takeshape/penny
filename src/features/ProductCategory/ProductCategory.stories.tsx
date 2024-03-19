@@ -1,5 +1,5 @@
+import { productCategoryCollection } from '@/features/ProductCategory/fixtures';
 import { Meta, StoryObj } from '@storybook/react';
-import { productCategoryCollection } from 'features/ProductCategory/fixtures';
 import { ProductCategory } from './ProductCategory';
 
 const meta: Meta<typeof ProductCategory> = {
@@ -17,7 +17,9 @@ export const _ProductCategory: Story = {
     header: { text: { primary: productCategoryCollection.name, secondary: productCategoryCollection.descriptionHtml } },
     items: productCategoryCollection.items,
     pagination: {
-      setCurrentPage: () => {}
+      setCurrentPage: () => {
+        // empty
+      }
     }
   }
 };

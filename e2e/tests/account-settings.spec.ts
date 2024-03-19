@@ -1,7 +1,7 @@
-import { test } from '../fixtures';
 import { expect } from 'playwright/test';
 import { USER_EMAIL, USER_PASSWORD } from '../constants';
 import { getPassword } from '../fake-data-generation';
+import { test } from '../fixtures';
 
 test.describe('Account settings', () => {
   test.beforeEach('Sign in', async ({ signInPage }) => {
@@ -121,7 +121,7 @@ test.describe('Account settings', () => {
     });
 
     // TODO: need to register a new user for it
-    test.fixme('Verify the password can be changed successfully', async ({ accountPage, signInPage, page }) => {
+    test.fixme('Verify the password can be changed successfully', async ({ accountPage, signInPage }) => {
       const newPassword = getPassword();
 
       await test.step('Change password and sign in', async () => {

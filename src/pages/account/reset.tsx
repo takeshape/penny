@@ -1,8 +1,8 @@
-import { AccountResetPassword } from 'features/AccountResetPassword/AccountResetPassword';
-import Layout from 'layouts/Full';
+import { AccountResetPassword } from '@/features/AccountResetPassword/AccountResetPassword';
+import Layout from '@/layouts/Full';
+import { getActivationParams } from '@/utils/account';
+import { getSingle } from '@/utils/types';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
-import { getActivationParams } from 'utils/account';
-import { getSingle } from 'utils/types';
 
 const ResetPasswordPage: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = ({
   customerId,
@@ -15,6 +15,7 @@ const ResetPasswordPage: NextPage<InferGetServerSidePropsType<typeof getServerSi
   );
 };
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   let params;
 
@@ -23,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   return {
-    notFound: !Boolean(query.resetUrl),
+    notFound: !query.resetUrl,
     props: {
       customerId: params?.customerId,
       resetToken: params?.token

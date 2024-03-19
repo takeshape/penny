@@ -6,8 +6,8 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 // import { RetryLink } from '@apollo/client/link/retry';
 import { ServerError } from '@apollo/client/link/utils';
-import { isSsr } from 'config';
-import logger from 'logger';
+import { isSsr } from '../../config';
+import logger from '../../logger';
 import { RetryLink } from './link/retry/RetryLink';
 
 export const APOLLO_CACHE_PROP_NAME = '__APOLLO_CACHE__';
@@ -16,7 +16,7 @@ const maxAttempts = 10;
 const backoffBase = 500;
 const jitterBase = 10000;
 
-export interface InitializeApolloProps {
+export type InitializeApolloProps = {
   initialCache?: NormalizedCacheObject;
   accessToken: string;
   accessTokenHeader: string;
@@ -24,7 +24,7 @@ export interface InitializeApolloProps {
   ssrMode?: boolean;
   rateLimit?: boolean;
   uri: string;
-}
+};
 
 function createApolloClient({
   accessToken,
@@ -60,7 +60,7 @@ function createApolloClient({
       }
 
       logger.error({
-        message: `[Network error]: ${networkError}`
+        message: `[Network error]: ${networkError.message}`
       });
     }
   });
@@ -93,7 +93,7 @@ function createApolloClient({
     //   jitter: true
     // },
     attempts: {
-      retryIf: (error, _operation) => {
+      retryIf: (error) => {
         if (Array.isArray(error)) {
           return error.some(({ message }) => message === 'Throttled');
         }

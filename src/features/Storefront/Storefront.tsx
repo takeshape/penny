@@ -1,6 +1,6 @@
-import { GetStorefrontQueryResponse } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
-import { isNotNullish } from 'utils/types';
+import { GetStorefrontQueryResponse } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
+import { isNotNullish } from '@/utils/types';
 import { BackgroundImage } from './BackgroundImage/BackgroundImage';
 import { Collection } from './Collection/Collection';
 import { Collections } from './Collections/Collections';
@@ -46,9 +46,9 @@ function storefrontChildToComponent() {
   return StorefrontComponent;
 }
 
-export interface StorefrontProps {
+export type StorefrontProps = {
   storefront: NonNullablePath<GetStorefrontQueryResponse, ['storefront']>;
-}
+};
 
 export const Storefront = ({ storefront }: StorefrontProps) => {
   const components = storefront.components?.filter(isNotNullish).map(storefrontChildToComponent());

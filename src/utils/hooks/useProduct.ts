@@ -1,8 +1,8 @@
+import { Product } from '@/types/product';
+import { useVariantOption } from '@/utils/hooks/useVariantOption';
+import { getVariant } from '@/utils/products';
+import { isNotNullish } from '@/utils/types';
 import { useEffect, useMemo, useState } from 'react';
-import { Product } from 'types/product';
-import { useVariantOption } from 'utils/hooks/useVariantOption';
-import { getVariant } from 'utils/products';
-import { isNotNullish } from 'utils/types';
 
 export type ProductHookOptions = {
   product: Pick<Product, 'variantOptions' | 'hasStock' | 'variants'>;

@@ -1,5 +1,5 @@
+import logger from '@/logger';
 import { DocumentNode, useApolloClient } from '@apollo/client';
-import logger from 'logger';
 import { useRouter } from 'next/router';
 import { RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -26,7 +26,7 @@ export type PaginationDataHookResultTuple<T> = [
   }
 ];
 
-export interface PaginationDataHooksOptions<T extends PaginationDataHookPageData> {
+export type PaginationDataHooksOptions<T extends PaginationDataHookPageData> = {
   parsePath: (path: string) => PaginationDataHookParsedPath;
   query: DocumentNode;
   getVariables: (parsedPath: PaginationDataHookParsedPath) => Record<string, unknown>;
@@ -34,7 +34,7 @@ export interface PaginationDataHooksOptions<T extends PaginationDataHookPageData
   getPageData: (data: T) => T | null;
   isSamePageData: (a: T, b: T) => boolean;
   noPrefetch?: boolean;
-}
+};
 
 /**
  * Load pagination data, with optional prefetch.
@@ -119,7 +119,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
     [currentPath.page, loadPage]
   );
 
-  const setOrLoadPage = useCallback(async () => {
+  const setOrLoadPage = useCallback(() => {
     const cachedPage = cachedPageData.current.get(currentPath.page);
 
     // Set the cached page immediately
@@ -129,7 +129,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
 
     // Load the needed page, then set it
     if (!cachedPage) {
-      loadAndSetCurrentPage();
+      void loadAndSetCurrentPage();
     }
 
     // Just load the next page, pre-fetch
@@ -141,7 +141,7 @@ export function usePaginationData<T extends PaginationDataHookPageData>({
       isSamePageData(currentPageData, cachedPage) &&
       !isLoadingNextPage
     ) {
-      loadNextPage(cachedPage.pageInfo.endCursor ?? '');
+      void loadNextPage(cachedPage.pageInfo.endCursor ?? '');
     }
   }, [
     currentPath.page,

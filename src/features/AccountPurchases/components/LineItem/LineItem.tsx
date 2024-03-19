@@ -1,6 +1,6 @@
-import Image from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { formatPrice } from 'utils/text';
+import Image from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { formatPrice } from '@/utils/text';
 import { LineItem as TLineItem } from '../../types';
 
 export const LineItem = ({ lineItem }: React.PropsWithChildren<{ lineItem: TLineItem }>) => {

@@ -1,27 +1,35 @@
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import Textarea from '@/components/Form/Textarea/Textarea';
+import { Star } from '@/components/Stars/Stars';
+import { CreateMyProductReviewMutationResponse, CreateMyProductReviewMutationVariables } from '@/types/takeshape';
+import { useAuthenticatedMutation } from '@/utils/takeshape';
 import { Dialog, Transition } from '@headlessui/react';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import Textarea from 'components/Form/Textarea/Textarea';
-import { Star } from 'components/Stars/Stars';
 import { Fragment, useCallback, useMemo } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { CreateMyProductReviewMutationResponse, CreateMyProductReviewMutationVariables } from 'types/takeshape';
-import { useAuthenticatedMutation } from 'utils/takeshape';
 import { CreateMyProductReviewMutation } from '../queries.takeshape';
 
-interface CreateReviewForm {
+type CreateReviewForm = {
   review: string;
   rating: number;
-}
+};
 
-export interface ReviewsProps {
+export type ReviewsProps = {
   productName: string;
   sku: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-}
+};
 
-const ReviewStar = ({ value, starNumber, onChange }: { value: number; starNumber: number; onChange: any }) => {
+const ReviewStar = ({
+  value,
+  starNumber,
+  onChange
+}: {
+  value: number;
+  starNumber: number;
+  onChange: (star: number) => void;
+}) => {
   return <Star lit={value >= starNumber} onClick={() => onChange(starNumber)} hoverHighlight={true} />;
 };
 
@@ -110,7 +118,7 @@ export const CreateReview = (props: ReviewsProps) => {
                 </Dialog.Title>
 
                 {!success && (
-                  <form onSubmit={handleSubmit(submitCallback)}>
+                  <form onSubmit={(...args) => void handleSubmit(submitCallback)(...args)}>
                     <Controller
                       control={control}
                       name="rating"

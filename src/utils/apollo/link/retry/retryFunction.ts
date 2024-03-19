@@ -4,11 +4,9 @@ import { Operation } from '@apollo/client';
  * Advanced mode: a function that determines both whether a particular
  * response should be retried.
  */
-export interface RetryFunction {
-  (count: number, operation: Operation, error: any): boolean | Promise<boolean>;
-}
+export type RetryFunction = (count: number, operation: Operation, error: any) => boolean | Promise<boolean>;
 
-export interface RetryFunctionOptions {
+export type RetryFunctionOptions = {
   /**
    * The max number of times to try a single operation before giving up.
    *
@@ -28,10 +26,10 @@ export interface RetryFunctionOptions {
    * By default, all errors are retried.
    */
   retryIf?: (error: any, operation: Operation) => boolean | Promise<boolean>;
-}
+};
 
 export function buildRetryFunction(retryOptions?: RetryFunctionOptions): RetryFunction {
-  const { retryIf, max = 5 } = retryOptions || ({} as RetryFunctionOptions);
+  const { retryIf, max = 5 } = retryOptions ?? ({} as RetryFunctionOptions);
   return function retryFunction(count, operation, error) {
     if (count >= max) return false;
     return retryIf ? retryIf(error, operation) : !!error;

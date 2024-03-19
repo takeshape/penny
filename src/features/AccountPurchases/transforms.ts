@@ -1,5 +1,5 @@
-import { createImageGetter, getProductUrl, shopifyGidToId } from 'transforms/shopify';
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
+import { createImageGetter, getProductUrl, shopifyGidToId } from '@/transforms/shopify';
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
 import {
   Fulfillment,
   FulfillmentStatus,
@@ -67,7 +67,7 @@ function getFulfillmentStatus(
   }
 }
 
-function getTrackingUrl(carrier: string | null, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
+export function getTrackingUrl(carrier: string | null, trackingNumber = 'XXXXXXXXXXXXXXX'): string | null {
   switch (carrier) {
     case 'USPS':
       return `https://tools.usps.com/go/TrackConfirmAction?tLabels=${trackingNumber}`;

@@ -1,21 +1,21 @@
-import PageLoader from 'components/PageLoader';
-import { collectionsPageSize, pageRevalidationTtl } from 'config';
-import { ProductCategoryWithCollection } from 'features/ProductCategory/ProductCategoryWithCollection';
+import PageLoader from '@/components/PageLoader';
+import { collectionsPageSize, pageRevalidationTtl } from '@/config';
+import { ProductCategoryWithCollection } from '@/features/ProductCategory/ProductCategoryWithCollection';
 import {
   ProductCategoryShopifyCollectionHandles,
   ProductCategoryShopifyCollectionQuery
-} from 'features/ProductCategory/queries';
-import { getCollection, getCollectionPageParams } from 'features/ProductCategory/transforms';
-import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
-import { useRouter } from 'next/router';
+} from '@/features/ProductCategory/queries';
+import { getCollection, getCollectionPageParams } from '@/features/ProductCategory/transforms';
+import Layout from '@/layouts/Default';
 import {
   ProductCategoryShopifyCollectionHandlesResponse,
   ProductCategoryShopifyCollectionHandlesVariables,
   ProductCategoryShopifyCollectionQueryResponse,
   ProductCategoryShopifyCollectionQueryVariables
-} from 'types/takeshape';
-import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { createAnonymousTakeshapeApolloClient } from '@/utils/takeshape';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { useRouter } from 'next/router';
 
 const CollectionPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ collection }) => {
   const { isFallback } = useRouter();
@@ -42,7 +42,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
     throw new Error('Invalid getStaticProps params');
   }
 
-  const [handle, _page, cursor, direction] = params?.collection;
+  const [handle, cursor, direction] = params?.collection ?? [];
 
   const variables =
     direction === 'before'
@@ -72,7 +72,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const collection = getCollection(data);
 
   return {
-    notFound: !Boolean(collection),
+    notFound: !collection,
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
@@ -89,7 +89,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let endCursor: string | undefined;
 
   while (hasNextPage) {
-    let variables: ProductCategoryShopifyCollectionHandlesVariables = {
+    const variables: ProductCategoryShopifyCollectionHandlesVariables = {
       first: 50
     };
 

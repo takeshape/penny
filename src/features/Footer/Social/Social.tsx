@@ -1,14 +1,14 @@
 import { SVGProps } from 'react';
 
-interface SocialItem {
+type SocialItem = {
   name: string;
   href: string;
   icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-}
+};
 
-export interface SocialProps {
+export type SocialProps = {
   channels: SocialItem[];
-}
+};
 
 export const Social = (props: React.PropsWithChildren<SocialProps>) => (
   <div className="flex space-x-6 md:order-2">

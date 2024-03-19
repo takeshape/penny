@@ -1,9 +1,9 @@
-import NextImage from 'components/NextImage';
+import NextImage from '@/components/NextImage';
 import { ProductPageDetails as ProductPageDetailsType } from '../types';
 
-export interface DetailsProps {
+export type DetailsProps = {
   details: ProductPageDetailsType;
-}
+};
 
 export const Details = ({ details: { text, details } }: DetailsProps) => (
   <section aria-labelledby="details-heading">

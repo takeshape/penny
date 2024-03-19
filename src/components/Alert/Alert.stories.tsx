@@ -63,11 +63,15 @@ export const WithActions: Story = {
     actions: [
       {
         text: 'View status',
-        onClick: () => {}
+        onClick: () => {
+          // empty
+        }
       },
       {
         text: 'Dismiss',
-        onClick: () => {}
+        onClick: () => {
+          // empty
+        }
       }
     ]
   }

@@ -1,9 +1,17 @@
-require('dotenv').config();
+import { CodegenConfig } from '@graphql-codegen/cli';
+import dotenv from 'dotenv';
+import assert from 'node:assert';
 
-const takeshapeApiUrl = process.env.NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL || process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;
+dotenv.config({ path: `.env` });
+dotenv.config({ path: `.env.local` });
+
+const takeshapeApiUrl = process.env.NEXT_PUBLIC_BRANCH_TAKESHAPE_API_URL ?? process.env.NEXT_PUBLIC_TAKESHAPE_API_URL;
 const takeshapeAnonymousApiKey = process.env.NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY;
 
-module.exports = {
+assert(takeshapeApiUrl, 'NEXT_PUBLIC_TAKESHAPE_API_URL is required');
+assert(takeshapeAnonymousApiKey, 'NEXT_PUBLIC_TAKESHAPE_ANONYMOUS_API_KEY is required');
+
+const config: CodegenConfig = {
   overwrite: true,
   documents: ['src/**/queries.ts', 'src/**/queries.takeshape.ts'],
   schema: {
@@ -30,3 +38,5 @@ module.exports = {
     }
   }
 };
+
+export default config;

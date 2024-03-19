@@ -1,4 +1,3 @@
-import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
 import {
   googleClientId,
   googleClientSecret,
@@ -13,21 +12,14 @@ import {
   takeshapeApiUrl,
   takeshapeAuthAudience,
   takeshapeAuthIssuer
-} from 'config';
-import { GetCustomerStateQuery } from 'features/Auth/queries';
+} from '@/config';
+import { GetCustomerStateQuery } from '@/features/Auth/queries';
 import {
   AuthCustomerAccessTokenCreateMutation,
   AuthCustomerAccessTokenCreateWithMultipassMutation,
   AuthCustomerQuery
-} from 'features/Auth/queries.storefront';
-import logger from 'logger';
-import { NextApiHandler } from 'next';
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
-import { Provider } from 'next-auth/providers';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
-import { parseCookies, setCookie } from 'nookies';
+} from '@/features/Auth/queries.storefront';
+import logger from '@/logger';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
   AuthCustomerAccessTokenCreateMutationVariables,
@@ -35,10 +27,17 @@ import {
   AuthCustomerAccessTokenCreateWithMultipassMutationVariables,
   AuthCustomerQueryResponse,
   AuthCustomerQueryVariables
-} from 'types/storefront';
-import { withSentry } from 'utils/api/withSentry';
-import { createClient } from 'utils/apollo/client';
-import { createMultipassToken } from 'utils/multipass';
+} from '@/types/storefront';
+import { withSentry } from '@/utils/api/withSentry';
+import { createClient } from '@/utils/apollo/client';
+import { createMultipassToken } from '@/utils/multipass';
+import createNextAuthAllAccess from '@takeshape/next-auth-all-access';
+import { NextApiHandler } from 'next';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import { parseCookies, setCookie } from 'nookies';
 import jwks from '../../../../keys/jwks.json';
 
 const shopifyClient = createClient({
@@ -73,7 +72,7 @@ const withAllAccess = createNextAuthAllAccess({
   ]
 });
 
-const providers: Provider[] = [
+const providers: NextAuthOptions['providers'] = [
   CredentialsProvider({
     id: 'shopify',
     name: 'Shopify',
@@ -262,7 +261,7 @@ const nextAuthConfig: NextAuthOptions = {
 
       return token;
     },
-    async session({ session, user, token }) {
+    session({ session, token }) {
       const { sub, firstName, lastName, shopifyCustomerAccessToken } = token;
 
       return {

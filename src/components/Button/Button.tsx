@@ -1,6 +1,6 @@
-import Loader from 'components/Loader/Loader';
+import Loader from '@/components/Loader/Loader';
+import classNames from '@/utils/classNames';
 import React from 'react';
-import classNames from 'utils/classNames';
 
 export type ButtonProps<T extends React.ElementType = 'button'> = {
   as?: T;
@@ -34,7 +34,7 @@ export const Button = <T extends React.ElementType = 'button'>(
     <Component
       {...rest}
       onClick={props.onClick}
-      disabled={props.disabled || props.loading}
+      disabled={Boolean(props.disabled) || Boolean(props.loading)}
       className={classNames(
         props.className,
         styles.base,
@@ -42,7 +42,7 @@ export const Button = <T extends React.ElementType = 'button'>(
         styles.colors[props.color ?? 'clear']
       )}
     >
-      {props.loading && (
+      {loading && (
         <span className="h-5 flex items-center opacity-80">
           <Loader colorClass="inherit" />
           <span className="sr-only">Loading</span>

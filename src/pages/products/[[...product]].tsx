@@ -1,10 +1,10 @@
-import PageLoader from 'components/PageLoader';
-import { pageRevalidationTtl, reviewsPerPage } from 'config';
-import { ProductPage as ProductPageComponent } from 'features/ProductPage/ProductPage';
+import PageLoader from '@/components/PageLoader';
+import { pageRevalidationTtl, reviewsPerPage } from '@/config';
+import { ProductPage as ProductPageComponent } from '@/features/ProductPage/ProductPage';
 import {
   ProductPageShopifyProductHandlesQuery,
   ProductPageShopifyProductQuery
-} from 'features/ProductPage/queries.takeshape';
+} from '@/features/ProductPage/queries.takeshape';
 import {
   getBreadcrumbs,
   getDetails,
@@ -16,19 +16,19 @@ import {
   getReviewHighlights,
   getReviewsIoProductReviews,
   getTrustpilotProductReviews
-} from 'features/ProductPage/transforms';
-import Layout from 'layouts/Default';
-import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
-import { ProductJsonLd } from 'next-seo';
-import { useRouter } from 'next/router';
+} from '@/features/ProductPage/transforms';
+import Layout from '@/layouts/Default';
 import {
   ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductHandlesQueryVariables,
   ProductPageShopifyProductResponse,
   ProductPageShopifyProductVariables
-} from 'types/takeshape';
-import { createAnonymousTakeshapeApolloClient } from 'utils/takeshape';
-import { getSingle } from 'utils/types';
+} from '@/types/takeshape';
+import { createAnonymousTakeshapeApolloClient } from '@/utils/takeshape';
+import { getSingle } from '@/utils/types';
+import { GetStaticPaths, GetStaticPropsContext, InferGetStaticPropsType, NextPage } from 'next';
+import { ProductJsonLd } from 'next-seo';
+import { useRouter } from 'next/router';
 
 const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
   options,
@@ -71,7 +71,7 @@ const ProductPage: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 const apolloClient = createAnonymousTakeshapeApolloClient();
 
 export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
-  let handle = getSingle(params?.product);
+  const handle = getSingle(params?.product);
 
   if (!handle) {
     throw new Error('Invalid getStaticProps params');
@@ -96,7 +96,7 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
   const reviewList = getReviewsIoProductReviews(data) ?? getTrustpilotProductReviews(data);
 
   return {
-    notFound: !Boolean(product) || !product?.isAvailable,
+    notFound: !product || !product?.isAvailable,
     revalidate: pageRevalidationTtl,
     props: {
       // IMPORTANT This allows state to reset on NextLink route changes
@@ -120,7 +120,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   let endCursor: string | undefined;
 
   while (hasNextPage) {
-    let variables: ProductPageShopifyProductHandlesQueryVariables = {
+    const variables: ProductPageShopifyProductHandlesQueryVariables = {
       first: 50
     };
 

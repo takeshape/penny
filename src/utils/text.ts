@@ -1,5 +1,5 @@
-import { locale } from 'config';
-import { ProductPriceOption } from 'types/product';
+import { locale } from '@/config';
+import { ProductPriceOption } from '@/types/product';
 
 const pluralRules = new Intl.PluralRules(locale);
 

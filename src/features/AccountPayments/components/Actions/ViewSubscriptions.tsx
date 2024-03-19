@@ -1,5 +1,5 @@
-import { Modal, ModalProps } from 'components/Modal/Modal';
-import { PaymentMethod } from 'types/paymentMethod';
+import { Modal, ModalProps } from '@/components/Modal/Modal';
+import { PaymentMethod } from '@/types/paymentMethod';
 
 // export const SubscriptionStatus = ({ status }: Pick<SubscriptionContract, 'status'>) => {
 //   let badgeText = '';
@@ -34,11 +34,11 @@ import { PaymentMethod } from 'types/paymentMethod';
 //   );
 // };
 
-export interface ViewSubscriptionsProps extends ModalProps {
+export type ViewSubscriptionsProps = {
   paymentMethod: PaymentMethod;
-}
+} & ModalProps;
 
-export const ViewSubscriptions = ({ isOpen, onClose, paymentMethod }: ViewSubscriptionsProps) => {
+export const ViewSubscriptions = ({ isOpen, onClose }: ViewSubscriptionsProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="md:max-h-[calc(7/8*100vh)] overflow-y-scroll p-[1px] flex flex-col">
