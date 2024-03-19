@@ -1,9 +1,8 @@
 'use client';
 
-// import { Error } from '@/components/Error/Error';
+import { Error } from '@/components/Error/Error';
 import Wrapper from '@/components/Wrapper/Content';
 import * as Sentry from '@sentry/nextjs';
-import Error from 'next/error';
 import { useEffect } from 'react';
 
 type GlobalErrorProps = {
