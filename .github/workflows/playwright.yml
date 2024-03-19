@@ -90,10 +90,12 @@ jobs:
         run: |
           mv ./blob-reports/**/*.zip ./blob-reports
           npx playwright merge-reports --reporter html ./blob-reports
+          mkdir -p ./playwright/$HTML_REPORT_URL_PATH
+          mv ./playwright-report/* ./playwright/$HTML_REPORT_URL_PATH
 
       - name: Upload to S3
         run: |
-          aws s3 sync ./playwright-report s3://$S3_BUCKET
+          aws s3 sync ./playwright s3://$S3_BUCKET
         env:
           S3_BUCKET: ${{ vars.PLAYWRIGHT_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.PLAYWRIGHT_AWS_ACCESS_KEY_ID }}
