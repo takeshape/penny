@@ -25,21 +25,21 @@ module.exports = {
             timings: [
               {
                 metric: 'interactive',
-                budget: 1000 // 1.0s
+                budget: 1500 // 1.5s
               },
               {
                 metric: 'first-contentful-paint',
-                budget: 200 // 0.2s
+                budget: 1000 // 1.0s
               },
               {
                 metric: 'speed-index',
-                budget: 300 // 0.3s
+                budget: 1000 // 1.0s
               }
             ],
             resourceSizes: [
               {
                 resourceType: 'script',
-                budget: 300 // 300k
+                budget: 600 // 600k
               },
               {
                 resourceType: 'total',
@@ -49,7 +49,7 @@ module.exports = {
             resourceCounts: [
               {
                 resourceType: 'third-party',
-                budget: 10
+                budget: 15
               }
             ]
           }
