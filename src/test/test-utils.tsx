@@ -1,5 +1,4 @@
 import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing';
-import { jest } from '@jest/globals';
 import { render, RenderOptions } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
 import { PropsWithChildren, ReactElement } from 'react';
