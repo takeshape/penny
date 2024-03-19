@@ -786,9 +786,9 @@ You AWS credentials:
 
 Your S3 details:
 
-- `PW_S3_URL` - Example: `https://dbr9n5zkng988.cloudfront.net/`
-- `PW_S3_BUCKET` - Example: `my-playwright-bucket`
-- `PW_S3_REGION` - Example: `us-east-1`
+- `PLAYWRIGHT_S3_URL` - Example: `https://dbr9n5zkng988.cloudfront.net/`
+- `PLAYWRIGHT_S3_BUCKET` - Example: `my-playwright-bucket`
+- `PLAYWRIGHT_S3_REGION` - Example: `us-east-1`
 
 # TakeShape Branches
 
