@@ -1,5 +1,6 @@
+import { errors } from '@/lib/auth/errors';
 import { Meta, StoryObj } from '@storybook/react';
-import { AuthSignIn, errors } from './AuthSignIn';
+import { AuthSignIn } from './AuthSignIn';
 
 const meta: Meta<typeof AuthSignIn> = {
   title: 'Features / Auth / Sign In',
@@ -8,7 +9,7 @@ const meta: Meta<typeof AuthSignIn> = {
     error: {
       control: {
         type: 'select',
-        options: Object.keys(errors)
+        options: Object.keys(errors as Record<string, string>)
       }
     }
   }
@@ -22,7 +23,7 @@ export const Success: Story = {};
 
 export const Error: Story = {
   args: {
-    error: { code: 'CredentialsSignin' }
+    error: { type: 'CredentialsSignin', code: 'credentials' }
   }
 };
 

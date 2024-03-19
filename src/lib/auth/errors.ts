@@ -61,6 +61,18 @@ export class NoAccountError extends CredentialsSignin {
   code = 'no-account';
 }
 
+export class NoEmailError extends CredentialsSignin {
+  code = 'no-email';
+}
+
+export class NoAccessTokenError extends CredentialsSignin {
+  code = 'no-access-token';
+}
+
+export class MultipassError extends CredentialsSignin {
+  code = 'multipass';
+}
+
 export type SigninError = {
   type: string;
   code: string;
@@ -91,7 +103,7 @@ export function parseSigninError(searchParams: ServerProps['searchParams']): Sig
 
 const defaultSigninErrorMessage = 'Unable to sign in.';
 
-const errors: Record<ErrorType, string> = {
+export const errors: Record<ErrorType, string> = {
   AccessDenied: 'Please sign in to access this page.',
   OAuthAccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
   AccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
@@ -111,7 +123,11 @@ const credentialSignInErrorCodes: Record<string, string> = {
   credentials: 'Email address or password are incorrect.',
   'missing-credentials': 'Email address or password not provided.',
   'no-account': 'Email address or password are incorrect.',
-  'email-in-use': 'Email address already in use. Sign in instead.'
+  'email-in-use': 'Email address already in use. Sign in instead.',
+  // Not actually CredentialsSignin errors, but that's the only way to throw custom data
+  'no-email': 'No email address found on the linked account.',
+  'no-access-token': 'Unable to get an access token from Shopify.',
+  multipass: 'Multipass error connecting your account to Shopify.'
 };
 
 export function getSigninErrorMessage(error: SigninError) {

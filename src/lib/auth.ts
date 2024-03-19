@@ -8,6 +8,7 @@ import {
 import { AuthCustomerQuery } from '@/features/Auth/queries.storefront';
 import { getStorefrontClient } from '@/lib/apollo/rsc';
 import { withAllAccess } from '@/lib/auth-all-access';
+import { NoAccessTokenError, NoEmailError } from '@/lib/auth/errors';
 import { getMultipassCustomerAccessToken } from '@/lib/auth/multipass-helper';
 import ShopifyCredentialsProvider from '@/lib/auth/shopify-credentials-provider';
 import logger from '@/lib/logger';
@@ -45,8 +46,13 @@ const nextAuthConfig: NextAuthConfig = withAllAccess({
         const { email } = user;
 
         if (!email) {
-          logger.error('Signin missing email');
-          throw new Error('MISSING_EMAIL');
+          logger.error(
+            {
+              errors: [{ message: 'Missing email' }]
+            },
+            'Signin callback failure'
+          );
+          throw new NoEmailError('No email address');
         }
 
         let shopifyCustomerAccessToken = user.shopifyCustomerAccessToken;
@@ -58,11 +64,12 @@ const nextAuthConfig: NextAuthConfig = withAllAccess({
         if (!shopifyCustomerAccessToken) {
           logger.error(
             {
-              email
+              email,
+              errors: [{ message: 'No access token' }]
             },
-            'Signin failure'
+            'Signin callback failure'
           );
-          throw new Error('NO_ACCESS_TOKEN');
+          throw new NoAccessTokenError('No access token');
         }
 
         // Fetch the customer data to enhance the token
