@@ -7,6 +7,7 @@ import { Logo } from '@/components/Logo/Logo';
 import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
 import { InactiveCustomer } from '@/features/Auth/types';
+import { encodeErrorCode } from '@/lib/auth/errors';
 import { sanitizeCallbackUrl } from '@/lib/callbacks';
 import {
   CreateCustomerMutationResponse,
@@ -95,7 +96,9 @@ export function AuthCreateAccount({ callbackUrl, useMultipass, notice, email }: 
 
       if (customer?.state === 'enabled') {
         // Send to sign up page
-        void router.push(`/account/signin?error=CannotCreate&email=${email}`);
+        void router.push(
+          `/account/signin?error=CredentialsSignin&code=${encodeErrorCode({ code: 'email-in-use', email })}`
+        );
         return;
       }
 

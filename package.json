@@ -38,6 +38,7 @@
   "dependencies": {
     "@apollo/client": "^3.9.7",
     "@apollo/experimental-nextjs-app-support": "^0.8.0",
+    "@auth/core": "^0.28.0",
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@next/bundle-analyzer": "^14.1.3",

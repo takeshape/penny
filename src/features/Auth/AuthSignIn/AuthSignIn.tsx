@@ -6,7 +6,7 @@ import FormInput from '@/components/Form/Input/Input';
 import { Logo } from '@/components/Logo/Logo';
 import NextLink from '@/components/NextLink';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { SigninError } from '@/features/Auth/types';
+import { SigninError, getSigninErrorMessage } from '@/lib/auth/errors';
 import { sanitizeCallbackUrl } from '@/lib/callbacks';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -17,29 +17,12 @@ export type AuthSignInForm = {
   email: string;
   password: string;
 };
+
 export type AuthSignInProps = {
   callbackUrl: string;
   error?: SigninError;
   useMultipass: boolean;
   email?: string;
-};
-
-export const errors: Record<string, string> = {
-  Signin: 'Try signing in with a different account.',
-  OAuthSignin: 'Try signing in with a different account.',
-  OAuthCallback: 'Try signing in with a different account.',
-  OAuthCreateAccount: 'Try signing in with a different account.',
-  EmailCreateAccount: 'Try signing in with a different account.',
-  Callback: 'Try signing in with a different account.',
-  OAuthAccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
-  EmailSignin: 'The e-mail could not be sent.',
-  CredentialsSignin: 'Email address or password are incorrect.',
-  SessionRequired: 'Please sign in to access this page.',
-  CheckoutSessionRequired: 'Please sign in to checkout.',
-  CannotCreate: 'Email address already in use. Sign in instead.',
-  EmailInUse: '',
-  UNIDENTIFIED_CUSTOMER: 'Try signing in with a different account.',
-  default: 'Unable to sign in.'
 };
 
 export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSignInProps) => {
@@ -59,7 +42,7 @@ export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSign
   );
 
   const hasErrors = Boolean(error);
-  const errorMessage = error && (errors[error.code] ?? errors.default);
+  const errorMessage = error && getSigninErrorMessage(error);
 
   const signupLink = useMemo(() => {
     let href = '/account/create';
@@ -74,7 +57,7 @@ export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSign
   }, [callbackUrl]);
 
   const inactiveCustomer = useMemo(() => {
-    if (error?.code === 'EmailInUse') {
+    if (error?.code === 'email-in-use') {
       return {
         email: error.email,
         id: error.customerId

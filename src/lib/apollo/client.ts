@@ -63,7 +63,7 @@ export function createApolloClientLinks({
     if (networkError) {
       // When unauthenticated, redirect to sign in
       if ((networkError as ServerError).statusCode === 401 && !isSsr) {
-        window.location.href = '/account/signin?error=SessionRequired';
+        window.location.href = '/account/signin?error=AccessDenied';
       }
 
       logger.error({

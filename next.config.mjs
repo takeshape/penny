@@ -124,7 +124,23 @@ const nextConfig = {
       }
     ]
   },
-  swcMinify: true
+  swcMinify: true,
+  async redirects() {
+    // TODO Signin error redirect bug, can remove when this is released:
+    // https://github.com/nextauthjs/next-auth/pull/10094
+    return [
+      {
+        source: '/api/auth/account/signin',
+        destination: '/account/signin',
+        permanent: false
+      },
+      {
+        source: '/api/auth/account/signout',
+        destination: '/account/signout',
+        permanent: false
+      }
+    ];
+  }
 };
 
 /**
