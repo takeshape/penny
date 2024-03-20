@@ -30,7 +30,7 @@ type AccountFormAddressForm = {
 };
 
 export const AccountFormAddress = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,

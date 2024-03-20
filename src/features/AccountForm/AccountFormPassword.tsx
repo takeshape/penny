@@ -16,7 +16,7 @@ export type AccountFormPasswordForm = {
 };
 
 export const AccountFormPassword = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,

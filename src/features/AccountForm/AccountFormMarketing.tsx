@@ -33,7 +33,7 @@ type AccountFormMarketingForm = {
 };
 
 export const AccountFormMarketing = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,

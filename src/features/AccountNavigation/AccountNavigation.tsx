@@ -48,7 +48,7 @@ function useLogout() {
 
   const handleLogout = useCallback(async () => {
     await client.resetStore();
-    void signOut({ callbackUrl: '/' });
+    void signOut({ callbackUrl: '/', redirect: true });
   }, [client]);
 
   return {

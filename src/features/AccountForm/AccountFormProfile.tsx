@@ -24,7 +24,7 @@ type AccountFormProfileForm = {
 };
 
 export const AccountFormProfile = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,
