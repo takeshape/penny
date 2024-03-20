@@ -134,11 +134,6 @@ const nextConfig = {
         destination: '/account/signin',
         permanent: false
       }
-      // {
-      //   source: '/api/auth/account/signout',
-      //   destination: '/account/signout',
-      //   permanent: false
-      // }
     ];
   }
 };
