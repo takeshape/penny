@@ -72,16 +72,13 @@ test.describe('Write a product review', () => {
     await collectionsPage.selectProduct(PRODUCT_NAME_INSTOCK);
   });
 
-  // TODO Reviews.io acct is currently inactive
-  test.fixme('Verify user cannot submit an empty review form', async ({ productPage, page }) => {
+  test('Verify user cannot submit an empty review form', async ({ productPage, page }) => {
     await productPage.clickOnWriteAReviewBtn();
     await productPage.submitAReviewBtn().click();
     await expect(page.getByText('This field is required')).toHaveCount(2);
   });
 
-  // TODO Reviews.io acct is currently inactive
-  // BUG https://app.shortcut.com/takeshape/story/12703/product-review-doesn-t-appear-after-submitting-a-review-form
-  test.fixme('Submit a review form', async ({ productPage }) => {
+  test('Submit a review form', async ({ productPage }) => {
     const message = getTextMessage();
 
     await productPage.clickOnWriteAReviewBtn();

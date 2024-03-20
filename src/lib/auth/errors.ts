@@ -29,6 +29,15 @@ export function decodeErrorCode(code: string | undefined) {
 }
 
 export type ErrorType =
+  // Default next-auth signin page errors
+  | 'Signin'
+  | 'OAuthSignin'
+  | 'OAuthCallbackError'
+  | 'OAuthCreateAccount'
+  | 'EmailCreateAccount'
+  | 'Callback'
+  | 'EmailSignin'
+  | 'SessionRequired'
   // AuthError types
   | 'AccessDenied'
   | 'CredentialsSignin'
@@ -48,6 +57,10 @@ export class MissingCredentialsError extends CredentialsSignin {
 
 export class EmailInUseError extends CredentialsSignin {
   code = 'email-in-use';
+}
+
+export class AccountDisabledError extends CredentialsSignin {
+  code = 'disabled';
   data: Record<string, string>;
 
   constructor(message: string, { cause, data }: ErrorOptions & { data: Record<string, string> }) {
@@ -101,29 +114,48 @@ export function parseSigninError(searchParams: ServerProps['searchParams']): Sig
   };
 }
 
-const defaultSigninErrorMessage = 'Unable to sign in.';
+const defaultSigninErrorMessage = 'Try signing in with a different account.';
+const defaultCredentialsErrorMessage = 'Email address or password are incorrect.';
 
 export const errors: Record<ErrorType, string> = {
+  /**
+   * From the default Signin page
+   * https://github.com/nextauthjs/next-auth/blob/5ea8b7b0f4d285e48f141dd91e518c905c9fb34e/packages/core/src/lib/pages/signin.tsx#L8C7-L22
+   */
+  Signin: defaultSigninErrorMessage,
+  OAuthSignin: defaultSigninErrorMessage,
+  OAuthCallbackError: defaultSigninErrorMessage,
+  OAuthCreateAccount: defaultSigninErrorMessage,
+  EmailCreateAccount: defaultSigninErrorMessage,
+  Callback: defaultSigninErrorMessage,
+  EmailSignin: 'The e-mail could not be sent.',
+  SessionRequired: 'Please sign in to access this page.',
+
+  /**
+   * Other errors from @auth/core it makes sense to handle (maybe they are in transition?)
+   */
   AccessDenied: 'Please sign in to access this page.',
   OAuthAccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
   AccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
-  OAuthSignInError: 'Try signing in with a different account.',
-  EmailSignInError: 'Try signing in with a different account.',
+  OAuthSignInError: defaultSigninErrorMessage,
+  EmailSignInError: defaultSigninErrorMessage,
   SignOutError: 'Could not sign out. If this problem persists contact support.',
-  SessionTokenError: 'Session error. Please sign in again.',
+  SessionTokenError: 'Session error. Please sign in again to access this page.',
+
   /**
    * Custom errors
    */
   CheckoutSessionRequired: 'Please sign in to checkout.',
-  CredentialsSignin: 'Email address or password are incorrect.',
+  CredentialsSignin: defaultCredentialsErrorMessage,
   CannotCreate: 'Email address already in use. Sign in instead.'
 };
 
 const credentialSignInErrorCodes: Record<string, string> = {
-  credentials: 'Email address or password are incorrect.',
+  credentials: defaultCredentialsErrorMessage,
   'missing-credentials': 'Email address or password not provided.',
-  'no-account': 'Email address or password are incorrect.',
-  'email-in-use': 'Email address already in use. Sign in instead.',
+  'no-account': defaultCredentialsErrorMessage,
+  'email-in-use': 'Email address in use, try another sign in method.',
+  disabled: 'This account needs to be activated.',
   // Not actually CredentialsSignin errors, but that's the only way to throw custom data
   'no-email': 'No email address found on the linked account.',
   'no-access-token': 'Unable to get an access token from Shopify.',

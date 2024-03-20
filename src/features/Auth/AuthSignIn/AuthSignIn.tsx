@@ -57,7 +57,7 @@ export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSign
   }, [callbackUrl]);
 
   const inactiveCustomer = useMemo(() => {
-    if (error?.code === 'email-in-use') {
+    if (error?.code === 'disabled') {
       return {
         email: error.email,
         id: error.customerId

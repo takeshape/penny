@@ -9,7 +9,7 @@ import {
 import { AuthCustomerQuery } from '@/features/Auth/queries.storefront';
 import { getStorefrontClient } from '@/lib/apollo/rsc';
 import { NoAccessTokenError, NoEmailError } from '@/lib/auth/errors';
-import { getMultipassCustomerAccessToken } from '@/lib/auth/multipass-helper';
+import { getMultipassCustomerAccessToken } from '@/lib/auth/multipass';
 import ShopifyCredentialsProvider from '@/lib/auth/shopify-credentials-provider';
 import logger from '@/logger';
 import { AuthCustomerQueryResponse, AuthCustomerQueryVariables } from '@/types/storefront';

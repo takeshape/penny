@@ -1,4 +1,4 @@
-import { atomWithReset } from 'jotai/utils';
+import { atomWithListeners } from '@/lib/jotai/atomWithListeners';
 import { QuickAdd } from './types';
 
-export const quickAddAtom = atomWithReset<QuickAdd | null>(null);
+export const [quickAddAtom, useQuickAddAtomListener] = atomWithListeners<QuickAdd | null>(null);

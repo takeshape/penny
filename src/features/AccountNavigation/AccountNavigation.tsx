@@ -45,10 +45,12 @@ function useAccountNavigationItems() {
 
 function useLogout() {
   const client = useApolloClient();
+
   const handleLogout = useCallback(async () => {
     await client.resetStore();
     void signOut({ callbackUrl: '/' });
   }, [client]);
+
   return {
     handleLogout
   };

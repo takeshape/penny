@@ -1,7 +1,7 @@
 import { GetCustomerStateQuery } from '@/features/Auth/queries';
 import { AuthCustomerAccessTokenCreateMutation } from '@/features/Auth/queries.storefront';
 import { getAnonymousTakeshapeClient, getStorefrontClient } from '@/lib/apollo/rsc';
-import { EmailInUseError, MissingCredentialsError, NoAccountError } from '@/lib/auth/errors';
+import { AccountDisabledError, EmailInUseError, MissingCredentialsError, NoAccountError } from '@/lib/auth/errors';
 import logger from '@/logger';
 import {
   AuthCustomerAccessTokenCreateMutationResponse,
@@ -70,7 +70,13 @@ export default function ShopifyCredentialsProvider() {
             throw new NoAccountError('No account found matching email');
           }
 
-          throw new EmailInUseError('This account is already in use', { data: { email, customerId: customer.id } });
+          if (customer?.state === 'enabled') {
+            throw new EmailInUseError('This account is already enabled');
+          }
+
+          throw new AccountDisabledError('This account is disabled', {
+            data: { email, customerId: customer.id }
+          });
         }
 
         throw new CredentialsSignin('Email address or password are incorrect.');

@@ -4,13 +4,12 @@ import { Modal } from '@/components/Modal/Modal';
 import { getProduct } from '@/features/QuickAdd/transforms';
 import { QuickAddQueryResponse, QuickAddQueryVariables } from '@/types/takeshape';
 import { QueryReference, useLoadableQuery, useReadQuery } from '@apollo/client';
-import { useAtomValue } from 'jotai';
-import { useResetAtom } from 'jotai/utils';
-import { Suspense, useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { Suspense, useCallback } from 'react';
 import { QuickAddItem } from './components/QuickAddItem';
 import { QuickAddItemLoading } from './components/QuickAddItemLoading';
 import { QuickAddQuery } from './queries';
-import { quickAddAtom } from './store';
+import { quickAddAtom, useQuickAddAtomListener } from './store';
 
 type ReadQuickAddProps = {
   onClose: () => void;
@@ -29,18 +28,23 @@ function ReadQuickAdd({ onClose, productQueryRef }: ReadQuickAddProps) {
 }
 
 export const QuickAdd = () => {
-  const quickAdd = useAtomValue(quickAddAtom);
-  const resetQuickAdd = useResetAtom(quickAddAtom);
-
+  const [quickAdd, setQuickAdd] = useAtom(quickAddAtom);
   const [loadProduct, productQueryRef] = useLoadableQuery<QuickAddQueryResponse, QuickAddQueryVariables>(QuickAddQuery);
 
-  useEffect(() => {
-    if (quickAdd?.productHandle) {
-      void loadProduct({
-        handle: quickAdd.productHandle
-      });
-    }
-  }, [loadProduct, quickAdd]);
+  const resetQuickAdd = useCallback(() => setQuickAdd(null), [setQuickAdd]);
+
+  useQuickAddAtomListener(
+    useCallback(
+      (get, set, val) => {
+        if (val?.productHandle) {
+          void loadProduct({
+            handle: val.productHandle
+          });
+        }
+      },
+      [loadProduct]
+    )
+  );
 
   return (
     <Modal isOpen={Boolean(quickAdd)} onClose={() => resetQuickAdd()} showCloseButton={true}>
