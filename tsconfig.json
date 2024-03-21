@@ -31,15 +31,16 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
+    "**/*.mts",
     "**/*.tsx",
     "**/*.js",
+    "**/*.mjs",
     ".next/types/**/*.ts",
-    "jest.config.js",
-    "codegen.*.config.ts",
-    "tailwind.config.ts",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
-    ".jest/**/*.js"
+    ".vitest/**/*.ts",
+    "codegen.*.config.ts",
+    "tailwind.config.ts"
   ],
   "exclude": [
     "node_modules",

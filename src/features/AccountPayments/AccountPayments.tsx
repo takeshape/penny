@@ -1,3 +1,5 @@
+'use client';
+
 import CardPanel from '@/components/Card/Panel/Panel';
 import { PaymentMethod as TPaymentMethod } from '@/types/paymentMethod';
 import { AddPaymentMethod } from './components/AddPaymentMethod';

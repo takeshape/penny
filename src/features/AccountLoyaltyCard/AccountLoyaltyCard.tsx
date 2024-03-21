@@ -1,12 +1,23 @@
+'use client';
+
 import CardPanel from '@/components/Card/Panel/Panel';
 import Image from '@/components/NextImage';
+import { GetMyLoyaltyCardQuery } from '@/features/AccountLoyaltyCard/queries';
+import { getLoyaltyCard } from '@/features/AccountLoyaltyCard/transforms';
+import { useAuthenticatedQuery } from '@/lib/takeshape';
+import { GetMyLoyaltyCardQueryResponse } from '@/types/takeshape';
 import { LoyaltyCard } from './types';
 
-export type AccountLoyaltyCardProps = {
-  loyaltyCard: LoyaltyCard;
-};
+export const AccountLoyaltyCard = () => {
+  const { transformedData: loyaltyCard } = useAuthenticatedQuery<GetMyLoyaltyCardQueryResponse, never, LoyaltyCard>(
+    GetMyLoyaltyCardQuery,
+    { transform: { data: getLoyaltyCard } }
+  );
 
-export const AccountLoyaltyCard = ({ loyaltyCard }: AccountLoyaltyCardProps) => {
+  if (!loyaltyCard) {
+    return null;
+  }
+
   return (
     <CardPanel primaryText="Penny Membership">
       <div>

@@ -20,16 +20,16 @@ jobs:
       # Required for API access during typechecking
       TAKESHAPE_API_KEY: ${{ secrets.TAKESHAPE_API_KEY }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
           cache: 'npm'
 
       - name: Cache node_modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.npm

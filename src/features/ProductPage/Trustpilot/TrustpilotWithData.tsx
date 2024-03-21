@@ -1,11 +1,13 @@
+'use client';
+
 import { reviewsPerPage } from '@/config';
 import { TrustpilotProductPageReviewPageQuery } from '@/features/ProductPage/queries.takeshape';
+import { useLazyQueryWithTransform } from '@/lib/query';
 import { ReviewList } from '@/types/review';
 import {
   TrustpilotProductPageReviewPageQueryResponse,
   TrustpilotProductPageReviewPageQueryVariables
 } from '@/types/takeshape';
-import { useLazyQueryWithTransform } from '@/utils/query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Trustpilot } from './Trustpilot';
 

@@ -1,15 +1,17 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
 import FormSelect from '@/components/Form/Select/Select';
+import { countries } from '@/lib/data/countries';
+import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerAddressUpdateMutationResponse,
   CustomerAddressUpdateMutationVariables,
   CustomerQueryResponse,
   CustomerQueryVariables
 } from '@/types/storefront';
-import { countries } from '@/utils/countries/countries';
-import { formatError } from '@/utils/errors';
-import { useStorefrontLazyQuery, useStorefrontMutation } from '@/utils/storefront';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,7 +30,7 @@ type AccountFormAddressForm = {
 };
 
 export const AccountFormAddress = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,

@@ -1,5 +1,7 @@
+'use client';
+
 import NextLink from '@/components/NextLink';
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/util/classNames';
 import { Disclosure } from '@headlessui/react';
 import { Navigation } from '../../types';
 
@@ -36,7 +38,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                   </Disclosure.Button>
                   <Disclosure.Panel className="space-y-1">
                     {section.subsections?.map((subsection) => (
-                      <>
+                      <div key={subsection.name}>
                         <p className="bg-white text-body-400 group w-full flex items-center pl-7 pr-2 py-2 text-xs font-medium rounded-md uppercase">
                           {subsection.name}
                         </p>
@@ -50,7 +52,7 @@ export const MobileMenuLinks = ({ sections }: Pick<Navigation, 'sections'>) => {
                             {link.name}
                           </Disclosure.Button>
                         ))}
-                      </>
+                      </div>
                     )) ?? null}
                   </Disclosure.Panel>
                 </>

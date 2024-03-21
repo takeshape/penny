@@ -1,13 +1,13 @@
 import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
 import {
   SetNextChargeDateMutationResponse,
   SetNextChargeDateMutationVariables,
   UnskipChargeMutationResponse,
   UnskipChargeMutationVariables
 } from '@/types/takeshape';
-import { useAuthenticatedMutation } from '@/utils/takeshape';
 import { format } from 'date-fns';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';

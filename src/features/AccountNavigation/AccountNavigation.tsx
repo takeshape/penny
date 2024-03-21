@@ -1,16 +1,18 @@
+'use client';
+
 import NextLink from '@/components/NextLink';
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/util/classNames';
 import { useApolloClient } from '@apollo/client';
 import {
   ArrowPathIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   GiftIcon,
   KeyIcon,
   TagIcon,
   UserCircleIcon
 } from '@heroicons/react/24/outline';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 
 export const accountNavigationItems = [
@@ -24,9 +26,10 @@ export const accountNavigationItems = [
 ];
 
 function useAccountNavigationItems() {
-  const { asPath } = useRouter();
+  const pathname = usePathname();
+
   const items = useMemo(() => {
-    const asPathParts = asPath.split('/');
+    const asPathParts = pathname?.split('/') ?? [];
     return accountNavigationItems.map((item) => {
       const hrefParts = item.href.split('/');
       return {
@@ -35,17 +38,19 @@ function useAccountNavigationItems() {
         current: asPathParts[0] === hrefParts[0] && asPathParts[1] === hrefParts[1] && asPathParts[2] === hrefParts[2]
       };
     });
-  }, [asPath]);
+  }, [pathname]);
+
   return items;
 }
 
 function useLogout() {
-  // eslint-disable-next-line @typescript-eslint/unbound-method
-  const { resetStore } = useApolloClient();
+  const client = useApolloClient();
+
   const handleLogout = useCallback(async () => {
-    await resetStore();
-    void signOut({ callbackUrl: '/' });
-  }, [resetStore]);
+    await client.resetStore();
+    void signOut({ callbackUrl: '/', redirect: true });
+  }, [client]);
+
   return {
     handleLogout
   };
@@ -86,7 +91,7 @@ export const AccountNavigation = () => {
           onClick={() => void handleLogout()}
           className="text-body-500 hover:text-body-900 hover:bg-primary-50 group rounded-md px-3 py-2 flex items-center text-sm font-medium w-full"
         >
-          <ArrowRightOnRectangleIcon
+          <ArrowRightStartOnRectangleIcon
             className="text-body-400 group-hover:text-body-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
             aria-hidden="true"
           />

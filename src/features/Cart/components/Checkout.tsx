@@ -1,11 +1,13 @@
+'use client';
+
 import Button from '@/components/Button/Button';
 import { signedInCheckout } from '@/config';
 import { getCheckoutUrl } from '@/features/Cart/transforms';
+import { useStorefrontMutation } from '@/lib/storefront';
 import { CartCreateMutationResponse, CartCreateMutationVariables } from '@/types/storefront';
-import { useStorefrontMutation } from '@/utils/storefront';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect } from 'react';
 import { CartCreateMutation } from '../queries.storefront';
 import { cartDiscountCodeAtom, cartItemsAtom, cartQuantityAtom, isCartCheckingOutAtom } from '../store';
@@ -13,7 +15,7 @@ import { getCartVariables } from '../utils';
 
 export const CartCheckout = () => {
   const { data: session } = useSession();
-  const { push } = useRouter();
+  const router = useRouter();
 
   const setIsCartCheckingOut = useSetAtom(isCartCheckingOutAtom);
   const quantity = useAtomValue(cartQuantityAtom);
@@ -26,7 +28,7 @@ export const CartCheckout = () => {
 
   const handleCheckout = useCallback(() => {
     if (signedInCheckout && !session) {
-      void push(`/auth/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/_checkout')}`);
+      void router.push(`/account/signin?error=CheckoutSessionRequired&callbackUrl=${encodeURIComponent('/checkout')}`);
       return;
     }
 
@@ -34,7 +36,7 @@ export const CartCheckout = () => {
     void setCartMutation({
       variables: getCartVariables(items, session, discountCode)
     });
-  }, [session, setIsCartCheckingOut, setCartMutation, items, discountCode, push]);
+  }, [session, setIsCartCheckingOut, setCartMutation, items, discountCode, router]);
 
   useEffect(() => {
     const checkoutUrl = getCheckoutUrl(data);

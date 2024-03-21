@@ -4,8 +4,8 @@ import ProductColorSelect from '@/components/Product/ProductColorSelect';
 import ProductPrice from '@/components/Product/ProductPrice';
 import ProductPriceSelect from '@/components/Product/ProductPriceSelect';
 import ProductSizeSelect from '@/components/Product/ProductSizeSelect';
-import { useAddToCart } from '@/utils/hooks/useAddToCart';
-import { useProduct } from '@/utils/hooks/useProduct';
+import { useAddToCart } from '@/lib/hooks/useAddToCart';
+import { useProduct } from '@/lib/hooks/useProduct';
 import { QuickAddProduct } from '../types';
 
 export type QuickAddItemProps = {

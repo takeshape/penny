@@ -1,4 +1,4 @@
-import { formatPrice } from '@/utils/text';
+import { formatPrice } from '@/lib/util/text';
 import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
 import { Order } from '../../types';

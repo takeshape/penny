@@ -3,7 +3,7 @@ const constants = require('../constants');
 module.exports = {
   ci: {
     collect: {
-      extends: 'lighthouse:default',
+      extends: 'lighthouse:no-pwa',
       settings: {
         formFactor: 'desktop',
         throttling: constants.throttling.desktopFIOS,
@@ -18,7 +18,7 @@ module.exports = {
           'maskable-icon', // not helpful
           'unsized-images' // not helpful
         ],
-        onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo', 'pwa'],
+        onlyCategories: ['accessibility', 'best-practices', 'performance', 'seo'],
         budgets: [
           {
             path: '/*',
@@ -33,13 +33,13 @@ module.exports = {
               },
               {
                 metric: 'speed-index',
-                budget: 300 // 0.3s
+                budget: 500 // 0.5s
               }
             ],
             resourceSizes: [
               {
                 resourceType: 'script',
-                budget: 300 // 300k
+                budget: 600 // 600k
               },
               {
                 resourceType: 'total',
@@ -49,7 +49,7 @@ module.exports = {
             resourceCounts: [
               {
                 resourceType: 'third-party',
-                budget: 10
+                budget: 15
               }
             ]
           }

@@ -1,6 +1,8 @@
+'use client';
+
 import NextImage from '@/components/NextImage';
 import NextLink from '@/components/NextLink';
-import { formatPrice, pluralizeText } from '@/utils/text';
+import { formatPrice, pluralizeText } from '@/lib/util/text';
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 import { PrimitiveAtom, useAtom } from 'jotai';
 import { Fragment } from 'react';

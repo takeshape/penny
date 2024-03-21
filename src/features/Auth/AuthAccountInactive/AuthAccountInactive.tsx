@@ -32,7 +32,7 @@ export const AccountInactiveForm = ({ customer, isOpen, onClose }: AccountInacti
 
   const handleFormSubmit: SubmitHandler<AccountInactiveFormValues> = useCallback(async () => {
     await sendInvite({ variables: { customerId: customer.id } });
-  }, [customer.id, sendInvite]);
+  }, [customer, sendInvite]);
 
   return (
     <ModalForm

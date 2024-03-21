@@ -1,3 +1,5 @@
+'use client';
+
 import { AccountNavigation } from '@/features/AccountNavigation/AccountNavigation';
 import { signIn, useSession } from 'next-auth/react';
 
@@ -17,7 +19,7 @@ export const MobileMenuAccount = () => {
   return (
     <div className="py-4 px-4">
       <a
-        href={`/api/auth/signin`}
+        href={`/account/signin`}
         onClick={(e) => {
           e.preventDefault();
           void signIn();
@@ -27,7 +29,7 @@ export const MobileMenuAccount = () => {
         Create an account
       </a>
       <a
-        href={`/api/auth/signin`}
+        href={`/account/signin`}
         onClick={(e) => {
           e.preventDefault();
           void signIn();

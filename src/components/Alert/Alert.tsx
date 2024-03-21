@@ -1,5 +1,5 @@
 import StatusIcon, { StatusIconProps } from '@/components/StatusIcon/StatusIcon';
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/util/classNames';
 import { ReactEventHandler } from 'react';
 
 export type AlertActionProps = {

@@ -1,5 +1,7 @@
 import { getIsExpiringSoon } from '@/components/Payments/utils';
 import { defaultProductImage } from '@/config';
+import { capitalize } from '@/lib/util/text';
+import { isNotNullish } from '@/lib/util/types';
 import {
   createImageGetter,
   getProductHasStock,
@@ -12,8 +14,6 @@ import {
   GetMySubscriptionListQueryResponse,
   GetMySubscriptionQueryResponse
 } from '@/types/takeshape';
-import { capitalize } from '@/utils/text';
-import { isNotNullish } from '@/utils/types';
 import {
   AnySubscription,
   ResponseAddress,
@@ -290,7 +290,7 @@ function getSubscriptionOrderStatus(rechargeCharge: ResponseSubscription['charge
       return {
         status: 'FULFILLMENT_DELIVERED',
         // This is a terminal event, statusAt should not change
-        statusAt: deliveredAt
+        statusAt: deliveredAt ?? updatedAt
       };
 
     case 'NOT_DELIVERED':

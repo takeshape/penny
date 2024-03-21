@@ -1,5 +1,6 @@
 import { enableReviewsIo, enableTrustpilot } from '@/config';
 import { ProductProps } from '@/features/ProductPage/Product/Product';
+import { isNotNullish } from '@/lib/util/types';
 import { getProductLineItemAttributes } from '@/transforms/product';
 import { getReview, getReviewList as getReviewsIoReviewList, getStats } from '@/transforms/reviewsIo';
 import {
@@ -17,16 +18,14 @@ import { ReviewList } from '@/types/review';
 import { ProductPageRelatedProductsQueryResponse } from '@/types/storefront';
 import {
   ProductPageReviewPageQueryResponse,
-  ProductPageShopifyProductHandlesQueryResponse,
   ProductPageShopifyProductResponse,
+  ProductPageShopifySummaryQueryResponse,
   Shopify_MoneyV2
 } from '@/types/takeshape';
 import { DeepRequired } from '@/types/util';
-import { isNotNullish } from '@/utils/types';
 import { cloneDeep } from '@apollo/client/utilities';
 import { getImageUrl } from '@takeshape/routing';
-import { GetStaticPathsResult } from 'next';
-import { ProductJsonLdProps } from 'next-seo';
+import type { ProductJsonLdProps } from 'next-seo';
 import {
   ProductPageBreadcrumbs,
   ProductPageDetails,
@@ -39,6 +38,7 @@ import {
   ProductPageRelatedProductsShopifyProduct,
   ProductPageReviewHighlights,
   ProductPageReviewsReviewList,
+  ProductPageShopifySummaryNodes,
   ResponseCollection
 } from './types';
 
@@ -219,15 +219,13 @@ export function getPageOptions(response?: ProductPageShopifyProductResponse): Pr
   };
 }
 
-export function getProductPageParams(
-  response: ProductPageShopifyProductHandlesQueryResponse
-): GetStaticPathsResult['paths'] | null {
-  const nodes = response?.products?.nodes;
+export function getProductPageSummaryNodes(
+  response: ProductPageShopifySummaryQueryResponse
+): ProductPageShopifySummaryNodes {
+  return response?.products?.nodes;
+}
 
-  if (!nodes) {
-    return null;
-  }
-
+export function getProductPageParams(nodes: NonNullable<ProductPageShopifySummaryNodes>) {
   return nodes
     .map((node) => {
       if (!node.publishedOnCurrentPublication) {
@@ -235,9 +233,7 @@ export function getProductPageParams(
       }
 
       return {
-        params: {
-          product: [node.handle]
-        }
+        product: [node.handle]
       };
     })
     .filter(isNotNullish);

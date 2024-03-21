@@ -1,6 +1,8 @@
+'use client';
+
 import { isStorybook } from '@/config';
+import classNames from '@/lib/util/classNames';
 import { isMobileMenuOpenAtom } from '@/store';
-import classNames from '@/utils/classNames';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useAtom } from 'jotai';

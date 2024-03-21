@@ -1,16 +1,12 @@
 import createBundleAnalyzer from '@next/bundle-analyzer';
 import { withSentryConfig } from '@sentry/nextjs';
 import { setProcessBranchUrl } from '@takeshape/shape-tools';
-import { createRequire } from 'module';
-import withPwa from 'next-pwa';
 
 // Set the TakeShape branch URL
 // Storybook doesn't make live queries, so this is unnecessary.
 if (!process.env.STORYBOOK) {
   await setProcessBranchUrl({ envVar: 'NEXT_PUBLIC_TAKESHAPE_API_URL' });
 }
-
-const require = createRequire(import.meta.url);
 
 const withBundleAnalyzer = createBundleAnalyzer({
   enabled: process.env.ANALYZE === 'true'
@@ -105,7 +101,6 @@ const nextConfig = {
     ];
   },
   poweredByHeader: false,
-  reactStrictMode: true,
   eslint: {
     dirs: ['src']
   },
@@ -130,48 +125,30 @@ const nextConfig = {
     ]
   },
   swcMinify: true,
-  webpack: (config, { webpack }) => {
-    // Sentry tree shaking
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        __SENTRY_DEBUG__: false,
-        __SENTRY_TRACING__: false
-      })
-    );
-
-    // Unable to use the next-plugin-preval config directly for some reason, mjs?
-    const rules = config.module?.rules;
-
-    rules.push({
-      test: /\.preval\.(t|j)sx?$/,
-      loader: require.resolve('next-plugin-preval/loader')
-    });
-
-    return config;
-  },
-  experimental: {
-    // Try to avoid throttling
-    // workerThreads: false,
-    // cpus: 1
+  async redirects() {
+    // TODO Signin error redirect bug, can remove when this is released:
+    // https://github.com/nextauthjs/next-auth/pull/10094
+    return [
+      {
+        source: '/api/auth/account/signin',
+        destination: '/account/signin',
+        permanent: false
+      }
+    ];
   }
 };
 
+/**
+ * @param {Array<(config: import('next').NextConfig | undefined) => import('next').NextConfig>} plugins
+ * @param {import('next').NextConfig} config
+ */
 const withPlugins = (plugins, config) => () =>
   plugins.reduce((acc, plugin) => plugin(acc), {
     ...config
   });
 
 export default withSentryConfig(
-  withPlugins(
-    [
-      withBundleAnalyzer,
-      withPwa({
-        dest: 'public',
-        disable: process.env.NODE_ENV === 'development'
-      })
-    ],
-    nextConfig
-  ),
+  withPlugins([withBundleAnalyzer], nextConfig),
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options

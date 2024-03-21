@@ -1,6 +1,6 @@
 import { useSubscriptionRefetch } from '@/features/AccountSubscriptions/hooks';
-import classNames from '@/utils/classNames';
-import { formatPrice } from '@/utils/text';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';

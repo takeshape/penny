@@ -1,3 +1,5 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import FormInput from '@/components/Form/Input/Input';
@@ -6,7 +8,7 @@ import FormTextarea from '@/components/Form/Textarea/Textarea';
 import NextLink from '@/components/NextLink';
 import { BackgroundDots } from '@/features/Contact/components/BackgroundDots';
 import { useCreateTicket } from '@/features/Contact/useCreateTicket';
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/util/classNames';
 import { Switch } from '@headlessui/react';
 import { useSession } from 'next-auth/react';
 import { useReCaptcha } from 'next-recaptcha-v3';
@@ -30,7 +32,7 @@ export type ContactProps = {
   };
 };
 
-export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
+export function Contact(props: React.PropsWithChildren<ContactProps>) {
   const { text } = props;
   const [agreed, setAgreed] = useState(false);
   const { handleSubmit, control, formState, reset } = useForm<ContactForm>({ mode: 'onBlur' });
@@ -218,4 +220,4 @@ export const Contact = (props: React.PropsWithChildren<ContactProps>) => {
       </div>
     </div>
   );
-};
+}

@@ -1,68 +1,51 @@
+'use client';
+
 import Alert from '@/components/Alert/Alert';
 import Button from '@/components/Button/Button';
 import FormInput from '@/components/Form/Input/Input';
 import { Logo } from '@/components/Logo/Logo';
 import NextLink from '@/components/NextLink';
 import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { SigninError } from '@/features/Auth/types';
-import { sanitizeCallbackUrl } from '@/utils/callbacks';
+import { SigninError, getSigninErrorMessage } from '@/lib/auth/errors';
+import { sanitizeCallbackUrl } from '@/lib/util/callbacks';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCallback, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 export type AuthSignInForm = {
   email: string;
   password: string;
-  rememberMe: boolean;
 };
+
 export type AuthSignInProps = {
-  signIn: typeof signIn;
   callbackUrl: string;
   error?: SigninError;
   useMultipass: boolean;
   email?: string;
 };
 
-export const errors: Record<string, string> = {
-  Signin: 'Try signing in with a different account.',
-  OAuthSignin: 'Try signing in with a different account.',
-  OAuthCallback: 'Try signing in with a different account.',
-  OAuthCreateAccount: 'Try signing in with a different account.',
-  EmailCreateAccount: 'Try signing in with a different account.',
-  Callback: 'Try signing in with a different account.',
-  OAuthAccountNotLinked: 'To confirm your identity, sign in with the same account you used originally.',
-  EmailSignin: 'The e-mail could not be sent.',
-  CredentialsSignin: 'Email address or password are incorrect.',
-  SessionRequired: 'Please sign in to access this page.',
-  CheckoutSessionRequired: 'Please sign in to checkout.',
-  CannotCreate: 'Email address already in use. Sign in instead.',
-  EmailInUse: '',
-  UNIDENTIFIED_CUSTOMER: 'Try signing in with a different account.',
-  default: 'Unable to sign in.'
-};
-
-export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: AuthSignInProps) => {
+export const AuthSignIn = ({ callbackUrl, error, useMultipass, email }: AuthSignInProps) => {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
-  const { handleSubmit, formState, control, register, watch, reset } = useForm<AuthSignInForm>();
-  const { push } = useRouter();
+  const { handleSubmit, formState, control, watch, reset } = useForm<AuthSignInForm>();
+  const router = useRouter();
   const watched = useRef({ email: '' });
 
   watched.current.email = watch('email', '');
 
   const onSubmit = useCallback(
-    async ({ email, password, rememberMe }: AuthSignInForm) => {
-      await signIn('shopify', { email, password, rememberMe, callbackUrl });
+    async ({ email, password }: AuthSignInForm) => {
+      await signIn('shopify', { email, password, callbackUrl });
     },
-    [callbackUrl, signIn]
+    [callbackUrl]
   );
 
   const hasErrors = Boolean(error);
-  const errorMessage = error && (errors[error.code] ?? errors.default);
+  const errorMessage = error && getSigninErrorMessage(error);
 
   const signupLink = useMemo(() => {
-    let href = '/auth/create';
+    let href = '/account/create';
     if (sanitizedCallbackUrl) {
       href += `?callbackUrl=${encodeURIComponent(sanitizedCallbackUrl)}`;
     }
@@ -71,10 +54,10 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const signinGoogle = useCallback(() => {
     void signIn('google', { callbackUrl });
-  }, [callbackUrl, signIn]);
+  }, [callbackUrl]);
 
   const inactiveCustomer = useMemo(() => {
-    if (error?.code === 'EmailInUse') {
+    if (error?.code === 'disabled') {
       return {
         email: error.email,
         id: error.customerId
@@ -84,9 +67,9 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
   const onAccountInactiveFormClose = useCallback(() => {
-    void push(window.location.pathname);
+    void router.push(window.location.pathname);
     reset();
-  }, [reset, push]);
+  }, [reset, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -146,22 +129,9 @@ export const AuthSignIn = ({ callbackUrl, error, signIn, useMultipass, email }: 
             />
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  {...register('rememberMe')}
-                  id="remember-me"
-                  type="checkbox"
-                  defaultChecked
-                  className="h-4 w-4 text-accent-600 focus:ring-accent-500 border-body-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-body-900">
-                  Remember me
-                </label>
-              </div>
-
               <div className="text-sm">
                 <NextLink
-                  href={`/auth/recover?callbackUrl=${encodeURIComponent('/auth/signin')}`}
+                  href={`/account/recover?callbackUrl=${encodeURIComponent('/account/signin')}`}
                   className="font-medium text-accent-600 hover:text-accent-500"
                 >
                   Forgot your password?

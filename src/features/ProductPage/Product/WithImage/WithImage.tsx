@@ -1,11 +1,13 @@
+'use client';
+
 import Breadcrumbs, { Breadcrumb } from '@/components/Breadcrumbs/Breadcrumbs';
 import NextImage from '@/components/NextImage';
 import ProductPrice from '@/components/Product/ProductPrice';
 import ProductSizeSelectWithDescription from '@/components/Product/ProductSizeSelectWithDescription';
 import Stars from '@/components/Stars/Stars';
+import { useAddToCart } from '@/lib/hooks/useAddToCart';
+import { useProduct } from '@/lib/hooks/useProduct';
 import { ReviewHighlights } from '@/types/review';
-import { useAddToCart } from '@/utils/hooks/useAddToCart';
-import { useProduct } from '@/utils/hooks/useProduct';
 import { CheckIcon, QuestionMarkCircleIcon, ShieldCheckIcon } from '@heroicons/react/24/solid';
 import { ProductPageProduct } from '../../types';
 

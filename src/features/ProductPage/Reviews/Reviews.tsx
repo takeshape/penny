@@ -4,7 +4,7 @@ import { ReviewsListItem } from '@/features/ProductPage/Reviews/ReviewsListItem'
 import { ReviewsListItemLoading } from '@/features/ProductPage/Reviews/ReviewsListItemLoading';
 import { ApolloError } from '@apollo/client';
 import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import { MouseEventHandler } from 'react';
 import { ProductPageReviewsReview, ProductPageReviewsRollup, ProductPageReviewsStats } from '../types';
 import { ReviewsRollup } from './ReviewsRollup';
@@ -33,7 +33,7 @@ export const Reviews = ({
   error
 }: ReviewsProps) => {
   const { data: session } = useSession();
-  const { asPath } = useRouter();
+  const pathname = usePathname();
 
   return (
     <section id="reviews" aria-labelledby="reviews-heading" className="bg-background">
@@ -74,7 +74,7 @@ export const Reviews = ({
               </Button>
             ) : (
               <span
-                onClick={() => void signIn(undefined, { callbackUrl: `${asPath}?writeReview=true` })}
+                onClick={() => void signIn(undefined, { callbackUrl: `${pathname}?writeReview=true` })}
                 className="mt-6 inline-flex w-full bg-background border border-form-300 rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-form-900 hover:bg-form-50 sm:w-auto lg:w-full cursor-pointer"
               >
                 Sign in to write a review

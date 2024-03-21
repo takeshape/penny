@@ -6,6 +6,8 @@ import { ModalProps } from '@/components/Modal/Modal';
 import { ModalForm } from '@/components/Modal/ModalForm';
 import { ModalFormActions } from '@/components/Modal/ModalFormActions';
 import { CreditCard } from '@/components/Payments/CreditCard';
+import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from '@/lib/takeshape';
+import classNames from '@/lib/util/classNames';
 import {
   GetMyPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryVariables,
@@ -14,8 +16,6 @@ import {
   UpdateMyPaymentMethodMutationResponse,
   UpdateMyPaymentMethodMutationVariables
 } from '@/types/takeshape';
-import classNames from '@/utils/classNames';
-import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from '@/utils/takeshape';
 import { RadioGroup } from '@headlessui/react';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';

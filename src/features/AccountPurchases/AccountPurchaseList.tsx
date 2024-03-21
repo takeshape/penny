@@ -1,5 +1,7 @@
+'use client';
+
+import { useAuthenticatedQuery } from '@/lib/takeshape';
 import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
-import { useAuthenticatedQuery } from '@/utils/takeshape';
 import { NetworkStatus } from '@apollo/client';
 import { PurchaseOrder } from './components/Order/Order';
 import { OrderSkeleton } from './components/Order/OrderSkeleton';

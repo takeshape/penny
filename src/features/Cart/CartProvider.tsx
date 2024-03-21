@@ -1,8 +1,11 @@
+'use client';
+
 import { cartDiscountCodeAtom, cartItemsAtom, isCartCheckingOutAtom } from '@/features/Cart/store';
+import { useRemoveQueryParams } from '@/lib/hooks/useRemoveQueryParams';
+import { getSingle } from '@/lib/util/types';
 import { currencyAtom, notificationAtom } from '@/store';
-import { getSingle } from '@/utils/types';
 import { useAtomValue, useSetAtom } from 'jotai';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
 
 export const CartProvider = ({ children }: PropsWithChildren) => {
@@ -13,11 +16,12 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
   const currency = useAtomValue(currencyAtom);
 
   const [previousCurrency, setPreviousCurrency] = useState('');
+  const router = useRouter();
 
-  const {
-    replace,
-    query: { shopify_checkout_action: action, discount, ...query }
-  } = useRouter();
+  const searchParams = useSearchParams();
+  const action = searchParams?.get('shopify_checkout_action');
+  const discount = searchParams?.get('discount');
+  const replacementUrl = useRemoveQueryParams({ remove: ['shopify_checkout_action', 'discount'] });
 
   useEffect(() => {
     if (action) {
@@ -37,9 +41,12 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       }
 
       setNotification({ title, body, showFor: 5000, status: 'info' });
-      void replace({ query }, undefined, { shallow: true });
+
+      if (replacementUrl) {
+        void router.replace(replacementUrl);
+      }
     }
-  }, [action, query, replace, setCartItems, setDiscountCode, setNotification]);
+  }, [action, router, setCartItems, setDiscountCode, setNotification, replacementUrl]);
 
   useEffect(() => {
     const discountCode = getSingle(discount);
@@ -49,9 +56,11 @@ export const CartProvider = ({ children }: PropsWithChildren) => {
       const title = `Discount code added`;
       const body = `<b>${ucDiscountCode}</b> has been added to your cart and will be applied at checkout.`;
       setNotification({ title, body, showFor: 5000, status: 'info' });
-      void replace({ query }, undefined, { shallow: true });
+      if (replacementUrl) {
+        void router.replace(replacementUrl);
+      }
     }
-  }, [discount, query, replace, setDiscountCode, setNotification]);
+  }, [discount, router, setDiscountCode, setNotification, replacementUrl]);
 
   useEffect(() => {
     // If the currency changes the cart needs to be reset to prevent out-of-sync

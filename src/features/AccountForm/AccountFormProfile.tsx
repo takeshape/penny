@@ -1,14 +1,16 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
 import FormPhoneInput from '@/components/Form/PhoneInput/PhoneInput';
+import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerQueryResponse,
   CustomerQueryVariables,
   CustomerUpdateMutationResponse,
   CustomerUpdateMutationVariables
 } from '@/types/storefront';
-import { formatError } from '@/utils/errors';
-import { useStorefrontLazyQuery, useStorefrontMutation } from '@/utils/storefront';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,7 +24,7 @@ type AccountFormProfileForm = {
 };
 
 export const AccountFormProfile = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,

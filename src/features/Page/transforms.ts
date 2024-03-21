@@ -1,3 +1,4 @@
+import { PageSummaryItems } from '@/features/Page/types';
 import { GetPageSlugsResponse, PageGetPageResponse } from '@/types/takeshape';
 
 export function getPage(response: PageGetPageResponse) {
@@ -10,16 +11,10 @@ export function getPage(response: PageGetPageResponse) {
   return page;
 }
 
-export function getPageParams(response: GetPageSlugsResponse) {
-  const items = response?.pageList?.items;
+export function getPageSummaryItems(response: GetPageSlugsResponse): PageSummaryItems {
+  return response?.pageList?.items;
+}
 
-  if (!items) {
-    return null;
-  }
-
-  return items.map((item) => ({
-    params: {
-      page: item.slug
-    }
-  }));
+export function getPageParams(items: NonNullable<PageSummaryItems>) {
+  return items.map(({ slug }) => ({ page: slug }));
 }

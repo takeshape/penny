@@ -1,5 +1,10 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormToggleWithLabel from '@/components/Form/Toggle/ToggleWithLabel';
+import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
+import { useAuthenticatedMutation, useAuthenticatedQuery } from '@/lib/takeshape';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerQueryResponse,
   CustomerQueryVariables,
@@ -13,9 +18,6 @@ import {
   UnsubscribeMyEmailFromNewsletterMutationResponse,
   UnsubscribeMyEmailFromNewsletterMutationVariables
 } from '@/types/takeshape';
-import { formatError } from '@/utils/errors';
-import { useStorefrontLazyQuery, useStorefrontMutation } from '@/utils/storefront';
-import { useAuthenticatedMutation, useAuthenticatedQuery } from '@/utils/takeshape';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -31,7 +33,7 @@ type AccountFormMarketingForm = {
 };
 
 export const AccountFormMarketing = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,

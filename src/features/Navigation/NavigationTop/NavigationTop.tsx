@@ -1,3 +1,5 @@
+'use client';
+
 import { Logo } from '@/components/Logo/Logo';
 import NextLink from '@/components/NextLink';
 import { showCurrencySelector } from '@/config';

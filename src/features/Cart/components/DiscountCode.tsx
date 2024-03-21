@@ -1,3 +1,5 @@
+'use client';
+
 import { cartDiscountCodeAtom } from '@/features/Cart/store';
 import { Disclosure } from '@headlessui/react';
 import { TagIcon } from '@heroicons/react/24/solid';

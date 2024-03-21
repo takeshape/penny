@@ -1,4 +1,4 @@
-import classNames from '@/utils/classNames';
+import classNames from '@/lib/util/classNames';
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,

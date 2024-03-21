@@ -1,5 +1,7 @@
+'use client';
+
+import { useStorefrontLazyQuery } from '@/lib/storefront';
 import { ProductPageRelatedProductsQueryResponse, ProductPageRelatedProductsQueryVariables } from '@/types/storefront';
-import { useStorefrontLazyQuery } from '@/utils/storefront';
 import { useEffect, useMemo } from 'react';
 import { ProductPageRelatedProductsQuery } from '../queries.storefront';
 import { getRelatedProductList } from '../transforms';

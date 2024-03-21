@@ -11,6 +11,6 @@ countries.json
 !.takeshape
 !.storybook
 !.lighthouse
-!.jest
+!.vitest
 worker
 mocks

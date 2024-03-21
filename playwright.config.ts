@@ -12,7 +12,7 @@ dotenv.config({ path: `.env.local` });
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e/tests',
+  testDir: './playwright/tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -22,7 +22,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: process.env.CI ? 'blob' : 'html',
   timeout: 60 * 1000,
   expect: {
     timeout: 20000

@@ -1,5 +1,5 @@
+import classNames from '@/lib/util/classNames';
 import { shopifyGidToId } from '@/transforms/shopify';
-import classNames from '@/utils/classNames';
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';

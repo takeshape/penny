@@ -1,3 +1,5 @@
+'use client';
+
 import PageLoader from '@/components/PageLoader';
 import { isStorybook } from '@/config';
 import { CartDiscountCode } from '@/features/Cart/components/DiscountCode';

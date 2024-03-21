@@ -1,8 +1,10 @@
+'use client';
+
 import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
 import FormInput from '@/components/Form/Input/Input';
+import { useStorefrontMutation } from '@/lib/storefront';
+import { formatError } from '@/lib/util/errors';
 import { CustomerUpdateMutationResponse, CustomerUpdateMutationVariables } from '@/types/storefront';
-import { formatError } from '@/utils/errors';
-import { useStorefrontMutation } from '@/utils/storefront';
 import { signOut, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -14,7 +16,7 @@ export type AccountFormPasswordForm = {
 };
 
 export const AccountFormPassword = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,
@@ -51,7 +53,7 @@ export const AccountFormPassword = () => {
 
   useEffect(() => {
     if (isSubmitSuccessful && !error) {
-      void signOut({ callbackUrl: '/auth/signin' });
+      void signOut({ callbackUrl: '/account/signin' });
     }
   }, [isSubmitSuccessful, error, reset]);
 

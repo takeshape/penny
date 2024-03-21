@@ -1,11 +1,13 @@
+'use client';
+
 import Breadcrumbs, { Breadcrumb } from '@/components/Breadcrumbs/Breadcrumbs';
 import ProductColorSelect from '@/components/Product/ProductColorSelect';
 import ProductPrice from '@/components/Product/ProductPrice';
 import ProductPriceSelect from '@/components/Product/ProductPriceSelect';
 import ProductSizeSelect from '@/components/Product/ProductSizeSelect';
+import { useAddToCart } from '@/lib/hooks/useAddToCart';
+import { useProduct } from '@/lib/hooks/useProduct';
 import { ReviewHighlights } from '@/types/review';
-import { useAddToCart } from '@/utils/hooks/useAddToCart';
-import { useProduct } from '@/utils/hooks/useProduct';
 import { PropsWithChildren } from 'react';
 import { ProductPageProduct } from '../../types';
 import { FeaturedReviews } from './FeaturedReviews';
