@@ -64,7 +64,7 @@ test.describe('Sign in', () => {
     await signInPage.emailInput().fill(USER_EMAIL);
     await signInPage.passwordInput().fill(getPassword());
     await signInPage.signInButton().click();
-    await expect(page.getByText(`${USER_EMAIL} is in use`)).toBeVisible();
+    await expect(page.getByText('Email address in use')).toBeVisible();
   });
 
   test('Verify user cannot log in with invalid email', async ({ signInPage, page }) => {
