@@ -20,28 +20,25 @@ directory. [The instructions section of this README will teach you how to do tha
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
-## Lighthouse Report: mobile
+## Lighthouse Report: desktop
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-c2xyf66a7-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1710860981493-53474.report.html) |
+| [Path: /](https://penny-lgjhsyc9u-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711050558158-86929.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
+| 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-c2xyf66a7-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1710860981943-41535.report.html) |
-| 🟢 Performance | 98 |
-| 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| [Path: /products/basic-tee-6-pack](https://penny-lgjhsyc9u-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711050558573-23663.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 99 |
+| 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-c2xyf66a7-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1710860982603-66674.report.html) |
+| [Path: /collections/men](https://penny-lgjhsyc9u-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711050558857-12471.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
 
 <!-- LIGHTHOUSE:END -->
 <!-- prettier-ignore-end -->
