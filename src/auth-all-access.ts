@@ -9,6 +9,7 @@ export const {
   issuer: takeshapeAuthIssuer,
   origin: siteUrl,
   jwks,
+  jwksUriBaseUrl: 'oidc',
   clients: [
     {
       id: 'takeshape',
