@@ -20,21 +20,21 @@ directory. [The instructions section of this README will teach you how to do tha
 
 <!-- prettier-ignore-start -->
 <!-- LIGHTHOUSE:BEGIN -->
-## Lighthouse Report: mobile
+## Lighthouse Report: desktop
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-6ud56xofi-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711578003942-55316.report.html) |
+| [Path: /](https://penny-q87rndnyi-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711579606309-80349.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-6ud56xofi-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711578004494-43270.report.html) |
+| [Path: /products/basic-tee-6-pack](https://penny-q87rndnyi-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711579606769-56796.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 99 |
 | 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| [Path: /collections/men](https://penny-6ud56xofi-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711578004826-17882.report.html) |
+| [Path: /collections/men](https://penny-q87rndnyi-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711579607285-79606.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
 | 🟢 Best practices | 96 |
