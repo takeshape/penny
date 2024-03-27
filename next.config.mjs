@@ -133,6 +133,12 @@ const nextConfig = {
         source: '/api/auth/account/signin',
         destination: '/account/signin',
         permanent: false
+      },
+      // TODO Remove this when all-access has been updated
+      {
+        source: '/api/auth/all-access/jwks.json',
+        destination: '/oidc/jwks.json',
+        permanent: false
       }
     ];
   }
