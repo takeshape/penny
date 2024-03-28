@@ -148,7 +148,7 @@ We also used a few tools from TakeShape's ecosystem to simplify our workflow and
   provides JWKS-verifiable access tokens for third-party APIs.
 - [@takeshape/graphql-validate](https://www.npmjs.com/package/@takeshape/graphql-validate) — GraphQL query validation
   against your TakeShape API.
-- [@takeshape/nextjs](https://www.npmjs.com/package/@takeshape/nextjs) — Branch workflow and supporting utilties.
+- [@takeshape/shape-tools](https://www.npmjs.com/package/@takeshape/shape-tools) — Branch workflow and supporting utilities.
 
 # Screenshot
 
