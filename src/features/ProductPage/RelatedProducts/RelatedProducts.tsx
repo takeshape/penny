@@ -2,9 +2,9 @@ import { ProductPageRelatedProductsProduct } from '../types';
 import { ListItem } from './components/ListItem';
 import { ListItemLoading } from './components/ListItemLoading';
 
-export interface RelatedProductsProps {
+export type RelatedProductsProps = {
   products: ProductPageRelatedProductsProduct[];
-}
+};
 
 export const RelatedProducts = ({ products }: RelatedProductsProps) => {
   return (

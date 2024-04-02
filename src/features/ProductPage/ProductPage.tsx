@@ -1,7 +1,10 @@
-import Wrapper from 'components/Wrapper/Content';
-import { TrustpilotWithData } from 'features/ProductPage/Trustpilot/TrustpilotWithData';
-import { shopifyGidToId } from 'transforms/shopify';
-import { ReviewList } from 'types/review';
+import Wrapper from '@/components/Wrapper/Content';
+import { TrustpilotWithData } from '@/features/ProductPage/Trustpilot/TrustpilotWithData';
+import { getProductJsonLdProps } from '@/features/ProductPage/transforms';
+import { shopifyGidToId } from '@/transforms/shopify';
+import { ReviewList } from '@/types/review';
+import { ProductJsonLd } from 'next-seo';
+import { Simplify } from 'type-fest';
 import { Details } from './Details/Details';
 import { Policies } from './Policies/Policies';
 import { Product, ProductProps } from './Product/Product';
@@ -9,13 +12,15 @@ import { RelatedProductsWithData } from './RelatedProducts/RelatedProductsWithDa
 import { ReviewsWithData } from './Reviews/ReviewsWithData';
 import { ProductPageDetails, ProductPageOptions, ProductPagePolicies } from './types';
 
-export type ProductPageProps = Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> & {
-  reviewsPerPage?: number;
-  reviewList: ReviewList | null;
-  options: Omit<ProductPageOptions, 'component'>;
-  details: ProductPageDetails | null;
-  policies: ProductPagePolicies | null;
-};
+export type ProductPageProps = Simplify<
+  Omit<ProductProps, 'showFeaturedReviews' | 'showBreadcrumbs' | 'showReviewsLink'> & {
+    reviewsPerPage?: number;
+    reviewList: ReviewList | null;
+    options: Omit<ProductPageOptions, 'component'>;
+    details: ProductPageDetails | null;
+    policies: ProductPagePolicies | null;
+  }
+>;
 
 export const ProductPage = ({
   product,
@@ -29,9 +34,11 @@ export const ProductPage = ({
   reviewsPerPage
 }: ProductPageProps) => {
   const { showDetails, showPolicies, showReviewsIo, showTrustpilot, showRelatedProducts, showBreadcrumbs } = options;
+  const jsonLdProps = getProductJsonLdProps({ product, reviewList });
 
   return (
     <>
+      <ProductJsonLd {...jsonLdProps} useAppDir={true} />
       <div className="bg-background">
         <Product
           component={component}

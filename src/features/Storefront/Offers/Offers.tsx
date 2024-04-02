@@ -1,4 +1,4 @@
-import { StorefrontChild } from 'features/Storefront/types';
+import { StorefrontChild } from '@/features/Storefront/types';
 
 export type OffersProps = StorefrontChild & { __typename: 'OffersComponent' };
 

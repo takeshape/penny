@@ -1,12 +1,12 @@
+import classNames from '@/lib/util/classNames';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { MouseEventHandler, useMemo } from 'react';
-import classNames from 'utils/classNames';
 
-interface StarProps {
+type StarProps = {
   lit?: boolean;
   onClick?: MouseEventHandler<SVGSVGElement>;
   hoverHighlight?: boolean;
-}
+};
 
 export const Star = ({ lit, onClick, hoverHighlight = false }: StarProps) => (
   <StarIcon
@@ -21,11 +21,11 @@ export const Star = ({ lit, onClick, hoverHighlight = false }: StarProps) => (
   />
 );
 
-interface StarsProps {
+type StarsProps = {
   scale?: number;
   rating: number;
   hoverHighlight?: boolean;
-}
+};
 
 export const Stars = (props: StarsProps) => {
   const { scale = 5, rating, hoverHighlight } = props;

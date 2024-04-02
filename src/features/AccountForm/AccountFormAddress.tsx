@@ -1,21 +1,23 @@
-import FormCardPanel from 'components/Form/CardPanel/CardPanel';
-import FormInput from 'components/Form/Input/Input';
-import FormSelect from 'components/Form/Select/Select';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+'use client';
+
+import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
+import FormInput from '@/components/Form/Input/Input';
+import FormSelect from '@/components/Form/Select/Select';
+import { countries } from '@/lib/data/countries';
+import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerAddressUpdateMutationResponse,
   CustomerAddressUpdateMutationVariables,
   CustomerQueryResponse,
   CustomerQueryVariables
-} from 'types/storefront';
-import { countries } from 'utils/countries/countries';
-import { formatError } from 'utils/errors';
-import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
+} from '@/types/storefront';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { CustomerAddressUpdateMutation, CustomerQuery } from './queries.storefront';
 
-interface AccountFormAddressForm {
+type AccountFormAddressForm = {
   firstName: string | null;
   lastName: string | null;
   address1: string | null;
@@ -25,10 +27,10 @@ interface AccountFormAddressForm {
   province: string | null;
   zip: string | null;
   company: string | null;
-}
+};
 
 export const AccountFormAddress = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,
@@ -95,7 +97,7 @@ export const AccountFormAddress = () => {
   // Load the customer
   useEffect(() => {
     if (session?.user?.shopifyCustomerAccessToken) {
-      loadCustomer({
+      void loadCustomer({
         variables: {
           customerAccessToken: session.user.shopifyCustomerAccessToken
         }
@@ -135,7 +137,7 @@ export const AccountFormAddress = () => {
     <FormCardPanel
       primaryText="Shipping Address"
       secondaryText="Use a permanent address where you can receive mail."
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       isReady={isReady}
       isSubmitting={isSubmitting}
       isSubmitSuccessful={isSubmitSuccessful}

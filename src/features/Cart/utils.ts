@@ -1,9 +1,9 @@
-import { shopifyCheckoutRedirectUrl } from 'config';
-import { CartItem } from 'features/Cart/types';
+import { shopifyCheckoutRedirectUrl } from '@/config';
+import { CartItem } from '@/features/Cart/types';
+import { ProductPriceOption } from '@/types/product';
+import { CartCreateMutationVariables, CartLineInput } from '@/types/storefront';
 import { Session } from 'next-auth';
 import Stach from 'stach';
-import { ProductPriceOption } from 'types/product';
-import { CartCreateMutationVariables, CartLineInput } from 'types/storefront';
 
 export const getCartVariables = (items: CartItem[], session: Session | null, discountCode: string | null) => {
   const redirectOrigin = Stach(shopifyCheckoutRedirectUrl, { origin: window.location.origin });

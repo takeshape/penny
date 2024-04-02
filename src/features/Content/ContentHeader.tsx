@@ -1,8 +1,8 @@
-export interface ContentHeaderProps {
+export type ContentHeaderProps = {
   heading: string;
   label?: string;
   subheading?: string;
-}
+};
 
 export const ContentHeader = ({ heading, label, subheading }: ContentHeaderProps) => {
   return (

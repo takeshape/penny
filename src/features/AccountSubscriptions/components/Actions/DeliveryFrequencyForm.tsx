@@ -1,24 +1,24 @@
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
+import classNames from '@/lib/util/classNames';
+import { UpdateDeliveryFrequencyMutationResponse, UpdateDeliveryFrequencyMutationVariables } from '@/types/takeshape';
 import { RadioGroup } from '@headlessui/react';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { UpdateDeliveryFrequencyMutationResponse, UpdateDeliveryFrequencyMutationVariables } from 'types/takeshape';
-import classNames from 'utils/classNames';
-import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UpdateDeliveryFrequencyMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { formatDeliverySchedule } from '../../utils';
 
-export interface DeliveryFrequencyFormProps extends ModalProps {
+export type DeliveryFrequencyFormProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface DeliveryFrequencyFormValues {
+export type DeliveryFrequencyFormValues = {
   intervalCount: string;
-}
+};
 
 export const DeliveryFrequencyForm = ({
   isOpen,
@@ -73,7 +73,7 @@ export const DeliveryFrequencyForm = ({
       primaryText="Delivery frequency"
       secondaryText="Change how often you get your subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section aria-labelledby="options-heading" className="md:max-h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
         <h3 id="options-heading" className="sr-only">

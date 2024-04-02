@@ -1,6 +1,6 @@
+import { formatPrice } from '@/lib/util/text';
 import { format } from 'date-fns';
 import { PropsWithChildren } from 'react';
-import { formatPrice } from 'utils/text';
 import { Order } from '../../types';
 import { LineItem } from '../LineItem/LineItem';
 import { PurchaseItemOrderStatus } from '../OrderStatus/OrderStatus';

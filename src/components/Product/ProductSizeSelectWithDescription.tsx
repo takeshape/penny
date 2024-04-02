@@ -1,16 +1,16 @@
+import { useHasStockFor } from '@/lib/hooks/useHasStockFor';
+import classNames from '@/lib/util/classNames';
+import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductVariantOption, ProductVariantSelection } from 'types/product';
-import classNames from 'utils/classNames';
-import { useHasStockFor } from 'utils/hooks/useHasStockFor';
 
-export interface ProductSizeSelectWithDescriptionProps {
+export type ProductSizeSelectWithDescriptionProps = {
   label: string;
   value: string | null;
   onChange: Dispatch<SetStateAction<string | null>>;
   option: ProductVariantOption;
   selections: ProductVariantSelection[];
-}
+};
 
 export const ProductSizeSelectWithDescription = ({
   label,

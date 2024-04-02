@@ -1,6 +1,6 @@
+import FormInput from '@/components/Form/Input/Input';
 import { Meta, ReactRenderer, StoryObj } from '@storybook/react';
 import { ArgsStoryFn } from '@storybook/types';
-import FormInput from 'components/Form/Input/Input';
 import { useForm } from 'react-hook-form';
 import { FormCardPanel } from './CardPanel';
 

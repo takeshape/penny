@@ -1,13 +1,13 @@
-import { useMutation } from '@apollo/client';
-import { contactProvider } from 'config';
-import { CreateTicketWithGorgiasMutation, CreateTicketWithZendeskMutation } from 'features/Contact/queries';
+import { contactProvider } from '@/config';
+import { CreateTicketWithGorgiasMutation, CreateTicketWithZendeskMutation } from '@/features/Contact/queries';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
 import {
   CreateTicketWithGorgiasMutationResponse,
   CreateTicketWithGorgiasMutationVariables,
   CreateTicketWithZendeskMutationResponse,
   CreateTicketWithZendeskMutationVariables
-} from 'types/takeshape';
-import { useAuthenticatedMutation } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { useMutation } from '@apollo/client';
 
 export type CreateTicketVariables = CreateTicketWithGorgiasMutationVariables | CreateTicketWithZendeskMutationVariables;
 export type CreateTicketResponse = CreateTicketWithGorgiasMutationResponse | CreateTicketWithZendeskMutationResponse;

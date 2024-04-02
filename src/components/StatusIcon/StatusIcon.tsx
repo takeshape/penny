@@ -1,15 +1,15 @@
+import classNames from '@/lib/util/classNames';
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
   InformationCircleIcon,
   XCircleIcon
 } from '@heroicons/react/24/solid';
-import classNames from 'utils/classNames';
 
-export interface StatusIconProps {
+export type StatusIconProps = {
   status: 'error' | 'warn' | 'success' | 'info';
   size?: 4 | 5 | 6;
-}
+};
 
 export const StatusIcon = ({ status, size }: StatusIconProps) => {
   size = size ?? 5;

@@ -1,8 +1,8 @@
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
 import { StarIcon } from '@heroicons/react/24/solid';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import classNames from 'utils/classNames';
-import { formatPrice } from 'utils/text';
 import { ProductCategoryProductListItem } from '../../types';
 
 export type GridItemProps = Pick<ProductCategoryProductListItem, 'product' | 'reviews'> & { priority?: boolean };

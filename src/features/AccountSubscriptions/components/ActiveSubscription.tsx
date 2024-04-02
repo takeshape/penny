@@ -1,10 +1,10 @@
+import { useSubscriptionRefetch } from '@/features/AccountSubscriptions/hooks';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
 import { Menu, Tab, Transition } from '@headlessui/react';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid';
 import { format } from 'date-fns';
-import { useSubscriptionRefetch } from 'features/AccountSubscriptions/hooks';
 import { Fragment } from 'react';
-import classNames from 'utils/classNames';
-import { formatPrice } from 'utils/text';
 import { AnySubscription, RefetchSubscriptions } from '../types';
 import { formatDeliverySchedule } from '../utils';
 import { ManageSubscription } from './ManageSubscription/ManageSubscription';
@@ -23,10 +23,10 @@ const navigationItems = [
   }
 ];
 
-export interface ActiveSubscriptionProps {
+export type ActiveSubscriptionProps = {
   subscription: AnySubscription;
   refetchSubscriptionList: RefetchSubscriptions;
-}
+};
 
 export const ActiveSubscription = ({
   subscription: initialSubscription,

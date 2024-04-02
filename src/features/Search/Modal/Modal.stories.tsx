@@ -1,12 +1,12 @@
+import { isSearchOpenAtom } from '@/store';
 import { Meta, StoryObj } from '@storybook/react';
 import { graphql } from 'msw';
-import { isSearchOpenAtom } from 'store';
 import { SearchShopifyProducts } from '../queries.fixtures';
-import { Modal } from './Modal';
+import { SearchModal } from './Modal';
 
-const meta: Meta<typeof Modal> = {
-  title: 'Features / Search / Components / Modal',
-  component: Modal,
+const meta: Meta<typeof SearchModal> = {
+  title: 'Features / Search / Components / SearchModal',
+  component: SearchModal,
   parameters: {
     jotai: {
       atoms: {
@@ -19,7 +19,7 @@ const meta: Meta<typeof Modal> = {
   }
 };
 
-type Story = StoryObj<typeof Modal>;
+type Story = StoryObj<typeof SearchModal>;
 
 export const _Empty: Story = {
   parameters: {

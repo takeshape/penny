@@ -1,10 +1,12 @@
+'use client';
+
+import StatusIcon from '@/components/StatusIcon/StatusIcon';
+import { notificationAtom } from '@/store';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
-import StatusIcon from 'components/StatusIcon/StatusIcon';
 import { useAtomValue } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { Fragment, useCallback, useEffect, useRef } from 'react';
-import { notificationAtom } from 'store';
 
 export const Notification = () => {
   const notification = useAtomValue(notificationAtom);

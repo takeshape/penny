@@ -1,10 +1,12 @@
-import Alert from 'components/Alert/Alert';
-import CardPanel from 'components/Card/Panel/Panel';
-import { ActiveSubscription } from 'features/AccountSubscriptions/components/ActiveSubscription';
-import { AnySubscription } from 'features/AccountSubscriptions/types';
+'use client';
+
+import Alert from '@/components/Alert/Alert';
+import CardPanel from '@/components/Card/Panel/Panel';
+import { ActiveSubscription } from '@/features/AccountSubscriptions/components/ActiveSubscription';
+import { AnySubscription } from '@/features/AccountSubscriptions/types';
+import { useAuthenticatedQuery } from '@/lib/takeshape';
+import { GetMySubscriptionListQueryResponse } from '@/types/takeshape';
 import { useMemo } from 'react';
-import { GetMySubscriptionListQueryResponse } from 'types/takeshape';
-import { useAuthenticatedQuery } from 'utils/takeshape';
 import { EndedSubscription } from './components/EndedSubscription';
 import { NoSubscriptions } from './components/NoSubscriptions';
 import { SubscriptionItem, SubscriptionList, SubscriptionListWrapper } from './components/SubscriptionList';
@@ -18,9 +20,12 @@ export const AccountSubscriptions = () => {
     transformedData: subscriptions,
     refetch,
     error
-  } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse, {}, AnySubscription[]>(GetMySubscriptionListQuery, {
-    transform: { data: getSubscriptionList }
-  });
+  } = useAuthenticatedQuery<GetMySubscriptionListQueryResponse, Record<string, unknown>, AnySubscription[]>(
+    GetMySubscriptionListQuery,
+    {
+      transform: { data: getSubscriptionList }
+    }
+  );
 
   const activeSubscriptions = useMemo(() => subscriptions?.filter(isActiveSubscription) ?? [], [subscriptions]);
   const endedSubscriptions = useMemo(() => subscriptions?.filter(isEndedSubscription) ?? [], [subscriptions]);

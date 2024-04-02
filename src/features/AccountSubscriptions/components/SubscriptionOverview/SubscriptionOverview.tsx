@@ -1,17 +1,17 @@
-import NextImage from 'components/NextImage';
-import { CreditCard } from 'components/Payments/CreditCard';
+import NextImage from '@/components/NextImage';
+import { CreditCard } from '@/components/Payments/CreditCard';
+import { getProductUrl } from '@/transforms/shopify';
 import { useMemo, useState } from 'react';
-import { getProductUrl } from 'transforms/shopify';
 import { AnySubscription, RefetchSubscriptions } from '../../types';
 import { getOrders } from '../../utils';
 import { PaymentMethodForm } from '../Actions/PaymentMethodForm';
 import { ProductOptionsForm } from '../Actions/ProductOptionsForm';
 import { ShipmentStatus } from './ShipmentStatus';
 
-export interface SubscriptionOverviewProps {
+export type SubscriptionOverviewProps = {
   subscription: AnySubscription;
   refetchSubscriptions: RefetchSubscriptions;
-}
+};
 
 export const SubscriptionOverview = ({ subscription, refetchSubscriptions }: SubscriptionOverviewProps) => {
   const { status, orders, product, productVariant } = subscription;

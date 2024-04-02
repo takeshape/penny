@@ -1,6 +1,6 @@
+import { ProductBase } from '@/types/product';
+import { ReviewsIo_ListProductReviewsResponse } from '@/types/takeshape';
 import { SetRequired } from 'type-fest';
-import { ProductBase } from 'types/product';
-import { ReviewsIo_ListProductReviewsResponse } from 'types/takeshape';
 
 export type QuickAddProduct = SetRequired<
   ProductBase,

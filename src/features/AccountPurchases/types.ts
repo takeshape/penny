@@ -1,5 +1,5 @@
-import { GetMyAdminCustomerOrdersQueryResponse } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
+import { GetMyAdminCustomerOrdersQueryResponse } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
 
 export type OrderStatus =
   | 'UNFULFILLED'
@@ -12,14 +12,14 @@ export type OrderStatus =
   | 'ON_HOLD'
   | 'SCHEDULED';
 
-export interface FulfillmentStatus {
+export type FulfillmentStatus = {
   label: string;
   color: string;
   text: string;
   date: string;
-}
+};
 
-export interface LineItem {
+export type LineItem = {
   id: string;
   name: string;
   product: {
@@ -37,20 +37,20 @@ export interface LineItem {
     amount: number;
   };
   quantity: number;
-}
+};
 
-export interface Fulfillment {
+export type Fulfillment = {
   status: FulfillmentStatus;
   trackingInfo: TrackingInfo[];
-}
+};
 
-export interface TrackingInfo {
+export type TrackingInfo = {
   company: string;
   number: string;
   trackingUrl: string | null;
-}
+};
 
-export interface Order {
+export type Order = {
   id: string;
   status: OrderStatus;
   createdAt: string;
@@ -60,7 +60,7 @@ export interface Order {
   };
   lineItems: LineItem[];
   fulfillments: Fulfillment[];
-}
+};
 
 export type ResponseCustomer = NonNullablePath<GetMyAdminCustomerOrdersQueryResponse, ['customer']>;
 export type ResponseOrder = NonNullablePath<ResponseCustomer, ['orders', 'edges', 0, 'node']>;

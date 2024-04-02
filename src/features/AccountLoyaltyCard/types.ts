@@ -1,5 +1,5 @@
-import { Voucherify_LoyaltyCardAsset, Voucherify_LoyaltyCardStats } from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
+import { Voucherify_LoyaltyCardAsset, Voucherify_LoyaltyCardStats } from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
 
 export type LoyaltyCard = {
   code: string;

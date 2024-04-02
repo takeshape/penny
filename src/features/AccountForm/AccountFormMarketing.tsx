@@ -1,37 +1,39 @@
-import FormCardPanel from 'components/Form/CardPanel/CardPanel';
-import FormToggleWithLabel from 'components/Form/Toggle/ToggleWithLabel';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+'use client';
+
+import FormCardPanel from '@/components/Form/CardPanel/CardPanel';
+import FormToggleWithLabel from '@/components/Form/Toggle/ToggleWithLabel';
+import { useStorefrontLazyQuery, useStorefrontMutation } from '@/lib/storefront';
+import { useAuthenticatedMutation, useAuthenticatedQuery } from '@/lib/takeshape';
+import { formatError } from '@/lib/util/errors';
 import {
   CustomerQueryResponse,
   CustomerQueryVariables,
   CustomerUpdateMutationResponse,
   CustomerUpdateMutationVariables
-} from 'types/storefront';
+} from '@/types/storefront';
 import {
   GetMyNewsletterSubscriptionsQueryResponse,
   SubscribeMyEmailToNewsletterMutationResponse,
   SubscribeMyEmailToNewsletterMutationVariables,
   UnsubscribeMyEmailFromNewsletterMutationResponse,
   UnsubscribeMyEmailFromNewsletterMutationVariables
-} from 'types/takeshape';
-import { formatError } from 'utils/errors';
-import { useStorefrontLazyQuery, useStorefrontMutation } from 'utils/storefront';
-import { useAuthenticatedMutation, useAuthenticatedQuery } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   GetMyNewsletterSubscriptionsQuery,
   SubscribeMyEmailToNewsletterMutation,
   UnsubscribeMyEmailFromNewsletterMutation
 } from './queries';
 import { CustomerQuery, CustomerUpdateMutation } from './queries.storefront';
-interface AccountFormMarketingForm {
+type AccountFormMarketingForm = {
   newsletters: Record<string, boolean>;
   acceptsMarketing: boolean;
-}
+};
 
 export const AccountFormMarketing = () => {
-  const { data: session } = useSession({ required: true });
+  const { data: session } = useSession();
 
   const {
     handleSubmit,
@@ -107,7 +109,7 @@ export const AccountFormMarketing = () => {
   // Load the customer
   useEffect(() => {
     if (session?.user?.shopifyCustomerAccessToken) {
-      loadCustomer({
+      void loadCustomer({
         variables: {
           customerAccessToken: session.user.shopifyCustomerAccessToken
         }
@@ -153,7 +155,7 @@ export const AccountFormMarketing = () => {
     <FormCardPanel
       primaryText="Marketing &amp; Newsletters"
       secondaryText="What should we send you?"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}
       isReady={isReady}
       isSubmitting={isSubmitting}
       isSubmitSuccessful={isSubmitSuccessful}

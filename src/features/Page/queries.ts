@@ -5,6 +5,7 @@ export const PageGetPageSlugs = gql`
     pageList: getPageList(size: 100) {
       items {
         _id
+        _updatedAt
         slug
       }
     }

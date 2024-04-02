@@ -1,23 +1,23 @@
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
+import { shopifyGidToId } from '@/transforms/shopify';
+import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
+import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from '@/types/takeshape';
 import { Disclosure, RadioGroup } from '@headlessui/react';
 import { ChevronUpIcon } from '@heroicons/react/24/solid';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
 import { useCallback, useEffect } from 'react';
 import { Control, Controller, useForm, useWatch } from 'react-hook-form';
-import { shopifyGidToId } from 'transforms/shopify';
-import { ProductVariantOption, ProductVariantSelection } from 'types/product';
-import { UpdateProductOptionsMutationResponse, UpdateProductOptionsMutationVariables } from 'types/takeshape';
-import classNames from 'utils/classNames';
-import { useAuthenticatedMutation } from 'utils/takeshape';
-import { formatPrice } from 'utils/text';
 import { UpdateProductOptionsMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionProductVariant } from '../../types';
 import { getVariant, toFormOptions, toSelections } from '../../utils';
 
-interface ProductOptionsPriceProps extends Pick<ProductOptionsFormProps, 'subscription' | 'variants'> {
+type ProductOptionsPriceProps = {
   control: Control<ProductOptionsFormValues, any>;
-}
+} & Pick<ProductOptionsFormProps, 'subscription' | 'variants'>;
 
 const ProductOptionsPrice = ({ control, variants }: ProductOptionsPriceProps) => {
   const options = useWatch({
@@ -48,18 +48,18 @@ const ProductOptionsPrice = ({ control, variants }: ProductOptionsPriceProps) =>
   );
 };
 
-export interface ProductOptionsFormProps extends ModalProps {
+export type ProductOptionsFormProps = {
   subscription: AnySubscription;
   variants: SubscriptionProductVariant[];
   variantOptions: ProductVariantOption[];
   currentSelections: ProductVariantSelection[];
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-interface ProductOptionsFormValues {
+type ProductOptionsFormValues = {
   options: Record<string, string>;
   quantity: number;
-}
+};
 
 export const ProductOptionsForm = ({
   subscription,
@@ -126,7 +126,7 @@ export const ProductOptionsForm = ({
       primaryText="Product options"
       secondaryText="Update the product options for your subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
     >
       <section aria-labelledby="options-heading" className="md:h-[calc(1/2*100vh)] overflow-y-scroll p-[1px]">
         <h3 id="options-heading" className="sr-only">

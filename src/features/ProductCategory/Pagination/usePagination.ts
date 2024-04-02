@@ -2,7 +2,7 @@
 import { useMemo } from 'react';
 
 const range = (start: number, end: number) => {
-  let length = end - start + 1;
+  const length = end - start + 1;
   /*
   	Create an array of certain length and set the elements within it from
     start value to end value.
@@ -10,11 +10,11 @@ const range = (start: number, end: number) => {
   return Array.from({ length }, (_, idx) => idx + start);
 };
 
-interface UsePaginationHookProps {
+type UsePaginationHookProps = {
   pageCount: number;
   siblingCount: number;
   currentPage: number;
-}
+};
 
 const DOTS = '…';
 
@@ -51,8 +51,8 @@ export const usePagination = ({ pageCount, siblingCount = 1, currentPage }: UseP
     	Case 2: No left dots to show, but rights dots to be shown
     */
     if (!shouldShowLeftDots && shouldShowRightDots) {
-      let leftItemCount = 3 + 2 * siblingCount;
-      let leftRange = range(1, leftItemCount);
+      const leftItemCount = 3 + 2 * siblingCount;
+      const leftRange = range(1, leftItemCount);
 
       return [...leftRange, DOTS, pageCount];
     }
@@ -61,8 +61,8 @@ export const usePagination = ({ pageCount, siblingCount = 1, currentPage }: UseP
     	Case 3: No right dots to show, but left dots to be shown
     */
     if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 + 2 * siblingCount;
-      let rightRange = range(pageCount - rightItemCount + 1, pageCount);
+      const rightItemCount = 3 + 2 * siblingCount;
+      const rightRange = range(pageCount - rightItemCount + 1, pageCount);
       return [firstPageIndex, DOTS, ...rightRange];
     }
 
@@ -70,7 +70,7 @@ export const usePagination = ({ pageCount, siblingCount = 1, currentPage }: UseP
     	Case 4: Both left and right dots to be shown
     */
     if (shouldShowLeftDots && shouldShowRightDots) {
-      let middleRange = range(leftSiblingIndex, rightSiblingIndex);
+      const middleRange = range(leftSiblingIndex, rightSiblingIndex);
       return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
     }
   }, [pageCount, siblingCount, currentPage]);

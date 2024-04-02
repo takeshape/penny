@@ -1,10 +1,10 @@
-import NextLink from 'components/NextLink';
+import NextLink from '@/components/NextLink';
 import { PropsWithChildren, useMemo } from 'react';
 
-interface NavigationItemProps {
+type NavigationItemProps = {
   name?: string;
   href?: string;
-}
+};
 
 const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => (
   <NextLink href={props.href} className="text-base text-primary-500 hover:text-primary-900">
@@ -12,11 +12,11 @@ const NavigationItem = (props: React.PropsWithChildren<NavigationItemProps>) => 
   </NextLink>
 );
 
-interface NavigationSectionProps {
+type NavigationSectionProps = {
   name?: string | null;
   items?: NavigationItemProps[];
   links?: NavigationItemProps[];
-}
+};
 
 const NavigationSection = (props: PropsWithChildren<NavigationSectionProps>) => (
   <>
@@ -33,9 +33,9 @@ const NavigationSection = (props: PropsWithChildren<NavigationSectionProps>) => 
   </>
 );
 
-export interface NavigationProps {
+export type NavigationProps = {
   sections?: NavigationSectionProps[];
-}
+};
 
 export const Navigation = (props: React.PropsWithChildren<NavigationProps>) => {
   const { sections } = props;

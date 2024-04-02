@@ -1,5 +1,5 @@
+import { CreditCard } from '@/types/paymentMethod';
 import { differenceInMonths, isAfter, lastDayOfMonth } from 'date-fns';
-import { CreditCard } from 'types/paymentMethod';
 import {
   AlipayIcon,
   AmexIcon,

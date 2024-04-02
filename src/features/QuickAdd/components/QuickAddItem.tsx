@@ -1,20 +1,20 @@
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import ProductColorSelect from 'components/Product/ProductColorSelect';
-import ProductPrice from 'components/Product/ProductPrice';
-import ProductPriceSelect from 'components/Product/ProductPriceSelect';
-import ProductSizeSelect from 'components/Product/ProductSizeSelect';
-import { useAddToCart } from 'utils/hooks/useAddToCart';
-import { useProduct } from 'utils/hooks/useProduct';
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import ProductColorSelect from '@/components/Product/ProductColorSelect';
+import ProductPrice from '@/components/Product/ProductPrice';
+import ProductPriceSelect from '@/components/Product/ProductPriceSelect';
+import ProductSizeSelect from '@/components/Product/ProductSizeSelect';
+import { useAddToCart } from '@/lib/hooks/useAddToCart';
+import { useProduct } from '@/lib/hooks/useProduct';
 import { QuickAddProduct } from '../types';
 
-export interface QuickAddItemProps {
+export type QuickAddItemProps = {
   product: QuickAddProduct;
   onClose: () => void;
-}
+};
 
 export const QuickAddItem = ({ product, onClose }: QuickAddItemProps) => {
-  let { hasStock } = product;
+  const { hasStock } = product;
 
   const {
     setSelectedColor,

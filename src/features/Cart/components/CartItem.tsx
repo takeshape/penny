@@ -1,15 +1,17 @@
+'use client';
+
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { formatPrice, pluralizeText } from '@/lib/util/text';
 import { MinusCircleIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
 import { PrimitiveAtom, useAtom } from 'jotai';
 import { Fragment } from 'react';
-import { formatPrice, pluralizeText } from 'utils/text';
 import { CartItem as CartItemType } from '../types';
 
-export interface CartItemProps {
+export type CartItemProps = {
   atom: PrimitiveAtom<CartItemType>;
   onRemove: () => void;
-}
+};
 
 export const CartItem = ({ atom, onRemove }: CartItemProps) => {
   const [item, setItem] = useAtom(atom);

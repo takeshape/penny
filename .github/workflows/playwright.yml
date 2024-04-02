@@ -7,30 +7,39 @@ env:
   HUSKY: 0
 
 jobs:
-  playwright-test:
-    name: Test
+  Run:
+    name: Shard ${{ matrix.shardIndex }}
     if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Preview'
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    env:
+      SHARD_INDEX: ${{ matrix.shardIndex }}
+      SHARD_TOTAL: 3
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex:
+          - 1
+          - 2
+          - 3
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
-          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --shard=$SHARD_INDEX/$SHARD_TOTAL
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
           PLAYWRIGHT_PRODUCT_NAME_INSTOCK: ${{ vars.PLAYWRIGHT_PRODUCT_NAME_INSTOCK }}
@@ -44,34 +53,48 @@ jobs:
           PLAYWRIGHT_USER_EMAIL: ${{ vars.PLAYWRIGHT_USER_EMAIL }}
           PLAYWRIGHT_USER_PASSWORD: ${{ vars.PLAYWRIGHT_USER_PASSWORD }}
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+      - name: Move Playwright report
+        if: ${{ success() || failure() }}
+        shell: bash
+        run: |
+          mkdir blob-reports
+          mv blob-report blob-reports/blob-report-$SHARD_INDEX
 
-  # If configured, host your playwright report on S3
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ success() || failure() }}
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-reports
+          retention-days: 1
 
   report:
     name: Report
     if: ${{ vars.PLAYWRIGHT_S3_URL != '' && (success() || failure()) }}
     runs-on: ubuntu-latest
     needs:
-      - playwright-test
+      - Run
     env:
       HTML_REPORT_URL_PATH: reports/${{ github.sha }}/${{ github.run_attempt }}
     steps:
       - name: Download results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: playwright-report
-          path: playwright/${{ env.HTML_REPORT_URL_PATH }}
+          path: blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge reports
+        shell: bash
+        run: |
+          mv ./blob-reports/**/*.zip ./blob-reports
+          npx playwright merge-reports --reporter html ./blob-reports
+          mkdir -p ./playwright-report-upload/$HTML_REPORT_URL_PATH
+          mv ./playwright-report/* ./playwright-report-upload/$HTML_REPORT_URL_PATH
 
       - name: Upload to S3
         run: |
-          aws s3 sync playwright s3://$S3_BUCKET
+          aws s3 sync ./playwright-report-upload s3://$S3_BUCKET
         env:
           S3_BUCKET: ${{ vars.PLAYWRIGHT_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.PLAYWRIGHT_AWS_ACCESS_KEY_ID }}
@@ -87,10 +110,10 @@ jobs:
 
       - name: Post status
         if: ${{ success() || failure() }}
-        uses: Sibz/github-status-action@v1
+        uses: guibranco/github-status-action-v2@v1.1.13
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: Playwright Report
-          state: ${{ needs.playwright-test.result }}
+          state: ${{ needs.Run.result }}
           sha: ${{ github.sha }}
           target_url: ${{ vars.PLAYWRIGHT_S3_URL }}${{ env.HTML_REPORT_URL_PATH }}/index.html

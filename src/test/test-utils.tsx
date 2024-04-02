@@ -2,23 +2,24 @@ import { MockedProvider as MockedApolloProvider } from '@apollo/client/testing';
 import { render, RenderOptions } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
 import { PropsWithChildren, ReactElement } from 'react';
+import { vi } from 'vitest';
 
 const mockUseRouterReturnValue = {
   query: {},
   pathname: '/',
   asPath: '/',
   events: {
-    emit: jest.fn(),
-    on: jest.fn(),
-    off: jest.fn()
+    emit: vi.fn(),
+    on: vi.fn(),
+    off: vi.fn()
   },
-  push: jest.fn(),
-  prefetch: jest.fn(),
-  replace: jest.fn(),
-  back: jest.fn()
+  push: vi.fn(),
+  prefetch: vi.fn(),
+  replace: vi.fn(),
+  back: vi.fn()
 };
 
-jest.mock('next/dist/client/router', () => ({
+vi.mock('next/dist/client/router', () => ({
   __esModule: true,
   useRouter: () => mockUseRouterReturnValue
 }));

@@ -1,11 +1,11 @@
+import { _BackgroundImage } from '@/features/Storefront/BackgroundImage/BackgroundImage.stories';
+import { _Collection } from '@/features/Storefront/Collection/Collection.stories';
+import { _Collections } from '@/features/Storefront/Collections/Collections.stories';
+import { _Hero } from '@/features/Storefront/Hero/Hero.stories';
+import { _Offers } from '@/features/Storefront/Offers/Offers.stories';
+import { _Sale } from '@/features/Storefront/Sale/Sale.stories';
+import { _Testimonials } from '@/features/Storefront/Testimonials/Testimonials.stories';
 import { Meta, StoryObj } from '@storybook/react';
-import { _BackgroundImage } from 'features/Storefront/BackgroundImage/BackgroundImage.stories';
-import { _Collection } from 'features/Storefront/Collection/Collection.stories';
-import { _Collections } from 'features/Storefront/Collections/Collections.stories';
-import { _Hero } from 'features/Storefront/Hero/Hero.stories';
-import { _Offers } from 'features/Storefront/Offers/Offers.stories';
-import { _Sale } from 'features/Storefront/Sale/Sale.stories';
-import { _Testimonials } from 'features/Storefront/Testimonials/Testimonials.stories';
 import { Storefront } from './Storefront';
 
 const meta: Meta<typeof Storefront> = {

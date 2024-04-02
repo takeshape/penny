@@ -1,21 +1,21 @@
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { ReviewList } from 'types/review';
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { ReviewList } from '@/types/review';
 import { TrustpilotLoading } from './TrustpilotLoading';
 import { TrustpilotStars } from './TrustpilotStars';
 
 export const readOnlyReviews = true;
 export const useReviewsFromProductQuery = false;
 
-export interface TrustpilotProps {
+export type TrustpilotProps = {
   error: boolean;
   currentPageData: ReviewList | null;
   currentPage: number;
   handleNext: () => void;
   handlePrevious: () => void;
-}
+};
 
 export const Trustpilot = ({ error, currentPageData, currentPage, handleNext, handlePrevious }: TrustpilotProps) => {
   const { stats } = currentPageData ?? {};

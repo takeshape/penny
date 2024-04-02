@@ -14,8 +14,12 @@ export const Loading: Story = {
     error: false,
     currentPageData: null,
     currentPage: 1,
-    handleNext: () => {},
-    handlePrevious: () => {}
+    handleNext: () => {
+      // empty
+    },
+    handlePrevious: () => {
+      // empty
+    }
   }
 };
 

@@ -1,4 +1,4 @@
-import { cartLocalStorageKey, defaultProductImage } from 'config';
+import { cartLocalStorageKey, defaultProductImage } from '@/config';
 import { atom } from 'jotai';
 import { atomWithStorage, splitAtom } from 'jotai/utils';
 import { AddToCartInput, CartItem, CartItemAttribute } from './types';

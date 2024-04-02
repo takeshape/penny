@@ -6,8 +6,8 @@ import {
   getProductUrl,
   getProductVariantOptions,
   getProductVariants
-} from 'transforms/shopify';
-import { QuickAddQueryResponse } from 'types/takeshape';
+} from '@/transforms/shopify';
+import { QuickAddQueryResponse } from '@/types/takeshape';
 import { QuickAddProduct } from './types';
 
 export function getProduct(response?: QuickAddQueryResponse | null): QuickAddProduct | null {

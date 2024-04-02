@@ -1,3 +1,4 @@
+import { ProductVariantSelection } from '@/types/product';
 import {
   ArrowUturnLeftIcon,
   CheckCircleIcon,
@@ -7,7 +8,6 @@ import {
   TruckIcon
 } from '@heroicons/react/24/solid';
 import { isFuture, isPast, isToday } from 'date-fns';
-import { ProductVariantSelection } from 'types/product';
 import {
   ActiveSubscription,
   AnySubscription,

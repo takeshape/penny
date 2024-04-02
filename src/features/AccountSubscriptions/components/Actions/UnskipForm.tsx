@@ -1,23 +1,23 @@
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
+import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from '@/types/takeshape';
 import { format } from 'date-fns';
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { UnskipChargeMutationResponse, UnskipChargeMutationVariables } from 'types/takeshape';
-import { useAuthenticatedMutation } from 'utils/takeshape';
 import { UnskipChargeMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
-export interface UnskipFormProps extends ModalProps {
+export type UnskipFormProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface SkipFormValues {
+export type SkipFormValues = {
   confirm: boolean;
-}
+};
 
 export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscriptions }: UnskipFormProps) => {
   const {
@@ -51,7 +51,7 @@ export const UnskipForm = ({ isOpen, onClose, order, subscription, refetchSubscr
       primaryText="Unskip order"
       secondaryText="Restore a previously skipped upcoming order."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
       autoCloseDelay={3000}
     >

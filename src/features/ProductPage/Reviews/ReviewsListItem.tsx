@@ -1,11 +1,11 @@
-import { Avatar } from 'components/Avatar/Avatar';
-import { DefaultReviewer } from 'components/Icons/Icons';
-import { Stars } from 'components/Stars/Stars';
+import { Avatar } from '@/components/Avatar/Avatar';
+import { DefaultReviewer } from '@/components/Icons/Icons';
+import { Stars } from '@/components/Stars/Stars';
 import { ProductPageReviewsReview } from '../types';
 
-export interface ReviewsListItemProps {
+export type ReviewsListItemProps = {
   item: ProductPageReviewsReview;
-}
+};
 
 export const ReviewsListItem = ({ item }: ReviewsListItemProps) => {
   return (

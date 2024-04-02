@@ -1,19 +1,19 @@
 import { SelectHTMLAttributes } from 'react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
 
-export interface SelectOption {
+export type SelectOption = {
   key: string;
   value?: string;
   title: string;
   disabled?: boolean;
-}
+};
 
-export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+export type SelectProps = {
   id: string;
   label: string;
   options: SelectOption[];
   helpText?: string;
-}
+} & SelectHTMLAttributes<HTMLSelectElement>;
 
 export const FormSelect = <
   TFieldValues extends FieldValues,

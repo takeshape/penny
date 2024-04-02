@@ -1,12 +1,12 @@
-import { Review, ReviewList, ReviewStats } from 'types/review';
+import { isNotNullish } from '@/lib/util/types';
+import { Review, ReviewList, ReviewStats } from '@/types/review';
 import {
   ReviewsIo_ListProductReviewsResponse,
   ReviewsIo_ListProductReviewsResponseReviewsProperty,
   ReviewsIo_ListProductReviewsResponseStatsProperty,
   ReviewsIo_ProductReview,
   ReviewsIo_Reviewer
-} from 'types/takeshape';
-import { isNotNullish } from 'utils/types';
+} from '@/types/takeshape';
 
 export type ReviewsIoReview = Pick<
   ReviewsIo_ProductReview,

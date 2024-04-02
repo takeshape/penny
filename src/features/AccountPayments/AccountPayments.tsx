@@ -1,11 +1,13 @@
-import CardPanel from 'components/Card/Panel/Panel';
-import { PaymentMethod as TPaymentMethod } from 'types/paymentMethod';
+'use client';
+
+import CardPanel from '@/components/Card/Panel/Panel';
+import { PaymentMethod as TPaymentMethod } from '@/types/paymentMethod';
 import { AddPaymentMethod } from './components/AddPaymentMethod';
 import { PaymentMethod } from './components/PaymentMethod';
 
-export interface AccountPaymentsProps {
+export type AccountPaymentsProps = {
   paymentMethods: TPaymentMethod[];
-}
+};
 
 export const AccountPayments = ({ paymentMethods }: AccountPaymentsProps) => {
   return (

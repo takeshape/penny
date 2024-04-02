@@ -1,7 +1,7 @@
+import { currencyList } from '@/config';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from '@/store';
 import { Meta, StoryObj } from '@storybook/react';
-import { currencyList } from 'config';
 import { rest } from 'msw';
-import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from './Navigation';
 import { navigationResponse } from './queries.fixtures';
 import { getNavigation } from './transforms';

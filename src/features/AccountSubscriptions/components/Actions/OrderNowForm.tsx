@@ -1,28 +1,28 @@
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { format } from 'date-fns';
-import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { useAuthenticatedMutation } from '@/lib/takeshape';
 import {
   SetNextChargeDateMutationResponse,
   SetNextChargeDateMutationVariables,
   UnskipChargeMutationResponse,
   UnskipChargeMutationVariables
-} from 'types/takeshape';
-import { useAuthenticatedMutation } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { format } from 'date-fns';
+import { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
 import { SetNextChargeDateMutation, UnskipChargeMutation } from '../../queries';
 import { AnySubscription, RefetchSubscriptions, SubscriptionOrder } from '../../types';
 
-export interface OrderNowFormProps extends ModalProps {
+export type OrderNowFormProps = {
   subscription: AnySubscription;
   order: SubscriptionOrder;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface OrderNowFormValues {
+export type OrderNowFormValues = {
   confirm: boolean;
-}
+};
 
 /**
  * TODO Ideally we'd use this: https://developer.rechargepayments.com/2021-11/charges/charge_process but it requires a
@@ -73,7 +73,7 @@ export const OrderNowForm = ({ isOpen, onClose, subscription, order, refetchSubs
       primaryText="Order now"
       secondaryText="Get your next order right away."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful}
     >
       <div className="md:h-[calc(1/4*100vh)] overflow-y-scroll p-[1px] flex flex-col">

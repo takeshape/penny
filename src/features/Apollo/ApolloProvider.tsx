@@ -1,19 +1,19 @@
-import { ApolloProvider as Provider } from '@apollo/client';
-import { takeshapeAnonymousApiKey, takeshapeApiUrl } from 'config';
+'use client';
+
+import { takeshapeAnonymousApiKey, takeshapeApiUrl } from '@/config';
+import { createNextSSRApolloClient } from '@/lib/apollo/ssr';
+import { ApolloNextAppProvider } from '@apollo/experimental-nextjs-app-support/ssr';
 import { PropsWithChildren } from 'react';
-import { useApollo } from 'utils/apollo/useApollo';
 
-type ApolloProviderProps = PropsWithChildren<{ pageProps: any }>;
-
-const ApolloProvider = ({ pageProps, children }: ApolloProviderProps) => {
-  const apolloClient = useApollo(pageProps, {
+function makeClient() {
+  return createNextSSRApolloClient({
     uri: takeshapeApiUrl,
     accessToken: takeshapeAnonymousApiKey,
     accessTokenHeader: 'Authorization',
     accessTokenPrefix: 'Bearer'
   });
+}
 
-  return <Provider client={apolloClient}>{children}</Provider>;
-};
-
-export default ApolloProvider;
+export function ApolloProvider({ children }: PropsWithChildren) {
+  return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>;
+}

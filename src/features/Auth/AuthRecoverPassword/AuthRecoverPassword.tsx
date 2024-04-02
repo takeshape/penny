@@ -1,30 +1,33 @@
-import { useMutation, useQuery } from '@apollo/client';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { useReCaptcha } from 'next-recaptcha-v3';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+'use client';
+
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { sanitizeCallbackUrl } from '@/lib/util/callbacks';
 import {
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables,
   RecoverCustomerPasswordMutationResponse,
   RecoverCustomerPasswordMutationVariables
-} from 'types/takeshape';
-import { sanitizeCallbackUrl } from 'utils/callbacks';
+} from '@/types/takeshape';
+import { useMutation, useQuery } from '@apollo/client';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { GetCustomerStateQuery, RecoverCustomerPasswordMutation } from '../queries';
 import { InactiveCustomer } from '../types';
-export interface AuthRecoverPasswordForm {
-  email: string;
-}
 
-export interface AuthRecoverPasswordProps {
+export type AuthRecoverPasswordForm = {
+  email: string;
+};
+
+export type AuthRecoverPasswordProps = {
   callbackUrl: string;
-}
+};
 
 export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) => {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
@@ -32,7 +35,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
   const { handleSubmit, formState, reset, control } = useForm<AuthRecoverPasswordForm>({ mode: 'onBlur' });
 
-  const { push } = useRouter();
+  const router = useRouter();
   const [setRecoverPasswordPayload, { data: recoverPasswordData }] = useMutation<
     RecoverCustomerPasswordMutationResponse,
     RecoverCustomerPasswordMutationVariables
@@ -61,14 +64,14 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       if (customer?.state === 'no-account') {
         // Send to sign up page
-        push(`/auth/create?notice=Email+address+not+found.&email=${email}`);
+        void router.push(`/account/create?notice=Email+address+not+found.&email=${email}`);
         return;
       }
 
       const recaptchaToken = await executeRecaptcha('recover_password');
       await setRecoverPasswordPayload({ variables: { email, recaptchaToken } });
     },
-    [executeRecaptcha, push, refetch, setRecoverPasswordPayload]
+    [executeRecaptcha, router, refetch, setRecoverPasswordPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -82,9 +85,9 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
   useEffect(() => {
     if (sanitizedCallbackUrl && hasData) {
-      setTimeout(() => push(sanitizedCallbackUrl), 5000);
+      setTimeout(() => void router.push(sanitizedCallbackUrl), 5000);
     }
-  }, [sanitizedCallbackUrl, hasData, push]);
+  }, [sanitizedCallbackUrl, hasData, router]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -102,7 +105,7 @@ export const AuthRecoverPassword = ({ callbackUrl }: AuthRecoverPasswordProps) =
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {hasErrors && (
               <Alert
                 status="error"

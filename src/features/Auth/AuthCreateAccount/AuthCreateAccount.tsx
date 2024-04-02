@@ -1,38 +1,41 @@
-import { ApolloError, useMutation, useQuery } from '@apollo/client';
-import Alert from 'components/Alert/Alert';
-import Button from 'components/Button/Button';
-import FormInput from 'components/Form/Input/Input';
-import { Logo } from 'components/Logo/Logo';
-import RecaptchaBranding from 'components/RecaptchaBranding/RecaptchaBranding';
-import { AccountInactiveForm } from 'features/Auth/AuthAccountInactive/AuthAccountInactive';
-import { InactiveCustomer } from 'features/Auth/types';
-import { signIn } from 'next-auth/react';
-import { useReCaptcha } from 'next-recaptcha-v3';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+'use client';
+
+import Alert from '@/components/Alert/Alert';
+import Button from '@/components/Button/Button';
+import FormInput from '@/components/Form/Input/Input';
+import { Logo } from '@/components/Logo/Logo';
+import RecaptchaBranding from '@/components/RecaptchaBranding/RecaptchaBranding';
+import { AccountInactiveForm } from '@/features/Auth/AuthAccountInactive/AuthAccountInactive';
+import { InactiveCustomer } from '@/features/Auth/types';
+import { encodeErrorCode } from '@/lib/auth/errors';
+import { sanitizeCallbackUrl } from '@/lib/util/callbacks';
 import {
   CreateCustomerMutationResponse,
   CreateCustomerMutationVariables,
   GetCustomerStateQueryResponse,
   GetCustomerStateQueryVariables
-} from 'types/takeshape';
-import { sanitizeCallbackUrl } from 'utils/callbacks';
+} from '@/types/takeshape';
+import { ApolloError, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/experimental-nextjs-app-support/ssr';
+import { signIn } from 'next-auth/react';
+import { useReCaptcha } from 'next-recaptcha-v3';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { CreateCustomerMutation, GetCustomerStateQuery } from '../queries';
 
-export interface AuthCreateAccountForm {
+export type AuthCreateAccountForm = {
   email: string;
   password: string;
   passwordConfirm: string;
-}
+};
 
-export interface AuthCreateAccountProps {
+export type AuthCreateAccountProps = {
   callbackUrl: string;
-  signIn: typeof signIn;
   useMultipass: boolean;
   notice?: string;
   email?: string;
-}
+};
 
 function getErrorMessage(error?: ApolloError) {
   if (!error) {
@@ -46,12 +49,12 @@ function getErrorMessage(error?: ApolloError) {
   return error.message;
 }
 
-export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, email }: AuthCreateAccountProps) => {
+export function AuthCreateAccount({ callbackUrl, useMultipass, notice, email }: AuthCreateAccountProps) {
   const sanitizedCallbackUrl = useMemo(() => sanitizeCallbackUrl(callbackUrl), [callbackUrl]);
 
   const { handleSubmit, formState, control, watch, reset } = useForm<AuthCreateAccountForm>();
   const [inactiveCustomer, setInactiveCustomer] = useState<InactiveCustomer | null>(null);
-  const { push } = useRouter();
+  const router = useRouter();
 
   const [setCustomerPayload, { data: customerResponse, error: customerError }] = useMutation<
     CreateCustomerMutationResponse,
@@ -70,9 +73,9 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
   useEffect(() => {
     if (customerResponse?.customerCreate?.customer?.id) {
       const { email, password } = watched.current;
-      signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
+      void signIn('shopify', { email, password, callbackUrl: sanitizedCallbackUrl });
     }
-  }, [customerResponse, signIn, sanitizedCallbackUrl]);
+  }, [customerResponse, sanitizedCallbackUrl]);
 
   const { executeRecaptcha } = useReCaptcha();
 
@@ -93,7 +96,9 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
 
       if (customer?.state === 'enabled') {
         // Send to sign up page
-        push(`/auth/signin?error=CannotCreate&email=${email}`);
+        void router.push(
+          `/account/signin?error=CredentialsSignin&code=${encodeErrorCode({ code: 'email-in-use', email })}`
+        );
         return;
       }
 
@@ -102,7 +107,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
         variables: { input: { email, password, recaptchaToken } }
       });
     },
-    [executeRecaptcha, push, refetch, setCustomerPayload]
+    [executeRecaptcha, router, refetch, setCustomerPayload]
   );
 
   const isAccountInactiveOpen = useMemo(() => inactiveCustomer !== null, [inactiveCustomer]);
@@ -114,8 +119,8 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
   const errorMessage = getErrorMessage(customerError);
 
   const signinGoogle = useCallback(() => {
-    signIn('google', { callbackUrl: sanitizedCallbackUrl });
-  }, [sanitizedCallbackUrl, signIn]);
+    void signIn('google', { callbackUrl: sanitizedCallbackUrl });
+  }, [sanitizedCallbackUrl]);
 
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -133,7 +138,7 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-background py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={(...args) => void handleSubmit(onSubmit)(...args)}>
             {notice && <Alert status="warn" primaryText={notice} />}
 
             {errorMessage && (
@@ -209,10 +214,10 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
             <div className="text-body-500 text-sm">
               Already have an account?
               <a
-                href={`/api/auth/signin`}
+                href={`/account/signin`}
                 onClick={(e) => {
                   e.preventDefault();
-                  signIn(undefined, { callbackUrl: sanitizedCallbackUrl });
+                  void signIn(undefined, { callbackUrl: sanitizedCallbackUrl });
                 }}
                 className="ml-1 text-sm font-medium text-accent-500 hover:text-accent-500 cursor-pointer"
               >
@@ -262,4 +267,4 @@ export const AuthCreateAccount = ({ callbackUrl, signIn, useMultipass, notice, e
       </div>
     </div>
   );
-};
+}

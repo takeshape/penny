@@ -1,14 +1,14 @@
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { StorefrontChild } from '@/features/Storefront/types';
 import { getImageUrl } from '@takeshape/routing';
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { StorefrontChild } from 'features/Storefront/types';
 
 type CollectionsProps = StorefrontChild & {
   __typename: 'CollectionsComponent';
 };
 
 export const Collections = ({ collections }: CollectionsProps) => {
-  if (!collections || !collections.length) return null;
+  if (!collections?.length) return null;
   return (
     <section aria-labelledby="collections-heading" className="bg-body-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

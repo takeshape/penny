@@ -1,19 +1,19 @@
-import { Breadcrumb } from 'components/Breadcrumbs/Breadcrumbs';
-import { SetRequired } from 'type-fest';
-import { CollectionBase } from 'types/collection';
-import { ProductBase } from 'types/product';
-import { ReviewStats } from 'types/review';
+import { Breadcrumb } from '@/components/Breadcrumbs/Breadcrumbs';
+import { CollectionBase } from '@/types/collection';
+import { ProductBase } from '@/types/product';
+import { ReviewStats } from '@/types/review';
 import {
   ProductCategoryShopifyCollectionQueryResponse,
+  ProductCategoryShopifySummaryResponse,
   ReviewsIo_ListProductReviewsResponse,
-  Shopify_Collection,
   Shopify_CollectionConnection
-} from 'types/takeshape';
-import { NonNullablePath } from 'types/util';
+} from '@/types/takeshape';
+import { NonNullablePath } from '@/types/util';
+import { Get, SetRequired } from 'type-fest';
 
-export type ProductCategoryShopifyCollectionHandleNode = Pick<Shopify_Collection, 'id' | 'handle'>;
-export type ProductCategoryShopifyCollectionHandleConnection = Pick<Shopify_CollectionConnection, 'pageInfo'> & {
-  nodes: ProductCategoryShopifyCollectionHandleNode[];
+export type ProductCategoryShopifySummaryNodes = Get<ProductCategoryShopifySummaryResponse, ['collections', 'nodes']>;
+export type ProductCategoryShopifySummaryConnection = Pick<Shopify_CollectionConnection, 'pageInfo'> & {
+  nodes: ProductCategoryShopifySummaryNodes;
 };
 
 export type ProductCategoryShopifyCollection = ProductCategoryShopifyCollectionQueryResponse['collection'];

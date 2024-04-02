@@ -1,10 +1,12 @@
+'use client';
+
+import { isStorybook } from '@/config';
+import classNames from '@/lib/util/classNames';
+import { isMobileMenuOpenAtom } from '@/store';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { isStorybook } from 'config';
 import { useAtom } from 'jotai';
 import { Fragment } from 'react';
-import { isMobileMenuOpenAtom } from 'store';
-import classNames from 'utils/classNames';
 import { Navigation } from '../types';
 import { MobileMenuAccount } from './components/MobileMenuAccount';
 import { MobileMenuCurrencySelect } from './components/MobileMenuCurrencySelect';

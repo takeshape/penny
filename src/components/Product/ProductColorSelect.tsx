@@ -1,15 +1,15 @@
+import { useHasStockFor } from '@/lib/hooks/useHasStockFor';
+import classNames from '@/lib/util/classNames';
+import { ProductVariantOption, ProductVariantSelection } from '@/types/product';
 import { RadioGroup } from '@headlessui/react';
 import { Dispatch, SetStateAction } from 'react';
-import { ProductVariantOption, ProductVariantSelection } from 'types/product';
-import classNames from 'utils/classNames';
-import { useHasStockFor } from 'utils/hooks/useHasStockFor';
 
-export interface ProductColorSelectProps {
+export type ProductColorSelectProps = {
   value: string | null;
   option: ProductVariantOption;
   onChange: Dispatch<SetStateAction<string | null>>;
   selections: ProductVariantSelection[];
-}
+};
 
 export const ProductColorSelect = ({ value, onChange, option, selections }: ProductColorSelectProps) => {
   const hasStockFor = useHasStockFor({ name: option.name, selections });

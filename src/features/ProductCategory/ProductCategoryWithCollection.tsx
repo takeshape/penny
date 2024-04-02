@@ -1,10 +1,11 @@
-import Seo from 'components/Seo';
-import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo } from 'react';
-import { PaginationDataHookParsedPath, usePaginationData } from 'utils/hooks/usePaginationData';
+'use client';
+
+import { PaginationDataHookParsedPath, usePaginationData } from '@/lib/hooks/usePaginationData';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
 import { ProductCategory } from './ProductCategory';
 import { ProductCategoryShopifyCollectionQuery } from './queries';
-import { getCollection, getCurrentTitle, getNextUrl, parseRouterPath } from './transforms';
+import { getCollection, getNextUrl, parseRouterPath } from './transforms';
 import { ProductCategoryCollection, ProductCategoryProductListItem } from './types';
 
 function isSameCollection(collA: ProductCategoryCollection, collB: ProductCategoryCollection) {
@@ -13,15 +14,15 @@ function isSameCollection(collA: ProductCategoryCollection, collB: ProductCatego
   );
 }
 
-export interface ProductCategoryWithCollectionProps {
+export type ProductCategoryWithCollectionProps = {
   collection: ProductCategoryCollection;
   pageSize: number;
-}
+};
 
 export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductCategoryWithCollectionProps) => {
-  const { push } = useRouter();
+  const router = useRouter();
 
-  const parsePath = useCallback((asPath: string) => parseRouterPath(collection, asPath), [collection]);
+  const parsePath = useCallback((pathname: string | null) => parseRouterPath(collection, pathname), [collection]);
   const getVariables = useCallback(
     (parsedPath: PaginationDataHookParsedPath) => {
       const variables =
@@ -55,8 +56,6 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
     isSamePageData: isSameCollection
   });
 
-  const currentTitle = useMemo(() => getCurrentTitle(currentPageData, currentPage), [currentPageData, currentPage]);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
@@ -83,9 +82,9 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
         nextUrl = getNextUrl(currentPageData, nextPage, isPreviousPage);
       }
 
-      push(nextUrl, undefined, { shallow: true });
+      void router.push(nextUrl);
     },
-    [cachedPageData, currentPageData, currentPath.page, push]
+    [cachedPageData, currentPageData, currentPath.page, router]
   );
 
   let items: ProductCategoryProductListItem[] = [];
@@ -102,17 +101,14 @@ export const ProductCategoryWithCollection = ({ collection, pageSize }: ProductC
     : null;
 
   return (
-    <>
-      <Seo title={currentTitle} />
-      <ProductCategory
-        header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
-        items={items}
-        pagination={{
-          nextPageUrl: isLoadingPage || isLoadingNextPage || !nextPageUrl ? undefined : nextPageUrl,
-          previousPageUrl: isLoadingPage || !previousPageUrl ? undefined : previousPageUrl,
-          setCurrentPage: handleSetCurrentPage
-        }}
-      />
-    </>
+    <ProductCategory
+      header={{ text: { primary: collection.name, secondary: collection.descriptionHtml } }}
+      items={items}
+      pagination={{
+        nextPageUrl: isLoadingPage || isLoadingNextPage || !nextPageUrl ? undefined : nextPageUrl,
+        previousPageUrl: isLoadingPage || !previousPageUrl ? undefined : previousPageUrl,
+        setCurrentPage: handleSetCurrentPage
+      }}
+    />
   );
 };

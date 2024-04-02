@@ -1,9 +1,10 @@
-import Button from 'components/Button/Button';
-import { Logo } from 'components/Logo/Logo';
+'use client';
+
+import Button from '@/components/Button/Button';
+import { Logo } from '@/components/Logo/Logo';
 import { signOut } from 'next-auth/react';
 
-export const AuthSignOut = (props: { signOut: typeof signOut }) => {
-  const { signOut } = props;
+export const AuthSignOut = () => {
   return (
     <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -17,7 +18,7 @@ export const AuthSignOut = (props: { signOut: typeof signOut }) => {
             <Button
               onClick={(e) => {
                 e.preventDefault();
-                signOut({ callbackUrl: '/' });
+                void signOut({ callbackUrl: '/' });
               }}
               color="primary"
               className="w-full"

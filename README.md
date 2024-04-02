@@ -11,6 +11,9 @@ Check out the store now at https://penny-demo.takeshape.io/.
 - Deployed on Netlify: https://penny-ecommerce.netlify.app
 - Deployed on Vercel: https://penny-ecommerce.vercel.app
 
+> [!IMPORTANT]  
+> In order to checkout in the demo you will need to enter the store password `test1234`
+
 You can clone this repo with git to run the Next.js frontend locally (`git clone https://github.com/takeshape/penny`).
 To connect it to a GraphQL backend that TakeShape provides, just deploy the pattern in the `.takeshape/pattern`
 directory. [The instructions section of this README will teach you how to do that](#getting-started).
@@ -21,24 +24,21 @@ directory. [The instructions section of this README will teach you how to do tha
 
 | Category | Score |
 | -------- | ----- |
-| [Path: /](https://penny-pj7g1f8kl-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1708503983792-11642.report.html) |
+| [Path: /](https://penny-99me0lx52-takeshape.vercel.app/) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711582866803-2975.report.html) |
 | 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 100 |
+| 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /products/basic-tee-6-pack](https://penny-pj7g1f8kl-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1708503984059-63871.report.html) |
-| 🟢 Performance | 99 |
+| [Path: /products/basic-tee-6-pack](https://penny-99me0lx52-takeshape.vercel.app/products/basic-tee-6-pack) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711582867308-31177.report.html) |
+| 🟢 Performance | 100 |
+| 🟢 Accessibility | 99 |
+| 🟢 Best practices | 96 |
+| 🟢 SEO | 100 |
+| [Path: /collections/men](https://penny-99me0lx52-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1711582867733-57816.report.html) |
+| 🟢 Performance | 100 |
 | 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
+| 🟢 Best practices | 96 |
 | 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
-| [Path: /collections/men](https://penny-pj7g1f8kl-takeshape.vercel.app/collections/men) | [Report](https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1708503984361-68691.report.html) |
-| 🟢 Performance | 99 |
-| 🟢 Accessibility | 100 |
-| 🟢 Best practices | 92 |
-| 🟢 SEO | 100 |
-| 🟢 PWA | 100 |
 
 <!-- LIGHTHOUSE:END -->
 <!-- prettier-ignore-end -->
@@ -107,7 +107,7 @@ to keep error-free and performant.
 
 #### Unit Tests
 
-- [Jest](https://jestjs.io/) for React component testing.
+- [Vitest](https://vitest.dev/) for React component and unit testing.
 - [ESLint](https://eslint.org) for code style and quality.
 - [TypeScript](https://www.typescriptlang.org) ensures a type-safe codebase.
 - [GraphQL Codegen](https://www.graphql-code-generator.com) extend type-safety to all your GraphQL queries.
@@ -250,8 +250,7 @@ service provider in your TakeShape project, and configuring NextAuth with `@take
    ![A screenshot of the Home tab in the Penny on TakeShape](/readme-images/home-tab-open-id-readme-images.png)
 
 2. Add your store's URL to the **Issuer URL** field, and enter the same URL with
-   `/api/auth/all-access/.well-known/openid-configuration` appended to the end of it in the **OpenID Configuration
-   URL**.
+   `/api/oidc/.well-known/openid-configuration` appended to the end of it in the **OpenID Configuration URL**.
 
    > Note: Your store URL should be the public-facing URL of your website, not necessarily your myshopify.com URL.
 
@@ -312,8 +311,8 @@ the frontend Next.js project.
 3. Configure your Shopify checkout experience.
 
 This project uses Shopify's checkout experience. That means when a customer is ready to purchase, they are redirected to
-a checkout flow that Shopify generates. The only downside is, shopify's checkout flow will send users to your shopify
-store, not your headless store, when they're done. To force Shopify's checkout experience to redirect to your headless
+a checkout flow that Shopify generates. The only downside is, Shopify's checkout flow will send users to your Shopify
+store, not your Penny store, when they're done. To force Shopify's checkout experience to redirect to your Penny
 storefront, you must use [their Liquid templating language](https://shopify.github.io/liquid/). These instructions show
 you how:
 
@@ -335,8 +334,8 @@ you how:
 
 - **Save** your changes.
 
-The following instructions will show you how to configure your checkout process to work with this headless store. To
-configure these settings, stay in the **Checkout** section of the **Settings** menu in your store's admin UI.
+Configure your checkout process to work with this headless store. Stay in the **Checkout** section of the **Settings**
+menu in your store's admin UI.
 
 - Under **Customer Accounts**, select **Accounts are optional**. This allows customers to create checkouts as guests.
 
@@ -357,6 +356,12 @@ configure these settings, stay in the **Checkout** section of the **Settings** m
 > If you want to test this app without enabling real payments, it's best to set up test payments while you're in
 > Shopify's admin UI.
 > [Follow Shopify's instructions for setting up test payments in your store](https://help.shopify.com/en/manual/payments/shopify-payments/testing-shopify-payments).
+
+Shopify's support for allowing headless checkout on password protected stores has proven erratic, so it is **not**
+recommended that you password protect your Shopify store when using Penny. Instead you should update your Shopify theme
+to redirect users to your Penny site and set up a `robots.txt` file to prevent indexing of your Shopify native store.
+
+The [shopify-headless-theme](https://github.com/instantcommerce/shopify-headless-theme) is an excellent option.
 
 4. Get your Storefront API keys.
 
@@ -398,7 +403,7 @@ Then select **Save** at the top right of the page.
 - You will now see a **Storefront API access token**. Copy it and save it. You'll need it to configure Shopify
   Storefront in your TakeShape project.
 
-![A screenshot of the Storefront APi access token section](/readme-images/storefront-api-access-token-readme-images.png)
+![A screenshot of the Storefront API access token section](/readme-images/storefront-api-access-token-readme-images.png)
 
 - Go back to the Configuration tab for your app. At this point you have as Storefront API integration but no Admin API
   integration. Next to Admin API integration click Configure.
@@ -655,24 +660,29 @@ project name.
 
 ![A screenshot of the sentry settings page with the Client Keys (DSN) panel open](/readme-images/sentry/dsn-sentry.png)
 
-- Save your DSN. You can set it in your `.env.local` or your hosting provider's UI as the `NEXT_PUBLIC_SENTRY_DSN`
-  variable.
+- Save your DSN. You can set it in your `.env` or `.env.local` or your hosting provider's UI as
+  `NEXT_PUBLIC_SENTRY_DSN`.
 
-2. Find your sentry org slug.
+2. Create a Sentry auth token.
+
+- Head to **Settings**, then **Auth Tokens**.
+
+- Set the `SENTRY_AUTH_TOKEN` value in your `.env.local` or in your hosting provider's UI.
+
+3. Find your sentry org slug.
 
 - Head to **Settings**, then **General Settings**. At the top of the page you should see **Organization Slug**. Copy the
   value there.
 
-- Set this value in your `.env.local` or your hosting provider's UI as the `SENTRY_ORG` variable.
+- Set this value in your checked in `.env` file.
 
-3. Find your sentry project name.
+4. Find your sentry project name.
 
 - Head to **Settings**, then **Projects**. You'll see a list of projects. Select the Next.js project you want to use.
 
 - Under the **Project Details** section on the next page, you'll see a **Name** field. Copy that value.
 
-- Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your `.env.local` or your hosting provider's
-  UI.
+- Set the value from the **Name** field to the `SENTRY_PROJECT` variable in your checked in `.env` file.
 
 ## Multipass
 
@@ -706,15 +716,21 @@ You can run and develop your Playwright tests locally using the following proces
 1. Work within the Playwright UI to run and debug your tests.
 
 ### CI
+
 Make sure you have set these environment variables in your repository:
+
 - `PLAYWRIGHT_TEST_BASE_URL` - this will be set automatically by the GitHub Actions workflow;
-- `PLAYWRIGHT_PRODUCT_NAME_INSTOCK`  - a product name to find in a collection and use in tests;
-- `PLAYWRIGHT_PRODUCT_SIZE_INSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_INSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` product;
-- `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK`  - a product name to find in a collection and use in tests;
-- `PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK` - should be the combination of size and color for your `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` product;
-- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to;
+- `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` - a product name to find in a collection and use in tests;
+- `PLAYWRIGHT_PRODUCT_SIZE_INSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_INSTOCK` - should be the combination of size and color
+  for your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` product;
+- `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` - a product name to find in a collection and use in tests;
+- `PLAYWRIGHT_PRODUCT_SIZE_OUTOFSTOCK` and `PLAYWRIGHT_PRODUCT_COLOR_OUTOFSTOCK` - should be the combination of size and
+  color for your `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` product;
+- `PLAYWRIGHT_COLLECTION_NAME` - the name of the collection that your `PLAYWRIGHT_PRODUCT_NAME_INSTOCK` and
+  `PLAYWRIGHT_PRODUCT_NAME_OUTOFSTOCK` relate to;
 - `PLAYWRIGHT_BRAND_NAME` - any brand name in your store;
-- `PLAYWRIGHT_USER_EMAIL` - test user email already registered in the system, it's used for authenticated feature testing like account settings, etc.;
+- `PLAYWRIGHT_USER_EMAIL` - test user email already registered in the system, it's used for authenticated feature
+  testing like account settings, etc.;
 - `PLAYWRIGHT_USER_PASSWORD` - test user password.
 
 # Deploying to production
@@ -767,9 +783,9 @@ You AWS credentials:
 
 Your S3 details:
 
-- `PW_S3_URL` - Example: `https://dbr9n5zkng988.cloudfront.net/`
-- `PW_S3_BUCKET` - Example: `my-playwright-bucket`
-- `PW_S3_REGION` - Example: `us-east-1`
+- `PLAYWRIGHT_S3_URL` - Example: `https://dbr9n5zkng988.cloudfront.net/`
+- `PLAYWRIGHT_S3_BUCKET` - Example: `my-playwright-bucket`
+- `PLAYWRIGHT_S3_REGION` - Example: `us-east-1`
 
 # TakeShape Branches
 
@@ -896,7 +912,7 @@ Add this snippet to your checkout template.
 
 You can also set your own `redirect_origin` with the `shopifyCheckoutRedirectUrl` variable exported from
 `src/config/shopify.ts`. Note that `{{origin}}` is available as a replacement variable, for example, this will redirect
-you to the same origin, at the path `/foo` — `{{origin}}/foo`.
+you to the same origin, at the path `/foo` — `{{origin}}/foo`.
 
 - Captcha can be disabled in the client by removing `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` from the env. The Takeshape API
   will still require Captcha unless the Captcha compose step and `"if": "$resolvers.recaptcha.success == true"` is

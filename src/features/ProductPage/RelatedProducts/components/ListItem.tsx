@@ -1,15 +1,15 @@
-import NextImage from 'components/NextImage';
-import NextLink from 'components/NextLink';
-import { quickAddAtom } from 'features/QuickAdd/store';
+import NextImage from '@/components/NextImage';
+import NextLink from '@/components/NextLink';
+import { quickAddAtom } from '@/features/QuickAdd/store';
+import { formatPrice } from '@/lib/util/text';
+import { truncate } from '@/lib/util/truncate';
 import { useSetAtom } from 'jotai';
 import { MouseEvent, useCallback } from 'react';
-import { formatPrice } from 'utils/text';
-import { truncate } from 'utils/truncate';
 import { ProductPageRelatedProductsProduct } from '../../types';
 
-export interface ListItemProps {
+export type ListItemProps = {
   product: ProductPageRelatedProductsProduct;
-}
+};
 
 export const ListItem = ({ product }: ListItemProps) => {
   const quickAdd = useSetAtom(quickAddAtom);

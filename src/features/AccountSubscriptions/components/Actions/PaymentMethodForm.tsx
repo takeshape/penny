@@ -1,15 +1,13 @@
 /**
  * If a project is able to use `write_customer_payment_methods` can use this.
  */
-import { RadioGroup } from '@headlessui/react';
-import { Loader } from 'components/Loader/Loader';
-import { ModalProps } from 'components/Modal/Modal';
-import { ModalForm } from 'components/Modal/ModalForm';
-import { ModalFormActions } from 'components/Modal/ModalFormActions';
-import { CreditCard } from 'components/Payments/CreditCard';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Loader } from '@/components/Loader/Loader';
+import { ModalProps } from '@/components/Modal/Modal';
+import { ModalForm } from '@/components/Modal/ModalForm';
+import { ModalFormActions } from '@/components/Modal/ModalFormActions';
+import { CreditCard } from '@/components/Payments/CreditCard';
+import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from '@/lib/takeshape';
+import classNames from '@/lib/util/classNames';
 import {
   GetMyPaymentMethodsQueryResponse,
   GetMyPaymentMethodsQueryVariables,
@@ -17,9 +15,11 @@ import {
   SendMyUpdatePaymentEmailMutationVariables,
   UpdateMyPaymentMethodMutationResponse,
   UpdateMyPaymentMethodMutationVariables
-} from 'types/takeshape';
-import classNames from 'utils/classNames';
-import { useAuthenticatedLazyQuery, useAuthenticatedMutation } from 'utils/takeshape';
+} from '@/types/takeshape';
+import { RadioGroup } from '@headlessui/react';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
   GetMyPaymentMethodsQuery,
   SendMyUpdatePaymentEmailMutation,
@@ -28,15 +28,15 @@ import {
 import { getPaymentMethods } from '../../transforms';
 import { RefetchSubscriptions, SubscriptionPaymentMethod } from '../../types';
 
-export interface PaymentMethodFormProps extends ModalProps {
+export type PaymentMethodFormProps = {
   defaultPaymentMethodId?: string;
   addressId: string;
   refetchSubscriptions: RefetchSubscriptions;
-}
+} & ModalProps;
 
-export interface PaymentMethodFormValues {
+export type PaymentMethodFormValues = {
   paymentMethodId: string;
-}
+};
 
 export const PaymentMethodForm = ({
   isOpen,
@@ -84,7 +84,7 @@ export const PaymentMethodForm = ({
   );
 
   const handleAddPaymentMethod = useCallback(() => {
-    sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId ?? '' } });
+    void sendUpdatePaymentEmail({ variables: { paymentMethodId: defaultPaymentMethodId ?? '' } });
     setIsPaymentMethodAdded(true);
   }, [defaultPaymentMethodId, sendUpdatePaymentEmail]);
 
@@ -96,7 +96,7 @@ export const PaymentMethodForm = ({
   // Set initial values
   useEffect(() => {
     if (isOpen) {
-      getMyPaymentMethods();
+      void getMyPaymentMethods();
     }
     resetState();
   }, [getMyPaymentMethods, isOpen, resetState]);
@@ -108,7 +108,7 @@ export const PaymentMethodForm = ({
       primaryText="Payment method"
       secondaryText="Change how you pay for this subscription."
       afterLeave={resetState}
-      onSubmit={handleSubmit(handleFormSubmit)}
+      onSubmit={(...args) => void handleSubmit(handleFormSubmit)(...args)}
       isSubmitSuccessful={isSubmitSuccessful || isPaymentMethodAdded}
       autoCloseDelay={3000}
     >

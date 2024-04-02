@@ -1,11 +1,11 @@
-import NextImage from 'components/NextImage';
+import NextImage from '@/components/NextImage';
 
-export interface AvatarProps {
+export type AvatarProps = {
   src: string | null;
   alt?: string;
   size?: number;
   fallback: JSX.Element;
-}
+};
 
 export const Avatar = ({ src, alt, size, fallback }: AvatarProps) => {
   alt = alt ?? '';

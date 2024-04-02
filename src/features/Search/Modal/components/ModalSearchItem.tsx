@@ -1,10 +1,12 @@
+'use client';
+
+import NextImage from '@/components/NextImage';
+import classNames from '@/lib/util/classNames';
+import { truncate } from '@/lib/util/truncate';
 import { Combobox } from '@headlessui/react';
-import NextImage from 'components/NextImage';
-import classNames from 'utils/classNames';
-import { truncate } from 'utils/truncate';
 import { SearchItem } from '../../types';
 
-export interface ModalSearchItemProps extends SearchItem {}
+export type ModalSearchItemProps = SearchItem;
 
 export const ModalSearchItem = ({ product }: ModalSearchItemProps) => {
   return (

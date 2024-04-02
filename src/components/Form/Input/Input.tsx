@@ -1,40 +1,37 @@
+import classNames from '@/lib/util/classNames';
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid';
-import IMask from 'imask';
-import { createRef, forwardRef, InputHTMLAttributes, RefCallback } from 'react';
+import { forwardRef, InputHTMLAttributes } from 'react';
 import { FieldPath, FieldValues, useController, UseControllerProps } from 'react-hook-form';
-import { IMaskInput } from 'react-imask';
-import classNames from 'utils/classNames';
+import { IMaskInput, IMaskInputProps } from 'react-imask';
+import { SetRequired } from 'type-fest';
 
-interface MaskedInputProps extends InputHTMLAttributes<HTMLInputElement> {
+type MaskedInputProps = SetRequired<IMaskInputProps<HTMLInputElement>, 'name'> & {
   onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-  mask: IMask.AnyMask;
-}
+};
 
-const MaskedInput = forwardRef<IMask.MaskElement, MaskedInputProps>(function MaskedField(
-  { onChange, mask, ...props },
-  inputRef
-) {
-  const ref = createRef();
+const MaskedInputInner = ({ id, name, onChange, ...props }: MaskedInputProps) => {
   return (
     <IMaskInput
       {...props}
-      inputRef={inputRef as RefCallback<IMask.MaskElement>}
-      ref={ref}
-      mask={mask as any}
+      id={id ?? name}
+      name={name}
       onAccept={(value: any) => {
-        onChange({ target: { name: props.name, value } });
+        onChange({ target: { name, value } });
       }}
     />
   );
+};
+
+const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(function MaskedField(props, ref) {
+  return <MaskedInputInner {...props} inputRef={ref} />;
 });
 
-export interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export type FormInputProps = InputHTMLAttributes<HTMLInputElement> & {
   id: string;
   label: string;
   helpText?: string;
-  mask?: IMask.AnyMask;
-}
+  mask?: MaskedInputProps['mask'];
+};
 
 export const FormInput = <
   TFieldValues extends FieldValues,
@@ -49,7 +46,6 @@ export const FormInput = <
   defaultValue,
   rules,
   shouldUnregister,
-  mask,
   ...props
 }: FormInputProps & UseControllerProps<TFieldValues, TName>) => {
   const { field, fieldState } = useController({
@@ -81,8 +77,8 @@ export const FormInput = <
           </span>
         )}
       </div>
-      {mask ? (
-        <MaskedInput mask={mask} {...props} {...field} id={id} className={inputClasses} />
+      {props.mask ? (
+        <MaskedInput {...(props as MaskedInputProps)} {...field} id={id} className={inputClasses} />
       ) : (
         <input {...props} {...field} id={id} className={inputClasses} />
       )}

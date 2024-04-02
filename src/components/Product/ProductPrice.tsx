@@ -1,12 +1,12 @@
-import { ProductPriceOption } from 'types/product';
-import classNames from 'utils/classNames';
-import { formatPrice } from 'utils/text';
+import classNames from '@/lib/util/classNames';
+import { formatPrice } from '@/lib/util/text';
+import { ProductPriceOption } from '@/types/product';
 
-export interface ProductPriceProps {
+export type ProductPriceProps = {
   price: ProductPriceOption;
   isAvailable: boolean;
   size: 'small' | 'large';
-}
+};
 
 export const ProductPrice = ({ price, isAvailable, size }: ProductPriceProps) => {
   const { currencyCode, amount } = price;

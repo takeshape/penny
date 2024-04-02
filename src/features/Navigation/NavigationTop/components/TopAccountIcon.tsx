@@ -1,6 +1,8 @@
+'use client';
+
+import NextLink from '@/components/NextLink';
 import { UserIcon } from '@heroicons/react/24/outline';
 import { UserIcon as SolidUserIcon } from '@heroicons/react/24/solid';
-import NextLink from 'components/NextLink';
 import { signIn, useSession } from 'next-auth/react';
 
 export const SignedIn = () => {
@@ -21,10 +23,10 @@ export const SignedIn = () => {
 export const SignedOut = () => (
   <div className="flex-1 items-center hidden lg:flex">
     <a
-      href={`/api/auth/signin`}
+      href={`/account/signin`}
       onClick={(e) => {
         e.preventDefault();
-        signIn(undefined, { callbackUrl: '/account' });
+        void signIn(undefined, { callbackUrl: '/account' });
       }}
       className="-m-2 p-2 text-primary-400 hover:text-primary-500 cursor-pointer"
     >

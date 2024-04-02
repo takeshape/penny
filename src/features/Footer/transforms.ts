@@ -1,6 +1,6 @@
-import { getNavigationLink } from 'transforms/navigation';
-import { FooterQueryResponse, NavigationSectionsLinkProperty } from 'types/takeshape';
-import { isNotNullish } from 'utils/types';
+import { isNotNullish } from '../../lib/util/types';
+import { getNavigationLink } from '../../transforms/navigation';
+import { FooterQueryResponse, NavigationSectionsLinkProperty } from '../../types/takeshape';
 
 export function getFooter(response: FooterQueryResponse) {
   const footer = response?.footer;

@@ -1,7 +1,7 @@
-import * as Icons from 'components/Icons/Icons';
-import { siteCopyrightText } from 'config';
-import { NavigationProps } from 'features/Footer/Navigation/Navigation';
-import { NewsletterProps } from 'features/Footer/Newsletter/Newsletter';
+import * as Icons from '@/components/Icons/Icons';
+import { siteCopyrightText } from '@/config';
+import { NavigationProps } from '@/features/Footer/Navigation/Navigation';
+import { NewsletterProps } from '@/features/Footer/Newsletter/Newsletter';
 import { Navigation } from './Navigation/Navigation';
 import { Newsletter } from './Newsletter/Newsletter';
 import { Social, SocialProps } from './Social/Social';
@@ -36,10 +36,10 @@ const social: SocialProps = {
   ]
 };
 
-export interface FooterProps {
+export type FooterProps = {
   navigation: NavigationProps | null;
   newsletter: NewsletterProps | null;
-}
+};
 
 export const Footer = ({ navigation, newsletter }: FooterProps) => {
   const currentYear = new Date().getFullYear();

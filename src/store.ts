@@ -1,7 +1,7 @@
-import { defaultCurrency } from 'config';
+import { defaultCurrency } from '@/config';
+import { NotificationMessage } from '@/types/notification';
 import { atom } from 'jotai';
 import { atomWithReset, atomWithStorage } from 'jotai/utils';
-import { NotificationMessage } from 'types/notification';
 
 /* Global */
 export const currencyAtom = atomWithStorage('currency', defaultCurrency);

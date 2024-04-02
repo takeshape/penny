@@ -1,4 +1,4 @@
-import PageLoader from 'components/PageLoader';
+import PageLoader from '@/components/PageLoader';
 
 export const ProductLoading = () => {
   return (

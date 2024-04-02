@@ -1,9 +1,11 @@
+'use client';
+
+import { Logo } from '@/components/Logo/Logo';
+import NextLink from '@/components/NextLink';
+import { showCurrencySelector } from '@/config';
+import { isMobileMenuOpenAtom, isSearchOpenAtom } from '@/store';
 import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { Logo } from 'components/Logo/Logo';
-import NextLink from 'components/NextLink';
-import { showCurrencySelector } from 'config';
 import { useSetAtom } from 'jotai';
-import { isMobileMenuOpenAtom, isSearchOpenAtom } from 'store';
 import { Navigation } from '../types';
 import { TopAccountIcon } from './components/TopAccountIcon';
 import { TopCartIcon } from './components/TopCartIcon';
@@ -12,7 +14,7 @@ import { TopCurrencySelect } from './components/TopCurrencySelect';
 import { TopLinks } from './components/TopLinks';
 import { TopMessage } from './components/TopMessage';
 
-export interface NavigationTopProps extends Navigation {}
+export type NavigationTopProps = Navigation;
 
 export const NavigationTop = ({ message, sections, currencies }: NavigationTopProps) => {
   const setIsMobileMenuOpen = useSetAtom(isMobileMenuOpenAtom);

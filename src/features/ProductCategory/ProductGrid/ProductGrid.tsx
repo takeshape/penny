@@ -1,11 +1,11 @@
-import { GridItemLoading } from 'features/ProductCategory/ProductGrid/components/GridItemLoading';
+import { GridItemLoading } from '@/features/ProductCategory/ProductGrid/components/GridItemLoading';
 import { PropsWithChildren } from 'react';
 import { ProductCategoryProductListItem } from '../types';
 import { GridItem } from './components/GridItem';
 
-export interface ProductGridProps {
+export type ProductGridProps = {
   items: (ProductCategoryProductListItem | null)[];
-}
+};
 
 export const ProductGrid = ({ items }: PropsWithChildren<ProductGridProps>) => {
   return (
